@@ -4,6 +4,8 @@
 
 当前 M0（MVP-001—003）工程基础已通过验收，正在实现 M1 数据与策略；金融业务尚未完成。任务状态与验证证据见 [开发状态](docs/progress/STATUS.md)，完整范围见 [92 项需求追踪](docs/spec/requirements-traceability.md)。两份计划原文保存在本目录。
 
+已完成 16 表迁移和 60 天演示事实，`make seed` 可重复导入 129 条模拟流水、3 张账单及 T0/T1/30 天定存产品。四个只读查询接口见 [账户事实 API](docs/architecture/account-facts-api.md)。
+
 ## 环境与启动
 
 Python 3.12、uv、Node.js 24、pnpm 11、Docker Desktop（Linux containers）、Microsoft Edge（真实浏览器测试）。本地 PostgreSQL 16 使用 54329 端口，API 8000，Web 5173。
@@ -26,7 +28,7 @@ Linux/macOS 使用 `make bootstrap`、`make dev`。两者调用同一个 `script
 
 每次统一命令打印 `run_id`，原始子命令日志与退出状态保存在 `.runtime/quality/<run_id>/`。`test`/`integration` 会启动本项目 PostgreSQL；迁移集成测试只创建和销毁随机 `bf_test_*` 数据库，不回滚演示库。
 
-`seed`、`demo-reset`、`export-evidence`、`audit-verify`、`security-check`、`evidence-check`、`build-proposal` 的命令入口预留，关联任务实现前明确失败，不能用于宣称初版完成。
+`seed`/`demo-reset` 会启动本项目数据库、升级到当前迁移并事务性重置专属合成演示用户，保留其他用户；当前为 M1 种子重置，完整竞赛演示待 MVP-404。`export-evidence`、`audit-verify`、`security-check`、`evidence-check`、`build-proposal` 的命令入口预留，关联任务实现前明确失败，不能用于宣称初版完成。
 
 首次建立锁文件由维护者运行 `uv sync` 和 `pnpm install`；常规 bootstrap 使用 frozen 锁文件，避免安装时漂移。`.env` 只包含本地模拟配置，不覆盖已存在环境文件。
 

@@ -197,6 +197,8 @@ def main(target: str) -> None:
         for child in ("lint", "typecheck", "test", "e2e"):
             main(child)
     elif target in {"seed", "demo-reset"}:
+        run("docker", "compose", "up", "-d", "--wait", "db")
+        uv("alembic", "upgrade", "head")
         uv("python", "scripts/seed_demo.py")
     elif target == "export-evidence":
         uv("python", "scripts/export_evidence.py")

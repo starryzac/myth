@@ -5,6 +5,271 @@
     "version": "0.1.0"
   },
   "paths": {
+    "/api/v1/accounts/summary": {
+      "get": {
+        "tags": [
+          "模拟账户事实"
+        ],
+        "summary": "Account Summary",
+        "operationId": "account_summary",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountSummary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/transactions": {
+      "get": {
+        "tags": [
+          "模拟账户事实"
+        ],
+        "summary": "List Transactions",
+        "operationId": "list_transactions",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000000,
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Account Id"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 48
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionPage"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/products": {
+      "get": {
+        "tags": [
+          "模拟账户事实"
+        ],
+        "summary": "List Products",
+        "operationId": "list_products",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/positions": {
+      "get": {
+        "tags": [
+          "模拟账户事实"
+        ],
+        "summary": "List Positions",
+        "operationId": "list_positions",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PositionList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/health": {
       "get": {
         "summary": "Health",
@@ -46,6 +311,214 @@
   },
   "components": {
     "schemas": {
+      "AccountSummary": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "timezone": {
+            "type": "string",
+            "title": "Timezone"
+          },
+          "oldest_account_observed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Oldest Account Observed At"
+          },
+          "latest_account_observed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Account Observed At"
+          },
+          "accounts": {
+            "items": {
+              "$ref": "#/components/schemas/AccountView"
+            },
+            "type": "array",
+            "title": "Accounts"
+          },
+          "credit_card_bills": {
+            "items": {
+              "$ref": "#/components/schemas/BillView"
+            },
+            "type": "array",
+            "title": "Credit Card Bills"
+          },
+          "cash_balance_cents": {
+            "type": "integer",
+            "title": "Cash Balance Cents"
+          },
+          "position_principal_cents": {
+            "type": "integer",
+            "title": "Position Principal Cents"
+          },
+          "unknown_position_principal_cents": {
+            "type": "integer",
+            "title": "Unknown Position Principal Cents"
+          },
+          "credit_card_unpaid_cents": {
+            "type": "integer",
+            "title": "Credit Card Unpaid Cents"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "timezone",
+          "oldest_account_observed_at",
+          "latest_account_observed_at",
+          "accounts",
+          "credit_card_bills",
+          "cash_balance_cents",
+          "position_principal_cents",
+          "unknown_position_principal_cents",
+          "credit_card_unpaid_cents"
+        ],
+        "title": "AccountSummary"
+      },
+      "AccountView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "external_ref": {
+            "type": "string",
+            "title": "External Ref"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "account_type": {
+            "type": "string",
+            "title": "Account Type"
+          },
+          "bank_code": {
+            "type": "string",
+            "title": "Bank Code"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CNY",
+            "title": "Currency"
+          },
+          "balance_cents": {
+            "type": "integer",
+            "title": "Balance Cents"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "external_ref",
+          "name",
+          "account_type",
+          "bank_code",
+          "currency",
+          "balance_cents",
+          "observed_at"
+        ],
+        "title": "AccountView"
+      },
+      "BillView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Account Id"
+          },
+          "source_ref": {
+            "type": "string",
+            "title": "Source Ref"
+          },
+          "evidence_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Id"
+          },
+          "statement_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Statement Date"
+          },
+          "due_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Due Date"
+          },
+          "total_cents": {
+            "type": "integer",
+            "title": "Total Cents"
+          },
+          "minimum_due_cents": {
+            "type": "integer",
+            "title": "Minimum Due Cents"
+          },
+          "paid_cents": {
+            "type": "integer",
+            "title": "Paid Cents"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "account_id",
+          "source_ref",
+          "evidence_id",
+          "statement_date",
+          "due_date",
+          "total_cents",
+          "minimum_due_cents",
+          "paid_cents",
+          "status"
+        ],
+        "title": "BillView"
+      },
       "ErrorDetail": {
         "properties": {
           "code": {
@@ -104,6 +577,399 @@
         },
         "type": "object",
         "title": "HealthResponse"
+      },
+      "PositionList": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PositionView"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "PositionList"
+      },
+      "PositionView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Account Id"
+          },
+          "product_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Product Id"
+          },
+          "goal_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal Id"
+          },
+          "policy_version_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy Version Id"
+          },
+          "principal_cents": {
+            "type": "integer",
+            "title": "Principal Cents"
+          },
+          "accrued_yield_cents": {
+            "type": "integer",
+            "title": "Accrued Yield Cents"
+          },
+          "purchased_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Purchased At"
+          },
+          "maturity_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maturity At"
+          },
+          "available_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Available At"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "account_id",
+          "product_id",
+          "goal_id",
+          "policy_version_id",
+          "principal_cents",
+          "accrued_yield_cents",
+          "purchased_at",
+          "maturity_at",
+          "available_at",
+          "status"
+        ],
+        "title": "PositionView"
+      },
+      "ProductList": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ProductView"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "ProductList"
+      },
+      "ProductView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "product_code": {
+            "type": "string",
+            "title": "Product Code"
+          },
+          "version_number": {
+            "type": "integer",
+            "title": "Version Number"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "asset_class": {
+            "type": "string",
+            "title": "Asset Class"
+          },
+          "risk_level": {
+            "type": "integer",
+            "title": "Risk Level"
+          },
+          "principal_fluctuation": {
+            "type": "boolean",
+            "title": "Principal Fluctuation"
+          },
+          "minimum_purchase_cents": {
+            "type": "integer",
+            "title": "Minimum Purchase Cents"
+          },
+          "lock_days": {
+            "type": "integer",
+            "title": "Lock Days"
+          },
+          "redemption_delay_days": {
+            "type": "integer",
+            "title": "Redemption Delay Days"
+          },
+          "annual_yield_bps": {
+            "type": "integer",
+            "title": "Annual Yield Bps"
+          },
+          "early_withdrawal_loss_bps": {
+            "type": "integer",
+            "title": "Early Withdrawal Loss Bps"
+          },
+          "maturity_rule": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Maturity Rule"
+          },
+          "early_withdrawal_rule": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Early Withdrawal Rule"
+          },
+          "auto_purchase_allowed": {
+            "type": "boolean",
+            "title": "Auto Purchase Allowed"
+          },
+          "auto_redeem_allowed": {
+            "type": "boolean",
+            "title": "Auto Redeem Allowed"
+          },
+          "effective_from": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Effective From"
+          },
+          "effective_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective Until"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "product_code",
+          "version_number",
+          "name",
+          "asset_class",
+          "risk_level",
+          "principal_fluctuation",
+          "minimum_purchase_cents",
+          "lock_days",
+          "redemption_delay_days",
+          "annual_yield_bps",
+          "early_withdrawal_loss_bps",
+          "maturity_rule",
+          "early_withdrawal_rule",
+          "auto_purchase_allowed",
+          "auto_redeem_allowed",
+          "effective_from",
+          "effective_until"
+        ],
+        "title": "ProductView"
+      },
+      "TransactionPage": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TransactionView"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "TransactionPage"
+      },
+      "TransactionView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Account Id"
+          },
+          "source_ref": {
+            "type": "string",
+            "title": "Source Ref"
+          },
+          "evidence_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Id"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "CREDIT",
+              "DEBIT"
+            ],
+            "title": "Direction"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "title": "Amount Cents"
+          },
+          "balance_after_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Balance After Cents"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "counterparty_ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Counterparty Ref"
+          },
+          "is_one_off": {
+            "type": "boolean",
+            "title": "Is One Off"
+          },
+          "category_confirmed": {
+            "type": "boolean",
+            "title": "Category Confirmed"
+          },
+          "occurred_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Occurred At"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "account_id",
+          "source_ref",
+          "evidence_id",
+          "direction",
+          "amount_cents",
+          "balance_after_cents",
+          "category",
+          "counterparty_ref",
+          "is_one_off",
+          "category_confirmed",
+          "occurred_at",
+          "observed_at"
+        ],
+        "title": "TransactionView"
       }
     }
   }

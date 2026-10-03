@@ -4,6 +4,74 @@
  */
 
 export interface paths {
+    "/api/v1/accounts/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Account Summary */
+        get: operations["account_summary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/transactions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Transactions */
+        get: operations["list_transactions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Products */
+        get: operations["list_products"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/positions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Positions */
+        get: operations["list_positions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/health": {
         parameters: {
             query?: never;
@@ -25,6 +93,101 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AccountSummary */
+        AccountSummary: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Timezone */
+            timezone: string;
+            /** Oldest Account Observed At */
+            oldest_account_observed_at: string | null;
+            /** Latest Account Observed At */
+            latest_account_observed_at: string | null;
+            /** Accounts */
+            accounts: components["schemas"]["AccountView"][];
+            /** Credit Card Bills */
+            credit_card_bills: components["schemas"]["BillView"][];
+            /** Cash Balance Cents */
+            cash_balance_cents: number;
+            /** Position Principal Cents */
+            position_principal_cents: number;
+            /** Unknown Position Principal Cents */
+            unknown_position_principal_cents: number;
+            /** Credit Card Unpaid Cents */
+            credit_card_unpaid_cents: number;
+        };
+        /** AccountView */
+        AccountView: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** External Ref */
+            external_ref: string;
+            /** Name */
+            name: string;
+            /** Account Type */
+            account_type: string;
+            /** Bank Code */
+            bank_code: string;
+            /**
+             * Currency
+             * @constant
+             */
+            currency: "CNY";
+            /** Balance Cents */
+            balance_cents: number;
+            /**
+             * Observed At
+             * Format: date-time
+             */
+            observed_at: string;
+        };
+        /** BillView */
+        BillView: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Source Ref */
+            source_ref: string;
+            /** Evidence Id */
+            evidence_id: string | null;
+            /**
+             * Statement Date
+             * Format: date
+             */
+            statement_date: string;
+            /**
+             * Due Date
+             * Format: date
+             */
+            due_date: string;
+            /** Total Cents */
+            total_cents: number;
+            /** Minimum Due Cents */
+            minimum_due_cents: number;
+            /** Paid Cents */
+            paid_cents: number;
+            /** Status */
+            status: string;
+        };
         /** ErrorDetail */
         ErrorDetail: {
             /** Code */
@@ -59,6 +222,175 @@ export interface components {
              */
             simulation: true;
         };
+        /** PositionList */
+        PositionList: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /** Items */
+            items: components["schemas"]["PositionView"][];
+        };
+        /** PositionView */
+        PositionView: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Goal Id */
+            goal_id: string | null;
+            /** Policy Version Id */
+            policy_version_id: string | null;
+            /** Principal Cents */
+            principal_cents: number;
+            /** Accrued Yield Cents */
+            accrued_yield_cents: number;
+            /**
+             * Purchased At
+             * Format: date-time
+             */
+            purchased_at: string;
+            /** Maturity At */
+            maturity_at: string | null;
+            /** Available At */
+            available_at: string | null;
+            /** Status */
+            status: string;
+        };
+        /** ProductList */
+        ProductList: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /** Items */
+            items: components["schemas"]["ProductView"][];
+        };
+        /** ProductView */
+        ProductView: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Product Code */
+            product_code: string;
+            /** Version Number */
+            version_number: number;
+            /** Name */
+            name: string;
+            /** Asset Class */
+            asset_class: string;
+            /** Risk Level */
+            risk_level: number;
+            /** Principal Fluctuation */
+            principal_fluctuation: boolean;
+            /** Minimum Purchase Cents */
+            minimum_purchase_cents: number;
+            /** Lock Days */
+            lock_days: number;
+            /** Redemption Delay Days */
+            redemption_delay_days: number;
+            /** Annual Yield Bps */
+            annual_yield_bps: number;
+            /** Early Withdrawal Loss Bps */
+            early_withdrawal_loss_bps: number;
+            /** Maturity Rule */
+            maturity_rule: {
+                [key: string]: unknown;
+            };
+            /** Early Withdrawal Rule */
+            early_withdrawal_rule: {
+                [key: string]: unknown;
+            };
+            /** Auto Purchase Allowed */
+            auto_purchase_allowed: boolean;
+            /** Auto Redeem Allowed */
+            auto_redeem_allowed: boolean;
+            /**
+             * Effective From
+             * Format: date-time
+             */
+            effective_from: string;
+            /** Effective Until */
+            effective_until: string | null;
+        };
+        /** TransactionPage */
+        TransactionPage: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /** Items */
+            items: components["schemas"]["TransactionView"][];
+            /** Total */
+            total: number;
+            /** Limit */
+            limit: number;
+            /** Offset */
+            offset: number;
+        };
+        /** TransactionView */
+        TransactionView: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Source Ref */
+            source_ref: string;
+            /** Evidence Id */
+            evidence_id: string | null;
+            /**
+             * Direction
+             * @enum {string}
+             */
+            direction: "CREDIT" | "DEBIT";
+            /** Amount Cents */
+            amount_cents: number;
+            /** Balance After Cents */
+            balance_after_cents: number | null;
+            /** Category */
+            category: string;
+            /** Counterparty Ref */
+            counterparty_ref: string | null;
+            /** Is One Off */
+            is_one_off: boolean;
+            /** Category Confirmed */
+            category_confirmed: boolean;
+            /**
+             * Occurred At
+             * Format: date-time
+             */
+            occurred_at: string;
+            /**
+             * Observed At
+             * Format: date-time
+             */
+            observed_at: string;
+        };
     };
     responses: never;
     parameters: never;
@@ -68,6 +400,199 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    account_summary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountSummary"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    list_transactions: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                account_id?: string | null;
+                category?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransactionPage"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    list_products: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProductList"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    list_positions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PositionList"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
     health: {
         parameters: {
             query?: never;

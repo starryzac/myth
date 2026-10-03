@@ -6,7 +6,8 @@
 
 - M0（MVP-001—003）完成并通过每任务 make check，Git 已保存基础里程碑。
 - MVP-101 完成，16 表、SQLAlchemy/Alembic、PostgreSQL 往返迁移及整体质量门通过。
-- 最小未完成任务：MVP-102，60 天可重复模拟种子。
+- MVP-102 完成，60 天可重复种子和四个事实查询 API 已通过，实际演示库已导入。
+- 最小未完成任务：MVP-103，策略生命周期与版本。
 - 后续完整范围见 `docs/spec/requirements-traceability.md`（25 MVP + 67 FULL）与 `acceptance-checklist.md`。
 
 ## 环境和精确命令
@@ -38,6 +39,6 @@ PostgreSQL 16 Docker Compose 项目 bounded-funds，端口 54329，独立数据�
 
 临时内容：项目内 `.venv`、`.uv-cache`、`.pnpm-store`、node_modules、.runtime、测试报告和构建目录；Docker 独立卷用于项目模拟数据，未经核对不删除。此前 pytest 沙盒产生的 `pytest-cache-files-*` 权限目录已忽略，不影响代码；不做无关清理。
 
-最新 check run `20261003T161343Z-a44e30c2`：17 后端、4 前端、1 Edge E2E，通过。演示数据库已在 migrate run `20261003T161446Z-7349ad65` 升级，尚无种子。清单已导出到 `docs/progress/evidence/MVP-101-*-manifest.json`。
+最新 check run `20261003T163545Z-6bfac458`：35 后端、4 前端、1 Edge E2E，通过。两次 make seed run `20261003T163521Z-1211830c` 与 `20261003T163526Z-112d03ab` 完整摘要及数据 SHA256 相同；5 账户、129 流水、252 证据、3 账单、3 产品、3 持仓，未建任何活动策略。证据位于 `docs/progress/evidence/MVP-102-*`。
 
-继续前检查 Git、当前运行进程与数据库，不据本文声称服务仍运行。下一任务 MVP-102 种子数据，每任务保留红绿证据及真实限制并运行 make check。初始迁移已接受，不得回改；结构演进新增修订。
+继续前检查 Git、当前运行进程与数据库，不据本文声称服务仍运行。下一任务 MVP-103 策略版本，每任务保留红绿证据及真实限制并运行 make check。初始迁移已接受，不得回改；结构演进新增修订。

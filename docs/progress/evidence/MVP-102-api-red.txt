@@ -1,0 +1,28 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0
+rootdir: F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collected 7 items
+
+apps\api\app\tests\test_account_api.py E
+
+=================================== ERRORS ====================================
+_ ERROR at setup of test_summary_separates_cash_positions_unknown_and_liability _
+
+    @pytest.fixture
+    def fact_client() -> Iterator[tuple[TestClient, dict[str, UUID]]]:
+>       from app.api.dependencies import get_session
+E       ModuleNotFoundError: No module named 'app.api.dependencies'
+
+apps\api\app\tests\test_account_api.py:25: ModuleNotFoundError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+ERROR apps/api/app/tests/test_account_api.py::test_summary_separates_cash_positions_unknown_and_liability
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+========================= 1 warning, 1 error in 1.81s =========================

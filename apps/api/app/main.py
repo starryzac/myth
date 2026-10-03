@@ -16,6 +16,7 @@ from app.api.errors import (
     http_error_handler,
     validation_error_handler,
 )
+from app.api.v1.accounts import router as account_router
 
 logger = logging.getLogger("bounded_funds.http")
 logger.setLevel(logging.INFO)
@@ -62,6 +63,7 @@ def create_app() -> FastAPI:
 
     api.add_exception_handler(HTTPException, http_error_handler)
     api.add_exception_handler(RequestValidationError, validation_error_handler)
+    api.include_router(account_router)
 
     @api.get("/api/v1/health", response_model=HealthResponse, operation_id="health")
     def health() -> HealthResponse:
