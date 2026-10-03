@@ -200,6 +200,10 @@ def main(target: str) -> None:
         run("docker", "compose", "up", "-d", "--wait", "db")
         uv("alembic", "upgrade", "head")
         uv("python", "scripts/seed_demo.py")
+    elif target == "policy-refresh":
+        run("docker", "compose", "up", "-d", "--wait", "db")
+        uv("alembic", "upgrade", "head")
+        uv("python", "scripts/refresh_policy_states.py")
     elif target == "export-evidence":
         uv("python", "scripts/export_evidence.py")
     elif target == "audit-verify":

@@ -6,6 +6,8 @@
 
 已完成 16 表迁移和 60 天演示事实，`make seed` 可重复导入 129 条模拟流水、3 张账单及 T0/T1/30 天定存产品。四个只读查询接口见 [账户事实 API](docs/architecture/account-facts-api.md)。
 
+策略已支持明确确认、追加版本、暂停、撤销、到期及旧动作失效；[策略 API](docs/architecture/policy-api.md)。`make policy-refresh` 可落库刷新时间状态，授权检查不依赖刷新是否执行。发现/自然语言编译、资金算法和业务界面仍按后续任务推进。
+
 ## 环境与启动
 
 Python 3.12、uv、Node.js 24、pnpm 11、Docker Desktop（Linux containers）、Microsoft Edge（真实浏览器测试）。本地 PostgreSQL 16 使用 54329 端口，API 8000，Web 5173。

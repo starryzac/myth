@@ -6,6 +6,7 @@ from uuid import uuid4
 
 from fastapi import FastAPI, Request, Response
 from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from starlette.exceptions import HTTPException
 from starlette.middleware.base import RequestResponseEndpoint
@@ -17,6 +18,8 @@ from app.api.errors import (
     validation_error_handler,
 )
 from app.api.v1.accounts import router as account_router
+from app.api.v1.policies import router as policy_router
+from app.services.policy_lifecycle import PolicyLifecycleError
 
 logger = logging.getLogger("bounded_funds.http")
 logger.setLevel(logging.INFO)
@@ -64,6 +67,13 @@ def create_app() -> FastAPI:
     api.add_exception_handler(HTTPException, http_error_handler)
     api.add_exception_handler(RequestValidationError, validation_error_handler)
     api.include_router(account_router)
+    api.include_router(policy_router)
+
+    async def lifecycle_error_handler(request: Request, exception: Exception) -> JSONResponse:
+        assert isinstance(exception, PolicyLifecycleError)
+        return error_response(request, exception.status_code, exception.code, exception.message)
+
+    api.add_exception_handler(PolicyLifecycleError, lifecycle_error_handler)
 
     @api.get("/api/v1/health", response_model=HealthResponse, operation_id="health")
     def health() -> HealthResponse:

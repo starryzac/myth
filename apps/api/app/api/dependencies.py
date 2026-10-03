@@ -1,6 +1,7 @@
 """Single synthetic-user MVP dependencies; authenticated identities arrive in FULL."""
 
 from collections.abc import Iterator
+from datetime import UTC, datetime
 from functools import lru_cache
 from typing import Annotated
 
@@ -39,3 +40,11 @@ def get_demo_user(session: SessionDependency) -> User:
 
 
 DemoUserDependency = Annotated[User, Depends(get_demo_user)]
+
+
+def get_now() -> datetime:
+    """Trusted application clock; clients cannot backdate policy authority."""
+    return datetime.now(UTC)
+
+
+ClockDependency = Annotated[datetime, Depends(get_now)]

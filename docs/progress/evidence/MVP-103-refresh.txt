@@ -1,0 +1,13 @@
+run_id=20261003T170613Z-7212b512
++ docker compose up -d --wait db
+ Container bounded-funds-db-1 Running 
+ Container bounded-funds-db-1 Waiting 
+ Container bounded-funds-db-1 Healthy 
++ uv run --frozen alembic upgrade head
++ uv run --frozen python scripts/refresh_policy_states.py
+{
+  "simulation": true,
+  "updated_policy_ids": [],
+  "invalidated_action_ids": [],
+  "inflight_action_ids": []
+}
