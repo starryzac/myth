@@ -1,6 +1,7 @@
 """Read-only adapter for verified simulated facts; never creates execution authority."""
 
 from calendar import monthrange
+from dataclasses import dataclass
 from datetime import UTC, date, datetime, time, timedelta, timezone
 from typing import Any, Literal
 from uuid import UUID
@@ -706,10 +707,17 @@ def _goals(
     return ownership, contributions, unassigned
 
 
-def compute_user_boundary(session: Session, user_id: UUID, now: datetime) -> BoundaryResponse:
-    """Caller supplies trusted time and a consistent read transaction; no writes occur."""
-    from app.domain.boundary import compute_boundary
+@dataclass(frozen=True)
+class BoundaryContext:
+    snapshot: BoundarySnapshot
+    versions: list[BoundaryPolicyVersion]
+    positions: list[BoundaryPosition]
+    products: list[BoundaryProduct]
+    sources: Sources
 
+
+def load_boundary_context(session: Session, user_id: UUID, now: datetime) -> BoundaryContext:
+    """Load verified financial facts without writing or authorizing actions."""
     if now.tzinfo is None or now.utcoffset() is None:
         raise PolicyLifecycleError("INVALID_CLOCK", "服务器时间必须带时区")
     try:
@@ -784,17 +792,27 @@ def compute_user_boundary(session: Session, user_id: UUID, now: datetime) -> Bou
                 "source_digest": input_digest,
             }
         )
-        try:
-            boundary = compute_boundary(snapshot, versions, position_facts, product_facts)
-        except (TypeError, ValueError, OverflowError) as error:
-            raise PolicyLifecycleError(
-                "INVALID_BOUNDARY_INPUT", "金融输入不一致或超出支持范围"
-            ) from error
-        return BoundaryResponse(
-            user_id=user_id,
-            as_of=now,
-            boundary=boundary,
-            source_evidence_ids=sorted(sources.used),
-            input_digest=input_digest,
-            source_issues=issues,
+        return BoundaryContext(snapshot, versions, position_facts, product_facts, sources)
+
+
+def compute_user_boundary(session: Session, user_id: UUID, now: datetime) -> BoundaryResponse:
+    """Compatibility wrapper around the shared read-only verified context."""
+    from app.domain.boundary import compute_boundary
+
+    context = load_boundary_context(session, user_id, now)
+    try:
+        boundary = compute_boundary(
+            context.snapshot, context.versions, context.positions, context.products
         )
+    except (TypeError, ValueError, OverflowError) as error:
+        raise PolicyLifecycleError(
+            "INVALID_BOUNDARY_INPUT", "金融输入不一致或超出支持范围"
+        ) from error
+    return BoundaryResponse(
+        user_id=user_id,
+        as_of=context.snapshot.as_of,
+        boundary=boundary,
+        source_evidence_ids=sorted(context.sources.used),
+        input_digest=context.snapshot.source_digest,
+        source_issues=sorted(context.sources.issues, key=lambda item: (item.code, item.source_ref)),
+    )

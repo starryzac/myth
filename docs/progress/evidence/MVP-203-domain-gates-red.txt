@@ -1,0 +1,86 @@
+...FFFFFFFFFF                                                            [100%]
+================================== FAILURES ===================================
+_ test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion[source] _
+apps\api\app\tests\test_goal_allocation.py:197: in test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion
+    assert result.status == ("LIQUIDITY_RISK" if failure == "cash" else "INSUFFICIENT_EVIDENCE")
+E   AssertionError: assert 'READY' == 'INSUFFICIENT_EVIDENCE'
+E     
+E     - INSUFFICIENT_EVIDENCE
+E     + READY
+_ test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion[boundary] _
+apps\api\app\tests\test_goal_allocation.py:197: in test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion
+    assert result.status == ("LIQUIDITY_RISK" if failure == "cash" else "INSUFFICIENT_EVIDENCE")
+E   AssertionError: assert 'MINIMUM_SHORTFALL' == 'INSUFFICIENT_EVIDENCE'
+E     
+E     - INSUFFICIENT_EVIDENCE
+E     + MINIMUM_SHORTFALL
+_ test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion[cash] _
+apps\api\app\tests\test_goal_allocation.py:197: in test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion
+    assert result.status == ("LIQUIDITY_RISK" if failure == "cash" else "INSUFFICIENT_EVIDENCE")
+E   AssertionError: assert 'MINIMUM_SHORTFALL' == 'LIQUIDITY_RISK'
+E     
+E     - LIQUIDITY_RISK
+E     + MINIMUM_SHORTFALL
+_ test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion[month] _
+apps\api\app\tests\test_goal_allocation.py:194: in test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion
+    result = plan_goal_allocation(
+apps\api\app\domain\goal_allocation.py:97: in plan_goal_allocation
+    contributed = next(
+E   StopIteration
+_ test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion[destination] _
+apps\api\app\tests\test_goal_allocation.py:194: in test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion
+    result = plan_goal_allocation(
+apps\api\app\domain\goal_allocation.py:112: in plan_goal_allocation
+    projected, _ = _project(snapshot, goal_id, trial, lots)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\domain\goal_allocation.py:182: in _project
+    raise ValueError("Goal destination account is required")
+E   ValueError: Goal destination account is required
+_ test_selected_exact_version_must_be_active_at_the_instant_of_planning[wrong_version] _
+apps\api\app\tests\test_goal_allocation.py:214: in test_selected_exact_version_must_be_active_at_the_instant_of_planning
+    result = plan_goal_allocation(GOAL, version, snapshot, policies, [], [], lots)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\domain\goal_allocation.py:93: in plan_goal_allocation
+    policy = next(p for p in active_policy_versions if p.version_id == policy_version_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   StopIteration
+_ test_selected_exact_version_must_be_active_at_the_instant_of_planning[future] _
+apps\api\app\tests\test_goal_allocation.py:215: in test_selected_exact_version_must_be_active_at_the_instant_of_planning
+    assert result.status == "INACTIVE_POLICY"
+E   AssertionError: assert 'READY' == 'INACTIVE_POLICY'
+E     
+E     - INACTIVE_POLICY
+E     + READY
+_ test_selected_exact_version_must_be_active_at_the_instant_of_planning[expired] _
+apps\api\app\tests\test_goal_allocation.py:215: in test_selected_exact_version_must_be_active_at_the_instant_of_planning
+    assert result.status == "INACTIVE_POLICY"
+E   AssertionError: assert 'READY' == 'INACTIVE_POLICY'
+E     
+E     - INACTIVE_POLICY
+E     + READY
+_ test_income_before_confirmation_is_not_newly_authorized_even_on_the_same_local_day _
+apps\api\app\tests\test_goal_allocation.py:225: in test_income_before_confirmation_is_not_newly_authorized_even_on_the_same_local_day
+    assert result.status == "MINIMUM_SHORTFALL"
+E   AssertionError: assert 'READY' == 'MINIMUM_SHORTFALL'
+E     
+E     - MINIMUM_SHORTFALL
+E     + READY
+_______________ test_future_income_fact_blocks_precise_planning _______________
+apps\api\app\tests\test_goal_allocation.py:233: in test_future_income_fact_blocks_precise_planning
+    assert result.status == "INSUFFICIENT_EVIDENCE"
+E   AssertionError: assert 'READY' == 'INSUFFICIENT_EVIDENCE'
+E     
+E     - INSUFFICIENT_EVIDENCE
+E     + READY
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_goal_allocation.py::test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion[source]
+FAILED apps/api/app/tests/test_goal_allocation.py::test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion[boundary]
+FAILED apps/api/app/tests/test_goal_allocation.py::test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion[cash]
+FAILED apps/api/app/tests/test_goal_allocation.py::test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion[month]
+FAILED apps/api/app/tests/test_goal_allocation.py::test_incomplete_or_unsafe_baseline_cannot_produce_a_precise_suggestion[destination]
+FAILED apps/api/app/tests/test_goal_allocation.py::test_selected_exact_version_must_be_active_at_the_instant_of_planning[wrong_version]
+FAILED apps/api/app/tests/test_goal_allocation.py::test_selected_exact_version_must_be_active_at_the_instant_of_planning[future]
+FAILED apps/api/app/tests/test_goal_allocation.py::test_selected_exact_version_must_be_active_at_the_instant_of_planning[expired]
+FAILED apps/api/app/tests/test_goal_allocation.py::test_income_before_confirmation_is_not_newly_authorized_even_on_the_same_local_day
+FAILED apps/api/app/tests/test_goal_allocation.py::test_future_income_fact_blocks_precise_planning
+10 failed, 3 passed in 1.38s

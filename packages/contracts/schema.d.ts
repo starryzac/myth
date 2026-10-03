@@ -276,6 +276,41 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/goals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Goals */
+        get: operations["list_goals"];
+        put?: never;
+        /** Create Goal */
+        post: operations["create_goal"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goals/{goal_id}/allocation-preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Allocation */
+        get: operations["preview_goal_allocation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/health": {
         parameters: {
             query?: never;
@@ -605,6 +640,24 @@ export interface components {
             /** Missing Dates */
             missing_dates: string[];
         };
+        /** CreateGoalRequest */
+        CreateGoalRequest: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+        };
         /** DailyReserveAmount */
         DailyReserveAmount: {
             /**
@@ -693,6 +746,164 @@ export interface components {
             amount_cents: number;
             /** Reasons */
             reasons: string[];
+        };
+        /** GoalAllocationResponse */
+        GoalAllocationResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            allocation: components["schemas"]["GoalAllocationResult"];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Input Digest */
+            input_digest: string;
+            /** Source Issues */
+            source_issues: components["schemas"]["BoundarySourceIssue"][];
+        };
+        /** GoalAllocationResult */
+        GoalAllocationResult: {
+            /**
+             * Algorithm Version
+             * @default single-goal-allocation-v1
+             */
+            algorithm_version: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Policy Version Id
+             * Format: uuid
+             */
+            policy_version_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY" | "MINIMUM_SHORTFALL" | "LIQUIDITY_RISK" | "INSUFFICIENT_EVIDENCE" | "INACTIVE_POLICY";
+            /**
+             * Financial Only
+             * @default true
+             * @constant
+             */
+            financial_only: true;
+            /**
+             * Preview Only
+             * @default true
+             * @constant
+             */
+            preview_only: true;
+            /** Suggested Cents */
+            suggested_cents?: number | null;
+            /** Max Safe Cents */
+            max_safe_cents?: number | null;
+            /** Remaining Min Cents */
+            remaining_min_cents?: number | null;
+            /** Remaining Target Cents */
+            remaining_target_cents?: number | null;
+            /** Remaining Max Cents */
+            remaining_max_cents?: number | null;
+            /** Eligible New Funds Cents */
+            eligible_new_funds_cents?: number | null;
+            /** Minimum Shortfall Cents */
+            minimum_shortfall_cents?: number | null;
+            /** Lot Allocations */
+            lot_allocations?: components["schemas"]["LotAllocation"][];
+            baseline_boundary: components["schemas"]["BoundaryResult"];
+            candidate_boundary?: components["schemas"]["BoundaryResult"] | null;
+            /** Allocation Hash */
+            allocation_hash: string;
+            /** Reasons */
+            reasons?: string[];
+        };
+        /** GoalList */
+        GoalList: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /** Items */
+            items: components["schemas"]["GoalView"][];
+        };
+        /** GoalResponse */
+        GoalResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            goal: components["schemas"]["GoalView"];
+        };
+        /** GoalView */
+        GoalView: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Policy Version Id
+             * Format: uuid
+             */
+            policy_version_id: string;
+            /** Account Id */
+            account_id: string | null;
+            /** Name */
+            name: string;
+            /** Target Cents */
+            target_cents: number;
+            /** Allocated Cents */
+            allocated_cents: number;
+            /**
+             * Deadline
+             * Format: date
+             */
+            deadline: string;
+            /** Monthly Min Cents */
+            monthly_min_cents: number;
+            /** Monthly Target Cents */
+            monthly_target_cents: number;
+            /** Monthly Max Cents */
+            monthly_max_cents: number;
+            /** Importance */
+            importance: number;
+            /** Minimum Protection Cents */
+            minimum_protection_cents: number;
+            /** Reducible */
+            reducible: boolean;
+            /** Deferrable */
+            deferrable: boolean;
+            /** Cross Goal Reallocation Allowed */
+            cross_goal_reallocation_allowed: boolean;
+            /** Asset Policy Id */
+            asset_policy_id: string | null;
         };
         /** HealthResponse */
         HealthResponse: {
@@ -820,6 +1031,23 @@ export interface components {
             coverage_gaps: components["schemas"]["CoverageGap"][];
             /** Issues */
             issues: string[];
+        };
+        /** LotAllocation */
+        LotAllocation: {
+            /**
+             * Origin Transaction Id
+             * Format: uuid
+             */
+            origin_transaction_id: string;
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Amount Cents */
+            amount_cents: number;
+            /** Remaining Available Cents */
+            remaining_available_cents: number;
         };
         /** PolicyChangeRequest */
         PolicyChangeRequest: {
@@ -2095,6 +2323,180 @@ export interface operations {
             };
             /** @description Not Found */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    list_goals: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GoalList"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    create_goal: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateGoalRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GoalResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_goal_allocation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                goal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GoalAllocationResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
                 headers: {
                     [name: string]: unknown;
                 };

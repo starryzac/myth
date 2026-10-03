@@ -1,0 +1,21 @@
+..                                                                       [100%]
+============================ Hypothesis Statistics ============================
+apps/api/app/tests/test_goal_allocation_properties.py::test_current_version_cutoff_does_not_inherit_earlier_income:
+
+  - during generate phase (6.25 seconds):
+    - Typical runtimes: ~ 6-82 ms, of which ~ 0-1 ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+apps/api/app/tests/test_goal_allocation_properties.py::test_month_rollover_resets_month_total_without_rebuilding_source_balance:
+
+  - during generate phase (19.48 seconds):
+    - Typical runtimes: ~ 52-181 ms, of which ~ 0-1 ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+2 passed, 7 deselected in 26.33s

@@ -1217,6 +1217,209 @@
         }
       }
     },
+    "/api/v1/goals": {
+      "get": {
+        "tags": [
+          "目标储备"
+        ],
+        "summary": "Read Goals",
+        "operationId": "list_goals",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "目标储备"
+        ],
+        "summary": "Create Goal",
+        "operationId": "create_goal",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGoalRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/goals/{goal_id}/allocation-preview": {
+      "get": {
+        "tags": [
+          "目标储备"
+        ],
+        "summary": "Read Allocation",
+        "operationId": "preview_goal_allocation",
+        "parameters": [
+          {
+            "name": "goal_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Goal Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalAllocationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
     "/api/v1/health": {
       "get": {
         "summary": "Health",
@@ -2039,6 +2242,33 @@
         ],
         "title": "CoverageGap"
       },
+      "CreateGoalRequest": {
+        "properties": {
+          "policy_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Id"
+          },
+          "expected_version_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Expected Version Id"
+          },
+          "account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Account Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "policy_id",
+          "expected_version_id",
+          "account_id"
+        ],
+        "title": "CreateGoalRequest"
+      },
       "DailyReserveAmount": {
         "properties": {
           "day": {
@@ -2231,6 +2461,391 @@
           "reasons"
         ],
         "title": "ExcludedReserveTransaction"
+      },
+      "GoalAllocationResponse": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "goal_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Goal Id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "allocation": {
+            "$ref": "#/components/schemas/GoalAllocationResult"
+          },
+          "source_evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Source Evidence Ids"
+          },
+          "input_digest": {
+            "type": "string",
+            "title": "Input Digest"
+          },
+          "source_issues": {
+            "items": {
+              "$ref": "#/components/schemas/BoundarySourceIssue"
+            },
+            "type": "array",
+            "title": "Source Issues"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "goal_id",
+          "as_of",
+          "allocation",
+          "source_evidence_ids",
+          "input_digest",
+          "source_issues"
+        ],
+        "title": "GoalAllocationResponse"
+      },
+      "GoalAllocationResult": {
+        "properties": {
+          "algorithm_version": {
+            "type": "string",
+            "title": "Algorithm Version",
+            "default": "single-goal-allocation-v1"
+          },
+          "goal_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Goal Id"
+          },
+          "policy_version_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Version Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "MINIMUM_SHORTFALL",
+              "LIQUIDITY_RISK",
+              "INSUFFICIENT_EVIDENCE",
+              "INACTIVE_POLICY"
+            ],
+            "title": "Status"
+          },
+          "financial_only": {
+            "type": "boolean",
+            "const": true,
+            "title": "Financial Only",
+            "default": true
+          },
+          "preview_only": {
+            "type": "boolean",
+            "const": true,
+            "title": "Preview Only",
+            "default": true
+          },
+          "suggested_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suggested Cents"
+          },
+          "max_safe_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Safe Cents"
+          },
+          "remaining_min_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remaining Min Cents"
+          },
+          "remaining_target_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remaining Target Cents"
+          },
+          "remaining_max_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remaining Max Cents"
+          },
+          "eligible_new_funds_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Eligible New Funds Cents"
+          },
+          "minimum_shortfall_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minimum Shortfall Cents"
+          },
+          "lot_allocations": {
+            "items": {
+              "$ref": "#/components/schemas/LotAllocation"
+            },
+            "type": "array",
+            "title": "Lot Allocations"
+          },
+          "baseline_boundary": {
+            "$ref": "#/components/schemas/BoundaryResult"
+          },
+          "candidate_boundary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BoundaryResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "allocation_hash": {
+            "type": "string",
+            "title": "Allocation Hash"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "goal_id",
+          "policy_version_id",
+          "status",
+          "baseline_boundary",
+          "allocation_hash"
+        ],
+        "title": "GoalAllocationResult"
+      },
+      "GoalList": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/GoalView"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "GoalList"
+      },
+      "GoalResponse": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "goal": {
+            "$ref": "#/components/schemas/GoalView"
+          }
+        },
+        "type": "object",
+        "required": [
+          "goal"
+        ],
+        "title": "GoalResponse"
+      },
+      "GoalView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "policy_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Id"
+          },
+          "policy_version_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Version Id"
+          },
+          "account_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "target_cents": {
+            "type": "integer",
+            "title": "Target Cents"
+          },
+          "allocated_cents": {
+            "type": "integer",
+            "title": "Allocated Cents"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date",
+            "title": "Deadline"
+          },
+          "monthly_min_cents": {
+            "type": "integer",
+            "title": "Monthly Min Cents"
+          },
+          "monthly_target_cents": {
+            "type": "integer",
+            "title": "Monthly Target Cents"
+          },
+          "monthly_max_cents": {
+            "type": "integer",
+            "title": "Monthly Max Cents"
+          },
+          "importance": {
+            "type": "integer",
+            "title": "Importance"
+          },
+          "minimum_protection_cents": {
+            "type": "integer",
+            "title": "Minimum Protection Cents"
+          },
+          "reducible": {
+            "type": "boolean",
+            "title": "Reducible"
+          },
+          "deferrable": {
+            "type": "boolean",
+            "title": "Deferrable"
+          },
+          "cross_goal_reallocation_allowed": {
+            "type": "boolean",
+            "title": "Cross Goal Reallocation Allowed"
+          },
+          "asset_policy_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Asset Policy Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "policy_id",
+          "policy_version_id",
+          "account_id",
+          "name",
+          "target_cents",
+          "allocated_cents",
+          "deadline",
+          "monthly_min_cents",
+          "monthly_target_cents",
+          "monthly_max_cents",
+          "importance",
+          "minimum_protection_cents",
+          "reducible",
+          "deferrable",
+          "cross_goal_reallocation_allowed",
+          "asset_policy_id"
+        ],
+        "title": "GoalView"
       },
       "HealthResponse": {
         "properties": {
@@ -2519,6 +3134,41 @@
           "issues"
         ],
         "title": "LivingReserveEstimate"
+      },
+      "LotAllocation": {
+        "properties": {
+          "origin_transaction_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Origin Transaction Id"
+          },
+          "account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Account Id"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Amount Cents"
+          },
+          "remaining_available_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Remaining Available Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "origin_transaction_id",
+          "account_id",
+          "amount_cents",
+          "remaining_available_cents"
+        ],
+        "title": "LotAllocation"
       },
       "PolicyChangeRequest": {
         "properties": {

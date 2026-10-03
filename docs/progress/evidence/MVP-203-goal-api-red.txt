@@ -1,0 +1,66 @@
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+_ test_goal_creation_initializes_zero_ownership_and_preserves_all_existing_money _
+apps\api\app\tests\test_goal_api.py:82: in test_goal_creation_initializes_zero_ownership_and_preserves_all_existing_money
+    assert client.get("/api/v1/goals").status_code == 200
+E   AssertionError: assert 404 == 200
+E    +  where 404 = <Response [404 Not Found]>.status_code
+E    +    where <Response [404 Not Found]> = get('/api/v1/goals')
+E    +      where get = <starlette.testclient.TestClient object at 0x0000023DB05F0EF0>.get
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "b1bfa2fd-4361-48be-96a8-1eccc4ecefea", "method": "GET", "status": 404, "duration_ms": 125.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:56 {"event": "http_request", "request_id": "b1bfa2fd-4361-48be-96a8-1eccc4ecefea", "method": "GET", "status": 404, "duration_ms": 125.0}
+______ test_creation_retry_does_not_reset_owned_funds_or_rebind_account _______
+apps\api\app\tests\test_goal_api.py:113: in test_creation_retry_does_not_reset_owned_funds_or_rebind_account
+    assert created.status_code == 200
+E   assert 404 == 200
+E    +  where 404 = <Response [404 Not Found]>.status_code
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "bca92f05-22c5-4f37-bc80-992155ca592c", "method": "POST", "status": 200, "duration_ms": 156.0}
+{"event": "http_request", "request_id": "df9dcd95-ac78-4568-acd3-a68c851a0029", "method": "POST", "status": 200, "duration_ms": 16.0}
+{"event": "http_request", "request_id": "7f254b06-1060-480b-a807-493ed9da1786", "method": "POST", "status": 404, "duration_ms": 0.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:56 {"event": "http_request", "request_id": "bca92f05-22c5-4f37-bc80-992155ca592c", "method": "POST", "status": 200, "duration_ms": 156.0}
+INFO     bounded_funds.http:main.py:56 {"event": "http_request", "request_id": "df9dcd95-ac78-4568-acd3-a68c851a0029", "method": "POST", "status": 200, "duration_ms": 16.0}
+INFO     bounded_funds.http:main.py:56 {"event": "http_request", "request_id": "7f254b06-1060-480b-a807-493ed9da1786", "method": "POST", "status": 404, "duration_ms": 0.0}
+_ test_goal_creation_rejects_stale_unconfirmed_foreign_and_client_financial_fields _
+apps\api\app\tests\test_goal_api.py:150: in test_goal_creation_rejects_stale_unconfirmed_foreign_and_client_financial_fields
+    assert client.post("/api/v1/goals", json=modified).status_code == expected
+E   AssertionError: assert 404 == 409
+E    +  where 404 = <Response [404 Not Found]>.status_code
+E    +    where <Response [404 Not Found]> = post('/api/v1/goals', json={'policy_id': '7697ecac-dbed-425f-9a6a-23b1354fae77', 'expected_version_id': '976679b5-8bf1-4549-939b-7e4bfd1e3d38', 'account_id': '4eb14153-fdd3-5778-bd0c-7b8b82d16411'})
+E    +      where post = <starlette.testclient.TestClient object at 0x0000023DB1A34B30>.post
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "b8f782b9-3425-4dc4-b40d-ee6fbca61ef9", "method": "POST", "status": 200, "duration_ms": 78.0}
+{"event": "http_request", "request_id": "4639ab9d-0b4f-4184-9663-ed783886b800", "method": "POST", "status": 200, "duration_ms": 16.0}
+{"event": "http_request", "request_id": "a3896eb5-a068-4086-9e75-df10567535c7", "method": "POST", "status": 404, "duration_ms": 0.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:56 {"event": "http_request", "request_id": "b8f782b9-3425-4dc4-b40d-ee6fbca61ef9", "method": "POST", "status": 200, "duration_ms": 78.0}
+INFO     bounded_funds.http:main.py:56 {"event": "http_request", "request_id": "4639ab9d-0b4f-4184-9663-ed783886b800", "method": "POST", "status": 200, "duration_ms": 16.0}
+INFO     bounded_funds.http:main.py:56 {"event": "http_request", "request_id": "a3896eb5-a068-4086-9e75-df10567535c7", "method": "POST", "status": 404, "duration_ms": 0.0}
+_____ test_allocation_preview_requires_complete_sources_and_is_read_only ______
+apps\api\app\tests\test_goal_api.py:168: in test_allocation_preview_requires_complete_sources_and_is_read_only
+    assert created.status_code == 200
+E   assert 404 == 200
+E    +  where 404 = <Response [404 Not Found]>.status_code
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "6553df2a-ef20-4a52-b53f-79e6f12372bf", "method": "POST", "status": 200, "duration_ms": 141.0}
+{"event": "http_request", "request_id": "b16d0e0d-47d6-4e32-b055-a8bdd12c89ad", "method": "POST", "status": 200, "duration_ms": 156.0}
+{"event": "http_request", "request_id": "d47df696-0e4d-43df-bf58-0e5838853bd1", "method": "POST", "status": 404, "duration_ms": 16.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:56 {"event": "http_request", "request_id": "6553df2a-ef20-4a52-b53f-79e6f12372bf", "method": "POST", "status": 200, "duration_ms": 141.0}
+INFO     bounded_funds.http:main.py:56 {"event": "http_request", "request_id": "b16d0e0d-47d6-4e32-b055-a8bdd12c89ad", "method": "POST", "status": 200, "duration_ms": 156.0}
+INFO     bounded_funds.http:main.py:56 {"event": "http_request", "request_id": "d47df696-0e4d-43df-bf58-0e5838853bd1", "method": "POST", "status": 404, "duration_ms": 16.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_goal_api.py::test_goal_creation_initializes_zero_ownership_and_preserves_all_existing_money
+FAILED apps/api/app/tests/test_goal_api.py::test_creation_retry_does_not_reset_owned_funds_or_rebind_account
+FAILED apps/api/app/tests/test_goal_api.py::test_goal_creation_rejects_stale_unconfirmed_foreign_and_client_financial_fields
+FAILED apps/api/app/tests/test_goal_api.py::test_allocation_preview_requires_complete_sources_and_is_read_only
+4 failed, 1 warning in 10.83s

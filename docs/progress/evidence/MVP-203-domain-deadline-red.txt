@@ -1,0 +1,12 @@
+F.                                                                       [100%]
+================================== FAILURES ===================================
+_ test_goal_deadline_is_inclusive_in_its_local_calendar[2026-10-03-INACTIVE_POLICY-None] _
+apps\api\app\tests\test_goal_allocation.py:470: in test_goal_deadline_is_inclusive_in_its_local_calendar
+    assert result.status == status
+E   AssertionError: assert 'READY' == 'INACTIVE_POLICY'
+E     
+E     - INACTIVE_POLICY
+E     + READY
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_goal_allocation.py::test_goal_deadline_is_inclusive_in_its_local_calendar[2026-10-03-INACTIVE_POLICY-None]
+1 failed, 1 passed, 36 deselected in 0.87s

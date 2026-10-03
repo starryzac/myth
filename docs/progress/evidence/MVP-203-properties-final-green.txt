@@ -1,0 +1,48 @@
+.............                                                            [100%]
+============================ Hypothesis Statistics ============================
+apps/api/app/tests/test_goal_allocation_properties.py::test_positive_maximum_is_safe_and_next_cent_breaks_ledger_or_business_limit:
+
+  - during generate phase (13.25 seconds):
+    - Typical runtimes: ~ 9-192 ms, of which ~ 0-6 ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+apps/api/app/tests/test_goal_allocation_properties.py::test_missing_one_or_more_new_cents_never_rewrites_monthly_minimum:
+
+  - during generate phase (11.11 seconds):
+    - Typical runtimes: ~ 15-146 ms, of which ~ 0-3 ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+apps/api/app/tests/test_goal_allocation_properties.py::test_fifo_uses_unique_residual_cents_and_input_permutations_do_not_change_plan:
+
+  - during generate phase (19.58 seconds):
+    - Typical runtimes: ~ 57-137 ms, of which ~ 0-1 ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+apps/api/app/tests/test_goal_allocation_properties.py::test_current_version_cutoff_does_not_inherit_earlier_income:
+
+  - during generate phase (7.30 seconds):
+    - Typical runtimes: ~ 12-72 ms, of which < 1ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+apps/api/app/tests/test_goal_allocation_properties.py::test_month_rollover_resets_month_total_without_rebuilding_source_balance:
+
+  - during generate phase (14.30 seconds):
+    - Typical runtimes: ~ 47-103 ms, of which < 1ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+13 passed in 66.95s (0:01:06)
