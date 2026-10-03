@@ -1,0 +1,1437 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 7 items
+
+apps/api/app/tests/test_policy_discovery.py::test_seed_yields_only_rent_and_bill_observations_without_authority PASSED [ 14%]
+apps/api/app/tests/test_policy_discovery.py::test_repeated_observations_reuse_ids_even_when_clock_advances FAILED [ 28%]
+apps/api/app/tests/test_policy_discovery.py::test_concurrent_discovery_creates_one_revision_per_object FAILED [ 42%]
+apps/api/app/tests/test_policy_discovery.py::test_closed_candidates_are_never_revived[REJECTED] FAILED [ 57%]
+apps/api/app/tests/test_policy_discovery.py::test_closed_candidates_are_never_revived[EXPIRED] FAILED [ 71%]
+apps/api/app/tests/test_policy_discovery.py::test_new_revision_expires_old_proposal_and_invalid_pattern_expires_latest FAILED [ 85%]
+apps/api/app/tests/test_policy_discovery.py::test_confirmation_alone_creates_authority_and_suppresses_new_discovery FAILED [100%]
+
+================================== FAILURES ===================================
+________ test_repeated_observations_reuse_ids_even_when_clock_advances ________
+
+self = <sqlalchemy.engine.base.Connection object at 0x000001A5383E7BF0>
+dialect = <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x000001A5381036B0>
+context = <sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x000001A5384146B0>
+statement = <sqlalchemy.dialects.postgresql.psycopg.PGCompiler_psycopg object at 0x000001A5383FD280>
+parameters = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Unpack[TupleAny]]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        evt_handled: bool = False
+        try:
+            if self._has_events or self.engine._has_events:
+                for fn in self.dispatch.before_cursor_execute:
+                    str_statement, effective_parameters = fn(
+                        self,
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                        context.executemany,
+                    )
+    
+            if self._echo:
+                self._log_info(str_statement)
+    
+                stats = context._get_cache_stats()
+    
+                if not self.engine.hide_parameters:
+                    self._log_info(
+                        "[%s] %r",
+                        stats,
+                        sql_util._repr_params(
+                            effective_parameters,
+                            batches=10,
+                            ismulti=context.executemany,
+                        ),
+                    )
+                else:
+                    self._log_info(
+                        "[%s] [SQL parameters hidden due to "
+                        "hide_parameters=True]",
+                        stats,
+                    )
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1912: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1189: in do_executemany
+    cursor.executemany(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_837c073d71d24fc4aed9bacbbea0c323) at 0x1a5375bc4d0>
+query = 'INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, statu...y_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)'
+params_seq = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+returning = False
+
+    def executemany(
+        self, query: Query, params_seq: Iterable[Params], *, returning: bool = False
+    ) -> None:
+        """
+        Execute the same command with a sequence of input data.
+        """
+        try:
+            with self._conn.lock:
+                if Pipeline.is_supported():
+                    # If there is already a pipeline, ride it, in order to avoid
+                    # sending unnecessary Sync.
+                    if self._conn._pipeline:
+                        self._conn.wait(
+                            self._executemany_gen_pipeline(query, params_seq, returning)
+                        )
+                    else:
+                        # Otherwise, make a new one
+                        with self._conn._pipeline_nolock():
+                            self._conn.wait(
+                                self._executemany_gen_pipeline(
+                                    query, params_seq, returning
+                                )
+                            )
+                else:
+                    self._conn.wait(
+                        self._executemany_gen_no_pipeline(query, params_seq, returning)
+                    )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.UniqueViolation: duplicate key value violates unique constraint "uq_policy_proposals_user_idempotency"
+E           DETAIL:  Key (user_id, idempotency_key)=(271a9827-f82a-5be6-9e0a-50f721029fb0, discovery:19ac8d3c7ee87c032d42e69f88e80c9c2eced8c9abd854d8efeed080411982a7:50cabd6ccc756228d26ec7348430bd6e985c2b6e79ea0f33d1543aba29778c6e) already exists.
+
+.venv\Lib\site-packages\psycopg\cursor.py:148: UniqueViolation
+
+The above exception was the direct cause of the following exception:
+
+discovery_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_837c073d71d24fc4aed9bacbbea0c323)
+
+    def test_repeated_observations_reuse_ids_even_when_clock_advances(discovery_engine: Engine) -> None:
+        first = discover(discovery_engine)
+>       second = discover(discovery_engine, SEED_AS_OF + timedelta(days=1))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_policy_discovery.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_policy_discovery.py:106: in discover
+    return discover_policies(session, DEMO_USER_ID, now)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\policy_discovery.py:219: in discover_policies
+    session.flush()
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4536: in flush
+    self._flush(objects)
+<sqlalchemy generated warned() wrapper for sqlalchemy.orm.session.Session._flush>:2: in _flush
+    return target(fn, self, objects=objects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\util\deprecations.py:281: in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4679: in _flush
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4640: in _flush
+    flush_context.execute()
+.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py:467: in execute
+    rec.execute(self)
+.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py:643: in execute
+    util.preloaded.orm_persistence._save_obj(
+.venv\Lib\site-packages\sqlalchemy\orm\persistence.py:92: in _save_obj
+    _emit_insert_statements(
+.venv\Lib\site-packages\sqlalchemy\orm\persistence.py:1052: in _emit_insert_statements
+    result = connection.execute(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1448: in execute
+    return meth(
+.venv\Lib\site-packages\sqlalchemy\sql\elements.py:533: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1668: in _execute_clauseelement
+    ret = self._execute_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1822: in _execute_context
+    return self._exec_single_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1962: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:2332: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1912: in _exec_single_context
+    self.dialect.do_executemany(
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1189: in do_executemany
+    cursor.executemany(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_837c073d71d24fc4aed9bacbbea0c323) at 0x1a5375bc4d0>
+query = 'INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, statu...y_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)'
+params_seq = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+returning = False
+
+    def executemany(
+        self, query: Query, params_seq: Iterable[Params], *, returning: bool = False
+    ) -> None:
+        """
+        Execute the same command with a sequence of input data.
+        """
+        try:
+            with self._conn.lock:
+                if Pipeline.is_supported():
+                    # If there is already a pipeline, ride it, in order to avoid
+                    # sending unnecessary Sync.
+                    if self._conn._pipeline:
+                        self._conn.wait(
+                            self._executemany_gen_pipeline(query, params_seq, returning)
+                        )
+                    else:
+                        # Otherwise, make a new one
+                        with self._conn._pipeline_nolock():
+                            self._conn.wait(
+                                self._executemany_gen_pipeline(
+                                    query, params_seq, returning
+                                )
+                            )
+                else:
+                    self._conn.wait(
+                        self._executemany_gen_no_pipeline(query, params_seq, returning)
+                    )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           sqlalchemy.exc.IntegrityError: (psycopg.errors.UniqueViolation) duplicate key value violates unique constraint "uq_policy_proposals_user_idempotency"
+E           DETAIL:  Key (user_id, idempotency_key)=(271a9827-f82a-5be6-9e0a-50f721029fb0, discovery:19ac8d3c7ee87c032d42e69f88e80c9c2eced8c9abd854d8efeed080411982a7:50cabd6ccc756228d26ec7348430bd6e985c2b6e79ea0f33d1543aba29778c6e) already exists.
+E           [SQL: INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, status, confirmed_policy_id, idempotency_key, user_id, id, created_at) VALUES (%(source_type)s::VARCHAR, %(source_text)s::VARCHAR, %(compiler_version)s::VARCHAR, %(proposed_configuration)s::JSONB, %(evidence_ids)s::JSONB, %(status)s::VARCHAR, %(confirmed_policy_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)]
+E           [parameters: [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '����Ԥ����ѡ', 'valid_from': No ... (362 chars)), 'evidence_ids': Jsonb(['30352647-14c7-546f-92d2-d2bc79ae0 ... (120 chars)), 'status': 'PROPOSED', 'confirmed_policy_id': None, 'idempotency_key': 'discovery:19ac8d3c7ee87c032d42e69f88e80c9c2eced8c9abd854d8efeed080411982a7:50cabd6ccc756228d26ec7348430bd6e985c2b6e79ea0f33d1543aba29778c6e', 'user_id': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'id': UUID('6396ed21-9a20-4198-892b-39408a7794c3'), 'created_at': datetime.datetime(2026, 10, 4, 15, 59, 59, tzinfo=datetime.timezone.utc)}, {'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), 'evidence_ids': Jsonb(['3d90eb9b-4292-5110-a05e-34bcc73e8 ... (120 chars)), 'status': 'PROPOSED', 'confirmed_policy_id': None, 'idempotency_key': 'discovery:a80178ed2f18cc5dd73cf99c2db6ae4a93d54e8727c9be1d26fdd3c27896ffa3:744343a9e884fb7de10955588a07bcc58f1f419f2d1c68d317b99f1be0bacaeb', 'user_id': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'id': UUID('bc10ccc1-9245-48ca-b0fb-a5bb05454405'), 'created_at': datetime.datetime(2026, 10, 4, 15, 59, 59, tzinfo=datetime.timezone.utc)}]]
+E           (Background on this error at: https://sqlalche.me/e/21/gkpj)
+
+.venv\Lib\site-packages\psycopg\cursor.py:148: IntegrityError
+__________ test_concurrent_discovery_creates_one_revision_per_object __________
+
+self = <sqlalchemy.engine.base.Connection object at 0x000001A538414EC0>
+dialect = <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x000001A53838D910>
+context = <sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x000001A539F0EEA0>
+statement = <sqlalchemy.dialects.postgresql.psycopg.PGCompiler_psycopg object at 0x000001A539E87170>
+parameters = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Unpack[TupleAny]]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        evt_handled: bool = False
+        try:
+            if self._has_events or self.engine._has_events:
+                for fn in self.dispatch.before_cursor_execute:
+                    str_statement, effective_parameters = fn(
+                        self,
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                        context.executemany,
+                    )
+    
+            if self._echo:
+                self._log_info(str_statement)
+    
+                stats = context._get_cache_stats()
+    
+                if not self.engine.hide_parameters:
+                    self._log_info(
+                        "[%s] %r",
+                        stats,
+                        sql_util._repr_params(
+                            effective_parameters,
+                            batches=10,
+                            ismulti=context.executemany,
+                        ),
+                    )
+                else:
+                    self._log_info(
+                        "[%s] [SQL parameters hidden due to "
+                        "hide_parameters=True]",
+                        stats,
+                    )
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1912: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1189: in do_executemany
+    cursor.executemany(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_cc1b4729e4414f5dbc7bc85cc4cf215d) at 0x1a538160650>
+query = 'INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, statu...y_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)'
+params_seq = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+returning = False
+
+    def executemany(
+        self, query: Query, params_seq: Iterable[Params], *, returning: bool = False
+    ) -> None:
+        """
+        Execute the same command with a sequence of input data.
+        """
+        try:
+            with self._conn.lock:
+                if Pipeline.is_supported():
+                    # If there is already a pipeline, ride it, in order to avoid
+                    # sending unnecessary Sync.
+                    if self._conn._pipeline:
+                        self._conn.wait(
+                            self._executemany_gen_pipeline(query, params_seq, returning)
+                        )
+                    else:
+                        # Otherwise, make a new one
+                        with self._conn._pipeline_nolock():
+                            self._conn.wait(
+                                self._executemany_gen_pipeline(
+                                    query, params_seq, returning
+                                )
+                            )
+                else:
+                    self._conn.wait(
+                        self._executemany_gen_no_pipeline(query, params_seq, returning)
+                    )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.UniqueViolation: duplicate key value violates unique constraint "uq_policy_proposals_user_idempotency"
+E           DETAIL:  Key (user_id, idempotency_key)=(271a9827-f82a-5be6-9e0a-50f721029fb0, discovery:19ac8d3c7ee87c032d42e69f88e80c9c2eced8c9abd854d8efeed080411982a7:50cabd6ccc756228d26ec7348430bd6e985c2b6e79ea0f33d1543aba29778c6e) already exists.
+
+.venv\Lib\site-packages\psycopg\cursor.py:148: UniqueViolation
+
+The above exception was the direct cause of the following exception:
+
+discovery_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_cc1b4729e4414f5dbc7bc85cc4cf215d)
+
+    def test_concurrent_discovery_creates_one_revision_per_object(discovery_engine: Engine) -> None:
+        barrier = Barrier(2)
+    
+        def run() -> DiscoveryResult:
+            barrier.wait(timeout=10)
+            return discover(discovery_engine)
+    
+        with ThreadPoolExecutor(max_workers=2) as executor:
+>           results = [future.result(timeout=30) for future in [executor.submit(run), executor.submit(run)]]
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_policy_discovery.py:141: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py:58: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\tests\test_policy_discovery.py:138: in run
+    return discover(discovery_engine)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\tests\test_policy_discovery.py:106: in discover
+    return discover_policies(session, DEMO_USER_ID, now)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\policy_discovery.py:219: in discover_policies
+    session.flush()
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4536: in flush
+    self._flush(objects)
+<sqlalchemy generated warned() wrapper for sqlalchemy.orm.session.Session._flush>:2: in _flush
+    return target(fn, self, objects=objects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\util\deprecations.py:281: in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4679: in _flush
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4640: in _flush
+    flush_context.execute()
+.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py:467: in execute
+    rec.execute(self)
+.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py:643: in execute
+    util.preloaded.orm_persistence._save_obj(
+.venv\Lib\site-packages\sqlalchemy\orm\persistence.py:92: in _save_obj
+    _emit_insert_statements(
+.venv\Lib\site-packages\sqlalchemy\orm\persistence.py:1052: in _emit_insert_statements
+    result = connection.execute(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1448: in execute
+    return meth(
+.venv\Lib\site-packages\sqlalchemy\sql\elements.py:533: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1668: in _execute_clauseelement
+    ret = self._execute_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1822: in _execute_context
+    return self._exec_single_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1962: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:2332: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1912: in _exec_single_context
+    self.dialect.do_executemany(
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1189: in do_executemany
+    cursor.executemany(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_cc1b4729e4414f5dbc7bc85cc4cf215d) at 0x1a538160650>
+query = 'INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, statu...y_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)'
+params_seq = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+returning = False
+
+    def executemany(
+        self, query: Query, params_seq: Iterable[Params], *, returning: bool = False
+    ) -> None:
+        """
+        Execute the same command with a sequence of input data.
+        """
+        try:
+            with self._conn.lock:
+                if Pipeline.is_supported():
+                    # If there is already a pipeline, ride it, in order to avoid
+                    # sending unnecessary Sync.
+                    if self._conn._pipeline:
+                        self._conn.wait(
+                            self._executemany_gen_pipeline(query, params_seq, returning)
+                        )
+                    else:
+                        # Otherwise, make a new one
+                        with self._conn._pipeline_nolock():
+                            self._conn.wait(
+                                self._executemany_gen_pipeline(
+                                    query, params_seq, returning
+                                )
+                            )
+                else:
+                    self._conn.wait(
+                        self._executemany_gen_no_pipeline(query, params_seq, returning)
+                    )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           sqlalchemy.exc.IntegrityError: (psycopg.errors.UniqueViolation) duplicate key value violates unique constraint "uq_policy_proposals_user_idempotency"
+E           DETAIL:  Key (user_id, idempotency_key)=(271a9827-f82a-5be6-9e0a-50f721029fb0, discovery:19ac8d3c7ee87c032d42e69f88e80c9c2eced8c9abd854d8efeed080411982a7:50cabd6ccc756228d26ec7348430bd6e985c2b6e79ea0f33d1543aba29778c6e) already exists.
+E           [SQL: INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, status, confirmed_policy_id, idempotency_key, user_id, id, created_at) VALUES (%(source_type)s::VARCHAR, %(source_text)s::VARCHAR, %(compiler_version)s::VARCHAR, %(proposed_configuration)s::JSONB, %(evidence_ids)s::JSONB, %(status)s::VARCHAR, %(confirmed_policy_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)]
+E           [parameters: [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '����Ԥ����ѡ', 'valid_from': No ... (362 chars)), 'evidence_ids': Jsonb(['30352647-14c7-546f-92d2-d2bc79ae0 ... (120 chars)), 'status': 'PROPOSED', 'confirmed_policy_id': None, 'idempotency_key': 'discovery:19ac8d3c7ee87c032d42e69f88e80c9c2eced8c9abd854d8efeed080411982a7:50cabd6ccc756228d26ec7348430bd6e985c2b6e79ea0f33d1543aba29778c6e', 'user_id': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'id': UUID('ed530ba2-8ad8-452b-87b8-c4f978079dee'), 'created_at': datetime.datetime(2026, 10, 3, 15, 59, 59, tzinfo=datetime.timezone.utc)}, {'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), 'evidence_ids': Jsonb(['3d90eb9b-4292-5110-a05e-34bcc73e8 ... (120 chars)), 'status': 'PROPOSED', 'confirmed_policy_id': None, 'idempotency_key': 'discovery:a80178ed2f18cc5dd73cf99c2db6ae4a93d54e8727c9be1d26fdd3c27896ffa3:744343a9e884fb7de10955588a07bcc58f1f419f2d1c68d317b99f1be0bacaeb', 'user_id': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'id': UUID('092ebb02-0499-4f00-b845-196770ff5f5c'), 'created_at': datetime.datetime(2026, 10, 3, 15, 59, 59, tzinfo=datetime.timezone.utc)}]]
+E           (Background on this error at: https://sqlalche.me/e/21/gkpj)
+
+.venv\Lib\site-packages\psycopg\cursor.py:148: IntegrityError
+_____________ test_closed_candidates_are_never_revived[REJECTED] ______________
+
+self = <sqlalchemy.engine.base.Connection object at 0x000001A539F0EC90>
+dialect = <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x000001A53A148BC0>
+context = <sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x000001A539842150>
+statement = <sqlalchemy.dialects.postgresql.psycopg.PGCompiler_psycopg object at 0x000001A5398C9340>
+parameters = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Unpack[TupleAny]]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        evt_handled: bool = False
+        try:
+            if self._has_events or self.engine._has_events:
+                for fn in self.dispatch.before_cursor_execute:
+                    str_statement, effective_parameters = fn(
+                        self,
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                        context.executemany,
+                    )
+    
+            if self._echo:
+                self._log_info(str_statement)
+    
+                stats = context._get_cache_stats()
+    
+                if not self.engine.hide_parameters:
+                    self._log_info(
+                        "[%s] %r",
+                        stats,
+                        sql_util._repr_params(
+                            effective_parameters,
+                            batches=10,
+                            ismulti=context.executemany,
+                        ),
+                    )
+                else:
+                    self._log_info(
+                        "[%s] [SQL parameters hidden due to "
+                        "hide_parameters=True]",
+                        stats,
+                    )
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1912: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1189: in do_executemany
+    cursor.executemany(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_f9b9fdf7afac44e69dd8382fce2211d4) at 0x1a538160d10>
+query = 'INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, statu...y_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)'
+params_seq = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+returning = False
+
+    def executemany(
+        self, query: Query, params_seq: Iterable[Params], *, returning: bool = False
+    ) -> None:
+        """
+        Execute the same command with a sequence of input data.
+        """
+        try:
+            with self._conn.lock:
+                if Pipeline.is_supported():
+                    # If there is already a pipeline, ride it, in order to avoid
+                    # sending unnecessary Sync.
+                    if self._conn._pipeline:
+                        self._conn.wait(
+                            self._executemany_gen_pipeline(query, params_seq, returning)
+                        )
+                    else:
+                        # Otherwise, make a new one
+                        with self._conn._pipeline_nolock():
+                            self._conn.wait(
+                                self._executemany_gen_pipeline(
+                                    query, params_seq, returning
+                                )
+                            )
+                else:
+                    self._conn.wait(
+                        self._executemany_gen_no_pipeline(query, params_seq, returning)
+                    )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.UniqueViolation: duplicate key value violates unique constraint "uq_policy_proposals_user_idempotency"
+E           DETAIL:  Key (user_id, idempotency_key)=(271a9827-f82a-5be6-9e0a-50f721029fb0, discovery:19ac8d3c7ee87c032d42e69f88e80c9c2eced8c9abd854d8efeed080411982a7:50cabd6ccc756228d26ec7348430bd6e985c2b6e79ea0f33d1543aba29778c6e) already exists.
+
+.venv\Lib\site-packages\psycopg\cursor.py:148: UniqueViolation
+
+The above exception was the direct cause of the following exception:
+
+discovery_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_f9b9fdf7afac44e69dd8382fce2211d4)
+status = 'REJECTED'
+
+    @pytest.mark.parametrize("status", ["REJECTED", "EXPIRED"])
+    def test_closed_candidates_are_never_revived(discovery_engine: Engine, status: str) -> None:
+        first = discover(discovery_engine)
+        with Session(discovery_engine) as session, session.begin():
+            for proposal in session.scalars(select(PolicyProposal)):
+                proposal.status = status
+>       repeated = discover(discovery_engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_policy_discovery.py:152: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_policy_discovery.py:106: in discover
+    return discover_policies(session, DEMO_USER_ID, now)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\policy_discovery.py:219: in discover_policies
+    session.flush()
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4536: in flush
+    self._flush(objects)
+<sqlalchemy generated warned() wrapper for sqlalchemy.orm.session.Session._flush>:2: in _flush
+    return target(fn, self, objects=objects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\util\deprecations.py:281: in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4679: in _flush
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4640: in _flush
+    flush_context.execute()
+.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py:467: in execute
+    rec.execute(self)
+.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py:643: in execute
+    util.preloaded.orm_persistence._save_obj(
+.venv\Lib\site-packages\sqlalchemy\orm\persistence.py:92: in _save_obj
+    _emit_insert_statements(
+.venv\Lib\site-packages\sqlalchemy\orm\persistence.py:1052: in _emit_insert_statements
+    result = connection.execute(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1448: in execute
+    return meth(
+.venv\Lib\site-packages\sqlalchemy\sql\elements.py:533: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1668: in _execute_clauseelement
+    ret = self._execute_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1822: in _execute_context
+    return self._exec_single_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1962: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:2332: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1912: in _exec_single_context
+    self.dialect.do_executemany(
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1189: in do_executemany
+    cursor.executemany(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_f9b9fdf7afac44e69dd8382fce2211d4) at 0x1a538160d10>
+query = 'INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, statu...y_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)'
+params_seq = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+returning = False
+
+    def executemany(
+        self, query: Query, params_seq: Iterable[Params], *, returning: bool = False
+    ) -> None:
+        """
+        Execute the same command with a sequence of input data.
+        """
+        try:
+            with self._conn.lock:
+                if Pipeline.is_supported():
+                    # If there is already a pipeline, ride it, in order to avoid
+                    # sending unnecessary Sync.
+                    if self._conn._pipeline:
+                        self._conn.wait(
+                            self._executemany_gen_pipeline(query, params_seq, returning)
+                        )
+                    else:
+                        # Otherwise, make a new one
+                        with self._conn._pipeline_nolock():
+                            self._conn.wait(
+                                self._executemany_gen_pipeline(
+                                    query, params_seq, returning
+                                )
+                            )
+                else:
+                    self._conn.wait(
+                        self._executemany_gen_no_pipeline(query, params_seq, returning)
+                    )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           sqlalchemy.exc.IntegrityError: (psycopg.errors.UniqueViolation) duplicate key value violates unique constraint "uq_policy_proposals_user_idempotency"
+E           DETAIL:  Key (user_id, idempotency_key)=(271a9827-f82a-5be6-9e0a-50f721029fb0, discovery:19ac8d3c7ee87c032d42e69f88e80c9c2eced8c9abd854d8efeed080411982a7:50cabd6ccc756228d26ec7348430bd6e985c2b6e79ea0f33d1543aba29778c6e) already exists.
+E           [SQL: INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, status, confirmed_policy_id, idempotency_key, user_id, id, created_at) VALUES (%(source_type)s::VARCHAR, %(source_text)s::VARCHAR, %(compiler_version)s::VARCHAR, %(proposed_configuration)s::JSONB, %(evidence_ids)s::JSONB, %(status)s::VARCHAR, %(confirmed_policy_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)]
+E           [parameters: [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '����Ԥ����ѡ', 'valid_from': No ... (362 chars)), 'evidence_ids': Jsonb(['30352647-14c7-546f-92d2-d2bc79ae0 ... (120 chars)), 'status': 'PROPOSED', 'confirmed_policy_id': None, 'idempotency_key': 'discovery:19ac8d3c7ee87c032d42e69f88e80c9c2eced8c9abd854d8efeed080411982a7:50cabd6ccc756228d26ec7348430bd6e985c2b6e79ea0f33d1543aba29778c6e', 'user_id': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'id': UUID('2a319f45-2d46-4bfd-ba4f-1af31b626f5a'), 'created_at': datetime.datetime(2026, 10, 3, 15, 59, 59, tzinfo=datetime.timezone.utc)}, {'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), 'evidence_ids': Jsonb(['3d90eb9b-4292-5110-a05e-34bcc73e8 ... (120 chars)), 'status': 'PROPOSED', 'confirmed_policy_id': None, 'idempotency_key': 'discovery:a80178ed2f18cc5dd73cf99c2db6ae4a93d54e8727c9be1d26fdd3c27896ffa3:744343a9e884fb7de10955588a07bcc58f1f419f2d1c68d317b99f1be0bacaeb', 'user_id': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'id': UUID('96db983a-1cc0-4c25-9029-35f8a2b5e9a0'), 'created_at': datetime.datetime(2026, 10, 3, 15, 59, 59, tzinfo=datetime.timezone.utc)}]]
+E           (Background on this error at: https://sqlalche.me/e/21/gkpj)
+
+.venv\Lib\site-packages\psycopg\cursor.py:148: IntegrityError
+______________ test_closed_candidates_are_never_revived[EXPIRED] ______________
+
+self = <sqlalchemy.engine.base.Connection object at 0x000001A538148D10>
+dialect = <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x000001A539E4ADB0>
+context = <sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x000001A5381A76B0>
+statement = <sqlalchemy.dialects.postgresql.psycopg.PGCompiler_psycopg object at 0x000001A53A14BBC0>
+parameters = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Unpack[TupleAny]]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        evt_handled: bool = False
+        try:
+            if self._has_events or self.engine._has_events:
+                for fn in self.dispatch.before_cursor_execute:
+                    str_statement, effective_parameters = fn(
+                        self,
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                        context.executemany,
+                    )
+    
+            if self._echo:
+                self._log_info(str_statement)
+    
+                stats = context._get_cache_stats()
+    
+                if not self.engine.hide_parameters:
+                    self._log_info(
+                        "[%s] %r",
+                        stats,
+                        sql_util._repr_params(
+                            effective_parameters,
+                            batches=10,
+                            ismulti=context.executemany,
+                        ),
+                    )
+                else:
+                    self._log_info(
+                        "[%s] [SQL parameters hidden due to "
+                        "hide_parameters=True]",
+                        stats,
+                    )
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1912: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1189: in do_executemany
+    cursor.executemany(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_c4a4b09d4cf949189b049da3cb46cfd1) at 0x1a538160590>
+query = 'INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, statu...y_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)'
+params_seq = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+returning = False
+
+    def executemany(
+        self, query: Query, params_seq: Iterable[Params], *, returning: bool = False
+    ) -> None:
+        """
+        Execute the same command with a sequence of input data.
+        """
+        try:
+            with self._conn.lock:
+                if Pipeline.is_supported():
+                    # If there is already a pipeline, ride it, in order to avoid
+                    # sending unnecessary Sync.
+                    if self._conn._pipeline:
+                        self._conn.wait(
+                            self._executemany_gen_pipeline(query, params_seq, returning)
+                        )
+                    else:
+                        # Otherwise, make a new one
+                        with self._conn._pipeline_nolock():
+                            self._conn.wait(
+                                self._executemany_gen_pipeline(
+                                    query, params_seq, returning
+                                )
+                            )
+                else:
+                    self._conn.wait(
+                        self._executemany_gen_no_pipeline(query, params_seq, returning)
+                    )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.UniqueViolation: duplicate key value violates unique constraint "uq_policy_proposals_user_idempotency"
+E           DETAIL:  Key (user_id, idempotency_key)=(271a9827-f82a-5be6-9e0a-50f721029fb0, discovery:19ac8d3c7ee87c032d42e69f88e80c9c2eced8c9abd854d8efeed080411982a7:50cabd6ccc756228d26ec7348430bd6e985c2b6e79ea0f33d1543aba29778c6e) already exists.
+
+.venv\Lib\site-packages\psycopg\cursor.py:148: UniqueViolation
+
+The above exception was the direct cause of the following exception:
+
+discovery_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_c4a4b09d4cf949189b049da3cb46cfd1)
+status = 'EXPIRED'
+
+    @pytest.mark.parametrize("status", ["REJECTED", "EXPIRED"])
+    def test_closed_candidates_are_never_revived(discovery_engine: Engine, status: str) -> None:
+        first = discover(discovery_engine)
+        with Session(discovery_engine) as session, session.begin():
+            for proposal in session.scalars(select(PolicyProposal)):
+                proposal.status = status
+>       repeated = discover(discovery_engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_policy_discovery.py:152: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_policy_discovery.py:106: in discover
+    return discover_policies(session, DEMO_USER_ID, now)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\policy_discovery.py:219: in discover_policies
+    session.flush()
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4536: in flush
+    self._flush(objects)
+<sqlalchemy generated warned() wrapper for sqlalchemy.orm.session.Session._flush>:2: in _flush
+    return target(fn, self, objects=objects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\util\deprecations.py:281: in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4679: in _flush
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4640: in _flush
+    flush_context.execute()
+.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py:467: in execute
+    rec.execute(self)
+.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py:643: in execute
+    util.preloaded.orm_persistence._save_obj(
+.venv\Lib\site-packages\sqlalchemy\orm\persistence.py:92: in _save_obj
+    _emit_insert_statements(
+.venv\Lib\site-packages\sqlalchemy\orm\persistence.py:1052: in _emit_insert_statements
+    result = connection.execute(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1448: in execute
+    return meth(
+.venv\Lib\site-packages\sqlalchemy\sql\elements.py:533: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1668: in _execute_clauseelement
+    ret = self._execute_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1822: in _execute_context
+    return self._exec_single_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1962: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:2332: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1912: in _exec_single_context
+    self.dialect.do_executemany(
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1189: in do_executemany
+    cursor.executemany(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_c4a4b09d4cf949189b049da3cb46cfd1) at 0x1a538160590>
+query = 'INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, statu...y_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)'
+params_seq = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+returning = False
+
+    def executemany(
+        self, query: Query, params_seq: Iterable[Params], *, returning: bool = False
+    ) -> None:
+        """
+        Execute the same command with a sequence of input data.
+        """
+        try:
+            with self._conn.lock:
+                if Pipeline.is_supported():
+                    # If there is already a pipeline, ride it, in order to avoid
+                    # sending unnecessary Sync.
+                    if self._conn._pipeline:
+                        self._conn.wait(
+                            self._executemany_gen_pipeline(query, params_seq, returning)
+                        )
+                    else:
+                        # Otherwise, make a new one
+                        with self._conn._pipeline_nolock():
+                            self._conn.wait(
+                                self._executemany_gen_pipeline(
+                                    query, params_seq, returning
+                                )
+                            )
+                else:
+                    self._conn.wait(
+                        self._executemany_gen_no_pipeline(query, params_seq, returning)
+                    )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           sqlalchemy.exc.IntegrityError: (psycopg.errors.UniqueViolation) duplicate key value violates unique constraint "uq_policy_proposals_user_idempotency"
+E           DETAIL:  Key (user_id, idempotency_key)=(271a9827-f82a-5be6-9e0a-50f721029fb0, discovery:19ac8d3c7ee87c032d42e69f88e80c9c2eced8c9abd854d8efeed080411982a7:50cabd6ccc756228d26ec7348430bd6e985c2b6e79ea0f33d1543aba29778c6e) already exists.
+E           [SQL: INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, status, confirmed_policy_id, idempotency_key, user_id, id, created_at) VALUES (%(source_type)s::VARCHAR, %(source_text)s::VARCHAR, %(compiler_version)s::VARCHAR, %(proposed_configuration)s::JSONB, %(evidence_ids)s::JSONB, %(status)s::VARCHAR, %(confirmed_policy_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)]
+E           [parameters: [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '����Ԥ����ѡ', 'valid_from': No ... (362 chars)), 'evidence_ids': Jsonb(['30352647-14c7-546f-92d2-d2bc79ae0 ... (120 chars)), 'status': 'PROPOSED', 'confirmed_policy_id': None, 'idempotency_key': 'discovery:19ac8d3c7ee87c032d42e69f88e80c9c2eced8c9abd854d8efeed080411982a7:50cabd6ccc756228d26ec7348430bd6e985c2b6e79ea0f33d1543aba29778c6e', 'user_id': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'id': UUID('babd394d-0005-4c39-8f76-68dc28b9e162'), 'created_at': datetime.datetime(2026, 10, 3, 15, 59, 59, tzinfo=datetime.timezone.utc)}, {'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), 'evidence_ids': Jsonb(['3d90eb9b-4292-5110-a05e-34bcc73e8 ... (120 chars)), 'status': 'PROPOSED', 'confirmed_policy_id': None, 'idempotency_key': 'discovery:a80178ed2f18cc5dd73cf99c2db6ae4a93d54e8727c9be1d26fdd3c27896ffa3:744343a9e884fb7de10955588a07bcc58f1f419f2d1c68d317b99f1be0bacaeb', 'user_id': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'id': UUID('4dc46813-ce0b-4f6b-aac8-184cb05fabf4'), 'created_at': datetime.datetime(2026, 10, 3, 15, 59, 59, tzinfo=datetime.timezone.utc)}]]
+E           (Background on this error at: https://sqlalche.me/e/21/gkpj)
+
+.venv\Lib\site-packages\psycopg\cursor.py:148: IntegrityError
+__ test_new_revision_expires_old_proposal_and_invalid_pattern_expires_latest __
+
+self = <sqlalchemy.engine.base.Connection object at 0x000001A537F4F9B0>
+dialect = <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x000001A53838CC50>
+context = <sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x000001A5385590A0>
+statement = <sqlalchemy.dialects.postgresql.psycopg.PGCompiler_psycopg object at 0x000001A539851370>
+parameters = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Unpack[TupleAny]]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        evt_handled: bool = False
+        try:
+            if self._has_events or self.engine._has_events:
+                for fn in self.dispatch.before_cursor_execute:
+                    str_statement, effective_parameters = fn(
+                        self,
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                        context.executemany,
+                    )
+    
+            if self._echo:
+                self._log_info(str_statement)
+    
+                stats = context._get_cache_stats()
+    
+                if not self.engine.hide_parameters:
+                    self._log_info(
+                        "[%s] %r",
+                        stats,
+                        sql_util._repr_params(
+                            effective_parameters,
+                            batches=10,
+                            ismulti=context.executemany,
+                        ),
+                    )
+                else:
+                    self._log_info(
+                        "[%s] [SQL parameters hidden due to "
+                        "hide_parameters=True]",
+                        stats,
+                    )
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1912: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1189: in do_executemany
+    cursor.executemany(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_5533671c523045da8336c62721d1da30) at 0x1a538017290>
+query = 'INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, statu...y_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)'
+params_seq = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+returning = False
+
+    def executemany(
+        self, query: Query, params_seq: Iterable[Params], *, returning: bool = False
+    ) -> None:
+        """
+        Execute the same command with a sequence of input data.
+        """
+        try:
+            with self._conn.lock:
+                if Pipeline.is_supported():
+                    # If there is already a pipeline, ride it, in order to avoid
+                    # sending unnecessary Sync.
+                    if self._conn._pipeline:
+                        self._conn.wait(
+                            self._executemany_gen_pipeline(query, params_seq, returning)
+                        )
+                    else:
+                        # Otherwise, make a new one
+                        with self._conn._pipeline_nolock():
+                            self._conn.wait(
+                                self._executemany_gen_pipeline(
+                                    query, params_seq, returning
+                                )
+                            )
+                else:
+                    self._conn.wait(
+                        self._executemany_gen_no_pipeline(query, params_seq, returning)
+                    )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.UniqueViolation: duplicate key value violates unique constraint "uq_policy_proposals_user_idempotency"
+E           DETAIL:  Key (user_id, idempotency_key)=(271a9827-f82a-5be6-9e0a-50f721029fb0, discovery:a80178ed2f18cc5dd73cf99c2db6ae4a93d54e8727c9be1d26fdd3c27896ffa3:744343a9e884fb7de10955588a07bcc58f1f419f2d1c68d317b99f1be0bacaeb) already exists.
+
+.venv\Lib\site-packages\psycopg\cursor.py:148: UniqueViolation
+
+The above exception was the direct cause of the following exception:
+
+discovery_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_5533671c523045da8336c62721d1da30)
+
+    def test_new_revision_expires_old_proposal_and_invalid_pattern_expires_latest(
+        discovery_engine: Engine,
+    ) -> None:
+        discover(discovery_engine)
+        with Session(discovery_engine) as session, session.begin():
+            old = session.scalar(select(PolicyProposal).where(
+                PolicyProposal.proposed_configuration["due_day"].as_integer() == 28
+            ))
+            assert old is not None
+            old_id = old.id
+            change_rent(session, 190000, both=True)
+>       changed = discover(discovery_engine)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_policy_discovery.py:173: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_policy_discovery.py:106: in discover
+    return discover_policies(session, DEMO_USER_ID, now)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\policy_discovery.py:219: in discover_policies
+    session.flush()
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4536: in flush
+    self._flush(objects)
+<sqlalchemy generated warned() wrapper for sqlalchemy.orm.session.Session._flush>:2: in _flush
+    return target(fn, self, objects=objects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\util\deprecations.py:281: in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4679: in _flush
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4640: in _flush
+    flush_context.execute()
+.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py:467: in execute
+    rec.execute(self)
+.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py:643: in execute
+    util.preloaded.orm_persistence._save_obj(
+.venv\Lib\site-packages\sqlalchemy\orm\persistence.py:92: in _save_obj
+    _emit_insert_statements(
+.venv\Lib\site-packages\sqlalchemy\orm\persistence.py:1052: in _emit_insert_statements
+    result = connection.execute(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1448: in execute
+    return meth(
+.venv\Lib\site-packages\sqlalchemy\sql\elements.py:533: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1668: in _execute_clauseelement
+    ret = self._execute_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1822: in _execute_context
+    return self._exec_single_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1962: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:2332: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1912: in _exec_single_context
+    self.dialect.do_executemany(
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1189: in do_executemany
+    cursor.executemany(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_5533671c523045da8336c62721d1da30) at 0x1a538017290>
+query = 'INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, statu...y_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)'
+params_seq = [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_versio...ler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), ...}]
+returning = False
+
+    def executemany(
+        self, query: Query, params_seq: Iterable[Params], *, returning: bool = False
+    ) -> None:
+        """
+        Execute the same command with a sequence of input data.
+        """
+        try:
+            with self._conn.lock:
+                if Pipeline.is_supported():
+                    # If there is already a pipeline, ride it, in order to avoid
+                    # sending unnecessary Sync.
+                    if self._conn._pipeline:
+                        self._conn.wait(
+                            self._executemany_gen_pipeline(query, params_seq, returning)
+                        )
+                    else:
+                        # Otherwise, make a new one
+                        with self._conn._pipeline_nolock():
+                            self._conn.wait(
+                                self._executemany_gen_pipeline(
+                                    query, params_seq, returning
+                                )
+                            )
+                else:
+                    self._conn.wait(
+                        self._executemany_gen_no_pipeline(query, params_seq, returning)
+                    )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           sqlalchemy.exc.IntegrityError: (psycopg.errors.UniqueViolation) duplicate key value violates unique constraint "uq_policy_proposals_user_idempotency"
+E           DETAIL:  Key (user_id, idempotency_key)=(271a9827-f82a-5be6-9e0a-50f721029fb0, discovery:a80178ed2f18cc5dd73cf99c2db6ae4a93d54e8727c9be1d26fdd3c27896ffa3:744343a9e884fb7de10955588a07bcc58f1f419f2d1c68d317b99f1be0bacaeb) already exists.
+E           [SQL: INSERT INTO policy_proposals (source_type, source_text, compiler_version, proposed_configuration, evidence_ids, status, confirmed_policy_id, idempotency_key, user_id, id, created_at) VALUES (%(source_type)s::VARCHAR, %(source_text)s::VARCHAR, %(compiler_version)s::VARCHAR, %(proposed_configuration)s::JSONB, %(evidence_ids)s::JSONB, %(status)s::VARCHAR, %(confirmed_policy_id)s::UUID, %(idempotency_key)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)]
+E           [parameters: [{'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '����Ԥ����ѡ', 'valid_from': No ... (362 chars)), 'evidence_ids': Jsonb(['30352647-14c7-546f-92d2-d2bc79ae0 ... (120 chars)), 'status': 'PROPOSED', 'confirmed_policy_id': None, 'idempotency_key': 'discovery:19ac8d3c7ee87c032d42e69f88e80c9c2eced8c9abd854d8efeed080411982a7:ca5fe090eaf77225d04cee327e6d38b4a12c77e6bea4f5e18cfe786471d82317', 'user_id': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'id': UUID('e0e433c2-f09f-4285-91b4-dade16b27c16'), 'created_at': datetime.datetime(2026, 10, 3, 15, 59, 59, tzinfo=datetime.timezone.utc)}, {'source_type': 'DETERMINISTIC_POLICY_DISCOVERY', 'source_text': '����ʷ�۲죬���ܱ�֤δ���������û����ȷ�ϣ��Զ�ִ��Ĭ�Ϲرա�', 'compiler_version': 'mvp-104-v1', 'proposed_configuration': Jsonb({'name': '���ÿ�����Ԥ����ѡ', 'valid_from': ... (410 chars)), 'evidence_ids': Jsonb(['3d90eb9b-4292-5110-a05e-34bcc73e8 ... (120 chars)), 'status': 'PROPOSED', 'confirmed_policy_id': None, 'idempotency_key': 'discovery:a80178ed2f18cc5dd73cf99c2db6ae4a93d54e8727c9be1d26fdd3c27896ffa3:744343a9e884fb7de10955588a07bcc58f1f419f2d1c68d317b99f1be0bacaeb', 'user_id': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'id': UUID('ceb4129e-d035-4bf1-9373-70764b5fc130'), 'created_at': datetime.datetime(2026, 10, 3, 15, 59, 59, tzinfo=datetime.timezone.utc)}]]
+E           (Background on this error at: https://sqlalche.me/e/21/gkpj)
+
+.venv\Lib\site-packages\psycopg\cursor.py:148: IntegrityError
+___ test_confirmation_alone_creates_authority_and_suppresses_new_discovery ____
+
+self = <sqlalchemy.sql.coercions.BinaryElementImpl object at 0x000001A535771700>
+element = <app.db.models.PolicyVersion object at 0x000001A53855BBF0>
+expr = Column('id', Uuid(), table=<policy_versions>, primary_key=True, nullable=False, default=CallableColumnDefault(<function uuid4 at 0x000001A537589E40>))
+operator = <built-in function eq>, bindparam_type = None, argname = None
+kw = {}
+
+    def _literal_coercion(  # type: ignore[override]
+        self,
+        element,
+        *,
+        expr,
+        operator,
+        bindparam_type=None,
+        argname=None,
+        **kw,
+    ):
+        try:
+>           return expr._bind_param(operator, element, type_=bindparam_type)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.venv\Lib\site-packages\sqlalchemy\sql\coercions.py:817: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\sql\elements.py:5133: in _bind_param
+    return BindParameter(
+.venv\Lib\site-packages\sqlalchemy\sql\elements.py:2142: in __init__
+    self.type = _compared_to_type.coerce_compared_value(
+.venv\Lib\site-packages\sqlalchemy\sql\sqltypes.py:3926: in coerce_compared_value
+    return super().coerce_compared_value(op, value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\sql\type_api.py:1122: in coerce_compared_value
+    _coerced_type = _resolve_value_to_type(value)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = <app.db.models.PolicyVersion object at 0x000001A53855BBF0>
+
+    def _resolve_value_to_type(value: Any) -> TypeEngine[Any]:
+        _result_type = _type_map_get(type(value), False)
+    
+        if _result_type is False:
+            _result_type = getattr(value, "__sa_type_engine__", False)
+    
+        if _result_type is False:
+            # use inspect() to detect SQLAlchemy built-in
+            # objects.
+            insp = inspection.inspect(value, False)
+            if (
+                insp is not None
+                and
+                # foil mock.Mock() and other impostors by ensuring
+                # the inspection target itself self-inspects
+                insp.__class__ in inspection._registrars
+            ):
+>               raise exc.ArgumentError(
+                    "Object %r is not legal as a SQL literal value" % (value,)
+                )
+E               sqlalchemy.exc.ArgumentError: Object <app.db.models.PolicyVersion object at 0x000001A53855BBF0> is not legal as a SQL literal value
+
+.venv\Lib\site-packages\sqlalchemy\sql\sqltypes.py:4117: ArgumentError
+
+The above exception was the direct cause of the following exception:
+
+discovery_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_d30c3b98474845c7b911ba5d1edd1b0b)
+
+    def test_confirmation_alone_creates_authority_and_suppresses_new_discovery(
+        discovery_engine: Engine,
+    ) -> None:
+        discover(discovery_engine)
+        with Session(discovery_engine) as session, session.begin():
+            proposal = session.scalar(select(PolicyProposal).where(
+                PolicyProposal.proposed_configuration["due_day"].as_integer() == 28
+            ))
+            assert proposal is not None
+            result = confirm_proposal(
+                session, DEMO_USER_ID, proposal.id,
+                configuration_hash(proposal.proposed_configuration), True, SEED_AS_OF,
+            )
+            policy = session.get(Policy, result.policy_id)
+            version = session.get(PolicyVersion, result.current_version_id)
+            assert policy is not None and version is not None
+>           assert is_version_authorized(session, policy, version, SEED_AS_OF)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_policy_discovery.py:206: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\policy_lifecycle.py:707: in is_version_authorized
+    PolicyVersion.id == version_id,
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\sql\operators.py:748: in __eq__
+    return self.operate(eq, other)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\attributes.py:459: in operate
+    return op(self.comparator, *other, **kwargs)  # type: ignore[no-any-return]  # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\sql\operators.py:748: in __eq__
+    return self.operate(eq, other)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\properties.py:484: in operate
+    return op(self.__clause_element__(), *other, **kwargs)  # type: ignore[no-any-return]  # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\sql\annotation.py:374: in __eq__
+    return self.__element.__class__.__eq__(self, other)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\sql\operators.py:748: in __eq__
+    return self.operate(eq, other)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\sql\elements.py:1598: in operate
+    return op(self.comparator, *other, **kwargs)  # type: ignore[no-any-return]  # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\sql\operators.py:748: in __eq__
+    return self.operate(eq, other)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\sql\type_api.py:267: in operate
+    return op_fn(self.expr, op, *other, **addtl_kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\sql\default_comparator.py:120: in _boolean_compare
+    obj = coercions.expect(
+.venv\Lib\site-packages\sqlalchemy\sql\coercions.py:405: in expect
+    resolved = impl._literal_coercion(
+.venv\Lib\site-packages\sqlalchemy\sql\coercions.py:819: in _literal_coercion
+    self._raise_for_expected(element, err=err)
+.venv\Lib\site-packages\sqlalchemy\sql\coercions.py:794: in _raise_for_expected
+    return super()._raise_for_expected(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <sqlalchemy.sql.coercions.BinaryElementImpl object at 0x000001A535771700>
+element = <app.db.models.PolicyVersion object at 0x000001A53855BBF0>
+argname = None, resolved = None, advice = None, code = None
+err = ArgumentError('Object <app.db.models.PolicyVersion object at 0x000001A53855BBF0> is not legal as a SQL literal value')
+kw = {}
+
+    def _raise_for_expected(
+        self,
+        element: Any,
+        argname: Optional[str] = None,
+        resolved: Optional[Any] = None,
+        *,
+        advice: Optional[str] = None,
+        code: Optional[str] = None,
+        err: Optional[Exception] = None,
+        **kw: Any,
+    ) -> NoReturn:
+        if resolved is not None and resolved is not element:
+            got = "%r object resolved from %r object" % (resolved, element)
+        else:
+            got = repr(element)
+    
+        if argname:
+            msg = "%s expected for argument %r; got %s." % (
+                self.name,
+                argname,
+                got,
+            )
+        else:
+            msg = "%s expected, got %s." % (self.name, got)
+    
+        if advice:
+            msg += " " + advice
+    
+>       raise exc.ArgumentError(msg, code=code) from err
+E       sqlalchemy.exc.ArgumentError: SQL expression element or literal value expected, got <app.db.models.PolicyVersion object at 0x000001A53855BBF0>.
+
+.venv\Lib\site-packages\sqlalchemy\sql\coercions.py:528: ArgumentError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_policy_discovery.py::test_repeated_observations_reuse_ids_even_when_clock_advances
+FAILED apps/api/app/tests/test_policy_discovery.py::test_concurrent_discovery_creates_one_revision_per_object
+FAILED apps/api/app/tests/test_policy_discovery.py::test_closed_candidates_are_never_revived[REJECTED]
+FAILED apps/api/app/tests/test_policy_discovery.py::test_closed_candidates_are_never_revived[EXPIRED]
+FAILED apps/api/app/tests/test_policy_discovery.py::test_new_revision_expires_old_proposal_and_invalid_pattern_expires_latest
+FAILED apps/api/app/tests/test_policy_discovery.py::test_confirmation_alone_creates_authority_and_suppresses_new_discovery
+======================== 6 failed, 1 passed in 18.37s =========================

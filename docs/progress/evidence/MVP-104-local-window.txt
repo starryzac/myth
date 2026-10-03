@@ -1,0 +1,14 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 44 items / 41 deselected / 3 selected
+
+apps/api/app/tests/test_policy_discovery.py::test_discovery_never_joins_different_users PASSED [ 33%]
+apps/api/app/tests/test_policy_discovery.py::test_window_includes_local_midnight_and_expires_when_it_moves[True] PASSED [ 66%]
+apps/api/app/tests/test_policy_discovery.py::test_window_includes_local_midnight_and_expires_when_it_moves[False] PASSED [100%]
+
+====================== 3 passed, 41 deselected in 6.04s =======================

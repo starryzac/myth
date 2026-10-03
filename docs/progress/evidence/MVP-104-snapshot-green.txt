@@ -1,0 +1,17 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 48 items / 42 deselected / 6 selected
+
+apps/api/app/tests/test_policy_discovery.py::test_confirmation_and_discovery_share_user_serialization PASSED [ 16%]
+apps/api/app/tests/test_policy_discovery.py::test_confirmation_alone_creates_authority_and_suppresses_new_discovery PASSED [ 33%]
+apps/api/app/tests/test_policy_discovery.py::test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[corrected_amount] PASSED [ 50%]
+apps/api/app/tests/test_policy_discovery.py::test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[source_ref] PASSED [ 66%]
+apps/api/app/tests/test_policy_discovery.py::test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[source_level] PASSED [ 83%]
+apps/api/app/tests/test_policy_discovery.py::test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[missing_source] PASSED [100%]
+
+====================== 6 passed, 42 deselected in 11.63s ======================

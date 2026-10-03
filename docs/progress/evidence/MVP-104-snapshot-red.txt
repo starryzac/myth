@@ -1,0 +1,161 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 48 items / 44 deselected / 4 selected
+
+apps/api/app/tests/test_policy_discovery.py::test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[corrected_amount] FAILED [ 25%]
+apps/api/app/tests/test_policy_discovery.py::test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[source_ref] FAILED [ 50%]
+apps/api/app/tests/test_policy_discovery.py::test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[source_level] FAILED [ 75%]
+apps/api/app/tests/test_policy_discovery.py::test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[missing_source] FAILED [100%]
+
+================================== FAILURES ===================================
+_ test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[corrected_amount] _
+
+discovery_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_ccc176f0772a441f823aad13ad9eeff6)
+change = 'corrected_amount'
+
+    @pytest.mark.parametrize("change", ["corrected_amount", "source_ref", "source_level", "missing_source"])
+    def test_confirmation_rejects_changed_discovery_evidence_without_rediscovery(
+        discovery_engine: Engine, change: str,
+    ) -> None:
+        discover(discovery_engine)
+        with Session(discovery_engine) as session, session.begin():
+            proposal = session.scalar(select(PolicyProposal).where(
+                PolicyProposal.proposed_configuration["due_day"].as_integer() == 28
+            ))
+            assert proposal is not None
+            proposal_id = proposal.id
+            reviewed_hash = configuration_hash(proposal.proposed_configuration)
+            transaction = session.scalar(select(Transaction).where(Transaction.category == "rent"))
+            assert transaction is not None
+            source = session.get(EvidenceItem, transaction.evidence_id)
+            assert source is not None
+            if change == "corrected_amount":
+                change_rent(session, 190000, both=True)
+            elif change == "source_ref":
+                source.source_ref = "different-bank-source"
+            elif change == "source_level":
+                source.evidence_level = "BANK_OBSERVED"
+            elif change == "missing_source":
+                proposal.evidence_ids = [identifier for identifier in proposal.evidence_ids
+                                         if identifier != str(source.id)]
+        with Session(discovery_engine) as session, session.begin():
+>           with pytest.raises(PolicyLifecycleError) as error:
+E           Failed: DID NOT RAISE PolicyLifecycleError
+
+apps\api\app\tests\test_policy_discovery.py:639: Failed
+_ test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[source_ref] _
+
+discovery_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_c4cefafe117d472099314e5d76b2c251)
+change = 'source_ref'
+
+    @pytest.mark.parametrize("change", ["corrected_amount", "source_ref", "source_level", "missing_source"])
+    def test_confirmation_rejects_changed_discovery_evidence_without_rediscovery(
+        discovery_engine: Engine, change: str,
+    ) -> None:
+        discover(discovery_engine)
+        with Session(discovery_engine) as session, session.begin():
+            proposal = session.scalar(select(PolicyProposal).where(
+                PolicyProposal.proposed_configuration["due_day"].as_integer() == 28
+            ))
+            assert proposal is not None
+            proposal_id = proposal.id
+            reviewed_hash = configuration_hash(proposal.proposed_configuration)
+            transaction = session.scalar(select(Transaction).where(Transaction.category == "rent"))
+            assert transaction is not None
+            source = session.get(EvidenceItem, transaction.evidence_id)
+            assert source is not None
+            if change == "corrected_amount":
+                change_rent(session, 190000, both=True)
+            elif change == "source_ref":
+                source.source_ref = "different-bank-source"
+            elif change == "source_level":
+                source.evidence_level = "BANK_OBSERVED"
+            elif change == "missing_source":
+                proposal.evidence_ids = [identifier for identifier in proposal.evidence_ids
+                                         if identifier != str(source.id)]
+        with Session(discovery_engine) as session, session.begin():
+>           with pytest.raises(PolicyLifecycleError) as error:
+E           Failed: DID NOT RAISE PolicyLifecycleError
+
+apps\api\app\tests\test_policy_discovery.py:639: Failed
+_ test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[source_level] _
+
+discovery_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_c7c855345a50435e8235e028d4a882b8)
+change = 'source_level'
+
+    @pytest.mark.parametrize("change", ["corrected_amount", "source_ref", "source_level", "missing_source"])
+    def test_confirmation_rejects_changed_discovery_evidence_without_rediscovery(
+        discovery_engine: Engine, change: str,
+    ) -> None:
+        discover(discovery_engine)
+        with Session(discovery_engine) as session, session.begin():
+            proposal = session.scalar(select(PolicyProposal).where(
+                PolicyProposal.proposed_configuration["due_day"].as_integer() == 28
+            ))
+            assert proposal is not None
+            proposal_id = proposal.id
+            reviewed_hash = configuration_hash(proposal.proposed_configuration)
+            transaction = session.scalar(select(Transaction).where(Transaction.category == "rent"))
+            assert transaction is not None
+            source = session.get(EvidenceItem, transaction.evidence_id)
+            assert source is not None
+            if change == "corrected_amount":
+                change_rent(session, 190000, both=True)
+            elif change == "source_ref":
+                source.source_ref = "different-bank-source"
+            elif change == "source_level":
+                source.evidence_level = "BANK_OBSERVED"
+            elif change == "missing_source":
+                proposal.evidence_ids = [identifier for identifier in proposal.evidence_ids
+                                         if identifier != str(source.id)]
+        with Session(discovery_engine) as session, session.begin():
+>           with pytest.raises(PolicyLifecycleError) as error:
+E           Failed: DID NOT RAISE PolicyLifecycleError
+
+apps\api\app\tests\test_policy_discovery.py:639: Failed
+_ test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[missing_source] _
+
+discovery_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_6933e7b999584abbb71b6cdfe21b665a)
+change = 'missing_source'
+
+    @pytest.mark.parametrize("change", ["corrected_amount", "source_ref", "source_level", "missing_source"])
+    def test_confirmation_rejects_changed_discovery_evidence_without_rediscovery(
+        discovery_engine: Engine, change: str,
+    ) -> None:
+        discover(discovery_engine)
+        with Session(discovery_engine) as session, session.begin():
+            proposal = session.scalar(select(PolicyProposal).where(
+                PolicyProposal.proposed_configuration["due_day"].as_integer() == 28
+            ))
+            assert proposal is not None
+            proposal_id = proposal.id
+            reviewed_hash = configuration_hash(proposal.proposed_configuration)
+            transaction = session.scalar(select(Transaction).where(Transaction.category == "rent"))
+            assert transaction is not None
+            source = session.get(EvidenceItem, transaction.evidence_id)
+            assert source is not None
+            if change == "corrected_amount":
+                change_rent(session, 190000, both=True)
+            elif change == "source_ref":
+                source.source_ref = "different-bank-source"
+            elif change == "source_level":
+                source.evidence_level = "BANK_OBSERVED"
+            elif change == "missing_source":
+                proposal.evidence_ids = [identifier for identifier in proposal.evidence_ids
+                                         if identifier != str(source.id)]
+        with Session(discovery_engine) as session, session.begin():
+>           with pytest.raises(PolicyLifecycleError) as error:
+E           Failed: DID NOT RAISE PolicyLifecycleError
+
+apps\api\app\tests\test_policy_discovery.py:639: Failed
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_policy_discovery.py::test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[corrected_amount]
+FAILED apps/api/app/tests/test_policy_discovery.py::test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[source_ref]
+FAILED apps/api/app/tests/test_policy_discovery.py::test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[source_level]
+FAILED apps/api/app/tests/test_policy_discovery.py::test_confirmation_rejects_changed_discovery_evidence_without_rediscovery[missing_source]
+====================== 4 failed, 44 deselected in 9.66s =======================

@@ -475,6 +475,84 @@
         }
       }
     },
+    "/api/v1/policies/discover": {
+      "post": {
+        "tags": [
+          "策略生命周期"
+        ],
+        "summary": "Discover",
+        "operationId": "discover_policies",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/DiscoveryRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscoveryResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/policies/{policy_id}/versions": {
       "get": {
         "tags": [
@@ -1065,6 +1143,88 @@
           "reviewed_hash"
         ],
         "title": "ConfirmationRequest"
+      },
+      "DiscoveryRequest": {
+        "properties": {},
+        "additionalProperties": false,
+        "type": "object",
+        "title": "DiscoveryRequest",
+        "description": "Discovery uses the trusted server snapshot; clients cannot inject facts or time."
+      },
+      "DiscoveryResult": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "rule_version": {
+            "type": "string",
+            "title": "Rule Version",
+            "default": "mvp-104-v1"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "created_proposal_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Created Proposal Ids"
+          },
+          "reused_proposal_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Reused Proposal Ids"
+          },
+          "skipped": {
+            "items": {
+              "$ref": "#/components/schemas/DiscoverySkip"
+            },
+            "type": "array",
+            "title": "Skipped"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "as_of",
+          "created_proposal_ids",
+          "reused_proposal_ids",
+          "skipped"
+        ],
+        "title": "DiscoveryResult"
+      },
+      "DiscoverySkip": {
+        "properties": {
+          "reason_code": {
+            "type": "string",
+            "title": "Reason Code"
+          },
+          "source_ref": {
+            "type": "string",
+            "title": "Source Ref"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason_code",
+          "source_ref"
+        ],
+        "title": "DiscoverySkip"
       },
       "ErrorDetail": {
         "properties": {

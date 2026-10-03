@@ -8,6 +8,7 @@ from app.api.dependencies import ClockDependency, DemoUserDependency, SessionDep
 from app.api.errors import ErrorEnvelope
 from app.db.models import Policy, PolicyProposal, PolicyVersion
 from app.domain.policy_configuration import configuration_hash, validate_configuration
+from app.services.policy_discovery import DiscoveryResult, discover_policies
 from app.services.policy_lifecycle import (
     LifecycleResult,
     change_policy,
@@ -54,6 +55,10 @@ class PolicyChangeRequest(ConfirmationRequest):
 
 class StateChangeRequest(RequestModel):
     expected_version_id: UUID
+
+
+class DiscoveryRequest(RequestModel):
+    """Discovery uses the trusted server snapshot; clients cannot inject facts or time."""
 
 
 class PolicyVersionView(BaseModel):
@@ -204,6 +209,16 @@ def list_policies(
             )
         )
     return PolicyList(items=items)
+
+
+@router.post("/policies/discover", response_model=DiscoveryResult, operation_id="discover_policies")
+def discover(
+    session: SessionDependency,
+    user: DemoUserDependency,
+    now: ClockDependency,
+    body: DiscoveryRequest | None = None,
+) -> DiscoveryResult:
+    return discover_policies(session=session, user_id=user.id, now=now)
 
 
 @router.get(

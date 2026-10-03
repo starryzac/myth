@@ -123,6 +123,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/policies/discover": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Discover */
+        post: operations["discover_policies"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/policies/{policy_id}/versions": {
         parameters: {
             query?: never;
@@ -313,6 +330,48 @@ export interface components {
             accepted: boolean;
             /** Reviewed Hash */
             reviewed_hash: string;
+        };
+        /**
+         * DiscoveryRequest
+         * @description Discovery uses the trusted server snapshot; clients cannot inject facts or time.
+         */
+        DiscoveryRequest: Record<string, never>;
+        /** DiscoveryResult */
+        DiscoveryResult: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Rule Version
+             * @default mvp-104-v1
+             */
+            rule_version: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Created Proposal Ids */
+            created_proposal_ids: string[];
+            /** Reused Proposal Ids */
+            reused_proposal_ids: string[];
+            /** Skipped */
+            skipped: components["schemas"]["DiscoverySkip"][];
+        };
+        /** DiscoverySkip */
+        DiscoverySkip: {
+            /** Reason Code */
+            reason_code: string;
+            /** Source Ref */
+            source_ref: string;
         };
         /** ErrorDetail */
         ErrorDetail: {
@@ -1058,6 +1117,66 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PolicyList"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    discover_policies: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["DiscoveryRequest"] | null;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscoveryResult"];
                 };
             };
             /** @description Not Found */

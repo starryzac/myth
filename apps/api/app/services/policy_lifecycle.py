@@ -186,6 +186,35 @@ def _evidence(
             raise ValueError("Evidence digest mismatch")
     except (TypeError, ValueError) as error:
         raise PolicyLifecycleError("INVALID_EVIDENCE", "策略证据内容与记录摘要不一致") from error
+    verified = {str(item.id): item for item in rows}
+    for observation in rows:
+        if observation.source_type != "DETERMINISTIC_POLICY_DISCOVERY":
+            continue
+        sources = observation.content.get("sources")
+        if (
+            observation.evidence_level != "BANK_OBSERVED"
+            or not isinstance(sources, list)
+            or not sources
+        ):
+            raise PolicyLifecycleError("INVALID_EVIDENCE", "发现候选的原始证据快照缺失或无效")
+        seen: set[str] = set()
+        for snapshot in sources:
+            identifier = snapshot.get("evidence_id") if isinstance(snapshot, dict) else None
+            source = verified.get(identifier) if isinstance(identifier, str) else None
+            if (
+                source is None
+                or source.id == observation.id
+                or identifier in seen
+                or source.evidence_level != "BANK_CONFIRMED"
+                or source.content_hash != snapshot.get("evidence_hash")
+                or source.source_type != snapshot.get("evidence_source_type")
+                or source.source_ref != snapshot.get("evidence_source_ref")
+                or source.observed_at.isoformat() != snapshot.get("evidence_observed_at")
+            ):
+                raise PolicyLifecycleError(
+                    "INVALID_EVIDENCE", "发现候选的原始证据已经变化，请重新发现并审核"
+                )
+            seen.add(str(source.id))
     return list(rows)
 
 

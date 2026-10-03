@@ -8,7 +8,8 @@
 - MVP-101 完成，16 表、SQLAlchemy/Alembic、PostgreSQL 往返迁移及整体质量门通过。
 - MVP-102 完成，60 天可重复种子和四个事实查询 API 已通过，实际演示库已导入。
 - MVP-103 完成，策略生命周期、严格 DSL、不可变版本、引用和证据校验、旧动作失效及在途保护通过。
-- 最小未完成任务：MVP-104，候选策略发现。
+- MVP-104 完成，历史候选发现、幂等修订、失效、原始来源快照检查、确认隔离通过。
+- 最小未完成任务：MVP-105，自然语言策略编译。当前完成源码已通过最终 check；提交号以 Git log 为准。后续按纯规则编译器、持久草稿/候选服务和 HTTP 分工推进，不跨任务改核心模型。
 - 后续完整范围见 `docs/spec/requirements-traceability.md`（25 MVP + 67 FULL）与 `acceptance-checklist.md`。
 
 ## 环境和精确命令
@@ -40,9 +41,9 @@ PostgreSQL 16 Docker Compose 项目 bounded-funds，端口 54329，独立数据�
 
 临时内容：项目内 `.venv`、`.uv-cache`、`.pnpm-store`、node_modules、.runtime、测试报告和构建目录；Docker 独立卷用于项目模拟数据，未经核对不删除。此前 pytest 沙盒产生的 `pytest-cache-files-*` 权限目录已忽略，不影响代码；不做无关清理。
 
-最新 check run `20261003T170309Z-76714c69`：221 后端、4 前端、1 Edge E2E，通过。实际库已升级 0002 并运行 policy-refresh（种子无策略，更新为空）。随后 seed run `20261003T170618Z-491fbb5c` 的 SHA256 与 MVP-102 相同。证据见 `docs/progress/evidence/MVP-103-*`。
+最新 check run `20261003T173729Z-a3c17e60`：271 后端、4 前端、1 Edge E2E，通过，运行前后源码 SHA256 一致。实际库已升级 0002；最近 seed run `20261003T170618Z-491fbb5c` 的 SHA256 与 MVP-102 相同，MVP-104 无种子变更。证据见 `docs/progress/evidence/MVP-104-*`。
 
-继续前检查 Git、当前运行进程与数据库，不据本文声称服务仍运行。下一任务 MVP-104 候选发现，每任务保留红绿证据及真实限制并运行 make check。已接受迁移不得回改；结构演进新增修订。
+继续前检查 Git、当前运行进程与数据库，不据本文声称服务仍运行。下一任务 MVP-105 自然语言编译，每任务保留红绿证据及真实限制并运行 make check。已接受迁移不得回改；结构演进新增修订。
 
 ## 后续必须延续的边界
 

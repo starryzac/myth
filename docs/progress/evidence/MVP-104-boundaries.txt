@@ -1,0 +1,53 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 42 items
+
+apps/api/app/tests/test_policy_discovery.py::test_seed_yields_only_rent_and_bill_observations_without_authority PASSED [  2%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[different_payee] PASSED [  4%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[empty_payee] PASSED [  7%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[same_month] PASSED [  9%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[day_drift] PASSED [ 11%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[amount_drift] PASSED [ 14%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[one_off] PASSED [ 16%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[income] PASSED [ 19%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[internal_transfer] PASSED [ 21%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[asset_purchase] PASSED [ 23%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[card_payment] PASSED [ 26%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[future_transaction] PASSED [ 28%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[future_observation] PASSED [ 30%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[missing_evidence] PASSED [ 33%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[hash_corrupt] PASSED [ 35%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[conflicted] PASSED [ 38%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[unknown] PASSED [ 40%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[future_evidence] PASSED [ 42%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[expired_evidence] PASSED [ 45%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[unconfirmed_evidence] PASSED [ 47%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[spliced_fact] PASSED [ 50%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[wrong_account] PASSED [ 52%]
+apps/api/app/tests/test_policy_discovery.py::test_rent_pattern_and_evidence_fail_closed[wrong_evidence_amount] PASSED [ 54%]
+apps/api/app/tests/test_policy_discovery.py::test_card_periods_use_due_month_and_require_valid_issued_evidence[nonconsecutive] PASSED [ 57%]
+apps/api/app/tests/test_policy_discovery.py::test_card_periods_use_due_month_and_require_valid_issued_evidence[duplicate_period] PASSED [ 59%]
+apps/api/app/tests/test_policy_discovery.py::test_card_periods_use_due_month_and_require_valid_issued_evidence[due_drift] PASSED [ 61%]
+apps/api/app/tests/test_policy_discovery.py::test_card_periods_use_due_month_and_require_valid_issued_evidence[future_statement] PASSED [ 64%]
+apps/api/app/tests/test_policy_discovery.py::test_card_periods_use_due_month_and_require_valid_issued_evidence[statement_outside_window] PASSED [ 66%]
+apps/api/app/tests/test_policy_discovery.py::test_card_periods_use_due_month_and_require_valid_issued_evidence[spliced_source] PASSED [ 69%]
+apps/api/app/tests/test_policy_discovery.py::test_card_periods_use_due_month_and_require_valid_issued_evidence[wrong_amount] PASSED [ 71%]
+apps/api/app/tests/test_policy_discovery.py::test_card_periods_use_due_month_and_require_valid_issued_evidence[wrong_date] PASSED [ 73%]
+apps/api/app/tests/test_policy_discovery.py::test_card_periods_use_due_month_and_require_valid_issued_evidence[conflicted] PASSED [ 76%]
+apps/api/app/tests/test_policy_discovery.py::test_transaction_window_uses_user_local_days_and_never_joins_different_users PASSED [ 78%]
+apps/api/app/tests/test_policy_discovery.py::test_database_failure_rolls_back_partial_discovery_but_preserves_caller_transaction PASSED [ 80%]
+apps/api/app/tests/test_policy_discovery.py::test_confirmation_and_discovery_share_user_serialization PASSED [ 83%]
+apps/api/app/tests/test_policy_discovery.py::test_invalid_clock_or_user_does_not_create_candidates PASSED [ 85%]
+apps/api/app/tests/test_policy_discovery.py::test_repeated_observations_reuse_ids_even_when_clock_advances PASSED [ 88%]
+apps/api/app/tests/test_policy_discovery.py::test_concurrent_discovery_creates_one_revision_per_object PASSED [ 90%]
+apps/api/app/tests/test_policy_discovery.py::test_closed_candidates_are_never_revived[REJECTED] PASSED [ 92%]
+apps/api/app/tests/test_policy_discovery.py::test_closed_candidates_are_never_revived[EXPIRED] PASSED [ 95%]
+apps/api/app/tests/test_policy_discovery.py::test_new_revision_expires_old_proposal_and_invalid_pattern_expires_latest PASSED [ 97%]
+apps/api/app/tests/test_policy_discovery.py::test_confirmation_alone_creates_authority_and_suppresses_new_discovery PASSED [100%]
+
+======================== 42 passed in 67.24s (0:01:07) ========================
