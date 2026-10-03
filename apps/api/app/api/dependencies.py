@@ -11,7 +11,9 @@ from sqlalchemy.orm import Session
 
 from app.db.models import User
 from app.db.session import create_database_engine, database_session
+from app.db.settings import DatabaseSettings
 from app.domain.demo_identity import DEMO_USER_ID, DEMO_USER_REF
+from app.services.policy_compilation import CandidateProvider
 
 
 @lru_cache(maxsize=1)
@@ -48,3 +50,17 @@ def get_now() -> datetime:
 
 
 ClockDependency = Annotated[datetime, Depends(get_now)]
+
+
+@lru_cache(maxsize=1)
+def get_compiler_settings() -> DatabaseSettings:
+    return DatabaseSettings()
+
+
+def get_candidate_provider() -> CandidateProvider | None:
+    """An explicit server adapter may be injected; no external provider is configured."""
+    return None
+
+
+CompilerSettingsDependency = Annotated[DatabaseSettings, Depends(get_compiler_settings)]
+CandidateProviderDependency = Annotated[CandidateProvider | None, Depends(get_candidate_provider)]

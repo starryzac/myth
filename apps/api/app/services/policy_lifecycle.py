@@ -215,7 +215,64 @@ def _evidence(
                     "INVALID_EVIDENCE", "发现候选的原始证据已经变化，请重新发现并审核"
                 )
             seen.add(str(source.id))
+    _compilation_evidence(verified)
     return list(rows)
+
+
+def _compilation_evidence(verified: dict[str, EvidenceItem]) -> None:
+    """One-level bindings for original text, optional model output and human edits."""
+    try:
+        for item in verified.values():
+            content = item.content
+            if item.source_type == "POLICY_COMPILATION_EDIT":
+                source = verified.get(content.get("compilation_id", ""))
+                if (
+                    item.evidence_level != "USER_DECLARED"
+                    or source is None
+                    or source.source_type != "POLICY_COMPILATION"
+                    or source.evidence_level != "USER_DECLARED"
+                    or source.content_hash != content.get("source_hash")
+                    or configuration_hash(content["configuration"])
+                    != content.get("configuration_hash")
+                ):
+                    raise ValueError("Compilation edit source mismatch")
+            elif item.source_type == "POLICY_COMPILATION":
+                result = content["compilation"]
+                digest = configuration_hash(
+                    {
+                        "text": content["text"],
+                        "reference_date": content["reference_date"],
+                        "timezone": content["timezone"],
+                        "engine": content["engine"],
+                        "compiler_version": result["compiler_version"],
+                    }
+                )
+                if (
+                    item.evidence_level != "USER_DECLARED"
+                    or content.get("user_id") != str(item.user_id)
+                    or content.get("simulation") is not True
+                    or item.source_ref != "compilation:" + digest + ":" + configuration_hash(result)
+                    or result["reference_date"] != content["reference_date"]
+                    or result["timezone"] != content["timezone"]
+                    or content["engine"] not in {"rules", "llm"}
+                ):
+                    raise ValueError("Compilation anchor or text mismatch")
+                if content["engine"] == "llm":
+                    model = verified.get(content.get("model_evidence_id", ""))
+                    if (
+                        model is None
+                        or model.evidence_level != "MODEL_INFERRED"
+                        or model.source_type != "POLICY_COMPILATION_MODEL"
+                        or model.source_ref != item.source_ref
+                        or model.content_hash != content.get("model_evidence_hash")
+                    ):
+                        raise ValueError("Compilation model snapshot mismatch")
+                elif content.get("model_evidence_id") is not None:
+                    raise ValueError("Rules compilation cannot claim a model source")
+    except (KeyError, TypeError, ValueError) as error:
+        raise PolicyLifecycleError(
+            "INVALID_EVIDENCE", "原文、编译锚点或模型来源已变化，请重新编译并审核"
+        ) from error
 
 
 def _window(

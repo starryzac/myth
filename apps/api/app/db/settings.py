@@ -14,6 +14,7 @@ class DatabaseSettings(BaseSettings):
         "postgresql+psycopg://bounded:bounded_local_only@127.0.0.1:54329/bounded_funds"
     )
     simulation_mode: bool = True
+    llm_enabled: bool = False
 
     @field_validator("simulation_mode")
     @classmethod

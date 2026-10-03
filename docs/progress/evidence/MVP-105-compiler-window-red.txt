@@ -1,0 +1,18 @@
+............FF                                                           [100%]
+================================== FAILURES ===================================
+____ test_explicit_validity_window_is_preserved_in_emergency_configuration ____
+apps\api\app\tests\test_policy_compiler.py:103: in test_explicit_validity_window_is_preserved_in_emergency_configuration
+    assert result.issues == []
+E   AssertionError: assert [CompilationI...2027年12月31日')] == []
+E     
+E     Left contains one more item: CompilationIssue(code='UNSUPPORTED_CLAUSE', field='text', message='该子句未被完整理解，请改写或明确修订。', source_fragment='有效期从2026年11月1日至2027年12月31日')
+E     Use -v to get more diff
+_ test_monthly_range_keeps_unspecified_target_missing_instead_of_using_midpoint _
+apps\api\app\tests\test_policy_compiler.py:115: in test_monthly_range_keeps_unspecified_target_missing_instead_of_using_midpoint
+    assert result.draft["monthly_contribution"] == {"min_cents": 100_000, "max_cents": 200_000}
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'monthly_contribution'
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_policy_compiler.py::test_explicit_validity_window_is_preserved_in_emergency_configuration
+FAILED apps/api/app/tests/test_policy_compiler.py::test_monthly_range_keeps_unspecified_target_missing_instead_of_using_midpoint
+2 failed, 12 passed in 0.76s

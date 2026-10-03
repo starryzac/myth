@@ -1,0 +1,21 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 36 items / 26 deselected / 10 selected
+
+apps/api/app/tests/test_policy_compilation.py::test_revision_anchor_replay_and_confirmation_preserve_user_choices PASSED [ 10%]
+apps/api/app/tests/test_policy_compilation.py::test_concurrent_compile_and_revision_are_unique PASSED [ 20%]
+apps/api/app/tests/test_policy_compilation.py::test_enabled_model_is_marked_inferred_and_repeated_without_second_call PASSED [ 30%]
+apps/api/app/tests/test_policy_compilation.py::test_confirmation_rejects_rehashed_compilation_sources[edited_source] PASSED [ 40%]
+apps/api/app/tests/test_policy_compilation.py::test_confirmation_rejects_rehashed_compilation_sources[model_source] PASSED [ 50%]
+apps/api/app/tests/test_policy_compilation.py::test_confirmation_rejects_rehashed_compilation_sources[rule_text] PASSED [ 60%]
+apps/api/app/tests/test_policy_compilation.py::test_human_edit_of_model_candidate_retains_provenance_and_can_be_confirmed PASSED [ 70%]
+apps/api/app/tests/test_policy_compilation.py::test_original_compiler_output_cannot_be_rewritten_even_with_new_content_hash[recompile] PASSED [ 80%]
+apps/api/app/tests/test_policy_compilation.py::test_original_compiler_output_cannot_be_rewritten_even_with_new_content_hash[confirm] PASSED [ 90%]
+apps/api/app/tests/test_policy_compilation.py::test_duplicate_original_compilations_are_rejected_as_conflict PASSED [100%]
+
+===================== 10 passed, 26 deselected in 16.72s ======================

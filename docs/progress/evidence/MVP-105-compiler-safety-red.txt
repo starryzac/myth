@@ -1,0 +1,22 @@
+..........................................................FFF....        [100%]
+================================== FAILURES ===================================
+_ test_expired_intent_and_separated_number_tokens_need_clarification[\u65c5\u884c\u76ee\u68071\u4e07\u5143\uff0c\u622a\u6b622026-10-03\uff0c\u6bcf\u6708\u56fa\u5b9a\u5b581000\u5143] _
+apps\api\app\tests\test_policy_compiler.py:204: in test_expired_intent_and_separated_number_tokens_need_clarification
+    assert result.configuration is None
+E   AssertionError: assert {'name': '旅行', 'valid_from': None, 'valid_until': None, 'type': 'goal_saving', ...} is None
+E    +  where {'name': '旅行', 'valid_from': None, 'valid_until': None, 'type': 'goal_saving', ...} = CompilationResult(compiler_version='offline-policy-rules-v1', reference_date=datetime.date(2026, 10, 4), timezone='Asi...户复核。', 'cross_goal_reallocation_allowed=false；asset_policy_id=null，不生成资产授权或跨目标许可。', '未指定的有效期日期保留空值，由首次确认和生命周期规则决定生效。']).configuration
+_ test_expired_intent_and_separated_number_tokens_need_clarification[\u4fdd\u75593000\u5143\u5e94\u6025\u91d1\uff0c\u6709\u6548\u671f\u4ece2026-01-01\u81f32026-10-03] _
+apps\api\app\tests\test_policy_compiler.py:204: in test_expired_intent_and_separated_number_tokens_need_clarification
+    assert result.configuration is None
+E   AssertionError: assert {'name': '应急金', 'valid_from': '2026-01-01', 'valid_until': '2026-10-03', 'type': 'emergency_buffer', ...} is None
+E    +  where {'name': '应急金', 'valid_from': '2026-01-01', 'valid_until': '2026-10-03', 'type': 'emergency_buffer', ...} = CompilationResult(compiler_version='offline-policy-rules-v1', reference_date=datetime.date(2026, 10, 4), timezone='Asi...26-01-01', 'valid_until': '2026-10-03', 'type': 'emergency_buffer', 'amount_cents': 300000}, issues=[], assumptions=[]).configuration
+_ test_expired_intent_and_separated_number_tokens_need_clarification[\u4fdd\u75591 2\u4e07\u5143\u5e94\u6025\u91d1] _
+apps\api\app\tests\test_policy_compiler.py:204: in test_expired_intent_and_separated_number_tokens_need_clarification
+    assert result.configuration is None
+E   AssertionError: assert {'name': '应急金', 'valid_from': None, 'valid_until': None, 'type': 'emergency_buffer', ...} is None
+E    +  where {'name': '应急金', 'valid_from': None, 'valid_until': None, 'type': 'emergency_buffer', ...} = CompilationResult(compiler_version='offline-policy-rules-v1', reference_date=datetime.date(2026, 10, 4), timezone='Asi...one, 'type': 'emergency_buffer', 'amount_cents': 12000000}, issues=[], assumptions=['未指定的有效期日期保留空值，由首次确认和生命周期规则决定生效。']).configuration
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_policy_compiler.py::test_expired_intent_and_separated_number_tokens_need_clarification[\u65c5\u884c\u76ee\u68071\u4e07\u5143\uff0c\u622a\u6b622026-10-03\uff0c\u6bcf\u6708\u56fa\u5b9a\u5b581000\u5143]
+FAILED apps/api/app/tests/test_policy_compiler.py::test_expired_intent_and_separated_number_tokens_need_clarification[\u4fdd\u75593000\u5143\u5e94\u6025\u91d1\uff0c\u6709\u6548\u671f\u4ece2026-01-01\u81f32026-10-03]
+FAILED apps/api/app/tests/test_policy_compiler.py::test_expired_intent_and_separated_number_tokens_need_clarification[\u4fdd\u75591 2\u4e07\u5143\u5e94\u6025\u91d1]
+3 failed, 62 passed in 0.82s

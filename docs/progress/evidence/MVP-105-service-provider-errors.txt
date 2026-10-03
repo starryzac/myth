@@ -1,0 +1,14 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 33 items / 30 deselected / 3 selected
+
+apps/api/app/tests/test_policy_compilation.py::test_provider_failure_is_explicit_and_leaves_no_partial_compilation[timeout] PASSED [ 33%]
+apps/api/app/tests/test_policy_compilation.py::test_provider_failure_is_explicit_and_leaves_no_partial_compilation[invalid_json] PASSED [ 66%]
+apps/api/app/tests/test_policy_compilation.py::test_original_anchor_does_not_allow_a_deadline_that_has_passed_today PASSED [100%]
+
+====================== 3 passed, 30 deselected in 5.89s =======================

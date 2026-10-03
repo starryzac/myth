@@ -4,10 +4,21 @@ from datetime import datetime
 from typing import Annotated, Any, Literal
 from uuid import UUID
 
-from app.api.dependencies import ClockDependency, DemoUserDependency, SessionDependency
+from app.api.dependencies import (
+    CandidateProviderDependency,
+    ClockDependency,
+    CompilerSettingsDependency,
+    DemoUserDependency,
+    SessionDependency,
+)
 from app.api.errors import ErrorEnvelope
 from app.db.models import Policy, PolicyProposal, PolicyVersion
 from app.domain.policy_configuration import configuration_hash, validate_configuration
+from app.services.policy_compilation import (
+    CompilationResponse,
+    compile_candidate,
+    revise_compilation,
+)
 from app.services.policy_discovery import DiscoveryResult, discover_policies
 from app.services.policy_lifecycle import (
     LifecycleResult,
@@ -19,7 +30,7 @@ from app.services.policy_lifecycle import (
     suspend_policy,
 )
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -59,6 +70,22 @@ class StateChangeRequest(RequestModel):
 
 class DiscoveryRequest(RequestModel):
     """Discovery uses the trusted server snapshot; clients cannot inject facts or time."""
+
+
+class CompilationRequest(RequestModel):
+    text: Annotated[StrictStr, Field(min_length=1, max_length=2000)]
+    engine: Literal["rules", "llm"] = "rules"
+
+    @field_validator("text")
+    @classmethod
+    def nonblank_text(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("A nonblank source text is required")
+        return value
+
+
+class CompilationRevisionRequest(RequestModel):
+    configuration: dict[str, Any]
 
 
 class PolicyVersionView(BaseModel):
@@ -219,6 +246,52 @@ def discover(
     body: DiscoveryRequest | None = None,
 ) -> DiscoveryResult:
     return discover_policies(session=session, user_id=user.id, now=now)
+
+
+@router.post(
+    "/policies/compile",
+    response_model=CompilationResponse,
+    operation_id="compile_policy_candidate",
+    responses={503: {"model": ErrorEnvelope}},
+)
+def compile_text(
+    body: CompilationRequest,
+    session: SessionDependency,
+    user: DemoUserDependency,
+    now: ClockDependency,
+    settings: CompilerSettingsDependency,
+    provider: CandidateProviderDependency,
+) -> CompilationResponse:
+    return compile_candidate(
+        session=session,
+        user_id=user.id,
+        text=body.text,
+        now=now,
+        engine=body.engine,
+        llm_enabled=settings.llm_enabled,
+        provider=provider,
+    )
+
+
+@router.post(
+    "/policy-compilations/{compilation_id}/revise",
+    response_model=CompilationResponse,
+    operation_id="revise_policy_compilation",
+)
+def revise_text_compilation(
+    compilation_id: UUID,
+    body: CompilationRevisionRequest,
+    session: SessionDependency,
+    user: DemoUserDependency,
+    now: ClockDependency,
+) -> CompilationResponse:
+    return revise_compilation(
+        session=session,
+        user_id=user.id,
+        compilation_id=compilation_id,
+        configuration=body.configuration,
+        now=now,
+    )
 
 
 @router.get(

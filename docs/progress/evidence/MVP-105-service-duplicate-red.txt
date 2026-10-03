@@ -1,0 +1,33 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 36 items / 35 deselected / 1 selected
+
+apps/api/app/tests/test_policy_compilation.py::test_duplicate_original_compilations_are_rejected_as_conflict FAILED [100%]
+
+================================== FAILURES ===================================
+________ test_duplicate_original_compilations_are_rejected_as_conflict ________
+
+compilation_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_688dfb21405f4223ab3bd7e7265ff197)
+
+    def test_duplicate_original_compilations_are_rejected_as_conflict(compilation_engine: Engine) -> None:
+        with Session(compilation_engine) as session, session.begin():
+            first = compile_candidate(session, DEMO_USER_ID, "保留3000元应急金", SEED_AS_OF)
+            source = session.get(EvidenceItem, first.compilation_id)
+            assert source is not None
+            session.add(EvidenceItem(id=uuid4(), user_id=DEMO_USER_ID,
+                evidence_level=source.evidence_level, source_type=source.source_type,
+                source_ref=source.source_ref, content=source.content, content_hash=source.content_hash,
+                valid_from=source.valid_from, observed_at=source.observed_at, status="VALID"))
+        with Session(compilation_engine) as session, session.begin():
+>           with pytest.raises(PolicyLifecycleError) as error:
+E           Failed: DID NOT RAISE PolicyLifecycleError
+
+apps\api\app\tests\test_policy_compilation.py:658: Failed
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_policy_compilation.py::test_duplicate_original_compilations_are_rejected_as_conflict
+====================== 1 failed, 35 deselected in 4.40s =======================

@@ -140,6 +140,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/policies/compile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Compile Text */
+        post: operations["compile_policy_candidate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/policy-compilations/{compilation_id}/revise": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Revise Text Compilation */
+        post: operations["revise_policy_compilation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/policies/{policy_id}/versions": {
         parameters: {
             query?: never;
@@ -323,6 +357,89 @@ export interface components {
             paid_cents: number;
             /** Status */
             status: string;
+        };
+        /** CompilationIssue */
+        CompilationIssue: {
+            /** Code */
+            code: string;
+            /** Field */
+            field: string;
+            /** Message */
+            message: string;
+            /** Source Fragment */
+            source_fragment: string;
+        };
+        /** CompilationRequest */
+        CompilationRequest: {
+            /** Text */
+            text: string;
+            /**
+             * Engine
+             * @default rules
+             * @enum {string}
+             */
+            engine: "rules" | "llm";
+        };
+        /** CompilationResponse */
+        CompilationResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Compilation Id
+             * Format: uuid
+             */
+            compilation_id: string;
+            compilation: components["schemas"]["CompilationResult"];
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            } | null;
+            /** Configuration Hash */
+            configuration_hash: string | null;
+            /** Proposal Id */
+            proposal_id: string | null;
+            /** Proposal Status */
+            proposal_status: string | null;
+        };
+        /** CompilationResult */
+        CompilationResult: {
+            /** Compiler Version */
+            compiler_version: string;
+            /**
+             * Reference Date
+             * Format: date
+             */
+            reference_date: string;
+            /** Timezone */
+            timezone: string;
+            /** Draft */
+            draft: {
+                [key: string]: unknown;
+            };
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            } | null;
+            /** Issues */
+            issues?: components["schemas"]["CompilationIssue"][];
+            /** Assumptions */
+            assumptions?: string[];
+        };
+        /** CompilationRevisionRequest */
+        CompilationRevisionRequest: {
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
         };
         /** ConfirmationRequest */
         ConfirmationRequest: {
@@ -1177,6 +1294,137 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DiscoveryResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    compile_policy_candidate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CompilationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CompilationResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    revise_policy_compilation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                compilation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CompilationRevisionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CompilationResponse"];
                 };
             };
             /** @description Not Found */
