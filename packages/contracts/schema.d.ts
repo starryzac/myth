@@ -311,6 +311,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/asset-policies/{policy_id}/allocation-preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Asset Allocation */
+        get: operations["preview_asset_allocation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/health": {
         parameters: {
             query?: never;
@@ -391,6 +408,143 @@ export interface components {
              * Format: date-time
              */
             observed_at: string;
+        };
+        /** AssetAllocationResponse */
+        AssetAllocationResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            allocation: components["schemas"]["AssetAllocationResult"];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Input Digest */
+            input_digest: string;
+            /** Source Issues */
+            source_issues: components["schemas"]["BoundarySourceIssue"][];
+        };
+        /** AssetAllocationResult */
+        AssetAllocationResult: {
+            /** Algorithm Version */
+            algorithm_version: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Policy Version Id
+             * Format: uuid
+             */
+            policy_version_id: string;
+            /**
+             * Scope
+             * @enum {string}
+             */
+            scope: "general_idle_funds" | "goal";
+            /** Goal Id */
+            goal_id?: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY" | "INSUFFICIENT_EVIDENCE" | "LIQUIDITY_RISK" | "INACTIVE_POLICY";
+            /**
+             * Financial Only
+             * @default true
+             * @constant
+             */
+            financial_only: true;
+            /**
+             * Preview Only
+             * @default true
+             * @constant
+             */
+            preview_only: true;
+            /** Selected Asset Class */
+            selected_asset_class?: string | null;
+            /** Selected Product Id */
+            selected_product_id?: string | null;
+            /** Suggested Cents */
+            suggested_cents?: number | null;
+            /** Retained Cash Cents */
+            retained_cash_cents?: number | null;
+            /** Comparison Days */
+            comparison_days?: number | null;
+            /** Scope Cash Cents */
+            scope_cash_cents?: number | null;
+            /** Remaining Managed Cents */
+            remaining_managed_cents?: number | null;
+            /** Net Simulated Yield Cents */
+            net_simulated_yield_cents?: number | null;
+            /** Source Cash Uses */
+            source_cash_uses?: components["schemas"]["AssetCashUse"][];
+            /** Candidates */
+            candidates?: components["schemas"]["AssetCandidate"][];
+            baseline_boundary: components["schemas"]["BoundaryResult"];
+            reservation_adjusted_boundary?: components["schemas"]["BoundaryResult"] | null;
+            candidate_boundary?: components["schemas"]["BoundaryResult"] | null;
+            /** Selection Hash */
+            selection_hash: string;
+            /** Reasons */
+            reasons?: string[];
+        };
+        /** AssetCandidate */
+        AssetCandidate: {
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Product Code */
+            product_code: string;
+            /** Version Number */
+            version_number: number;
+            /** Asset Class */
+            asset_class: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "FEASIBLE" | "REJECTED";
+            /** Financial Cap Cents */
+            financial_cap_cents?: number | null;
+            /** Max Allocatable Cents */
+            max_allocatable_cents?: number | null;
+            /** Net Simulated Yield Cents */
+            net_simulated_yield_cents?: number | null;
+            exit_plan?: components["schemas"]["PlannedExit"] | null;
+            /** Candidate Boundary Hash */
+            candidate_boundary_hash?: string | null;
+            /** Reasons */
+            reasons?: string[];
+        };
+        /** AssetCashUse */
+        AssetCashUse: {
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Amount Cents */
+            amount_cents: number;
         };
         /** BillView */
         BillView: {
@@ -1048,6 +1202,27 @@ export interface components {
             amount_cents: number;
             /** Remaining Available Cents */
             remaining_available_cents: number;
+        };
+        /** PlannedExit */
+        PlannedExit: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "FIXED_MATURITY" | "PLANNED_REDEMPTION";
+            /** Request At */
+            request_at?: string | null;
+            /**
+             * Principal Available At
+             * Format: date-time
+             */
+            principal_available_at: string;
+            /** Earning Days */
+            earning_days: number;
+            /** Liquidity Days */
+            liquidity_days: number;
+            /** Terms Digest */
+            terms_digest: string;
         };
         /** PolicyChangeRequest */
         PolicyChangeRequest: {
@@ -2484,6 +2659,64 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["GoalAllocationResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_asset_allocation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssetAllocationResponse"];
                 };
             };
             /** @description Not Found */

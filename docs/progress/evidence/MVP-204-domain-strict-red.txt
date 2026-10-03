@@ -1,0 +1,58 @@
+.........................FFFFFF.FF                                       [100%]
+================================== FAILURES ===================================
+___ test_equal_profit_and_liquidity_break_ties_by_shorter_redemption_delay ____
+apps\api\app\tests\test_asset_allocation.py:332: in test_equal_profit_and_liquidity_break_ties_by_shorter_redemption_delay
+    assert result.selected_product_id == fixed.product_id
+E   AssertionError: assert UUID('00000000-0000-0000-0000-00000000000a') == UUID('00000000-0000-0000-0000-00000000000b')
+E    +  where UUID('00000000-0000-0000-0000-00000000000a') = AssetAllocationResult(algorithm_version='single-product-allocation-v1', policy_id=UUID('00000000-0000-0000-0000-000000..., calculation_notes=[]), selection_hash='b9869b0e44862fb6cfdf30bf3c8fe464cf3149d229d5c920d75b532ca7ccb0e9', reasons=[]).selected_product_id
+E    +  and   UUID('00000000-0000-0000-0000-00000000000b') = AssetProductTerms(product_id=UUID('00000000-0000-0000-0000-00000000000b'), product_code='P11', version_number=2, asset...: 'UNTIL_MATURITY'}, 'term_days': 30}, terms_digest='54cffcfa2d0693c4027c7d712b5d5754c508f4ba023cf12fd908ace9e002c378').product_id
+_ test_untrusted_or_contradictory_input_is_rejected_before_optimization[duplicate] _
+apps\api\app\tests\test_asset_allocation.py:353: in test_untrusted_or_contradictory_input_is_rejected_before_optimization
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_untrusted_or_contradictory_input_is_rejected_before_optimization[version_collision] _
+apps\api\app\tests\test_asset_allocation.py:353: in test_untrusted_or_contradictory_input_is_rejected_before_optimization
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_untrusted_or_contradictory_input_is_rejected_before_optimization[bool] _
+apps\api\app\tests\test_asset_allocation.py:353: in test_untrusted_or_contradictory_input_is_rejected_before_optimization
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_untrusted_or_contradictory_input_is_rejected_before_optimization[float] _
+apps\api\app\tests\test_asset_allocation.py:353: in test_untrusted_or_contradictory_input_is_rejected_before_optimization
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_untrusted_or_contradictory_input_is_rejected_before_optimization[capacity] _
+apps\api\app\tests\test_asset_allocation.py:353: in test_untrusted_or_contradictory_input_is_rejected_before_optimization
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_untrusted_or_contradictory_input_is_rejected_before_optimization[managed_understates_position] _
+apps\api\app\tests\test_asset_allocation.py:353: in test_untrusted_or_contradictory_input_is_rejected_before_optimization
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_______ test_exposure_identity_order_does_not_change_the_selection_hash _______
+apps\api\app\tests\test_asset_allocation.py:363: in test_exposure_identity_order_does_not_change_the_selection_hash
+    assert first.model_dump(mode="json") == second.model_dump(mode="json")
+E   AssertionError: assert {'algorithm_v...e_funds', ...} == {'algorithm_v...e_funds', ...}
+E     
+E     Omitting 22 identical items, use -vv to show
+E     Differing items:
+E     {'selection_hash': '5a16c8641a8a11215fc1261d7b9f9c98596749792a89f2474f296f16389b8e91'} != {'selection_hash': '9a1f03d62d27202450c69415603fab9d0fe9cf01e8a2c0295688894677fca321'}
+E     Use -v to get more diff
+============================== warnings summary ===============================
+apps/api/app/tests/test_asset_allocation.py::test_untrusted_or_contradictory_input_is_rejected_before_optimization[float]
+  F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Lib\site-packages\pydantic\main.py:475: UserWarning: Pydantic serializer warnings:
+    PydanticSerializationUnexpectedValue(Expected `int` - serialized value may not be as expected [field_name='minimum_purchase_cents', input_value=1.0, input_type=float])
+    return self.__pydantic_serializer__.to_python(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_asset_allocation.py::test_equal_profit_and_liquidity_break_ties_by_shorter_redemption_delay
+FAILED apps/api/app/tests/test_asset_allocation.py::test_untrusted_or_contradictory_input_is_rejected_before_optimization[duplicate]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_untrusted_or_contradictory_input_is_rejected_before_optimization[version_collision]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_untrusted_or_contradictory_input_is_rejected_before_optimization[bool]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_untrusted_or_contradictory_input_is_rejected_before_optimization[float]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_untrusted_or_contradictory_input_is_rejected_before_optimization[capacity]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_untrusted_or_contradictory_input_is_rejected_before_optimization[managed_understates_position]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_exposure_identity_order_does_not_change_the_selection_hash
+8 failed, 26 passed, 1 warning in 16.45s

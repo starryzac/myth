@@ -1,0 +1,12 @@
+F.                                                                       [100%]
+================================== FAILURES ===================================
+_ test_exposure_epoch_covers_economic_facts_without_following_the_read_clock[0-READY] _
+apps\api\app\tests\test_asset_allocation.py:309: in test_exposure_epoch_covers_economic_facts_without_following_the_read_clock
+    assert result.status == expected
+E   AssertionError: assert 'INSUFFICIENT_EVIDENCE' == 'READY'
+E     
+E     - READY
+E     + INSUFFICIENT_EVIDENCE
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_asset_allocation.py::test_exposure_epoch_covers_economic_facts_without_following_the_read_clock[0-READY]
+1 failed, 1 passed, 21 deselected in 0.80s

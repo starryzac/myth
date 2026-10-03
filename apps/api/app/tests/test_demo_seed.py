@@ -75,6 +75,48 @@ def database_snapshot(engine: Engine) -> str:
     return json.dumps(result, ensure_ascii=False, sort_keys=True, default=str)
 
 
+def test_new_product_versions_have_explicit_principal_yield_and_zero_fee_contracts(
+    demo_engine: Engine,
+) -> None:
+    summary = seed_demo(demo_engine)
+    assert summary.seed_version == "mvp-204-v4"
+    with Session(demo_engine) as session:
+        products = session.scalars(select(AssetProduct)).all()
+        old = {item.product_code: item for item in products if item.version_number == 1}
+        current = {item.product_code: item for item in products if item.version_number == 2}
+        assert len(old) == len(current) == 3
+        assert set(old) == set(current)
+        for code, product in current.items():
+            assert product.id != old[code].id
+            assert product.created_at == product.effective_from == SEED_AS_OF
+            assert old[code].maturity_rule == {"kind": "RETURN_TO_CASH", "auto_rollover": False}
+            terms = product.maturity_rule
+            assert terms["guaranteed"] is True and terms["day_basis"] == "CALENDAR"
+            assert terms["principal_return_bps"] == 10000
+            assert terms["rollover"] is False and terms["auto_rollover"] is False
+            assert terms["settlement_delay_days"] == product.redemption_delay_days
+            fixed = product.asset_class == "FIXED_DEPOSIT"
+            assert terms["protocol"] == (
+                "fixed-principal-return-v1" if fixed else "planned-principal-return-v1"
+            )
+            if fixed:
+                assert terms["term_days"] == product.lock_days == 30
+            yield_rule = terms["yield_rule"]
+            assert yield_rule == {
+                "protocol": "simple-annual-yield-v1",
+                "basis": "ACT_365",
+                "annual_yield_bps": product.annual_yield_bps,
+                "simulation": True,
+                "fee_cents": 0,
+                "purchase_fee_bps": 0,
+                "redemption_fee_bps": 0,
+                "accrual": "UNTIL_MATURITY" if fixed else "UNTIL_REDEMPTION_REQUEST",
+            }
+        assert {item.product_id for item in session.scalars(select(AssetPosition))} == {
+            item.id for item in old.values()
+        }
+
+
 def test_seed_binds_boundary_facts_to_account_bill_and_position_identity(
     demo_engine: Engine,
 ) -> None:
@@ -128,6 +170,35 @@ def test_seed_binds_boundary_facts_to_account_bill_and_position_identity(
             assert proofs[0].observed_at == SEED_AS_OF
 
 
+def test_seed_declares_complete_empty_automatic_exposure_without_claiming_authority(
+    demo_engine: Engine,
+) -> None:
+    seed_demo(demo_engine)
+    with Session(demo_engine) as session:
+        statements = session.scalars(
+            select(EvidenceItem).where(EvidenceItem.source_type == "SIMULATED_ASSET_EXPOSURE")
+        ).all()
+        assert len(statements) == 1
+        proof = statements[0]
+        assert proof.evidence_level == "BANK_CONFIRMED"
+        assert proof.observed_at == proof.valid_from == SEED_AS_OF
+        payload = proof.content
+        assert payload["simulation"] is True and payload["complete"] is True
+        assert payload["protocol"] == "asset-exposure-v1"
+        assert payload["user_id"] == str(DEMO_USER_ID)
+        assert payload["as_of"] == SEED_AS_OF.isoformat()
+        assert payload["actions"] == payload["receipts"] == payload["settlements"] == []
+        assert {item["id"] for item in payload["accounts"]} == {
+            str(item.id) for item in session.scalars(select(Account))
+        }
+        assert {item["id"] for item in payload["positions"]} == {
+            str(item.id) for item in session.scalars(select(AssetPosition))
+        }
+        assert all(len(item["digest"]) == 64 for item in payload["positions"])
+        assert session.scalars(select(Policy)).all() == []
+        assert session.scalars(select(ActionPlan)).all() == []
+
+
 def test_seed_repeats_exact_database_content_and_all_required_facts(demo_engine: Engine) -> None:
     first = seed_demo(demo_engine)
     snapshot = database_snapshot(demo_engine)
@@ -138,7 +209,7 @@ def test_seed_repeats_exact_database_content_and_all_required_facts(demo_engine:
     assert first.as_of == SEED_AS_OF
     assert first.days == 60
     assert first.counts["accounts"] == 5
-    assert first.counts["asset_products"] == 3
+    assert first.counts["asset_products"] == 6
     assert first.counts["policies"] == 0
     assert len(first.dataset_sha256) == 64
     with Session(demo_engine) as session:
@@ -240,7 +311,7 @@ def test_v2_seed_declares_closed_history_scope_and_immutable_economic_roles(
             )
         )
         assert coverage is not None
-        assert summary.seed_version == "mvp-202-v3"
+        assert summary.seed_version == "mvp-204-v4"
         assert summary.as_of == datetime(2026, 10, 3, 16, tzinfo=UTC)
         assert coverage.evidence_level == "BANK_CONFIRMED"
         assert coverage.valid_from == coverage.observed_at == summary.as_of
@@ -352,12 +423,14 @@ def test_v2_reuses_real_v1_catalog_without_overwriting_shared_products(demo_engi
             ).mappings()
         ]
     summary = seed_demo(demo_engine)
-    assert summary.seed_version == "mvp-202-v3"
+    assert summary.seed_version == "mvp-204-v4"
     with demo_engine.connect() as connection:
         after = [
             dict(row)
             for row in connection.execute(
-                select(AssetProduct.__table__).order_by(AssetProduct.id)
+                select(AssetProduct.__table__)
+                .where(AssetProduct.version_number == 1)
+                .order_by(AssetProduct.id)
             ).mappings()
         ]
     assert after == before

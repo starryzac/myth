@@ -1,0 +1,141 @@
+...FFFFFFFFFFFFFFF                                                       [100%]
+================================== FAILURES ===================================
+_ test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[legacy] _
+apps\api\app\tests\test_asset_allocation.py:209: in test_product_constraints_reject_individual_candidates_without_forcing_a_purchase
+    result = select_asset(snapshot(), [], [], financial_products([p]), authorization(), [p], exposure())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\domain\asset_allocation.py:72: in select_asset
+    fixed = rule["protocol"] == "fixed-principal-return-v1"
+            ^^^^^^^^^^^^^^^^
+E   KeyError: 'protocol'
+_ test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[fee] _
+apps\api\app\tests\test_asset_allocation.py:210: in test_product_constraints_reject_individual_candidates_without_forcing_a_purchase
+    assert result.status == "READY" and result.selected_asset_class == "CASH"
+E   AssertionError: assert ('READY' == 'READY'
+E     
+E       READY and 'CASH_MGMT_T0' == 'CASH'
+E     
+E     - CASH
+E     + CASH_MGMT_T0)
+_ test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[float_guarantee] _
+apps\api\app\tests\test_asset_allocation.py:210: in test_product_constraints_reject_individual_candidates_without_forcing_a_purchase
+    assert result.status == "READY" and result.selected_asset_class == "CASH"
+E   AssertionError: assert ('READY' == 'READY'
+E     
+E       READY and 'CASH_MGMT_T0' == 'CASH'
+E     
+E     - CASH
+E     + CASH_MGMT_T0)
+_ test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[risk] _
+apps\api\app\tests\test_asset_allocation.py:210: in test_product_constraints_reject_individual_candidates_without_forcing_a_purchase
+    assert result.status == "READY" and result.selected_asset_class == "CASH"
+E   AssertionError: assert ('READY' == 'READY'
+E     
+E       READY and 'CASH_MGMT_T0' == 'CASH'
+E     
+E     - CASH
+E     + CASH_MGMT_T0)
+_ test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[fluctuation] _
+apps\api\app\tests\test_asset_allocation.py:210: in test_product_constraints_reject_individual_candidates_without_forcing_a_purchase
+    assert result.status == "READY" and result.selected_asset_class == "CASH"
+E   AssertionError: assert ('READY' == 'READY'
+E     
+E       READY and 'CASH_MGMT_T0' == 'CASH'
+E     
+E     - CASH
+E     + CASH_MGMT_T0)
+_ test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[purchase] _
+apps\api\app\tests\test_asset_allocation.py:210: in test_product_constraints_reject_individual_candidates_without_forcing_a_purchase
+    assert result.status == "READY" and result.selected_asset_class == "CASH"
+E   AssertionError: assert ('READY' == 'READY'
+E     
+E       READY and 'CASH_MGMT_T0' == 'CASH'
+E     
+E     - CASH
+E     + CASH_MGMT_T0)
+_ test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[redeem] _
+apps\api\app\tests\test_asset_allocation.py:210: in test_product_constraints_reject_individual_candidates_without_forcing_a_purchase
+    assert result.status == "READY" and result.selected_asset_class == "CASH"
+E   AssertionError: assert ('READY' == 'READY'
+E     
+E       READY and 'CASH_MGMT_T0' == 'CASH'
+E     
+E     - CASH
+E     + CASH_MGMT_T0)
+_ test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[lock] _
+apps\api\app\tests\test_asset_allocation.py:210: in test_product_constraints_reject_individual_candidates_without_forcing_a_purchase
+    assert result.status == "READY" and result.selected_asset_class == "CASH"
+E   AssertionError: assert ('READY' == 'READY'
+E     
+E       READY and 'CASH_MGMT_T0' == 'CASH'
+E     
+E     - CASH
+E     + CASH_MGMT_T0)
+_ test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[delay] _
+apps\api\app\tests\test_asset_allocation.py:210: in test_product_constraints_reject_individual_candidates_without_forcing_a_purchase
+    assert result.status == "READY" and result.selected_asset_class == "CASH"
+E   AssertionError: assert ('READY' == 'READY'
+E     
+E       READY and 'CASH_MGMT_T0' == 'CASH'
+E     
+E     - CASH
+E     + CASH_MGMT_T0)
+_ test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[minimum] _
+apps\api\app\tests\test_asset_allocation.py:210: in test_product_constraints_reject_individual_candidates_without_forcing_a_purchase
+    assert result.status == "READY" and result.selected_asset_class == "CASH"
+E   AssertionError: assert ('READY' == 'READY'
+E     
+E       READY and 'CASH_MGMT_T0' == 'CASH'
+E     
+E     - CASH
+E     + CASH_MGMT_T0)
+_ test_planned_request_before_authorization_expiry_is_used_for_both_safety_and_yield _
+apps\api\app\tests\test_asset_allocation.py:226: in test_planned_request_before_authorization_expiry_is_used_for_both_safety_and_yield
+    assert result.suggested_cents == 1_000_000
+E   AssertionError: assert 500000 == 1000000
+E    +  where 500000 = AssetAllocationResult(algorithm_version='single-product-allocation-v1', policy_id=UUID('00000000-0000-0000-0000-000000..., calculation_notes=[]), selection_hash='08131b1e21ca5c4993412cd13571ac2b6493b3040d8e9240d69b6f02746b4c88', reasons=[]).suggested_cents
+_ test_missing_or_unauthorized_context_cannot_return_precise_asset_amounts[sources] _
+apps\api\app\tests\test_asset_allocation.py:251: in test_missing_or_unauthorized_context_cannot_return_precise_asset_amounts
+    assert result.status == {"sources": "INSUFFICIENT_EVIDENCE", "risk": "LIQUIDITY_RISK",
+E   AssertionError: assert 'READY' == 'INSUFFICIENT_EVIDENCE'
+E     
+E     - INSUFFICIENT_EVIDENCE
+E     + READY
+_ test_missing_or_unauthorized_context_cannot_return_precise_asset_amounts[risk] _
+apps\api\app\tests\test_asset_allocation.py:251: in test_missing_or_unauthorized_context_cannot_return_precise_asset_amounts
+    assert result.status == {"sources": "INSUFFICIENT_EVIDENCE", "risk": "LIQUIDITY_RISK",
+E   AssertionError: assert 'READY' == 'LIQUIDITY_RISK'
+E     
+E     - LIQUIDITY_RISK
+E     + READY
+_ test_missing_or_unauthorized_context_cannot_return_precise_asset_amounts[inactive] _
+apps\api\app\tests\test_asset_allocation.py:251: in test_missing_or_unauthorized_context_cannot_return_precise_asset_amounts
+    assert result.status == {"sources": "INSUFFICIENT_EVIDENCE", "risk": "LIQUIDITY_RISK",
+E   AssertionError: assert 'READY' == 'INACTIVE_POLICY'
+E     
+E     - INACTIVE_POLICY
+E     + READY
+_ test_missing_or_unauthorized_context_cannot_return_precise_asset_amounts[goal_reference] _
+apps\api\app\tests\test_asset_allocation.py:251: in test_missing_or_unauthorized_context_cannot_return_precise_asset_amounts
+    assert result.status == {"sources": "INSUFFICIENT_EVIDENCE", "risk": "LIQUIDITY_RISK",
+E   AssertionError: assert 'READY' == 'INACTIVE_POLICY'
+E     
+E     - INACTIVE_POLICY
+E     + READY
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_asset_allocation.py::test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[legacy]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[fee]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[float_guarantee]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[risk]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[fluctuation]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[purchase]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[redeem]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[lock]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[delay]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_product_constraints_reject_individual_candidates_without_forcing_a_purchase[minimum]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_planned_request_before_authorization_expiry_is_used_for_both_safety_and_yield
+FAILED apps/api/app/tests/test_asset_allocation.py::test_missing_or_unauthorized_context_cannot_return_precise_asset_amounts[sources]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_missing_or_unauthorized_context_cannot_return_precise_asset_amounts[risk]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_missing_or_unauthorized_context_cannot_return_precise_asset_amounts[inactive]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_missing_or_unauthorized_context_cannot_return_precise_asset_amounts[goal_reference]
+15 failed, 3 passed in 1.93s

@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_complete_statement_cannot_hide_a_live_bank_position_by_deleting_its_projection _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_7ba951a002e74e1e8e2a0645932cf2e0)
+
+    def test_complete_statement_cannot_hide_a_live_bank_position_by_deleting_its_projection(
+        boundary_engine: Engine,
+    ) -> None:
+        with Session(boundary_engine) as session, session.begin():
+            position = session.scalar(select(AssetPosition))
+            assert position is not None
+            session.delete(position)
+            exposure_statement(session)
+        with Session(boundary_engine) as session:
+            context = load_boundary_context(session, DEMO_USER_ID, SEED_AS_OF)
+            load_asset_exposure(session, context, authorization())
+>           assert any(
+                item.code == "EXPOSURE_RECONCILIATION_REQUIRED" for item in context.sources.issues
+            )
+E           assert False
+E            +  where False = any(<generator object test_complete_statement_cannot_hide_a_live_bank_position_by_deleting_its_projection.<locals>.<genexpr> at 0x000002009ED97ED0>)
+
+apps\api\app\tests\test_asset_allocation_service.py:553: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_asset_allocation_service.py::test_complete_statement_cannot_hide_a_live_bank_position_by_deleting_its_projection
+1 failed, 31 deselected in 4.58s

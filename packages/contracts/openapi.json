@@ -1420,6 +1420,79 @@
         }
       }
     },
+    "/api/v1/asset-policies/{policy_id}/allocation-preview": {
+      "get": {
+        "tags": [
+          "资产配置"
+        ],
+        "summary": "Read Asset Allocation",
+        "operationId": "preview_asset_allocation",
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Policy Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetAllocationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
     "/api/v1/health": {
       "get": {
         "summary": "Health",
@@ -1598,6 +1671,413 @@
           "observed_at"
         ],
         "title": "AccountView"
+      },
+      "AssetAllocationResponse": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "policy_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "allocation": {
+            "$ref": "#/components/schemas/AssetAllocationResult"
+          },
+          "source_evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Source Evidence Ids"
+          },
+          "input_digest": {
+            "type": "string",
+            "title": "Input Digest"
+          },
+          "source_issues": {
+            "items": {
+              "$ref": "#/components/schemas/BoundarySourceIssue"
+            },
+            "type": "array",
+            "title": "Source Issues"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "policy_id",
+          "as_of",
+          "allocation",
+          "source_evidence_ids",
+          "input_digest",
+          "source_issues"
+        ],
+        "title": "AssetAllocationResponse"
+      },
+      "AssetAllocationResult": {
+        "properties": {
+          "algorithm_version": {
+            "type": "string",
+            "title": "Algorithm Version"
+          },
+          "policy_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Id"
+          },
+          "policy_version_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Version Id"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "general_idle_funds",
+              "goal"
+            ],
+            "title": "Scope"
+          },
+          "goal_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "INSUFFICIENT_EVIDENCE",
+              "LIQUIDITY_RISK",
+              "INACTIVE_POLICY"
+            ],
+            "title": "Status"
+          },
+          "financial_only": {
+            "type": "boolean",
+            "const": true,
+            "title": "Financial Only",
+            "default": true
+          },
+          "preview_only": {
+            "type": "boolean",
+            "const": true,
+            "title": "Preview Only",
+            "default": true
+          },
+          "selected_asset_class": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Asset Class"
+          },
+          "selected_product_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Product Id"
+          },
+          "suggested_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suggested Cents"
+          },
+          "retained_cash_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retained Cash Cents"
+          },
+          "comparison_days": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 3660.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comparison Days"
+          },
+          "scope_cash_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope Cash Cents"
+          },
+          "remaining_managed_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remaining Managed Cents"
+          },
+          "net_simulated_yield_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Net Simulated Yield Cents"
+          },
+          "source_cash_uses": {
+            "items": {
+              "$ref": "#/components/schemas/AssetCashUse"
+            },
+            "type": "array",
+            "title": "Source Cash Uses"
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/AssetCandidate"
+            },
+            "type": "array",
+            "title": "Candidates"
+          },
+          "baseline_boundary": {
+            "$ref": "#/components/schemas/BoundaryResult"
+          },
+          "reservation_adjusted_boundary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BoundaryResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidate_boundary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BoundaryResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "selection_hash": {
+            "type": "string",
+            "title": "Selection Hash"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "algorithm_version",
+          "policy_id",
+          "policy_version_id",
+          "scope",
+          "status",
+          "baseline_boundary",
+          "selection_hash"
+        ],
+        "title": "AssetAllocationResult"
+      },
+      "AssetCandidate": {
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Product Id"
+          },
+          "product_code": {
+            "type": "string",
+            "title": "Product Code"
+          },
+          "version_number": {
+            "type": "integer",
+            "title": "Version Number"
+          },
+          "asset_class": {
+            "type": "string",
+            "title": "Asset Class"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "FEASIBLE",
+              "REJECTED"
+            ],
+            "title": "Status"
+          },
+          "financial_cap_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Financial Cap Cents"
+          },
+          "max_allocatable_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Allocatable Cents"
+          },
+          "net_simulated_yield_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Net Simulated Yield Cents"
+          },
+          "exit_plan": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlannedExit"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidate_boundary_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidate Boundary Hash"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "product_id",
+          "product_code",
+          "version_number",
+          "asset_class",
+          "status"
+        ],
+        "title": "AssetCandidate"
+      },
+      "AssetCashUse": {
+        "properties": {
+          "account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Account Id"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Amount Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "account_id",
+          "amount_cents"
+        ],
+        "title": "AssetCashUse"
       },
       "BillView": {
         "properties": {
@@ -3169,6 +3649,61 @@
           "remaining_available_cents"
         ],
         "title": "LotAllocation"
+      },
+      "PlannedExit": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "FIXED_MATURITY",
+              "PLANNED_REDEMPTION"
+            ],
+            "title": "Kind"
+          },
+          "request_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request At"
+          },
+          "principal_available_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Principal Available At"
+          },
+          "earning_days": {
+            "type": "integer",
+            "maximum": 3660.0,
+            "minimum": 0.0,
+            "title": "Earning Days"
+          },
+          "liquidity_days": {
+            "type": "integer",
+            "maximum": 3660.0,
+            "minimum": 0.0,
+            "title": "Liquidity Days"
+          },
+          "terms_digest": {
+            "type": "string",
+            "title": "Terms Digest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "principal_available_at",
+          "earning_days",
+          "liquidity_days",
+          "terms_digest"
+        ],
+        "title": "PlannedExit"
       },
       "PolicyChangeRequest": {
         "properties": {

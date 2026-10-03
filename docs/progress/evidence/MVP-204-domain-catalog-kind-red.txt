@@ -1,0 +1,18 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_explicit_catalog_kind_matches_the_principal_protocol[None-REDEEM_ON_REQUEST] _
+apps\api\app\tests\test_asset_allocation.py:322: in test_explicit_catalog_kind_matches_the_principal_protocol
+    assert result.selected_product_id == p.product_id
+E   AssertionError: assert None == UUID('00000000-0000-0000-0000-00000000000a')
+E    +  where None = AssetAllocationResult(algorithm_version='single-product-allocation-v1', policy_id=UUID('00000000-0000-0000-0000-000000..., calculation_notes=[]), selection_hash='1037a3c07cd48aa4b9f621fe937a0f62ca8037119b7ba9e5e91f4d9956341bac', reasons=[]).selected_product_id
+E    +  and   UUID('00000000-0000-0000-0000-00000000000a') = AssetProductTerms(product_id=UUID('00000000-0000-0000-0000-00000000000a'), product_code='P10', version_number=2, asset...QUEST'}, 'kind': 'REDEEM_ON_REQUEST'}, terms_digest='da566f691dd09f946ad629b60786ef6a10dc0ad5dea7d05ae6bd4ee4b24ebcf0').product_id
+_ test_explicit_catalog_kind_matches_the_principal_protocol[30-RETURN_TO_CASH] _
+apps\api\app\tests\test_asset_allocation.py:322: in test_explicit_catalog_kind_matches_the_principal_protocol
+    assert result.selected_product_id == p.product_id
+E   AssertionError: assert None == UUID('00000000-0000-0000-0000-00000000000a')
+E    +  where None = AssetAllocationResult(algorithm_version='single-product-allocation-v1', policy_id=UUID('00000000-0000-0000-0000-000000..., calculation_notes=[]), selection_hash='6882e7032bdcd893b28570388cf10edb3e00c3faecab4d2e5be72bc9eac120c3', reasons=[]).selected_product_id
+E    +  and   UUID('00000000-0000-0000-0000-00000000000a') = AssetProductTerms(product_id=UUID('00000000-0000-0000-0000-00000000000a'), product_code='P10', version_number=2, asset..._days': 30, 'kind': 'RETURN_TO_CASH'}, terms_digest='d42702162d803d091b0f8ecafa3e069849d348df89aaf2c185208f4db454b25c').product_id
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_asset_allocation.py::test_explicit_catalog_kind_matches_the_principal_protocol[None-REDEEM_ON_REQUEST]
+FAILED apps/api/app/tests/test_asset_allocation.py::test_explicit_catalog_kind_matches_the_principal_protocol[30-RETURN_TO_CASH]
+2 failed, 23 deselected in 0.86s

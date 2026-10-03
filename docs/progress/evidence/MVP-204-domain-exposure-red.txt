@@ -1,0 +1,23 @@
+..................FFF                                                    [100%]
+================================== FAILURES ===================================
+_ test_immutable_legacy_catalog_is_superseded_only_by_currently_known_effective_version _
+apps\api\app\tests\test_asset_allocation.py:268: in test_immutable_legacy_catalog_is_superseded_only_by_currently_known_effective_version
+    assert "SUPERSEDED_PRODUCT_VERSION" in rejected[old.product_id].reasons
+E   AssertionError: assert 'SUPERSEDED_PRODUCT_VERSION' in ['INCOMPLETE_OR_UNSUPPORTED_PRODUCT_TERMS']
+E    +  where ['INCOMPLETE_OR_UNSUPPORTED_PRODUCT_TERMS'] = AssetCandidate(product_id=UUID('00000000-0000-0000-0000-000000000009'), product_code='P10', version_number=1, asset_cl...ed_yield_cents=None, exit_plan=None, candidate_boundary_hash=None, reasons=['INCOMPLETE_OR_UNSUPPORTED_PRODUCT_TERMS']).reasons
+________ test_general_pending_cash_is_reserved_across_the_whole_window ________
+apps\api\app\tests\test_asset_allocation.py:281: in test_general_pending_cash_is_reserved_across_the_whole_window
+    assert result.suggested_cents == 650_000
+E   AssertionError: assert 800000 == 650000
+E    +  where 800000 = AssetAllocationResult(algorithm_version='single-product-allocation-v1', policy_id=UUID('00000000-0000-0000-0000-000000..., calculation_notes=[]), selection_hash='0d7eb491023cbb00a5ef8801da5d83b54e79dbb3d1229848213f95b8d4d10a84', reasons=[]).suggested_cents
+_ test_pending_goal_purchase_is_not_reserved_twice_as_goal_cash_and_general_cash _
+apps\api\app\tests\test_asset_allocation.py:295: in test_pending_goal_purchase_is_not_reserved_twice_as_goal_cash_and_general_cash
+    assert result.suggested_cents == result.scope_cash_cents == 800_000
+E   AssertionError: assert 800000 == 1000000
+E    +  where 800000 = AssetAllocationResult(algorithm_version='single-product-allocation-v1', policy_id=UUID('00000000-0000-0000-0000-000000..., calculation_notes=[]), selection_hash='68da81288bf9d53082c614d408eda0de5bca33e5ca1339ed9cb63b77ce2a9a9f', reasons=[]).suggested_cents
+E    +  and   1000000 = AssetAllocationResult(algorithm_version='single-product-allocation-v1', policy_id=UUID('00000000-0000-0000-0000-000000..., calculation_notes=[]), selection_hash='68da81288bf9d53082c614d408eda0de5bca33e5ca1339ed9cb63b77ce2a9a9f', reasons=[]).scope_cash_cents
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_asset_allocation.py::test_immutable_legacy_catalog_is_superseded_only_by_currently_known_effective_version
+FAILED apps/api/app/tests/test_asset_allocation.py::test_general_pending_cash_is_reserved_across_the_whole_window
+FAILED apps/api/app/tests/test_asset_allocation.py::test_pending_goal_purchase_is_not_reserved_twice_as_goal_cash_and_general_cash
+3 failed, 18 passed in 1.41s

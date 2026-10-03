@@ -1,0 +1,103 @@
+...F.                                                                    [100%]
+================================== FAILURES ===================================
+_ test_goal_allocation_requires_current_mutual_authority_and_matching_projection[target_projection] _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_4dc737c54f4649b9a1b46f8ae766e86c)
+fault = 'target_projection'
+
+    @pytest.mark.parametrize(
+        "fault",
+        ["missing_reference", "wrong_projection", "stale_version", "target_projection", "paused_goal"],
+    )
+    def test_goal_allocation_requires_current_mutual_authority_and_matching_projection(
+        boundary_engine: Engine, fault: str
+    ) -> None:
+        with Session(boundary_engine) as session, session.begin():
+            goal_id, policy_id = linked_goal_policy(session)
+            goal = session.get(Goal, goal_id)
+            assert goal is not None
+            if fault in {"missing_reference", "wrong_projection"}:
+                goal.asset_policy_id = None
+            elif fault == "stale_version":
+                older = session.scalar(
+                    select(PolicyVersion)
+                    .where(PolicyVersion.policy_id == goal.policy_id)
+                    .order_by(PolicyVersion.version_number)
+                )
+                assert older is not None
+                goal.policy_version_id = older.id
+            elif fault == "target_projection":
+                goal.target_cents += 1
+            else:
+                suspend_policy(
+                    session, DEMO_USER_ID, goal.policy_id, goal.policy_version_id, SEED_AS_OF
+                )
+        with Session(boundary_engine) as session:
+>           result = preview_asset_allocation(session, DEMO_USER_ID, policy_id, SEED_AS_OF)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_asset_allocation_service.py:537: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\asset_allocation.py:151: in preview_asset_allocation
+    allocation = select_asset(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+snapshot = BoundarySnapshot(as_of=datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc), timezone='Asia/Shanghai', ..., amount_cents=0)], source_issues=[], source_digest='81206bdbdc6ddf2c878945ccfa12ed408986b8cf273cbdecbcc883f4bd1a04d5')
+boundary_versions = [BoundaryPolicyVersion(evidence_ids=[UUID('55385e67-be61-49c7-98cb-b551ca9d9e6b'), UUID('dbddb4c4-c9d1-43f9-a4dc-65de6...etime.timezone.utc), valid_from=datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc), valid_until=None)]
+positions = [BoundaryPosition(evidence_ids=[UUID('a202e1ac-860c-5509-bdb5-56e7e364a98c')], position_id=UUID('7560448c-5d88-5dcd-87...c59'), goal_id=None, principal_cents=100000, status='HELD', principal_available_at=None, availability_evidence_ids=[])]
+boundary_products = [BoundaryProduct(product_id=UUID('c6ebc4fc-26c6-5e2c-8df6-ebf417a93086'), version_number=1, asset_class='CASH_MGMT_T0'...al_return_bps=10000, rollover=False), terms_digest='888fb8b007b7b4ee7da87ad86a0aad9b91224a4dd180a12f1d02de8190cdd0c0')]
+authorization = BoundaryPolicyVersion(evidence_ids=[UUID('0652d37a-12ea-486f-bd1d-fd966b74b53b'), UUID('8d1563cd-6519-4c39-a9b2-02321d...tetime.timezone.utc), valid_from=datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc), valid_until=None)
+products = [AssetProductTerms(product_id=UUID('707aaa2b-268c-58d2-979c-259a7dbd6858'), product_code='BF_DEMO_FIXED_30D', version_...: 10000, 'settlement_delay_days': 1}, terms_digest='c9030253f40ebd6dfd244d7d5ce4c766e2db1d86b6846214955edcb0dc49c977')]
+exposure = AssetExposure(as_of=datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc), scope='goal', goal_id=UUID('c...-500a-a203-ae07fc3b7d11'), UUID('e812df3a-95b9-5264-a802-85f7e4e29c21'), UUID('eb1ecae8-e558-456a-905b-158d83c4416c')])
+source_issues = []
+
+    def select_asset(
+        snapshot: BoundarySnapshot,
+        boundary_versions: Sequence[BoundaryPolicyVersion],
+        positions: Sequence[BoundaryPosition],
+        boundary_products: Sequence[BoundaryProduct],
+        authorization: BoundaryPolicyVersion,
+        products: Sequence[AssetProductTerms],
+        exposure: AssetExposure,
+        *,
+        source_issues: Sequence[SourceIssue] = (),
+    ) -> AssetAllocationResult:
+        """Select at most one hypothetical position; never issue or reserve a purchase."""
+        config = validate_configuration(authorization.configuration)
+        baseline = compute_boundary(snapshot, boundary_versions, positions, boundary_products)
+        goal_id = UUID(config["goal_id"]) if config["scope"] == "goal" else None
+        comparison_days = 90
+        owned = {
+            account.account_id: sum(g.cash_owned_cents for g in snapshot.goals if g.account_id == account.account_id)
+            for account in snapshot.cash_accounts
+        }
+        funding = {
+            account.account_id: account.balance_cents - owned[account.account_id]
+            for account in sorted(snapshot.cash_accounts, key=lambda a: a.account_id)
+            if account.account_type == "CASH"
+        }
+        if goal_id is not None:
+            goal = next(g for g in snapshot.goals if g.goal_id == goal_id)
+            goal_version = next(v for v in boundary_versions if v.policy_id == goal.policy_id)
+            zone = UTC if snapshot.timezone == "UTC" else timezone(timedelta(hours=8))
+            comparison_days = min(90, max(0, (
+                date.fromisoformat(goal_version.configuration["deadline"])
+                - snapshot.as_of.astimezone(zone).date()
+            ).days - 1))
+            if goal.account_id is None:
+                raise ValueError("A goal cash account is required")
+            funding = {goal.account_id: goal.cash_owned_cents}
+        scope_cash = sum(funding.values())
+        remaining = max(0, config["max_auto_managed_cents"] - exposure.managed_principal_cents - exposure.pending_purchase_cents)
+        candidates = []
+        states = {}
+        for product in sorted(products, key=lambda p: (p.product_code, p.version_number, p.product_id)):
+            rule = product.maturity_rule
+>           fixed = rule["protocol"] == "fixed-principal-return-v1"
+                    ^^^^^^^^^^^^^^^^
+E           KeyError: 'protocol'
+
+apps\api\app\domain\asset_allocation.py:72: KeyError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_asset_allocation_service.py::test_goal_allocation_requires_current_mutual_authority_and_matching_projection[target_projection]
+1 failed, 4 passed, 26 deselected in 12.69s

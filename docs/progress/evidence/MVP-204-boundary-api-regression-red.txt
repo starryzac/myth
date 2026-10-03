@@ -1,0 +1,44 @@
+F
+================================== FAILURES ===================================
+_ test_seed_boundary_explains_ninety_days_without_writing_or_granting_authority _
+
+boundary_client = (<starlette.testclient.TestClient object at 0x000001F40C274F80>, Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_df6e8cf63cc941f8ba7ea6fb61088350))
+
+    def test_seed_boundary_explains_ninety_days_without_writing_or_granting_authority(
+        boundary_client: tuple[TestClient, Engine],
+    ) -> None:
+        client, engine = boundary_client
+        before = snapshot(engine)
+        response = client.get(PATH)
+        assert response.status_code == 200
+        result = response.json()
+        boundary = result["boundary"]
+        assert result["simulation"] is True
+        assert result["source_issues"] == []
+        assert result["source_evidence_ids"]
+        assert boundary["status"] == "READY"
+        assert boundary["financial_only"] is True
+        # Cash already excludes all 500000 position principal; protect the 160000
+        # unassigned GOAL account and 145000 actual bill, each exactly once.
+        assert boundary["safe_idle_cents"] == 3157400
+        assert boundary["minimum_margin_cents"] == 3157400
+        assert boundary["deficit_cents"] == 0
+>       assert len(boundary["max_allocatable_by_product"]) == 3
+E       AssertionError: assert 6 == 3
+E        +  where 6 = len({'16de5243-77ab-5f9e-b848-168b5aea7496': 3157400, '2bdff536-91a3-5060-a0aa-3d19aab86c45': 3157400, '707aaa2b-268c-58d2-979c-259a7dbd6858': 3157400, '99d37933-b2e3-5ce9-be7a-3804befd8edc': 3157400, ...})
+
+apps\api\app\tests\test_boundary_api.py:77: AssertionError
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "b81c35e1-ddc1-4896-b405-829fc04822b0", "method": "GET", "status": 200, "duration_ms": 187.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:58 {"event": "http_request", "request_id": "b81c35e1-ddc1-4896-b405-829fc04822b0", "method": "GET", "status": 200, "duration_ms": 187.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_boundary_api.py::test_seed_boundary_explains_ninety_days_without_writing_or_granting_authority
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 warning in 5.75s

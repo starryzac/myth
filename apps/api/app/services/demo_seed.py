@@ -26,6 +26,7 @@ from app.db.models import (
     Transaction,
     User,
 )
+from app.domain.asset_exposure import EXPOSURE_SOURCE, asset_exposure_snapshot
 from app.domain.demo_identity import DEMO_USER_ID as DEMO_USER_ID
 from app.domain.demo_identity import DEMO_USER_REF as DEMO_USER_REF
 from app.domain.history_coverage import COVERAGE_SOURCE_TYPE, build_history_coverage
@@ -34,7 +35,7 @@ from sqlalchemy import delete, or_, select, text, update
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
-SEED_VERSION = "mvp-202-v3"
+SEED_VERSION = "mvp-204-v4"
 SEED_START = date(2026, 8, 5)
 SEED_END = date(2026, 10, 3)
 SEED_AS_OF = datetime(2026, 10, 3, 16, tzinfo=UTC)
@@ -282,6 +283,41 @@ def _product_values() -> list[dict[str, Any]]:
                 "auto_redeem_allowed": key != "fixed",
                 "effective_from": _at(SEED_START, 0),
                 "effective_until": None,
+            }
+        )
+    # Existing v1 records are shared by historical positions and never rewritten.
+    for original in list(result):
+        fixed = original["asset_class"] == "FIXED_DEPOSIT"
+        terms = {
+            "protocol": "fixed-principal-return-v1" if fixed else "planned-principal-return-v1",
+            "kind": "RETURN_TO_CASH" if fixed else "REDEEM_ON_REQUEST",
+            "day_basis": "CALENDAR",
+            "guaranteed": True,
+            "settlement_delay_days": original["redemption_delay_days"],
+            "principal_return_bps": 10000,
+            "rollover": False,
+            "auto_rollover": False,
+            "yield_rule": {
+                "protocol": "simple-annual-yield-v1",
+                "basis": "ACT_365",
+                "annual_yield_bps": original["annual_yield_bps"],
+                "simulation": True,
+                "fee_cents": 0,
+                "purchase_fee_bps": 0,
+                "redemption_fee_bps": 0,
+                "accrual": "UNTIL_MATURITY" if fixed else "UNTIL_REDEMPTION_REQUEST",
+            },
+        }
+        if fixed:
+            terms["term_days"] = original["lock_days"]
+        result.append(
+            {
+                **original,
+                "id": _id(f"product:{original['product_code']}:v2"),
+                "version_number": 2,
+                "created_at": SEED_AS_OF,
+                "effective_from": SEED_AS_OF,
+                "maturity_rule": terms,
             }
         )
     return result
@@ -651,4 +687,27 @@ def seed_demo(engine: Engine) -> SeedSummary:
         _ensure_products(session)
         _clear_demo(session)
         _insert_facts(session)
+        session.add(
+            _evidence(
+                "asset-exposure",
+                EXPOSURE_SOURCE,
+                asset_exposure_snapshot(
+                    DEMO_USER_ID,
+                    SEED_AS_OF,
+                    accounts=session.scalars(
+                        select(Account).where(Account.user_id == DEMO_USER_ID)
+                    ),
+                    positions=session.scalars(
+                        select(AssetPosition).where(AssetPosition.user_id == DEMO_USER_ID)
+                    ),
+                    actions=[],
+                    receipts=[],
+                    evidence=session.scalars(
+                        select(EvidenceItem).where(EvidenceItem.user_id == DEMO_USER_ID)
+                    ),
+                ),
+                SEED_AS_OF,
+            )
+        )
+        session.flush()
         return _summary(session)

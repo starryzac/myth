@@ -10,7 +10,7 @@ from alembic import command
 from alembic.config import Config
 from app.api.dependencies import get_engine, get_now
 from app.db.base import Base
-from app.db.models import Account
+from app.db.models import Account, AssetProduct
 from app.db.session import create_database_engine
 from app.db.testing import temporary_database
 from app.main import create_app
@@ -74,7 +74,13 @@ def test_seed_boundary_explains_ninety_days_without_writing_or_granting_authorit
     assert boundary["safe_idle_cents"] == 3157400
     assert boundary["minimum_margin_cents"] == 3157400
     assert boundary["deficit_cents"] == 0
-    assert len(boundary["max_allocatable_by_product"]) == 3
+    # The immutable v1 catalog is retained alongside the three new v2 products.
+    # Financial caps cover every exact version; selection of the latest known
+    # eligible version belongs to the asset-allocation preview.
+    with Session(engine) as session:
+        catalog_ids = {str(identifier) for identifier in session.scalars(select(AssetProduct.id))}
+    assert len(catalog_ids) == 6
+    assert set(boundary["max_allocatable_by_product"]) == catalog_ids
     assert set(boundary["max_allocatable_by_product"].values()) == {3157400}
     assert len(boundary["boundary_hash"]) == 64
     points = boundary["calculation_trace"]

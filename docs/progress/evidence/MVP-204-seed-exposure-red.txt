@@ -1,0 +1,22 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_seed_declares_complete_empty_automatic_exposure_without_claiming_authority _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_12f1a864fcfd427aafdc6dbc2b20bb4b)
+
+    def test_seed_declares_complete_empty_automatic_exposure_without_claiming_authority(
+        demo_engine: Engine,
+    ) -> None:
+        seed_demo(demo_engine)
+        with Session(demo_engine) as session:
+            statements = session.scalars(
+                select(EvidenceItem).where(EvidenceItem.source_type == "SIMULATED_ASSET_EXPOSURE")
+            ).all()
+>           assert len(statements) == 1
+E           assert 0 == 1
+E            +  where 0 = len([])
+
+apps\api\app\tests\test_demo_seed.py:181: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_demo_seed.py::test_seed_declares_complete_empty_automatic_exposure_without_claiming_authority
+1 failed, 14 deselected in 4.65s
