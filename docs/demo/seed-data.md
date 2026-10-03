@@ -2,6 +2,8 @@
 
 日期：2026-10-04（Asia/Shanghai）。本文件对应 `mvp-102-v1`，不是实际银行账户或用户记录。
 
+以下原有章节保留 v1 的历史验证记录与校验和；MVP-201 起使用的 `mvp-201-v2` 及其独立验证见文末追加章节。v2 不将已有 v1 结果重新标记为新版本的实测结果。
+
 ## 固定身份与时间
 
 - 演示用户：`271a9827-f82a-5be6-9e0a-50f721029fb0`。
@@ -105,3 +107,57 @@ uv run --cache-dir .uv-cache --frozen python scripts/seed_demo.py
 - 含策略、版本、目标、持仓、决策约束、动作、回执、审计原因链与证据 supersedes 的完整依赖图可以重置。
 
 Ruff 与 strict mypy 定向验证已通过；项目统一命令与完整质量门由主代理集成验证。本任务不标记初版总体完成。
+
+## MVP-201 追加：v2 完整历史覆盖协议
+
+`mvp-201-v2` 保留 2026-08-05 至 2026-10-03 的 60 个本地自然日、全部 129 笔交易和原经济金额，观察截止改为 `2026-10-03T16:00:00Z`（上海 10 月 4 日零时）。因此最后一天已经结束，生活准备金估算不必将未结束的一天当作完整样本。原 UUID5 命名空间、用户身份及已有行 ID 保持不变，租户事实的来源引用和账户外部引用随种子版本更新。
+
+三件全局产品仍是原 v1 目录：`created_at` 固定为 `2026-10-03T15:59:59Z`，产品版本、属性和 ID 均不改变。产品不随租户观察截止滚动；旧库中的 v1 产品可以直接复用，字段不一致仍整体拒绝，其他用户持有的共享产品不会被覆盖。
+
+### 持久化覆盖声明
+
+新增恰好一条 `BANK_CONFIRMED / SIMULATED_TRANSACTION_HISTORY_COVERAGE` 证据；原 252 条证据的种类保留，演示重置时按 v2 重新生成。覆盖证据的 `valid_from`、`observed_at` 和 `created_at` 均为新的观察截止，不能早于覆盖结束日的下一本地零时。种子现在共有 253 条证据。
+
+纯函数协议位于 `app/domain/history_coverage.py`，种子和估算服务共同使用：
+
+| 字段 | 固定协议 |
+|---|---|
+| `protocol` | `transaction-history-coverage-v1`。 |
+| `simulation`、`user_id`、`timezone` | 合成来源、所属用户、`Asia/Shanghai`。 |
+| `period_start`、`period_end` | 包含首尾的本地日期区间；本种子为 2026-08-05 至 2026-10-03。 |
+| `scope_account_ids` | 全部五账户 ID 的排序列表，包含没有交易的账户。 |
+| `accounts` | 按账户 ID 排序，逐项含 `account_id`、`transaction_count`、`bank_fact_digest`。 |
+
+活期 127 笔、目标账户 2 笔，信用卡、现金管理和定存账户各 0 笔。零笔账户仍有清单和空集合摘要；无覆盖声明不能等价解释为零消费。
+
+`bank_fact_snapshot(transaction, evidence)` 绑定交易 ID、用户、账户、方向、整数分金额、交易后余额、发生和观察时间、收款方、交易来源引用、银行证据 ID/来源/内容哈希/等级/有效时间/观察时间/状态，以及银行提供的 `economic_role`。它核对原银行 payload 与交易事实；`category`、`category_confirmed`、`is_one_off` 不属于该快照，用户修改分类或一次性标记不会破坏历史完整性。
+
+`account_history_manifest(account_id, transactions, evidence_by_id)` 按交易 UUID 排序后，对 `{"transactions": [...银行快照...]}` 使用 canonical JSON SHA-256。`build_history_coverage(...)` 生成上述声明，拒绝跨用户、声明外账户、声明日期外交易、重复交易和缺失证据；银行源缺失角色、内容摘要损坏或事实 payload 不匹配也不能生成有效清单。该 helper 不接数据库，不决定建议金额或权限，外层证据的已知时刻和当前有效性由调用服务检查。
+
+### 银行经济角色与可编辑分类
+
+v2 的 `SIMULATED_BANK_TRANSACTION` payload 增加固定生成器给出的经济角色，并由覆盖摘要绑定：
+
+| `economic_role` | 本种子事实 |
+|---|---|
+| `CONSUMPTION` | food、transport、daily_necessities、one_off_purchase，以及外部服务支付 rent、utilities。 |
+| `INCOME` | 已到账模拟工资。 |
+| `OPENING` | 期初余额。 |
+| `INTERNAL_TRANSFER` | 目标账户转入的借贷双边。 |
+| `ASSET_PURCHASE` | 三笔历史手动申购。 |
+| `CREDIT_CARD_PAYMENT` | 两笔信用卡还款。 |
+
+估算服务必须读取银行 payload 中的角色，不能依据当前可编辑的 `Transaction.category` 重新推断。把内部转账、产品申购或卡还款的类别改为 food，不会把它们变为生活消费。租金和水电默认不在基本生活类别中，只有用户明确、有效地重新分类并选择后才能参加历史估算；此处不预先决定 MVP-202 的未来需求去重规则。
+
+这只是版本化合成导入协议，不代表真实银行已经提供了这些角色或历史完整性接口，也不替代独立用户类别确认。一次性大额记录依然真实扣减现金，估计时排除它不会恢复余额。
+
+### v2 验证结果与范围
+
+种子分工的定向测试仅使用 PostgreSQL 随机 `bf_test_<32hex>` 临时数据库。兼容性验证通过后，主代理正式运行两次 `make seed`：`20261003T184040Z-0e769dbb` 与 `20261003T184102Z-2198cb60` 均 exit 0；两个正式演示库摘要的全部业务字段相同，数据集校验和与临时库一致。原始日志为 `MVP-201-seed-first.txt` 和 `MVP-201-seed-second.txt`，统一质量门见本任务进度记录。
+
+- `MVP-201-seed-coverage-red.txt`：v1 没有覆盖证据，新增公开 seed 行为测试真实失败；接入 v2 后 `MVP-201-seed-coverage-green.txt` 通过。
+- `MVP-201-seed-compatibility-green.txt`：从已提交 `cbe6fff` 的真实 v1 生成器提取三件产品字面 fixture（`app/tests/fixtures/seed-v1-products.json`），临时库预装后运行 v2，逐字段验证三件共享产品完全不变，并保留他人持仓；另验分类/确认/一次性标记变化不改摘要，删除交易或更正银行金额改变摘要。
+- `MVP-201-seed-and-protocol-green.txt`：23 项测试通过，包含全部原 seed 重跑、金额守恒、租户隔离、失败回滚，以及新增覆盖日期/账户/证据绑定验证。协议测试第一次运行的空清单摘要期望值录入有误；以独立 .NET SHA-256 计算纠正后通过，这一测试期望修正不作为实现缺失的 red 证据。
+- `MVP-201-seed-v2-summary-green.txt`：真实临时库输出为 1 用户、5 账户、129 交易、253 证据、3 账单、3 产品和 3 持仓，策略/候选/目标/决策/动作均为 0。临时汇总命令第一次因 Alembic 路径填写错误失败，修正为仓库根 `alembic.ini` 后成功；失败日志保留为 `MVP-201-seed-v2-summary.txt`。
+
+新版本合计现金仍为 `3462400` 分、持仓本金 `500000` 分、累计收益 `0`、总资产 `3962400` 分、未付卡账单 `145000` 分。v2 数据集实测 SHA-256 为 `643a41b782ff003cd599291f35923592284c72dea2c00417470c5c45a9451bdc`。本节数值是合成数据的复现结果，不是产品效果实验；上文 v1 的 `29e0f79e...` 校验和及原测试日志继续保留。

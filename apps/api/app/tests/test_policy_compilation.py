@@ -55,7 +55,7 @@ def test_compile_persists_source_and_proposed_configuration_without_authority(
         result = compile_candidate(session, DEMO_USER_ID, "保留3000元应急金", SEED_AS_OF)
         assert result.simulation is True
         assert result.user_id == DEMO_USER_ID
-        assert result.compilation.reference_date.isoformat() == "2026-10-03"
+        assert result.compilation.reference_date.isoformat() == "2026-10-04"
         assert result.compilation.timezone == "Asia/Shanghai"
         assert result.configuration is not None
         assert result.configuration["type"] == "emergency_buffer"
@@ -611,12 +611,12 @@ def test_original_anchor_does_not_allow_a_deadline_that_has_passed_today(
                 session,
                 DEMO_USER_ID,
                 draft.compilation_id,
-                {**GOAL, "deadline": "2026-10-03"},
+                {**GOAL, "deadline": "2026-10-04"},
                 SEED_AS_OF + timedelta(days=1),
             )
         assert error.value.code == "PAST_DEADLINE"
         source = session.get(EvidenceItem, draft.compilation_id)
-        assert source is not None and source.content["reference_date"] == "2026-10-03"
+        assert source is not None and source.content["reference_date"] == "2026-10-04"
 
 
 @pytest.mark.parametrize("operation", ["recompile", "confirm"])

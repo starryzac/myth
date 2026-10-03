@@ -3,9 +3,9 @@
 import hashlib
 import json
 from collections.abc import Iterator
-from datetime import timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 from pathlib import Path
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 import pytest
 from alembic import command
@@ -30,6 +30,8 @@ from app.db.models import (
 )
 from app.db.session import create_database_engine
 from app.db.testing import temporary_database
+from app.domain.history_coverage import account_history_manifest
+from app.domain.policy_configuration import configuration_hash
 from app.services.demo_seed import (
     DEMO_USER_ID,
     DEMO_USER_REF,
@@ -174,6 +176,54 @@ def test_every_cash_balance_follows_its_ledger_without_counting_positions_twice(
         )
 
 
+def test_v2_seed_declares_closed_history_scope_and_immutable_economic_roles(
+    demo_engine: Engine,
+) -> None:
+    summary = seed_demo(demo_engine)
+    with Session(demo_engine) as session:
+        coverage = session.scalar(
+            select(EvidenceItem).where(
+                EvidenceItem.source_type == "SIMULATED_TRANSACTION_HISTORY_COVERAGE"
+            )
+        )
+        assert coverage is not None
+        assert summary.seed_version == "mvp-201-v2"
+        assert summary.as_of == datetime(2026, 10, 3, 16, tzinfo=UTC)
+        assert coverage.evidence_level == "BANK_CONFIRMED"
+        assert coverage.valid_from == coverage.observed_at == summary.as_of
+        content = coverage.content
+        assert content["protocol"] == "transaction-history-coverage-v1"
+        assert content["simulation"] is True
+        assert content["user_id"] == str(DEMO_USER_ID)
+        assert content["timezone"] == "Asia/Shanghai"
+        assert content["period_start"] == "2026-08-05"
+        assert content["period_end"] == "2026-10-03"
+        accounts = session.scalars(select(Account).where(Account.user_id == DEMO_USER_ID)).all()
+        assert content["scope_account_ids"] == sorted(str(row.id) for row in accounts)
+        manifests = {item["account_id"]: item for item in content["accounts"]}
+        counts = {
+            "CASH": 127,
+            "GOAL": 2,
+            "CREDIT_CARD": 0,
+            "CASH_MANAGEMENT": 0,
+            "FIXED_DEPOSIT": 0,
+        }
+        for account in accounts:
+            assert manifests[str(account.id)]["transaction_count"] == counts[account.account_type]
+            assert len(manifests[str(account.id)]["bank_fact_digest"]) == 64
+        roles = {
+            "opening_balance": "OPENING",
+            "salary": "INCOME",
+            "internal_transfer": "INTERNAL_TRANSFER",
+            "asset_purchase": "ASSET_PURCHASE",
+            "credit_card_payment": "CREDIT_CARD_PAYMENT",
+        }
+        for row in session.scalars(select(Transaction)):
+            evidence = session.get(EvidenceItem, row.evidence_id)
+            assert evidence is not None
+            assert evidence.content["economic_role"] == roles.get(row.category, "CONSUMPTION")
+
+
 def test_other_user_and_referenced_global_product_survive_reset(demo_engine: Engine) -> None:
     seed_demo(demo_engine)
     other_id, account_id, position_id = uuid4(), uuid4(), uuid4()
@@ -212,6 +262,95 @@ def test_other_user_and_referenced_global_product_survive_reset(demo_engine: Eng
         position = session.get(AssetPosition, position_id)
         assert position is not None and position.product_id == product_id
         assert session.get(AssetProduct, product_id) is not None
+
+
+def test_v2_reuses_real_v1_catalog_without_overwriting_shared_products(demo_engine: Engine) -> None:
+    fixture = json.loads(
+        (Path(__file__).parent / "fixtures" / "seed-v1-products.json").read_text(encoding="utf-8")
+    )
+    assert fixture["source_revision"] == "cbe6fff" and fixture["seed_version"] == "mvp-102-v1"
+    other_id, account_id, position_id = uuid4(), uuid4(), uuid4()
+    with Session(demo_engine) as session, session.begin():
+        for raw in fixture["products"]:
+            values = dict(raw)
+            values["id"] = UUID(values["id"])
+            for field in ("created_at", "effective_from"):
+                values[field] = datetime.fromisoformat(values[field])
+            session.add(AssetProduct(**values))
+        session.add(User(id=other_id, external_ref="v1-shared-holder", display_name="Other"))
+        session.flush()
+        session.add(Account(id=account_id, user_id=other_id, external_ref="v1-cash", name="Other"))
+        session.flush()
+        session.add(
+            AssetPosition(
+                id=position_id,
+                user_id=other_id,
+                account_id=account_id,
+                product_id=UUID(fixture["products"][0]["id"]),
+                principal_cents=12345,
+                purchased_at=datetime(2026, 10, 3, 15, 59, 59, tzinfo=UTC),
+            )
+        )
+    with demo_engine.connect() as connection:
+        before = [
+            dict(row)
+            for row in connection.execute(
+                select(AssetProduct.__table__).order_by(AssetProduct.id)
+            ).mappings()
+        ]
+    summary = seed_demo(demo_engine)
+    assert summary.seed_version == "mvp-201-v2"
+    with demo_engine.connect() as connection:
+        after = [
+            dict(row)
+            for row in connection.execute(
+                select(AssetProduct.__table__).order_by(AssetProduct.id)
+            ).mappings()
+        ]
+    assert after == before
+    assert {row["created_at"] for row in after} == {datetime(2026, 10, 3, 15, 59, 59, tzinfo=UTC)}
+    with Session(demo_engine) as session:
+        held = session.get(AssetPosition, position_id)
+        assert held is not None and held.principal_cents == 12345
+        assert held.user_id == other_id and held.account_id == account_id
+
+
+def test_coverage_digest_ignores_user_annotations_but_detects_bank_changes(
+    demo_engine: Engine,
+) -> None:
+    seed_demo(demo_engine)
+    with Session(demo_engine) as session:
+        account = session.scalar(select(Account).where(Account.account_type == "CASH"))
+        assert account is not None
+        rows = list(session.scalars(select(Transaction)))
+        evidence = {item.id: item for item in session.scalars(select(EvidenceItem))}
+        coverage = next(
+            item
+            for item in evidence.values()
+            if item.source_type == "SIMULATED_TRANSACTION_HISTORY_COVERAGE"
+        )
+        original = next(
+            item for item in coverage.content["accounts"] if item["account_id"] == str(account.id)
+        )
+        assert account_history_manifest(account.id, reversed(rows), evidence) == original
+        changed = next(row for row in rows if row.category == "asset_purchase")
+        changed.category, changed.category_confirmed, changed.is_one_off = "food", True, True
+        assert account_history_manifest(account.id, rows, evidence) == original
+        without_row = account_history_manifest(
+            account.id, [r for r in rows if r.id != changed.id], evidence
+        )
+        assert without_row["transaction_count"] == original["transaction_count"] - 1
+        assert without_row["bank_fact_digest"] != original["bank_fact_digest"]
+        assert changed.evidence_id is not None
+        bank = evidence[changed.evidence_id]
+        assert bank.content["economic_role"] == "ASSET_PURCHASE"
+        changed.amount_cents += 1
+        bank.content = {**bank.content, "amount_cents": changed.amount_cents}
+        bank.content_hash = configuration_hash(bank.content)
+        assert (
+            account_history_manifest(account.id, rows, evidence)["bank_fact_digest"]
+            != original["bank_fact_digest"]
+        )
 
 
 @pytest.mark.parametrize("collision", ["id", "external_ref"])

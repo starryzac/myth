@@ -1,0 +1,36 @@
+..FFFF                                                                   [100%]
+================================== FAILURES ===================================
+_ test_incomplete_coverage_does_not_turn_missing_days_into_zero_spending[all] _
+apps\api\app\tests\test_living_reserve.py:135: in test_incomplete_coverage_does_not_turn_missing_days_into_zero_spending
+    assert result.status == "INSUFFICIENT_HISTORY"
+E   AssertionError: assert 'READY' == 'INSUFFICIENT_HISTORY'
+E     
+E     - INSUFFICIENT_HISTORY
+E     + READY
+_ test_incomplete_coverage_does_not_turn_missing_days_into_zero_spending[one_day] _
+apps\api\app\tests\test_living_reserve.py:135: in test_incomplete_coverage_does_not_turn_missing_days_into_zero_spending
+    assert result.status == "INSUFFICIENT_HISTORY"
+E   AssertionError: assert 'READY' == 'INSUFFICIENT_HISTORY'
+E     
+E     - INSUFFICIENT_HISTORY
+E     + READY
+_ test_incomplete_coverage_does_not_turn_missing_days_into_zero_spending[account] _
+apps\api\app\tests\test_living_reserve.py:135: in test_incomplete_coverage_does_not_turn_missing_days_into_zero_spending
+    assert result.status == "INSUFFICIENT_HISTORY"
+E   AssertionError: assert 'READY' == 'INSUFFICIENT_HISTORY'
+E     
+E     - INSUFFICIENT_HISTORY
+E     + READY
+_ test_incomplete_coverage_does_not_turn_missing_days_into_zero_spending[empty_scope] _
+apps\api\app\tests\test_living_reserve.py:135: in test_incomplete_coverage_does_not_turn_missing_days_into_zero_spending
+    assert result.status == "INSUFFICIENT_HISTORY"
+E   AssertionError: assert 'READY' == 'INSUFFICIENT_HISTORY'
+E     
+E     - INSUFFICIENT_HISTORY
+E     + READY
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_living_reserve.py::test_incomplete_coverage_does_not_turn_missing_days_into_zero_spending[all]
+FAILED apps/api/app/tests/test_living_reserve.py::test_incomplete_coverage_does_not_turn_missing_days_into_zero_spending[one_day]
+FAILED apps/api/app/tests/test_living_reserve.py::test_incomplete_coverage_does_not_turn_missing_days_into_zero_spending[account]
+FAILED apps/api/app/tests/test_living_reserve.py::test_incomplete_coverage_does_not_turn_missing_days_into_zero_spending[empty_scope]
+4 failed, 2 passed in 0.78s

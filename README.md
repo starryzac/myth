@@ -2,11 +2,13 @@
 
 面向青年的可审计分级自主资金 Agent。全部账户、产品与动作均为合成模拟。
 
-当前 M0（MVP-001—003）工程基础已通过验收，正在实现 M1 数据与策略；金融业务尚未完成。任务状态与验证证据见 [开发状态](docs/progress/STATUS.md)，完整范围见 [92 项需求追踪](docs/spec/requirements-traceability.md)。两份计划原文保存在本目录。
+当前 M0 工程基础和 M1 数据与策略已通过验收，正在实现 M2 资金算法；初版整体尚未完成。任务状态与验证证据见 [开发状态](docs/progress/STATUS.md)，完整范围见 [92 项需求追踪](docs/spec/requirements-traceability.md)。两份计划原文保存在本目录。
 
 已完成 16 表迁移和 60 天演示事实，`make seed` 可重复导入 129 条模拟流水、3 张账单及 T0/T1/30 天定存产品。四个只读查询接口见 [账户事实 API](docs/architecture/account-facts-api.md)。
 
-策略已支持明确确认、追加版本、暂停、撤销、到期及旧动作失效；[策略 API](docs/architecture/policy-api.md)。`make policy-refresh` 可落库刷新时间状态，授权检查不依赖刷新是否执行。发现/自然语言编译、资金算法和业务界面仍按后续任务推进。
+策略已支持明确确认、追加版本、暂停、撤销、到期及旧动作失效；[策略 API](docs/architecture/policy-api.md)。`make policy-refresh` 可落库刷新时间状态，授权检查不依赖刷新是否执行。历史模式发现和离线自然语言编译仅生成可复核候选，默认关闭外部 LLM。资金算法和业务界面按后续任务推进。
+
+[生活准备金估算](docs/architecture/living-reserve-api.md) 已实现：验证完整历史与分类证据后，按重叠窗口的精确分位数返回建议；历史不足或来源冲突时不给精确建议。估算全程只读，确认前不产生策略权限。
 
 ## 环境与启动
 

@@ -242,6 +242,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/living-reserve/estimate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Estimate */
+        get: operations["estimate_living_reserve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/health": {
         parameters: {
             query?: never;
@@ -448,6 +465,28 @@ export interface components {
             /** Reviewed Hash */
             reviewed_hash: string;
         };
+        /** CoverageGap */
+        CoverageGap: {
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Missing Dates */
+            missing_dates: string[];
+        };
+        /** DailyReserveAmount */
+        DailyReserveAmount: {
+            /**
+             * Day
+             * Format: date
+             */
+            day: string;
+            /** Covered */
+            covered: boolean;
+            /** Amount Cents */
+            amount_cents: number | null;
+        };
         /**
          * DiscoveryRequest
          * @description Discovery uses the trusted server snapshot; clients cannot inject facts or time.
@@ -502,6 +541,28 @@ export interface components {
         /** ErrorEnvelope */
         ErrorEnvelope: {
             error: components["schemas"]["ErrorDetail"];
+        };
+        /** ExcludedReserveTransaction */
+        ExcludedReserveTransaction: {
+            /**
+             * Transaction Id
+             * Format: uuid
+             */
+            transaction_id: string;
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /**
+             * Occurred On
+             * Format: date
+             */
+            occurred_on: string;
+            /** Amount Cents */
+            amount_cents: number;
+            /** Reasons */
+            reasons: string[];
         };
         /** HealthResponse */
         HealthResponse: {
@@ -564,6 +625,71 @@ export interface components {
              * @default true
              */
             requires_recompute: boolean;
+        };
+        /** LivingReserveEstimate */
+        LivingReserveEstimate: {
+            /** Algorithm Version */
+            algorithm_version: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY" | "INSUFFICIENT_HISTORY";
+            /**
+             * Reference Date
+             * Format: date
+             */
+            reference_date: string;
+            /** Timezone */
+            timezone: string;
+            /**
+             * History Start
+             * Format: date
+             */
+            history_start: string;
+            /**
+             * History End
+             * Format: date
+             */
+            history_end: string;
+            /** Lookback Days */
+            lookback_days: number;
+            /** Horizon Days */
+            horizon_days: number;
+            /** Quantile */
+            quantile: number;
+            /** Quantile Fraction */
+            quantile_fraction: string;
+            /** Rank */
+            rank: number | null;
+            /** Window Count */
+            window_count: number;
+            /** Base Reserve Cents */
+            base_reserve_cents: number | null;
+            /** Extra Buffer Cents */
+            extra_buffer_cents: number;
+            /** Recommended Reserve Cents */
+            recommended_reserve_cents: number | null;
+            /** Selected Categories */
+            selected_categories: string[];
+            /** Account Ids */
+            account_ids: string[];
+            /** Normalized Configuration */
+            normalized_configuration: {
+                [key: string]: unknown;
+            };
+            /** Daily Amounts */
+            daily_amounts: components["schemas"]["DailyReserveAmount"][];
+            /** Windows */
+            windows: components["schemas"]["ReserveWindow"][];
+            /** Included Transaction Ids */
+            included_transaction_ids: string[];
+            /** Excluded Transactions */
+            excluded_transactions: components["schemas"]["ExcludedReserveTransaction"][];
+            /** Coverage Gaps */
+            coverage_gaps: components["schemas"]["CoverageGap"][];
+            /** Issues */
+            issues: string[];
         };
         /** PolicyChangeRequest */
         PolicyChangeRequest: {
@@ -828,6 +954,62 @@ export interface components {
             validation_ready: boolean;
             /** Confirmed Policy Id */
             confirmed_policy_id: string | null;
+        };
+        /** ReserveEstimationResponse */
+        ReserveEstimationResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            estimation: components["schemas"]["LivingReserveEstimate"];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Input Digest */
+            input_digest: string;
+            /** Source Issues */
+            source_issues: components["schemas"]["ReserveSourceIssue"][];
+            /** Candidate Configuration */
+            candidate_configuration: {
+                [key: string]: unknown;
+            } | null;
+            /** Candidate Configuration Hash */
+            candidate_configuration_hash: string | null;
+        };
+        /** ReserveSourceIssue */
+        ReserveSourceIssue: {
+            /** Code */
+            code: string;
+            /** Source Ref */
+            source_ref: string;
+            /** Message */
+            message: string;
+        };
+        /** ReserveWindow */
+        ReserveWindow: {
+            /**
+             * Start Date
+             * Format: date
+             */
+            start_date: string;
+            /**
+             * End Date
+             * Format: date
+             */
+            end_date: string;
+            /** Amount Cents */
+            amount_cents: number;
         };
         /** StateChangeRequest */
         StateChangeRequest: {
@@ -1682,6 +1864,60 @@ export interface operations {
             };
             /** @description Conflict */
             409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    estimate_living_reserve: {
+        parameters: {
+            query?: {
+                horizon_days?: number;
+                lookback_days?: number;
+                quantile?: number;
+                extra_buffer_cents?: number;
+                essential_categories?: string[];
+                exclude_one_off?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReserveEstimationResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };

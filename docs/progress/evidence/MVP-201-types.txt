@@ -1,0 +1,5 @@
+run_id=20261003T183451Z-7426bb7b
++ uv run --frozen python scripts/generate_openapi.py
+✨ openapi-typescript 7.13.0
+🚀 C:\Users\STARRY~1\AppData\Local\Temp\bounded-contracts-55rb11x4\openapi.json → C:\Users\STARRY~1\AppData\Local\Temp\bounded-contracts-55rb11x4\schema.d.ts [85.8ms]
+Updated OpenAPI and TypeScript contracts.

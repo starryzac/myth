@@ -112,8 +112,8 @@ def test_seed_yields_only_rent_and_bill_observations_without_authority(
             assert derived.content["future_obligation_guaranteed"] is False
             assert len(derived.content["sources"]) == 2
             assert derived.content["observation_window"] == {
-                "start_date": "2026-08-05",
-                "end_date": "2026-10-03",
+                "start_date": "2026-08-06",
+                "end_date": "2026-10-04",
                 "timezone": "Asia/Shanghai",
                 "days": 60,
             }
@@ -261,9 +261,9 @@ def test_card_periods_use_due_month_and_require_valid_issued_evidence(
         elif case == "due_drift":
             bill.due_date = bill.due_date.replace(day=21)
         elif case == "future_statement":
-            bill.statement_date = date(2026, 10, 4)
+            bill.statement_date = date(2026, 10, 5)
         elif case == "statement_outside_window":
-            bill.statement_date = date(2026, 8, 4)
+            bill.statement_date = date(2026, 8, 5)
         evidence.content = {
             **evidence.content,
             "statement_date": bill.statement_date.isoformat(),
@@ -379,8 +379,8 @@ def test_window_includes_local_midnight_and_expires_when_it_moves(
             .where(Transaction.category == "rent")
             .order_by(Transaction.occurred_at)
         ).all()
-        rows[0].occurred_at = datetime(2026, 8, 4, 16, tzinfo=UTC)
-        rows[1].occurred_at = datetime(2026, 9, 4, 16, tzinfo=UTC)
+        rows[0].occurred_at = datetime(2026, 8, 5, 16, tzinfo=UTC)
+        rows[1].occurred_at = datetime(2026, 9, 5, 16, tzinfo=UTC)
         if not inside_window:
             for row in rows:
                 row.occurred_at -= timedelta(seconds=1)

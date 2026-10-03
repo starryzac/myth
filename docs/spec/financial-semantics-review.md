@@ -296,7 +296,7 @@ Q_finance[s,p]
 |---|---|---|---|
 | SEM-01 | “剩余受保护需求”选严格现金总额模式还是归属＋日期现金流模式；各服务采用何种一致口径。 | 不得混搭造成重复保护或漏保护；归属不因放置改变。 | OPEN / NOT_FROZEN |
 | SEM-02 | 生活准备金是单次窗口预算还是持续滚动底线；未来消费如何表示。 | 同一经济需求只计一次；持续补充必须有明确策略语义。 | OPEN / NOT_FROZEN |
-| SEM-03 | 分位数使用 nearest-rank 或其他确定性方法，如何整数取整，历史不足门槛和空日处理。 | 同输入同输出；缺数据不等于零支出，覆盖明确才补零；INSUFFICIENT_HISTORY 不猜精确值。 | OPEN / NOT_FROZEN |
+| SEM-03 | 分位数使用 nearest-rank 或其他确定性方法，如何整数取整，历史不足门槛和空日处理。 | 同输入同输出；缺数据不等于零支出，覆盖明确才补零；INSUFFICIENT_HISTORY 不猜精确值。 | FROZEN / VERIFIED for MVP-201 — [ADR 0004](../adr/0004-living-reserve-estimation.md)、[验证记录](../progress/MVP-201.md) |
 | SEM-04 | 月度目标最低在哪些未来月份形成硬承诺；目标总额/日期、最低保障、可延期的区别。 | 不得默认把愿望金额全变硬债务，也不得擅自只保护当月以规避风险。 | OPEN / NOT_FROZEN |
 | SEM-05 | 同日收款、到期、赎回与付款的事件顺序；T+1 工作日/自然日、用户时区、cutoff、月底日期。 | 到账前不计现金；顺序未知不可乐观通过。 | OPEN / NOT_FROZEN |
 | SEM-06 | 通用 safe_idle 与各目标资产放置上限的接口及展示；scope 权限来源。 | 目标放置额度不能冒充通用闲钱；无授权不配置。 | OPEN / NOT_FROZEN |

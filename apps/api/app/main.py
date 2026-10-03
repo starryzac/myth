@@ -18,6 +18,7 @@ from app.api.errors import (
     validation_error_handler,
 )
 from app.api.v1.accounts import router as account_router
+from app.api.v1.living_reserve import router as reserve_router
 from app.api.v1.policies import router as policy_router
 from app.services.policy_lifecycle import PolicyLifecycleError
 
@@ -68,6 +69,7 @@ def create_app() -> FastAPI:
     api.add_exception_handler(RequestValidationError, validation_error_handler)
     api.include_router(account_router)
     api.include_router(policy_router)
+    api.include_router(reserve_router)
 
     async def lifecycle_error_handler(request: Request, exception: Exception) -> JSONResponse:
         assert isinstance(exception, PolicyLifecycleError)

@@ -1,0 +1,158 @@
+run_id=20261003T184125Z-b733551a
++ uv run --frozen ruff check apps/api scripts
+All checks passed!
++ uv run --frozen ruff format --check apps/api scripts
+50 files already formatted
++ uv run --frozen mypy
+Success: no issues found in 41 source files
++ pnpm --dir apps/web lint
+$ eslint . --max-warnings 0
++ uv run --frozen python scripts/generate_openapi.py --check
+✨ openapi-typescript 7.13.0
+🚀 C:\Users\STARRY~1\AppData\Local\Temp\bounded-contracts-psoso0z_\openapi.json → C:\Users\STARRY~1\AppData\Local\Temp\bounded-contracts-psoso0z_\schema.d.ts [87.4ms]
+OpenAPI and TypeScript contracts match the current API.
++ uv run --frozen mypy
+Success: no issues found in 41 source files
++ pnpm --dir apps/web typecheck
+$ tsc --noEmit
++ docker compose up -d --wait db
+ Container bounded-funds-db-1 Running 
+ Container bounded-funds-db-1 Waiting 
+ Container bounded-funds-db-1 Healthy 
++ uv run --frozen pytest --cov
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+testpaths: apps/api/app/tests
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collected 455 items
+
+apps\api\app\tests\test_account_api.py .........                         [  1%]
+apps\api\app\tests\test_compilation_api.py .....                         [  3%]
+apps\api\app\tests\test_demo_seed.py ............                        [  5%]
+apps\api\app\tests\test_discovery_api.py ..                              [  6%]
+apps\api\app\tests\test_errors.py ....                                   [  7%]
+apps\api\app\tests\test_health.py ..                                     [  7%]
+apps\api\app\tests\test_history_coverage.py ...........                  [  9%]
+apps\api\app\tests\test_living_reserve.py .............................. [ 16%]
+...                                                                      [ 17%]
+apps\api\app\tests\test_living_reserve_api.py ...                        [ 17%]
+apps\api\app\tests\test_living_reserve_service.py ...................... [ 22%]
+......                                                                   [ 23%]
+apps\api\app\tests\test_migrations.py ...........                        [ 26%]
+apps\api\app\tests\test_policy_api.py ....                               [ 27%]
+apps\api\app\tests\test_policy_compilation.py F......................... [ 32%]
+......F...                                                               [ 35%]
+apps\api\app\tests\test_policy_compiler.py ............................. [ 41%]
+....................................                                     [ 49%]
+apps\api\app\tests\test_policy_configuration.py ........................ [ 54%]
+........................................................................ [ 70%]
+.........................................................                [ 83%]
+apps\api\app\tests\test_policy_discovery.py ............................ [ 89%]
+....................                                                     [ 93%]
+apps\api\app\tests\test_policy_lifecycle.py ............................ [ 99%]
+.                                                                        [100%]
+
+================================== FAILURES ===================================
+__ test_compile_persists_source_and_proposed_configuration_without_authority __
+
+compilation_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_126870996d1f4ac3956d20b976b58392)
+
+    def test_compile_persists_source_and_proposed_configuration_without_authority(
+        compilation_engine: Engine,
+    ) -> None:
+        with Session(compilation_engine) as session, session.begin():
+            result = compile_candidate(session, DEMO_USER_ID, "保留3000元应急金", SEED_AS_OF)
+            assert result.simulation is True
+            assert result.user_id == DEMO_USER_ID
+>           assert result.compilation.reference_date.isoformat() == "2026-10-03"
+E           AssertionError: assert '2026-10-04' == '2026-10-03'
+E             
+E             - 2026-10-03
+E             ?          ^
+E             + 2026-10-04
+E             ?          ^
+
+apps\api\app\tests\test_policy_compilation.py:58: AssertionError
+____ test_original_anchor_does_not_allow_a_deadline_that_has_passed_today _____
+
+compilation_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_b10d89a3babb4af9a6a842b496b14352)
+
+    def test_original_anchor_does_not_allow_a_deadline_that_has_passed_today(
+        compilation_engine: Engine,
+    ) -> None:
+        draft = compile_draft(compilation_engine)
+        with Session(compilation_engine) as session, session.begin():
+            with pytest.raises(PolicyLifecycleError) as error:
+                revise_compilation(
+                    session,
+                    DEMO_USER_ID,
+                    draft.compilation_id,
+                    {**GOAL, "deadline": "2026-10-03"},
+                    SEED_AS_OF + timedelta(days=1),
+                )
+            assert error.value.code == "PAST_DEADLINE"
+            source = session.get(EvidenceItem, draft.compilation_id)
+>           assert source is not None and source.content["reference_date"] == "2026-10-03"
+E           AssertionError: assert (<app.db.models.EvidenceItem object at 0x000001C762E31E50> is not None and '2026-10-04' == '2026-10-03'
+E             
+E             - 2026-10-03
+E             ?          ^
+E             + 2026-10-04
+E             ?          ^)
+
+apps\api\app\tests\test_policy_compilation.py:619: AssertionError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.12.5-final-0 _______________
+
+Name                                          Stmts   Miss  Cover   Missing
+---------------------------------------------------------------------------
+apps\api\app\__init__.py                          0      0   100%
+apps\api\app\api\__init__.py                      0      0   100%
+apps\api\app\api\dependencies.py                 37      3    92%   21, 49, 57
+apps\api\app\api\errors.py                       20      0   100%
+apps\api\app\api\v1\accounts.py                 128      0   100%
+apps\api\app\api\v1\living_reserve.py            26      0   100%
+apps\api\app\api\v1\policies.py                 142      3    98%   172-174
+apps\api\app\db\__init__.py                       0      0   100%
+apps\api\app\db\base.py                          29      0   100%
+apps\api\app\db\models.py                       236      0   100%
+apps\api\app\db\session.py                       16      0   100%
+apps\api\app\db\settings.py                      15      0   100%
+apps\api\app\db\testing.py                       28      0   100%
+apps\api\app\domain\demo_identity.py              3      0   100%
+apps\api\app\domain\history_coverage.py          71      2    97%   138, 142
+apps\api\app\domain\living_reserve.py           153      3    98%   71-72, 135
+apps\api\app\domain\policy_compiler.py          280     13    95%   30, 55, 67, 98-99, 117-118, 198, 283-284, 287-288, 387
+apps\api\app\domain\policy_configuration.py     159      2    99%   47, 50
+apps\api\app\main.py                             53      0   100%
+apps\api\app\services\demo_seed.py              172      2    99%   422, 630
+apps\api\app\services\living_reserve.py         162     14    91%   60, 65-66, 80-81, 94, 97, 112, 121, 124, 228-229, 317-318
+apps\api\app\services\policy_compilation.py     159      9    94%   43, 51, 53, 58-59, 94-95, 255, 257
+apps\api\app\services\policy_discovery.py       155      6    96%   40, 46-47, 64-65, 195
+apps\api\app\services\policy_lifecycle.py       349     31    91%   62, 69, 106, 121, 124-126, 134, 145-146, 163-164, 199, 238, 271, 283-286, 313-321, 348, 413, 553, 605, 662, 700, 741, 743, 798, 805
+---------------------------------------------------------------------------
+TOTAL                                          2393     88    96%
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_policy_compilation.py::test_compile_persists_source_and_proposed_configuration_without_authority
+FAILED apps/api/app/tests/test_policy_compilation.py::test_original_anchor_does_not_allow_a_deadline_that_has_passed_today
+============ 2 failed, 453 passed, 1 warning in 385.61s (0:06:25) =============
+Traceback (most recent call last):
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tasks.py", line 224, in <module>
+    main(sys.argv[1])
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tasks.py", line 198, in main
+    main(child)
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tasks.py", line 192, in main
+    uv("pytest", "--cov")
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tasks.py", line 98, in uv
+    run("uv", "run", "--frozen", *args)
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tasks.py", line 94, in run
+    raise subprocess.CalledProcessError(code, args)
+subprocess.CalledProcessError: Command '('uv', 'run', '--frozen', 'pytest', '--cov')' returned non-zero exit status 1.

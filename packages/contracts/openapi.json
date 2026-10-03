@@ -1039,6 +1039,133 @@
         }
       }
     },
+    "/api/v1/living-reserve/estimate": {
+      "get": {
+        "tags": [
+          "生活准备金估算"
+        ],
+        "summary": "Estimate",
+        "operationId": "estimate_living_reserve",
+        "parameters": [
+          {
+            "name": "horizon_days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 366,
+              "minimum": 1,
+              "default": 14,
+              "title": "Horizon Days"
+            }
+          },
+          {
+            "name": "lookback_days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 366,
+              "minimum": 1,
+              "default": 56,
+              "title": "Lookback Days"
+            }
+          },
+          {
+            "name": "quantile",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "maximum": 1,
+              "exclusiveMinimum": 0,
+              "default": 0.8,
+              "title": "Quantile"
+            }
+          },
+          {
+            "name": "extra_buffer_cents",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 9223372036854775807,
+              "minimum": 0,
+              "default": 50000,
+              "title": "Extra Buffer Cents"
+            }
+          },
+          {
+            "name": "essential_categories",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48
+              },
+              "minItems": 1,
+              "maxItems": 48,
+              "title": "Essential Categories"
+            }
+          },
+          {
+            "name": "exclude_one_off",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Exclude One Off"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReserveEstimationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/api/v1/health": {
       "get": {
         "summary": "Health",
@@ -1515,6 +1642,64 @@
         ],
         "title": "ConfirmationRequest"
       },
+      "CoverageGap": {
+        "properties": {
+          "account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Account Id"
+          },
+          "missing_dates": {
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "type": "array",
+            "title": "Missing Dates"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "account_id",
+          "missing_dates"
+        ],
+        "title": "CoverageGap"
+      },
+      "DailyReserveAmount": {
+        "properties": {
+          "day": {
+            "type": "string",
+            "format": "date",
+            "title": "Day"
+          },
+          "covered": {
+            "type": "boolean",
+            "title": "Covered"
+          },
+          "amount_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "day",
+          "covered",
+          "amount_cents"
+        ],
+        "title": "DailyReserveAmount"
+      },
       "DiscoveryRequest": {
         "properties": {},
         "additionalProperties": false,
@@ -1632,6 +1817,48 @@
         ],
         "title": "ErrorEnvelope"
       },
+      "ExcludedReserveTransaction": {
+        "properties": {
+          "transaction_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Transaction Id"
+          },
+          "account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Account Id"
+          },
+          "occurred_on": {
+            "type": "string",
+            "format": "date",
+            "title": "Occurred On"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Amount Cents"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "transaction_id",
+          "account_id",
+          "occurred_on",
+          "amount_cents",
+          "reasons"
+        ],
+        "title": "ExcludedReserveTransaction"
+      },
       "HealthResponse": {
         "properties": {
           "status": {
@@ -1729,6 +1956,196 @@
           "inflight_action_ids"
         ],
         "title": "LifecycleResult"
+      },
+      "LivingReserveEstimate": {
+        "properties": {
+          "algorithm_version": {
+            "type": "string",
+            "title": "Algorithm Version"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "INSUFFICIENT_HISTORY"
+            ],
+            "title": "Status"
+          },
+          "reference_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Reference Date"
+          },
+          "timezone": {
+            "type": "string",
+            "title": "Timezone"
+          },
+          "history_start": {
+            "type": "string",
+            "format": "date",
+            "title": "History Start"
+          },
+          "history_end": {
+            "type": "string",
+            "format": "date",
+            "title": "History End"
+          },
+          "lookback_days": {
+            "type": "integer",
+            "title": "Lookback Days"
+          },
+          "horizon_days": {
+            "type": "integer",
+            "title": "Horizon Days"
+          },
+          "quantile": {
+            "type": "number",
+            "title": "Quantile"
+          },
+          "quantile_fraction": {
+            "type": "string",
+            "title": "Quantile Fraction"
+          },
+          "rank": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rank"
+          },
+          "window_count": {
+            "type": "integer",
+            "title": "Window Count"
+          },
+          "base_reserve_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Reserve Cents"
+          },
+          "extra_buffer_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Extra Buffer Cents"
+          },
+          "recommended_reserve_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommended Reserve Cents"
+          },
+          "selected_categories": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Selected Categories"
+          },
+          "account_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Account Ids"
+          },
+          "normalized_configuration": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Normalized Configuration"
+          },
+          "daily_amounts": {
+            "items": {
+              "$ref": "#/components/schemas/DailyReserveAmount"
+            },
+            "type": "array",
+            "title": "Daily Amounts"
+          },
+          "windows": {
+            "items": {
+              "$ref": "#/components/schemas/ReserveWindow"
+            },
+            "type": "array",
+            "title": "Windows"
+          },
+          "included_transaction_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Included Transaction Ids"
+          },
+          "excluded_transactions": {
+            "items": {
+              "$ref": "#/components/schemas/ExcludedReserveTransaction"
+            },
+            "type": "array",
+            "title": "Excluded Transactions"
+          },
+          "coverage_gaps": {
+            "items": {
+              "$ref": "#/components/schemas/CoverageGap"
+            },
+            "type": "array",
+            "title": "Coverage Gaps"
+          },
+          "issues": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Issues"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "algorithm_version",
+          "status",
+          "reference_date",
+          "timezone",
+          "history_start",
+          "history_end",
+          "lookback_days",
+          "horizon_days",
+          "quantile",
+          "quantile_fraction",
+          "rank",
+          "window_count",
+          "base_reserve_cents",
+          "extra_buffer_cents",
+          "recommended_reserve_cents",
+          "selected_categories",
+          "account_ids",
+          "normalized_configuration",
+          "daily_amounts",
+          "windows",
+          "included_transaction_ids",
+          "excluded_transactions",
+          "coverage_gaps",
+          "issues"
+        ],
+        "title": "LivingReserveEstimate"
       },
       "PolicyChangeRequest": {
         "properties": {
@@ -2345,6 +2762,134 @@
           "confirmed_policy_id"
         ],
         "title": "ProposalView"
+      },
+      "ReserveEstimationResponse": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "estimation": {
+            "$ref": "#/components/schemas/LivingReserveEstimate"
+          },
+          "source_evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Source Evidence Ids"
+          },
+          "input_digest": {
+            "type": "string",
+            "title": "Input Digest"
+          },
+          "source_issues": {
+            "items": {
+              "$ref": "#/components/schemas/ReserveSourceIssue"
+            },
+            "type": "array",
+            "title": "Source Issues"
+          },
+          "candidate_configuration": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidate Configuration"
+          },
+          "candidate_configuration_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidate Configuration Hash"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "as_of",
+          "estimation",
+          "source_evidence_ids",
+          "input_digest",
+          "source_issues",
+          "candidate_configuration",
+          "candidate_configuration_hash"
+        ],
+        "title": "ReserveEstimationResponse"
+      },
+      "ReserveSourceIssue": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "source_ref": {
+            "type": "string",
+            "title": "Source Ref"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "source_ref",
+          "message"
+        ],
+        "title": "ReserveSourceIssue"
+      },
+      "ReserveWindow": {
+        "properties": {
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Start Date"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "title": "End Date"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Amount Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "start_date",
+          "end_date",
+          "amount_cents"
+        ],
+        "title": "ReserveWindow"
       },
       "StateChangeRequest": {
         "properties": {

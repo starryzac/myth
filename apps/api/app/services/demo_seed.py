@@ -28,15 +28,17 @@ from app.db.models import (
 )
 from app.domain.demo_identity import DEMO_USER_ID as DEMO_USER_ID
 from app.domain.demo_identity import DEMO_USER_REF as DEMO_USER_REF
+from app.domain.history_coverage import COVERAGE_SOURCE_TYPE, build_history_coverage
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import delete, or_, select, text, update
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
-SEED_VERSION = "mvp-102-v1"
+SEED_VERSION = "mvp-201-v2"
 SEED_START = date(2026, 8, 5)
 SEED_END = date(2026, 10, 3)
-SEED_AS_OF = datetime(2026, 10, 3, 15, 59, 59, tzinfo=UTC)
+SEED_AS_OF = datetime(2026, 10, 3, 16, tzinfo=UTC)
+PRODUCT_CATALOG_CREATED_AT = datetime(2026, 10, 3, 15, 59, 59, tzinfo=UTC)
 SEED_NAMESPACE = UUID("8758cb2f-60ec-5703-a3df-1b64ca068e12")
 LOCAL_TIMEZONE = timezone(timedelta(hours=8))
 ESSENTIAL_CATEGORIES = frozenset({"food", "transport", "daily_necessities"})
@@ -90,6 +92,17 @@ class LedgerEntry:
     occurred_at: datetime
     counterparty_ref: str
     is_one_off: bool = False
+
+    @property
+    def economic_role(self) -> str:
+        """Importer-owned role from the fixed generator, never from an editable database row."""
+        return {
+            "opening_balance": "OPENING",
+            "salary": "INCOME",
+            "internal_transfer": "INTERNAL_TRANSFER",
+            "asset_purchase": "ASSET_PURCHASE",
+            "credit_card_payment": "CREDIT_CARD_PAYMENT",
+        }.get(self.category, "CONSUMPTION")
 
 
 def _ledger() -> list[LedgerEntry]:
@@ -246,7 +259,7 @@ def _product_values() -> list[dict[str, Any]]:
         result.append(
             {
                 "id": _id(f"product:{key}"),
-                "created_at": SEED_AS_OF,
+                "created_at": PRODUCT_CATALOG_CREATED_AT,
                 "product_code": code,
                 "version_number": 1,
                 "name": name,
@@ -420,6 +433,7 @@ def _insert_facts(session: Session) -> None:
                 "balance_after_cents": account.balance_cents,
                 "occurred_at": entry.occurred_at.isoformat(),
                 "counterparty_ref": entry.counterparty_ref,
+                "economic_role": entry.economic_role,
             },
             entry.occurred_at,
         )
@@ -463,6 +477,27 @@ def _insert_facts(session: Session) -> None:
             )
         )
     session.flush()
+    session.add(
+        _evidence(
+            "transaction-history-coverage",
+            COVERAGE_SOURCE_TYPE,
+            build_history_coverage(
+                DEMO_USER_ID,
+                "Asia/Shanghai",
+                SEED_START,
+                SEED_END,
+                [account.id for account in accounts.values()],
+                session.scalars(select(Transaction).where(Transaction.user_id == DEMO_USER_ID)),
+                {
+                    item.id: item
+                    for item in session.scalars(
+                        select(EvidenceItem).where(EvidenceItem.user_id == DEMO_USER_ID)
+                    )
+                },
+            ),
+            SEED_AS_OF,
+        )
+    )
     for key, account in accounts.items():
         session.add(
             _evidence(
