@@ -1,0 +1,19 @@
+name: bounded-funds
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: bounded
+      POSTGRES_PASSWORD: bounded_local_only
+      POSTGRES_DB: bounded_funds
+    ports:
+      - "127.0.0.1:54329:5432"
+    volumes:
+      - bounded_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bounded -d bounded_funds"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+volumes:
+  bounded_pgdata:

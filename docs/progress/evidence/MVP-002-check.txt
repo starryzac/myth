@@ -1,0 +1,82 @@
++ uv run --frozen ruff check apps/api scripts
+All checks passed!
++ uv run --frozen ruff format --check apps/api scripts
+9 files already formatted
++ uv run --frozen mypy
+Success: no issues found in 6 source files
++ pnpm --dir apps/web lint
+$ eslint . --max-warnings 0
++ uv run --frozen mypy
+Success: no issues found in 6 source files
++ pnpm --dir apps/web typecheck
+$ tsc --noEmit
++ uv run --frozen pytest --cov
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0
+rootdir: F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds
+configfile: pyproject.toml
+testpaths: apps/api/app/tests
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collected 6 items
+
+apps\api\app\tests\test_errors.py ....                                   [ 66%]
+apps\api\app\tests\test_health.py ..                                     [100%]
+
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.12.5-final-0 _______________
+
+Name                           Stmts   Miss  Cover   Missing
+------------------------------------------------------------
+apps\api\app\__init__.py           0      0   100%
+apps\api\app\api\__init__.py       0      0   100%
+apps\api\app\api\errors.py        20      0   100%
+apps\api\app\main.py              41      0   100%
+------------------------------------------------------------
+TOTAL                             61      0   100%
+======================== 6 passed, 1 warning in 1.63s =========================
++ pnpm --dir apps/web test
+$ vitest run
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/App.test.tsx (1 test) 147ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  23:45:59
+   Duration  2.23s (transform 60ms, setup 418ms, collect 120ms, tests 147ms, environment 879ms, prepare 278ms)
+
++ pnpm --dir apps/web e2e
+$ playwright test
+[WebServer] INFO:     Started server process [53912]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:18000 (Press CTRL+C to quit)
+[WebServer] {"event": "http_request", "request_id": "32529cf6-637d-4301-8c5d-801c16bf435a", "method": "GET", "status": 200, "duration_ms": 0.0}
+[WebServer] (node:57780) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] $ vite --host 127.0.0.1 --port 5173 "--port" "15173"
+[WebServer] (node:58668) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:47296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:47296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] {"event": "http_request", "request_id": "50ba8356-0be9-4265-94a0-21591b2ad240", "method": "GET", "status": 200, "duration_ms": 0.0}
+  ok 1 [edge] › tests\e2e\health.spec.ts:2:1 › Web 经代理连接真实模拟 API 并展示连接状态 (577ms)
+
+  1 passed (9.6s)
+
+To open last HTML report run:
+[36m[39m
+[36m  pnpm exec playwright show-report[39m
+[36m[39m

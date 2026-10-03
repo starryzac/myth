@@ -1,0 +1,86 @@
++ uv run --frozen ruff check apps/api scripts
+All checks passed!
++ uv run --frozen ruff format --check apps/api scripts
+10 files already formatted
++ uv run --frozen mypy
+Success: no issues found in 6 source files
++ pnpm --dir apps/web lint
+$ eslint . --max-warnings 0
++ uv run --frozen python scripts/generate_openapi.py --check
+✨ openapi-typescript 7.13.0
+🚀 C:\Users\STARRY~1\AppData\Local\Temp\bounded-contracts-qsr9ghu9\openapi.json → C:\Users\STARRY~1\AppData\Local\Temp\bounded-contracts-qsr9ghu9\schema.d.ts [29.8ms]
+OpenAPI and TypeScript contracts match the current API.
++ uv run --frozen mypy
+Success: no issues found in 6 source files
++ pnpm --dir apps/web typecheck
+$ tsc --noEmit
++ uv run --frozen pytest --cov
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0
+rootdir: F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds
+configfile: pyproject.toml
+testpaths: apps/api/app/tests
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collected 6 items
+
+apps\api\app\tests\test_errors.py ....                                   [ 66%]
+apps\api\app\tests\test_health.py ..                                     [100%]
+
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.12.5-final-0 _______________
+
+Name                           Stmts   Miss  Cover   Missing
+------------------------------------------------------------
+apps\api\app\__init__.py           0      0   100%
+apps\api\app\api\__init__.py       0      0   100%
+apps\api\app\api\errors.py        20      0   100%
+apps\api\app\main.py              41      0   100%
+------------------------------------------------------------
+TOTAL                             61      0   100%
+======================== 6 passed, 1 warning in 1.61s =========================
++ pnpm --dir apps/web test
+$ vitest run
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/App.test.tsx (1 test) 120ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  23:50:29
+   Duration  2.21s (transform 62ms, setup 416ms, collect 125ms, tests 120ms, environment 860ms, prepare 280ms)
+
++ pnpm --dir apps/web e2e
+$ playwright test
+[WebServer] INFO:     Started server process [42464]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:18000 (Press CTRL+C to quit)
+[WebServer] {"event": "http_request", "request_id": "d35fcd48-6dcf-462a-9cd2-edc859359c9b", "method": "GET", "status": 200, "duration_ms": 0.0}
+[WebServer] (node:47240) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] $ vite --host 127.0.0.1 --port 5173 "--port" "15173"
+[WebServer] (node:27988) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:51620) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51620) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] {"event": "http_request", "request_id": "26b2fcf9-fd7b-430c-a947-5e0bb80d3532", "method": "GET", "status": 200, "duration_ms": 0.0}
+  ok 1 [edge] › tests\e2e\health.spec.ts:2:1 › Web 经代理连接真实模拟 API 并展示连接状态 (559ms)
+
+  1 passed (7.2s)
+
+To open last HTML report run:
+[36m[39m
+[36m  pnpm exec playwright show-report[39m
+[36m[39m

@@ -1,0 +1,11 @@
+{
+  "name": "bounded-funds-workspace",
+  "private": true,
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "dev": "pnpm --dir apps/web dev",
+    "build": "pnpm --dir apps/web build",
+    "types": "python scripts/tasks.py types"
+  },
+  "devDependencies": { "openapi-typescript": "^7.10.1" }
+}

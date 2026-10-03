@@ -1,0 +1,18 @@
+{
+  "run_id": "9079ca47-03d5-455e-9727-517984566d77",
+  "timestamp": "2026-10-03T15:45:28.676986+00:00",
+  "records": [
+    {
+      "probe": "unused_import",
+      "exit_code": 1,
+      "detected": true,
+      "output": "+ uv run --frozen ruff check apps/api scripts\nF401 [*] `os` imported but unused\n --> apps\\api\\app\\_quality_gate_probe.py:1:8\n  |\n1 | import os\n  |        ^^\nhelp: Remove unused import: `os`\n  |\n  - import os\n  |\n\nFound 1 error.\n[*] 1 fixable with the `--fix` option.\nTraceback (most recent call last):\n  File \"F:\\ѧУ�\\���б�\\Ǯ;�н�\\bounded-funds\\scripts\\tasks.py\", line 141, in <module>\n    main(sys.argv[1])\n  File \"F:\\ѧУ�\\���б�\\Ǯ;�н�\\bounded-funds\\scripts\\tasks.py\", line 106, in main\n    uv(\"ruff\", \"check\", \"apps/api\", \"scripts\")\n  File \"F:\\ѧУ�\\���б�\\Ǯ;�н�\\bounded-funds\\scripts\\tasks.py\", line 34, in uv\n    run(\"uv\", \"run\", \"--frozen\", *args)\n  File \"F:\\ѧУ�\\���б�\\Ǯ;�н�\\bounded-funds\\scripts\\tasks.py\", line 30, in run\n    subprocess.run(command(*args), check=True, cwd=ROOT)\n  File \"C:\\Users\\starryzac\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['C:\\\\Users\\\\starryzac\\\\AppData\\\\Local\\\\Microsoft\\\\WinGet\\\\Packages\\\\astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe\\\\uv.EXE', 'run', '--frozen', 'ruff', 'check', 'apps/api', 'scripts']' returned non-zero exit status 1.\n"
+    },
+    {
+      "probe": "wrong_type",
+      "exit_code": 1,
+      "detected": true,
+      "output": "+ uv run --frozen ruff check apps/api scripts\nAll checks passed!\n+ uv run --frozen ruff format --check apps/api scripts\n10 files already formatted\n+ uv run --frozen mypy\napps\\api\\app\\_quality_gate_probe.py:1: error: Incompatible types in assignment (expression has type \"str\", variable has type \"int\")  [assignment]\nFound 1 error in 1 file (checked 7 source files)\nTraceback (most recent call last):\n  File \"F:\\ѧУ�\\���б�\\Ǯ;�н�\\bounded-funds\\scripts\\tasks.py\", line 141, in <module>\n    main(sys.argv[1])\n  File \"F:\\ѧУ�\\���б�\\Ǯ;�н�\\bounded-funds\\scripts\\tasks.py\", line 108, in main\n    uv(\"mypy\")\n  File \"F:\\ѧУ�\\���б�\\Ǯ;�н�\\bounded-funds\\scripts\\tasks.py\", line 34, in uv\n    run(\"uv\", \"run\", \"--frozen\", *args)\n  File \"F:\\ѧУ�\\���б�\\Ǯ;�н�\\bounded-funds\\scripts\\tasks.py\", line 30, in run\n    subprocess.run(command(*args), check=True, cwd=ROOT)\n  File \"C:\\Users\\starryzac\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['C:\\\\Users\\\\starryzac\\\\AppData\\\\Local\\\\Microsoft\\\\WinGet\\\\Packages\\\\astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe\\\\uv.EXE', 'run', '--frozen', 'mypy']' returned non-zero exit status 1.\n"
+    }
+  ]
+}
