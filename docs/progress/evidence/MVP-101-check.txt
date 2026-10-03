@@ -1,0 +1,98 @@
+run_id=20261003T161343Z-a44e30c2
++ uv run --frozen ruff check apps/api scripts
+All checks passed!
++ uv run --frozen ruff format --check apps/api scripts
+19 files already formatted
++ uv run --frozen mypy
+Success: no issues found in 13 source files
++ pnpm --dir apps/web lint
+$ eslint . --max-warnings 0
++ uv run --frozen python scripts/generate_openapi.py --check
+✨ openapi-typescript 7.13.0
+🚀 C:\Users\STARRY~1\AppData\Local\Temp\bounded-contracts-tf69e4s1\openapi.json → C:\Users\STARRY~1\AppData\Local\Temp\bounded-contracts-tf69e4s1\schema.d.ts [29.6ms]
+OpenAPI and TypeScript contracts match the current API.
++ uv run --frozen mypy
+Success: no issues found in 13 source files
++ pnpm --dir apps/web typecheck
+$ tsc --noEmit
++ docker compose up -d --wait db
+ Container bounded-funds-db-1 Running 
+ Container bounded-funds-db-1 Waiting 
+ Container bounded-funds-db-1 Healthy 
++ uv run --frozen pytest --cov
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+testpaths: apps/api/app/tests
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collected 17 items
+
+apps\api\app\tests\test_errors.py ....                                   [ 23%]
+apps\api\app\tests\test_health.py ..                                     [ 35%]
+apps\api\app\tests\test_migrations.py ...........                        [100%]
+
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.12.5-final-0 _______________
+
+Name                           Stmts   Miss  Cover   Missing
+------------------------------------------------------------
+apps\api\app\__init__.py           0      0   100%
+apps\api\app\api\__init__.py       0      0   100%
+apps\api\app\api\errors.py        20      0   100%
+apps\api\app\db\__init__.py        0      0   100%
+apps\api\app\db\base.py           29      0   100%
+apps\api\app\db\models.py        236      0   100%
+apps\api\app\db\session.py        16      2    88%   22-23
+apps\api\app\db\settings.py       14      0   100%
+apps\api\app\db\testing.py        28      0   100%
+apps\api\app\main.py              41      0   100%
+------------------------------------------------------------
+TOTAL                            384      2    99%
+======================== 17 passed, 1 warning in 8.25s ========================
++ pnpm --dir apps/web test
+$ vitest run
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/App.test.tsx (4 tests) 297ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  00:14:06
+   Duration  2.41s (transform 64ms, setup 421ms, collect 119ms, tests 297ms, environment 871ms, prepare 300ms)
+
++ pnpm --dir apps/web e2e
+$ playwright test
+[2m[WebServer] [22mINFO:     Started server process [53468]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:18000 (Press CTRL+C to quit)
+[2m[WebServer] [22m{"event": "http_request", "request_id": "de360d64-9d7c-4500-8034-7019970da75e", "method": "GET", "status": 200, "duration_ms": 0.0}
+[2m[WebServer] [22m(node:40564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m[2m$ vite --host 127.0.0.1 --port 5173 "--port" "15173"[22m
+[2m[WebServer] [22m(node:19664) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:44084) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44084) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m{"event": "http_request", "request_id": "3ab9e592-e9cb-4dc2-86f3-d010030c1285", "method": "GET", "status": 200, "duration_ms": 16.0}
+  ok 1 [edge] › tests\e2e\health.spec.ts:2:1 › Web 经代理连接真实模拟 API 并展示连接状态 (539ms)
+
+  1 passed (9.4s)
+
+To open last HTML report run:
+[36m[39m
+[36m  pnpm exec playwright show-report[39m
+[36m[39m

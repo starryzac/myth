@@ -6,7 +6,7 @@
 
 ## 环境与启动
 
-Python 3.12、uv、Node.js 24、pnpm 11、Docker Desktop（Linux containers）。本地 PostgreSQL 16 使用 54329 端口，API 8000，Web 5173。
+Python 3.12、uv、Node.js 24、pnpm 11、Docker Desktop（Linux containers）、Microsoft Edge（真实浏览器测试）。本地 PostgreSQL 16 使用 54329 端口，API 8000，Web 5173。
 
 ```powershell
 # Windows PowerShell，在本仓库目录执行
@@ -23,6 +23,8 @@ Linux/macOS 使用 `make bootstrap`、`make dev`。两者调用同一个 `script
 `lint`、`typecheck`、`unit`、`test`、`e2e`、`check` 对当前实现执行实际验证。M0 的 `check` 为 lint + typecheck + test + e2e；完整版本将按完整计划扩展为全部九项质量门。
 
 `make types` 从实际 API 同步 OpenAPI 和前端类型；`typecheck` 拒绝过期的合同。`python scripts/verify_quality_gates.py` 与 `python scripts/verify_contract_gate.py` 可复验负向检查。
+
+每次统一命令打印 `run_id`，原始子命令日志与退出状态保存在 `.runtime/quality/<run_id>/`。`test`/`integration` 会启动本项目 PostgreSQL；迁移集成测试只创建和销毁随机 `bf_test_*` 数据库，不回滚演示库。
 
 `seed`、`demo-reset`、`export-evidence`、`audit-verify`、`security-check`、`evidence-check`、`build-proposal` 的命令入口预留，关联任务实现前明确失败，不能用于宣称初版完成。
 

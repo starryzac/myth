@@ -2,20 +2,62 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 import os
 import shutil
 import signal
 import subprocess
 import sys
 import time
+from datetime import UTC, datetime
 from pathlib import Path
 from urllib.error import URLError
 from urllib.request import urlopen
+from uuid import uuid4
 
 ROOT = Path(__file__).resolve().parents[1]
 os.chdir(ROOT)
 os.environ.setdefault("UV_CACHE_DIR", str(ROOT / ".uv-cache"))
 os.environ["PYTHONPATH"] = str(ROOT / "apps" / "api")
+os.environ.setdefault("PYTHONUTF8", "1")
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+RUN_ID = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid4().hex[:8]
+RUN_DIRECTORY = ROOT / ".runtime" / "quality" / RUN_ID
+COMMANDS: list[dict[str, object]] = []
+
+
+def source_state() -> dict[str, object]:
+    revision = subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True
+    ).stdout.strip()
+    tracked = subprocess.run(
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+        cwd=ROOT,
+        capture_output=True,
+        check=True,
+    ).stdout.decode("utf-8")
+    configuration = {
+        "pyproject.toml",
+        "uv.lock",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        "package.json",
+        "alembic.ini",
+        "docker-compose.yml",
+        "Makefile",
+        "make.cmd",
+    }
+    hashes = {}
+    for relative in sorted(set(tracked.split("\0")) - {""}):
+        if relative in configuration or relative.startswith(
+            ("apps/", "scripts/", "packages/contracts/")
+        ):
+            path = ROOT / relative
+            if path.is_file():
+                hashes[relative] = hashlib.sha256(path.read_bytes()).hexdigest()
+    return {"git_revision": revision, "source_sha256": hashes}
 
 
 def command(*args: str) -> list[str]:
@@ -27,7 +69,29 @@ def command(*args: str) -> list[str]:
 
 def run(*args: str) -> None:
     print("+ " + " ".join(args), flush=True)
-    subprocess.run(command(*args), check=True, cwd=ROOT)
+    RUN_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    log_path = RUN_DIRECTORY / f"{len(COMMANDS) + 1:02d}-{args[0]}.log"
+    started = datetime.now(UTC).isoformat()
+    with log_path.open("w", encoding="utf-8") as output:
+        process = subprocess.Popen(
+            command(*args),
+            cwd=ROOT,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+        )
+        assert process.stdout is not None
+        for line in process.stdout:
+            output.write(line)
+            print(line, end="", flush=True)
+        code = process.wait()
+    COMMANDS.append(
+        {"command": list(args), "started_at": started, "exit_code": code, "log": log_path.name}
+    )
+    if code:
+        raise subprocess.CalledProcessError(code, args)
 
 
 def uv(*args: str) -> None:
@@ -102,6 +166,9 @@ def main(target: str) -> None:
         run("pnpm", "install", "--frozen-lockfile")
     elif target == "dev":
         start_services()
+    elif target == "migrate":
+        run("docker", "compose", "up", "-d", "--wait", "db")
+        uv("alembic", "upgrade", "head")
     elif target == "lint":
         uv("ruff", "check", "apps/api", "scripts")
         uv("ruff", "format", "--check", "apps/api", "scripts")
@@ -117,8 +184,11 @@ def main(target: str) -> None:
         uv("pytest", "-m", "not integration and not property", "--cov", "--cov-report=term-missing")
         run("pnpm", "--dir", "apps/web", "test")
     elif target in {"property", "integration"}:
+        if target == "integration":
+            run("docker", "compose", "up", "-d", "--wait", "db")
         uv("pytest", "-m", target)
     elif target == "test":
+        run("docker", "compose", "up", "-d", "--wait", "db")
         uv("pytest", "--cov")
         run("pnpm", "--dir", "apps/web", "test")
     elif target == "e2e":
@@ -141,4 +211,27 @@ def main(target: str) -> None:
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         raise SystemExit("Usage: python scripts/tasks.py TARGET")
-    main(sys.argv[1])
+    print(f"run_id={RUN_ID}", flush=True)
+    successful = False
+    source = source_state()
+    try:
+        main(sys.argv[1])
+        successful = True
+    finally:
+        RUN_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        (RUN_DIRECTORY / "manifest.json").write_text(
+            json.dumps(
+                {
+                    "run_id": RUN_ID,
+                    "target": sys.argv[1],
+                    "successful": successful,
+                    "finished_at": datetime.now(UTC).isoformat(),
+                    "commands": COMMANDS,
+                    "source": source,
+                },
+                indent=2,
+                ensure_ascii=False,
+            )
+            + "\n",
+            encoding="utf-8",
+        )

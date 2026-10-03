@@ -1,0 +1,22 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 11 items
+
+apps/api/app/tests/test_migrations.py::test_fresh_upgrade_downgrade_upgrade_matches_all_sixteen_models PASSED [  9%]
+apps/api/app/tests/test_migrations.py::test_destructive_migration_requires_a_generated_test_database[bounded_funds] PASSED [ 18%]
+apps/api/app/tests/test_migrations.py::test_destructive_migration_requires_a_generated_test_database[postgres] PASSED [ 27%]
+apps/api/app/tests/test_migrations.py::test_destructive_migration_requires_a_generated_test_database[bf_test_demo] PASSED [ 36%]
+apps/api/app/tests/test_migrations.py::test_destructive_migration_requires_a_generated_test_database[] PASSED [ 45%]
+apps/api/app/tests/test_migrations.py::test_offline_downgrade_cannot_bypass_database_safety_guard PASSED [ 54%]
+apps/api/app/tests/test_migrations.py::test_settings_reject_non_simulation_and_non_postgresql PASSED [ 63%]
+apps/api/app/tests/test_migrations.py::test_database_constraints_reject_negative_balance_and_cross_user_version PASSED [ 72%]
+apps/api/app/tests/test_migrations.py::test_integer_money_and_timezone_boundary PASSED [ 81%]
+apps/api/app/tests/test_migrations.py::test_source_and_action_idempotency_are_enforced_in_postgresql PASSED [ 90%]
+apps/api/app/tests/test_migrations.py::test_policy_version_number_is_unique_and_configuration_is_an_object PASSED [100%]
+
+============================= 11 passed in 8.75s ==============================

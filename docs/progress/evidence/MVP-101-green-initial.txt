@@ -1,0 +1,24 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 7 items
+
+apps/api/app/tests/test_migrations.py::test_fresh_upgrade_downgrade_upgrade_matches_all_sixteen_models PASSED [ 14%]
+apps/api/app/tests/test_migrations.py::test_destructive_migration_requires_a_generated_test_database[bounded_funds] PASSED [ 28%]
+apps/api/app/tests/test_migrations.py::test_destructive_migration_requires_a_generated_test_database[postgres] PASSED [ 42%]
+apps/api/app/tests/test_migrations.py::test_destructive_migration_requires_a_generated_test_database[bf_test_demo] PASSED [ 57%]
+apps/api/app/tests/test_migrations.py::test_destructive_migration_requires_a_generated_test_database[] PASSED [ 71%]
+apps/api/app/tests/test_migrations.py::test_database_constraints_reject_negative_balance_and_cross_user_version PASSED [ 85%]
+apps/api/app/tests/test_migrations.py::test_integer_money_and_timezone_boundary PASSED [100%]
+
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 7 passed, 1 warning in 3.83s =========================

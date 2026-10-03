@@ -18,7 +18,7 @@
 | 1 | MVP-001 | M:686–689；208–320 | 按指定栈创建单仓、Docker Compose、Makefile、环境文件、README、AGENTS。 | `make bootstrap` 与 `make dev` 实际运行记录；PostgreSQL、API、Web 健康记录；文件与目录核对。 | COMPLETE — [验证记录](../progress/MVP-001.md) |
 | 2 | MVP-002 | M:691–694 | ruff、mypy、pytest、统一错误模型、日志、请求 ID。 | 故意类型错误和 lint 错误使 `make lint` 失败的负例；恢复后通过；API 错误/request ID 测试。 | COMPLETE — [验证记录](../progress/MVP-002.md) |
 | 3 | MVP-003 | M:696–699 | ESLint、TypeScript strict、Vitest、Playwright；OpenAPI 生成前端类型。 | 类型生成命令与生成文件；Web 实际调用 API；前端静态检查和测试运行。 | COMPLETE — [验证记录](../progress/MVP-003.md) |
-| 4 | MVP-101 | M:703–706；327–358 | 全部 16 张核心表，整数分与 UTC，Alembic 迁移。 | 新 PostgreSQL 数据库升级、回滚、再升级结果一致；表/约束检查和迁移测试。 | PENDING |
+| 4 | MVP-101 | M:703–706；327–358 | 全部 16 张核心表，整数分与 UTC，Alembic 迁移。 | 新 PostgreSQL 数据库升级、回滚、再升级结果一致；表/约束检查和迁移测试。 | COMPLETE — [验证记录](../progress/MVP-101.md) |
 | 5 | MVP-102 | M:708–711 | 60 天模拟流水、工资、房租、信用卡、水电、日常、一次性大额及产品种子。 | 重复 `make seed` 的数据量、余额、账单和校验和一致；所有必需类别可查。 | PENDING |
 | 6 | MVP-103 | M:713–716；360–370 | 策略状态机、不可变版本、到期、暂停、撤销。 | 修改后旧未执行动作失效；历史查询；状态非法转移、到期及撤销测试。 | PENDING |
 | 7 | MVP-104 | M:718–721 | 历史转账发现房租候选，周期账单发现还款候选。 | 只产生 PROPOSED；确认前后边界差异；不能把历史直接转为未来义务的负例。 | PENDING |
