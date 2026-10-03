@@ -1,0 +1,4519 @@
+{
+  "verification": {
+    "source": "actual local simulated demo database",
+    "snapshot_before_sha256": "f678e749a6ada12f48d6549979c4c08aace9e817e9a8af795b2a29d1b6909174",
+    "snapshot_after_sha256": "f678e749a6ada12f48d6549979c4c08aace9e817e9a8af795b2a29d1b6909174",
+    "all_16_tables_unchanged": true
+  },
+  "response": {
+    "simulation": true,
+    "user_id": "271a9827-f82a-5be6-9e0a-50f721029fb0",
+    "as_of": "2026-10-03T19:36:10.895756Z",
+    "boundary": {
+      "algorithm_version": "strict-cash-boundary-v1",
+      "status": "READY",
+      "financial_only": true,
+      "safe_idle_cents": 3157400,
+      "minimum_margin_cents": 3157400,
+      "deficit_cents": 0,
+      "protected_cents_by_reason": {
+        "obligations": 145000,
+        "living": 0,
+        "emergency": 0,
+        "goal_cash": 160000,
+        "goal_minimum": 0
+      },
+      "max_allocatable_by_product": {
+        "707aaa2b-268c-58d2-979c-259a7dbd6858": 3157400,
+        "c6ebc4fc-26c6-5e2c-8df6-ebf417a93086": 3157400,
+        "e7aba366-8d36-5c35-bc26-d65fe9a3290c": 3157400
+      },
+      "blocking_constraints": [],
+      "calculation_trace": [
+        {
+          "day": 0,
+          "date": "2026-10-04",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 0,
+          "date": "2026-10-04",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 0,
+          "date": "2026-10-04",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 1,
+          "date": "2026-10-05",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 1,
+          "date": "2026-10-05",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 1,
+          "date": "2026-10-05",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 2,
+          "date": "2026-10-06",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 2,
+          "date": "2026-10-06",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 2,
+          "date": "2026-10-06",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 3,
+          "date": "2026-10-07",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 3,
+          "date": "2026-10-07",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 3,
+          "date": "2026-10-07",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 4,
+          "date": "2026-10-08",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 4,
+          "date": "2026-10-08",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 4,
+          "date": "2026-10-08",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 5,
+          "date": "2026-10-09",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 5,
+          "date": "2026-10-09",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 5,
+          "date": "2026-10-09",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 6,
+          "date": "2026-10-10",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 6,
+          "date": "2026-10-10",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 6,
+          "date": "2026-10-10",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 7,
+          "date": "2026-10-11",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 7,
+          "date": "2026-10-11",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 7,
+          "date": "2026-10-11",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 8,
+          "date": "2026-10-12",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 8,
+          "date": "2026-10-12",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 8,
+          "date": "2026-10-12",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 9,
+          "date": "2026-10-13",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 9,
+          "date": "2026-10-13",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 9,
+          "date": "2026-10-13",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 10,
+          "date": "2026-10-14",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 10,
+          "date": "2026-10-14",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 10,
+          "date": "2026-10-14",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 11,
+          "date": "2026-10-15",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 11,
+          "date": "2026-10-15",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 11,
+          "date": "2026-10-15",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 12,
+          "date": "2026-10-16",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 12,
+          "date": "2026-10-16",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 12,
+          "date": "2026-10-16",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 13,
+          "date": "2026-10-17",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 13,
+          "date": "2026-10-17",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 13,
+          "date": "2026-10-17",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 14,
+          "date": "2026-10-18",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 14,
+          "date": "2026-10-18",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 14,
+          "date": "2026-10-18",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 15,
+          "date": "2026-10-19",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 15,
+          "date": "2026-10-19",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 15,
+          "date": "2026-10-19",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 16,
+          "date": "2026-10-20",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3462400,
+          "protected_cents_by_reason": {
+            "obligations": 145000,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [
+            "bill:504a3200-ddb3-54e7-98e5-6cf5e67dfa3e"
+          ],
+          "principal_position_ids": []
+        },
+        {
+          "day": 16,
+          "date": "2026-10-20",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 16,
+          "date": "2026-10-20",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 17,
+          "date": "2026-10-21",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 17,
+          "date": "2026-10-21",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 17,
+          "date": "2026-10-21",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 18,
+          "date": "2026-10-22",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 18,
+          "date": "2026-10-22",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 18,
+          "date": "2026-10-22",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 19,
+          "date": "2026-10-23",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 19,
+          "date": "2026-10-23",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 19,
+          "date": "2026-10-23",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 20,
+          "date": "2026-10-24",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 20,
+          "date": "2026-10-24",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 20,
+          "date": "2026-10-24",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 21,
+          "date": "2026-10-25",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 21,
+          "date": "2026-10-25",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 21,
+          "date": "2026-10-25",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 22,
+          "date": "2026-10-26",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 22,
+          "date": "2026-10-26",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 22,
+          "date": "2026-10-26",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 23,
+          "date": "2026-10-27",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 23,
+          "date": "2026-10-27",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 23,
+          "date": "2026-10-27",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 24,
+          "date": "2026-10-28",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 24,
+          "date": "2026-10-28",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 24,
+          "date": "2026-10-28",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 25,
+          "date": "2026-10-29",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 25,
+          "date": "2026-10-29",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 25,
+          "date": "2026-10-29",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 26,
+          "date": "2026-10-30",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 26,
+          "date": "2026-10-30",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 26,
+          "date": "2026-10-30",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 27,
+          "date": "2026-10-31",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 27,
+          "date": "2026-10-31",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 27,
+          "date": "2026-10-31",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 28,
+          "date": "2026-11-01",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 28,
+          "date": "2026-11-01",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 28,
+          "date": "2026-11-01",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 29,
+          "date": "2026-11-02",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 29,
+          "date": "2026-11-02",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 29,
+          "date": "2026-11-02",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 30,
+          "date": "2026-11-03",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 30,
+          "date": "2026-11-03",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 30,
+          "date": "2026-11-03",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 31,
+          "date": "2026-11-04",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 31,
+          "date": "2026-11-04",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 31,
+          "date": "2026-11-04",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 32,
+          "date": "2026-11-05",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 32,
+          "date": "2026-11-05",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 32,
+          "date": "2026-11-05",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 33,
+          "date": "2026-11-06",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 33,
+          "date": "2026-11-06",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 33,
+          "date": "2026-11-06",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 34,
+          "date": "2026-11-07",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 34,
+          "date": "2026-11-07",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 34,
+          "date": "2026-11-07",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 35,
+          "date": "2026-11-08",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 35,
+          "date": "2026-11-08",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 35,
+          "date": "2026-11-08",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 36,
+          "date": "2026-11-09",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 36,
+          "date": "2026-11-09",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 36,
+          "date": "2026-11-09",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 37,
+          "date": "2026-11-10",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 37,
+          "date": "2026-11-10",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 37,
+          "date": "2026-11-10",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 38,
+          "date": "2026-11-11",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 38,
+          "date": "2026-11-11",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 38,
+          "date": "2026-11-11",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 39,
+          "date": "2026-11-12",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 39,
+          "date": "2026-11-12",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 39,
+          "date": "2026-11-12",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 40,
+          "date": "2026-11-13",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 40,
+          "date": "2026-11-13",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 40,
+          "date": "2026-11-13",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 41,
+          "date": "2026-11-14",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 41,
+          "date": "2026-11-14",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 41,
+          "date": "2026-11-14",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 42,
+          "date": "2026-11-15",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 42,
+          "date": "2026-11-15",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 42,
+          "date": "2026-11-15",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 43,
+          "date": "2026-11-16",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 43,
+          "date": "2026-11-16",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 43,
+          "date": "2026-11-16",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 44,
+          "date": "2026-11-17",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 44,
+          "date": "2026-11-17",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 44,
+          "date": "2026-11-17",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 45,
+          "date": "2026-11-18",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 45,
+          "date": "2026-11-18",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 45,
+          "date": "2026-11-18",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 46,
+          "date": "2026-11-19",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 46,
+          "date": "2026-11-19",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 46,
+          "date": "2026-11-19",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 47,
+          "date": "2026-11-20",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 47,
+          "date": "2026-11-20",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 47,
+          "date": "2026-11-20",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 48,
+          "date": "2026-11-21",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 48,
+          "date": "2026-11-21",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 48,
+          "date": "2026-11-21",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 49,
+          "date": "2026-11-22",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 49,
+          "date": "2026-11-22",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 49,
+          "date": "2026-11-22",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 50,
+          "date": "2026-11-23",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 50,
+          "date": "2026-11-23",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 50,
+          "date": "2026-11-23",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 51,
+          "date": "2026-11-24",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 51,
+          "date": "2026-11-24",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 51,
+          "date": "2026-11-24",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 52,
+          "date": "2026-11-25",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 52,
+          "date": "2026-11-25",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 52,
+          "date": "2026-11-25",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 53,
+          "date": "2026-11-26",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 53,
+          "date": "2026-11-26",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 53,
+          "date": "2026-11-26",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 54,
+          "date": "2026-11-27",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 54,
+          "date": "2026-11-27",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 54,
+          "date": "2026-11-27",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 55,
+          "date": "2026-11-28",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 55,
+          "date": "2026-11-28",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 55,
+          "date": "2026-11-28",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 56,
+          "date": "2026-11-29",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 56,
+          "date": "2026-11-29",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 56,
+          "date": "2026-11-29",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 57,
+          "date": "2026-11-30",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 57,
+          "date": "2026-11-30",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 57,
+          "date": "2026-11-30",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 58,
+          "date": "2026-12-01",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 58,
+          "date": "2026-12-01",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 58,
+          "date": "2026-12-01",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 59,
+          "date": "2026-12-02",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 59,
+          "date": "2026-12-02",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 59,
+          "date": "2026-12-02",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 60,
+          "date": "2026-12-03",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 60,
+          "date": "2026-12-03",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 60,
+          "date": "2026-12-03",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 61,
+          "date": "2026-12-04",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 61,
+          "date": "2026-12-04",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 61,
+          "date": "2026-12-04",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 62,
+          "date": "2026-12-05",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 62,
+          "date": "2026-12-05",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 62,
+          "date": "2026-12-05",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 63,
+          "date": "2026-12-06",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 63,
+          "date": "2026-12-06",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 63,
+          "date": "2026-12-06",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 64,
+          "date": "2026-12-07",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 64,
+          "date": "2026-12-07",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 64,
+          "date": "2026-12-07",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 65,
+          "date": "2026-12-08",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 65,
+          "date": "2026-12-08",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 65,
+          "date": "2026-12-08",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 66,
+          "date": "2026-12-09",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 66,
+          "date": "2026-12-09",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 66,
+          "date": "2026-12-09",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 67,
+          "date": "2026-12-10",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 67,
+          "date": "2026-12-10",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 67,
+          "date": "2026-12-10",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 68,
+          "date": "2026-12-11",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 68,
+          "date": "2026-12-11",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 68,
+          "date": "2026-12-11",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 69,
+          "date": "2026-12-12",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 69,
+          "date": "2026-12-12",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 69,
+          "date": "2026-12-12",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 70,
+          "date": "2026-12-13",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 70,
+          "date": "2026-12-13",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 70,
+          "date": "2026-12-13",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 71,
+          "date": "2026-12-14",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 71,
+          "date": "2026-12-14",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 71,
+          "date": "2026-12-14",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 72,
+          "date": "2026-12-15",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 72,
+          "date": "2026-12-15",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 72,
+          "date": "2026-12-15",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 73,
+          "date": "2026-12-16",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 73,
+          "date": "2026-12-16",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 73,
+          "date": "2026-12-16",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 74,
+          "date": "2026-12-17",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 74,
+          "date": "2026-12-17",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 74,
+          "date": "2026-12-17",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 75,
+          "date": "2026-12-18",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 75,
+          "date": "2026-12-18",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 75,
+          "date": "2026-12-18",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 76,
+          "date": "2026-12-19",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 76,
+          "date": "2026-12-19",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 76,
+          "date": "2026-12-19",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 77,
+          "date": "2026-12-20",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 77,
+          "date": "2026-12-20",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 77,
+          "date": "2026-12-20",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 78,
+          "date": "2026-12-21",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 78,
+          "date": "2026-12-21",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 78,
+          "date": "2026-12-21",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 79,
+          "date": "2026-12-22",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 79,
+          "date": "2026-12-22",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 79,
+          "date": "2026-12-22",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 80,
+          "date": "2026-12-23",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 80,
+          "date": "2026-12-23",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 80,
+          "date": "2026-12-23",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 81,
+          "date": "2026-12-24",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 81,
+          "date": "2026-12-24",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 81,
+          "date": "2026-12-24",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 82,
+          "date": "2026-12-25",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 82,
+          "date": "2026-12-25",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 82,
+          "date": "2026-12-25",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 83,
+          "date": "2026-12-26",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 83,
+          "date": "2026-12-26",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 83,
+          "date": "2026-12-26",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 84,
+          "date": "2026-12-27",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 84,
+          "date": "2026-12-27",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 84,
+          "date": "2026-12-27",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 85,
+          "date": "2026-12-28",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 85,
+          "date": "2026-12-28",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 85,
+          "date": "2026-12-28",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 86,
+          "date": "2026-12-29",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 86,
+          "date": "2026-12-29",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 86,
+          "date": "2026-12-29",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 87,
+          "date": "2026-12-30",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 87,
+          "date": "2026-12-30",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 87,
+          "date": "2026-12-30",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 88,
+          "date": "2026-12-31",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 88,
+          "date": "2026-12-31",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 88,
+          "date": "2026-12-31",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 89,
+          "date": "2027-01-01",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 89,
+          "date": "2027-01-01",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 89,
+          "date": "2027-01-01",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 90,
+          "date": "2027-01-02",
+          "phase": "BEFORE_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 90,
+          "date": "2027-01-02",
+          "phase": "AFTER_PAYMENT",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        },
+        {
+          "day": 90,
+          "date": "2027-01-02",
+          "phase": "AFTER_PRINCIPAL",
+          "cash_cents": 3317400,
+          "protected_cents_by_reason": {
+            "obligations": 0,
+            "living": 0,
+            "emergency": 0,
+            "goal_cash": 160000,
+            "goal_minimum": 0
+          },
+          "margin_cents": 3157400,
+          "obligation_occurrence_ids": [],
+          "principal_position_ids": []
+        }
+      ],
+      "boundary_hash": "d16dd537be153c9ec45e8bc594dbc4305d452b7c91ffaf4ae5c71eea6154a5f3",
+      "calculation_notes": []
+    },
+    "source_evidence_ids": [
+      "0b5a9920-5a24-503e-8586-194667df6643",
+      "3d3f413b-a572-5491-8122-c9bb03b30e8d",
+      "3d90eb9b-4292-5110-a05e-34bcc73e8240",
+      "64fbd342-1980-5134-af1a-b343c597a6c8",
+      "6f3a6cac-0e2a-5f49-a89b-0882bc5da2d5",
+      "7421454e-4136-5106-b877-d0de00718a92",
+      "9b828e4d-7bd8-52fd-b706-220fc8cb7197",
+      "a202e1ac-860c-5509-bdb5-56e7e364a98c",
+      "c017dfc1-3d62-560f-9d70-a494eeeeed99",
+      "c3272ab9-f37e-52f6-b5f8-6e1dcaa20938",
+      "deb31198-687f-500a-a203-ae07fc3b7d11"
+    ],
+    "input_digest": "e93c09dea51e116d726610f409f9a246ac02761e9fc1c08833c7d9bf7a3b949f",
+    "source_issues": []
+  }
+}

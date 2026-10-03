@@ -1,0 +1,30 @@
+...                                                                      [100%]
+============================ Hypothesis Statistics ============================
+apps/api/app/tests/test_boundary_properties.py::test_increasing_protection_never_increases_financial_caps:
+
+  - during generate phase (1.09 seconds):
+    - Typical runtimes: ~ 4-5 ms, of which < 1ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+apps/api/app/tests/test_boundary_properties.py::test_paying_a_protected_bill_reduces_cash_and_debt_together:
+
+  - during generate phase (2.67 seconds):
+    - Typical runtimes: ~ 4-19 ms, of which < 1ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+apps/api/app/tests/test_boundary_properties.py::test_owned_goal_principal_becoming_cash_never_enlarges_general_idle:
+
+  - during generate phase (3.75 seconds):
+    - Typical runtimes: ~ 13-24 ms, of which ~ 0-1 ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+3 passed, 6 deselected in 8.09s

@@ -34,7 +34,7 @@ from sqlalchemy import delete, or_, select, text, update
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
-SEED_VERSION = "mvp-201-v2"
+SEED_VERSION = "mvp-202-v3"
 SEED_START = date(2026, 8, 5)
 SEED_END = date(2026, 10, 3)
 SEED_AS_OF = datetime(2026, 10, 3, 16, tzinfo=UTC)
@@ -505,7 +505,9 @@ def _insert_facts(session: Session) -> None:
                 "SIMULATED_BANK_BALANCE",
                 {
                     "simulation": True,
+                    "user_id": str(DEMO_USER_ID),
                     "account_id": str(account.id),
+                    "account_type": account.account_type,
                     "balance_cents": account.balance_cents,
                     "currency": "CNY",
                     "as_of": SEED_AS_OF.isoformat(),
@@ -520,7 +522,12 @@ def _insert_facts(session: Session) -> None:
             "SIMULATED_CREDIT_CARD_BILL",
             {
                 "simulation": True,
+                "user_id": str(DEMO_USER_ID),
+                "bill_id": str(_id(f"bill:{month}")),
+                "account_id": str(accounts["card"].id),
+                "source_ref": f"{SEED_VERSION}:bill:{month}",
                 "total_cents": total,
+                "minimum_due_cents": total // 10,
                 "paid_cents": paid,
                 "statement_date": statement_day.isoformat(),
                 "due_date": date(2026, month, 20).isoformat(),
@@ -574,14 +581,24 @@ def _insert_facts(session: Session) -> None:
                 "SIMULATED_BANK_POSITION",
                 {
                     "simulation": True,
+                    "user_id": str(DEMO_USER_ID),
                     "position_id": str(_id(f"position:{key}")),
+                    "account_id": str(accounts["fixed" if key == "fixed" else "management"].id),
                     "product_id": str(_id(f"product:{key}")),
+                    "goal_id": None,
+                    "policy_version_id": None,
                     "principal_cents": amount,
+                    "purchased_at": purchased_at.isoformat(),
+                    "maturity_at": (purchased_at + timedelta(days=30)).isoformat()
+                    if key == "fixed"
+                    else None,
+                    "available_at": None,
+                    "as_of": SEED_AS_OF.isoformat(),
                     "purchase_transaction_id": str(_id(f"transaction:{day}:purchase:{key}")),
                     "acquisition": "synthetic_user_manual_purchase",
                     "status": "HELD",
                 },
-                purchased_at,
+                SEED_AS_OF,
             )
         )
     session.flush()

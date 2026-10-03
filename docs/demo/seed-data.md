@@ -161,3 +161,13 @@ v2 的 `SIMULATED_BANK_TRANSACTION` payload 增加固定生成器给出的经济
 - `MVP-201-seed-v2-summary-green.txt`：真实临时库输出为 1 用户、5 账户、129 交易、253 证据、3 账单、3 产品和 3 持仓，策略/候选/目标/决策/动作均为 0。临时汇总命令第一次因 Alembic 路径填写错误失败，修正为仓库根 `alembic.ini` 后成功；失败日志保留为 `MVP-201-seed-v2-summary.txt`。
 
 新版本合计现金仍为 `3462400` 分、持仓本金 `500000` 分、累计收益 `0`、总资产 `3962400` 分、未付卡账单 `145000` 分。v2 数据集实测 SHA-256 为 `643a41b782ff003cd599291f35923592284c72dea2c00417470c5c45a9451bdc`。本节数值是合成数据的复现结果，不是产品效果实验；上文 v1 的 `29e0f79e...` 校验和及原测试日志继续保留。
+
+## MVP-202 v3：资金边界事实绑定
+
+种子显式升级为 `mvp-202-v3`，60 日区间及 `SEED_AS_OF` 不变。经济金额、账户/交易/产品/持仓身份、253 条证据数量和共享产品 v1 全部保持；来源引用随种子版本变化。v2 的正式校验和作为上一版本证据保留，不复用为 v3 结果。
+
+余额证据补 `user_id`、`account_type`，防止仅改 GOAL 账户类型就释放保护；账单补 `user_id`、`bill_id`、`account_id`、`source_ref`、`minimum_due_cents`；持仓补 `user_id`、`account_id`、`goal_id`、`policy_version_id`、`purchased_at`、`maturity_at`、`available_at`、`as_of`。持仓原有 purchase_transaction_id、acquisition、status 和本金保留；观察时间改为明确的种子截止，购买时间仍保留历史事实。
+
+三个持仓的 available_at 仍是 null，没有虚构赎回或到账；固定产品的 maturity_at 不能单独替代到账证明。共享产品目录没有新增保证条款，不改写其他用户引用的 v1 产品。
+
+`MVP-202-seed-source-red.txt` 记录 v2 缺 user_id 的真实失败；补齐协议后 `MVP-202-seed-source-green.txt` 的 13 项测试通过，涵盖身份/时间绑定、全部原重复性与兼容性测试。正式演示库两次 `make seed` run `20261003T193225Z-b2775ed0`、`20261003T193310Z-33c5ee8f` 均 exit 0；全部业务 JSON 完全相同，实测 SHA-256 为 `701a80942c4299e1c2274a89b907859f6d7f6d22621a9e2b2be636487e3f6a66`。金额、记录数与 v2 相同，实际库现为 v3。原始日志、摘要与命令清单保存在 `docs/progress/evidence/MVP-202-seed-*`。此处仅是合成种子复现证据，整体任务验收另见进度文件。

@@ -1,0 +1,10 @@
+Command: python -m pytest apps/api/app/tests/test_boundary.py -q -p no:cacheprovider --tb=short
+..........................................                               [100%]
+42 passed in 0.59s
+Command: python -m ruff check apps/api/app/domain/boundary.py apps/api/app/domain/boundary_types.py apps/api/app/tests/test_boundary.py
+All checks passed!
+Command: python -m ruff format --check apps/api/app/domain/boundary.py apps/api/app/domain/boundary_types.py apps/api/app/tests/test_boundary.py
+3 files already formatted
+Command: python -m mypy apps/api/app/domain/boundary.py apps/api/app/domain/boundary_types.py apps/api/app/tests/test_boundary.py
+Success: no issues found in 3 source files
+All commands exited 0.

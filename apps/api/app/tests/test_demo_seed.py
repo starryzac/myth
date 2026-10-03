@@ -75,6 +75,59 @@ def database_snapshot(engine: Engine) -> str:
     return json.dumps(result, ensure_ascii=False, sort_keys=True, default=str)
 
 
+def test_seed_binds_boundary_facts_to_account_bill_and_position_identity(
+    demo_engine: Engine,
+) -> None:
+    seed_demo(demo_engine)
+    with Session(demo_engine) as session:
+        for account in session.scalars(select(Account)):
+            proofs = [
+                item
+                for item in session.scalars(select(EvidenceItem))
+                if item.source_type == "SIMULATED_BANK_BALANCE"
+                and item.content.get("account_id") == str(account.id)
+            ]
+            assert len(proofs) == 1
+            proof = proofs[0].content
+            assert proof["user_id"] == str(account.user_id)
+            assert proof["account_type"] == account.account_type
+            assert proof["currency"] == account.currency
+            assert proof["balance_cents"] == account.balance_cents
+            assert proof["as_of"] == account.observed_at.isoformat()
+        for bill in session.scalars(select(CreditCardBill)):
+            item = session.get(EvidenceItem, bill.evidence_id)
+            assert item is not None
+            proof = item.content
+            assert proof["user_id"] == str(bill.user_id)
+            assert proof["bill_id"] == str(bill.id)
+            assert proof["account_id"] == str(bill.account_id)
+            assert proof["source_ref"] == bill.source_ref
+            assert proof["minimum_due_cents"] == bill.minimum_due_cents
+        for position in session.scalars(select(AssetPosition)):
+            proofs = [
+                item
+                for item in session.scalars(select(EvidenceItem))
+                if item.source_type == "SIMULATED_BANK_POSITION"
+                and item.content.get("position_id") == str(position.id)
+            ]
+            assert len(proofs) == 1
+            proof = proofs[0].content
+            assert proof["user_id"] == str(position.user_id)
+            assert proof["account_id"] == str(position.account_id)
+            assert proof["product_id"] == str(position.product_id)
+            assert proof["goal_id"] is None and position.goal_id is None
+            assert proof["policy_version_id"] is None and position.policy_version_id is None
+            assert proof["principal_cents"] == position.principal_cents
+            assert proof["purchased_at"] == position.purchased_at.isoformat()
+            assert proof["maturity_at"] == (
+                position.maturity_at.isoformat() if position.maturity_at else None
+            )
+            assert proof["available_at"] is None and position.available_at is None
+            assert proof["status"] == position.status
+            assert proof["as_of"] == SEED_AS_OF.isoformat()
+            assert proofs[0].observed_at == SEED_AS_OF
+
+
 def test_seed_repeats_exact_database_content_and_all_required_facts(demo_engine: Engine) -> None:
     first = seed_demo(demo_engine)
     snapshot = database_snapshot(demo_engine)
@@ -187,7 +240,7 @@ def test_v2_seed_declares_closed_history_scope_and_immutable_economic_roles(
             )
         )
         assert coverage is not None
-        assert summary.seed_version == "mvp-201-v2"
+        assert summary.seed_version == "mvp-202-v3"
         assert summary.as_of == datetime(2026, 10, 3, 16, tzinfo=UTC)
         assert coverage.evidence_level == "BANK_CONFIRMED"
         assert coverage.valid_from == coverage.observed_at == summary.as_of
@@ -299,7 +352,7 @@ def test_v2_reuses_real_v1_catalog_without_overwriting_shared_products(demo_engi
             ).mappings()
         ]
     summary = seed_demo(demo_engine)
-    assert summary.seed_version == "mvp-201-v2"
+    assert summary.seed_version == "mvp-202-v3"
     with demo_engine.connect() as connection:
         after = [
             dict(row)

@@ -1,0 +1,21 @@
+......                                                                   [100%]
+============================ Hypothesis Statistics ============================
+apps/api/app/tests/test_boundary_properties.py::test_positive_financial_caps_and_one_cent_excess_against_exhaustive_ledger:
+
+  - during generate phase (0.81 seconds):
+    - Typical runtimes: ~ 3ms, of which < 1ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+apps/api/app/tests/test_boundary_properties.py::test_financial_dto_rejects_future_source_income_and_uncredited_yield:
+
+  - during generate phase (0.13 seconds):
+    - Typical runtimes: < 1ms, of which < 1ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+6 passed in 1.49s

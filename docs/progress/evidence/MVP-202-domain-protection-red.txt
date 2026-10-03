@@ -1,0 +1,10 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_ test_bill_payment_reduces_cash_and_remaining_debt_once_with_rolling_floors __
+apps\api\app\tests\test_boundary.py:66: in test_bill_payment_reduces_cash_and_remaining_debt_once_with_rolling_floors
+    assert result.safe_idle_cents == 500_000
+E   AssertionError: assert 1000000 == 500000
+E    +  where 1000000 = BoundaryResult(algorithm_version='strict-cash-boundary-v1', status='READY', financial_only=True, safe_idle_cents=10000..._ids=[], principal_position_ids=[])], boundary_hash='0bbaafea8b3a5bd785cb640b4d39fa987c913b92b7936257e03666f0b38c7d2a').safe_idle_cents
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_boundary.py::test_bill_payment_reduces_cash_and_remaining_debt_once_with_rolling_floors
+1 failed, 1 passed in 0.75s

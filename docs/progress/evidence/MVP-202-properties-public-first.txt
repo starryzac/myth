@@ -1,0 +1,23 @@
+...F                                                                     [100%]
+================================== FAILURES ===================================
+___ test_public_boundary_matches_independent_product_and_same_day_literals ____
+
+    def test_public_boundary_matches_independent_product_and_same_day_literals() -> None:
+        from app.domain.boundary import compute_boundary
+    
+        result = compute_boundary(
+            snapshot(200_000),
+            [floor_policy(50_000), floor_policy(100_000, identity=11, start_day=20)],
+            [],
+            [product(30, None), product(31, 7), product(32, 20), product(33, 30)],
+        )
+        assert result.status == "READY"
+        assert result.financial_only is True
+>       assert result.safe_idle_cents == 50_000
+E       AssertionError: assert 200000 == 50000
+E        +  where 200000 = BoundaryResult(algorithm_version='strict-cash-boundary-v1', status='READY', financial_only=True, safe_idle_cents=20000..._ids=[], principal_position_ids=[])], boundary_hash='91e3b67c379d2b869e449c4c18c3b6ed5e36ba5829bb357949db53a7eb2f9968').safe_idle_cents
+
+apps\api\app\tests\test_boundary_properties.py:201: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_boundary_properties.py::test_public_boundary_matches_independent_product_and_same_day_literals
+1 failed, 3 passed in 0.74s

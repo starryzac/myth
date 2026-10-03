@@ -1,0 +1,15 @@
+..F                                                                      [100%]
+================================== FAILURES ===================================
+_ test_known_product_maturity_changes_financial_cap_but_same_day_principal_is_not_early_cash _
+apps\api\app\tests\test_boundary.py:86: in test_known_product_maturity_changes_financial_cap_but_same_day_principal_is_not_early_cash
+    assert result.max_allocatable_by_product == {str(UUID(int=40)): 50_000, str(UUID(int=41)): 150_000, str(UUID(int=42)): 50_000}
+E   AssertionError: assert {} == {'00000000-00...0002a': 50000}
+E     
+E     Right contains 3 more items:
+E     {'00000000-0000-0000-0000-000000000028': 50000,
+E      '00000000-0000-0000-0000-000000000029': 150000,
+E      '00000000-0000-0000-0000-00000000002a': 50000}
+E     Use -v to get more diff
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_boundary.py::test_known_product_maturity_changes_financial_cap_but_same_day_principal_is_not_early_cash
+1 failed, 2 passed in 0.74s

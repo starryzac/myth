@@ -259,6 +259,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/boundary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Boundary */
+        get: operations["read_boundary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/health": {
         parameters: {
             query?: never;
@@ -374,6 +391,119 @@ export interface components {
             paid_cents: number;
             /** Status */
             status: string;
+        };
+        /** BlockingConstraint */
+        BlockingConstraint: {
+            /** Code */
+            code: string;
+            /** Entity Id */
+            entity_id?: string | null;
+            /** Date */
+            date?: string | null;
+            /** Required Cents */
+            required_cents?: number | null;
+            /** Available Cents */
+            available_cents?: number | null;
+        };
+        /** BoundaryPoint */
+        BoundaryPoint: {
+            /** Day */
+            day: number;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /**
+             * Phase
+             * @enum {string}
+             */
+            phase: "BEFORE_PAYMENT" | "AFTER_PAYMENT" | "AFTER_PRINCIPAL";
+            /** Cash Cents */
+            cash_cents: number;
+            /** Protected Cents By Reason */
+            protected_cents_by_reason: {
+                [key: string]: number;
+            };
+            /** Margin Cents */
+            margin_cents: number;
+            /** Obligation Occurrence Ids */
+            obligation_occurrence_ids: string[];
+            /** Principal Position Ids */
+            principal_position_ids: string[];
+        };
+        /** BoundaryResponse */
+        BoundaryResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            boundary: components["schemas"]["BoundaryResult"];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Input Digest */
+            input_digest: string;
+            /** Source Issues */
+            source_issues: components["schemas"]["BoundarySourceIssue"][];
+        };
+        /** BoundaryResult */
+        BoundaryResult: {
+            /** Algorithm Version */
+            algorithm_version: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY" | "LIQUIDITY_RISK" | "INSUFFICIENT_EVIDENCE";
+            /**
+             * Financial Only
+             * @default true
+             * @constant
+             */
+            financial_only: true;
+            /** Safe Idle Cents */
+            safe_idle_cents: number | null;
+            /** Minimum Margin Cents */
+            minimum_margin_cents: number | null;
+            /** Deficit Cents */
+            deficit_cents: number | null;
+            /** Protected Cents By Reason */
+            protected_cents_by_reason: {
+                [key: string]: number;
+            };
+            /** Max Allocatable By Product */
+            max_allocatable_by_product: {
+                [key: string]: number | null;
+            };
+            /** Blocking Constraints */
+            blocking_constraints: components["schemas"]["BlockingConstraint"][];
+            /** Calculation Trace */
+            calculation_trace: components["schemas"]["BoundaryPoint"][];
+            /** Boundary Hash */
+            boundary_hash: string;
+            /** Calculation Notes */
+            calculation_notes?: string[];
+        };
+        /** BoundarySourceIssue */
+        BoundarySourceIssue: {
+            /** Code */
+            code: string;
+            /** Source Ref */
+            source_ref: string;
+            /** Message */
+            message: string;
         };
         /** CompilationIssue */
         CompilationIssue: {
@@ -1914,6 +2044,53 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ReserveEstimationResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_boundary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BoundaryResponse"];
                 };
             };
             /** @description Not Found */

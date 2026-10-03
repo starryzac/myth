@@ -1,0 +1,48 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_newer_month_contribution_cannot_reduce_minimum_against_old_ownership __
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_e35c2baa78dd4b1892fc2a9fb443489e)
+
+    def test_newer_month_contribution_cannot_reduce_minimum_against_old_ownership(
+        boundary_engine: Engine,
+    ) -> None:
+        older = SEED_AS_OF - timedelta(days=1)
+        with Session(boundary_engine) as session, session.begin():
+            goal_fixture(session, with_proofs=True)
+            session.flush()
+            for account in session.scalars(select(Account)):
+                account.observed_at = older
+                proof = session.scalar(select(EvidenceItem).where(
+                    EvidenceItem.source_type == "SIMULATED_BANK_BALANCE",
+                    EvidenceItem.content["account_id"].as_string() == str(account.id),
+                ))
+                assert proof is not None
+                proof.content = {**proof.content, "as_of": older.isoformat()}
+                proof.content_hash = configuration_hash(proof.content)
+                proof.observed_at = proof.valid_from = older
+            ownership = session.scalar(select(EvidenceItem).where(EvidenceItem.source_type == OWNERSHIP_SOURCE))
+            assert ownership is not None
+            ownership.content = {**ownership.content, "as_of": older.isoformat()}
+            ownership.content_hash = configuration_hash(ownership.content)
+>       assert_insufficient(boundary_engine)
+
+apps\api\app\tests\test_boundary_service.py:489: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_e35c2baa78dd4b1892fc2a9fb443489e)
+
+    def assert_insufficient(engine: Engine) -> None:
+        before = snapshot(engine)
+        with Session(engine) as session:
+            result = compute_user_boundary(session, DEMO_USER_ID, SEED_AS_OF)
+>           assert result.boundary.status == "INSUFFICIENT_EVIDENCE"
+E           AssertionError: assert 'READY' == 'INSUFFICIENT_EVIDENCE'
+E             
+E             - INSUFFICIENT_EVIDENCE
+E             + READY
+
+apps\api\app\tests\test_boundary_service.py:123: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_boundary_service.py::test_newer_month_contribution_cannot_reduce_minimum_against_old_ownership
+1 failed, 39 deselected in 4.96s

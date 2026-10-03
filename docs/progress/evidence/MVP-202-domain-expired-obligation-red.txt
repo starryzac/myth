@@ -1,0 +1,15 @@
+.......................................FF                                [100%]
+================================== FAILURES ===================================
+____________ test_bill_cannot_bind_to_a_missing_or_noncard_account ____________
+apps\api\app\tests\test_boundary.py:564: in test_bill_cannot_bind_to_a_missing_or_noncard_account
+    with pytest.raises(ValueError,match="card account"):
+E   Failed: DID NOT RAISE ValueError
+_ test_expired_recurring_policy_does_not_erase_an_already_generated_unpaid_occurrence _
+apps\api\app\tests\test_boundary.py:576: in test_expired_recurring_policy_does_not_erase_an_already_generated_unpaid_occurrence
+    assert result.safe_idle_cents == 50_000
+E   AssertionError: assert 100000 == 50000
+E    +  where 100000 = BoundaryResult(algorithm_version='strict-cash-boundary-v1', status='READY', financial_only=True, safe_idle_cents=10000...ition_ids=[])], boundary_hash='56e05ca11076aa27b6902917f7d7e3b3e2148db207d900122ed46b54d63050a8', calculation_notes=[]).safe_idle_cents
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_boundary.py::test_bill_cannot_bind_to_a_missing_or_noncard_account
+FAILED apps/api/app/tests/test_boundary.py::test_expired_recurring_policy_does_not_erase_an_already_generated_unpaid_occurrence
+2 failed, 39 passed in 0.84s

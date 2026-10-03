@@ -1,0 +1,85 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_____ test_product_return_contract_cannot_override_longer_lock[rollover] ______
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_b39490d425f040bdad644612fcc976c5)
+case = 'rollover'
+
+    @pytest.mark.parametrize("case", ["lock", "delay", "rollover"])
+    def test_product_return_contract_cannot_override_longer_lock(
+        boundary_engine: Engine, case: str,
+    ) -> None:
+        with Session(boundary_engine) as session, session.begin():
+            product = session.scalar(select(AssetProduct).where(AssetProduct.asset_class == "FIXED_DEPOSIT"))
+            assert product is not None and product.lock_days == 30
+            product.maturity_rule = {
+                "protocol": "fixed-principal-return-v1", "day_basis": "CALENDAR", "guaranteed": True,
+                "term_days": 7 if case == "lock" else 30,
+                "settlement_delay_days": 0, "principal_return_bps": 10000,
+                "rollover": False, "auto_rollover": case == "rollover",
+            }
+            if case == "delay":
+                product.redemption_delay_days = 1
+>       assert_insufficient(boundary_engine)
+
+apps\api\app\tests\test_boundary_service.py:471: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_b39490d425f040bdad644612fcc976c5)
+
+    def assert_insufficient(engine: Engine) -> None:
+        before = snapshot(engine)
+        with Session(engine) as session:
+            result = compute_user_boundary(session, DEMO_USER_ID, SEED_AS_OF)
+>           assert result.boundary.status == "INSUFFICIENT_EVIDENCE"
+E           AssertionError: assert 'READY' == 'INSUFFICIENT_EVIDENCE'
+E             
+E             - INSUFFICIENT_EVIDENCE
+E             + READY
+
+apps\api\app\tests\test_boundary_service.py:123: AssertionError
+_______ test_unsettled_position_cannot_claim_already_arrived_principal ________
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_8007b1fed8e6471d96118e9c40eb095f)
+
+    def test_unsettled_position_cannot_claim_already_arrived_principal(boundary_engine: Engine) -> None:
+        with Session(boundary_engine) as session, session.begin():
+            position = session.scalar(select(AssetPosition))
+            assert position is not None
+            position.available_at = SEED_AS_OF - timedelta(hours=1)
+            proof = session.scalar(select(EvidenceItem).where(
+                EvidenceItem.source_type == "SIMULATED_BANK_POSITION",
+                EvidenceItem.content["position_id"].as_string() == str(position.id),
+            ))
+            assert proof is not None
+            proof.content = {**proof.content, "available_at": position.available_at.isoformat()}
+            proof.content_hash = configuration_hash(proof.content)
+            imported_proof(session, AVAILABILITY_SOURCE, {
+                "protocol": "principal-availability-v1", "position_id": str(position.id),
+                "account_id": str(position.account_id), "goal_id": None,
+                "principal_cents": position.principal_cents,
+                "available_at": position.available_at.isoformat(),
+                "principal_return_bps": 10000, "rollover": False,
+            })
+>       assert_insufficient(boundary_engine)
+
+apps\api\app\tests\test_boundary_service.py:536: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_8007b1fed8e6471d96118e9c40eb095f)
+
+    def assert_insufficient(engine: Engine) -> None:
+        before = snapshot(engine)
+        with Session(engine) as session:
+            result = compute_user_boundary(session, DEMO_USER_ID, SEED_AS_OF)
+>           assert result.boundary.status == "INSUFFICIENT_EVIDENCE"
+E           AssertionError: assert 'READY' == 'INSUFFICIENT_EVIDENCE'
+E             
+E             - INSUFFICIENT_EVIDENCE
+E             + READY
+
+apps\api\app\tests\test_boundary_service.py:123: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_boundary_service.py::test_product_return_contract_cannot_override_longer_lock[rollover]
+FAILED apps/api/app/tests/test_boundary_service.py::test_unsettled_position_cannot_claim_already_arrived_principal
+2 failed, 41 deselected in 6.39s

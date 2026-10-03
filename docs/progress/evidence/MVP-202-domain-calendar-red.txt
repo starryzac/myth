@@ -1,0 +1,16 @@
+...FF                                                                    [100%]
+================================== FAILURES ===================================
+_ test_monthly_occurrences_use_short_month_maximum_and_exact_settlement_identity _
+apps\api\app\tests\test_boundary.py:105: in test_monthly_occurrences_use_short_month_maximum_and_exact_settlement_identity
+    assert result.safe_idle_cents == 740_000
+E   AssertionError: assert 1000000 == 740000
+E    +  where 1000000 = BoundaryResult(algorithm_version='strict-cash-boundary-v1', status='READY', financial_only=True, safe_idle_cents=10000..._ids=[], principal_position_ids=[])], boundary_hash='9884be1b1a3996c2606a58d40e5505b74d74ff01ff08eb2a3c29565b7e569447').safe_idle_cents
+_ test_goal_minimum_is_capped_and_retained_across_months_without_virtual_contributions _
+apps\api\app\tests\test_boundary.py:123: in test_goal_minimum_is_capped_and_retained_across_months_without_virtual_contributions
+    assert result.safe_idle_cents == 540_000
+E   AssertionError: assert 800000 == 540000
+E    +  where 800000 = BoundaryResult(algorithm_version='strict-cash-boundary-v1', status='READY', financial_only=True, safe_idle_cents=80000..._ids=[], principal_position_ids=[])], boundary_hash='7f4c1877ac34a6e4626569ef647bfd01b63a1694f145c3bde7ad9803bb991c9c').safe_idle_cents
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_boundary.py::test_monthly_occurrences_use_short_month_maximum_and_exact_settlement_identity
+FAILED apps/api/app/tests/test_boundary.py::test_goal_minimum_is_capped_and_retained_across_months_without_virtual_contributions
+2 failed, 3 passed in 0.78s

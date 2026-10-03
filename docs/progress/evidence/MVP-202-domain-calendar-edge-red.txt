@@ -1,0 +1,12 @@
+...................................F...                                  [100%]
+================================== FAILURES ===================================
+_____________ test_calendar_overflow_is_a_controlled_input_error ______________
+apps\api\app\tests\test_boundary.py:523: in test_calendar_overflow_is_a_controlled_input_error
+    compute_boundary(base,[],[],[])
+apps\api\app\domain\boundary.py:141: in compute_boundary
+    last = first + timedelta(days=90)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   OverflowError: date value out of range
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_boundary.py::test_calendar_overflow_is_a_controlled_input_error
+1 failed, 38 passed in 0.82s

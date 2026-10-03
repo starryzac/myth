@@ -1,0 +1,66 @@
+...........                                                              [100%]
+============================ Hypothesis Statistics ============================
+apps/api/app/tests/test_boundary_properties.py::test_positive_financial_caps_and_one_cent_excess_against_exhaustive_ledger:
+
+  - during generate phase (0.89 seconds):
+    - Typical runtimes: ~ 3-4 ms, of which < 1ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+apps/api/app/tests/test_boundary_properties.py::test_increasing_protection_never_increases_financial_caps:
+
+  - during generate phase (2.64 seconds):
+    - Typical runtimes: ~ 5-22 ms, of which < 1ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+apps/api/app/tests/test_boundary_properties.py::test_paying_a_protected_bill_reduces_cash_and_debt_together:
+
+  - during generate phase (3.88 seconds):
+    - Typical runtimes: ~ 14-24 ms, of which < 1ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+apps/api/app/tests/test_boundary_properties.py::test_owned_goal_principal_becoming_cash_never_enlarges_general_idle:
+
+  - during generate phase (4.27 seconds):
+    - Typical runtimes: ~ 15-26 ms, of which ~ 0-1 ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+apps/api/app/tests/test_boundary_properties.py::test_real_goal_contribution_moves_ownership_without_double_protection:
+
+  - during generate phase (4.14 seconds):
+    - Typical runtimes: ~ 13-26 ms, of which < 1ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+apps/api/app/tests/test_boundary_properties.py::test_equivalent_input_permutations_preserve_complete_financial_result_and_hash:
+
+  - during generate phase (5.87 seconds):
+    - Typical runtimes: ~ 19-43 ms, of which ~ 0-1 ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+apps/api/app/tests/test_boundary_properties.py::test_financial_dto_rejects_future_source_income_and_uncredited_yield:
+
+  - during generate phase (0.34 seconds):
+    - Typical runtimes: ~ 0-2 ms, of which < 1ms in data generation
+    - 200 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=200
+
+
+11 passed in 22.62s

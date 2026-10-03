@@ -1,0 +1,86 @@
+.....................FFFFFFFFFFFFFF                                      [100%]
+================================== FAILURES ===================================
+_________ test_contradictory_financial_facts_are_rejected[bill_paid] __________
+apps\api\app\tests\test_boundary.py:214: in test_contradictory_financial_facts_are_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+________ test_contradictory_financial_facts_are_rejected[bill_status] _________
+apps\api\app\tests\test_boundary.py:214: in test_contradictory_financial_facts_are_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_________ test_contradictory_financial_facts_are_rejected[bill_dates] _________
+apps\api\app\tests\test_boundary.py:214: in test_contradictory_financial_facts_are_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+________ test_contradictory_financial_facts_are_rejected[policy_hash] _________
+apps\api\app\tests\test_boundary.py:214: in test_contradictory_financial_facts_are_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_______ test_contradictory_financial_facts_are_rejected[policy_window] ________
+apps\api\app\tests\test_boundary.py:214: in test_contradictory_financial_facts_are_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_______ test_contradictory_financial_facts_are_rejected[goal_principal] _______
+apps\api\app\tests\test_boundary.py:214: in test_contradictory_financial_facts_are_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_________ test_contradictory_financial_facts_are_rejected[goal_cash] __________
+apps\api\app\tests\test_boundary.py:214: in test_contradictory_financial_facts_are_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_____ test_contradictory_financial_facts_are_rejected[unassigned_account] _____
+apps\api\app\tests\test_boundary.py:214: in test_contradictory_financial_facts_are_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+____ test_contradictory_financial_facts_are_rejected[future_contribution] _____
+apps\api\app\tests\test_boundary.py:214: in test_contradictory_financial_facts_are_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_____ test_contradictory_financial_facts_are_rejected[future_settlement] ______
+apps\api\app\tests\test_boundary.py:214: in test_contradictory_financial_facts_are_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+__________ test_unmapped_goal_cash_cannot_become_general_idle_money ___________
+apps\api\app\tests\test_boundary.py:220: in test_unmapped_goal_cash_cannot_become_general_idle_money
+    assert compute_boundary(base,[],[],[]).status == "INSUFFICIENT_EVIDENCE"
+E   AssertionError: assert 'READY' == 'INSUFFICIENT_EVIDENCE'
+E     
+E     - INSUFFICIENT_EVIDENCE
+E     + READY
+__ test_future_observations_or_confirmations_are_not_current_evidence[cash] ___
+apps\api\app\tests\test_boundary.py:235: in test_future_observations_or_confirmations_are_not_current_evidence
+    assert compute_boundary(base,policies,[],[]).status == "INSUFFICIENT_EVIDENCE"
+E   AssertionError: assert 'READY' == 'INSUFFICIENT_EVIDENCE'
+E     
+E     - INSUFFICIENT_EVIDENCE
+E     + READY
+_ test_future_observations_or_confirmations_are_not_current_evidence[policy] __
+apps\api\app\tests\test_boundary.py:235: in test_future_observations_or_confirmations_are_not_current_evidence
+    assert compute_boundary(base,policies,[],[]).status == "INSUFFICIENT_EVIDENCE"
+E   AssertionError: assert 'READY' == 'INSUFFICIENT_EVIDENCE'
+E     
+E     - INSUFFICIENT_EVIDENCE
+E     + READY
+__ test_future_observations_or_confirmations_are_not_current_evidence[bill] ___
+apps\api\app\tests\test_boundary.py:235: in test_future_observations_or_confirmations_are_not_current_evidence
+    assert compute_boundary(base,policies,[],[]).status == "INSUFFICIENT_EVIDENCE"
+E   AssertionError: assert 'READY' == 'INSUFFICIENT_EVIDENCE'
+E     
+E     - INSUFFICIENT_EVIDENCE
+E     + READY
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_boundary.py::test_contradictory_financial_facts_are_rejected[bill_paid]
+FAILED apps/api/app/tests/test_boundary.py::test_contradictory_financial_facts_are_rejected[bill_status]
+FAILED apps/api/app/tests/test_boundary.py::test_contradictory_financial_facts_are_rejected[bill_dates]
+FAILED apps/api/app/tests/test_boundary.py::test_contradictory_financial_facts_are_rejected[policy_hash]
+FAILED apps/api/app/tests/test_boundary.py::test_contradictory_financial_facts_are_rejected[policy_window]
+FAILED apps/api/app/tests/test_boundary.py::test_contradictory_financial_facts_are_rejected[goal_principal]
+FAILED apps/api/app/tests/test_boundary.py::test_contradictory_financial_facts_are_rejected[goal_cash]
+FAILED apps/api/app/tests/test_boundary.py::test_contradictory_financial_facts_are_rejected[unassigned_account]
+FAILED apps/api/app/tests/test_boundary.py::test_contradictory_financial_facts_are_rejected[future_contribution]
+FAILED apps/api/app/tests/test_boundary.py::test_contradictory_financial_facts_are_rejected[future_settlement]
+FAILED apps/api/app/tests/test_boundary.py::test_unmapped_goal_cash_cannot_become_general_idle_money
+FAILED apps/api/app/tests/test_boundary.py::test_future_observations_or_confirmations_are_not_current_evidence[cash]
+FAILED apps/api/app/tests/test_boundary.py::test_future_observations_or_confirmations_are_not_current_evidence[policy]
+FAILED apps/api/app/tests/test_boundary.py::test_future_observations_or_confirmations_are_not_current_evidence[bill]
+14 failed, 21 passed in 0.94s

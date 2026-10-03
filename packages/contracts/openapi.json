@@ -1166,6 +1166,57 @@
         }
       }
     },
+    "/api/v1/boundary": {
+      "get": {
+        "tags": [
+          "自主资金边界"
+        ],
+        "summary": "Read Boundary",
+        "operationId": "read_boundary",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoundaryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/health": {
       "get": {
         "summary": "Health",
@@ -1414,6 +1465,328 @@
           "status"
         ],
         "title": "BillView"
+      },
+      "BlockingConstraint": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "entity_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Id"
+          },
+          "date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date"
+          },
+          "required_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Required Cents"
+          },
+          "available_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Available Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "title": "BlockingConstraint"
+      },
+      "BoundaryPoint": {
+        "properties": {
+          "day": {
+            "type": "integer",
+            "title": "Day"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "phase": {
+            "type": "string",
+            "enum": [
+              "BEFORE_PAYMENT",
+              "AFTER_PAYMENT",
+              "AFTER_PRINCIPAL"
+            ],
+            "title": "Phase"
+          },
+          "cash_cents": {
+            "type": "integer",
+            "title": "Cash Cents"
+          },
+          "protected_cents_by_reason": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Protected Cents By Reason"
+          },
+          "margin_cents": {
+            "type": "integer",
+            "title": "Margin Cents"
+          },
+          "obligation_occurrence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Obligation Occurrence Ids"
+          },
+          "principal_position_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Principal Position Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "day",
+          "date",
+          "phase",
+          "cash_cents",
+          "protected_cents_by_reason",
+          "margin_cents",
+          "obligation_occurrence_ids",
+          "principal_position_ids"
+        ],
+        "title": "BoundaryPoint"
+      },
+      "BoundaryResponse": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "boundary": {
+            "$ref": "#/components/schemas/BoundaryResult"
+          },
+          "source_evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Source Evidence Ids"
+          },
+          "input_digest": {
+            "type": "string",
+            "title": "Input Digest"
+          },
+          "source_issues": {
+            "items": {
+              "$ref": "#/components/schemas/BoundarySourceIssue"
+            },
+            "type": "array",
+            "title": "Source Issues"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "as_of",
+          "boundary",
+          "source_evidence_ids",
+          "input_digest",
+          "source_issues"
+        ],
+        "title": "BoundaryResponse"
+      },
+      "BoundaryResult": {
+        "properties": {
+          "algorithm_version": {
+            "type": "string",
+            "title": "Algorithm Version"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "LIQUIDITY_RISK",
+              "INSUFFICIENT_EVIDENCE"
+            ],
+            "title": "Status"
+          },
+          "financial_only": {
+            "type": "boolean",
+            "const": true,
+            "title": "Financial Only",
+            "default": true
+          },
+          "safe_idle_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Safe Idle Cents"
+          },
+          "minimum_margin_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minimum Margin Cents"
+          },
+          "deficit_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deficit Cents"
+          },
+          "protected_cents_by_reason": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Protected Cents By Reason"
+          },
+          "max_allocatable_by_product": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Max Allocatable By Product"
+          },
+          "blocking_constraints": {
+            "items": {
+              "$ref": "#/components/schemas/BlockingConstraint"
+            },
+            "type": "array",
+            "title": "Blocking Constraints"
+          },
+          "calculation_trace": {
+            "items": {
+              "$ref": "#/components/schemas/BoundaryPoint"
+            },
+            "type": "array",
+            "title": "Calculation Trace"
+          },
+          "boundary_hash": {
+            "type": "string",
+            "title": "Boundary Hash"
+          },
+          "calculation_notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Calculation Notes"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "algorithm_version",
+          "status",
+          "safe_idle_cents",
+          "minimum_margin_cents",
+          "deficit_cents",
+          "protected_cents_by_reason",
+          "max_allocatable_by_product",
+          "blocking_constraints",
+          "calculation_trace",
+          "boundary_hash"
+        ],
+        "title": "BoundaryResult"
+      },
+      "BoundarySourceIssue": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "source_ref": {
+            "type": "string",
+            "title": "Source Ref"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "source_ref",
+          "message"
+        ],
+        "title": "BoundarySourceIssue"
       },
       "CompilationIssue": {
         "properties": {

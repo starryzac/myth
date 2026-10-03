@@ -1,0 +1,16 @@
+
+=================================== ERRORS ====================================
+________ ERROR collecting apps/api/app/tests/test_boundary_service.py _________
+ImportError while importing test module 'F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\tests\test_boundary_service.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\tests\test_boundary_service.py:13: in <module>
+    from app.services.boundary import compute_user_boundary
+E   ModuleNotFoundError: No module named 'app.services.boundary'
+=========================== short test summary info ===========================
+ERROR apps/api/app/tests/test_boundary_service.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 1.34s

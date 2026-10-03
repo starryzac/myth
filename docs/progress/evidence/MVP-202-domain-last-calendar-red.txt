@@ -1,0 +1,17 @@
+....................................F.....                               [100%]
+================================== FAILURES ===================================
+__________ test_calendar_overflow_is_a_controlled_input_error[10-2] ___________
+apps\api\app\tests\test_boundary.py:526: in test_calendar_overflow_is_a_controlled_input_error
+    compute_boundary(base, [emergency], [], [])
+apps\api\app\domain\boundary.py:362: in compute_boundary
+    "emergency": sum(
+apps\api\app\domain\boundary.py:366: in <genexpr>
+    and _active(item, current, zone)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\domain\boundary.py:44: in _active
+    end = start + timedelta(days=1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   OverflowError: date value out of range
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_boundary.py::test_calendar_overflow_is_a_controlled_input_error[10-2]
+1 failed, 41 passed in 0.85s
