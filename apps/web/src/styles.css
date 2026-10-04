@@ -152,6 +152,25 @@ fieldset { border: 0; padding: 0; min-width: 0; }
 .goal-card li { margin: 10px 0; line-height: 1.9; font-size: 12px; }
 .policy-card details, .goal-card details, .editor-panel details { margin: 15px 0; font-size: 12px; line-height: 1.9; }
 .empty { margin: 30px 0; font-size: 13px; color: #6d8068; }
+.trace-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin: 20px 0; }
+.trace-detail { display: grid; gap: 20px; }
+.trace-section h3 { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.trace-step { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #e0ebd8; color: #356b51; font-size: 12px; }
+.trace-item { border-bottom: 1px solid #e1e8dc; padding: 15px 0; font-size: 12px; overflow-wrap: anywhere; }
+.trace-list .trace-item { padding: 22px; }
+.trace-item h4 { font-size: 13px; margin-bottom: 10px; }
+.trace-item p, .trace-section > p, .trace-summary p { line-height: 1.9; margin: 8px 0; }
+.trace-section details { margin: 15px 0; font-size: 12px; line-height: 1.8; }
+.trace-hash, .trace-path, .trace-summary { overflow-wrap: anywhere; }
+.trace-fields dl > div { display: grid; grid-template-columns: minmax(100px, 160px) minmax(0, 1fr); gap: 15px; margin: 12px 0; }
+.trace-fields dt { color: #6d8068; }
+.trace-fields dd { margin: 0; overflow-wrap: anywhere; }
+.trace-fields .money { font-size: 15px; }
+.trace-literal { white-space: pre-wrap; overflow-wrap: anywhere; }
+.trace-path { display: block; margin-top: 5px; font-size: 10px; }
+.trace-raw { background: #f5f2e8; padding: 12px; border-radius: 8px; }
+.trace-item:focus, #trace-outcome:focus, #trace-inputs:focus { outline: 2px solid #356b51; outline-offset: 5px; }
+@media (max-width: 760px) { .trace-fields dl > div { grid-template-columns: 1fr; gap: 5px; } .trace-list { grid-template-columns: 1fr; } }
 @media (max-width: 760px) { .form-grid, .config-review dl { grid-template-columns: 1fr; } .goal-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } .main-nav { width: 100%; } .main-nav a { flex: 1; text-align: center; padding: 10px 8px; } .policy-card, .goal-card, .editor-panel { padding: 17px; } }
 @media (max-width: 1150px) {
   .facts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

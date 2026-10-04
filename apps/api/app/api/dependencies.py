@@ -43,7 +43,16 @@ def get_session(
         compilation_read = request.method == "GET" and request.url.path.startswith(
             "/api/v1/policy-compilations/"
         )
-        if audit_read or dashboard_read or policy_preview_read or compilation_read:
+        decision_read = request.method == "GET" and getattr(
+            request.scope.get("route"), "path", None
+        ) in {
+            "/api/v1/decisions",
+            "/api/v1/decisions/{run_id}",
+            "/api/v1/decisions/{run_id}/explanation",
+            "/api/v1/actions/{action_id}/decision",
+            "/api/v1/actions/{action_id}/receipt",
+        }
+        if audit_read or dashboard_read or policy_preview_read or compilation_read or decision_read:
             session.execute(text("SET TRANSACTION READ ONLY"))
         yield session
 

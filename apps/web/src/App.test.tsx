@@ -61,9 +61,9 @@ test('所有卡片来自唯一总览请求，当前保护取今天分层而非�
   expect(screen.getByRole('region', { name: '已自主配置' })).toHaveTextContent('已排除 2 笔手工持仓');
 });
 
-test('页面导航实际切换并可回到总览，未出现403/404页面入口', async () => {
+test('页面导航实际切换并可回到总览，保留只读403入口且未出现404控制台', async () => {
   openApp(); await connected(); const nav = screen.getByRole('navigation', { name: '页面导航' });
-  expect(within(nav).getAllByRole('link')).toHaveLength(3);
+  expect(within(nav).getAllByRole('link')).toHaveLength(4);
   fireEvent.click(within(nav).getByRole('link', { name: '策略中心' }));
   await screen.findByRole('heading', { name: '策略中心' });
   expect(within(nav).getByRole('link', { name: '策略中心' })).toHaveAttribute('aria-current', 'page');

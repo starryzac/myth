@@ -12,6 +12,7 @@
 | 初始化或复位数据 | 固定生成器/源账本纯测试、类型 | fresh native 源与黄金资金链；原 reset key 重放零写；旧来源场景明确选 legacy 初态 |
 | 数据库迁移 | 迁移 Ruff/mypy，模型定义 | 空库往返/metadata；真实旧版本历史升级、原行/列/hash 保留；新约束的普通 DML 回滚 |
 | 策略生命周期/配置预览 | 编译、版本、边界纯测试 | 修改/暂停/到期与旧动作权限，资源占用及 UNKNOWN 保留；预览 RR/READ ONLY 零写 |
+| 决策追溯页/专用历史解析/只读依赖 | Web trace parser/page/路由交互、默认 HTTP 金额 guard 回归、typecheck/lint；API 只读依赖 Ruff/mypy | 原历史与当前关联分开、八层与真实理由定位、父子/opaque 分页/lazy 回执、404/409 隐藏旧绿；五个 GET 首次用户查询前 RR/READ ONLY、业务表零写、原资金 POST 完整执行，真实 Edge 全物理表零写 |
 | 仅文档或格式，行为未变 | 对应格式/链接/AST 等必要检查 | 复用既有结果，不重跑金融链或全量 |
 
 当前 MVP-401 的具体节点见相关 `test_dashboard_*`、`test_external_bank_*`、`test_execution_context.py`、`test_autonomy_service.py`。入口/API 变化时同步实际生成的 OpenAPI/TypeScript 合同，再做 Web 类型检查。
@@ -23,3 +24,5 @@ MVP-402 的具体选择：`policy_change_types/domain.boundary` 用 `test_policy
 每批记录命令、退出码、原始日志与对应代码版本；同一工作树版本可以复用一份源码指纹。完整证据索引在任务关闭或版本验收整理。慢链路按建库、迁移、seed、资金操作、审计核验和读取计时；嵌套函数的累计时间不能相加。隔离数据库并行需先观察单次资源与稳定性，再限制并发；单条资金链始终保持原顺序。
 
 零Goal建立或income epoch继承变更：test_goal_creation_income_epoch.py、test_execution_goal_creation.py、test_policy_execution_lifecycle.py、未来Goal变更节点及test_pure_epoch_successor_keeps_prepared_income_identity[False]；检查旧收入资格、非空预留身份、UNKNOWN、跨月不补零、原经济内容及重复建立零写。只改变时点的合法继承也需覆盖这些实际使用链路。
+
+MVP-403 只读依赖的实际节点：`test_decision_readonly_transaction.py`、`test_decision_trace_api.py`、`test_execution_api.py::test_http_preparation_confirmation_execution_and_receipt_roundtrip`、`test_decision_trace_audit.py::test_cross_user_history_is_404_and_does_not_touch_any_business_table`。只增加 GET 事务白名单、未改 DTO/模型/金融算法时，复用未受影响的 402 资金及生命周期结果；正式数据不重置、不补种子。原始声明的错误金额仅供追溯，可信计算金额严格校验，原响应文本须保留原始数字词法。
