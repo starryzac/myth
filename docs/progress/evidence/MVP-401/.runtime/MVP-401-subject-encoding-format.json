@@ -1,0 +1,33 @@
+{
+  "classification": "AUTHORIZED_STATIC_OR_PURE_ONLY_NOT_FULL_NOT_PG",
+  "actual_argv": [
+    "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Scripts\\python.exe",
+    "-m",
+    "ruff",
+    "format",
+    "--check",
+    "apps/api/app/domain/audit_chain.py",
+    "apps/api/app/services/audit_chain.py",
+    "apps/api/app/tests/test_audit_subject_encoding.py"
+  ],
+  "cwd": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds",
+  "started_at": "2026-10-04T15:24:39.855229+00:00",
+  "finished_at": "2026-10-04T15:24:40.109817+00:00",
+  "wall_seconds": 0.2649999999557622,
+  "exit_code": 0,
+  "log": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.runtime\\MVP-401-subject-encoding-format.txt",
+  "log_sha256": "eee76f865de5a9f2456950f710ae5d5f9b5bd0ea02aa54f614c5eed6642a0bfd",
+  "source_before": {
+    "apps/api/app/domain/audit_chain.py": "5c1877cd4f1d1b41e5dd498ad0d07de39633aa21299d085f6c08f6e57bc4a640",
+    "apps/api/app/services/audit_chain.py": "d1e977b64d6f80b70bbab7d980ba891d8e5c97bcdc4859f8f52ab4dac3b8f402",
+    "apps/api/app/tests/test_audit_subject_encoding.py": "e3d5c7eea9bc7cc890a931f252a66423ce61a8cca28681a48c7c3f05347d740f",
+    "apps/api/app/tests/fixtures/audit_subject_encoding_originals.json": "c3ce3c303cfce7ec8ca2bd057c870ba4844facdfc8cafa01d45b1df4bfc7dcfb"
+  },
+  "source_after": {
+    "apps/api/app/domain/audit_chain.py": "5c1877cd4f1d1b41e5dd498ad0d07de39633aa21299d085f6c08f6e57bc4a640",
+    "apps/api/app/services/audit_chain.py": "d1e977b64d6f80b70bbab7d980ba891d8e5c97bcdc4859f8f52ab4dac3b8f402",
+    "apps/api/app/tests/test_audit_subject_encoding.py": "e3d5c7eea9bc7cc890a931f252a66423ce61a8cca28681a48c7c3f05347d740f",
+    "apps/api/app/tests/fixtures/audit_subject_encoding_originals.json": "c3ce3c303cfce7ec8ca2bd057c870ba4844facdfc8cafa01d45b1df4bfc7dcfb"
+  },
+  "changed_during_run": []
+}

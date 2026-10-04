@@ -1,0 +1,277 @@
+{
+  "classification": "INSTRUMENTED_TEST_WORKER_NOT_PRODUCT_SLA",
+  "as_of": "2026-10-04T01:01:30+00:00",
+  "elapsed_seconds": 129.89100000000326,
+  "top_cumulative": [
+    {
+      "file": "C:\\Users\\starryzac\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\base_events.py",
+      "line": 1909,
+      "function": "_run_once",
+      "primitive_calls": 1905,
+      "calls": 1905,
+      "self_seconds": 0.9587376000000001,
+      "cumulative_seconds": 377.54423490000005
+    },
+    {
+      "file": "C:\\Users\\starryzac\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\windows_events.py",
+      "line": 443,
+      "function": "select",
+      "primitive_calls": 1905,
+      "calls": 1905,
+      "self_seconds": 0.18510010000000002,
+      "cumulative_seconds": 120.41950550000001
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\audit_chain.py",
+      "line": 52,
+      "function": "convert",
+      "primitive_calls": 16291,
+      "calls": 15061640,
+      "self_seconds": 41.127893400000005,
+      "cumulative_seconds": 54.8828727
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\audit_chain.py",
+      "line": 46,
+      "function": "canonical_bytes",
+      "primitive_calls": 16291,
+      "calls": 16291,
+      "self_seconds": 0.5663633,
+      "cumulative_seconds": 51.6222998
+    },
+    {
+      "file": "C:\\Users\\starryzac\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\windows_events.py",
+      "line": 761,
+      "function": "_poll",
+      "primitive_calls": 1905,
+      "calls": 1905,
+      "self_seconds": 0.9839123000000001,
+      "cumulative_seconds": 51.1101572
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\audit_chain.py",
+      "line": 163,
+      "function": "build_subject",
+      "primitive_calls": 1452,
+      "calls": 1452,
+      "self_seconds": 0.2036175,
+      "cumulative_seconds": 38.1743948
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\pydantic\\main.py",
+      "line": 693,
+      "function": "model_validate",
+      "primitive_calls": 2192,
+      "calls": 2192,
+      "self_seconds": 0.007526100000000001,
+      "cumulative_seconds": 37.9087769
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+      "primitive_calls": 22444,
+      "calls": 22444,
+      "self_seconds": 0.7692100000000001,
+      "cumulative_seconds": 36.1092223
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\services\\dashboard.py",
+      "line": 360,
+      "function": "get_dashboard",
+      "primitive_calls": 1,
+      "calls": 2,
+      "self_seconds": 0.0073863,
+      "cumulative_seconds": 31.680356800000002
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\services\\dashboard_helpers.py",
+      "line": 12,
+      "function": "current_epoch_audit",
+      "primitive_calls": 1,
+      "calls": 1,
+      "self_seconds": 0.090407,
+      "cumulative_seconds": 31.62499
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\audit_chain_types.py",
+      "line": 71,
+      "function": "<lambda>",
+      "primitive_calls": 1928,
+      "calls": 1928,
+      "self_seconds": 0.021609100000000003,
+      "cumulative_seconds": 30.435105000000004
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\decision_trace_types.py",
+      "line": 82,
+      "function": "_json_object",
+      "primitive_calls": 59096,
+      "calls": 59096,
+      "self_seconds": 0.13401190000000002,
+      "cumulative_seconds": 25.079916800000003
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\decision_trace_types.py",
+      "line": 29,
+      "function": "_bounded_json_object",
+      "primitive_calls": 60296,
+      "calls": 60296,
+      "self_seconds": 0.5170889000000001,
+      "cumulative_seconds": 24.844337200000002
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\audit_chain_types.py",
+      "line": 64,
+      "function": "_json",
+      "primitive_calls": 2056,
+      "calls": 2056,
+      "self_seconds": 0.0402604,
+      "cumulative_seconds": 24.219051500000003
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _overlapped.GetQueuedCompletionStatus>",
+      "primitive_calls": 1905,
+      "calls": 1905,
+      "self_seconds": 16.4949999,
+      "cumulative_seconds": 20.3553172
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\audit_chain.py",
+      "line": 1571,
+      "function": "_references",
+      "primitive_calls": 32,
+      "calls": 32,
+      "self_seconds": 0.008540500000000001,
+      "cumulative_seconds": 19.301939400000002
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\audit_chain.py",
+      "line": 204,
+      "function": "subject_hash",
+      "primitive_calls": 373,
+      "calls": 373,
+      "self_seconds": 0.10562,
+      "cumulative_seconds": 16.4794805
+    },
+    {
+      "file": "C:\\Users\\starryzac\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\copy.py",
+      "line": 118,
+      "function": "deepcopy",
+      "primitive_calls": 60296,
+      "calls": 3121183,
+      "self_seconds": 7.421146200000001,
+      "cumulative_seconds": 16.451138
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\pydantic\\main.py",
+      "line": 742,
+      "function": "model_validate_json",
+      "primitive_calls": 539,
+      "calls": 539,
+      "self_seconds": 0.0023383,
+      "cumulative_seconds": 16.199948900000003
+    },
+    {
+      "file": "C:\\Users\\starryzac\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\copy.py",
+      "line": 217,
+      "function": "_deepcopy_dict",
+      "primitive_calls": 60296,
+      "calls": 233450,
+      "self_seconds": 2.6348923,
+      "cumulative_seconds": 15.958847200000001
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\audit_chain.py",
+      "line": 210,
+      "function": "parse_subject",
+      "primitive_calls": 173,
+      "calls": 173,
+      "self_seconds": 0.0929755,
+      "cumulative_seconds": 15.951298300000001
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\decision_trace.py",
+      "line": 142,
+      "function": "verify_trace",
+      "primitive_calls": 18,
+      "calls": 18,
+      "self_seconds": 0.045934300000000004,
+      "cumulative_seconds": 15.208053900000001
+    },
+    {
+      "file": "C:\\Users\\starryzac\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\__init__.py",
+      "line": 183,
+      "function": "dumps",
+      "primitive_calls": 79140,
+      "calls": 79140,
+      "self_seconds": 0.42524520000000005,
+      "cumulative_seconds": 13.3011914
+    },
+    {
+      "file": "C:\\Users\\starryzac\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\encoder.py",
+      "line": 183,
+      "function": "encode",
+      "primitive_calls": 79140,
+      "calls": 79140,
+      "self_seconds": 0.3387895,
+      "cumulative_seconds": 12.782766
+    },
+    {
+      "file": "C:\\Users\\starryzac\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\encoder.py",
+      "line": 205,
+      "function": "iterencode",
+      "primitive_calls": 79140,
+      "calls": 79140,
+      "self_seconds": 12.295808200000002,
+      "cumulative_seconds": 12.295808200000002
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\services\\decision_trace.py",
+      "line": 492,
+      "function": "_stored_trace",
+      "primitive_calls": 9,
+      "calls": 9,
+      "self_seconds": 0.0699501,
+      "cumulative_seconds": 12.2628213
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'validate_json' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+      "primitive_calls": 539,
+      "calls": 539,
+      "self_seconds": 0.5029622,
+      "cumulative_seconds": 9.9314766
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\pydantic\\main.py",
+      "line": 253,
+      "function": "__init__",
+      "primitive_calls": 20248,
+      "calls": 20248,
+      "self_seconds": 0.0334667,
+      "cumulative_seconds": 9.9116765
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\audit_chain.py",
+      "line": 199,
+      "function": "subject_canonical_text",
+      "primitive_calls": 173,
+      "calls": 173,
+      "self_seconds": 0.0642241,
+      "cumulative_seconds": 7.7407105000000005
+    },
+    {
+      "file": "C:\\Users\\starryzac\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\copy.py",
+      "line": 191,
+      "function": "_deepcopy_list",
+      "primitive_calls": 121737,
+      "calls": 223232,
+      "self_seconds": 0.4110769,
+      "cumulative_seconds": 7.657044000000001
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "verified_at": "2026-10-04T15:14:28.965327+00:00",
+  "state": "APPLIED_TARGETED_VERIFIED_FROZEN",
+  "app_tests_passed": 13,
+  "source": {
+    "apps/web/src/App.tsx": "1779585e8ac75a0225d4f06928bc8e238df2f3689c33e9a7294751f01405e8bd",
+    "apps/web/src/App.test.tsx": "ef7c05ac503bdd869b0b76d39a79daa62c979e41d9090198790afb8c0bbfab65",
+    "packages/contracts/schema.d.ts": "0d18fd09e21a6ca18e79e3ef89a972569e3760b006ae1b9bad4686a18b5fe928"
+  },
+  "checks": [
+    {
+      "manifest": "20261004T151311Z-typecheck.json",
+      "command": [
+        "C:\\Users\\starryzac\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\bin\\fallback\\pnpm.cmd",
+        "--dir",
+        "apps/web",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "raw_log": "20261004T151311Z-typecheck.txt",
+      "raw_log_sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92"
+    },
+    {
+      "manifest": "20261004T151320Z-app-test.json",
+      "command": [
+        "C:\\Users\\starryzac\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\bin\\fallback\\pnpm.cmd",
+        "--dir",
+        "apps/web",
+        "test",
+        "src/App.test.tsx"
+      ],
+      "exit_code": 0,
+      "raw_log": "20261004T151320Z-app-test.txt",
+      "raw_log_sha256": "2208a3a5a0e4cb7b0d7786ef222ecd69873f3dea3d9715d4b991ca8b7a571a76"
+    },
+    {
+      "manifest": "20261004T151312Z-lint.json",
+      "command": [
+        "C:\\Users\\starryzac\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\bin\\fallback\\pnpm.cmd",
+        "--dir",
+        "apps/web",
+        "lint"
+      ],
+      "exit_code": 0,
+      "raw_log": "20261004T151312Z-lint.txt",
+      "raw_log_sha256": "960f1eb37ac4d28430af9bef2c98f32333254854ffde619330f53d373ce0f632"
+    }
+  ],
+  "scope": "Label + App.test only; no money/API/bank/DB/Edge reruns"
+}

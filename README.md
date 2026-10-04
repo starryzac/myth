@@ -2,7 +2,7 @@
 
 面向青年的可审计分级自主资金 Agent。全部账户、产品与动作均为合成模拟。
 
-当前完成17/92项：工程、事实/策略、资金算法、五类动作执行、四级自主、决策轨迹及[MVP-304审计链](docs/progress/MVP-304.md)。304按用户更新的验证节奏完成模块和必要集成验收：源绑定相关142项、复位2节点真实PG通过，正式库全23表只读核对相同。历史两次完整check仍是RED，不计版本全量通过。下一项MVP-401资金边界首页正在接续；初版整体及完整版均尚未完成。见[开发状态](docs/progress/STATUS.md)与[92项追踪](docs/spec/requirements-traceability.md)。
+当前完成18/92项：[MVP-401资金边界首页](docs/progress/MVP-401.md)已定向验收，真实Edge十阶段、资金/UNKNOWN与保留数据迁移通过。初版整体及完整版均未完成，目标持续ACTIVE；下一项MVP-402策略中心与目标页。全量留初版与完整版两个验收节点。见[开发状态](docs/progress/STATUS.md)与[92项追踪](docs/spec/requirements-traceability.md)。
 
 正式库为0006_audit_chain（22业务表），金融seed mvp-301-v6。非重置迁移保留原20表原字段全部数据，新审计表为空，正式旧历史保持LEGACY_UNAUDITED；隔离临时库审计正向结果不代表正式全史VALID。`make seed`导入60天事实、129模拟流水、3账单、T0/T1/30天定存及7独立银行开户记录；成功reset业务摘要v2保持固定、审计历史增长。当前事实查询见[账户API](docs/architecture/account-facts-api.md)。
 

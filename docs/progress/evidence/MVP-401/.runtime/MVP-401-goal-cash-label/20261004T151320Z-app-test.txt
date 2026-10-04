@@ -1,0 +1,11 @@
+$ vitest run "src/App.test.tsx"
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/App.test.tsx (13 tests) 798ms
+
+ Test Files  1 passed (1)
+      Tests  13 passed (13)
+   Start at  23:13:22
+   Duration  3.05s (transform 124ms, setup 445ms, collect 208ms, tests 798ms, environment 857ms, prepare 291ms)
+

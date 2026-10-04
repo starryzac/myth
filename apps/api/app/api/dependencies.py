@@ -27,10 +27,11 @@ def get_session(
 ) -> Iterator[Session]:
     with database_session(engine) as session:
         audit_read = request.url.path.startswith("/api/v1/audit/")
+        dashboard_read = request.url.path == "/api/v1/dashboard" and request.method == "GET"
         if request.method == "GET" or (audit_read and request.method == "POST"):
             # One database snapshot for aggregate facts across multiple SELECTs.
             session.connection(execution_options={"isolation_level": "REPEATABLE READ"})
-        if audit_read:
+        if audit_read or dashboard_read:
             session.execute(text("SET TRANSACTION READ ONLY"))
         yield session
 

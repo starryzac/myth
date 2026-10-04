@@ -1,0 +1,549 @@
+{
+  "status": "COMPLETE",
+  "started_at": "2026-10-04T15:25:52.048450+00:00",
+  "classification": "INSTRUMENTED_TEST_CHAIN_NOT_PRODUCT_SLA",
+  "stages": [
+    {
+      "stage": "initial",
+      "as_of": "2026-10-04T01:00:00+00:00",
+      "expected": [
+        3462400,
+        3157400,
+        0,
+        0
+      ],
+      "event": {
+        "stage": "initial",
+        "as_of": "2026-10-04T01:00:00+00:00"
+      },
+      "browser_url": "http://127.0.0.1:15173",
+      "browser_readonly_all_tables": true,
+      "actual": [
+        3462400,
+        3157400,
+        0,
+        0
+      ],
+      "browser_response_log": ".runtime\\MVP-401-browser-cli\\MVP-401-label-body.txt",
+      "browser_response_log_sha256": "5f15f904b2d93d60be25c833afb58f03e073d472c251f20b1e9c02f7bf9613de"
+    }
+  ],
+  "commands": [
+    {
+      "command": [
+        "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Scripts\\python.exe",
+        "-m",
+        "uvicorn",
+        "--no-access-log",
+        "--app-dir",
+        ".runtime",
+        "mvp401_e2e_server:api",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "18040"
+      ],
+      "pid": 108412
+    },
+    {
+      "command": [
+        "C:\\Program Files\\nodejs\\node.EXE",
+        "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\web\\node_modules\\vite\\bin\\vite.js",
+        "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\web",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "15173"
+      ],
+      "pid": 21624
+    }
+  ],
+  "phases": [
+    {
+      "phase": "create_database",
+      "elapsed_seconds": 0.21899999998277053
+    },
+    {
+      "phase": "migration",
+      "elapsed_seconds": 1.2339999999967404,
+      "top_cumulative": [
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.runtime\\drive_mvp401_label.py",
+          "line": 56,
+          "function": "<lambda>",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 4.000000000000001e-06,
+          "cumulative_seconds": 1.1997086000000001
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\alembic\\command.py",
+          "line": 446,
+          "function": "upgrade",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 1.45e-05,
+          "cumulative_seconds": 1.1997046
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\alembic\\script\\base.py",
+          "line": 541,
+          "function": "run_env",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 5.9e-06,
+          "cumulative_seconds": 1.1994077
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\alembic\\util\\pyfiles.py",
+          "line": 100,
+          "function": "load_python_file",
+          "primitive_calls": 1,
+          "calls": 8,
+          "self_seconds": 6.1000000000000005e-05,
+          "cumulative_seconds": 1.1994018000000002
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\alembic\\util\\pyfiles.py",
+          "line": 128,
+          "function": "load_module_py",
+          "primitive_calls": 1,
+          "calls": 8,
+          "self_seconds": 3.1400000000000004e-05,
+          "cumulative_seconds": 1.1990041
+        },
+        {
+          "file": "<frozen importlib._bootstrap_external>",
+          "line": 989,
+          "function": "exec_module",
+          "primitive_calls": 1,
+          "calls": 8,
+          "self_seconds": 2.9500000000000002e-05,
+          "cumulative_seconds": 1.1988927
+        },
+        {
+          "file": "<frozen importlib._bootstrap>",
+          "line": 480,
+          "function": "_call_with_frames_removed",
+          "primitive_calls": 1,
+          "calls": 8,
+          "self_seconds": 8.7e-06,
+          "cumulative_seconds": 1.1983717
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.exec>",
+          "primitive_calls": 1,
+          "calls": 9,
+          "self_seconds": 0.0001382,
+          "cumulative_seconds": 1.1983689000000002
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\alembic\\env.py",
+          "line": 1,
+          "function": "<module>",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 5.03e-05,
+          "cumulative_seconds": 1.1983629
+        },
+        {
+          "file": "<string>",
+          "line": 1,
+          "function": "run_migrations",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 3e-06,
+          "cumulative_seconds": 1.1663305000000002
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\alembic\\runtime\\environment.py",
+          "line": 948,
+          "function": "run_migrations",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 1.15e-05,
+          "cumulative_seconds": 1.1663275000000002
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\alembic\\runtime\\migration.py",
+          "line": 564,
+          "function": "run_migrations",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0002077,
+          "cumulative_seconds": 1.1662884
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\alembic\\operations\\base.py",
+          "line": 440,
+          "function": "invoke",
+          "primitive_calls": 106,
+          "calls": 106,
+          "self_seconds": 0.0003842,
+          "cumulative_seconds": 1.1021602000000001
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py",
+          "line": 1404,
+          "function": "execute",
+          "primitive_calls": 115,
+          "calls": 115,
+          "self_seconds": 0.0004021,
+          "cumulative_seconds": 1.0637644000000002
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\alembic\\ddl\\impl.py",
+          "line": 209,
+          "function": "_exec",
+          "primitive_calls": 113,
+          "calls": 113,
+          "self_seconds": 0.0003749,
+          "cumulative_seconds": 1.0599783
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py",
+          "line": 1767,
+          "function": "_execute_context",
+          "primitive_calls": 119,
+          "calls": 119,
+          "self_seconds": 0.0007668000000000001,
+          "cumulative_seconds": 1.0300507
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\psycopg\\connection.py",
+          "line": 479,
+          "function": "wait",
+          "primitive_calls": 126,
+          "calls": 126,
+          "self_seconds": 0.0003613,
+          "cumulative_seconds": 1.0265655
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\psycopg\\waiting.py",
+          "line": 329,
+          "function": "wait_select",
+          "primitive_calls": 126,
+          "calls": 126,
+          "self_seconds": 0.0013219,
+          "cumulative_seconds": 1.0262042
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py",
+          "line": 1826,
+          "function": "_exec_single_context",
+          "primitive_calls": 119,
+          "calls": 119,
+          "self_seconds": 0.0011783000000000002,
+          "cumulative_seconds": 1.0241084
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\psycopg\\cursor.py",
+          "line": 100,
+          "function": "execute",
+          "primitive_calls": 121,
+          "calls": 121,
+          "self_seconds": 0.0004983,
+          "cumulative_seconds": 1.0230288
+        }
+      ]
+    },
+    {
+      "phase": "seed",
+      "elapsed_seconds": 2.360000000044238,
+      "top_cumulative": [
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\tests\\dashboard_scenario.py",
+          "line": 48,
+          "function": "initialize",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 2.72e-05,
+          "cumulative_seconds": 2.1728583
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\demo_seed.py",
+          "line": 908,
+          "function": "seed_demo",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0013989,
+          "cumulative_seconds": 2.1676686000000003
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\demo_seed.py",
+          "line": 446,
+          "function": "_insert_facts",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0198388,
+          "cumulative_seconds": 1.2158903
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\sql\\elements.py",
+          "line": 524,
+          "function": "_execute_on_connection",
+          "primitive_calls": 545,
+          "calls": 545,
+          "self_seconds": 0.000938,
+          "cumulative_seconds": 1.050091
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py",
+          "line": 1618,
+          "function": "_execute_clauseelement",
+          "primitive_calls": 545,
+          "calls": 545,
+          "self_seconds": 0.0066787,
+          "cumulative_seconds": 1.049153
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py",
+          "line": 1404,
+          "function": "execute",
+          "primitive_calls": 544,
+          "calls": 544,
+          "self_seconds": 0.0014506,
+          "cumulative_seconds": 1.0455367
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py",
+          "line": 1767,
+          "function": "_execute_context",
+          "primitive_calls": 548,
+          "calls": 548,
+          "self_seconds": 0.0035005,
+          "cumulative_seconds": 0.871036
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py",
+          "line": 1826,
+          "function": "_exec_single_context",
+          "primitive_calls": 547,
+          "calls": 547,
+          "self_seconds": 0.0039269000000000005,
+          "cumulative_seconds": 0.8205945
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\orm\\session.py",
+          "line": 4504,
+          "function": "flush",
+          "primitive_calls": 252,
+          "calls": 252,
+          "self_seconds": 0.0005438,
+          "cumulative_seconds": 0.8024058000000001
+        },
+        {
+          "file": "<sqlalchemy generated warned() wrapper for sqlalchemy.orm.session.Session._flush>",
+          "line": 1,
+          "function": "_flush",
+          "primitive_calls": 163,
+          "calls": 163,
+          "self_seconds": 0.00028690000000000003,
+          "cumulative_seconds": 0.8014260000000001
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\util\\deprecations.py",
+          "line": 249,
+          "function": "warned",
+          "primitive_calls": 163,
+          "calls": 163,
+          "self_seconds": 0.0013917,
+          "cumulative_seconds": 0.8011391000000001
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\orm\\session.py",
+          "line": 4557,
+          "function": "_flush",
+          "primitive_calls": 163,
+          "calls": 163,
+          "self_seconds": 0.004555200000000001,
+          "cumulative_seconds": 0.7995752
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\psycopg\\connection.py",
+          "line": 479,
+          "function": "wait",
+          "primitive_calls": 792,
+          "calls": 792,
+          "self_seconds": 0.0018003000000000001,
+          "cumulative_seconds": 0.7968547
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\psycopg\\waiting.py",
+          "line": 329,
+          "function": "wait_select",
+          "primitive_calls": 792,
+          "calls": 792,
+          "self_seconds": 0.009650500000000001,
+          "cumulative_seconds": 0.7950544
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\orm\\unitofwork.py",
+          "line": 442,
+          "function": "execute",
+          "primitive_calls": 163,
+          "calls": 163,
+          "self_seconds": 0.0015031,
+          "cumulative_seconds": 0.7621428
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\orm\\unitofwork.py",
+          "line": 641,
+          "function": "execute",
+          "primitive_calls": 424,
+          "calls": 424,
+          "self_seconds": 0.0010012,
+          "cumulative_seconds": 0.7367829
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\orm\\persistence.py",
+          "line": 39,
+          "function": "_save_obj",
+          "primitive_calls": 424,
+          "calls": 424,
+          "self_seconds": 0.0091445,
+          "cumulative_seconds": 0.7357817000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 1365,
+          "calls": 1365,
+          "self_seconds": 0.6458586000000001,
+          "cumulative_seconds": 0.6458586000000001
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\psycopg\\cursor.py",
+          "line": 100,
+          "function": "execute",
+          "primitive_calls": 435,
+          "calls": 435,
+          "self_seconds": 0.0014616000000000002,
+          "cumulative_seconds": 0.5981249000000001
+        },
+        {
+          "file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\engine\\default.py",
+          "line": 1191,
+          "function": "do_execute",
+          "primitive_calls": 432,
+          "calls": 432,
+          "self_seconds": 0.0007189000000000001,
+          "cumulative_seconds": 0.5947305
+        }
+      ]
+    }
+  ],
+  "code_commit": "c1a1e5ce9b4cde7f92d5cc4ef2dac05534a2d5fd",
+  "source_before": {
+    "apps\\api\\alembic\\env.py": "9622008c7bef99fb62669042ed1f666c6b477073cf19528b2ef6de23690f332b",
+    "apps\\api\\alembic\\versions\\0001_mvp_tables_create_sixteen_mvp_persistence_tables.py": "4761be8c1fd2bbad7dd7879e4c40ed151a6e1e25ad035be6aec6e9b08c4488a6",
+    "apps\\api\\alembic\\versions\\0002_immutable_policy_versions.py": "bb3e09d4c28e516512c3cd71e203539b897dc82e4498b0f30da560edfdcc0192",
+    "apps\\api\\alembic\\versions\\0003_simulated_bank.py": "d88399b02465f6849470496c32eb71d4e46390d259d3d255ab2df4287cda98b4",
+    "apps\\api\\alembic\\versions\\0004_execution_bank.py": "bde661c45cac401ba91f6cbb9082a016ffc2bdeaad8a163de4561a697190ea3f",
+    "apps\\api\\alembic\\versions\\0005_decision_trace.py": "8b85befe070bfdaf7244e0f4b117656ccdab5c33458368335701a935cd93de6b",
+    "apps\\api\\alembic\\versions\\0006_audit_chain.py": "9909c910581e4d96107e28c0fedd81f624beaf87a7d4a7b9c20ab3df539ac772",
+    "apps\\api\\alembic\\versions\\0007_external_bank_facts.py": "b859958079f3e0f746796f726036b2134526c484e39473bb93bd89a67be1ca9d",
+    "apps\\api\\app\\__init__.py": "27cf758dade80f4efcdde1f2672760962864a3368fe7ff5875efcabdb4bba12a",
+    "apps\\api\\app\\api\\__init__.py": "f93ce92dfdd7dec699035b7474627a4df161b87072dedc580300c17411013422",
+    "apps\\api\\app\\api\\dependencies.py": "76da0ec6a821fc1a47994e51986f2c20e07f775720a40e44418459d5f98b9a64",
+    "apps\\api\\app\\api\\errors.py": "92a5d2c026ec5c8e6c28054552580edf61f2155c51590db5db75d16d88ef7a76",
+    "apps\\api\\app\\api\\v1\\accounts.py": "c8bcc6c4db2c89346834945e02d4897e85d9f4e5b6e9ae751e18ddc89d6bf23c",
+    "apps\\api\\app\\api\\v1\\actions.py": "e24b57baf4ac2ff220fb1f46fb1c9bfc78031b360ad1be0c89c6341536837f64",
+    "apps\\api\\app\\api\\v1\\assets.py": "0d41b6eb963e93dc2d361d5405fc6dee0c927a440b55a28076e7974e5b8cb5c8",
+    "apps\\api\\app\\api\\v1\\audit.py": "fc1f6eead5297c8127c4a87f406e9667466ea90404b614cdafcea3a2ffa949ce",
+    "apps\\api\\app\\api\\v1\\boundary.py": "36fa5282b39c13d2bbed1bc17a31f0014781dd78598271974f2161559658cb31",
+    "apps\\api\\app\\api\\v1\\dashboard.py": "939d768d9cfa26b13557a0067320fe9dcc8cba7a424294e8767a15684b2f07e5",
+    "apps\\api\\app\\api\\v1\\decisions.py": "94359bfb81a7d242cf84db958c6c33cadbb141a672475dff8296e3e2852befaa",
+    "apps\\api\\app\\api\\v1\\goals.py": "bf0c263b650d1204c5a810a9fc73ad680f5c432af2965a26fab8dafa47b734ca",
+    "apps\\api\\app\\api\\v1\\living_reserve.py": "9c6a473c310f03a70170a31389d84b0f2a2ef659a3cc3b67c0e055c2a9e20f4c",
+    "apps\\api\\app\\api\\v1\\policies.py": "6f7f09f85cdb6626c3c96bbd186a0048ef6987611f5aecbb6c94839b393f86f5",
+    "apps\\api\\app\\api\\v1\\recovery.py": "589c554dbcc214d08fdb77f3aa493c66733ec4ad8d6e91464dafb21db7e1b5cf",
+    "apps\\api\\app\\db\\__init__.py": "463e0c160c84f6f9ad063cbf9d62e8f83354995ff89b0c1900ee294dd1acfb26",
+    "apps\\api\\app\\db\\audit_guard.py": "3812c23354026cc02a5e9a15f5384c262b13fcade34789735db8a7265d1d65b3",
+    "apps\\api\\app\\db\\base.py": "031a8f35bd3ccd64e4a65e3634946dd7898e6819375780da9f8b8967e86c6429",
+    "apps\\api\\app\\db\\models.py": "68813c028cf7bd6a117ba35577f2fa362a1956a94a71d41ff037db5d31d01a3e",
+    "apps\\api\\app\\db\\session.py": "7f01b64901b9006216c7d80d607a360daedd16d2528578bab6c328773c637b70",
+    "apps\\api\\app\\db\\settings.py": "725ff1085e41f4165a3b371766c7b216c2f12940ea79591794bb5db05fbc01b1",
+    "apps\\api\\app\\db\\testing.py": "1e39c644e6b8fe2b3025eb4373cf02e519c6babef7b7448140076a5ffa86fc99",
+    "apps\\api\\app\\domain\\asset_allocation.py": "2385315cf96f795359db60baee2f58e2c8b7321b26bb222c4a615da39db1252d",
+    "apps\\api\\app\\domain\\asset_allocation_types.py": "7d028925f5d7f2abff4286dab513001120b417ddd3a6a4e5700e0f35dc6e8f4c",
+    "apps\\api\\app\\domain\\asset_exposure.py": "f062996fa4950978b7870bbefba7ba8ef9133e456c881d78129efaf3b2ba05dc",
+    "apps\\api\\app\\domain\\audit_chain.py": "5c1877cd4f1d1b41e5dd498ad0d07de39633aa21299d085f6c08f6e57bc4a640",
+    "apps\\api\\app\\domain\\audit_chain_types.py": "0741cc79df41a968f3e4fdbf756c120679af27a792b9921fec68c4eca46fcfbf",
+    "apps\\api\\app\\domain\\autonomy.py": "eef5c36d9d384d0f77a5264956c31b8dc8a6caf6080b8b8784a749de612e319b",
+    "apps\\api\\app\\domain\\autonomy_types.py": "29b1cea4414fddc33034c7e8ea0aff398cbb76245dc2d29e762b20124e1f5bce",
+    "apps\\api\\app\\domain\\bank_posting_codec.py": "7fec7004b1c0af2f1bd460efb5291a53bd4a1d7ab13614851a0ee3b81aa04d5c",
+    "apps\\api\\app\\domain\\boundary.py": "22967240f3239a1ec63fba9cd7f3121f09c771618f3adc669063e1e51cceaa75",
+    "apps\\api\\app\\domain\\boundary_details_types.py": "d470c3a63bb591a9fc0993d4cb1fec10a5c297e7014c5d3d33255480f8bf3a32",
+    "apps\\api\\app\\domain\\boundary_types.py": "425b9913c1001025d4bd92af0adcd667d936bc15a7fff009097dd93d39323618",
+    "apps\\api\\app\\domain\\decision_trace.py": "9d4c08f5245b5d3871b19fb405c88c4f34a9a11975540e2b0f1330ac008b3837",
+    "apps\\api\\app\\domain\\decision_trace_types.py": "83d6d3621c02cbd89dd26bdf15cde0f78ddeb4159c21e7a1a748fb1e495c03a2",
+    "apps\\api\\app\\domain\\demo_identity.py": "9aff0af6f8f6d08120ff9ec624b3c8b28ee3fa021110cd8c649f28d7f28658a1",
+    "apps\\api\\app\\domain\\execution.py": "c99ef78067e019d914657383fafe74bbda51f67ebfdc745475edcdc2abd39002",
+    "apps\\api\\app\\domain\\execution_types.py": "0f491229fadbc1f759f48e4212cc23587c893ff7828af4611f64b746f2f22d21",
+    "apps\\api\\app\\domain\\external_bank_fact.py": "cedbc5fa9311f0f102799caeb8a48e81b7a0af2be7af14a761214bca4f649b9a",
+    "apps\\api\\app\\domain\\external_bank_fact_types.py": "be0057fbe92e31568e5d52bede1eb486d84d4165e66c096237e6d883fb16aab4",
+    "apps\\api\\app\\domain\\goal_allocation.py": "081e4b31edf4c943b757f9477e5d9996f63132b2dc625c50c66bff72d8577e70",
+    "apps\\api\\app\\domain\\history_coverage.py": "7dead15e72d620c9c840f064e278fda4b92bb8b3a0948a956d75c9e7594318af",
+    "apps\\api\\app\\domain\\income_ledger.py": "00e36777c622726b01e4797b91ee1bfa306c2fb9aa00404dca46bf37a72d4252",
+    "apps\\api\\app\\domain\\living_reserve.py": "7722fa3550d2bfa485d6dd48ef4b39e140dcd7859d22b5d277bd1336b65dd8ee",
+    "apps\\api\\app\\domain\\policy_compiler.py": "f641917feb6b918a89e066dbf6fc274864b0d2a7ec7e9c93f25ad36a3dba30d2",
+    "apps\\api\\app\\domain\\policy_configuration.py": "e3645cd3faa23921b765bc7e952d4953489d508eb39e88065632e24d49c94657",
+    "apps\\api\\app\\domain\\recovery.py": "4dffa41ca47989eede8c8ce6cb62753d70bd13f36215b856de073ab50ea9690b",
+    "apps\\api\\app\\domain\\recovery_types.py": "95939a907f012f0460b8301c03efd592082c3368e131708897173e3ec8e74a59",
+    "apps\\api\\app\\main.py": "43bfa70a426944b2e14451e495876e8078be93172e7e07f2dc9897e7c6818b90",
+    "apps\\api\\app\\services\\action_contracts.py": "d551c9b51744769e2a8efaed6e86b0ad74b79064e889c596ee8139f3d9eefaa0",
+    "apps\\api\\app\\services\\asset_allocation.py": "88b987d8d581b5bcec12f68d3e6ae2e09d893aaecb2b421ebee28373c2e6d7ef",
+    "apps\\api\\app\\services\\asset_exposure_import.py": "da81307c13e249987622c4c5931ef236e4f77adb608a9fd52cadc5dd10448ee8",
+    "apps\\api\\app\\services\\audit_chain.py": "d1e977b64d6f80b70bbab7d980ba891d8e5c97bcdc4859f8f52ab4dac3b8f402",
+    "apps\\api\\app\\services\\audit_recording.py": "0ec595aa675f8285630d33958b642ebe7856ef7ed5943d99c4581694f3ec050e",
+    "apps\\api\\app\\services\\autonomy.py": "5b9db59de66bc7b3f692b86bf1e9efeb70cdb9c160a04d4caf7488ca3a1b988b",
+    "apps\\api\\app\\services\\boundary.py": "41401649fa59f1f7fc06a99cff69b1762857b1cb7924534bfd0c57e024ea640b",
+    "apps\\api\\app\\services\\dashboard.py": "e0da53dc4232312e95d35a9571e7179badd1d63c9d272ab2e5e31ea1e2f4e823",
+    "apps\\api\\app\\services\\dashboard_helpers.py": "da0adace6d2123a1b8a21c919eebbea879ae7a3076b37cad32e7e78f51cb2f8c",
+    "apps\\api\\app\\services\\dashboard_types.py": "fd3255e243b2a7999b81c16ae6c90daa6c72d91c4a83e708dbdeabcb1d52a168",
+    "apps\\api\\app\\services\\decision_assessment.py": "ed2389019ea25b3492c0f21969aa00428b579d1fee85a360af4f3673a6188216",
+    "apps\\api\\app\\services\\decision_recording.py": "a96a9556523708165e4274fff654596938173c7e1f1cbb6b9cd24c4b1ca1b1be",
+    "apps\\api\\app\\services\\decision_trace.py": "f1566cbd9fefa4ffa9cb6f3154a5bebce5424246df8554db4c71bef0b8944c47",
+    "apps\\api\\app\\services\\demo_seed.py": "940c5df18b9726893fd3bb58edee631f23564ce8f6a7cdbfe77b25d8eb1376c4",
+    "apps\\api\\app\\services\\execution.py": "9ed8fb17869e5aa23ce4f8ea45d1feee33afeeca8d8d1d7848ee292713b4bc44",
+    "apps\\api\\app\\services\\execution_bank.py": "04f4ecb8b24f15f6ab1373f5dd45f2ee15960cca158131bf393390b5eb44eb04",
+    "apps\\api\\app\\services\\execution_context.py": "845cba064cced66077d233962d957e1b0040773bdfc59f27e1a01528101d0d1f",
+    "apps\\api\\app\\services\\execution_exposure.py": "e5010bf59591975091d3c4896e4f8a367641a1e6a7c6beb40c14a9a2e613bacd",
+    "apps\\api\\app\\services\\execution_planning.py": "548ed9e82e3f9a54bb2bd1581fa55f7e481d8f929d1d8a431edfcb33e8d7ef0f",
+    "apps\\api\\app\\services\\execution_projection.py": "3087f536b33ed99f92bd32f139811a0e0630dcb7ba413df7c0c439b0f64cbd91",
+    "apps\\api\\app\\services\\execution_reservations.py": "2c18c9270924806c1a5377882390431c0055a23548e7ab963a29f72bbcde5d32",
+    "apps\\api\\app\\services\\execution_sources.py": "4aa3d27ae7f9ff107138f888c49ee67f29b544be616b0a7332ac2bd97d2dcbe5",
+    "apps\\api\\app\\services\\external_bank_facts.py": "cb2580dc716ce91f0e3cf1df07de9e273ae47691fa9a13ff96bbbec4a2c79ce5",
+    "apps\\api\\app\\services\\goal_allocation.py": "ec0b9e594b8f270b5f48bcf941554d6bb536a94fd60cd49e7c8e2ebb6ebfb75a",
+    "apps\\api\\app\\services\\goals.py": "667f164e41f9aa837f80411876005fddf03613d51c19266ad17d14fcbc495153",
+    "apps\\api\\app\\services\\income_ledger.py": "a2300a892089081d60537a93741408fbf3236b32dab6e957c7882cfd5a4dca0c",
+    "apps\\api\\app\\services\\living_reserve.py": "0efc351152da97a1be99e34ea2a540df301dbcc92033715f175ca877cd14e8b9",
+    "apps\\api\\app\\services\\policy_compilation.py": "0d434f0697abe72100916256e1b2aedf279cafb58543e36b0953ff151a941347",
+    "apps\\api\\app\\services\\policy_discovery.py": "bb96a34f2e1d488f82d6ae1b04626e279bd87105f0699f0e7d16f7de78c49812",
+    "apps\\api\\app\\services\\policy_lifecycle.py": "70924a5488cfdb74421554e070f5e9850d4eb58983fd4ce33c694f73c45ceb14",
+    "apps\\api\\app\\services\\recovery.py": "23ec9b9a8f66c831d56a4ef05f23d2372fe7e60d8dea54f88497b8f534e88081",
+    "apps\\api\\app\\services\\recovery_projection.py": "9cbf312f0d925f70a1098a46ff2d283314c9960d7866eb4b8c56ebac4e805634",
+    "apps\\api\\app\\services\\recovery_receipt_integrity.py": "f6c8c444a6a06e32ec3132f0561781a8d52f7cf58707d09af2e59480c5367946",
+    "apps\\api\\app\\services\\recovery_sources.py": "0fbe26b0231d8af72995471f86edf4dd7e42c44dab028122448b722f1186fdfe",
+    "apps\\api\\app\\services\\simulated_bank.py": "f095d3ba6dc33b54f2030ed9c1a5ee97c77bc607e04eda3f316f1aa09e3a551b",
+    "apps\\api\\app\\tests\\dashboard_scenario.py": "cbeb6d877177f8d9c894ae18ea55508bc667863b760decbd7a4663c933161374",
+    "apps\\web\\src\\api\\dashboard.test.ts": "03120d0a4e2cd1d759bde22e706ff43dd242a8b9a14eb5a8e2d6ddbfff0d925b",
+    "apps\\web\\src\\api\\dashboard.ts": "325184f50ec416a49030c6aa34e5af611205876944dabcd8d4352e6dbc0d68fc",
+    "apps\\web\\src\\App.test.tsx": "ef7c05ac503bdd869b0b76d39a79daa62c979e41d9090198790afb8c0bbfab65",
+    "apps\\web\\src\\App.tsx": "1779585e8ac75a0225d4f06928bc8e238df2f3689c33e9a7294751f01405e8bd",
+    "apps\\web\\src\\features\\dashboard-labels.ts": "fe2fbdfb7571a989faec6b6572c5c12e6fd88c88e6fd418dadd8a3c94edb89bd",
+    "apps\\web\\src\\features\\money.test.ts": "991e51f5b5ba8af4986be809638a7a6f97ffc4feb1aff908db06f8cd83008021",
+    "apps\\web\\src\\features\\money.ts": "5e44fa76a286306659a4babc9089be143c991cce5495d902538ae241a06597ea",
+    "apps\\web\\src\\main.tsx": "40a97de305f82f93ebc72afe896c14003259c26aa163822bb8ce1423fb2b5971",
+    "apps\\web\\src\\styles.css": "1e0cf63d268072ee0c5db23c61ac6e78c85e96978a3c2adc70d629f0c386af33",
+    "apps\\web\\src\\tests\\dashboard-fixture.ts": "e1f16bbb8df997224a18065f7978355b12545ebb90b2109cfc5f17ed2d00cc31",
+    "packages\\contracts\\openapi.json": "3fb958a7546982029b590479f47022dd829b415c22b038bdb1b526afca417c6d",
+    "packages\\contracts\\schema.d.ts": "0d18fd09e21a6ca18e79e3ef89a972569e3760b006ae1b9bad4686a18b5fe928"
+  },
+  "finished_at": "2026-10-04T15:28:07.777465+00:00",
+  "changed_during_run": []
+}

@@ -1,0 +1,23 @@
+$ vitest run "src/App.test.tsx" "src/features/money.test.ts" "src/api/dashboard.test.ts"
+failed to load config from F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\vitest.config.ts
+
+⎯⎯⎯⎯⎯⎯⎯ Startup Error ⎯⎯⎯⎯⎯⎯⎯⎯
+Error: spawn EPERM
+    at ChildProcess.spawn (node:internal/child_process:421:11)
+    at Object.spawn (node:child_process:796:9)
+    at ensureServiceIsRunning (F:\学校活动\工行杯\钱途有界\bounded-funds\node_modules\.pnpm\esbuild@0.28.2\node_modules\esbuild\lib\main.js:2272:29)
+    at build (F:\学校活动\工行杯\钱途有界\bounded-funds\node_modules\.pnpm\esbuild@0.28.2\node_modules\esbuild\lib\main.js:2170:26)
+    at bundleConfigFile (file:///F:/%E5%AD%A6%E6%A0%A1%E6%B4%BB%E5%8A%A8/%E5%B7%A5%E8%A1%8C%E6%9D%AF/%E9%92%B1%E9%80%94%E6%9C%89%E7%95%8C/bounded-funds/node_modules/.pnpm/vite@7.3.6_@types+node@24.6.0_jiti@2.7.0_lightningcss@1.30.1/node_modules/vite/dist/node/chunks/config.js:35895:23)
+    at bundleAndLoadConfigFile (file:///F:/%E5%AD%A6%E6%A0%A1%E6%B4%BB%E5%8A%A8/%E5%B7%A5%E8%A1%8C%E6%9D%AF/%E9%92%B1%E9%80%94%E6%9C%89%E7%95%8C/bounded-funds/node_modules/.pnpm/vite@7.3.6_@types+node@24.6.0_jiti@2.7.0_lightningcss@1.30.1/node_modules/vite/dist/node/chunks/config.js:35882:24)
+    at loadConfigFromFile (file:///F:/%E5%AD%A6%E6%A0%A1%E6%B4%BB%E5%8A%A8/%E5%B7%A5%E8%A1%8C%E6%9D%AF/%E9%92%B1%E9%80%94%E6%9C%89%E7%95%8C/bounded-funds/node_modules/.pnpm/vite@7.3.6_@types+node@24.6.0_jiti@2.7.0_lightningcss@1.30.1/node_modules/vite/dist/node/chunks/config.js:35851:179)
+    at resolveConfig (file:///F:/%E5%AD%A6%E6%A0%A1%E6%B4%BB%E5%8A%A8/%E5%B7%A5%E8%A1%8C%E6%9D%AF/%E9%92%B1%E9%80%94%E6%9C%89%E7%95%8C/bounded-funds/node_modules/.pnpm/vite@7.3.6_@types+node@24.6.0_jiti@2.7.0_lightningcss@1.30.1/node_modules/vite/dist/node/chunks/config.js:35500:28)
+    at _createServer (file:///F:/%E5%AD%A6%E6%A0%A1%E6%B4%BB%E5%8A%A8/%E5%B7%A5%E8%A1%8C%E6%9D%AF/%E9%92%B1%E9%80%94%E6%9C%89%E7%95%8C/bounded-funds/node_modules/.pnpm/vite@7.3.6_@types+node@24.6.0_jiti@2.7.0_lightningcss@1.30.1/node_modules/vite/dist/node/chunks/config.js:25441:73)
+    at createServer$2 (file:///F:/%E5%AD%A6%E6%A0%A1%E6%B4%BB%E5%8A%A8/%E5%B7%A5%E8%A1%8C%E6%9D%AF/%E9%92%B1%E9%80%94%E6%9C%89%E7%95%8C/bounded-funds/node_modules/.pnpm/vite@7.3.6_@types+node@24.6.0_jiti@2.7.0_lightningcss@1.30.1/node_modules/vite/dist/node/chunks/config.js:25438:9) {
+  errno: -4048,
+  code: 'EPERM',
+  syscall: 'spawn'
+}
+
+
+
+[ELIFECYCLE] Test failed. See above for more details.

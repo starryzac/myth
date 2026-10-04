@@ -3,9 +3,24 @@
 import json
 from calendar import monthrange
 from collections.abc import Sequence
+from dataclasses import dataclass
 from datetime import UTC, date, datetime, time, timedelta, timezone
-from typing import Any
+from typing import Any, Literal
+from uuid import UUID
 
+from app.domain.boundary_details_types import (
+    BoundaryComputation,
+    BoundaryDisplayDetails,
+    CurrentGoalOwnership,
+    CurrentProtection,
+    GoalOwnershipItem,
+    NextObligations,
+    ObligationOccurrence,
+    PaymentFact,
+    ProtectionValue,
+    TotalBasis,
+    UnassignedGoalCashItem,
+)
 from app.domain.boundary_types import (
     BlockingConstraint,
     BoundaryPoint,
@@ -85,13 +100,45 @@ def _insufficient(
     )
 
 
-def compute_boundary(
+@dataclass(frozen=True)
+class _OccurrencePlan:
+    occurrence_id: str
+    kind: Literal["CREDIT_CARD_BILL", "RECURRING_ORDINARY"]
+    bill_id: UUID | None
+    account_id: UUID | None
+    policy_id: UUID | None
+    policy_version_id: UUID | None
+    period: str | None
+    payee_id: str | None
+    due_date: date
+    projection_payment_date: date
+    overdue: bool
+    protected_total_cents: int
+    remaining_protection_cents: int
+    total_basis: TotalBasis
+    actual_final_total_cents: int | None
+    paid_cents: int | None
+    payment_fact: PaymentFact
+    evidence_ids: tuple[UUID, ...]
+
+
+@dataclass(frozen=True)
+class _BoundaryCore:
+    boundary: BoundaryResult
+    obligation_plan: tuple[_OccurrencePlan, ...]
+    snapshot: BoundarySnapshot
+    positions: tuple[BoundaryPosition, ...]
+    first: date
+    last: date
+
+
+def _compute_boundary_core(
     snapshot: BoundarySnapshot,
     active_policy_versions: Sequence[BoundaryPolicyVersion],
     positions: Sequence[BoundaryPosition],
     products: Sequence[BoundaryProduct],
-) -> BoundaryResult:
-    """Return financial necessary conditions across today and ninety following dates."""
+) -> _BoundaryCore:
+    """Compute financial v1 once and retain its original obligation metadata."""
     snapshot = BoundarySnapshot.model_validate(snapshot.model_dump())
     if len(active_policy_versions) > 100 or len(positions) > 10000 or len(products) > 100:
         raise ValueError("Boundary capacity is 100 policies, 10000 positions and 100 products")
@@ -210,14 +257,42 @@ def compute_boundary(
     ):
         raise ValueError("Owned goal cash exceeds its account balance")
     life = {item.policy_version_id: item.amount_cents for item in snapshot.living_reserves}
-    obligations = {
-        f"bill:{item.bill_id}": (max(first, item.due_date), item.total_cents - item.paid_cents)
-        for item in snapshot.bills
-        if item.due_date <= last and item.total_cents > item.paid_cents
-    }
+    obligations: dict[str, tuple[date, int]] = {}
+    obligation_plan: list[_OccurrencePlan] = []
+    for item in snapshot.bills:
+        if item.due_date <= last and item.total_cents > item.paid_cents:
+            key = f"bill:{item.bill_id}"
+            payment_date = max(first, item.due_date)
+            remaining = item.total_cents - item.paid_cents
+            obligations[key] = (payment_date, remaining)
+            obligation_plan.append(
+                _OccurrencePlan(
+                    occurrence_id=key,
+                    kind="CREDIT_CARD_BILL",
+                    bill_id=item.bill_id,
+                    account_id=item.account_id,
+                    policy_id=None,
+                    policy_version_id=None,
+                    period=None,
+                    payee_id=None,
+                    due_date=item.due_date,
+                    projection_payment_date=payment_date,
+                    overdue=item.due_date < first,
+                    protected_total_cents=item.total_cents,
+                    remaining_protection_cents=remaining,
+                    total_basis="BILL_ACTUAL",
+                    actual_final_total_cents=item.total_cents,
+                    paid_cents=item.paid_cents,
+                    payment_fact="BILL_CONFIRMED",
+                    evidence_ids=tuple(sorted(set(item.evidence_ids))),
+                )
+            )
     notes: list[str] = []
     settlements = {
         (item.policy_id, item.period): item.paid_cents for item in snapshot.occurrence_settlements
+    }
+    settlement_facts = {
+        (item.policy_id, item.period): item for item in snapshot.occurrence_settlements
     }
     final_totals = {
         (item.policy_id, item.period): item.final_total_cents
@@ -321,7 +396,54 @@ def compute_boundary(
                 if paid > occurrence_amount:
                     raise ValueError("Occurrence settlement exceeds its configured obligation")
                 if occurrence_amount > paid:
-                    obligations[key] = (max(first, due), occurrence_amount - paid)
+                    payment_date = max(first, due)
+                    remaining = occurrence_amount - paid
+                    obligations[key] = (payment_date, remaining)
+                    fact = settlement_facts.get((policy.policy_id, period))
+                    total_basis: TotalBasis = (
+                        "SETTLEMENT_FINAL"
+                        if fact is not None and fact.final_total_cents is not None
+                        else "POLICY_EXACT"
+                        if rule["kind"] == "exact"
+                        else "POLICY_RANGE_MAX"
+                    )
+                    payment_fact: PaymentFact = (
+                        "SETTLEMENT_CONFIRMED"
+                        if fact is not None
+                        else "MISSING_HISTORICAL_IMPORT"
+                        if due < first
+                        else "NO_IMPORT_CURRENT_OR_FUTURE"
+                    )
+                    obligation_plan.append(
+                        _OccurrencePlan(
+                            occurrence_id=key,
+                            kind="RECURRING_ORDINARY",
+                            bill_id=None,
+                            account_id=None,
+                            policy_id=policy.policy_id,
+                            policy_version_id=policy.version_id,
+                            period=period,
+                            payee_id=config["payee_id"],
+                            due_date=due,
+                            projection_payment_date=payment_date,
+                            overdue=due < first,
+                            protected_total_cents=occurrence_amount,
+                            remaining_protection_cents=remaining,
+                            total_basis=total_basis,
+                            actual_final_total_cents=(
+                                fact.final_total_cents if fact is not None else None
+                            ),
+                            paid_cents=fact.paid_cents if fact is not None else None,
+                            payment_fact=payment_fact,
+                            evidence_ids=tuple(
+                                sorted(
+                                    set(policy.evidence_ids).union(
+                                        fact.evidence_ids if fact is not None else []
+                                    )
+                                )
+                            ),
+                        )
+                    )
         elif config["type"] == "goal_saving":
             if policy.policy_id not in ownership:
                 evidence_blockers.append(
@@ -361,7 +483,14 @@ def compute_boundary(
                 max(0, config["target_cents"] - goal.allocated_cents), max(total, shortfall)
             )
     if evidence_blockers:
-        return _insufficient(financial_hash, products, evidence_blockers, notes)
+        return _BoundaryCore(
+            _insufficient(financial_hash, products, evidence_blockers, notes),
+            tuple(obligation_plan),
+            snapshot,
+            tuple(positions),
+            first,
+            last,
+        )
     trace: list[BoundaryPoint] = []
     goal_cash = sum(item.cash_owned_cents for item in snapshot.goals) + sum(
         item.amount_cents for item in snapshot.unassigned_goal_cash
@@ -461,7 +590,7 @@ def compute_boundary(
             or (point.day == return_day and point.phase != "AFTER_PRINCIPAL")
         ]
         product_caps[str(product.product_id)] = max(0, min(occupying)) if margin >= 0 else 0
-    return BoundaryResult(
+    result = BoundaryResult(
         algorithm_version=ALGORITHM_VERSION,
         status="READY" if margin >= 0 else "LIQUIDITY_RISK",
         safe_idle_cents=max(0, margin),
@@ -473,4 +602,152 @@ def compute_boundary(
         calculation_trace=trace,
         boundary_hash=financial_hash,
         calculation_notes=sorted(notes),
+    )
+
+    return _BoundaryCore(result, tuple(obligation_plan), snapshot, tuple(positions), first, last)
+
+
+def compute_boundary(
+    snapshot: BoundarySnapshot,
+    active_policy_versions: Sequence[BoundaryPolicyVersion],
+    positions: Sequence[BoundaryPosition],
+    products: Sequence[BoundaryProduct],
+) -> BoundaryResult:
+    """Return financial necessary conditions across today and ninety following dates."""
+    return _compute_boundary_core(snapshot, active_policy_versions, positions, products).boundary
+
+
+def _next_obligations(core: _BoundaryCore) -> NextObligations:
+    if core.boundary.status == "INSUFFICIENT_EVIDENCE":
+        return NextObligations(
+            status="NOT_PROVEN",
+            next_due_date=None,
+            next_count=None,
+            next_remaining_protection_cents=None,
+            basis_summary=None,
+            items=[],
+            items_complete=False,
+        )
+    ordered = sorted(core.obligation_plan, key=lambda item: (item.due_date, item.occurrence_id))
+    if not ordered:
+        return NextObligations(
+            status="PROVEN",
+            next_due_date=None,
+            next_count=0,
+            next_remaining_protection_cents=0,
+            basis_summary=None,
+            items=[],
+            items_complete=True,
+        )
+    due = ordered[0].due_date
+    group = [item for item in ordered if item.due_date == due]
+    upper_bounds = sum(item.total_basis == "POLICY_RANGE_MAX" for item in group)
+    basis: Literal["EXACT", "UPPER_BOUND", "MIXED"] = (
+        "EXACT" if upper_bounds == 0 else "UPPER_BOUND" if upper_bounds == len(group) else "MIXED"
+    )
+    return NextObligations(
+        status="PROVEN",
+        next_due_date=due,
+        next_count=len(group),
+        next_remaining_protection_cents=sum(item.remaining_protection_cents for item in group),
+        basis_summary=basis,
+        items=[
+            ObligationOccurrence.model_validate(
+                {
+                    **vars(item),
+                    "evidence_ids": list(item.evidence_ids),
+                }
+            )
+            for item in group[:20]
+        ],
+        items_complete=len(group) <= 20,
+    )
+
+
+def _current_protection(core: _BoundaryCore) -> CurrentProtection:
+    if core.boundary.status == "INSUFFICIENT_EVIDENCE":
+        return CurrentProtection(status="NOT_PROVEN", value=None)
+    point = core.boundary.calculation_trace[0]
+    return CurrentProtection(
+        status="PROVEN",
+        value=ProtectionValue(
+            date=point.date,
+            amounts_by_reason=dict(point.protected_cents_by_reason),
+            total_cents=sum(point.protected_cents_by_reason.values()),
+            cash_cents=point.cash_cents,
+            margin_cents=point.margin_cents,
+        ),
+    )
+
+
+def _current_goal_ownership(core: _BoundaryCore) -> CurrentGoalOwnership:
+    if core.boundary.status == "INSUFFICIENT_EVIDENCE":
+        return CurrentGoalOwnership(
+            status="NOT_PROVEN",
+            items=[],
+            cash_owned_cents=None,
+            principal_owned_cents=None,
+            allocated_cents=None,
+            unassigned_goal_cash=[],
+            unassigned_goal_cash_cents=None,
+        )
+    items = [
+        GoalOwnershipItem(
+            goal_id=goal.goal_id,
+            policy_id=goal.policy_id,
+            account_id=goal.account_id,
+            cash_owned_cents=goal.cash_owned_cents,
+            principal_owned_cents=goal.principal_owned_cents,
+            allocated_cents=goal.allocated_cents,
+            evidence_ids=sorted(set(goal.evidence_ids)),
+            principal_position_ids=[
+                position.position_id
+                for position in core.positions
+                if position.goal_id == goal.goal_id and position.status != "REDEEMED"
+            ],
+        )
+        for goal in sorted(core.snapshot.goals, key=lambda item: item.goal_id)
+    ]
+    unassigned = [
+        UnassignedGoalCashItem(
+            account_id=item.account_id,
+            amount_cents=item.amount_cents,
+            evidence_ids=sorted(set(item.evidence_ids)),
+        )
+        for item in sorted(core.snapshot.unassigned_goal_cash, key=lambda item: item.account_id)
+    ]
+    return CurrentGoalOwnership(
+        status="PROVEN",
+        items=items,
+        cash_owned_cents=sum(item.cash_owned_cents for item in items),
+        principal_owned_cents=sum(item.principal_owned_cents for item in items),
+        allocated_cents=sum(item.allocated_cents for item in items),
+        unassigned_goal_cash=unassigned,
+        unassigned_goal_cash_cents=sum(item.amount_cents for item in unassigned),
+    )
+
+
+def compute_boundary_with_details(
+    snapshot: BoundarySnapshot,
+    active_policy_versions: Sequence[BoundaryPolicyVersion],
+    positions: Sequence[BoundaryPosition],
+    products: Sequence[BoundaryProduct],
+) -> BoundaryComputation:
+    """Build independent display facts from the single validated financial v1 computation."""
+    core = _compute_boundary_core(snapshot, active_policy_versions, positions, products)
+    return BoundaryComputation(
+        boundary=core.boundary,
+        details=BoundaryDisplayDetails(
+            as_of=core.snapshot.as_of,
+            timezone=core.snapshot.timezone,
+            window_start=core.first,
+            window_end=core.last,
+            input_digest=core.snapshot.source_digest,
+            boundary_hash=core.boundary.boundary_hash,
+            next_obligations=_next_obligations(core),
+            current_protection=_current_protection(core),
+            current_goal_ownership=_current_goal_ownership(core),
+            blocking_constraints=list(core.boundary.blocking_constraints),
+            source_issues=list(core.snapshot.source_issues),
+        ),
     )

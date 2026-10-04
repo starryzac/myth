@@ -1,0 +1,8 @@
+{
+  "only_changed_function": "_project",
+  "only_changed_operation": "final internal validate_bank_projection allow_unprojected=True",
+  "source_before_sha256": "cb2580dc716ce91f0e3cf1df07de9e273ae47691fa9a13ff96bbbec4a2c79ce5",
+  "source_after_sha256": "e008b93cfaa61a6957d209340fde0b379e3fb76e5d0ff9cb5a5b83c6e4bb2c77",
+  "other_functions_ast_unchanged": true,
+  "all_other_source_text_unchanged": true
+}

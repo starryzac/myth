@@ -1,0 +1,37 @@
+{
+  "stage": "goal_allocated",
+  "request_index": 130,
+  "response_as_of": "2026-10-04T01:00:40Z",
+  "visible": {
+    "stage_cards": [
+      {
+        "name": "91日资金边界",
+        "amount": "¥33,474.00"
+      },
+      {
+        "name": "账面现金",
+        "amount": "¥36,624.00"
+      },
+      {
+        "name": "目标资金归属",
+        "amount": "¥100.00"
+      },
+      {
+        "name": "已自主配置",
+        "amount": "¥0.00"
+      }
+    ],
+    "viewport": 1440,
+    "document": 1425,
+    "simulation": true
+  },
+  "expected_visible": [
+    "¥33,474.00",
+    "¥36,624.00",
+    "¥100.00",
+    "¥0.00"
+  ],
+  "capture_elapsed_seconds": 65.31300000002375,
+  "screenshot": "output/playwright/MVP-401-goal_allocated.png",
+  "screenshot_sha256": "27e848e5bf3a3834bdfa743527617f71d889b9a62baaf296110b28a9edc386ec"
+}

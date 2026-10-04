@@ -695,6 +695,110 @@ class SimulatedBankRedemption(OwnedMixin, Base):
     )
 
 
+class ExternalBankFact(OwnedMixin, Base):
+    """Trusted external bank fact; independent from the Agent command protocol."""
+
+    __tablename__ = "external_bank_facts"
+    protocol_version: Mapped[str] = mapped_column(String(40))
+    source_id: Mapped[str] = mapped_column(String(40))
+    external_ref: Mapped[str] = mapped_column(String(160))
+    kind: Mapped[str] = mapped_column(String(24))
+    account_id: Mapped[UUID]
+    amount_cents: Mapped[int] = mapped_column(MoneyCents())
+    currency: Mapped[str] = mapped_column(String(3), server_default="CNY")
+    counterparty_ref: Mapped[str] = mapped_column(String(96))
+    occurred_at: Mapped[datetime] = mapped_column(UTCDateTime())
+    observed_at: Mapped[datetime] = mapped_column(UTCDateTime())
+    idempotency_key: Mapped[str] = mapped_column(String(160))
+    request: Mapped[JsonObject] = mapped_column(JSONB)
+    request_canonical_text: Mapped[str] = mapped_column(Text)
+    request_hash: Mapped[str] = mapped_column(String(64))
+    bank_status: Mapped[str] = mapped_column(String(24), server_default="ACCEPTED")
+    accepted_at: Mapped[datetime] = mapped_column(UTCDateTime())
+    settled_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
+    bank_result: Mapped[JsonObject | None] = mapped_column(JSONB(none_as_null=True))
+    bank_result_canonical_text: Mapped[str | None] = mapped_column(Text)
+    bank_result_hash: Mapped[str | None] = mapped_column(String(64))
+    projection_status: Mapped[str] = mapped_column(String(24), server_default="PENDING")
+    projected_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
+    projection_result: Mapped[JsonObject | None] = mapped_column(JSONB(none_as_null=True))
+    projection_result_canonical_text: Mapped[str | None] = mapped_column(Text)
+    projection_result_hash: Mapped[str | None] = mapped_column(String(64))
+    updated_at: Mapped[datetime] = mapped_column(UTCDateTime())
+    __table_args__ = owned_args(
+        owned_reference("account_id", "accounts"),
+        UniqueConstraint("user_id", "source_id", "external_ref", name="uq_external_bank_fact_ref"),
+        UniqueConstraint("user_id", "idempotency_key", name="uq_external_bank_fact_key"),
+        Index(
+            "ix_external_bank_fact_pending",
+            "user_id",
+            "bank_status",
+            "projection_status",
+            "occurred_at",
+            "id",
+        ),
+        CheckConstraint(
+            "protocol_version = 'bank-external-fact-v1' "
+            "AND source_id = 'bounded-funds-external-v1'",
+            name="protocol",
+        ),
+        CheckConstraint(
+            "kind IN ('INCOME', 'CONSUMPTION') AND currency = 'CNY' AND amount_cents > 0",
+            name="economics",
+        ),
+        CheckConstraint(
+            "length(external_ref) BETWEEN 1 AND 160 "
+            "AND length(idempotency_key) BETWEEN 1 AND 160 "
+            "AND length(counterparty_ref) BETWEEN 1 AND 96",
+            name="identity",
+        ),
+        CheckConstraint(
+            "occurred_at <= observed_at AND observed_at <= accepted_at "
+            "AND updated_at >= accepted_at",
+            name="time",
+        ),
+        CheckConstraint(
+            "request_hash ~ '^[0-9a-f]{64}$' AND jsonb_typeof(request) = 'object' "
+            "AND octet_length(request_canonical_text) <= 1048576",
+            name="request",
+        ),
+        CheckConstraint(
+            "bank_status IN ('ACCEPTED', 'SETTLED', 'UNKNOWN', 'REJECTED')", name="bank_status"
+        ),
+        CheckConstraint(
+            "(bank_status = 'SETTLED' AND settled_at IS NOT NULL AND settled_at >= accepted_at "
+            "AND bank_result IS NOT NULL AND jsonb_typeof(bank_result) = 'object' "
+            "AND bank_result_canonical_text IS NOT NULL AND bank_result_hash IS NOT NULL "
+            "AND bank_result_hash ~ '^[0-9a-f]{64}$' "
+            "AND octet_length(bank_result_canonical_text) <= 1048576) "
+            "OR (bank_status <> 'SETTLED' AND settled_at IS NULL AND bank_result IS NULL "
+            "AND bank_result_canonical_text IS NULL AND bank_result_hash IS NULL)",
+            name="bank_result",
+        ),
+        CheckConstraint(
+            "projection_status IN ('PENDING', 'PROJECTED', 'UNKNOWN')", name="projection_status"
+        ),
+        CheckConstraint(
+            "(projection_status = 'PROJECTED' AND bank_status = 'SETTLED' "
+            "AND projected_at IS NOT NULL AND projected_at >= settled_at "
+            "AND projection_result IS NOT NULL AND jsonb_typeof(projection_result) = 'object' "
+            "AND projection_result_canonical_text IS NOT NULL "
+            "AND projection_result_hash IS NOT NULL "
+            "AND projection_result_hash ~ '^[0-9a-f]{64}$' "
+            "AND octet_length(projection_result_canonical_text) <= 1048576) "
+            "OR (projection_status <> 'PROJECTED' AND projected_at IS NULL "
+            "AND projection_result IS NULL AND projection_result_canonical_text IS NULL "
+            "AND projection_result_hash IS NULL)",
+            name="projection_result",
+        ),
+        CheckConstraint(
+            "(projection_status = 'PENDING' OR bank_status = 'SETTLED') "
+            "AND updated_at >= coalesce(projected_at, settled_at, accepted_at)",
+            name="projection_bank_state",
+        ),
+    )
+
+
 class SimulatedBankPosting(OwnedMixin, Base):
     __tablename__ = "simulated_bank_postings"
     ledger_key: Mapped[str] = mapped_column(String(160))
@@ -704,6 +808,7 @@ class SimulatedBankPosting(OwnedMixin, Base):
     position_id: Mapped[UUID | None]
     redemption_id: Mapped[UUID | None]
     operation_id: Mapped[UUID | None]
+    external_fact_id: Mapped[UUID | None]
     leg_ref: Mapped[str | None] = mapped_column(String(160))
     previous_posting_id: Mapped[UUID | None]
     sequence_number: Mapped[int] = mapped_column(Integer)
@@ -716,12 +821,14 @@ class SimulatedBankPosting(OwnedMixin, Base):
         owned_reference("account_id", "accounts"),
         owned_reference("redemption_id", "simulated_bank_redemptions"),
         owned_reference("operation_id", "bank_operations"),
+        owned_reference("external_fact_id", "external_bank_facts"),
         owned_reference("previous_posting_id", "simulated_bank_postings"),
         UniqueConstraint(
             "user_id", "ledger_key", "sequence_number", name="uq_bank_posting_sequence"
         ),
         UniqueConstraint("redemption_id", "entry_kind", name="uq_bank_posting_redemption_leg"),
         UniqueConstraint("operation_id", "leg_ref", name="uq_bank_posting_operation_leg"),
+        UniqueConstraint("external_fact_id", "leg_ref", name="uq_bank_posting_external_leg"),
         CheckConstraint("sequence_number > 0", name="sequence"),
         CheckConstraint(
             "balance_before_cents >= 0 AND balance_after_cents >= 0 "
@@ -734,16 +841,21 @@ class SimulatedBankPosting(OwnedMixin, Base):
             "(account_id IS NULL AND position_id IS NOT NULL "
             "AND ledger_key = 'POSITION:' || position_id::text) OR "
             "(account_id IS NULL AND position_id IS NULL AND "
-            "(ledger_key LIKE 'PAYEE:%' OR ledger_key LIKE 'FEE:%' OR ledger_key LIKE 'LOSS:%')))) "
+            "(ledger_key LIKE 'PAYEE:%' OR ledger_key LIKE 'FEE:%' OR ledger_key LIKE 'LOSS:%' "
+            "OR ledger_key LIKE 'CLEARING:bounded-funds-external-v1:%')))) "
             "OR (ledger_dimension IN ('GOAL_OWNERSHIP', 'INCOME_LOCATION', 'LIABILITY') "
             "AND position_id IS NULL)",
             name="ledger_identity",
         ),
         CheckConstraint(
             "(entry_kind = 'OPENING' AND redemption_id IS NULL AND operation_id IS NULL "
+            "AND external_fact_id IS NULL "
             "AND leg_ref IS NULL AND sequence_number = 1 "
             "AND previous_posting_id IS NULL AND balance_before_cents = 0 AND delta_cents >= 0) "
-            "OR (entry_kind <> 'OPENING' AND operation_id IS NOT NULL AND leg_ref IS NOT NULL "
+            "OR (entry_kind <> 'OPENING' AND ((operation_id IS NOT NULL "
+            "AND external_fact_id IS NULL) OR (operation_id IS NULL "
+            "AND external_fact_id IS NOT NULL AND redemption_id IS NULL)) "
+            "AND leg_ref IS NOT NULL "
             "AND previous_posting_id IS NOT NULL AND sequence_number > 1)",
             name="entry",
         ),

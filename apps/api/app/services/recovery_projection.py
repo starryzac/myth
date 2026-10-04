@@ -60,11 +60,13 @@ def replace_proof(
     content: dict[str, Any],
     now: datetime,
     operation_id: UUID,
+    *,
+    evidence_id: UUID | None = None,
 ) -> EvidenceItem:
     digest = configuration_hash(content)
     if previous.content == content and previous.observed_at == now:
         return previous
-    identity = uuid5(operation_id, f"evidence:{previous.id}:{digest}")
+    identity = evidence_id or uuid5(operation_id, f"evidence:{previous.id}:{digest}")
     previous.status = "SUPERSEDED"
     row = EvidenceItem(
         id=identity,
@@ -93,7 +95,7 @@ def refresh_exposure(
     declarations: dict[UUID, dict[str, Any]],
 ) -> None:
     previous = current_proof(session, user_id, EXPOSURE_SOURCE)
-    if previous.content.get("protocol") == "asset-exposure-v3":
+    if previous.content.get("protocol") in {"asset-exposure-v3", "asset-exposure-v4"}:
         from app.services.execution_exposure import refresh_execution_exposure
 
         refresh_execution_exposure(session, user_id, now, operation_id, declarations=declarations)

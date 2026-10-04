@@ -259,7 +259,7 @@ def test_income_augmented_action_anchors_the_actual_final_request_and_executes(
     goal_client: tuple[TestClient, Engine],
 ) -> None:
     client, engine = goal_client
-    goal_id, _, _, _ = public_zero_goal(engine)
+    goal_id, _, _, _ = public_zero_goal(engine, import_income=False)
     action = prepare_action(
         engine,
         DEMO_USER_ID,

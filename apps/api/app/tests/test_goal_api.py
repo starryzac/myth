@@ -20,6 +20,7 @@ from app.domain.policy_configuration import configuration_hash
 from app.main import create_app
 from app.services.demo_seed import seed_demo
 from app.services.goal_allocation import LEDGER_SOURCE
+from app.tests.test_boundary_service import seed_legacy_income_fixture
 from fastapi.testclient import TestClient
 from sqlalchemy import select
 from sqlalchemy.engine import Engine
@@ -31,13 +32,19 @@ TEXT = "买车目标三万元，截止2027年10月1日，每月至少一千八�
 
 
 @pytest.fixture
-def goal_client() -> Iterator[tuple[TestClient, Engine]]:
+def goal_client(request: pytest.FixtureRequest) -> Iterator[tuple[TestClient, Engine]]:
     with temporary_database() as url:
         config = Config(str(Path(__file__).resolve().parents[4] / "alembic.ini"))
         config.set_main_option("sqlalchemy.url", url.replace("%", "%%"))
         command.upgrade(config, "head")
         engine = create_database_engine(url)
-        seed_demo(engine)
+        initial_state = getattr(request, "param", "native")
+        if initial_state == "native":
+            seed_demo(engine)
+        elif initial_state == "legacy-income":
+            seed_legacy_income_fixture(engine)
+        else:
+            raise ValueError("Unknown trusted goal fixture initial state")
         api = create_app()
         api.dependency_overrides[get_engine] = lambda: engine
         api.dependency_overrides[get_now] = lambda: NOW
@@ -179,6 +186,7 @@ def test_goal_creation_rejects_stale_inactive_foreign_and_client_financial_field
     assert all_tables(engine) == before
 
 
+@pytest.mark.parametrize("goal_client", ["legacy-income"], indirect=True)
 def test_allocation_preview_requires_complete_sources_and_is_read_only(
     goal_client: tuple[TestClient, Engine],
 ) -> None:
@@ -201,6 +209,7 @@ def test_allocation_preview_requires_complete_sources_and_is_read_only(
     assert all_tables(engine) == before
 
 
+@pytest.mark.parametrize("goal_client", ["legacy-income"], indirect=True)
 def test_http_preview_allocates_only_verified_available_income_and_preserves_reservations(
     goal_client: tuple[TestClient, Engine],
 ) -> None:

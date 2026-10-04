@@ -22,6 +22,7 @@ from app.api.v1.actions import router as action_router
 from app.api.v1.assets import router as asset_router
 from app.api.v1.audit import router as audit_router
 from app.api.v1.boundary import router as boundary_router
+from app.api.v1.dashboard import router as dashboard_router
 from app.api.v1.decisions import router as decision_router
 from app.api.v1.goals import router as goal_router
 from app.api.v1.living_reserve import router as reserve_router
@@ -84,6 +85,7 @@ def create_app() -> FastAPI:
     api.include_router(action_router)
     api.include_router(decision_router)
     api.include_router(audit_router)
+    api.include_router(dashboard_router)
 
     async def lifecycle_error_handler(request: Request, exception: Exception) -> JSONResponse:
         assert isinstance(exception, PolicyLifecycleError)

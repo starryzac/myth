@@ -1,0 +1,78 @@
+{
+  "simulation": true,
+  "user_id": "271a9827-f82a-5be6-9e0a-50f721029fb0",
+  "as_of": "2026-10-03T16:00:00Z",
+  "plan": {
+    "algorithm_version": "whole-position-recovery-v1",
+    "user_id": "271a9827-f82a-5be6-9e0a-50f721029fb0",
+    "as_of": "2026-10-03T16:00:00Z",
+    "simulation": true,
+    "preview_only": true,
+    "status": "INSUFFICIENT_EVIDENCE",
+    "actual_boundary": {
+      "algorithm_version": "strict-cash-boundary-v1",
+      "status": "INSUFFICIENT_EVIDENCE",
+      "financial_only": true,
+      "safe_idle_cents": null,
+      "minimum_margin_cents": null,
+      "deficit_cents": null,
+      "protected_cents_by_reason": {},
+      "max_allocatable_by_product": {
+        "16de5243-77ab-5f9e-b848-168b5aea7496": null,
+        "2bdff536-91a3-5060-a0aa-3d19aab86c45": null,
+        "68ddd90c-cd17-4df2-826d-c7a707a9c339": null,
+        "707aaa2b-268c-58d2-979c-259a7dbd6858": null,
+        "99d37933-b2e3-5ce9-be7a-3804befd8edc": null,
+        "c6ebc4fc-26c6-5e2c-8df6-ebf417a93086": null,
+        "e7aba366-8d36-5c35-bc26-d65fe9a3290c": null
+      },
+      "blocking_constraints": [
+        {
+          "code": "INVALID_ASSET_EXPOSURE",
+          "entity_id": "88c6700e-6cb4-5ed6-ab81-f7087c3f17b6",
+          "date": null,
+          "required_cents": null,
+          "available_cents": null
+        }
+      ],
+      "calculation_trace": [],
+      "boundary_hash": "724191924f22f9e69125c67af34bf9a41e251410c45f81f29b7dd4207cb61818",
+      "calculation_notes": []
+    },
+    "projected_boundary": null,
+    "steps": [],
+    "candidates": [],
+    "uncovered_checkpoints": [],
+    "first_sustained_safe_point": null,
+    "plan_hash": "4e9590e9d8a1459312cad43db4422c39fe6a1366590e5ee6ddbbe4b0c8a03f49",
+    "reasons": [
+      "SOURCE_EVIDENCE_INCOMPLETE"
+    ]
+  },
+  "source_evidence_ids": [
+    "0b5a9920-5a24-503e-8586-194667df6643",
+    "0e120166-6dcb-4d6c-9737-364e92724ce4",
+    "3d3f413b-a572-5491-8122-c9bb03b30e8d",
+    "3d90eb9b-4292-5110-a05e-34bcc73e8240",
+    "5b6ab655-fc9f-412f-8a52-5d349643ed46",
+    "64fbd342-1980-5134-af1a-b343c597a6c8",
+    "6f3a6cac-0e2a-5f49-a89b-0882bc5da2d5",
+    "7421454e-4136-5106-b877-d0de00718a92",
+    "88c6700e-6cb4-5ed6-ab81-f7087c3f17b6",
+    "9b828e4d-7bd8-52fd-b706-220fc8cb7197",
+    "a202e1ac-860c-5509-bdb5-56e7e364a98c",
+    "c017dfc1-3d62-560f-9d70-a494eeeeed99",
+    "c3272ab9-f37e-52f6-b5f8-6e1dcaa20938",
+    "c7c772cb-6b38-456a-993a-b97a1e0aacdb",
+    "deb31198-687f-500a-a203-ae07fc3b7d11",
+    "f9b0d89e-21ac-468d-9ab2-c4f70abdb0d4"
+  ],
+  "input_digest": "3f0d8d64426ddfd45363dc4bf6eb19a8e851ce8a9895cba9daee0d3bb1c1a6e8",
+  "source_issues": [
+    {
+      "code": "INVALID_ASSET_EXPOSURE",
+      "source_ref": "88c6700e-6cb4-5ed6-ab81-f7087c3f17b6",
+      "message": "External bank facts require complete exposure v4"
+    }
+  ]
+}

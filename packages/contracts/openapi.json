@@ -2805,6 +2805,93 @@
         }
       }
     },
+    "/api/v1/dashboard": {
+      "get": {
+        "tags": [
+          "模拟资金边界首页"
+        ],
+        "summary": "Dashboard Summary",
+        "operationId": "dashboard_summary",
+        "parameters": [
+          {
+            "name": "pending_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Pending Limit"
+            }
+          },
+          {
+            "name": "recovery_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 10,
+              "title": "Recovery Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
     "/api/v1/health": {
       "get": {
         "summary": "Health",
@@ -2846,6 +2933,45 @@
   },
   "components": {
     "schemas": {
+      "AccountFactsCard": {
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "PROVEN",
+              "NOT_PROVEN",
+              "INCOMPLETE"
+            ],
+            "title": "State"
+          },
+          "facts": {
+            "$ref": "#/components/schemas/AccountSummary"
+          },
+          "bank_projection_state": {
+            "type": "string",
+            "enum": [
+              "MATCHED",
+              "NOT_PROVEN"
+            ],
+            "title": "Bank Projection State"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/BoundarySourceIssue"
+            },
+            "type": "array",
+            "title": "Issues"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "state",
+          "facts",
+          "bank_projection_state"
+        ],
+        "title": "AccountFactsCard"
+      },
       "AccountSummary": {
         "properties": {
           "simulation": {
@@ -3974,7 +4100,7 @@
             "default": 1
           },
           "payload": {
-            "$ref": "#/components/schemas/AuditPayload"
+            "$ref": "#/components/schemas/AuditPayloadV1"
           },
           "occurred_at": {
             "type": "string",
@@ -4063,6 +4189,186 @@
           "event_hash"
         ],
         "title": "AuditEnvelope"
+      },
+      "AuditEnvelopeV2": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "event_type": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Event Type"
+          },
+          "aggregate_type": {
+            "type": "string",
+            "maxLength": 48,
+            "minLength": 1,
+            "title": "Aggregate Type"
+          },
+          "aggregate_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Aggregate Id"
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Correlation Id"
+          },
+          "causation_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Causation Id"
+          },
+          "decision_run_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decision Run Id"
+          },
+          "action_plan_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Plan Id"
+          },
+          "action_receipt_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Receipt Id"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Idempotency Key"
+          },
+          "payload_version": {
+            "type": "integer",
+            "const": 2,
+            "title": "Payload Version",
+            "default": 2
+          },
+          "payload": {
+            "$ref": "#/components/schemas/AuditPayloadV2"
+          },
+          "occurred_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Occurred At"
+          },
+          "schema_version": {
+            "type": "string",
+            "const": "audit-event-v1",
+            "title": "Schema Version",
+            "default": "audit-event-v1"
+          },
+          "canonical_version": {
+            "type": "string",
+            "const": "audit-canonical-json-v1",
+            "title": "Canonical Version",
+            "default": "audit-canonical-json-v1"
+          },
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "epoch_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Epoch Id"
+          },
+          "sequence_number": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "title": "Sequence Number"
+          },
+          "previous_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Hash"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "appended_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Appended At"
+          },
+          "event_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Event Hash"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "event_type",
+          "aggregate_type",
+          "aggregate_id",
+          "correlation_id",
+          "idempotency_key",
+          "payload",
+          "occurred_at",
+          "id",
+          "epoch_id",
+          "sequence_number",
+          "previous_hash",
+          "observed_at",
+          "appended_at",
+          "event_hash"
+        ],
+        "title": "AuditEnvelopeV2"
       },
       "AuditEpochTransition": {
         "properties": {
@@ -4311,9 +4617,13 @@
                 "$ref": "#/components/schemas/AuditEnvelope"
               },
               {
+                "$ref": "#/components/schemas/AuditEnvelopeV2"
+              },
+              {
                 "type": "null"
               }
-            ]
+            ],
+            "title": "Envelope"
           },
           "original": {
             "anyOf": [
@@ -4624,7 +4934,7 @@
         ],
         "title": "AuditObservation"
       },
-      "AuditPayload": {
+      "AuditPayloadV1": {
         "properties": {
           "fact_key": {
             "type": "string",
@@ -4715,7 +5025,48 @@
           "fact_key",
           "correlation_kind"
         ],
-        "title": "AuditPayload"
+        "title": "AuditPayloadV1"
+      },
+      "AuditPayloadV2": {
+        "properties": {
+          "fact_key": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Fact Key"
+          },
+          "correlation_kind": {
+            "type": "string",
+            "const": "EXTERNAL_BANK_FACT",
+            "title": "Correlation Kind"
+          },
+          "references": {
+            "items": {
+              "$ref": "#/components/schemas/AuditReference"
+            },
+            "type": "array",
+            "maxItems": 10000,
+            "title": "References"
+          },
+          "anchors": {
+            "items": {
+              "$ref": "#/components/schemas/AuditAnchor"
+            },
+            "type": "array",
+            "maxItems": 10000,
+            "title": "Anchors"
+          },
+          "context": {
+            "$ref": "#/components/schemas/AuditFactContext"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "fact_key",
+          "correlation_kind"
+        ],
+        "title": "AuditPayloadV2"
       },
       "AuditReference": {
         "properties": {
@@ -6217,6 +6568,142 @@
         ],
         "title": "DailyReserveAmount"
       },
+      "DashboardAuditCard": {
+        "properties": {
+          "scope": {
+            "type": "string",
+            "const": "CURRENT_LIVE_EPOCH",
+            "title": "Scope",
+            "default": "CURRENT_LIVE_EPOCH"
+          },
+          "epoch_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epoch Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "anchored_run_statuses": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "propertyNames": {
+              "format": "uuid"
+            },
+            "type": "object",
+            "title": "Anchored Run Statuses"
+          },
+          "complete": {
+            "type": "boolean",
+            "title": "Complete"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "epoch_id",
+          "status",
+          "anchored_run_statuses",
+          "complete"
+        ],
+        "title": "DashboardAuditCard"
+      },
+      "DashboardResponse": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "dashboard-v1",
+            "title": "Schema Version",
+            "default": "dashboard-v1"
+          },
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "timezone": {
+            "type": "string",
+            "enum": [
+              "Asia/Shanghai",
+              "UTC"
+            ],
+            "title": "Timezone"
+          },
+          "account_facts": {
+            "$ref": "#/components/schemas/AccountFactsCard"
+          },
+          "boundary": {
+            "$ref": "#/components/schemas/FinancialBoundaryCard"
+          },
+          "goal_ownership": {
+            "$ref": "#/components/schemas/GoalOwnershipCard"
+          },
+          "managed_assets": {
+            "$ref": "#/components/schemas/ManagedAssetsCard"
+          },
+          "next_obligations": {
+            "$ref": "#/components/schemas/NextObligations"
+          },
+          "pending_actions": {
+            "$ref": "#/components/schemas/PendingActionsCard"
+          },
+          "recovery_proposals": {
+            "$ref": "#/components/schemas/RecoveryProposalsCard"
+          },
+          "intervention": {
+            "$ref": "#/components/schemas/InterventionCard"
+          },
+          "audit": {
+            "$ref": "#/components/schemas/DashboardAuditCard"
+          },
+          "source_evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Source Evidence Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "as_of",
+          "timezone",
+          "account_facts",
+          "boundary",
+          "goal_ownership",
+          "managed_assets",
+          "next_obligations",
+          "pending_actions",
+          "recovery_proposals",
+          "intervention",
+          "audit",
+          "source_evidence_ids"
+        ],
+        "title": "DashboardResponse"
+      },
       "DecisionTrace": {
         "properties": {
           "schema_version": {
@@ -7211,6 +7698,189 @@
         ],
         "title": "ExecutionValidation"
       },
+      "FinancialBoundaryCard": {
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "PROVEN",
+              "NOT_PROVEN",
+              "INCOMPLETE"
+            ],
+            "title": "State"
+          },
+          "financial_only": {
+            "type": "boolean",
+            "const": true,
+            "title": "Financial Only",
+            "default": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "LIQUIDITY_RISK",
+              "INSUFFICIENT_EVIDENCE"
+            ],
+            "title": "Status"
+          },
+          "safe_idle_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Safe Idle Cents"
+          },
+          "minimum_margin_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minimum Margin Cents"
+          },
+          "deficit_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deficit Cents"
+          },
+          "protected_cents_by_reason": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "integer"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protected Cents By Reason"
+          },
+          "current_protected_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Protected Cents"
+          },
+          "current_protected_cents_by_reason": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "integer"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Protected Cents By Reason"
+          },
+          "current_margin_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Margin Cents"
+          },
+          "constraining_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Constraining Date"
+          },
+          "window_start": {
+            "type": "string",
+            "format": "date",
+            "title": "Window Start"
+          },
+          "window_end": {
+            "type": "string",
+            "format": "date",
+            "title": "Window End"
+          },
+          "input_digest": {
+            "type": "string",
+            "title": "Input Digest"
+          },
+          "boundary_hash": {
+            "type": "string",
+            "title": "Boundary Hash"
+          },
+          "blocking_constraints": {
+            "items": {
+              "$ref": "#/components/schemas/BlockingConstraint"
+            },
+            "type": "array",
+            "title": "Blocking Constraints"
+          },
+          "calculation_notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Calculation Notes"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/BoundarySourceIssue"
+            },
+            "type": "array",
+            "title": "Issues"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "state",
+          "status",
+          "safe_idle_cents",
+          "minimum_margin_cents",
+          "deficit_cents",
+          "protected_cents_by_reason",
+          "current_protected_cents",
+          "current_protected_cents_by_reason",
+          "current_margin_cents",
+          "constraining_date",
+          "window_start",
+          "window_end",
+          "input_digest",
+          "boundary_hash",
+          "blocking_constraints",
+          "calculation_notes"
+        ],
+        "title": "FinancialBoundaryCard"
+      },
       "GoalAllocationResponse": {
         "properties": {
           "simulation": {
@@ -7584,6 +8254,151 @@
         ],
         "title": "GoalOwnership"
       },
+      "GoalOwnershipCard": {
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "PROVEN",
+              "NOT_PROVEN",
+              "INCOMPLETE"
+            ],
+            "title": "State"
+          },
+          "cash_owned_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cash Owned Cents"
+          },
+          "principal_owned_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Principal Owned Cents"
+          },
+          "allocated_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Allocated Cents"
+          },
+          "unassigned_goal_cash_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unassigned Goal Cash Cents"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/GoalOwnershipItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/BoundarySourceIssue"
+            },
+            "type": "array",
+            "title": "Issues"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "state",
+          "cash_owned_cents",
+          "principal_owned_cents",
+          "allocated_cents",
+          "unassigned_goal_cash_cents",
+          "items"
+        ],
+        "title": "GoalOwnershipCard"
+      },
+      "GoalOwnershipItem": {
+        "properties": {
+          "goal_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Goal Id"
+          },
+          "policy_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Id"
+          },
+          "account_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "cash_owned_cents": {
+            "type": "integer",
+            "title": "Cash Owned Cents"
+          },
+          "principal_owned_cents": {
+            "type": "integer",
+            "title": "Principal Owned Cents"
+          },
+          "allocated_cents": {
+            "type": "integer",
+            "title": "Allocated Cents"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "goal_id",
+          "policy_id",
+          "account_id",
+          "name",
+          "cash_owned_cents",
+          "principal_owned_cents",
+          "allocated_cents",
+          "evidence_ids"
+        ],
+        "title": "GoalOwnershipItem"
+      },
       "GoalResponse": {
         "properties": {
           "simulation": {
@@ -7813,6 +8628,45 @@
           "amount_cents"
         ],
         "title": "IncomeUse"
+      },
+      "InterventionCard": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "NONE",
+              "CONFIRMATION_REQUIRED",
+              "REVIEW_REQUIRED",
+              "RECONCILIATION_REQUIRED",
+              "NOT_PROVEN"
+            ],
+            "title": "Status"
+          },
+          "known_required_count": {
+            "type": "integer",
+            "title": "Known Required Count"
+          },
+          "complete": {
+            "type": "boolean",
+            "title": "Complete"
+          },
+          "reason_codes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reason Codes"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "known_required_count",
+          "complete",
+          "reason_codes"
+        ],
+        "title": "InterventionCard"
       },
       "LifecycleResult": {
         "properties": {
@@ -8146,6 +9000,427 @@
         ],
         "title": "LotAllocation"
       },
+      "ManagedAssetsCard": {
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "PROVEN",
+              "NOT_PROVEN",
+              "INCOMPLETE"
+            ],
+            "title": "State"
+          },
+          "managed_current_principal_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Managed Current Principal Cents"
+          },
+          "general_principal_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "General Principal Cents"
+          },
+          "held_or_matured_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Held Or Matured Cents"
+          },
+          "redeeming_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Redeeming Cents"
+          },
+          "pending_purchase_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pending Purchase Cents"
+          },
+          "by_goal": {
+            "items": {
+              "$ref": "#/components/schemas/ManagedGoalAmount"
+            },
+            "type": "array",
+            "title": "By Goal"
+          },
+          "excluded_manual_count": {
+            "type": "integer",
+            "title": "Excluded Manual Count"
+          },
+          "unknown_position_count": {
+            "type": "integer",
+            "title": "Unknown Position Count"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/BoundarySourceIssue"
+            },
+            "type": "array",
+            "title": "Issues"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "state",
+          "managed_current_principal_cents",
+          "general_principal_cents",
+          "held_or_matured_cents",
+          "redeeming_cents",
+          "pending_purchase_cents",
+          "by_goal",
+          "excluded_manual_count",
+          "unknown_position_count",
+          "evidence_ids"
+        ],
+        "title": "ManagedAssetsCard"
+      },
+      "ManagedGoalAmount": {
+        "properties": {
+          "goal_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Goal Id"
+          },
+          "principal_cents": {
+            "type": "integer",
+            "title": "Principal Cents"
+          },
+          "pending_purchase_cents": {
+            "type": "integer",
+            "title": "Pending Purchase Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "goal_id",
+          "principal_cents",
+          "pending_purchase_cents"
+        ],
+        "title": "ManagedGoalAmount"
+      },
+      "NextObligations": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "PROVEN",
+              "NOT_PROVEN"
+            ],
+            "title": "Status"
+          },
+          "selection_scope": {
+            "type": "string",
+            "const": "KNOWN_PROTECTION_COMMITMENTS_DUE_BY_WINDOW_END_INCLUDING_OVERDUE",
+            "title": "Selection Scope",
+            "default": "KNOWN_PROTECTION_COMMITMENTS_DUE_BY_WINDOW_END_INCLUDING_OVERDUE"
+          },
+          "next_due_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Due Date"
+          },
+          "next_count": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Count"
+          },
+          "next_remaining_protection_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Remaining Protection Cents"
+          },
+          "basis_summary": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "EXACT",
+                  "UPPER_BOUND",
+                  "MIXED"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Basis Summary"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ObligationOccurrence"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Items"
+          },
+          "items_complete": {
+            "type": "boolean",
+            "title": "Items Complete"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "next_due_date",
+          "next_count",
+          "next_remaining_protection_cents",
+          "basis_summary",
+          "items",
+          "items_complete"
+        ],
+        "title": "NextObligations"
+      },
+      "ObligationOccurrence": {
+        "properties": {
+          "occurrence_id": {
+            "type": "string",
+            "title": "Occurrence Id"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "CREDIT_CARD_BILL",
+              "RECURRING_ORDINARY"
+            ],
+            "title": "Kind"
+          },
+          "bill_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bill Id"
+          },
+          "account_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Id"
+          },
+          "policy_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy Id"
+          },
+          "policy_version_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy Version Id"
+          },
+          "period": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period"
+          },
+          "payee_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Payee Id"
+          },
+          "due_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Due Date"
+          },
+          "projection_payment_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Projection Payment Date"
+          },
+          "overdue": {
+            "type": "boolean",
+            "title": "Overdue"
+          },
+          "protected_total_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Protected Total Cents"
+          },
+          "remaining_protection_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Remaining Protection Cents"
+          },
+          "total_basis": {
+            "type": "string",
+            "enum": [
+              "BILL_ACTUAL",
+              "POLICY_EXACT",
+              "POLICY_RANGE_MAX",
+              "SETTLEMENT_FINAL"
+            ],
+            "title": "Total Basis"
+          },
+          "actual_final_total_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actual Final Total Cents"
+          },
+          "paid_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paid Cents"
+          },
+          "payment_fact": {
+            "type": "string",
+            "enum": [
+              "BILL_CONFIRMED",
+              "SETTLEMENT_CONFIRMED",
+              "NO_IMPORT_CURRENT_OR_FUTURE",
+              "MISSING_HISTORICAL_IMPORT"
+            ],
+            "title": "Payment Fact"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "occurrence_id",
+          "kind",
+          "bill_id",
+          "account_id",
+          "policy_id",
+          "policy_version_id",
+          "period",
+          "payee_id",
+          "due_date",
+          "projection_payment_date",
+          "overdue",
+          "protected_total_cents",
+          "remaining_protection_cents",
+          "total_basis",
+          "actual_final_total_cents",
+          "paid_cents",
+          "payment_fact",
+          "evidence_ids"
+        ],
+        "title": "ObligationOccurrence"
+      },
       "OccurrenceReference": {
         "properties": {
           "kind": {
@@ -8239,6 +9514,222 @@
           "policy_id"
         ],
         "title": "PaymentIntent"
+      },
+      "PendingActionItem": {
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Action Id"
+          },
+          "decision_run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Decision Run Id"
+          },
+          "action_type": {
+            "type": "string",
+            "title": "Action Type"
+          },
+          "amount_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount Cents"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "prepared_level": {
+            "type": "string",
+            "title": "Prepared Level"
+          },
+          "prepared_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Prepared At"
+          },
+          "current_decision": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AutonomyDecision"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "effect_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effect Hash"
+          },
+          "fee_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fee Cents"
+          },
+          "loss_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Loss Cents"
+          },
+          "bank_operation_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bank Operation Id"
+          },
+          "bank_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bank Status"
+          },
+          "bank_state_proven": {
+            "type": "boolean",
+            "title": "Bank State Proven"
+          },
+          "receipt_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Receipt Id"
+          },
+          "receipt_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Receipt Status"
+          },
+          "receipt_verified": {
+            "type": "boolean",
+            "title": "Receipt Verified"
+          },
+          "audit_status": {
+            "type": "string",
+            "title": "Audit Status"
+          },
+          "reason_codes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reason Codes"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action_id",
+          "decision_run_id",
+          "action_type",
+          "amount_cents",
+          "status",
+          "prepared_level",
+          "prepared_at",
+          "current_decision",
+          "effect_hash",
+          "fee_cents",
+          "loss_cents",
+          "bank_operation_id",
+          "bank_status",
+          "bank_state_proven",
+          "receipt_id",
+          "receipt_status",
+          "receipt_verified",
+          "audit_status",
+          "reason_codes"
+        ],
+        "title": "PendingActionItem"
+      },
+      "PendingActionsCard": {
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "PROVEN",
+              "NOT_PROVEN",
+              "INCOMPLETE"
+            ],
+            "title": "State"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PendingActionItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "list_complete": {
+            "type": "boolean",
+            "title": "List Complete"
+          },
+          "has_more": {
+            "type": "boolean",
+            "title": "Has More"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "state",
+          "total",
+          "items",
+          "list_complete",
+          "has_more"
+        ],
+        "title": "PendingActionsCard"
       },
       "PlannedExit": {
         "properties": {
@@ -9400,6 +10891,116 @@
           "source_issues"
         ],
         "title": "RecoveryPreviewResponse"
+      },
+      "RecoveryProposalItem": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "original_status": {
+            "type": "string",
+            "title": "Original Status"
+          },
+          "fee_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fee Cents"
+          },
+          "loss_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Loss Cents"
+          },
+          "audit_status": {
+            "type": "string",
+            "title": "Audit Status"
+          },
+          "reason_codes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reason Codes"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id",
+          "as_of",
+          "status",
+          "original_status",
+          "fee_cents",
+          "loss_cents",
+          "audit_status",
+          "reason_codes"
+        ],
+        "title": "RecoveryProposalItem"
+      },
+      "RecoveryProposalsCard": {
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "PROVEN",
+              "NOT_PROVEN",
+              "INCOMPLETE"
+            ],
+            "title": "State"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RecoveryProposalItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "list_complete": {
+            "type": "boolean",
+            "title": "List Complete"
+          },
+          "has_more": {
+            "type": "boolean",
+            "title": "Has More"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "state",
+          "total",
+          "items",
+          "list_complete",
+          "has_more"
+        ],
+        "title": "RecoveryProposalsCard"
       },
       "RecoveryQuote": {
         "properties": {

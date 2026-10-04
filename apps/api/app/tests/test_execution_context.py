@@ -12,6 +12,7 @@ from app.domain.execution_types import ExecutionEffect
 from app.services.demo_seed import DEMO_USER_ID, SEED_AS_OF, seed_demo
 from app.services.execution_context import load_execution_context
 from app.services.recovery import preview_recovery
+from app.tests.test_boundary_service import seed_legacy_income_fixture
 from app.tests.test_demo_seed import database_snapshot
 from app.tests.test_demo_seed import demo_engine as demo_engine
 from app.tests.test_recovery_service import recovery_fixture
@@ -69,7 +70,7 @@ def redemption_effect(session: Session) -> ExecutionEffect:
 def test_context_keeps_original_quote_and_authority_as_execution_clock_advances(
     demo_engine: Engine,
 ) -> None:
-    seed_demo(demo_engine)
+    seed_legacy_income_fixture(demo_engine)
     recovery_fixture(demo_engine)
     before = database_snapshot(demo_engine)
     with Session(demo_engine) as session:
@@ -89,7 +90,7 @@ def test_context_keeps_original_quote_and_authority_as_execution_clock_advances(
 def test_another_action_cannot_be_named_as_self_to_hide_its_resource_claims(
     demo_engine: Engine,
 ) -> None:
-    seed_demo(demo_engine)
+    seed_legacy_income_fixture(demo_engine)
     recovery_fixture(demo_engine)
     with Session(demo_engine) as session:
         effect = redemption_effect(session)
@@ -104,7 +105,7 @@ def test_another_action_cannot_be_named_as_self_to_hide_its_resource_claims(
 def test_current_authorization_cannot_adopt_a_historical_manual_position(
     demo_engine: Engine,
 ) -> None:
-    seed_demo(demo_engine)
+    seed_legacy_income_fixture(demo_engine)
     recovery_fixture(demo_engine)
     with Session(demo_engine) as session:
         effect = redemption_effect(session)
@@ -136,7 +137,7 @@ def test_current_authorization_cannot_adopt_a_historical_manual_position(
 
 
 def test_revoked_current_policy_closes_prepared_redemption(demo_engine: Engine) -> None:
-    seed_demo(demo_engine)
+    seed_legacy_income_fixture(demo_engine)
     recovery_fixture(demo_engine)
     with Session(demo_engine) as session, session.begin():
         effect = redemption_effect(session)
@@ -253,7 +254,7 @@ def test_imported_legacy_income_reservation_remains_cash_unavailable(
     from app.tests.test_asset_allocation_service import authorization
     from app.tests.test_boundary_service import confirmed_policy
 
-    seed_demo(demo_engine)
+    seed_legacy_income_fixture(demo_engine)
     with Session(demo_engine) as session, session.begin():
         cash = session.scalars(select(Account).where(Account.account_type == "CASH")).one()
         asset = session.scalars(
@@ -366,7 +367,7 @@ def test_current_recovery_permission_restrictions_cannot_be_ignored(
     from app.services.policy_lifecycle import change_policy
     from app.tests.test_asset_allocation_service import authorization
 
-    seed_demo(demo_engine)
+    seed_legacy_income_fixture(demo_engine)
     recovery_fixture(demo_engine, delay=1)
     with Session(demo_engine) as session, session.begin():
         effect = redemption_effect(session)
@@ -463,7 +464,7 @@ def test_cost_confirmation_does_not_replace_both_historical_and_current_permissi
     from app.tests.test_asset_allocation_service import authorization, exposure_statement
     from app.tests.test_boundary_service import confirmed_policy
 
-    seed_demo(demo_engine)
+    seed_legacy_income_fixture(demo_engine)
     recovery_fixture(demo_engine)
     with Session(demo_engine) as session, session.begin():
         effect = redemption_effect(session)
@@ -568,7 +569,7 @@ def test_cost_confirmation_does_not_replace_both_historical_and_current_permissi
 def test_zero_cost_quote_does_not_override_original_product_automatic_exit_flag(
     demo_engine: Engine,
 ) -> None:
-    seed_demo(demo_engine)
+    seed_legacy_income_fixture(demo_engine)
     recovery_fixture(demo_engine)
     with Session(demo_engine) as session, session.begin():
         effect = redemption_effect(session)

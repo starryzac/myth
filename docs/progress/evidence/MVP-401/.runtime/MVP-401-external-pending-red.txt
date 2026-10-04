@@ -1,0 +1,150 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Scripts\python.exe
+hypothesis profile 'default'
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 1 item
+
+apps/api/app/tests/test_external_bank_pending_reconciliation.py::test_two_pending_salaries_repair_in_cash_order_without_resending_bank_legs FAILED [100%]
+
+================================== FAILURES ===================================
+_ test_two_pending_salaries_repair_in_cash_order_without_resending_bank_legs __
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_73bcb566ff274ab9a7598f1eb35f6c19)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000021DEFE8DCA0>
+
+    def test_two_pending_salaries_repair_in_cash_order_without_resending_bank_legs(
+        demo_engine: Engine, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        seed_demo(demo_engine)
+        request_a = fact_request(demo_engine, amount=600000, ref="pending-salary-a", key="first-key-a")
+        request_b = ExternalFactRequest.model_validate(
+            {
+                **fact_request(
+                    demo_engine, amount=700000, ref="pending-salary-b", key="first-key-b"
+                ).model_dump(),
+                "occurred_at": NOW + timedelta(minutes=1),
+            }
+        )
+        with Session(demo_engine) as session:
+            account = session.get(Account, request_a.account_id)
+            assert account is not None
+            cash_before, observation_before = account.balance_cents, account.observed_at
+            income_before = read_income_state(session, DEMO_USER_ID, NOW).ledger
+    
+        def claims() -> str:
+            with Session(demo_engine) as session:
+                rows = [
+                    dict(row)
+                    for row in session.execute(
+                        select(ActionResourceReservation.__table__)
+                        .where(ActionResourceReservation.user_id == DEMO_USER_ID)
+                        .order_by(ActionResourceReservation.id)
+                    ).mappings()
+                ]
+            return json.dumps(rows, sort_keys=True, default=str)
+    
+        claims_before = claims()
+        project = external_bank_facts._project
+    
+        def interrupted_application(session: Session, fact: ExternalBankFact, now: datetime) -> None:
+            raise PolicyLifecycleError(
+                "SIMULATED_PROJECTION_INTERRUPTION", "First bank committed before application loss", 409
+            )
+    
+        # Only the application stage is interrupted. Both actual bank transactions run unchanged.
+        monkeypatch.setattr(external_bank_facts, "_project", interrupted_application)
+        pending_a = ingest_external_fact(demo_engine, DEMO_USER_ID, request_a, NOW)
+        assert pending_a.bank_status == "SETTLED" and pending_a.projection_status == "UNKNOWN"
+        monkeypatch.setattr(external_bank_facts, "_project", project)
+        pending_b = ingest_external_fact(
+            demo_engine, DEMO_USER_ID, request_b, NOW + timedelta(minutes=1)
+        )
+        assert pending_b.bank_status == "SETTLED" and pending_b.projection_status == "UNKNOWN"
+        assert pending_b.projection_error == "EXTERNAL_BANK_RECONCILIATION_REQUIRED"
+        fact_ids = (pending_a.external_fact_id, pending_b.external_fact_id)
+    
+        def bank_originals() -> tuple[dict[UUID, tuple[Any, ...]], str]:
+            with Session(demo_engine) as session:
+                facts = {
+                    row.id: (
+                        row.idempotency_key,
+                        row.request_canonical_text,
+                        row.request_hash,
+                        row.observed_at,
+                        row.accepted_at,
+                        row.settled_at,
+                        row.bank_result_canonical_text,
+                        row.bank_result_hash,
+                    )
+                    for row in session.scalars(
+                        select(ExternalBankFact).where(ExternalBankFact.id.in_(fact_ids))
+                    )
+                }
+                economic = [
+                    dict(row)
+                    for row in session.execute(
+                        select(SimulatedBankPosting.__table__)
+                        .where(
+                            SimulatedBankPosting.external_fact_id.in_(fact_ids),
+                            SimulatedBankPosting.ledger_dimension == "ECONOMIC",
+                        )
+                        .order_by(SimulatedBankPosting.id)
+                    ).mappings()
+                ]
+            assert set(facts) == set(fact_ids) and len(economic) == 4
+            assert {row["id"] for row in economic} == {
+                *pending_a.economic_posting_ids,
+                *pending_b.economic_posting_ids,
+            }
+            return facts, json.dumps(economic, sort_keys=True, default=str)
+    
+        originals_before = bank_originals()
+        assert originals_before[0][pending_a.external_fact_id][0] == request_a.idempotency_key
+        assert originals_before[0][pending_b.external_fact_id][0] == request_b.idempotency_key
+        with Session(demo_engine) as session:
+            account = session.get(Account, request_a.account_id)
+            assert account is not None
+            assert (account.balance_cents, account.observed_at) == (cash_before, observation_before)
+            assert (
+                read_income_state(session, DEMO_USER_ID, NOW + timedelta(minutes=1)).ledger
+                == income_before
+            )
+            assert (
+                ledger_heads(session, DEMO_USER_ID)["CASH:" + str(account.id)].balance_after_cents
+                == cash_before + request_a.amount_cents + request_b.amount_cents
+            )
+        assert claims() == claims_before
+    
+        still_pending_b = ingest_external_fact(
+            demo_engine, DEMO_USER_ID, request_b, NOW + timedelta(minutes=2)
+        )
+        assert still_pending_b.projection_status == "UNKNOWN" and still_pending_b.transaction_id is None
+        assert bank_originals() == originals_before and claims() == claims_before
+    
+        repaired_a = ingest_external_fact(
+            demo_engine, DEMO_USER_ID, request_a, NOW + timedelta(minutes=3)
+        )
+>       assert repaired_a.bank_status == "SETTLED" and repaired_a.projection_status == "PROJECTED", (
+            repaired_a
+        )
+E       AssertionError: ExternalFactResult(simulation=True, external_fact_id=UUID('c9f5ea98-de7a-5d2f-8220-1c0c85776165'), bank_status='SETTLED', projection_status='UNKNOWN', economic_posting_ids=(UUID('d63a8084-d248-582b-aac2-d0c5f7c389f3'), UUID('cc0d8780-f60d-5cdc-9abb-d7e44dc96c6b')), transaction_id=None, projection_error='EXTERNAL_BANK_RECONCILIATION_REQUIRED')
+E       assert ('SETTLED' == 'SETTLED'
+E         
+E           SETTLED and 'UNKNOWN' == 'PROJECTED'
+E         
+E         - PROJECTED
+E         + UNKNOWN)
+
+apps\api\app\tests\test_external_bank_pending_reconciliation.py:140: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_external_bank_pending_reconciliation.py::test_two_pending_salaries_repair_in_cash_order_without_resending_bank_legs - AssertionError: ExternalFactResult(simulation=True, external_fact_id=UUID('c9f5ea98-de7a-5d2f-8220-1c0c85776165'), bank_status='SETTLED', projection_status='UNKNOWN', economic_posting_ids=(UUID('d63a8084-d248-582b-aac2-d0c5f7c389f3'), UUID('cc0d8780-f60d-5cdc-9abb-d7e44dc96c6b')), transaction_id=None, projection_error='EXTERNAL_BANK_RECONCILIATION_REQUIRED')
+assert ('SETTLED' == 'SETTLED'
+  
+    SETTLED and 'UNKNOWN' == 'PROJECTED'
+  
+  - PROJECTED
+  + UNKNOWN)
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+============================== 1 failed in 8.37s ==============================

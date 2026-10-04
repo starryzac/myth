@@ -1,0 +1,25 @@
+{
+  "test_boundary_service.py": {
+    "source_sha256": "edf2471c0c75aa6fba21696277f6f62607f2f6a74cd36e3004c219c9cae3e8ce",
+    "changed_functions": [
+      "seed_legacy_income_fixture"
+    ],
+    "assertion_ast_unchanged": true,
+    "assertion_count": 65
+  },
+  "test_execution_context.py": {
+    "source_sha256": "4d81f64ccb6cd28fb6080f833fd6a5c2c877a1f5c0fe782539791a4817a57c3b",
+    "changed_functions": [
+      "test_context_keeps_original_quote_and_authority_as_execution_clock_advances",
+      "test_another_action_cannot_be_named_as_self_to_hide_its_resource_claims",
+      "test_current_authorization_cannot_adopt_a_historical_manual_position",
+      "test_revoked_current_policy_closes_prepared_redemption",
+      "test_current_recovery_permission_restrictions_cannot_be_ignored",
+      "test_cost_confirmation_does_not_replace_both_historical_and_current_permissions",
+      "test_zero_cost_quote_does_not_override_original_product_automatic_exit_flag"
+    ],
+    "assertion_ast_unchanged": true,
+    "assertion_count": 51
+  }
+}
+AST proof only; no application import, PG, pytest or coverage

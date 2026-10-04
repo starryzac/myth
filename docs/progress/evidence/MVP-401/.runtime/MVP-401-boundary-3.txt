@@ -1,0 +1,3 @@
+apps\api\app\tests\boundary_display_cases.py:196: error: Incompatible types in assignment (expression has type "None", variable has type "int")  [assignment]
+Found 1 error in 1 file (checked 4 source files)
+

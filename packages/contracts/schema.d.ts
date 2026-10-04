@@ -634,6 +634,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/dashboard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Dashboard Summary */
+        get: operations["dashboard_summary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/health": {
         parameters: {
             query?: never;
@@ -655,6 +672,22 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AccountFactsCard */
+        AccountFactsCard: {
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "PROVEN" | "NOT_PROVEN" | "INCOMPLETE";
+            facts: components["schemas"]["AccountSummary"];
+            /**
+             * Bank Projection State
+             * @enum {string}
+             */
+            bank_projection_state: "MATCHED" | "NOT_PROVEN";
+            /** Issues */
+            issues?: components["schemas"]["BoundarySourceIssue"][];
+        };
         /** AccountSummary */
         AccountSummary: {
             /**
@@ -1090,7 +1123,95 @@ export interface components {
              * @default 1
              */
             payload_version: number;
-            payload: components["schemas"]["AuditPayload"];
+            payload: components["schemas"]["AuditPayloadV1"];
+            /**
+             * Occurred At
+             * Format: date-time
+             */
+            occurred_at: string;
+            /**
+             * Schema Version
+             * @default audit-event-v1
+             * @constant
+             */
+            schema_version: "audit-event-v1";
+            /**
+             * Canonical Version
+             * @default audit-canonical-json-v1
+             * @constant
+             */
+            canonical_version: "audit-canonical-json-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Sequence Number */
+            sequence_number: number;
+            /** Previous Hash */
+            previous_hash: string | null;
+            /**
+             * Observed At
+             * Format: date-time
+             */
+            observed_at: string;
+            /**
+             * Appended At
+             * Format: date-time
+             */
+            appended_at: string;
+            /** Event Hash */
+            event_hash: string;
+        };
+        /** AuditEnvelopeV2 */
+        AuditEnvelopeV2: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Event Type */
+            event_type: string;
+            /** Aggregate Type */
+            aggregate_type: string;
+            /**
+             * Aggregate Id
+             * Format: uuid
+             */
+            aggregate_id: string;
+            /**
+             * Correlation Id
+             * Format: uuid
+             */
+            correlation_id: string;
+            /** Causation Id */
+            causation_id?: string | null;
+            /** Decision Run Id */
+            decision_run_id?: string | null;
+            /** Action Plan Id */
+            action_plan_id?: string | null;
+            /** Action Receipt Id */
+            action_receipt_id?: string | null;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Payload Version
+             * @default 2
+             * @constant
+             */
+            payload_version: 2;
+            payload: components["schemas"]["AuditPayloadV2"];
             /**
              * Occurred At
              * Format: date-time
@@ -1211,7 +1332,8 @@ export interface components {
              * @enum {string}
              */
             completeness: "COMPLETE" | "LEGACY_UNAUDITED" | "UNSUPPORTED_VERSION";
-            envelope: components["schemas"]["AuditEnvelope"] | null;
+            /** Envelope */
+            envelope: components["schemas"]["AuditEnvelope"] | components["schemas"]["AuditEnvelopeV2"] | null;
             /** Original */
             original: {
                 [key: string]: unknown;
@@ -1311,8 +1433,8 @@ export interface components {
             /** Request Id */
             request_id?: string | null;
         };
-        /** AuditPayload */
-        AuditPayload: {
+        /** AuditPayloadV1 */
+        AuditPayloadV1: {
             /** Fact Key */
             fact_key: string;
             /**
@@ -1331,6 +1453,21 @@ export interface components {
             legacy_origin?: components["schemas"]["AuditLegacyOrigin"] | null;
             epoch_transition?: components["schemas"]["AuditEpochTransition"] | null;
             observation?: components["schemas"]["AuditObservation"] | null;
+            context?: components["schemas"]["AuditFactContext"];
+        };
+        /** AuditPayloadV2 */
+        AuditPayloadV2: {
+            /** Fact Key */
+            fact_key: string;
+            /**
+             * Correlation Kind
+             * @constant
+             */
+            correlation_kind: "EXTERNAL_BANK_FACT";
+            /** References */
+            references?: components["schemas"]["AuditReference"][];
+            /** Anchors */
+            anchors?: components["schemas"]["AuditAnchor"][];
             context?: components["schemas"]["AuditFactContext"];
         };
         /** AuditReference */
@@ -1946,6 +2083,66 @@ export interface components {
             /** Amount Cents */
             amount_cents: number | null;
         };
+        /** DashboardAuditCard */
+        DashboardAuditCard: {
+            /**
+             * Scope
+             * @default CURRENT_LIVE_EPOCH
+             * @constant
+             */
+            scope: "CURRENT_LIVE_EPOCH";
+            /** Epoch Id */
+            epoch_id: string | null;
+            /** Status */
+            status: string;
+            /** Anchored Run Statuses */
+            anchored_run_statuses: {
+                [key: string]: string;
+            };
+            /** Complete */
+            complete: boolean;
+        };
+        /** DashboardResponse */
+        DashboardResponse: {
+            /**
+             * Schema Version
+             * @default dashboard-v1
+             * @constant
+             */
+            schema_version: "dashboard-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Timezone
+             * @enum {string}
+             */
+            timezone: "Asia/Shanghai" | "UTC";
+            account_facts: components["schemas"]["AccountFactsCard"];
+            boundary: components["schemas"]["FinancialBoundaryCard"];
+            goal_ownership: components["schemas"]["GoalOwnershipCard"];
+            managed_assets: components["schemas"]["ManagedAssetsCard"];
+            next_obligations: components["schemas"]["NextObligations"];
+            pending_actions: components["schemas"]["PendingActionsCard"];
+            recovery_proposals: components["schemas"]["RecoveryProposalsCard"];
+            intervention: components["schemas"]["InterventionCard"];
+            audit: components["schemas"]["DashboardAuditCard"];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+        };
         /** DecisionTrace */
         DecisionTrace: {
             /**
@@ -2318,6 +2515,65 @@ export interface components {
             /** Reasons */
             reasons?: string[];
         };
+        /** FinancialBoundaryCard */
+        FinancialBoundaryCard: {
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "PROVEN" | "NOT_PROVEN" | "INCOMPLETE";
+            /**
+             * Financial Only
+             * @default true
+             * @constant
+             */
+            financial_only: true;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY" | "LIQUIDITY_RISK" | "INSUFFICIENT_EVIDENCE";
+            /** Safe Idle Cents */
+            safe_idle_cents: number | null;
+            /** Minimum Margin Cents */
+            minimum_margin_cents: number | null;
+            /** Deficit Cents */
+            deficit_cents: number | null;
+            /** Protected Cents By Reason */
+            protected_cents_by_reason: {
+                [key: string]: number;
+            } | null;
+            /** Current Protected Cents */
+            current_protected_cents: number | null;
+            /** Current Protected Cents By Reason */
+            current_protected_cents_by_reason: {
+                [key: string]: number;
+            } | null;
+            /** Current Margin Cents */
+            current_margin_cents: number | null;
+            /** Constraining Date */
+            constraining_date: string | null;
+            /**
+             * Window Start
+             * Format: date
+             */
+            window_start: string;
+            /**
+             * Window End
+             * Format: date
+             */
+            window_end: string;
+            /** Input Digest */
+            input_digest: string;
+            /** Boundary Hash */
+            boundary_hash: string;
+            /** Blocking Constraints */
+            blocking_constraints: components["schemas"]["BlockingConstraint"][];
+            /** Calculation Notes */
+            calculation_notes: string[];
+            /** Issues */
+            issues?: components["schemas"]["BoundarySourceIssue"][];
+        };
         /** GoalAllocationResponse */
         GoalAllocationResponse: {
             /**
@@ -2467,6 +2723,51 @@ export interface components {
             /** Allocated Cents */
             allocated_cents: number;
         };
+        /** GoalOwnershipCard */
+        GoalOwnershipCard: {
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "PROVEN" | "NOT_PROVEN" | "INCOMPLETE";
+            /** Cash Owned Cents */
+            cash_owned_cents: number | null;
+            /** Principal Owned Cents */
+            principal_owned_cents: number | null;
+            /** Allocated Cents */
+            allocated_cents: number | null;
+            /** Unassigned Goal Cash Cents */
+            unassigned_goal_cash_cents: number | null;
+            /** Items */
+            items: components["schemas"]["GoalOwnershipItem"][];
+            /** Issues */
+            issues?: components["schemas"]["BoundarySourceIssue"][];
+        };
+        /** GoalOwnershipItem */
+        GoalOwnershipItem: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /** Account Id */
+            account_id: string | null;
+            /** Name */
+            name: string;
+            /** Cash Owned Cents */
+            cash_owned_cents: number;
+            /** Principal Owned Cents */
+            principal_owned_cents: number;
+            /** Allocated Cents */
+            allocated_cents: number;
+            /** Evidence Ids */
+            evidence_ids: string[];
+        };
         /** GoalResponse */
         GoalResponse: {
             /**
@@ -2586,6 +2887,20 @@ export interface components {
             account_id: string;
             /** Amount Cents */
             amount_cents: number;
+        };
+        /** InterventionCard */
+        InterventionCard: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "NONE" | "CONFIRMATION_REQUIRED" | "REVIEW_REQUIRED" | "RECONCILIATION_REQUIRED" | "NOT_PROVEN";
+            /** Known Required Count */
+            known_required_count: number;
+            /** Complete */
+            complete: boolean;
+            /** Reason Codes */
+            reason_codes: string[];
         };
         /** LifecycleResult */
         LifecycleResult: {
@@ -2727,6 +3042,126 @@ export interface components {
             /** Remaining Available Cents */
             remaining_available_cents: number;
         };
+        /** ManagedAssetsCard */
+        ManagedAssetsCard: {
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "PROVEN" | "NOT_PROVEN" | "INCOMPLETE";
+            /** Managed Current Principal Cents */
+            managed_current_principal_cents: number | null;
+            /** General Principal Cents */
+            general_principal_cents: number | null;
+            /** Held Or Matured Cents */
+            held_or_matured_cents: number | null;
+            /** Redeeming Cents */
+            redeeming_cents: number | null;
+            /** Pending Purchase Cents */
+            pending_purchase_cents: number | null;
+            /** By Goal */
+            by_goal: components["schemas"]["ManagedGoalAmount"][];
+            /** Excluded Manual Count */
+            excluded_manual_count: number;
+            /** Unknown Position Count */
+            unknown_position_count: number;
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** Issues */
+            issues?: components["schemas"]["BoundarySourceIssue"][];
+        };
+        /** ManagedGoalAmount */
+        ManagedGoalAmount: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Principal Cents */
+            principal_cents: number;
+            /** Pending Purchase Cents */
+            pending_purchase_cents: number;
+        };
+        /** NextObligations */
+        NextObligations: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "PROVEN" | "NOT_PROVEN";
+            /**
+             * Selection Scope
+             * @default KNOWN_PROTECTION_COMMITMENTS_DUE_BY_WINDOW_END_INCLUDING_OVERDUE
+             * @constant
+             */
+            selection_scope: "KNOWN_PROTECTION_COMMITMENTS_DUE_BY_WINDOW_END_INCLUDING_OVERDUE";
+            /** Next Due Date */
+            next_due_date: string | null;
+            /** Next Count */
+            next_count: number | null;
+            /** Next Remaining Protection Cents */
+            next_remaining_protection_cents: number | null;
+            /** Basis Summary */
+            basis_summary: ("EXACT" | "UPPER_BOUND" | "MIXED") | null;
+            /** Items */
+            items: components["schemas"]["ObligationOccurrence"][];
+            /** Items Complete */
+            items_complete: boolean;
+        };
+        /** ObligationOccurrence */
+        ObligationOccurrence: {
+            /** Occurrence Id */
+            occurrence_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "CREDIT_CARD_BILL" | "RECURRING_ORDINARY";
+            /** Bill Id */
+            bill_id: string | null;
+            /** Account Id */
+            account_id: string | null;
+            /** Policy Id */
+            policy_id: string | null;
+            /** Policy Version Id */
+            policy_version_id: string | null;
+            /** Period */
+            period: string | null;
+            /** Payee Id */
+            payee_id: string | null;
+            /**
+             * Due Date
+             * Format: date
+             */
+            due_date: string;
+            /**
+             * Projection Payment Date
+             * Format: date
+             */
+            projection_payment_date: string;
+            /** Overdue */
+            overdue: boolean;
+            /** Protected Total Cents */
+            protected_total_cents: number;
+            /** Remaining Protection Cents */
+            remaining_protection_cents: number;
+            /**
+             * Total Basis
+             * @enum {string}
+             */
+            total_basis: "BILL_ACTUAL" | "POLICY_EXACT" | "POLICY_RANGE_MAX" | "SETTLEMENT_FINAL";
+            /** Actual Final Total Cents */
+            actual_final_total_cents: number | null;
+            /** Paid Cents */
+            paid_cents: number | null;
+            /**
+             * Payment Fact
+             * @enum {string}
+             */
+            payment_fact: "BILL_CONFIRMED" | "SETTLEMENT_CONFIRMED" | "NO_IMPORT_CURRENT_OR_FUTURE" | "MISSING_HISTORICAL_IMPORT";
+            /** Evidence Ids */
+            evidence_ids: string[];
+        };
         /** OccurrenceReference */
         OccurrenceReference: {
             /**
@@ -2762,6 +3197,71 @@ export interface components {
             period?: string | null;
             /** Bill Id */
             bill_id?: string | null;
+        };
+        /** PendingActionItem */
+        PendingActionItem: {
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /**
+             * Decision Run Id
+             * Format: uuid
+             */
+            decision_run_id: string;
+            /** Action Type */
+            action_type: string;
+            /** Amount Cents */
+            amount_cents: number | null;
+            /** Status */
+            status: string;
+            /** Prepared Level */
+            prepared_level: string;
+            /**
+             * Prepared At
+             * Format: date-time
+             */
+            prepared_at: string;
+            current_decision: components["schemas"]["AutonomyDecision"] | null;
+            /** Effect Hash */
+            effect_hash: string | null;
+            /** Fee Cents */
+            fee_cents: number | null;
+            /** Loss Cents */
+            loss_cents: number | null;
+            /** Bank Operation Id */
+            bank_operation_id: string | null;
+            /** Bank Status */
+            bank_status: string | null;
+            /** Bank State Proven */
+            bank_state_proven: boolean;
+            /** Receipt Id */
+            receipt_id: string | null;
+            /** Receipt Status */
+            receipt_status: string | null;
+            /** Receipt Verified */
+            receipt_verified: boolean;
+            /** Audit Status */
+            audit_status: string;
+            /** Reason Codes */
+            reason_codes: string[];
+        };
+        /** PendingActionsCard */
+        PendingActionsCard: {
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "PROVEN" | "NOT_PROVEN" | "INCOMPLETE";
+            /** Total */
+            total: number;
+            /** Items */
+            items: components["schemas"]["PendingActionItem"][];
+            /** List Complete */
+            list_complete: boolean;
+            /** Has More */
+            has_more: boolean;
         };
         /** PlannedExit */
         PlannedExit: {
@@ -3253,6 +3753,47 @@ export interface components {
             input_digest: string;
             /** Source Issues */
             source_issues: components["schemas"]["BoundarySourceIssue"][];
+        };
+        /** RecoveryProposalItem */
+        RecoveryProposalItem: {
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Status */
+            status: string;
+            /** Original Status */
+            original_status: string;
+            /** Fee Cents */
+            fee_cents: number | null;
+            /** Loss Cents */
+            loss_cents: number | null;
+            /** Audit Status */
+            audit_status: string;
+            /** Reason Codes */
+            reason_codes: string[];
+        };
+        /** RecoveryProposalsCard */
+        RecoveryProposalsCard: {
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "PROVEN" | "NOT_PROVEN" | "INCOMPLETE";
+            /** Total */
+            total: number;
+            /** Items */
+            items: components["schemas"]["RecoveryProposalItem"][];
+            /** List Complete */
+            list_complete: boolean;
+            /** Has More */
+            has_more: boolean;
         };
         /** RecoveryQuote */
         RecoveryQuote: {
@@ -5936,6 +6477,65 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AuditVerification"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    dashboard_summary: {
+        parameters: {
+            query?: {
+                pending_limit?: number;
+                recovery_limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DashboardResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
                 };
             };
             /** @description Unprocessable Entity */

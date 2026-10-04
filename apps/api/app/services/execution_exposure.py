@@ -13,6 +13,7 @@ from app.db.models import (
     AssetPosition,
     BankOperation,
     EvidenceItem,
+    ExternalBankFact,
     SimulatedBankPosting,
     SimulatedBankRedemption,
 )
@@ -32,7 +33,8 @@ def refresh_execution_exposure(
     operation_id: UUID,
     *,
     declarations: dict[UUID, dict[str, Any]] | None = None,
-) -> None:
+    evidence_id: UUID | None = None,
+) -> EvidenceItem:
     """Caller must hold the user lock and have verified facts before changing projections."""
     previous = current_proof(session, user_id, EXPOSURE_SOURCE)
     declared = {UUID(item["action_id"]): item for item in previous.content["settlements"]}
@@ -66,6 +68,16 @@ def refresh_execution_exposure(
         record["state"] = state
         declared[action.id] = record
     declared.update(declarations or {})
+    postings = list(
+        session.scalars(select(SimulatedBankPosting).where(SimulatedBankPosting.user_id == user_id))
+    )
+    facts = list(
+        session.scalars(select(ExternalBankFact).where(ExternalBankFact.user_id == user_id))
+    )
+    external = bool(facts) or any(
+        row.external_fact_id is not None or row.ledger_key.startswith("CLEARING:")
+        for row in postings
+    )
     content = asset_exposure_snapshot(
         user_id,
         now,
@@ -78,17 +90,16 @@ def refresh_execution_exposure(
         bank_requests=session.scalars(
             select(SimulatedBankRedemption).where(SimulatedBankRedemption.user_id == user_id)
         ),
-        bank_postings=session.scalars(
-            select(SimulatedBankPosting).where(SimulatedBankPosting.user_id == user_id)
-        ),
+        bank_postings=postings,
         bank_operations=session.scalars(
             select(BankOperation).where(BankOperation.user_id == user_id)
         ),
         resource_reservations=session.scalars(
             select(ActionResourceReservation).where(ActionResourceReservation.user_id == user_id)
         ),
+        external_bank_facts=facts if external else None,
     )
-    replace_proof(session, previous, content, now, operation_id)
+    return replace_proof(session, previous, content, now, operation_id, evidence_id=evidence_id)
 
 
 def validate_execution_declaration(

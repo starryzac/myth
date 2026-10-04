@@ -1,0 +1,177 @@
+{
+  "classification": "PURE_FROZEN_OLD_NEW_COMPARISON_NOT_PG",
+  "old_source_sha256": "bd796bd1ede119e2d1381ff0cb18e26aa962ab8e74ee8aed61cc839f4ba05464",
+  "new_source_sha256": "5c1877cd4f1d1b41e5dd498ad0d07de39633aa21299d085f6c08f6e57bc4a640",
+  "oracle_sha256": "c3ce3c303cfce7ec8ca2bd057c870ba4844facdfc8cafa01d45b1df4bfc7dcfb",
+  "comparisons": [
+    {
+      "name": "legacy_posting_v1",
+      "fields": true,
+      "canonical": true,
+      "hash": true,
+      "parse": true
+    },
+    {
+      "name": "external_posting_v2",
+      "fields": true,
+      "canonical": true,
+      "hash": true,
+      "parse": true
+    },
+    {
+      "name": "clearing_opening_v2_null_origin",
+      "fields": true,
+      "canonical": true,
+      "hash": true,
+      "parse": true
+    },
+    {
+      "name": "income_zero_opening_v1",
+      "fields": true,
+      "canonical": true,
+      "hash": true,
+      "parse": true
+    },
+    {
+      "name": "raw_invalid_claim_preserved",
+      "fields": true,
+      "canonical": true,
+      "hash": true,
+      "parse": true
+    },
+    {
+      "name": "global_product",
+      "fields": true,
+      "canonical": true,
+      "hash": true,
+      "parse": true
+    },
+    {
+      "name": "original_decision_trace",
+      "fields": true,
+      "canonical": true,
+      "hash": true,
+      "parse": true
+    },
+    {
+      "name": "boolean_top_level_money",
+      "old": {
+        "exception_type": "AuditContractError",
+        "message": "Original row money must be strict signed integer cents"
+      },
+      "new": {
+        "exception_type": "AuditContractError",
+        "message": "Original row money must be strict signed integer cents"
+      },
+      "equal": true
+    },
+    {
+      "name": "foreign_owner",
+      "old": {
+        "exception_type": "AuditContractError",
+        "message": "Audit subject row belongs to another tenant"
+      },
+      "new": {
+        "exception_type": "AuditContractError",
+        "message": "Audit subject row belongs to another tenant"
+      },
+      "equal": true
+    },
+    {
+      "name": "wrong_identity",
+      "old": {
+        "exception_type": "AuditContractError",
+        "message": "Audit subject identity differs from its original"
+      },
+      "new": {
+        "exception_type": "AuditContractError",
+        "message": "Audit subject identity differs from its original"
+      },
+      "equal": true
+    },
+    {
+      "name": "unsupported_kind",
+      "old": {
+        "exception_type": "AuditUnsupportedVersion",
+        "message": "Unsupported audit subject kind or version"
+      },
+      "new": {
+        "exception_type": "AuditUnsupportedVersion",
+        "message": "Unsupported audit subject kind or version"
+      },
+      "equal": true
+    },
+    {
+      "name": "unsupported_snapshot",
+      "old": {
+        "exception_type": "AuditUnsupportedVersion",
+        "message": "Unsupported audit subject kind or version"
+      },
+      "new": {
+        "exception_type": "AuditUnsupportedVersion",
+        "message": "Unsupported audit subject kind or version"
+      },
+      "equal": true
+    },
+    {
+      "name": "external_origin_xor",
+      "old": {
+        "exception_type": "ValueError",
+        "message": "A posting requires exactly one command or external fact origin"
+      },
+      "new": {
+        "exception_type": "ValueError",
+        "message": "A posting requires exactly one command or external fact origin"
+      },
+      "equal": true
+    },
+    {
+      "name": "depth:subject_hash",
+      "old": {
+        "exception_type": "ValidationError",
+        "message": "1 validation error for AuditSubject\ndata\n  Value error, Audit value cannot be canonically encoded [type=value_error, input_value={'content': {'balance_cen...0000-0000-000000000001'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error"
+      },
+      "new": {
+        "exception_type": "ValidationError",
+        "message": "1 validation error for AuditSubject\ndata\n  Value error, Audit value cannot be canonically encoded [type=value_error, input_value={'content': {'balance_cen...0000-0000-000000000001'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error"
+      },
+      "equal": true
+    },
+    {
+      "name": "depth:subject_canonical_text",
+      "old": {
+        "exception_type": "ValidationError",
+        "message": "1 validation error for AuditSubject\ndata\n  Value error, Audit value cannot be canonically encoded [type=value_error, input_value={'content': {'balance_cen...0000-0000-000000000001'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error"
+      },
+      "new": {
+        "exception_type": "ValidationError",
+        "message": "1 validation error for AuditSubject\ndata\n  Value error, Audit value cannot be canonically encoded [type=value_error, input_value={'content': {'balance_cen...0000-0000-000000000001'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error"
+      },
+      "equal": true
+    },
+    {
+      "name": "bytes:subject_hash",
+      "old": {
+        "exception_type": "ValidationError",
+        "message": "1 validation error for AuditSubject\ndata\n  Value error, Audit JSON exceeds byte limit [type=value_error, input_value={'content': {'balance_cen...0000-0000-000000000001'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error"
+      },
+      "new": {
+        "exception_type": "ValidationError",
+        "message": "1 validation error for AuditSubject\ndata\n  Value error, Audit JSON exceeds byte limit [type=value_error, input_value={'content': {'balance_cen...0000-0000-000000000001'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error"
+      },
+      "equal": true
+    },
+    {
+      "name": "bytes:subject_canonical_text",
+      "old": {
+        "exception_type": "ValidationError",
+        "message": "1 validation error for AuditSubject\ndata\n  Value error, Audit JSON exceeds byte limit [type=value_error, input_value={'content': {'balance_cen...0000-0000-000000000001'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error"
+      },
+      "new": {
+        "exception_type": "ValidationError",
+        "message": "1 validation error for AuditSubject\ndata\n  Value error, Audit JSON exceeds byte limit [type=value_error, input_value={'content': {'balance_cen...0000-0000-000000000001'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error"
+      },
+      "equal": true
+    }
+  ]
+}

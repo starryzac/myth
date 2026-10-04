@@ -1,0 +1,23 @@
+{
+  "classification": "IGNORED_CANDIDATE_NOT_DEPLOYED_NOT_BEHAVIOR_VERIFIED",
+  "created_at": "2026-10-04T15:11:12.956254+00:00",
+  "production_files_written": [],
+  "database_or_test_process_started": false,
+  "files": [
+    {
+      "path": "apps/api/app/domain/audit_chain.py",
+      "production_sha256": "bd796bd1ede119e2d1381ff0cb18e26aa962ab8e74ee8aed61cc839f4ba05464",
+      "candidate_sha256": "5c1877cd4f1d1b41e5dd498ad0d07de39633aa21299d085f6c08f6e57bc4a640",
+      "syntax": "AST_PARSE_PASSED",
+      "production_unchanged": true
+    },
+    {
+      "path": "apps/api/app/services/audit_chain.py",
+      "production_sha256": "fc9119223e3ce19e37ba1b02b8fe518fbb21cbe267cf5c296d15528c20049bae",
+      "candidate_sha256": "d1e977b64d6f80b70bbab7d980ba891d8e5c97bcdc4859f8f52ab4dac3b8f402",
+      "syntax": "AST_PARSE_PASSED",
+      "production_unchanged": true
+    }
+  ],
+  "diff_sha256": "844dcd4b37a91e089fd64a26d8b44e13d885693ba041799538acd1debbfa5a81"
+}

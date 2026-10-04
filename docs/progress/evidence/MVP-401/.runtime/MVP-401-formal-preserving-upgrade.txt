@@ -1,0 +1,6 @@
+{
+  "status": "MIGRATED_PRESERVING_OLD_DATA",
+  "audit_status": "LEGACY_UNAUDITED",
+  "evidence_directory": ".runtime\\MVP-401-formal-migration-20261004T151717Z-9bd6121d",
+  "original_20_data_sha256": "dbbc4819f11e156ddcc11a2af3d08739cbe4101c9d2f547469fa3dd05101e2d0"
+}

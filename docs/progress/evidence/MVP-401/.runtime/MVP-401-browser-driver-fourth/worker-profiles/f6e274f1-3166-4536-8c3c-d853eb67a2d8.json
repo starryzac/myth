@@ -1,0 +1,277 @@
+{
+  "classification": "INSTRUMENTED_TEST_WORKER_NOT_PRODUCT_SLA",
+  "as_of": "2026-10-04T01:00:20+00:00",
+  "elapsed_seconds": 0.625,
+  "top_cumulative": [
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\services\\dashboard.py",
+      "line": 360,
+      "function": "get_dashboard",
+      "primitive_calls": 1,
+      "calls": 2,
+      "self_seconds": 0.0020769,
+      "cumulative_seconds": 0.5495431000000001
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\orm\\session.py",
+      "line": 2201,
+      "function": "_execute_internal",
+      "primitive_calls": 87,
+      "calls": 87,
+      "self_seconds": 0.0014826000000000002,
+      "cumulative_seconds": 0.2846426
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\orm\\context.py",
+      "line": 306,
+      "function": "orm_execute_statement",
+      "primitive_calls": 87,
+      "calls": 87,
+      "self_seconds": 0.0003774,
+      "cumulative_seconds": 0.27726670000000003
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py",
+      "line": 1404,
+      "function": "execute",
+      "primitive_calls": 87,
+      "calls": 87,
+      "self_seconds": 0.00030720000000000004,
+      "cumulative_seconds": 0.2678062
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\sql\\elements.py",
+      "line": 524,
+      "function": "_execute_on_connection",
+      "primitive_calls": 87,
+      "calls": 87,
+      "self_seconds": 0.0002423,
+      "cumulative_seconds": 0.26749900000000004
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py",
+      "line": 1618,
+      "function": "_execute_clauseelement",
+      "primitive_calls": 87,
+      "calls": 87,
+      "self_seconds": 0.0019029000000000001,
+      "cumulative_seconds": 0.2670999
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py",
+      "line": 1767,
+      "function": "_execute_context",
+      "primitive_calls": 87,
+      "calls": 87,
+      "self_seconds": 0.0008466000000000001,
+      "cumulative_seconds": 0.2492097
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py",
+      "line": 1826,
+      "function": "_exec_single_context",
+      "primitive_calls": 87,
+      "calls": 87,
+      "self_seconds": 0.00107,
+      "cumulative_seconds": 0.2409203
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\engine\\default.py",
+      "line": 1191,
+      "function": "do_execute",
+      "primitive_calls": 87,
+      "calls": 87,
+      "self_seconds": 0.0014676000000000001,
+      "cumulative_seconds": 0.22535770000000002
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\psycopg\\cursor.py",
+      "line": 100,
+      "function": "execute",
+      "primitive_calls": 87,
+      "calls": 87,
+      "self_seconds": 0.0006680000000000001,
+      "cumulative_seconds": 0.22377360000000002
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\psycopg\\connection.py",
+      "line": 479,
+      "function": "wait",
+      "primitive_calls": 87,
+      "calls": 87,
+      "self_seconds": 0.00039630000000000004,
+      "cumulative_seconds": 0.22300550000000002
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\psycopg\\waiting.py",
+      "line": 329,
+      "function": "wait_select",
+      "primitive_calls": 87,
+      "calls": 87,
+      "self_seconds": 0.0013222000000000002,
+      "cumulative_seconds": 0.2226092
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\orm\\session.py",
+      "line": 2565,
+      "function": "scalars",
+      "primitive_calls": 56,
+      "calls": 56,
+      "self_seconds": 0.0003614,
+      "cumulative_seconds": 0.2059583
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method select.select>",
+      "primitive_calls": 163,
+      "calls": 163,
+      "self_seconds": 0.19310850000000002,
+      "cumulative_seconds": 0.19310850000000002
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\services\\dashboard_helpers.py",
+      "line": 12,
+      "function": "current_epoch_audit",
+      "primitive_calls": 1,
+      "calls": 1,
+      "self_seconds": 0.0001929,
+      "cumulative_seconds": 0.147564
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\services\\boundary.py",
+      "line": 743,
+      "function": "load_boundary_context",
+      "primitive_calls": 1,
+      "calls": 1,
+      "self_seconds": 0.00030270000000000004,
+      "cumulative_seconds": 0.13503300000000001
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\services\\asset_exposure_import.py",
+      "line": 70,
+      "function": "load_all_asset_exposure",
+      "primitive_calls": 1,
+      "calls": 1,
+      "self_seconds": 0.0011201000000000002,
+      "cumulative_seconds": 0.12991540000000001
+    },
+    {
+      "file": "C:\\Users\\starryzac\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\base_events.py",
+      "line": 1909,
+      "function": "_run_once",
+      "primitive_calls": 9,
+      "calls": 9,
+      "self_seconds": 0.0009058,
+      "cumulative_seconds": 0.1211879
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\services\\simulated_bank.py",
+      "line": 263,
+      "function": "validate_recovery_exposure",
+      "primitive_calls": 1,
+      "calls": 1,
+      "self_seconds": 0.0004993,
+      "cumulative_seconds": 0.09664020000000001
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\asset_exposure.py",
+      "line": 61,
+      "function": "asset_exposure_snapshot",
+      "primitive_calls": 2,
+      "calls": 2,
+      "self_seconds": 0.00010800000000000001,
+      "cumulative_seconds": 0.0901243
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\asset_exposure.py",
+      "line": 50,
+      "function": "_manifest",
+      "primitive_calls": 20,
+      "calls": 20,
+      "self_seconds": 0.0071355,
+      "cumulative_seconds": 0.07738990000000001
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\orm\\loading.py",
+      "line": 214,
+      "function": "chunks",
+      "primitive_calls": 174,
+      "calls": 174,
+      "self_seconds": 0.0029558,
+      "cumulative_seconds": 0.059022500000000006
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\.venv\\Lib\\site-packages\\sqlalchemy\\orm\\session.py",
+      "line": 2517,
+      "function": "scalar",
+      "primitive_calls": 23,
+      "calls": 23,
+      "self_seconds": 0.00044950000000000003,
+      "cumulative_seconds": 0.054287100000000005
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\services\\income_ledger.py",
+      "line": 43,
+      "function": "read_income_state",
+      "primitive_calls": 1,
+      "calls": 1,
+      "self_seconds": 0.00023820000000000002,
+      "cumulative_seconds": 0.053939400000000005
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\services\\income_ledger.py",
+      "line": 86,
+      "function": "_read",
+      "primitive_calls": 1,
+      "calls": 1,
+      "self_seconds": 0.0006270000000000001,
+      "cumulative_seconds": 0.0532207
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\audit_chain.py",
+      "line": 46,
+      "function": "canonical_bytes",
+      "primitive_calls": 545,
+      "calls": 545,
+      "self_seconds": 0.0024912000000000003,
+      "cumulative_seconds": 0.0500289
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\services\\dashboard.py",
+      "line": 60,
+      "function": "_capacity",
+      "primitive_calls": 1,
+      "calls": 1,
+      "self_seconds": 0.0005082,
+      "cumulative_seconds": 0.0459839
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\services\\simulated_bank.py",
+      "line": 171,
+      "function": "validate_bank_projection",
+      "primitive_calls": 3,
+      "calls": 3,
+      "self_seconds": 0.0002874,
+      "cumulative_seconds": 0.0447752
+    },
+    {
+      "file": "F:\\\u5b66\u6821\u6d3b\u52a8\\\u5de5\u884c\u676f\\\u94b1\u9014\u6709\u754c\\bounded-funds\\apps\\api\\app\\domain\\policy_configuration.py",
+      "line": 231,
+      "function": "configuration_hash",
+      "primitive_calls": 494,
+      "calls": 494,
+      "self_seconds": 0.0027473000000000003,
+      "cumulative_seconds": 0.0426717
+    },
+    {
+      "file": "C:\\Users\\starryzac\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\__init__.py",
+      "line": 183,
+      "function": "dumps",
+      "primitive_calls": 1077,
+      "calls": 1077,
+      "self_seconds": 0.0046496,
+      "cumulative_seconds": 0.0338172
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+$ tsc --noEmit
+src/App.tsx(201,63): error TS2322: Type 'number | undefined' is not assignable to type 'number | null'.
+  Type 'undefined' is not assignable to type 'number | null'.
+src/App.tsx(202,62): error TS2322: Type 'number | undefined' is not assignable to type 'number | null'.
+  Type 'undefined' is not assignable to type 'number | null'.
+[ELIFECYCLE] Command failed with exit code 2.

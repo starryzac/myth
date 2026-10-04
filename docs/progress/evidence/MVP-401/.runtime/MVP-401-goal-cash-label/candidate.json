@@ -1,0 +1,21 @@
+{
+  "prepared_at": "2026-10-04T15:10:00.843796+00:00",
+  "state": "CANDIDATE_NOT_APPLIED_OR_TESTED",
+  "reason": "goal_cash includes owned goal cash plus unassigned GOAL-account cash",
+  "label": "目标现金保护（含待归属）",
+  "production_and_test_source_unchanged": true,
+  "sources": {
+    "apps/web/src/App.tsx": "406a6c9a6adc08e5471cdee07fbef5dbf808c8837050702dd46041790af53bc5",
+    "apps/web/src/App.test.tsx": "43cc00d68105959b9fd3cb9dffa24a23f6331425d0c1069926ae0d4a1cfdc2d2"
+  },
+  "patches": {
+    "label-only.patch": "ba726567426ecadb404627e46ee2b8692b4d28c90176cef216a6ce4c3dc8cc1b",
+    "related-test.patch": "946deedef8a625c38d0bd1c6dd6e01525d8cb9b3e6e528426b6ec7f020c8ae00"
+  },
+  "planned_validation": [
+    "pnpm --dir apps/web typecheck",
+    "pnpm --dir apps/web test src/App.test.tsx",
+    "pnpm --dir apps/web lint"
+  ],
+  "db_or_browser_executed": false
+}

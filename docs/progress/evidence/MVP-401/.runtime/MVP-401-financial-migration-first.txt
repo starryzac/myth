@@ -1,0 +1,45 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Scripts\python.exe
+hypothesis profile 'default'
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 4 items
+
+apps/api/app/tests/test_external_bank_facts.py::test_actual_external_consumption_cannot_release_goal_or_pending_income_claims[allocated_goal] PASSED [ 25%]
+apps/api/app/tests/test_external_bank_facts.py::test_actual_external_consumption_cannot_release_goal_or_pending_income_claims[active_income_claim] PASSED [ 50%]
+apps/api/app/tests/test_external_bank_migration.py::test_external_schema_empty_roundtrip_matches_models PASSED [ 75%]
+apps/api/app/tests/test_external_bank_migration.py::test_upgrade_preserves_authentic_open_sealed_v1_and_readonly_old_reset_replay FAILED [100%]
+
+================================== FAILURES ===================================
+_ test_upgrade_preserves_authentic_open_sealed_v1_and_readonly_old_reset_replay _
+
+migrated_database = (Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_0ac7fb9400014cc0a9fee257c38564dc), <alembic.config.Config object at 0x00000202556D6CC0>)
+
+    def test_upgrade_preserves_authentic_open_sealed_v1_and_readonly_old_reset_replay(
+        migrated_database: tuple[Engine, Config],
+    ) -> None:
+        engine, config = migrated_database
+        command.downgrade(config, "0006_audit_chain")
+        destination = ROOT / ".runtime" / ("MVP-401-authentic-upgrade-" + uuid4().hex)
+>       old = _actual_old_history(engine, destination)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_external_bank_migration.py:159: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_external_bank_migration.py:96: in _actual_old_history
+    require_test_database(engine.url.render_as_string(hide_password=False))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+database = 'postgresql+psycopg://bounded:bounded_local_only@127.0.0.1:54329/bf_test_0ac7fb9400014cc0a9fee257c38564dc'
+
+    def require_test_database(database: str | None) -> str:
+        if database is None or re.fullmatch(r"bf_test_[0-9a-f]{32}", database) is None:
+>           raise ValueError("Destructive operations require a generated bf_test_<32 hex> database")
+E           ValueError: Destructive operations require a generated bf_test_<32 hex> database
+
+apps\api\app\db\testing.py:16: ValueError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_external_bank_migration.py::test_upgrade_preserves_authentic_open_sealed_v1_and_readonly_old_reset_replay - ValueError: Destructive operations require a generated bf_test_<32 hex> database
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+=================== 1 failed, 3 passed in 103.96s (0:01:43) ===================

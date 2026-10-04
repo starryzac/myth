@@ -1,5 +1,6 @@
 """Actual prepared/confirmed/executed application transactions on PostgreSQL."""
 
+from copy import deepcopy
 from datetime import timedelta
 from uuid import UUID, uuid4
 
@@ -13,6 +14,7 @@ from app.db.models import (
     Goal,
 )
 from app.domain.execution_types import OccurrenceReference
+from app.domain.income_ledger import LEDGER_SOURCE
 from app.domain.policy_configuration import configuration_hash
 from app.services.action_contracts import (
     ConfirmActionRequest,
@@ -51,6 +53,19 @@ def transfer_accounts(engine: Engine) -> tuple[UUID, UUID]:
     """Explicit trusted synthetic fixture import, independent of normal execution."""
     with Session(engine) as session, session.begin():
         source = session.scalars(select(Account).where(Account.account_type == "CASH")).one()
+        current_income = session.scalar(
+            select(EvidenceItem.id).where(
+                EvidenceItem.user_id == DEMO_USER_ID,
+                EvidenceItem.source_type == LEDGER_SOURCE,
+                EvidenceItem.status != "SUPERSEDED",
+            )
+        )
+        # Validate the complete original CASH scope before adding the actual zero-balance account.
+        income_before = (
+            read_income_state(session, DEMO_USER_ID, SEED_AS_OF)
+            if current_income is not None
+            else None
+        )
         target = Account(
             id=uuid4(),
             user_id=DEMO_USER_ID,
@@ -92,6 +107,39 @@ def transfer_accounts(engine: Engine) -> tuple[UUID, UUID]:
         open_simulated_bank(
             session, DEMO_USER_ID, SEED_AS_OF, cash_balances={target.id: 0}, position_principals={}
         )
+        if income_before is not None:
+            previous_income = session.get(EvidenceItem, income_before.evidence_id)
+            assert previous_income is not None and previous_income.status == "VALID"
+            original_content = deepcopy(previous_income.content)
+            original_hash = previous_income.content_hash
+            scope = tuple(sorted((*income_before.ledger.scope_account_ids, target.id)))
+            successor_content = {
+                **deepcopy(original_content),
+                "scope_account_ids": [str(identity) for identity in scope],
+            }
+            # Trusted fixture import: only scope changes; no action or bank fact is invented.
+            previous_income.status = "SUPERSEDED"
+            session.add(
+                EvidenceItem(
+                    id=uuid4(),
+                    user_id=DEMO_USER_ID,
+                    created_at=SEED_AS_OF,
+                    evidence_level="BANK_CONFIRMED",
+                    source_type=LEDGER_SOURCE,
+                    source_ref="explicit-transfer-cash-scope-fixture",
+                    content=successor_content,
+                    content_hash=configuration_hash(successor_content),
+                    status="VALID",
+                    valid_from=SEED_AS_OF,
+                    observed_at=SEED_AS_OF,
+                    supersedes_id=previous_income.id,
+                )
+            )
+            session.flush()
+            inherited = read_income_state(session, DEMO_USER_ID, SEED_AS_OF).ledger
+            assert inherited == income_before.ledger.model_copy(update={"scope_account_ids": scope})
+            assert previous_income.content == original_content
+            assert previous_income.content_hash == original_hash
         refresh_execution_exposure(session, DEMO_USER_ID, SEED_AS_OF, uuid4())
         return source.id, target.id
 

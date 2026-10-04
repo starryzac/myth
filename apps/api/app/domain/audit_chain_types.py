@@ -25,6 +25,8 @@ EVENT_TYPES = frozenset(
         "POLICY_VERSION_CONFIRMED",
         "POLICY_STATE_CHANGED",
         "GOAL_INITIALIZED",
+        "EXTERNAL_BANK_FACT_SETTLED",
+        "EXTERNAL_BANK_FACT_PROJECTED",
     }
 )
 PUBLIC_SUBJECT_KINDS = frozenset(
@@ -42,6 +44,7 @@ PUBLIC_SUBJECT_KINDS = frozenset(
         "BANK_OPERATION",
         "BANK_REDEMPTION",
         "BANK_POSTING",
+        "BANK_EXTERNAL_FACT",
         "RESOURCE_CLAIM",
         "TRANSACTION",
     }
@@ -185,7 +188,7 @@ class AuditObservation(AuditModel):
     request_id: UUID | None = None
 
 
-class AuditPayload(AuditModel):
+class AuditPayloadV1(AuditModel):
     fact_key: Label
     correlation_kind: Literal["EPOCH", "DECISION_RUN", "POLICY", "GOAL"]
     references: Annotated[list[AuditReference], Field(max_length=10000)] = Field(
@@ -199,6 +202,20 @@ class AuditPayload(AuditModel):
     legacy_origin: AuditLegacyOrigin | None = None
     epoch_transition: AuditEpochTransition | None = None
     observation: AuditObservation | None = None
+    context: AuditFactContext = Field(default_factory=AuditFactContext)
+
+
+# Existing callers retain the exact v1 fields, defaults and encoding.
+AuditPayload = AuditPayloadV1
+
+
+class AuditPayloadV2(AuditModel):
+    fact_key: Label
+    correlation_kind: Literal["EXTERNAL_BANK_FACT"]
+    references: Annotated[list[AuditReference], Field(max_length=10000)] = Field(
+        default_factory=list
+    )
+    anchors: Annotated[list[AuditAnchor], Field(max_length=10000)] = Field(default_factory=list)
     context: AuditFactContext = Field(default_factory=AuditFactContext)
 
 
@@ -229,6 +246,40 @@ class AuditEnvelope(AuditIntent):
     observed_at: datetime
     appended_at: datetime
     event_hash: Digest
+
+
+class AuditIntentV2(AuditModel):
+    user_id: UUID
+    event_type: Annotated[str, Field(min_length=1, max_length=80)]
+    aggregate_type: Annotated[str, Field(min_length=1, max_length=48)]
+    aggregate_id: UUID
+    correlation_id: UUID
+    causation_id: UUID | None = None
+    decision_run_id: UUID | None = None
+    action_plan_id: UUID | None = None
+    action_receipt_id: UUID | None = None
+    idempotency_key: Label
+    payload_version: Literal[2] = 2
+    payload: AuditPayloadV2
+    occurred_at: datetime
+
+
+class AuditEnvelopeV2(AuditIntentV2):
+    schema_version: Literal["audit-event-v1"] = "audit-event-v1"
+    canonical_version: Literal["audit-canonical-json-v1"] = "audit-canonical-json-v1"
+    simulation: Literal[True] = True
+    id: UUID
+    epoch_id: UUID
+    sequence_number: Sequence
+    previous_hash: Digest | None
+    observed_at: datetime
+    appended_at: datetime
+    event_hash: Digest
+
+
+AuditEnvelopeV1 = AuditEnvelope
+AuditEvent = AuditEnvelopeV1 | AuditEnvelopeV2
+AuditIntentAny = AuditIntent | AuditIntentV2
 
 
 class AuditEpochSeal(AuditModel):

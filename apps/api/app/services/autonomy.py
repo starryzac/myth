@@ -32,7 +32,7 @@ from app.domain.execution_types import BankCommand, ExecutionEffect
 from app.domain.policy_configuration import configuration_hash, validate_configuration
 from app.services.action_contracts import ActionIntent, TransferIntent
 from app.services.asset_exposure_import import load_asset_exposure
-from app.services.boundary import BoundaryContext, load_boundary_context
+from app.services.boundary import BoundaryContext, clone_boundary_context, load_boundary_context
 from app.services.execution_context import load_execution_context
 from app.services.execution_planning import plan_execution_effect
 from app.services.execution_sources import (
@@ -75,8 +75,14 @@ def _clock(now: datetime) -> datetime:
     return now.astimezone(UTC)
 
 
-def _basis(session: Session, user_id: UUID, now: datetime) -> _Basis:
-    base = load_boundary_context(session, user_id, now)
+def _basis(
+    session: Session, user_id: UUID, now: datetime, context: BoundaryContext | None = None
+) -> _Basis:
+    base = (
+        clone_boundary_context(context, user_id, now)
+        if context is not None
+        else load_boundary_context(session, user_id, now)
+    )
     exposure = load_asset_exposure(session, base, {"scope": "general_idle_funds"})
     try:
         validate_bank_projection(session, user_id, now)
@@ -345,7 +351,9 @@ def _facts(
             )
             source_ids = sorted(set(source_ids) | set(authority.evidence_ids))
             facts = facts.model_copy(update={"authority": authority})
-        context = load_execution_context(session, user_id, effect, now, own_action_id=action_id)
+        context = load_execution_context(
+            session, user_id, effect, now, own_action_id=action_id, base_context=basis.context
+        )
         confirmation = read_execution_confirmation(session, effect, now) if action_id else None
         validation = revalidate_execution(effect, context, confirmation=confirmation)
     except PolicyLifecycleError as error:
@@ -470,7 +478,12 @@ def assess_intent(
 
 
 def assess_action(
-    session: Session, user_id: UUID, action_id: UUID, now: datetime
+    session: Session,
+    user_id: UUID,
+    action_id: UUID,
+    now: datetime,
+    *,
+    context: BoundaryContext | None = None,
 ) -> AutonomyResponse:
     now = _clock(now)
     with session.no_autoflush:
@@ -509,7 +522,7 @@ def assess_action(
             raise PolicyLifecycleError(
                 "INVALID_EXECUTION_SOURCE", "原动作载荷不完整或已变化", 409
             ) from error
-        basis = _basis(session, user_id, now)
+        basis = _basis(session, user_id, now, context)
         facts = _facts(
             session, user_id, intent, now, basis, effect=command.effect, action_id=action_id
         )

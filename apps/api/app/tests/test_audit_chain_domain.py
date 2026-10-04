@@ -224,7 +224,11 @@ def recorded_chain() -> tuple[list[AuditEnvelope], AuditHead, ReferenceBundle]:
         genesis_event_id=first.id,
         genesis_event_hash=first.event_hash,
     )
-    return [first, second], head, ReferenceBundle(subjects=[subject])
+    return (
+        [cast("AuditEnvelope", first), cast("AuditEnvelope", second)],
+        head,
+        ReferenceBundle(subjects=[subject]),
+    )
 
 
 def test_full_original_decision_chain_detects_deleted_tail_and_empty_chain() -> None:
@@ -341,20 +345,8 @@ def test_bank_posting_and_receipt_digests_bind_the_full_original_money_set() -> 
     import pytest
     from app.domain.audit_chain import posting_set_digest, receipt_digest
 
-    first = {
-        "id": "00000000-0000-0000-0000-000000000009",
-        "ledger_key": "cash",
-        "sequence_number": 2,
-        "entry_kind": "EXECUTION",
-        "delta_cents": -100,
-    }
-    second = {
-        "id": "00000000-0000-0000-0000-000000000010",
-        "ledger_key": "principal",
-        "sequence_number": 2,
-        "entry_kind": "EXECUTION",
-        "delta_cents": 100,
-    }
+    _, _, postings, _, _ = transfer_originals()
+    first, second = postings
     assert posting_set_digest([second, first]) == posting_set_digest([first, second])
     assert posting_set_digest([first]) != posting_set_digest([first, second])
     receipt = {
@@ -537,7 +529,7 @@ def transfer_originals() -> tuple[
         "settled_at": now,
         "status": "SETTLED",
     }
-    postings = [
+    postings: list[dict[str, Any]] = [
         {
             "id": str(uuid5(action_id, "posting:cash:" + str(account))),
             "user_id": str(user),
@@ -545,6 +537,9 @@ def transfer_originals() -> tuple[
             "leg_ref": "cash:" + str(account),
             "ledger_key": "CASH:" + str(account),
             "ledger_dimension": "ECONOMIC",
+            "ledger_metadata": {},
+            "redemption_id": None,
+            "previous_posting_id": str(uuid5(user, "execution-opening:CASH:" + str(account))),
             "sequence_number": 2,
             "entry_kind": "EXECUTION",
             "delta_cents": delta,
@@ -693,7 +688,7 @@ def projected_chain() -> tuple[list[AuditEnvelope], AuditHead, ReferenceBundle]:
         }
     )
     return (
-        events + [projected],
+        events + [cast("AuditEnvelope", projected)],
         head,
         bundle.model_copy(update={"subjects": bundle.subjects + originals}),
     )
@@ -711,7 +706,11 @@ def test_projected_original_receipt_and_posting_anchors_verify_without_session()
         epoch_id=head.epoch_id,
         kind=posting.kind,
         id=posting.id,
-        data={**posting.data, "delta_cents": -200},
+        data={
+            **posting.data,
+            "delta_cents": -200,
+            "balance_after_cents": posting.data["balance_before_cents"] - 200,
+        },
     )
     current = bundle.model_copy(update={"current_subjects": [changed]})
     assert (

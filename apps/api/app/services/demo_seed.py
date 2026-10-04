@@ -4,7 +4,7 @@ import hashlib
 import json
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, time, timedelta, timezone
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal, cast
 from uuid import UUID, uuid4, uuid5
 
 from app.db.audit_guard import DEMO_GATE_KEY
@@ -21,6 +21,7 @@ from app.db.models import (
     DecisionConstraint,
     DecisionRun,
     EvidenceItem,
+    ExternalBankFact,
     Goal,
     Policy,
     PolicyProposal,
@@ -32,6 +33,7 @@ from app.db.models import (
 )
 from app.domain.asset_exposure import EXPOSURE_SOURCE, asset_exposure_snapshot
 from app.domain.audit_chain import parse_event
+from app.domain.audit_chain_types import AuditEnvelope
 from app.domain.demo_identity import DEMO_USER_ID as DEMO_USER_ID
 from app.domain.demo_identity import DEMO_USER_REF as DEMO_USER_REF
 from app.domain.history_coverage import COVERAGE_SOURCE_TYPE, build_history_coverage
@@ -51,8 +53,11 @@ from sqlalchemy import delete, or_, select, text, update
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
+if TYPE_CHECKING:
+    from app.domain.income_ledger import IncomeLedger
+
 SEED_VERSION = "mvp-301-v6"
-SUMMARY_VERSION = "seed-summary-v2"
+SUMMARY_VERSION = "seed-summary-v3"
 SEED_START = date(2026, 8, 5)
 SEED_END = date(2026, 10, 3)
 SEED_AS_OF = datetime(2026, 10, 3, 16, tzinfo=UTC)
@@ -69,7 +74,7 @@ class SeedConflictError(ValueError):
 class SeedSummary(BaseModel):
     model_config = ConfigDict(frozen=True)
     simulation: Literal[True] = True
-    summary_version: Literal["seed-summary-v2"] = "seed-summary-v2"
+    summary_version: Literal["seed-summary-v2", "seed-summary-v3"] = "seed-summary-v3"
     seed_version: str
     user_id: UUID
     as_of: datetime
@@ -395,6 +400,7 @@ def _clear_demo(session: Session) -> None:
     )
     for model in [
         SimulatedBankPosting,
+        ExternalBankFact,
         BankOperation,
         SimulatedBankRedemption,
         ActionResourceReservation,
@@ -702,6 +708,9 @@ def _summary(session: Session) -> SeedSummary:
 
 
 def _open_seed_bank(session: Session) -> None:
+    from app.services.execution_bank import open_execution_anchors
+    from app.services.external_bank_facts import open_external_clearing
+
     # Independent openings are reconstructed from the fixed synthetic seed
     # instructions, never copied from mutable application account projections.
     balances = {key: 0 for key in ("cash", "goal", "management", "fixed")}
@@ -721,6 +730,179 @@ def _open_seed_bank(session: Session) -> None:
             _id("position:fixed"): 100000,
         },
     )
+    open_external_clearing(
+        session,
+        DEMO_USER_ID,
+        SEED_AS_OF,
+        counterparty_reserves={"payroll": 100000000, "merchant": 0},
+    )
+    income = _seed_income_ledger(session)
+    open_execution_anchors(session, DEMO_USER_ID, SEED_AS_OF, income_ledger=income)
+
+
+def _seed_income_ledger(session: Session) -> "IncomeLedger":
+    """Replay fixed bank instructions FIFO; SPENT means exited current CASH availability."""
+    from app.domain.history_coverage import bank_fact_snapshot
+    from app.domain.income_ledger import (
+        LEDGER_SOURCE,
+        IncomeFragment,
+        IncomeLedger,
+        IncomeOrigin,
+        location_id,
+    )
+
+    if current_audit_epoch(session, DEMO_USER_ID) is not None:
+        raise SeedConflictError("Historical income import is restricted to trusted seed genesis")
+    transactions = {
+        row.id: row
+        for row in session.scalars(select(Transaction).where(Transaction.user_id == DEMO_USER_ID))
+    }
+    proofs = {
+        row.id: row
+        for row in session.scalars(select(EvidenceItem).where(EvidenceItem.user_id == DEMO_USER_ID))
+    }
+    cash_id = _id("account:cash")
+    origins: list[IncomeOrigin] = []
+    available: dict[UUID, int] = {}
+    debits: list[dict[str, Any]] = []
+    untracked = 0
+    source: list[dict[str, Any]] = []
+    known_debits = {
+        "food",
+        "transport",
+        "daily_necessities",
+        "rent",
+        "utilities",
+        "one_off_purchase",
+        "internal_transfer",
+        "asset_purchase",
+        "credit_card_payment",
+    }
+    for instruction in _ledger():
+        if instruction.account != "cash":
+            continue
+        transaction = transactions.get(_id(f"transaction:{instruction.key}"))
+        proof = (
+            proofs.get(transaction.evidence_id)
+            if transaction is not None and transaction.evidence_id is not None
+            else None
+        )
+        if (
+            transaction is None
+            or proof is None
+            or (
+                transaction.account_id != cash_id
+                or transaction.amount_cents != instruction.amount_cents
+                or transaction.direction != instruction.direction
+                or transaction.occurred_at != instruction.occurred_at
+                or transaction.counterparty_ref != instruction.counterparty_ref
+                or proof.content.get("economic_role") != instruction.economic_role
+            )
+        ):
+            raise SeedConflictError(
+                "Trusted income instructions differ from their actual bank originals"
+            )
+        bank_fact_snapshot(transaction, proof)
+        source.append(
+            {
+                "key": instruction.key,
+                "transaction_id": str(transaction.id),
+                "evidence_id": str(proof.id),
+                "evidence_hash": proof.content_hash,
+                "direction": instruction.direction,
+                "amount_cents": instruction.amount_cents,
+                "occurred_at": instruction.occurred_at.isoformat(),
+                "economic_role": instruction.economic_role,
+            }
+        )
+        if instruction.direction == "CREDIT":
+            if instruction.economic_role == "INCOME":
+                origins.append(
+                    IncomeOrigin(
+                        origin_transaction_id=transaction.id,
+                        origin_account_id=cash_id,
+                        amount_cents=instruction.amount_cents,
+                        occurred_at=transaction.occurred_at,
+                        observed_at=transaction.observed_at,
+                        bank_evidence_id=proof.id,
+                        bank_evidence_hash=proof.content_hash,
+                    )
+                )
+                available[transaction.id] = instruction.amount_cents
+            elif instruction.category == "opening_balance":
+                untracked += instruction.amount_cents
+            else:
+                raise SeedConflictError("Unknown trusted CASH credit source")
+            continue
+        if instruction.category not in known_debits:
+            raise SeedConflictError("Unknown trusted CASH debit attribution")
+        remaining = instruction.amount_cents
+        uses = []
+        for origin in origins:
+            consumed = min(remaining, available[origin.origin_transaction_id])
+            if consumed:
+                available[origin.origin_transaction_id] -= consumed
+                uses.append(
+                    {
+                        "origin_transaction_id": str(origin.origin_transaction_id),
+                        "amount_cents": consumed,
+                    }
+                )
+                remaining -= consumed
+            if not remaining:
+                break
+        untracked -= remaining
+        if untracked < 0:
+            raise SeedConflictError(
+                "Historical CASH debit lacks actual prior income or opening capital"
+            )
+        debits.append(
+            {
+                "transaction_id": str(transaction.id),
+                "economic_role": instruction.economic_role,
+                "income_uses": uses,
+                "untracked_spent_cents": remaining,
+            }
+        )
+    ledger = IncomeLedger(
+        user_id=DEMO_USER_ID,
+        as_of=SEED_AS_OF,
+        scope_account_ids=(cash_id,),
+        origins=tuple(origins),
+        fragments=tuple(
+            IncomeFragment(
+                fragment_id=location_id(origin.origin_transaction_id, cash_id),
+                origin_transaction_id=origin.origin_transaction_id,
+                account_id=cash_id,
+                spent_cents=origin.amount_cents - available[origin.origin_transaction_id],
+                available_cents=available[origin.origin_transaction_id],
+            )
+            for origin in origins
+        ),
+    )
+    content = ledger.model_dump(mode="json")
+    session.add(_evidence("seed-income-ledger", LEDGER_SOURCE, content, SEED_AS_OF))
+    session.add(
+        _evidence(
+            "seed-income-fifo-import",
+            "SIMULATED_SEED_INCOME_IMPORT",
+            {
+                "simulation": True,
+                "user_id": str(DEMO_USER_ID),
+                "protocol_version": "seed-income-cash-fifo-v1",
+                "source_digest": _hash(source),
+                "sources": source,
+                "debits": debits,
+                "ledger_content_hash": _hash(content),
+                "untracked_remaining_cents": untracked,
+                "spent_semantics": "EXITED_CURRENT_CASH_AVAILABLE_SCOPE",
+                "ordering": "occurred_at_then_stable_instruction_key",
+            },
+            SEED_AS_OF,
+        )
+    )
+    session.flush()
+    return ledger
 
 
 def seed_demo(
@@ -751,7 +933,7 @@ def seed_demo(
             )
             if replay is not None:
                 original = parse_event(replay.canonical_text or "")
-                transition = original.payload.epoch_transition
+                transition = cast(AuditEnvelope, original).payload.epoch_transition
                 if (
                     transition is None
                     or transition.reason != reason
@@ -792,6 +974,28 @@ def seed_demo(
                     receipts=[],
                     evidence=session.scalars(
                         select(EvidenceItem).where(EvidenceItem.user_id == DEMO_USER_ID)
+                    ),
+                    settlements=[],
+                    bank_requests=session.scalars(
+                        select(SimulatedBankRedemption).where(
+                            SimulatedBankRedemption.user_id == DEMO_USER_ID
+                        )
+                    ),
+                    bank_postings=session.scalars(
+                        select(SimulatedBankPosting).where(
+                            SimulatedBankPosting.user_id == DEMO_USER_ID
+                        )
+                    ),
+                    bank_operations=session.scalars(
+                        select(BankOperation).where(BankOperation.user_id == DEMO_USER_ID)
+                    ),
+                    resource_reservations=session.scalars(
+                        select(ActionResourceReservation).where(
+                            ActionResourceReservation.user_id == DEMO_USER_ID
+                        )
+                    ),
+                    external_bank_facts=session.scalars(
+                        select(ExternalBankFact).where(ExternalBankFact.user_id == DEMO_USER_ID)
                     ),
                 ),
                 SEED_AS_OF,

@@ -11,6 +11,7 @@ from app.db.models import (
     ActionResourceReservation,
     AssetPosition,
     BankOperation,
+    ExternalBankFact,
     PolicyVersion,
     SimulatedBankPosting,
     SimulatedBankRedemption,
@@ -66,18 +67,10 @@ def _goal_scope(goal_id: UUID | None) -> str:
     return str(goal_id) if goal_id else "general"
 
 
-def load_asset_exposure(
-    session: Session, context: BoundaryContext, configuration: dict[str, Any]
-) -> AssetExposure:
+def load_all_asset_exposure(
+    session: Session, context: BoundaryContext
+) -> list[AssetExposure] | None:
     sources = context.sources
-    goal_id = UUID(configuration["goal_id"]) if configuration.get("goal_id") else None
-    empty = AssetExposure(
-        as_of=context.snapshot.as_of,
-        scope=configuration["scope"],
-        goal_id=goal_id,
-        managed_principal_cents=0,
-        pending_purchase_cents=0,
-    )
     statements = [
         row
         for row in sources.evidence.values()
@@ -90,7 +83,7 @@ def load_asset_exposure(
             EXPOSURE_SOURCE,
             "需要唯一完整的资产占用证明",
         )
-        return empty
+        return None
     statement = statements[0]
     accounts = list(session.scalars(select(Account).where(Account.user_id == sources.user_id)))
     positions = list(
@@ -115,8 +108,18 @@ def load_asset_exposure(
             select(SimulatedBankPosting).where(SimulatedBankPosting.user_id == sources.user_id)
         )
     )
-    is_v3 = statement.content.get("protocol") == "asset-exposure-v3"
-    is_v2 = statement.content.get("protocol") in {"asset-exposure-v2", "asset-exposure-v3"}
+    is_v4 = statement.content.get("protocol") == "asset-exposure-v4"
+    is_v3 = statement.content.get("protocol") in {"asset-exposure-v3", "asset-exposure-v4"}
+    is_v2 = statement.content.get("protocol") in {
+        "asset-exposure-v2",
+        "asset-exposure-v3",
+        "asset-exposure-v4",
+    }
+    external_facts = list(
+        session.scalars(
+            select(ExternalBankFact).where(ExternalBankFact.user_id == sources.user_id).limit(10001)
+        )
+    )
     bank_operations = list(
         session.scalars(select(BankOperation).where(BankOperation.user_id == sources.user_id))
     )
@@ -133,6 +136,8 @@ def load_asset_exposure(
             or len(actions) > 10000
             or len(receipts) > 100000
             or len(transactions) > 100000
+            or len(external_facts) > 10000
+            or len(bank_postings) > 100000
         ):
             raise ValueError("Exposure input capacity exceeded")
         epoch = datetime.fromisoformat(statement.content["as_of"])
@@ -155,6 +160,7 @@ def load_asset_exposure(
             bank_postings=bank_postings if is_v2 else None,
             bank_operations=bank_operations if is_v3 else None,
             resource_reservations=resource_reservations if is_v3 else None,
+            external_bank_facts=external_facts if is_v4 else None,
         )
         if configuration_hash(expected) != configuration_hash(
             statement.content
@@ -170,7 +176,28 @@ def load_asset_exposure(
             or any("execution" in row.request for row in actions)
         ):
             raise ValueError("Generic execution requires complete independent exposure v3")
+        if not is_v4 and (
+            external_facts
+            or any(
+                row.external_fact_id is not None or row.ledger_key.startswith("CLEARING:")
+                for row in bank_postings
+            )
+        ):
+            raise ValueError("External bank facts require complete exposure v4")
         watermarks = [row.observed_at for row in accounts]
+        watermarks += [
+            stamp
+            for row in external_facts
+            for stamp in (
+                row.occurred_at,
+                row.observed_at,
+                row.accepted_at,
+                row.settled_at,
+                row.projected_at,
+                row.updated_at,
+            )
+            if stamp is not None
+        ]
         watermarks += [row.purchased_at for row in positions]
         watermarks += [row.created_at for row in actions]
         watermarks += [row.authorized_at for row in actions if row.authorized_at is not None]
@@ -201,13 +228,13 @@ def load_asset_exposure(
         ]
         if any(stamp > epoch for stamp in watermarks):
             raise ValueError("Exposure predates a known financial or execution fact")
-        if goal_id is not None:
-            owned = sources.candidates(OWNERSHIP_SOURCE, "goal_id", goal_id)
+        for goal in context.snapshot.goals:
+            owned = sources.candidates(OWNERSHIP_SOURCE, "goal_id", goal.goal_id)
             if len(owned) != 1 or owned[0].content.get("as_of") != epoch.isoformat():
                 raise ValueError("Goal ownership and exposure epochs differ")
     except (KeyError, TypeError, ValueError, OverflowError, PolicyLifecycleError) as error:
         sources.issue("INVALID_ASSET_EXPOSURE", statement.id, str(error))
-        return empty
+        return None
 
     try:
         by_action = {row.id: row for row in actions}
@@ -234,9 +261,11 @@ def load_asset_exposure(
         declarations = {UUID(item["action_id"]): item for item in settlements}
         if len(declarations) != len(settlements) or set(declarations) != set(by_action):
             raise ValueError("Every action needs exactly one settlement declaration")
-        managed = pending = 0
-        counted_positions: list[UUID] = []
-        counted_actions: list[UUID] = []
+        scopes = {"general", *(str(goal.goal_id) for goal in context.snapshot.goals)}
+        managed: dict[str, int] = {}
+        pending: dict[str, int] = {}
+        counted_positions: dict[str, list[UUID]] = {}
+        counted_actions: dict[str, list[UUID]] = {}
         manual_positions: list[UUID] = []
         reserved: dict[UUID, int] = {}
         reserved_goals: dict[UUID, int] = {}
@@ -296,9 +325,9 @@ def load_asset_exposure(
                             reserved_goals[effect.goal_id] = (
                                 reserved_goals.get(effect.goal_id, 0) + effect.amount_cents
                             )
-                        if scope == _goal_scope(goal_id):
-                            pending += effect.amount_cents
-                            counted_actions.append(action.id)
+                        scopes.add(scope)
+                        pending[scope] = pending.get(scope, 0) + effect.amount_cents
+                        counted_actions.setdefault(scope, []).append(action.id)
                     continue
                 if state == "EXECUTION_SETTLED" and effect.action_type == "REDEEM_ASSET":
                     operation = next(
@@ -436,9 +465,9 @@ def load_asset_exposure(
                         reserved_goals.get(action.goal_id, 0) + action.amount_cents
                     )
                 reserved[account.id] = reserved.get(account.id, 0) + action.amount_cents
-                if scope == _goal_scope(goal_id):
-                    pending += action.amount_cents
-                    counted_actions.append(action.id)
+                scopes.add(scope)
+                pending[scope] = pending.get(scope, 0) + action.amount_cents
+                counted_actions.setdefault(scope, []).append(action.id)
             elif state == "MATERIALIZED":
                 if (
                     set(declaration)
@@ -531,9 +560,10 @@ def load_asset_exposure(
             scope = _scope(session, context, position.policy_version_id)
             if scope != _goal_scope(position.goal_id):
                 raise ValueError("Position scope does not match historical authorization")
-            if scope == _goal_scope(goal_id) and position.status != "REDEEMED":
-                managed += position.principal_cents
-                counted_positions.append(position.id)
+            scopes.add(scope)
+            if position.status != "REDEEMED":
+                managed[scope] = managed.get(scope, 0) + position.principal_cents
+                counted_positions.setdefault(scope, []).append(position.id)
         for account_id, amount in reserved.items():
             if amount > by_account[account_id].balance_cents:
                 raise ValueError("Pending purchases exceed their source cash")
@@ -541,19 +571,40 @@ def load_asset_exposure(
             owned_goal = next(item for item in context.snapshot.goals if item.goal_id == identifier)
             if amount > owned_goal.cash_owned_cents:
                 raise ValueError("Pending goal purchases exceed that goal's owned cash")
-        return AssetExposure(
-            as_of=epoch,
-            scope=configuration["scope"],
-            goal_id=goal_id,
-            managed_principal_cents=managed,
-            pending_purchase_cents=pending,
-            reserved_cash_by_account=reserved,
-            reserved_goal_cash_by_goal=reserved_goals,
-            counted_position_ids=sorted(counted_positions),
-            counted_action_ids=sorted(counted_actions),
-            excluded_manual_position_ids=sorted(manual_positions),
-            evidence_ids=sorted(sources.used),
-        )
+        return [
+            AssetExposure(
+                as_of=epoch,
+                scope="general_idle_funds" if scope == "general" else "goal",
+                goal_id=None if scope == "general" else UUID(scope),
+                managed_principal_cents=managed.get(scope, 0),
+                pending_purchase_cents=pending.get(scope, 0),
+                reserved_cash_by_account=reserved,
+                reserved_goal_cash_by_goal=reserved_goals,
+                counted_position_ids=sorted(counted_positions.get(scope, [])),
+                counted_action_ids=sorted(counted_actions.get(scope, [])),
+                excluded_manual_position_ids=sorted(manual_positions),
+                evidence_ids=sorted(sources.used),
+            )
+            for scope in sorted(scopes, key=lambda value: (value != "general", value))
+        ]
     except (KeyError, TypeError, ValueError, OverflowError, PolicyLifecycleError) as error:
         sources.issue("EXPOSURE_RECONCILIATION_REQUIRED", statement.id, str(error))
+        return None
+
+
+def load_asset_exposure(
+    session: Session, context: BoundaryContext, configuration: dict[str, Any]
+) -> AssetExposure:
+    """Compatibility view; verification and historical scope attribution happen once."""
+    goal_id = UUID(configuration["goal_id"]) if configuration.get("goal_id") else None
+    empty = AssetExposure(
+        as_of=context.snapshot.as_of,
+        scope=configuration["scope"],
+        goal_id=goal_id,
+        managed_principal_cents=0,
+        pending_purchase_cents=0,
+    )
+    items = load_all_asset_exposure(session, context)
+    if items is None:
         return empty
+    return next((item for item in items if item.goal_id == goal_id), empty)

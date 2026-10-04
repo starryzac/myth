@@ -1,7 +1,8 @@
 """Read-only adapter for verified simulated facts; never creates execution authority."""
 
 from calendar import monthrange
-from dataclasses import dataclass
+from copy import copy
+from dataclasses import dataclass, replace
 from datetime import UTC, date, datetime, time, timedelta, timezone
 from typing import Any, Literal
 from uuid import UUID
@@ -724,6 +725,19 @@ class BoundaryContext:
     positions: list[BoundaryPosition]
     products: list[BoundaryProduct]
     sources: Sources
+
+
+def clone_boundary_context(
+    context: BoundaryContext, user_id: UUID, now: datetime
+) -> BoundaryContext:
+    """Reuse this request's facts without sharing mutable validation bookkeeping."""
+    if context.sources.user_id != user_id or context.snapshot.as_of != now:
+        raise ValueError("Read context must match its tenant and trusted clock")
+    sources = copy(context.sources)
+    sources.used = set(context.sources.used)
+    sources.issues = list(context.sources.issues)
+    sources.evidence = dict(context.sources.evidence)
+    return replace(context, sources=sources)
 
 
 def load_boundary_context(session: Session, user_id: UUID, now: datetime) -> BoundaryContext:

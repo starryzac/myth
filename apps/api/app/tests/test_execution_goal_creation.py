@@ -21,7 +21,9 @@ __all__ = ["boundary_engine"]
 pytestmark = pytest.mark.integration
 
 
-def public_zero_goal(engine: Engine) -> tuple[UUID, UUID, UUID, UUID]:
+def public_zero_goal(
+    engine: Engine, *, import_income: bool = True
+) -> tuple[UUID, UUID, UUID, UUID]:
     with Session(engine) as session, session.begin():
         cash = session.scalars(select(Account).where(Account.account_type == "CASH")).one()
         policy_id, version_id = confirmed_policy(
@@ -35,9 +37,13 @@ def public_zero_goal(engine: Engine) -> tuple[UUID, UUID, UUID, UUID]:
             },
             SEED_AS_OF - timedelta(days=40),
         )
-        # A complete trusted income import precedes the public goal creation call.
-        # It does not open any goal ledger or change existing account balances.
-        source_ledger(session, available_cents=100000)
+        if import_income:
+            # A complete trusted income import precedes the public goal creation call.
+            # It does not open any goal ledger or change existing account balances.
+            source_ledger(session, available_cents=100000)
+        else:
+            # Native 401 seed already has its own bound FIFO proof and bank LOT anchors.
+            read_income_state(session, DEMO_USER_ID, SEED_AS_OF)
         refresh_execution_exposure(session, DEMO_USER_ID, SEED_AS_OF, uuid4())
         goal = create_goal_projection(
             session, DEMO_USER_ID, policy_id, version_id, cash.id, SEED_AS_OF

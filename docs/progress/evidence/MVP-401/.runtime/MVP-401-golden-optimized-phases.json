@@ -1,0 +1,152 @@
+[
+  {
+    "phase": "seed",
+    "started_at": "2026-10-04T15:39:56.784865+00:00",
+    "seconds": 1.8439999999827705
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:39:58.741763+00:00",
+    "seconds": 0.9690000000409782
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:39:59.704555+00:00",
+    "seconds": 0.46899999998277053
+  },
+  {
+    "phase": "funds-goal_confirmed",
+    "started_at": "2026-10-04T15:40:00.228988+00:00",
+    "seconds": 0.0779999999795109
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:40:00.445487+00:00",
+    "seconds": 0.375
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:40:00.814337+00:00",
+    "seconds": 0.375
+  },
+  {
+    "phase": "funds-goal_created",
+    "started_at": "2026-10-04T15:40:01.243720+00:00",
+    "seconds": 0.2190000000409782
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:40:01.512741+00:00",
+    "seconds": 0.26600000000325963
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:40:01.767806+00:00",
+    "seconds": 0.35899999999674037
+  },
+  {
+    "phase": "funds-salary",
+    "started_at": "2026-10-04T15:40:02.261300+00:00",
+    "seconds": 0.6720000000204891
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:40:02.995912+00:00",
+    "seconds": 0.6100000000442378
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:40:03.599031+00:00",
+    "seconds": 0.5619999999762513
+  },
+  {
+    "phase": "funds-goal_allocated",
+    "started_at": "2026-10-04T15:40:04.386970+00:00",
+    "seconds": 26.78100000001723
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:40:32.003250+00:00",
+    "seconds": 34.48399999999674
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:41:06.496604+00:00",
+    "seconds": 36.57900000002701
+  },
+  {
+    "phase": "funds-purchase_prepared",
+    "started_at": "2026-10-04T15:41:44.256760+00:00",
+    "seconds": 9.73399999999674
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:41:56.745756+00:00",
+    "seconds": 43.17200000002049
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:42:39.911935+00:00",
+    "seconds": 46.64100000000326
+  },
+  {
+    "phase": "funds-purchased",
+    "started_at": "2026-10-04T15:43:28.928288+00:00",
+    "seconds": 21.54700000002049
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:43:51.959826+00:00",
+    "seconds": 37.81299999996554
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:44:29.768898+00:00",
+    "seconds": 50.20300000003772
+  },
+  {
+    "phase": "funds-consumption",
+    "started_at": "2026-10-04T15:45:23.107976+00:00",
+    "seconds": 1.4059999999590218
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:45:27.234834+00:00",
+    "seconds": 58.82900000002701
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:46:26.068634+00:00",
+    "seconds": 65.43699999997625
+  },
+  {
+    "phase": "funds-redeem_prepared",
+    "started_at": "2026-10-04T15:47:35.486273+00:00",
+    "seconds": 7.0
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:47:45.040996+00:00",
+    "seconds": 70.54700000002049
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:48:55.589159+00:00",
+    "seconds": 56.68799999996554
+  },
+  {
+    "phase": "funds-redeemed",
+    "started_at": "2026-10-04T15:49:55.339722+00:00",
+    "seconds": 19.71899999998277
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:50:20.302676+00:00",
+    "seconds": 82.04700000002049
+  },
+  {
+    "phase": "http-get-/api/v1/dashboard",
+    "started_at": "2026-10-04T15:51:42.359405+00:00",
+    "seconds": 89.48500000004424
+  }
+]

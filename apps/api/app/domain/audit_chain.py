@@ -6,16 +6,20 @@ import math
 import re
 from collections.abc import Iterable
 from datetime import UTC, date, datetime
-from typing import TYPE_CHECKING, Any, Literal
+from typing import TYPE_CHECKING, Any, Literal, cast, overload
 from uuid import UUID, uuid5
 
 if TYPE_CHECKING:
     from app.domain.audit_chain_types import (
         AuditCheckpoint,
         AuditEnvelope,
+        AuditEnvelopeV2,
         AuditEpochSeal,
+        AuditEvent,
         AuditHead,
         AuditIntent,
+        AuditIntentAny,
+        AuditIntentV2,
         AuditSubject,
         AuditVerification,
         ReferenceBundle,
@@ -23,6 +27,16 @@ if TYPE_CHECKING:
 
 MAX_EVENT_BYTES = 1024 * 1024
 MAX_SUBJECT_BYTES = 16 * 1024 * 1024
+EXTERNAL_EVENT_TYPES = frozenset({"EXTERNAL_BANK_FACT_SETTLED", "EXTERNAL_BANK_FACT_PROJECTED"})
+EXTERNAL_ANCHOR_ALGORITHM = "bank-external-canonical-sha256-v1"
+EXTERNAL_ANCHOR_KINDS = frozenset(
+    {
+        "EXTERNAL_BANK_REQUEST",
+        "EXTERNAL_BANK_RESULT",
+        "EXTERNAL_BANK_POSTING_SET",
+        "EXTERNAL_BANK_PROJECTION",
+    }
+)
 
 
 class AuditContractError(ValueError):
@@ -130,12 +144,26 @@ def _protocol(value: dict[str, Any], schema: str) -> None:
         raise AuditUnsupportedVersion("Unsupported original audit schema or canonical version")
 
 
-def build_subject(**fields: Any) -> "AuditSubject":
+def _external_fact_original(data: dict[str, Any]) -> None:
+    from app.domain.external_bank_fact import validate_external_fact_original
+
+    validate_external_fact_original(data)
+
+
+def _external_fact_immutable(
+    original: "AuditSubject", current: dict[tuple[str, UUID], "AuditSubject"]
+) -> None:
+    from app.domain.external_bank_fact import verify_external_fact_binding
+
+    latest = current.get((original.kind, original.id))
+    if latest is not None:
+        verify_external_fact_binding(original.data, latest.data)
+
+
+def _validated_subject_bytes(**fields: Any) -> tuple["AuditSubject", bytes]:
     from app.domain.audit_chain_types import SUBJECT_KINDS, AuditSubject
 
     subject = AuditSubject.model_validate(fields)
-    if subject.kind not in SUBJECT_KINDS or subject.snapshot_version != 1:
-        raise AuditUnsupportedVersion("Unsupported audit subject kind or version")
     if subject.data.get("id") != str(subject.id):
         raise AuditContractError("Audit subject identity differs from its original")
     owner = subject.data.get("user_id")
@@ -154,19 +182,45 @@ def build_subject(**fields: Any) -> "AuditSubject":
             and (type(value) is not int or not -(2**63) <= value <= 2**63 - 1)
         ):
             raise AuditContractError("Original row money must be strict signed integer cents")
-    canonical_bytes(subject.model_dump(mode="python"), raw=True)
+    if subject.kind not in SUBJECT_KINDS or subject.snapshot_version not in (
+        (1, 2) if subject.kind == "BANK_POSTING" else (1,)
+    ):
+        raise AuditUnsupportedVersion("Unsupported audit subject kind or version")
+    if subject.kind == "BANK_POSTING":
+        from app.domain.bank_posting_codec import validate_posting_original
+
+        validate_posting_original(subject.data, subject.snapshot_version)
+    elif subject.kind == "BANK_EXTERNAL_FACT":
+        _external_fact_original(subject.data)
+    encoded = canonical_bytes(subject.model_dump(mode="python"), raw=True)
+    return subject, encoded
+
+
+def build_subject(**fields: Any) -> "AuditSubject":
+    subject, _ = _validated_subject_bytes(**fields)
     return subject
 
 
+def _subject_hash_bytes(encoded: bytes) -> str:
+    """Only bytes produced by the immediately preceding full subject validation."""
+    return hashlib.sha256(b"bounded-funds/audit-subject-v1\0" + encoded).hexdigest()
+
+
+def encode_subject_original(**fields: Any) -> tuple["AuditSubject", str, str]:
+    """Validate original fields once and return subject, exact text, and digest."""
+    subject, encoded = _validated_subject_bytes(**fields)
+    return subject, encoded.decode("utf-8"), _subject_hash_bytes(encoded)
+
+
 def subject_canonical_text(subject: "AuditSubject") -> str:
-    original = build_subject(**subject.model_dump(mode="python"))
-    return canonical_text(original.model_dump(mode="python"), raw=True)
+    _, encoded = _validated_subject_bytes(**subject.model_dump(mode="python"))
+    return encoded.decode("utf-8")
 
 
 def subject_hash(subject: "AuditSubject") -> str:
     _declared(subject)
-    original = build_subject(**subject.model_dump(mode="python"))
-    return _digest("audit-subject-v1", original.model_dump(mode="python"), raw=True)
+    _, encoded = _validated_subject_bytes(**subject.model_dump(mode="python"))
+    return _subject_hash_bytes(encoded)
 
 
 def parse_subject(text: str) -> "AuditSubject":
@@ -175,8 +229,8 @@ def parse_subject(text: str) -> "AuditSubject":
     raw = _read(text)
     _protocol(raw, "audit-subject-v1")
     subject = AuditSubject.model_validate_json(json.dumps(raw, allow_nan=False))
-    subject = build_subject(**subject.model_dump(mode="python"))
-    if subject_canonical_text(subject) != text:
+    subject, encoded = _validated_subject_bytes(**subject.model_dump(mode="python"))
+    if encoded.decode("utf-8") != text:
         raise AuditContractError("Audit subject text is not its original canonical encoding")
     return subject
 
@@ -189,13 +243,12 @@ class AuditBudgetExceeded(AuditContractError):
     """A bounded original set was not fully checked, so no PASS may be inferred."""
 
 
-def _intent(intent: "AuditIntent") -> "AuditIntent":
+def _intent(intent: "AuditIntentAny") -> "AuditIntentAny":
     from app.domain.audit_chain_types import AuditIntent
 
     _declared(intent)
-    restored = AuditIntent.model_validate(
-        intent.model_dump(mode="python", include=set(AuditIntent.model_fields))
-    )
+    fields = intent.model_dump(mode="python", include=set(AuditIntent.model_fields))
+    restored = _event_model(fields, envelope=False).model_validate(fields)
     refs = sorted(
         restored.payload.references, key=lambda r: (r.kind, str(r.id), r.role, r.snapshot_hash)
     )
@@ -203,17 +256,16 @@ def _intent(intent: "AuditIntent") -> "AuditIntent":
         restored.payload.anchors,
         key=lambda a: (a.kind, str(a.reference_id), a.snapshot_hash, a.hash_algorithm),
     )
-    payload = restored.payload.model_copy(
-        update={
-            "references": refs,
-            "anchors": anchors,
-            "missing_evidence_ids": sorted(restored.payload.missing_evidence_ids),
-        }
-    )
+    updates: dict[str, Any] = {"references": refs, "anchors": anchors}
+    if restored.payload_version == 1:
+        updates["missing_evidence_ids"] = sorted(
+            cast("AuditIntent", restored).payload.missing_evidence_ids
+        )
+    payload = restored.payload.model_copy(update=updates)
     return restored.model_copy(update={"payload": payload})
 
 
-def intent_digest(intent: "AuditIntent") -> str:
+def intent_digest(intent: "AuditIntentAny") -> str:
     return _digest("audit-intent-v1", _intent(intent).model_dump(mode="python"))
 
 
@@ -231,20 +283,119 @@ def _declared(value: Any) -> None:
                 _declared(child)
 
 
-def _event_content(event: "AuditEnvelope") -> None:
-    from app.domain.audit_chain_types import EVENT_TYPES, PUBLIC_SUBJECT_KINDS
+@overload
+def _event_model(
+    value: dict[str, Any], *, envelope: Literal[False]
+) -> "type[AuditIntent] | type[AuditIntentV2]": ...
 
-    if event.event_type not in EVENT_TYPES or event.payload_version != 1:
+
+@overload
+def _event_model(
+    value: dict[str, Any], *, envelope: Literal[True]
+) -> "type[AuditEnvelope] | type[AuditEnvelopeV2]": ...
+
+
+def _event_model(
+    value: dict[str, Any], *, envelope: bool
+) -> "type[AuditIntent] | type[AuditIntentV2] | type[AuditEnvelope] | type[AuditEnvelopeV2]":
+    from app.domain.audit_chain_types import (
+        EVENT_TYPES,
+        AuditEnvelope,
+        AuditEnvelopeV2,
+        AuditIntent,
+        AuditIntentV2,
+    )
+
+    version, kind = value.get("payload_version"), value.get("event_type")
+    if type(version) is not int or kind not in EVENT_TYPES:
         raise AuditUnsupportedVersion("Unsupported audit event type or payload version")
+    expected = 2 if kind in EXTERNAL_EVENT_TYPES else 1
+    if version != expected:
+        raise AuditUnsupportedVersion("Unsupported registered audit event payload version")
+    if envelope:
+        return AuditEnvelopeV2 if version == 2 else AuditEnvelope
+    return AuditIntentV2 if version == 2 else AuditIntent
+
+
+def _known_event_integrity(value: dict[str, Any]) -> None:
+    """Check known outer content before rejecting an unknown inner payload version."""
+    if value.get("simulation") is not True:
+        raise AuditContractError("Audit simulation must be the boolean true")
+    sequence, digest = value.get("sequence_number"), value.get("event_hash")
+    if (
+        type(sequence) is not int
+        or not 1 <= sequence <= 2**31 - 1
+        or type(digest) is not str
+        or re.fullmatch(r"[0-9a-f]{64}", digest) is None
+        or (sequence == 1) != (value.get("previous_hash") is None)
+    ):
+        raise AuditContractError("Audit original row header is invalid")
+    for field in ("id", "user_id", "epoch_id"):
+        UUID(str(value[field]))
+    if _digest("audit-event-v1", {k: v for k, v in value.items() if k != "event_hash"}) != digest:
+        raise AuditContractError("Audit event hash differs from its frozen content")
+    payload = value.get("payload")
+    if type(payload) is dict and type(payload.get("references")) is list:
+        for ref in payload["references"]:
+            if (
+                type(ref) is dict
+                and ref.get("scope") == "TENANT"
+                and (str(ref.get("user_id")) != str(value["user_id"]))
+            ):
+                raise AuditContractError("Audit reference belongs to another tenant")
+
+
+def _external_event_content(event: "AuditEvent") -> None:
+    payload = event.payload
+    if (
+        payload.correlation_kind != "EXTERNAL_BANK_FACT"
+        or event.aggregate_type != "BANK_EXTERNAL_FACT"
+        or event.aggregate_id != event.correlation_id
+        or any((event.decision_run_id, event.action_plan_id, event.action_receipt_id))
+    ):
+        raise AuditContractError("External audit fact must bind its real independent bank identity")
+    if (event.event_type == "EXTERNAL_BANK_FACT_SETTLED") != (event.causation_id is None):
+        raise AuditContractError("External projection requires its earlier settled cause")
+    if any(
+        ref.kind in {"DECISION_RUN", "ACTION_PLAN", "ACTION_RECEIPT", "BANK_OPERATION"}
+        for ref in payload.references
+    ):
+        raise AuditContractError("External bank fact cannot borrow an Agent command relationship")
+    required = {"EXTERNAL_BANK_RESULT", "EXTERNAL_BANK_POSTING_SET"}
+    required.add(
+        "EXTERNAL_BANK_REQUEST"
+        if event.event_type == "EXTERNAL_BANK_FACT_SETTLED"
+        else "EXTERNAL_BANK_PROJECTION"
+    )
+    kinds = {anchor.kind for anchor in payload.anchors}
+    identities = [(anchor.kind, anchor.reference_id) for anchor in payload.anchors]
+    if not required.issubset(kinds) or len(identities) != len(set(identities)):
+        raise AuditContractError("External bank fact lacks its unique mandatory original anchors")
+    for anchor in payload.anchors:
+        if (
+            anchor.kind not in EXTERNAL_ANCHOR_KINDS
+            or anchor.hash_algorithm != EXTERNAL_ANCHOR_ALGORITHM
+        ):
+            raise AuditUnsupportedVersion("Unsupported external bank fact anchor protocol")
+        if anchor.reference_id != event.correlation_id:
+            raise AuditContractError("External bank anchor differs from its actual fact identity")
+    for ref in payload.references:
+        if ref.kind == "BANK_EXTERNAL_FACT" and ref.id != event.correlation_id:
+            raise AuditContractError("External audit event references a different bank fact")
+    canonical_bytes(event.model_dump(mode="python"))
+
+
+def _event_content(event: "AuditEvent") -> None:
+    from app.domain.audit_chain_types import PUBLIC_SUBJECT_KINDS
+
+    _event_model(event.model_dump(mode="python"), envelope=True)
     if event.occurred_at > event.observed_at:
         raise AuditContractError("Audit fact has not occurred at its observation clock")
     if (event.sequence_number == 1) != (event.previous_hash is None):
         raise AuditContractError("Audit genesis/previous hash is inconsistent")
     payload = event.payload
     keys = [(r.kind, r.id, r.role) for r in payload.references]
-    if len(keys) != len(set(keys)) or len(payload.missing_evidence_ids) != len(
-        set(payload.missing_evidence_ids)
-    ):
+    if len(keys) != len(set(keys)):
         raise AuditContractError("Audit original references contain duplicate identities")
     for ref in payload.references:
         if ref.kind not in PUBLIC_SUBJECT_KINDS:
@@ -255,6 +406,13 @@ def _event_content(event: "AuditEnvelope") -> None:
             ref.kind != "ASSET_PRODUCT" or ref.user_id is not None
         ):
             raise AuditContractError("Only original catalog products may have global scope")
+    if event.payload_version == 2:
+        _external_event_content(event)
+        return
+    event = cast("AuditEnvelope", event)
+    payload = event.payload
+    if len(payload.missing_evidence_ids) != len(set(payload.missing_evidence_ids)):
+        raise AuditContractError("Audit original references contain duplicate identities")
     meta = event.event_type in {"EPOCH_STARTED", "EPOCH_SEALED"}
     if meta:
         transition = payload.epoch_transition
@@ -483,7 +641,7 @@ def _event_content(event: "AuditEnvelope") -> None:
 
 
 def build_event(
-    intent: "AuditIntent",
+    intent: "AuditIntentAny",
     *,
     event_id: UUID,
     epoch_id: UUID,
@@ -491,9 +649,7 @@ def build_event(
     previous_hash: str | None,
     observed_at: datetime,
     appended_at: datetime,
-) -> "AuditEnvelope":
-    from app.domain.audit_chain_types import AuditEnvelope
-
+) -> "AuditEvent":
     normalized = _intent(intent)
     fields = normalized.model_dump(mode="python")
     fields.update(
@@ -505,45 +661,42 @@ def build_event(
         appended_at=appended_at,
         event_hash="0" * 64,
     )
-    event = AuditEnvelope.model_validate(fields)
+    event = _event_model(fields, envelope=True).model_validate(fields)
     _event_content(event)
     digest = _digest("audit-event-v1", event.model_dump(mode="python", exclude={"event_hash"}))
     return event.model_copy(update={"event_hash": digest})
 
 
-def verify_event(event: "AuditEnvelope") -> None:
-    from app.domain.audit_chain_types import AuditEnvelope
+def verify_event(event: "AuditEvent") -> None:
+    from app.domain.audit_chain_types import AuditEvent
 
-    if not isinstance(event, AuditEnvelope):
+    if not isinstance(event, AuditEvent):
         raise AuditContractError("Expected a frozen AuditEnvelope")
     _declared(event)
-    event = AuditEnvelope.model_validate(event.model_dump(mode="python"))
-    if (
-        _digest("audit-event-v1", event.model_dump(mode="python", exclude={"event_hash"}))
-        != event.event_hash
-    ):
-        raise AuditContractError("Audit event hash differs from its frozen content")
+    fields = event.model_dump(mode="python")
+    _protocol(fields, "audit-event-v1")
+    _known_event_integrity(fields)
+    event = _event_model(fields, envelope=True).model_validate(fields)
     _event_content(event)
 
 
-def event_canonical_text(event: "AuditEnvelope") -> str:
+def event_canonical_text(event: "AuditEvent") -> str:
     verify_event(event)
     return canonical_text(event.model_dump(mode="python"))
 
 
-def parse_event(text: str) -> "AuditEnvelope":
-    from app.domain.audit_chain_types import AuditEnvelope
-
+def parse_event(text: str) -> "AuditEvent":
     raw = _read(text)
     _protocol(raw, "audit-event-v1")
-    event = AuditEnvelope.model_validate_json(json.dumps(raw, allow_nan=False))
+    _known_event_integrity(raw)
+    event = _event_model(raw, envelope=True).model_validate_json(json.dumps(raw, allow_nan=False))
     verify_event(event)
     if event_canonical_text(event) != text:
         raise AuditContractError("Audit event text is not its original canonical encoding")
     return event
 
 
-def same_intent(event: "AuditEnvelope", intent: "AuditIntent") -> bool:
+def same_intent(event: "AuditEvent", intent: "AuditIntentAny") -> bool:
     verify_event(event)
     return intent_digest(event) == intent_digest(intent)
 
@@ -747,11 +900,14 @@ def archive_manifest_digest(subjects: Iterable["AuditSubject"]) -> str:
 
 def posting_set_digest(postings: Iterable[dict[str, Any]]) -> str:
     """Original full non-opening legs, with a deterministic explicit set order."""
+    from app.domain.bank_posting_codec import validate_posting_original
     from app.domain.policy_configuration import configuration_hash
 
-    originals = [
-        json.loads(canonical_bytes(row)) for row in postings if row.get("entry_kind") != "OPENING"
-    ]
+    originals = []
+    for row in postings:
+        validate_posting_original(row, 1)
+        if row.get("entry_kind") != "OPENING":
+            originals.append(json.loads(canonical_bytes(row)))
     if not originals or len(originals) > 10000:
         raise AuditContractError(
             "Audit settlement needs its bounded actual non-opening posting set"
@@ -1228,6 +1384,11 @@ def verify_frozen_projection(
 
 def verify_frozen_ledgers(postings: Iterable[dict[str, Any]]) -> None:
     """Check the complete archived economic chains from their retained actual openings."""
+    from app.domain.bank_posting_codec import (
+        bank_posting_snapshot_version,
+        validate_posting_original,
+    )
+
     rows = list(postings)
     if len(rows) > 100000:
         raise AuditBudgetExceeded("Frozen ledger count budget exceeded")
@@ -1238,6 +1399,7 @@ def verify_frozen_ledgers(postings: Iterable[dict[str, Any]]) -> None:
         rows.sort(key=lambda row: (row["ledger_key"], row["sequence_number"]))
         for row in rows:
             canonical_bytes(row, raw=True)
+            validate_posting_original(row, bank_posting_snapshot_version(row))
             if owner is not None and row["user_id"] != owner:
                 raise AuditContractError("Frozen economic ledgers mix tenants")
             owner = row["user_id"]
@@ -1367,8 +1529,63 @@ def _trace_algorithms_supported(versions: dict[str, str]) -> bool:
     return all(value in supported for value in versions.values())
 
 
+def _external_references(
+    event: "AuditEvent", index: dict[tuple[str, UUID, str], "AuditSubject"]
+) -> None:
+    from app.domain.external_bank_fact import (
+        verify_external_projection,
+        verify_external_settlement,
+    )
+
+    originals = [index[(ref.kind, ref.id, ref.snapshot_hash)] for ref in event.payload.references]
+    facts = [
+        original
+        for original in originals
+        if original.kind == "BANK_EXTERNAL_FACT" and original.id == event.correlation_id
+    ]
+    if len(facts) != 1:
+        raise AuditContractError("External event requires its unique actual stage fact original")
+    fact = facts[0]
+    if not any(
+        ref.kind == fact.kind
+        and ref.id == fact.id
+        and ref.snapshot_hash == subject_hash(fact)
+        and ref.role == "AFTER"
+        for ref in event.payload.references
+    ):
+        raise AuditContractError("External event fact original lacks its registered stage role")
+    rows = [
+        original.data
+        for original in originals
+        if original.kind == "BANK_POSTING" and original.data.get("external_fact_id") == str(fact.id)
+    ]
+    if fact.data.get("bank_status") != "SETTLED":
+        raise AuditContractError("External bank event lacks an actual settled bank fact")
+    result = verify_external_settlement(fact.data, rows)
+    expected = {
+        "EXTERNAL_BANK_REQUEST": fact.data["request_hash"],
+        "EXTERNAL_BANK_RESULT": fact.data["bank_result_hash"],
+        "EXTERNAL_BANK_POSTING_SET": result.posting_digest,
+    }
+    clock_field = "settled_at"
+    if event.event_type == "EXTERNAL_BANK_FACT_PROJECTED":
+        verify_external_projection(fact.data, rows, subjects=originals)
+        expected["EXTERNAL_BANK_PROJECTION"] = fact.data["projection_result_hash"]
+        clock_field = "projected_at"
+    if event.occurred_at != _clock(fact.data[clock_field]) or event.observed_at < _clock(
+        fact.data["observed_at"]
+    ):
+        raise AuditContractError("External audit fact clock differs from its actual stage original")
+    for anchor in event.payload.anchors:
+        typed = ("BANK_EXTERNAL_FACT", anchor.reference_id, anchor.snapshot_hash)
+        if index.get(typed) is not fact or anchor.snapshot_hash != subject_hash(fact):
+            raise AuditContractError("External anchor lacks its exact typed stage fact original")
+        if anchor.kind not in expected or anchor.digest != expected[anchor.kind]:
+            raise AuditContractError("External anchor differs from its complete original content")
+
+
 def _references(
-    event: "AuditEnvelope",
+    event: "AuditEvent",
     index: dict[tuple[str, UUID, str], "AuditSubject"],
     current: dict[tuple[str, UUID], "AuditSubject"],
 ) -> None:
@@ -1385,7 +1602,13 @@ def _references(
         raise AuditContractError("Audit aggregate lacks its actual typed original reference")
     if (
         event.payload.correlation_kind != "EPOCH"
-        and (event.payload.correlation_kind, event.correlation_id) not in available
+        and (
+            "BANK_EXTERNAL_FACT"
+            if event.payload.correlation_kind == "EXTERNAL_BANK_FACT"
+            else event.payload.correlation_kind,
+            event.correlation_id,
+        )
+        not in available
     ):
         raise AuditContractError("Audit correlation lacks its actual typed original reference")
     for kind, identity in (
@@ -1421,7 +1644,19 @@ def _references(
             )
         elif original.kind == "POLICY_VERSION":
             _immutable(original, current, original.data)
-        elif original.kind in {"BANK_POSTING", "ACTION_RECEIPT"}:
+        elif original.kind == "BANK_POSTING":
+            from app.domain.bank_posting_codec import validate_posting_original
+
+            validate_posting_original(original.data, original.snapshot_version)
+            latest = current.get((original.kind, original.id))
+            if latest is not None:
+                validate_posting_original(latest.data, latest.snapshot_version)
+                if latest.snapshot_version != original.snapshot_version:
+                    raise AuditContractError("Current posting acquired a different original origin")
+            _immutable(original, current, original.data)
+        elif original.kind == "BANK_EXTERNAL_FACT":
+            _external_fact_immutable(original, current)
+        elif original.kind == "ACTION_RECEIPT":
             _immutable(original, current, original.data)
         elif original.kind == "BANK_OPERATION":
             _immutable(
@@ -1443,6 +1678,10 @@ def _references(
             )
             if original.data.get("status") == "SETTLED":
                 _immutable(original, current, ("status", "settled_at"))
+    if event.payload_version == 2:
+        _external_references(event, index)
+        return
+    event = cast("AuditEnvelope", event)
     for change in event.payload.changes:
         before = (
             index.get((change.kind, change.id, change.before_snapshot_hash))
@@ -1787,7 +2026,7 @@ def verify_epoch(
     """Check a complete stable epoch against an independent expected head, without writes."""
     from app.domain.audit_chain_types import (
         AuditDiagnostic,
-        AuditEnvelope,
+        AuditEvent,
         AuditVerification,
         Status,
     )
@@ -1807,12 +2046,13 @@ def verify_epoch(
         "NOT_REQUESTED" if checkpoint is None else "VERIFIED"
     )
     actual_count = 0
-    tail: AuditEnvelope | None = None
-    first: AuditEnvelope | None = None
+    tail: AuditEvent | None = None
+    first: AuditEvent | None = None
     original_first: tuple[UUID, str, int] | None = None
     original_tail: tuple[UUID, str, int] | None = None
     previous = None
-    seen: dict[UUID, AuditEnvelope] = {}
+    seen: dict[UUID, AuditEvent] = {}
+    unsupported_causes: set[UUID] = set()
     seen_keys: set[str] = set()
     seen_facts: set[tuple[str, str]] = set()
     verified_through = 0
@@ -1829,7 +2069,7 @@ def verify_epoch(
     def error(
         code: str,
         message: str,
-        event: AuditEnvelope | None = None,
+        event: AuditEvent | None = None,
         *,
         status: Status = "INTEGRITY_ERROR",
         reference: bool = False,
@@ -1925,10 +2165,11 @@ def verify_epoch(
             break
         actual_count += 1
         event = None
+        known_header = False
         try:
             value = (
                 raw.model_dump(mode="python")
-                if isinstance(raw, AuditEnvelope)
+                if isinstance(raw, AuditEvent)
                 else _read(raw)
                 if isinstance(raw, str)
                 else raw
@@ -1968,10 +2209,16 @@ def verify_epoch(
                 or value.get("canonical_version") != "audit-canonical-json-v1"
             ):
                 raise AuditUnsupportedVersion("Audit original protocol is unsupported")
+            _known_event_integrity(value)
+            if sequence != actual_count or value.get("previous_hash") != previous:
+                raise AuditContractError("Audit sequence or preceding content hash differs")
+            known_header = True
             event = (
                 raw
-                if isinstance(raw, AuditEnvelope)
-                else AuditEnvelope.model_validate_json(json.dumps(value, allow_nan=False))
+                if isinstance(raw, AuditEvent)
+                else _event_model(value, envelope=True).model_validate_json(
+                    json.dumps(value, allow_nan=False)
+                )
             )
             tail = event
             if first is None:
@@ -1986,7 +2233,7 @@ def verify_epoch(
             if actual_count == 1 and event.event_type != "EPOCH_STARTED":
                 raise AuditContractError("Audit epoch has no actual first genesis event")
             if actual_count == 1:
-                transition = event.payload.epoch_transition
+                transition = cast("AuditEnvelope", event).payload.epoch_transition
                 assert transition is not None
                 if (
                     (transition.kind == "INIT") != (head.epoch_number == 1)
@@ -1999,7 +2246,7 @@ def verify_epoch(
                 if transition.legacy_history and reference_status == "VALID":
                     reference_status = "LEGACY_UNAUDITED"
             if event.event_type == "EPOCH_SEALED":
-                transition = event.payload.epoch_transition
+                transition = cast("AuditEnvelope", event).payload.epoch_transition
                 assert transition is not None and transition.pre_seal_head is not None
                 if (
                     head.status != "SEALED"
@@ -2028,6 +2275,10 @@ def verify_epoch(
                 raise AuditContractError("Audit event identity, key or fact is duplicated")
             if event.causation_id is not None:
                 cause = seen.get(event.causation_id)
+                if cause is None and event.causation_id in unsupported_causes:
+                    raise AuditUnsupportedVersion(
+                        "Audit cause uses an unsupported original payload"
+                    )
                 if (
                     cause is None
                     or cause.correlation_id != event.correlation_id
@@ -2041,6 +2292,12 @@ def verify_epoch(
                     raise AuditContractError(
                         "Audit cause is not an earlier matching original business event"
                     )
+                if event.event_type == "EXTERNAL_BANK_FACT_PROJECTED" and (
+                    cause.event_type != "EXTERNAL_BANK_FACT_SETTLED"
+                    or cause.epoch_id != event.epoch_id
+                    or cause.aggregate_id != event.aggregate_id
+                ):
+                    raise AuditContractError("External projection cause is not its settled fact")
             try:
                 _references(event, index, current)
             except AuditUnsupportedVersion as failure:
@@ -2053,7 +2310,10 @@ def verify_epoch(
                 )
             except (ValueError, TypeError, KeyError) as failure:
                 error("REFERENCE_INVALID", str(failure), event, reference=True)
-            if event.payload.legacy_origin is not None:
+            if (
+                event.payload_version == 1
+                and cast("AuditEnvelope", event).payload.legacy_origin is not None
+            ):
                 reference_status = (
                     "LEGACY_UNAUDITED" if reference_status == "VALID" else reference_status
                 )
@@ -2068,6 +2328,8 @@ def verify_epoch(
             verified_through = actual_count if not errors else verified_through
         except AuditUnsupportedVersion as failure:
             error("UNSUPPORTED_VERSION", str(failure), event, status="UNSUPPORTED_VERSION")
+            if known_header:
+                unsupported_causes.add(UUID(str(value["id"])))
         except (ValueError, TypeError, KeyError) as failure:
             error("EVENT_OR_REFERENCE_INVALID", str(failure), event)
         if event is not None:
@@ -2075,6 +2337,8 @@ def verify_epoch(
             seen_keys.add(event.idempotency_key)
             seen_facts.add((event.event_type, event.payload.fact_key))
             previous = event.event_hash
+        elif known_header:
+            previous = digest
     if not incomplete and (
         actual_count != head.event_count
         or original_tail != (head.last_event_id, head.last_event_hash, head.last_sequence)

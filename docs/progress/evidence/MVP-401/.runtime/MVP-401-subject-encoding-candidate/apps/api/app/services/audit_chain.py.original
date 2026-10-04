@@ -1,0 +1,931 @@
+"""Caller-owned audit writes and stable, read-only verification of original facts."""
+
+import base64
+import hashlib
+import json
+from datetime import UTC, datetime
+from typing import Any, Literal, cast
+from uuid import UUID, uuid4
+
+from app.db.audit_guard import transaction_gate
+from app.db.models import (
+    Account,
+    ActionPlan,
+    ActionReceipt,
+    ActionResourceReservation,
+    AssetPosition,
+    AssetProduct,
+    AuditEpoch,
+    AuditEvent,
+    AuditSubjectSnapshot,
+    BankOperation,
+    CreditCardBill,
+    DecisionConstraint,
+    DecisionRun,
+    EvidenceItem,
+    ExternalBankFact,
+    Goal,
+    Policy,
+    PolicyProposal,
+    PolicyVersion,
+    SimulatedBankPosting,
+    SimulatedBankRedemption,
+    Transaction,
+    User,
+)
+from app.domain import audit_chain as domain
+from app.domain.audit_chain_types import (
+    AuditCheckpoint,
+    AuditDiagnostic,
+    AuditEnvelope,
+    AuditEpochTransition,
+    AuditFactContext,
+    AuditHead,
+    AuditIntent,
+    AuditIntentAny,
+    AuditPayload,
+    AuditReference,
+    AuditSubject,
+    AuditVerification,
+    ReferenceBundle,
+    Status,
+)
+from app.domain.audit_chain_types import (
+    AuditEvent as AuditEventEnvelope,
+)
+from app.domain.bank_posting_codec import bank_posting_data, bank_posting_snapshot_version
+from app.services.policy_lifecycle import PolicyLifecycleError
+from pydantic import BaseModel, ConfigDict
+from sqlalchemy import func, inspect, select, text
+from sqlalchemy.orm import Session
+
+SUBJECT_MODELS: dict[str, Any] = {
+    "USER": User,
+    "ACCOUNT": Account,
+    "EVIDENCE": EvidenceItem,
+    "TRANSACTION": Transaction,
+    "CREDIT_CARD_BILL": CreditCardBill,
+    "ASSET_PRODUCT": AssetProduct,
+    "POLICY": Policy,
+    "POLICY_VERSION": PolicyVersion,
+    "POLICY_PROPOSAL": PolicyProposal,
+    "GOAL": Goal,
+    "ASSET_POSITION": AssetPosition,
+    "DECISION_RUN": DecisionRun,
+    "DECISION_CONSTRAINT": DecisionConstraint,
+    "ACTION_PLAN": ActionPlan,
+    "ACTION_RECEIPT": ActionReceipt,
+    "BANK_REDEMPTION": SimulatedBankRedemption,
+    "BANK_POSTING": SimulatedBankPosting,
+    "BANK_OPERATION": BankOperation,
+    "BANK_EXTERNAL_FACT": ExternalBankFact,
+    "RESOURCE_CLAIM": ActionResourceReservation,
+}
+VERIFY_EVENT_LIMIT = 10000
+VERIFY_SUBJECT_LIMIT = 20000
+VERIFY_BYTE_LIMIT = 64 * 1024 * 1024
+
+
+class AuditEventView(BaseModel):
+    model_config = ConfigDict(frozen=True)
+    id: UUID
+    epoch_id: UUID | None
+    completeness: Literal["COMPLETE", "LEGACY_UNAUDITED", "UNSUPPORTED_VERSION"]
+    envelope: AuditEventEnvelope | None
+    original: dict[str, Any] | None
+
+
+class AuditEventPage(BaseModel):
+    model_config = ConfigDict(frozen=True)
+    simulation: Literal[True] = True
+    user_id: UUID
+    epoch_id: UUID | None
+    items: list[AuditEventView]
+    next_cursor: str | None
+
+
+def _error(code: str, message: str, status: int = 409) -> PolicyLifecycleError:
+    return PolicyLifecycleError(code, message, status)
+
+
+def _db_clock(session: Session) -> datetime:
+    clock = session.scalar(select(func.clock_timestamp()))
+    if not isinstance(clock, datetime):
+        raise _error("AUDIT_INVALID_CLOCK", "数据库审计时钟不可用")
+    return clock
+
+
+def can_continue_audit(verification: AuditVerification) -> bool:
+    """A declared old gap permits maintenance, while never reporting whole-history validity."""
+    return (
+        verification.status in {"VALID", "LEGACY_UNAUDITED"}
+        and verification.chain_status == "VALID"
+        and verification.reference_status in {"VALID", "LEGACY_UNAUDITED"}
+        and not verification.errors
+    )
+
+
+def current_audit_epoch(session: Session, user_id: UUID) -> AuditEpoch | None:
+    with session.no_autoflush:
+        return session.scalar(
+            select(AuditEpoch).where(AuditEpoch.user_id == user_id, AuditEpoch.status == "OPEN")
+        )
+
+
+def _head(row: AuditEpoch) -> AuditHead:
+    if row.schema_version != "audit-head-v1" or row.canonical_version != "audit-canonical-json-v1":
+        raise _error("AUDIT_UNSUPPORTED_VERSION", "原审计head协议不可识别")
+    return AuditHead.model_validate(
+        {
+            "schema_version": row.schema_version,
+            "canonical_version": row.canonical_version,
+            "user_id": row.user_id,
+            "epoch_id": row.id,
+            "epoch_number": row.epoch_number,
+            "status": row.status,
+            "event_count": row.event_count,
+            "last_sequence": row.last_sequence,
+            "last_event_id": row.last_event_id,
+            "last_event_hash": row.last_event_hash,
+            "genesis_event_id": row.genesis_event_id,
+            "genesis_event_hash": row.genesis_event_hash,
+            "previous_epoch_id": row.previous_epoch_id,
+            "previous_seal_hash": row.previous_seal_hash,
+        }
+    )
+
+
+def get_audit_head(
+    session: Session, user_id: UUID, epoch_id: UUID | None = None
+) -> AuditHead | None:
+    with session.no_autoflush:
+        row = (
+            current_audit_epoch(session, user_id)
+            if epoch_id is None
+            else session.scalar(
+                select(AuditEpoch).where(AuditEpoch.id == epoch_id, AuditEpoch.user_id == user_id)
+            )
+        )
+        return _head(row) if row is not None else None
+
+
+def _locked(session: Session, user_id: UUID) -> None:
+    transaction_gate(session, user_id)
+    user = session.scalar(select(User).where(User.id == user_id).with_for_update())
+    if user is None or not user.is_simulated:
+        raise _error("NOT_FOUND", "模拟用户不存在", 404)
+
+
+def _save_event(
+    session: Session,
+    row: AuditEpoch,
+    intent: AuditIntentAny,
+    observed_at: datetime,
+    appended_at: datetime,
+) -> AuditEvent:
+    try:
+        event = domain.build_event(
+            intent,
+            event_id=uuid4(),
+            epoch_id=row.id,
+            sequence_number=row.last_sequence + 1,
+            previous_hash=row.last_event_hash,
+            observed_at=observed_at,
+            appended_at=appended_at,
+        )
+    except ValueError as error:
+        raise _error("AUDIT_INVALID", str(error)) from error
+    fields = event.model_dump(
+        mode="python", exclude={"id", "epoch_id", "event_hash", "appended_at", "simulation"}
+    )
+    fields["payload"] = event.payload.model_dump(mode="json")
+    stored = AuditEvent(
+        id=event.id,
+        epoch_id=row.id,
+        event_hash=event.event_hash,
+        created_at=event.appended_at,
+        canonical_text=domain.event_canonical_text(event),
+        **fields,
+    )
+    session.add(stored)
+    session.flush()
+    session.refresh(row)
+    return stored
+
+
+def _new_epoch(
+    session: Session,
+    user_id: UUID,
+    appended_at: datetime,
+    transition: AuditEpochTransition,
+    previous: AuditEpoch | None = None,
+    summary: dict[str, Any] | None = None,
+) -> AuditEpoch:
+    row = AuditEpoch(
+        id=uuid4(),
+        user_id=user_id,
+        epoch_number=1 if previous is None else previous.epoch_number + 1,
+        opened_at=appended_at,
+        created_at=appended_at,
+        previous_epoch_id=previous.id if previous else None,
+        previous_seal_hash=previous.seal_hash if previous else None,
+    )
+    session.add(row)
+    session.flush()
+    intent = AuditIntent(
+        user_id=user_id,
+        event_type="EPOCH_STARTED",
+        aggregate_type="EPOCH",
+        aggregate_id=row.id,
+        correlation_id=row.id,
+        idempotency_key=f"epoch:{row.id}:started",
+        payload=AuditPayload(
+            fact_key=f"epoch:{row.id}:started",
+            correlation_kind="EPOCH",
+            epoch_transition=transition,
+            context=AuditFactContext(
+                details={"seed_summary": summary} if summary is not None else {}
+            ),
+        ),
+        occurred_at=appended_at,
+    )
+    _save_event(session, row, intent, appended_at, appended_at)
+    return row
+
+
+def ensure_audit_epoch(session: Session, user_id: UUID, appended_at: datetime) -> AuditEpoch:
+    _locked(session, user_id)
+    row = current_audit_epoch(session, user_id)
+    if row is not None:
+        return row
+    if session.scalar(select(AuditEpoch.id).where(AuditEpoch.user_id == user_id)) is not None:
+        raise _error("AUDIT_EPOCH_CLOSED", "封存后的epoch只能通过合成重置建立下一轮")
+    legacy = has_business_history(session, user_id) or (
+        session.scalar(
+            select(AuditEvent.id).where(
+                AuditEvent.user_id == user_id, AuditEvent.epoch_id.is_(None)
+            )
+        )
+        is not None
+    )
+    return _new_epoch(
+        session, user_id, appended_at, AuditEpochTransition(kind="INIT", legacy_history=legacy)
+    )
+
+
+def has_business_history(session: Session, user_id: UUID) -> bool:
+    """Identity/catalog alone do not assert history; any preexisting tenant facts do."""
+    with session.no_autoflush:
+        return any(
+            session.scalar(select(model.id).where(model.user_id == user_id).limit(1)) is not None
+            for kind, model in SUBJECT_MODELS.items()
+            if kind not in {"USER", "ASSET_PRODUCT"}
+        )
+
+
+def reset_archive_epoch(
+    session: Session, epoch: AuditEpoch, reset_key: str, reason: str, principal: str
+) -> None:
+    """Seal the real business graph while the reserved reset transaction owns its gate."""
+    verification = verify_audit_chain(session, epoch.user_id, epoch.id)
+    if not can_continue_audit(verification):
+        raise _error("AUDIT_INTEGRITY_ERROR", "原审计链不能通过核验，重置已拒绝")
+    for kind, model in SUBJECT_MODELS.items():
+        query = select(model)
+        if kind == "USER":
+            query = query.where(User.id == epoch.user_id)
+        elif kind != "ASSET_PRODUCT":
+            query = query.where(model.user_id == epoch.user_id)
+        row: Any
+        for row in session.scalars(query.order_by(model.id)):
+            capture_audit_subject_data(
+                session, epoch.user_id, epoch.id, kind, row.id, row_copy(row)
+            )
+    manifest = session.scalar(text("SELECT audit_archive_manifest(:epoch)"), {"epoch": epoch.id})
+    digest = hashlib.sha256(
+        b"bounded-funds/audit-archive-v1\0" + domain.canonical_bytes(manifest)
+    ).hexdigest()
+    clock = _db_clock(session)
+    genesis = session.get(AuditEvent, epoch.genesis_event_id)
+    original = domain.parse_event(genesis.canonical_text or "") if genesis else None
+    prior = cast(AuditEnvelope, original).payload.epoch_transition if original else None
+    transition = AuditEpochTransition(
+        kind="SEAL",
+        reset_key=reset_key,
+        reason=reason,
+        principal=principal,
+        pre_seal_head=_head(epoch),
+        archive_manifest_hash=digest,
+        archive_record_counts=manifest["counts"],
+        previous_epoch_id=epoch.previous_epoch_id,
+        previous_seal_hash=epoch.previous_seal_hash,
+        seed_version=prior.seed_version if prior else None,
+        summary_version=prior.summary_version if prior else None,
+        dataset_hash=prior.dataset_hash if prior else None,
+    )
+    key = f"epoch:{epoch.id}:sealed"
+    intent = AuditIntent(
+        user_id=epoch.user_id,
+        event_type="EPOCH_SEALED",
+        aggregate_type="EPOCH",
+        aggregate_id=epoch.id,
+        correlation_id=epoch.id,
+        idempotency_key=key,
+        occurred_at=clock,
+        payload=AuditPayload(fact_key=key, correlation_kind="EPOCH", epoch_transition=transition),
+    )
+    _save_event(session, epoch, intent, clock, clock)
+
+
+def start_seed_epoch(
+    session: Session,
+    user_id: UUID,
+    reset_key: str,
+    reason: str,
+    principal: str,
+    seed_version: str,
+    summary_version: str,
+    dataset_hash: str,
+    previous: AuditEpoch | None,
+    summary: dict[str, Any] | None = None,
+) -> AuditEpoch:
+    clock = _db_clock(session)
+    _locked(session, user_id)
+    legacy = (
+        session.scalar(
+            select(AuditEvent.id)
+            .where(AuditEvent.user_id == user_id, AuditEvent.epoch_id.is_(None))
+            .limit(1)
+        )
+        is not None
+    )
+    transition = AuditEpochTransition(
+        kind="INIT" if previous is None else "RESET",
+        reset_key=reset_key,
+        reason=reason,
+        principal=principal,
+        seed_version=seed_version,
+        summary_version=summary_version,
+        dataset_hash=dataset_hash,
+        previous_epoch_id=previous.id if previous else None,
+        previous_seal_hash=previous.seal_hash if previous else None,
+        legacy_history=legacy,
+    )
+    return _new_epoch(session, user_id, clock, transition, previous, summary)
+
+
+def row_copy(row: Any) -> dict[str, Any]:
+    data = {column.key: getattr(row, column.key) for column in inspect(type(row)).columns}
+    full = cast(dict[str, Any], json.loads(domain.canonical_text(data, raw=True)))
+    return bank_posting_data(full) if isinstance(row, SimulatedBankPosting) else full
+
+
+def _snapshot_version(kind: str, data: dict[str, Any]) -> int:
+    return bank_posting_snapshot_version(data) if kind == "BANK_POSTING" else 1
+
+
+def capture_audit_subject_data(
+    session: Session,
+    user_id: UUID,
+    epoch_id: UUID,
+    kind: str,
+    entity_id: UUID,
+    data: dict[str, Any],
+) -> AuditSubjectSnapshot:
+    model = SUBJECT_MODELS.get(kind)
+    if model is None:
+        raise _error("AUDIT_SUBJECT_KIND", "未知审计副本种类")
+    actual = session.get(model, entity_id)
+    if (
+        actual is None
+        or (kind == "USER" and entity_id != user_id)
+        or (kind not in {"ASSET_PRODUCT", "USER"} and actual.user_id != user_id)
+    ):
+        raise _error("NOT_FOUND", "原审计实体不存在", 404)
+    scope = "GLOBAL_CATALOG" if kind == "ASSET_PRODUCT" else "TENANT"
+    try:
+        subject = domain.build_subject(
+            user_id=user_id,
+            epoch_id=epoch_id,
+            kind=kind,
+            id=entity_id,
+            scope=scope,
+            snapshot_version=_snapshot_version(kind, data),
+            data=data,
+        )
+        digest = domain.subject_hash(subject)
+        original = domain.subject_canonical_text(subject)
+    except ValueError as error:
+        raise _error("AUDIT_SUBJECT_INVALID", str(error)) from error
+    found = session.scalar(
+        select(AuditSubjectSnapshot).where(
+            AuditSubjectSnapshot.user_id == user_id,
+            AuditSubjectSnapshot.epoch_id == epoch_id,
+            AuditSubjectSnapshot.kind == kind,
+            AuditSubjectSnapshot.entity_id == entity_id,
+            AuditSubjectSnapshot.snapshot_hash == digest,
+        )
+    )
+    if found is not None:
+        if found.canonical_text != original:
+            raise _error("AUDIT_SUBJECT_CHANGED", "已冻结的副本内容已改变")
+        return found
+    captured = session.scalar(select(func.clock_timestamp()))
+    result = AuditSubjectSnapshot(
+        id=uuid4(),
+        user_id=user_id,
+        epoch_id=epoch_id,
+        kind=kind,
+        entity_id=entity_id,
+        scope=scope,
+        snapshot_version=subject.snapshot_version,
+        canonical_text=original,
+        snapshot_hash=digest,
+        captured_at=captured,
+    )
+    session.add(result)
+    session.flush()
+    return result
+
+
+def capture_audit_subject(
+    session: Session, user_id: UUID, epoch_id: UUID, kind: str, entity_id: UUID
+) -> AuditSubjectSnapshot:
+    model = SUBJECT_MODELS.get(kind)
+    actual = session.get(model, entity_id) if model is not None else None
+    if actual is None:
+        raise _error("NOT_FOUND", "原审计实体不存在", 404)
+    return capture_audit_subject_data(session, user_id, epoch_id, kind, entity_id, row_copy(actual))
+
+
+def subject_reference(
+    snapshot: AuditSubjectSnapshot, role: Literal["BASIS", "BEFORE", "AFTER"] = "BASIS"
+) -> AuditReference:
+    return AuditReference.model_validate(
+        {
+            "kind": snapshot.kind,
+            "id": snapshot.entity_id,
+            "scope": snapshot.scope,
+            "user_id": None if snapshot.scope == "GLOBAL_CATALOG" else snapshot.user_id,
+            "role": role,
+            "snapshot_hash": snapshot.snapshot_hash,
+            "snapshot_version": snapshot.snapshot_version,
+        }
+    )
+
+
+def find_audit_fact(
+    session: Session, user_id: UUID, event_type: str, fact_key: str, epoch_id: UUID | None = None
+) -> AuditEvent | None:
+    with session.no_autoflush:
+        epoch = current_audit_epoch(session, user_id) if epoch_id is None else None
+        chosen = epoch.id if epoch is not None else epoch_id
+        if chosen is None:
+            return None
+        return session.scalar(
+            select(AuditEvent).where(
+                AuditEvent.user_id == user_id,
+                AuditEvent.epoch_id == chosen,
+                AuditEvent.event_type == event_type,
+                AuditEvent.payload["fact_key"].astext == fact_key,
+            )
+        )
+
+
+def get_decision_audit_status(session: Session, user_id: UUID, run_id: UUID) -> Status:
+    """An unaudited run cannot inherit the validity of another run's chain."""
+    with session.no_autoflush:
+        run = session.scalar(
+            select(DecisionRun).where(DecisionRun.id == run_id, DecisionRun.user_id == user_id)
+        )
+        if run is None:
+            raise _error("NOT_FOUND", "原决策不存在", 404)
+        epoch = current_audit_epoch(session, user_id)
+        if epoch is None:
+            return "LEGACY_UNAUDITED"
+        event = session.scalar(
+            select(AuditEvent).where(
+                AuditEvent.user_id == user_id,
+                AuditEvent.epoch_id == epoch.id,
+                AuditEvent.event_type == "DECISION_RECORDED",
+                AuditEvent.decision_run_id == run_id,
+            )
+        )
+        if event is None:
+            return "LEGACY_UNAUDITED"
+        return verify_audit_chain(session, user_id, epoch.id).status
+
+
+def append_audit_event(
+    session: Session, intent: AuditIntentAny, observed_at: datetime, appended_at: datetime
+) -> AuditEvent:
+    epoch = ensure_audit_epoch(session, intent.user_id, appended_at)
+    existing = session.scalar(
+        select(AuditEvent).where(
+            AuditEvent.user_id == intent.user_id,
+            AuditEvent.epoch_id == epoch.id,
+            AuditEvent.idempotency_key == intent.idempotency_key,
+        )
+    )
+    if existing is not None:
+        if existing.canonical_text is None:
+            raise _error("AUDIT_INVALID", "旧事件没有原规范副本")
+        try:
+            matched = domain.same_intent(domain.parse_event(existing.canonical_text), intent)
+        except ValueError as error:
+            raise _error("AUDIT_INTEGRITY_ERROR", str(error)) from error
+        if not matched:
+            raise _error("IDEMPOTENCY_CONFLICT", "审计幂等键不能改变原始事实")
+        if not can_continue_audit(verify_audit_chain(session, intent.user_id, epoch.id)):
+            raise _error("AUDIT_INTEGRITY_ERROR", "现存原审计内容不能通过核验")
+        return existing
+    if (
+        find_audit_fact(
+            session, intent.user_id, intent.event_type, intent.payload.fact_key, epoch.id
+        )
+        is not None
+    ):
+        raise _error("IDEMPOTENCY_CONFLICT", "同一原始事实不能换键重复记录")
+    return _save_event(session, epoch, intent, observed_at, appended_at)
+
+
+def _view(row: AuditEvent) -> AuditEventView:
+    if row.canonical_text is None:
+        return AuditEventView(
+            id=row.id,
+            epoch_id=row.epoch_id,
+            completeness="LEGACY_UNAUDITED",
+            envelope=None,
+            original=row_copy(row),
+        )
+    try:
+        event = domain.parse_event(row.canonical_text)
+    except domain.AuditUnsupportedVersion:
+        return AuditEventView(
+            id=row.id,
+            epoch_id=row.epoch_id,
+            completeness="UNSUPPORTED_VERSION",
+            envelope=None,
+            original=json.loads(row.canonical_text),
+        )
+    except ValueError as error:
+        raise _error("AUDIT_INTEGRITY_ERROR", str(error)) from error
+    return AuditEventView(
+        id=row.id, epoch_id=row.epoch_id, completeness="COMPLETE", envelope=event, original=None
+    )
+
+
+def list_audit_events(
+    session: Session,
+    user_id: UUID,
+    epoch_id: UUID | None = None,
+    limit: int = 50,
+    cursor: str | None = None,
+) -> AuditEventPage:
+    if type(limit) is not int or not 1 <= limit <= 100:
+        raise _error("INVALID_LIMIT", "审计分页数量必须为1到100", 422)
+    with session.no_autoflush:
+        epoch = current_audit_epoch(session, user_id) if epoch_id is None else None
+        chosen = epoch.id if epoch is not None else epoch_id
+        query = select(AuditEvent).where(
+            AuditEvent.user_id == user_id, AuditEvent.epoch_id == chosen
+        )
+        if cursor:
+            try:
+                raw = base64.b64decode(
+                    cursor + "=" * ((-len(cursor)) % 4), altchars=b"-_", validate=True
+                )
+                content = json.loads(raw)
+                if (
+                    set(content) != {"user", "epoch", "sequence", "id"}
+                    or content["user"] != str(user_id)
+                    or content["epoch"] != (str(chosen) if chosen else None)
+                ):
+                    raise ValueError("cursor boundary")
+                number = content["sequence"]
+                identity = UUID(content["id"])
+                if type(number) is not int or number < 1:
+                    raise ValueError("cursor sequence")
+                checkpoint = session.scalar(
+                    select(AuditEvent).where(
+                        AuditEvent.id == identity,
+                        AuditEvent.user_id == user_id,
+                        AuditEvent.epoch_id == chosen,
+                        AuditEvent.sequence_number == number,
+                    )
+                )
+                if checkpoint is None:
+                    raise ValueError("cursor missing")
+            except (ValueError, TypeError, KeyError, UnicodeError) as error:
+                raise _error("INVALID_CURSOR", "审计分页游标无效", 422) from error
+            query = query.where(AuditEvent.sequence_number > number)
+        rows = list(session.scalars(query.order_by(AuditEvent.sequence_number).limit(limit + 1)))
+        following = None
+        if len(rows) > limit:
+            last = rows[limit - 1]
+            following = (
+                base64.urlsafe_b64encode(
+                    json.dumps(
+                        {
+                            "user": str(user_id),
+                            "epoch": str(chosen) if chosen else None,
+                            "sequence": last.sequence_number,
+                            "id": str(last.id),
+                        },
+                        separators=(",", ":"),
+                    ).encode()
+                )
+                .decode()
+                .rstrip("=")
+            )
+        return AuditEventPage(
+            user_id=user_id,
+            epoch_id=chosen,
+            items=[_view(row) for row in rows[:limit]],
+            next_cursor=following,
+        )
+
+
+def _failure(
+    user_id: UUID,
+    epoch_id: UUID | None,
+    code: str,
+    message: str,
+    status: Literal["INTEGRITY_ERROR", "LEGACY_UNAUDITED", "INCOMPLETE"] = "INTEGRITY_ERROR",
+) -> AuditVerification:
+    return AuditVerification(
+        user_id=user_id,
+        epoch_id=epoch_id,
+        status=status,
+        chain_status=status,
+        reference_status=status,
+        checkpoint_status="NOT_REQUESTED",
+        actual_count=0,
+        expected_count=0,
+        actual_tail_id=None,
+        actual_tail_hash=None,
+        expected_tail_id=None,
+        expected_tail_hash=None,
+        verified_through_sequence=0,
+        errors=[AuditDiagnostic(code=code, message=message)],
+    )
+
+
+def verify_audit_chain(
+    session: Session,
+    user_id: UUID,
+    epoch_id: UUID | None = None,
+    checkpoint: AuditCheckpoint | None = None,
+    mode: Literal["PREFIX", "EXACT"] = "PREFIX",
+) -> AuditVerification:
+    with session.no_autoflush:
+        epoch = (
+            current_audit_epoch(session, user_id)
+            if epoch_id is None
+            else session.scalar(
+                select(AuditEpoch).where(AuditEpoch.id == epoch_id, AuditEpoch.user_id == user_id)
+            )
+        )
+        if epoch is None:
+            return _failure(
+                user_id,
+                epoch_id,
+                "HEAD_MISSING",
+                "不存在已注册的审计轮次",
+                "LEGACY_UNAUDITED" if epoch_id is None else "INCOMPLETE",
+            )
+        event_count, event_bytes = cast(
+            tuple[int, int],
+            session.execute(
+                select(
+                    func.count(AuditEvent.id),
+                    func.coalesce(func.sum(func.octet_length(AuditEvent.canonical_text)), 0),
+                ).where(AuditEvent.user_id == user_id, AuditEvent.epoch_id == epoch.id)
+            ).one(),
+        )
+        subject_count, subject_bytes = cast(
+            tuple[int, int],
+            session.execute(
+                select(
+                    func.count(AuditSubjectSnapshot.id),
+                    func.coalesce(
+                        func.sum(func.octet_length(AuditSubjectSnapshot.canonical_text)), 0
+                    ),
+                ).where(
+                    AuditSubjectSnapshot.user_id == user_id,
+                    AuditSubjectSnapshot.epoch_id == epoch.id,
+                )
+            ).one(),
+        )
+        if (
+            event_count > VERIFY_EVENT_LIMIT
+            or subject_count > VERIFY_SUBJECT_LIMIT
+            or event_bytes + subject_bytes > VERIFY_BYTE_LIMIT
+        ):
+            return _failure(
+                user_id, epoch.id, "LIMIT_EXCEEDED", "审计原件超过本次核验预算", "INCOMPLETE"
+            ).model_copy(
+                update={
+                    "actual_count": event_count,
+                    "expected_count": epoch.event_count,
+                    "expected_tail_id": epoch.last_event_id,
+                    "expected_tail_hash": epoch.last_event_hash,
+                }
+            )
+        snapshots = list(
+            session.scalars(
+                select(AuditSubjectSnapshot).where(
+                    AuditSubjectSnapshot.user_id == user_id,
+                    AuditSubjectSnapshot.epoch_id == epoch.id,
+                )
+            )
+        )
+        subjects: list[AuditSubject] = []
+        current: list[AuditSubject] = []
+        current_keys: set[tuple[str, UUID]] = set()
+        diagnostics: list[AuditDiagnostic] = []
+        try:
+            if (
+                epoch.schema_version != "audit-head-v1"
+                or epoch.canonical_version != "audit-canonical-json-v1"
+            ):
+                raise domain.AuditUnsupportedVersion("原审计head协议不可识别")
+            previous_seal = None
+            if epoch.previous_epoch_id is not None:
+                previous = session.scalar(
+                    select(AuditEpoch).where(
+                        AuditEpoch.id == epoch.previous_epoch_id, AuditEpoch.user_id == user_id
+                    )
+                )
+                if (
+                    previous is None
+                    or previous.status != "SEALED"
+                    or previous.epoch_number + 1 != epoch.epoch_number
+                    or previous.seal_hash != epoch.previous_seal_hash
+                ):
+                    raise ValueError("原前序epoch封口或顺序已改变")
+                if (
+                    previous.schema_version != "audit-head-v1"
+                    or previous.canonical_version != "audit-canonical-json-v1"
+                ):
+                    raise domain.AuditUnsupportedVersion("原前序审计head协议不可识别")
+                previous_seal = domain.parse_seal(previous.seal_canonical_text or "")
+                if previous_seal.seal_hash != previous.seal_hash or previous_seal.head != _head(
+                    previous
+                ):
+                    raise ValueError("原前序封口正文与保存的head不一致")
+            for snapshot in snapshots:
+                subject = domain.parse_subject(snapshot.canonical_text)
+                if (
+                    domain.subject_hash(subject) != snapshot.snapshot_hash
+                    or subject.user_id != user_id
+                    or subject.epoch_id != epoch.id
+                    or subject.id != snapshot.entity_id
+                    or subject.kind != snapshot.kind
+                    or subject.scope != snapshot.scope
+                    or subject.snapshot_version != snapshot.snapshot_version
+                ):
+                    raise ValueError("永久副本索引与原件不一致")
+                subjects.append(subject)
+                if epoch.status == "OPEN" and (subject.kind, subject.id) not in current_keys:
+                    current_keys.add((subject.kind, subject.id))
+                    model = SUBJECT_MODELS.get(subject.kind)
+                    actual = session.get(model, subject.id) if model is not None else None
+                    if actual is not None:
+                        actual_data = row_copy(actual)
+                        current.append(
+                            domain.build_subject(
+                                user_id=user_id,
+                                epoch_id=epoch.id,
+                                kind=subject.kind,
+                                id=subject.id,
+                                scope=subject.scope,
+                                snapshot_version=_snapshot_version(subject.kind, actual_data),
+                                data=actual_data,
+                            )
+                        )
+                    elif subject.kind in {
+                        "DECISION_RUN",
+                        "ACTION_PLAN",
+                        "ACTION_RECEIPT",
+                        "POLICY_VERSION",
+                        "EVIDENCE",
+                        "BANK_OPERATION",
+                        "BANK_REDEMPTION",
+                        "BANK_POSTING",
+                        "BANK_EXTERNAL_FACT",
+                        "ASSET_PRODUCT",
+                    }:
+                        diagnostics.append(
+                            AuditDiagnostic(
+                                code="CURRENT_ORIGINAL_MISSING",
+                                reference=f"{subject.kind}:{subject.id}",
+                                message="当前审计轮次已捕获的不可变原件不存在",
+                            )
+                        )
+            rows = list(
+                session.scalars(
+                    select(AuditEvent)
+                    .where(AuditEvent.user_id == user_id, AuditEvent.epoch_id == epoch.id)
+                    .order_by(AuditEvent.sequence_number)
+                )
+            )
+            events = [domain.parse_event(row.canonical_text or "") for row in rows]
+            for row, event in zip(rows, events, strict=True):
+                projected = event.model_dump(mode="python", exclude={"simulation", "appended_at"})
+                for field, value in projected.items():
+                    actual_value = getattr(row, field)
+                    if field == "payload":
+                        value = event.payload.model_dump(mode="json")
+                    if value != actual_value:
+                        raise ValueError("审计列投影与原规范文本不一致")
+                if row.created_at != event.appended_at:
+                    raise ValueError("审计追加时钟与原规范文本不一致")
+            if epoch.status == "SEALED":
+                seal = domain.parse_seal(epoch.seal_canonical_text or "")
+                domain.verify_seal(seal, previous_seal)
+                if seal.seal_hash != epoch.seal_hash or seal.head != _head(epoch):
+                    raise ValueError("封口与真实head不一致")
+                manifest = session.scalar(
+                    text("SELECT audit_archive_manifest(:epoch)"), {"epoch": epoch.id}
+                )
+                digest = hashlib.sha256(
+                    b"bounded-funds/audit-archive-v1\0" + domain.canonical_bytes(manifest)
+                ).hexdigest()
+                if (
+                    digest != epoch.archive_manifest_hash
+                    or manifest["counts"] != epoch.archive_record_counts
+                ):
+                    raise ValueError("完整归档manifest已改变")
+            verification = domain.verify_epoch(
+                events,
+                head=_head(epoch),
+                expected_user_id=user_id,
+                references=ReferenceBundle(
+                    subjects=subjects, current_subjects=current, original_errors=diagnostics
+                ),
+                checkpoint=checkpoint,
+                checkpoint_mode=mode,
+            )
+            if verification.status in {"INTEGRITY_ERROR", "INCOMPLETE"}:
+                return verification
+            unsupported_trace = False
+            if epoch.status == "OPEN":
+                from app.services.decision_trace import (
+                    _action_links,
+                    _current_references,
+                    _stored_trace,
+                )
+
+                checked: set[UUID] = set()
+                for event in events:
+                    if (
+                        event.event_type != "DECISION_RECORDED"
+                        or event.decision_run_id is None
+                        or event.decision_run_id in checked
+                    ):
+                        continue
+                    checked.add(event.decision_run_id)
+                    run = session.scalar(
+                        select(DecisionRun).where(
+                            DecisionRun.user_id == user_id, DecisionRun.id == event.decision_run_id
+                        )
+                    )
+                    if run is None:
+                        raise ValueError("当前轮次的原决策已缺失")
+                    try:
+                        completeness, trace = _stored_trace(session, run)
+                        if completeness == "UNSUPPORTED_VERSION":
+                            unsupported_trace = True
+                        elif completeness != "COMPLETE" or trace is None:
+                            raise ValueError("已记录决策的当前原轨迹无法完整核验")
+                        if trace is not None:
+                            _current_references(session, trace, allow_missing=True)
+                            _action_links(session, run, datetime.now(UTC), trace)
+                    except PolicyLifecycleError as error:
+                        raise ValueError("当前决策或经济回单原件未通过既有核验") from error
+            if unsupported_trace and verification.status != "UNSUPPORTED_VERSION":
+                return verification.model_copy(
+                    update={
+                        "status": "UNSUPPORTED_VERSION",
+                        "reference_status": "UNSUPPORTED_VERSION",
+                        "errors": verification.errors
+                        + [
+                            AuditDiagnostic(
+                                code="UNSUPPORTED_VERSION",
+                                message="原决策轨迹版本或算法不可识别",
+                            )
+                        ],
+                    }
+                )
+            return verification
+        except domain.AuditUnsupportedVersion as error:
+            return _failure(user_id, epoch.id, "UNSUPPORTED_VERSION", str(error)).model_copy(
+                update={
+                    "status": "UNSUPPORTED_VERSION",
+                    "chain_status": "UNSUPPORTED_VERSION",
+                    "reference_status": "UNSUPPORTED_VERSION",
+                }
+            )
+        except ValueError as error:
+            return _failure(user_id, epoch.id, "AUDIT_INTEGRITY_ERROR", str(error))

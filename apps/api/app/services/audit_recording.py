@@ -19,6 +19,7 @@ from app.db.models import (
     BankOperation,
     DecisionRun,
     EvidenceItem,
+    ExternalBankFact,
     Goal,
     OwnedMixin,
     Policy,
@@ -27,6 +28,7 @@ from app.db.models import (
     SimulatedBankRedemption,
     Transaction,
 )
+from app.domain.bank_posting_codec import bank_posting_data
 from app.domain.policy_configuration import configuration_hash
 from app.services.policy_lifecycle import PolicyLifecycleError
 from sqlalchemy import inspect, or_, select
@@ -60,7 +62,8 @@ def audit_subject_data(row: object) -> JsonObject:
     mapper = inspect(type(row))
     if mapper is None:
         raise PolicyLifecycleError("AUDIT_REFERENCE_ERROR", "审计副本必须来自实际映射对象", 409)
-    return {column.key: _json(getattr(row, column.key)) for column in mapper.column_attrs}
+    full = {column.key: _json(getattr(row, column.key)) for column in mapper.column_attrs}
+    return bank_posting_data(full) if isinstance(row, SimulatedBankPosting) else full
 
 
 def _owned[OwnedRow: OwnedMixin](
@@ -123,9 +126,10 @@ def _record(
     missing: list[UUID] | None = None,
     anchor_specs: list[tuple[str, UUID, str, str]] | None = None,
     status_change: tuple[str, UUID, str, str] | None = None,
+    payload_version: int = 1,
 ) -> None:
     # Local imports avoid the decision-recording/policy hook module cycle.
-    from app.domain.audit_chain_types import AuditIntent
+    from app.domain.audit_chain_types import AuditIntent, AuditIntentV2
     from app.services.audit_chain import (
         append_audit_event,
         capture_audit_subject,
@@ -181,6 +185,10 @@ def _record(
             "EVIDENCE_CONTENT": "EVIDENCE",
             "ACTION_RECEIPT": "ACTION_RECEIPT",
             "BANK_POSTING_SET": "BANK_OPERATION",
+            "EXTERNAL_BANK_REQUEST": "BANK_EXTERNAL_FACT",
+            "EXTERNAL_BANK_RESULT": "BANK_EXTERNAL_FACT",
+            "EXTERNAL_BANK_POSTING_SET": "BANK_EXTERNAL_FACT",
+            "EXTERNAL_BANK_PROJECTION": "BANK_EXTERNAL_FACT",
         }.get(kind)
         if subject_kind is None:
             raise PolicyLifecycleError("AUDIT_REFERENCE_ERROR", "审计内容锚类型未支持", 409)
@@ -231,8 +239,28 @@ def _record(
     )
     if action_id is not None:
         cause_query = cause_query.where(AuditEvent.action_plan_id == action_id)
+    if payload_version == 2:
+        cause_query = cause_query.where(
+            AuditEvent.event_type == "EXTERNAL_BANK_FACT_SETTLED",
+            AuditEvent.aggregate_type == "BANK_EXTERNAL_FACT",
+            AuditEvent.aggregate_id == aggregate_id,
+        )
+        if event_type == "EXTERNAL_BANK_FACT_SETTLED":
+            cause_query = cause_query.where(AuditEvent.id.is_(None))
     cause = session.scalars(cause_query.order_by(AuditEvent.sequence_number.desc())).first()
-    intent = AuditIntent.model_validate(
+    payload: JsonObject = {
+        "fact_key": fact_key,
+        "correlation_kind": correlation_kind,
+        "references": references,
+        "anchors": anchors,
+        "context": context or {},
+    }
+    if payload_version == 1:
+        payload.update(
+            {"changes": changes, "missing_evidence_ids": missing or [], "observation": observation}
+        )
+    intent_model = AuditIntent if payload_version == 1 else AuditIntentV2
+    intent = intent_model.model_validate(
         {
             "user_id": user_id,
             "event_type": event_type,
@@ -244,17 +272,8 @@ def _record(
             "action_plan_id": action_id,
             "action_receipt_id": receipt_id,
             "idempotency_key": "audit:" + hashlib.sha256(fact_key.encode()).hexdigest(),
-            "payload_version": 1,
-            "payload": {
-                "fact_key": fact_key,
-                "correlation_kind": correlation_kind,
-                "references": references,
-                "anchors": anchors,
-                "changes": changes,
-                "missing_evidence_ids": missing or [],
-                "context": context or {},
-                "observation": observation,
-            },
+            "payload_version": payload_version,
+            "payload": payload,
             "occurred_at": occurred_at,
         }
     )
@@ -444,6 +463,138 @@ def record_bank_settled(
     session: Session, operation: BankOperation | SimulatedBankRedemption, now: datetime
 ) -> None:
     _bank_fact(session, operation, now, settled=True)
+
+
+def _external_postings(session: Session, fact: ExternalBankFact) -> list[SimulatedBankPosting]:
+    return list(
+        session.scalars(
+            select(SimulatedBankPosting)
+            .where(
+                SimulatedBankPosting.user_id == fact.user_id,
+                SimulatedBankPosting.external_fact_id == fact.id,
+            )
+            .order_by(SimulatedBankPosting.id)
+        )
+    )
+
+
+def _external_anchors(fact: ExternalBankFact) -> list[tuple[str, UUID, str, str]]:
+    if fact.bank_result is None or fact.bank_result_hash is None:
+        raise PolicyLifecycleError("AUDIT_REFERENCE_ERROR", "银行事实缺少真实结算原件", 409)
+    algorithm = "bank-external-canonical-sha256-v1"
+    return [
+        ("EXTERNAL_BANK_REQUEST", fact.id, fact.request_hash, algorithm),
+        ("EXTERNAL_BANK_RESULT", fact.id, fact.bank_result_hash, algorithm),
+        ("EXTERNAL_BANK_POSTING_SET", fact.id, fact.bank_result["posting_digest"], algorithm),
+    ]
+
+
+def record_external_bank_settled(session: Session, fact: ExternalBankFact, now: datetime) -> None:
+    """Record a committed external economic fact without Agent authority or a fake action."""
+    if fact.settled_at is None or fact.bank_status != "SETTLED":
+        raise PolicyLifecycleError("AUDIT_REFERENCE_ERROR", "外部银行事实尚未真实结算", 409)
+    postings = _external_postings(session, fact)
+    subjects: list[SubjectRequest] = [
+        ("BANK_EXTERNAL_FACT", fact.id, "AFTER", None),
+        ("ACCOUNT", fact.account_id, "BASIS", None),
+    ]
+    subjects += [("BANK_POSTING", row.id, "BASIS", None) for row in postings]
+    _record(
+        session,
+        user_id=fact.user_id,
+        event_type="EXTERNAL_BANK_FACT_SETTLED",
+        aggregate_type="BANK_EXTERNAL_FACT",
+        aggregate_id=fact.id,
+        correlation_id=fact.id,
+        correlation_kind="EXTERNAL_BANK_FACT",
+        occurred_at=fact.settled_at,
+        observed_at=now,
+        subjects=subjects,
+        fact_key=f"EXTERNAL_BANK_FACT_SETTLED:{fact.id}",
+        anchor_specs=_external_anchors(fact),
+        payload_version=2,
+    )
+
+
+def record_external_bank_projected(session: Session, fact: ExternalBankFact, now: datetime) -> None:
+    """Capture the actual one-time external projection and its retained proof predecessors."""
+    if (
+        fact.projected_at is None
+        or fact.projection_result is None
+        or fact.projection_result_hash is None
+    ):
+        raise PolicyLifecycleError("AUDIT_REFERENCE_ERROR", "外部事实缺少实际导入原件", 409)
+    result = fact.projection_result
+    subjects: list[SubjectRequest] = [
+        ("BANK_EXTERNAL_FACT", fact.id, "AFTER", None),
+        ("ACCOUNT", fact.account_id, "AFTER", None),
+        ("TRANSACTION", UUID(result["transaction_id"]), "AFTER", None),
+    ]
+    subjects += [
+        ("BANK_POSTING", row.id, "BASIS", None) for row in _external_postings(session, fact)
+    ]
+    proof_ids = {
+        UUID(result[field])
+        for field in (
+            "transaction_evidence_id",
+            "balance_evidence_id",
+            "income_evidence_id",
+            "exposure_evidence_id",
+        )
+        if result.get(field) is not None
+    }
+    proof_ids.update(UUID(identity) for identity in result["proof_successor_ids"])
+    seen: set[UUID] = set()
+    income_origins: set[UUID] = set()
+
+    def retain_income_origins(proof: EvidenceItem) -> None:
+        if proof.content.get("protocol") == "new-funds-ledger-v1":
+            income_origins.update(UUID(lot["transaction_id"]) for lot in proof.content["lots"])
+        elif proof.content.get("protocol") == "new-funds-ledger-v2":
+            income_origins.update(
+                UUID(origin["origin_transaction_id"]) for origin in proof.content["origins"]
+            )
+
+    for identity in sorted(proof_ids, key=str):
+        current = _owned(session, EvidenceItem, identity, fact.user_id)
+        retain_income_origins(current)
+        subjects.append(("EVIDENCE", current.id, "AFTER", None))
+        while current.supersedes_id is not None:
+            if current.supersedes_id in seen:
+                break
+            seen.add(current.supersedes_id)
+            current = _owned(session, EvidenceItem, current.supersedes_id, fact.user_id)
+            retain_income_origins(current)
+            subjects.append(("EVIDENCE", current.id, "BASIS", None))
+    for identity in sorted(income_origins, key=str):
+        transaction = _owned(session, Transaction, identity, fact.user_id)
+        subjects.append(("TRANSACTION", transaction.id, "BASIS", None))
+        if transaction.evidence_id is None:
+            raise PolicyLifecycleError("AUDIT_REFERENCE_ERROR", "收入原件缺少实际银行证明", 409)
+        subjects.append(("EVIDENCE", transaction.evidence_id, "BASIS", None))
+    _record(
+        session,
+        user_id=fact.user_id,
+        event_type="EXTERNAL_BANK_FACT_PROJECTED",
+        aggregate_type="BANK_EXTERNAL_FACT",
+        aggregate_id=fact.id,
+        correlation_id=fact.id,
+        correlation_kind="EXTERNAL_BANK_FACT",
+        occurred_at=fact.projected_at,
+        observed_at=now,
+        subjects=subjects,
+        fact_key=f"EXTERNAL_BANK_FACT_PROJECTED:{fact.id}",
+        anchor_specs=_external_anchors(fact)
+        + [
+            (
+                "EXTERNAL_BANK_PROJECTION",
+                fact.id,
+                fact.projection_result_hash,
+                "bank-external-canonical-sha256-v1",
+            )
+        ],
+        payload_version=2,
+    )
 
 
 def record_action_projected(

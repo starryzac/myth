@@ -1,0 +1,15 @@
+........................................................................ [ 59%]
+..................................................                       [100%]
+============================== warnings summary ===============================
+apps/api/app/tests/test_boundary_details.py::test_invalid_money_still_fails_at_original_input_revalidation[1.25]
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\pydantic\main.py:475: UserWarning: Pydantic serializer warnings:
+    PydanticSerializationUnexpectedValue(Expected `int` - serialized value may not be as expected [field_name='balance_cents', input_value=1.25, input_type=float])
+    return self.__pydantic_serializer__.to_python(
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+122 passed, 2 warnings in 35.90s
+

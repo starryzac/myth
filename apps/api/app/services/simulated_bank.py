@@ -13,12 +13,14 @@ from app.db.models import (
     AssetProduct,
     BankOperation,
     EvidenceItem,
+    ExternalBankFact,
     SimulatedBankPosting,
     SimulatedBankRedemption,
     User,
 )
 from app.domain.asset_allocation_types import FixedPrincipalTerms
 from app.domain.asset_exposure import EXPOSURE_SOURCE, asset_exposure_snapshot
+from app.domain.bank_posting_codec import POSTING_V2_FIELDS, bank_posting_data
 from app.domain.policy_configuration import configuration_hash
 from app.services.policy_lifecycle import PolicyLifecycleError, is_version_authorized
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, StrictInt
@@ -131,8 +133,15 @@ def ledger_heads(session: Session, user_id: UUID) -> dict[str, SimulatedBankPost
         select(SimulatedBankPosting)
         .where(SimulatedBankPosting.user_id == user_id)
         .order_by(SimulatedBankPosting.ledger_key, SimulatedBankPosting.sequence_number)
+        .limit(100001)
     )
-    for row in rows:
+    for index, row in enumerate(rows):
+        if index >= 100000:
+            raise _error("Bank ledger exceeds its bounded verification capacity")
+        try:
+            bank_posting_data({key: getattr(row, key) for key in POSTING_V2_FIELDS})
+        except (KeyError, TypeError, ValueError) as error:
+            raise _error("Bank posting has an invalid original origin or layout") from error
         previous = heads.get(row.ledger_key)
         if previous is None:
             if (
@@ -147,6 +156,10 @@ def ledger_heads(session: Session, user_id: UUID) -> dict[str, SimulatedBankPost
             or row.sequence_number != previous.sequence_number + 1
             or row.balance_before_cents != previous.balance_after_cents
             or row.occurred_at < previous.occurred_at
+            or row.ledger_dimension != previous.ledger_dimension
+            or row.ledger_metadata != previous.ledger_metadata
+            or row.account_id != previous.account_id
+            or row.position_id != previous.position_id
         ):
             raise _error("A bank ledger economic chain is inconsistent")
         if row.balance_after_cents != row.balance_before_cents + row.delta_cents:
@@ -178,6 +191,18 @@ def validate_bank_projection(
             for row in positions
         }
     )
+    from app.services.external_bank_facts import verify_external_facts
+
+    external_facts = verify_external_facts(
+        session, user_id, now, require_projected=not allow_unprojected
+    )
+    if allow_unprojected:
+        for fact in external_facts:
+            if fact.bank_status == "SETTLED" and fact.projection_status != "PROJECTED":
+                key = "CASH:" + str(fact.account_id)
+                if key not in expected:
+                    raise _error("An unprojected external fact lost its CASH identity")
+                expected[key] += fact.amount_cents if fact.kind == "INCOME" else -fact.amount_cents
     if allow_unprojected:
         for request in session.scalars(
             select(SimulatedBankRedemption).where(
@@ -246,6 +271,11 @@ def validate_recovery_exposure(session: Session, user_id: UUID, now: datetime) -
     operations = list(
         session.scalars(select(BankOperation).where(BankOperation.user_id == user_id))
     )
+    external_facts = list(
+        session.scalars(
+            select(ExternalBankFact).where(ExternalBankFact.user_id == user_id).limit(10001)
+        )
+    )
     statements = [
         row for row in evidence if row.source_type == EXPOSURE_SOURCE and row.status != "SUPERSEDED"
     ]
@@ -253,7 +283,8 @@ def validate_recovery_exposure(session: Session, user_id: UUID, now: datetime) -
         not requests
         and not operations
         and not any(
-            row.content.get("protocol") in {"asset-exposure-v2", "asset-exposure-v3"}
+            row.content.get("protocol")
+            in {"asset-exposure-v2", "asset-exposure-v3", "asset-exposure-v4"}
             for row in statements
         )
     ):
@@ -281,7 +312,7 @@ def validate_recovery_exposure(session: Session, user_id: UUID, now: datetime) -
             )
         )
         extra: dict[str, Any] = {}
-        if proof.content.get("protocol") == "asset-exposure-v3":
+        if proof.content.get("protocol") in {"asset-exposure-v3", "asset-exposure-v4"}:
             extra = {
                 "bank_operations": operations,
                 "resource_reservations": list(
@@ -292,12 +323,24 @@ def validate_recovery_exposure(session: Session, user_id: UUID, now: datetime) -
                     )
                 ),
             }
+            if proof.content.get("protocol") == "asset-exposure-v4":
+                extra["external_bank_facts"] = external_facts
         elif any(row.legacy_redemption_id is None for row in operations):
             raise ValueError("Generic bank effects require complete v3 exposure")
+        if proof.content.get("protocol") != "asset-exposure-v4" and (
+            external_facts
+            or any(
+                row.external_fact_id is not None or row.ledger_key.startswith("CLEARING:")
+                for row in postings
+            )
+        ):
+            raise ValueError("External bank effects require complete v4 exposure")
         if (
             any(row.occurred_at > epoch for row in postings)
             or any(row.created_at > epoch for row in requests)
             or any(row.created_at > epoch for row in operations)
+            or len(external_facts) > 10000
+            or any(row.updated_at > epoch for row in external_facts)
         ):
             raise ValueError("Recovery exposure predates an independent bank fact")
         expected = asset_exposure_snapshot(

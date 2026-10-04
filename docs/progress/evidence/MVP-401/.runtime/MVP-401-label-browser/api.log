@@ -1,0 +1,7 @@
+INFO:     Started server process [21084]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18040 (Press CTRL+C to quit)
+{"event": "http_request", "request_id": "342e63d4-514e-45c0-b3ad-c182fe5c54bd", "method": "GET", "status": 200, "duration_ms": 78.0}
+{"event": "http_request", "request_id": "4a615651-a93c-4506-9993-db1e56302392", "method": "GET", "status": 200, "duration_ms": 734.0}
+{"event": "http_request", "request_id": "d55f493b-9ed5-4eb6-82fd-868a17ab5edb", "method": "GET", "status": 200, "duration_ms": 500.0}

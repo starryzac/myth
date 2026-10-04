@@ -1,0 +1,20 @@
+unformatted: File would be reformatted
+   --> apps\api\app\tests\boundary_display_cases.py:215:68
+    |
+214 |                 expected={
+    -                     "details.next_obligations.status": "NOT_PROVEN" if historical_paid is None else "PROVEN",
+    -                     "details.next_obligations.next_due_date": "2026-09-15" if historical_paid == 0 else None,
+    -                     "details.next_obligations.next_count": None if historical_paid is None else int(historical_paid == 0),
+215 +                     "details.next_obligations.status": "NOT_PROVEN"
+216 +                     if historical_paid is None
+217 +                     else "PROVEN",
+218 +                     "details.next_obligations.next_due_date": "2026-09-15"
+219 +                     if historical_paid == 0
+220 +                     else None,
+221 +                     "details.next_obligations.next_count": None
+222 +                     if historical_paid is None
+223 +                     else int(historical_paid == 0),
+224 |                     "details.next_obligations.next_remaining_protection_cents": (
+    |
+
+1 file would be reformatted, 43 files already formatted

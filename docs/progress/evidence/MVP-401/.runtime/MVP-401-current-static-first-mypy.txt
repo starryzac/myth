@@ -1,0 +1,5 @@
+apps\api\app\tests\test_audit_chain_domain.py:227: error: List item 0 has incompatible type "AuditEnvelope | AuditEnvelopeV2"; expected "AuditEnvelope"  [list-item]
+apps\api\app\tests\test_audit_chain_domain.py:227: error: List item 1 has incompatible type "AuditEnvelope | AuditEnvelopeV2"; expected "AuditEnvelope"  [list-item]
+apps\api\app\tests\test_audit_chain_domain.py:528: error: Need type annotation for "postings"  [var-annotated]
+apps\api\app\tests\test_audit_chain_domain.py:687: error: List item 0 has incompatible type "AuditEnvelope | AuditEnvelopeV2"; expected "AuditEnvelope"  [list-item]
+Found 4 errors in 1 file (checked 44 source files)

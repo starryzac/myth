@@ -508,3 +508,39 @@ def _persist(
     )
     session.flush()
     return ledger
+
+
+def persist_external_income(
+    session: Session,
+    user_id: UUID,
+    previous_evidence_id: UUID,
+    ledger: IncomeLedger,
+    external_fact_id: UUID,
+    now: datetime,
+) -> EvidenceItem:
+    """Caller projects a verified external bank fact in the same application transaction."""
+    from app.db.models import ExternalBankFact
+
+    previous = session.get(EvidenceItem, previous_evidence_id)
+    fact = session.get(ExternalBankFact, external_fact_id)
+    if (
+        previous is None
+        or fact is None
+        or previous.user_id != user_id
+        or fact.user_id != user_id
+        or ledger.user_id != user_id
+        or fact.bank_status != "SETTLED"
+        or previous.status != "VALID"
+        or previous.source_type != LEDGER_SOURCE
+        or previous.content_hash != configuration_hash(previous.content)
+    ):
+        raise _error("External income successor requires its actual settled bank original")
+    _persist(session, previous, ledger, external_fact_id, "external", now)
+    identity = uuid5(
+        external_fact_id,
+        f"income:external:{previous.id}:{configuration_hash(ledger.model_dump(mode='json'))}",
+    )
+    result = session.get(EvidenceItem, identity)
+    if result is None:
+        raise _error("External income projection must create its immutable successor")
+    return result

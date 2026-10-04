@@ -23,6 +23,7 @@ from app.db.models import (
     DecisionConstraint,
     DecisionRun,
     EvidenceItem,
+    ExternalBankFact,
     Goal,
     Policy,
     PolicyProposal,
@@ -41,6 +42,7 @@ from app.domain.audit_chain_types import (
     AuditFactContext,
     AuditHead,
     AuditIntent,
+    AuditIntentAny,
     AuditPayload,
     AuditReference,
     AuditSubject,
@@ -48,6 +50,10 @@ from app.domain.audit_chain_types import (
     ReferenceBundle,
     Status,
 )
+from app.domain.audit_chain_types import (
+    AuditEvent as AuditEventEnvelope,
+)
+from app.domain.bank_posting_codec import bank_posting_data, bank_posting_snapshot_version
 from app.services.policy_lifecycle import PolicyLifecycleError
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import func, inspect, select, text
@@ -72,6 +78,7 @@ SUBJECT_MODELS: dict[str, Any] = {
     "BANK_REDEMPTION": SimulatedBankRedemption,
     "BANK_POSTING": SimulatedBankPosting,
     "BANK_OPERATION": BankOperation,
+    "BANK_EXTERNAL_FACT": ExternalBankFact,
     "RESOURCE_CLAIM": ActionResourceReservation,
 }
 VERIFY_EVENT_LIMIT = 10000
@@ -84,7 +91,7 @@ class AuditEventView(BaseModel):
     id: UUID
     epoch_id: UUID | None
     completeness: Literal["COMPLETE", "LEGACY_UNAUDITED", "UNSUPPORTED_VERSION"]
-    envelope: AuditEnvelope | None
+    envelope: AuditEventEnvelope | None
     original: dict[str, Any] | None
 
 
@@ -172,7 +179,7 @@ def _locked(session: Session, user_id: UUID) -> None:
 def _save_event(
     session: Session,
     row: AuditEpoch,
-    intent: AuditIntent,
+    intent: AuditIntentAny,
     observed_at: datetime,
     appended_at: datetime,
 ) -> AuditEvent:
@@ -301,7 +308,7 @@ def reset_archive_epoch(
     clock = _db_clock(session)
     genesis = session.get(AuditEvent, epoch.genesis_event_id)
     original = domain.parse_event(genesis.canonical_text or "") if genesis else None
-    prior = original.payload.epoch_transition if original else None
+    prior = cast(AuditEnvelope, original).payload.epoch_transition if original else None
     transition = AuditEpochTransition(
         kind="SEAL",
         reset_key=reset_key,
@@ -369,7 +376,12 @@ def start_seed_epoch(
 
 def row_copy(row: Any) -> dict[str, Any]:
     data = {column.key: getattr(row, column.key) for column in inspect(type(row)).columns}
-    return cast(dict[str, Any], json.loads(domain.canonical_text(data, raw=True)))
+    full = cast(dict[str, Any], json.loads(domain.canonical_text(data, raw=True)))
+    return bank_posting_data(full) if isinstance(row, SimulatedBankPosting) else full
+
+
+def _snapshot_version(kind: str, data: dict[str, Any]) -> int:
+    return bank_posting_snapshot_version(data) if kind == "BANK_POSTING" else 1
 
 
 def capture_audit_subject_data(
@@ -392,11 +404,15 @@ def capture_audit_subject_data(
         raise _error("NOT_FOUND", "原审计实体不存在", 404)
     scope = "GLOBAL_CATALOG" if kind == "ASSET_PRODUCT" else "TENANT"
     try:
-        subject = domain.build_subject(
-            user_id=user_id, epoch_id=epoch_id, kind=kind, id=entity_id, scope=scope, data=data
+        subject, original, digest = domain.encode_subject_original(
+            user_id=user_id,
+            epoch_id=epoch_id,
+            kind=kind,
+            id=entity_id,
+            scope=scope,
+            snapshot_version=_snapshot_version(kind, data),
+            data=data,
         )
-        digest = domain.subject_hash(subject)
-        original = domain.subject_canonical_text(subject)
     except ValueError as error:
         raise _error("AUDIT_SUBJECT_INVALID", str(error)) from error
     found = session.scalar(
@@ -420,7 +436,7 @@ def capture_audit_subject_data(
         kind=kind,
         entity_id=entity_id,
         scope=scope,
-        snapshot_version=1,
+        snapshot_version=subject.snapshot_version,
         canonical_text=original,
         snapshot_hash=digest,
         captured_at=captured,
@@ -499,7 +515,7 @@ def get_decision_audit_status(session: Session, user_id: UUID, run_id: UUID) -> 
 
 
 def append_audit_event(
-    session: Session, intent: AuditIntent, observed_at: datetime, appended_at: datetime
+    session: Session, intent: AuditIntentAny, observed_at: datetime, appended_at: datetime
 ) -> AuditEvent:
     epoch = ensure_audit_epoch(session, intent.user_id, appended_at)
     existing = session.scalar(
@@ -774,6 +790,7 @@ def verify_audit_chain(
                     model = SUBJECT_MODELS.get(subject.kind)
                     actual = session.get(model, subject.id) if model is not None else None
                     if actual is not None:
+                        actual_data = row_copy(actual)
                         current.append(
                             domain.build_subject(
                                 user_id=user_id,
@@ -781,7 +798,8 @@ def verify_audit_chain(
                                 kind=subject.kind,
                                 id=subject.id,
                                 scope=subject.scope,
-                                data=row_copy(actual),
+                                snapshot_version=_snapshot_version(subject.kind, actual_data),
+                                data=actual_data,
                             )
                         )
                     elif subject.kind in {
@@ -793,6 +811,7 @@ def verify_audit_chain(
                         "BANK_OPERATION",
                         "BANK_REDEMPTION",
                         "BANK_POSTING",
+                        "BANK_EXTERNAL_FACT",
                         "ASSET_PRODUCT",
                     }:
                         diagnostics.append(

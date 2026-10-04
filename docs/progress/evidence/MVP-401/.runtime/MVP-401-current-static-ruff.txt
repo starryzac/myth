@@ -1,0 +1,34 @@
+E501 Line too long (109 > 100)
+   --> apps\api\app\tests\boundary_display_cases.py:215:101
+    |
+213 |                 (old,),
+214 |                 expected={
+215 |                     "details.next_obligations.status": "NOT_PROVEN" if historical_paid is None else "PROVEN",
+    |                                                                                                     ^^^^^^^^^
+216 |                     "details.next_obligations.next_due_date": "2026-09-15" if historical_paid == 0 else None,
+217 |                     "details.next_obligations.next_count": None if historical_paid is None else int(historical_paid == 0),
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\tests\boundary_display_cases.py:216:101
+    |
+214 |                 expected={
+215 |                     "details.next_obligations.status": "NOT_PROVEN" if historical_paid is None else "PROVEN",
+216 |                     "details.next_obligations.next_due_date": "2026-09-15" if historical_paid == 0 else None,
+    |                                                                                                     ^^^^^^^^^
+217 |                     "details.next_obligations.next_count": None if historical_paid is None else int(historical_paid == 0),
+218 |                     "details.next_obligations.next_remaining_protection_cents": (
+    |
+
+E501 Line too long (122 > 100)
+   --> apps\api\app\tests\boundary_display_cases.py:217:101
+    |
+215 |                     "details.next_obligations.status": "NOT_PROVEN" if historical_paid is None else "PROVEN",
+216 |                     "details.next_obligations.next_due_date": "2026-09-15" if historical_paid == 0 else None,
+217 |                     "details.next_obligations.next_count": None if historical_paid is None else int(historical_paid == 0),
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^
+218 |                     "details.next_obligations.next_remaining_protection_cents": (
+219 |                         None if historical_paid is None else 5_000 if historical_paid == 0 else 0
+    |
+
+Found 3 errors.

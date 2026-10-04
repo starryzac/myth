@@ -1,0 +1,37 @@
+{
+  "stage": "salary",
+  "request_index": 112,
+  "response_as_of": "2026-10-04T01:00:30Z",
+  "visible": {
+    "stage_cards": [
+      {
+        "name": "91日资金边界",
+        "amount": "¥33,574.00"
+      },
+      {
+        "name": "账面现金",
+        "amount": "¥36,624.00"
+      },
+      {
+        "name": "目标资金归属",
+        "amount": "¥0.00"
+      },
+      {
+        "name": "已自主配置",
+        "amount": "¥0.00"
+      }
+    ],
+    "viewport": 1440,
+    "document": 1425,
+    "simulation": true
+  },
+  "expected_visible": [
+    "¥33,574.00",
+    "¥36,624.00",
+    "¥0.00",
+    "¥0.00"
+  ],
+  "capture_elapsed_seconds": 10.546999999962281,
+  "screenshot": "output/playwright/MVP-401-salary.png",
+  "screenshot_sha256": "a9884a805303fe948f7ea811ed4ea0e4c157908ae4471a32bd1d76b5de6d0107"
+}

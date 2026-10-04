@@ -1,0 +1,11 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Scripts\python.exe
+hypothesis profile 'default'
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 1 item
+
+apps/api/app/tests/test_external_bank_migration.py::test_upgrade_preserves_authentic_open_sealed_v1_and_readonly_old_reset_replay PASSED [100%]
+
+======================== 1 passed in 469.21s (0:07:49) ========================

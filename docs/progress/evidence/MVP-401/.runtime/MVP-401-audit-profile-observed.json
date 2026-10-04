@@ -1,0 +1,2592 @@
+{
+  "classification": "READONLY_EXISTING_INSTRUMENTED_PROFILES_NOT_PRODUCT_SLA",
+  "manifest_status": "IN_PROGRESS",
+  "completed_stage_names": [
+    "initial",
+    "goal_confirmed",
+    "goal_created",
+    "salary",
+    "goal_allocated"
+  ],
+  "profiles": [
+    {
+      "profile": ".runtime/MVP-401-browser-driver-fourth/funds-goal_allocated.pstats",
+      "profile_sha256": "7b31543f061e310d4c303c75c957b52c549e64dd7aa21f7e93e49485d07d8737",
+      "as_of": null,
+      "wall_seconds": 85.93800000002375,
+      "profile_total_self_seconds": 85.87967059999997,
+      "top_self": [
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 3931,
+          "calls": 8021292,
+          "self_seconds": 35.868644,
+          "cumulative_seconds": 39.6298995
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/json/encoder.py",
+          "line": 205,
+          "function": "iterencode",
+          "primitive_calls": 25883,
+          "calls": 25883,
+          "self_seconds": 9.3863901,
+          "cumulative_seconds": 9.3863901
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.isinstance>",
+          "primitive_calls": 9808453,
+          "calls": 9808453,
+          "self_seconds": 4.236405400000001,
+          "cumulative_seconds": 4.287006600000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 9591,
+          "calls": 9591,
+          "self_seconds": 3.9849252,
+          "cumulative_seconds": 3.9849252
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'to_python' of 'pydantic_core._pydantic_core.SchemaSerializer' objects>",
+          "primitive_calls": 10226,
+          "calls": 10226,
+          "self_seconds": 3.5624653000000004,
+          "cumulative_seconds": 3.5624669000000004
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/json/decoder.py",
+          "line": 343,
+          "function": "raw_decode",
+          "primitive_calls": 10229,
+          "calls": 10229,
+          "self_seconds": 3.2407614000000002,
+          "cumulative_seconds": 3.2407656
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/copy.py",
+          "line": 118,
+          "function": "deepcopy",
+          "primitive_calls": 13527,
+          "calls": 834113,
+          "self_seconds": 3.0785149,
+          "cumulative_seconds": 6.8212558
+        },
+        {
+          "file": "apps/api/app/domain/decision_trace_types.py",
+          "line": 34,
+          "function": "visit",
+          "primitive_calls": 13527,
+          "calls": 438100,
+          "self_seconds": 2.5175758000000004,
+          "cumulative_seconds": 2.9756335000000003
+        }
+      ],
+      "top_cumulative": [
+        {
+          "file": ".runtime/drive_mvp401_e2e.py",
+          "line": 65,
+          "function": "<lambda>",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0010090000000000001,
+          "cumulative_seconds": 85.8842492
+        },
+        {
+          "file": "apps/api/app/tests/dashboard_scenario.py",
+          "line": 60,
+          "function": "advance",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0011963,
+          "cumulative_seconds": 85.8832402
+        },
+        {
+          "file": "apps/api/app/services/execution.py",
+          "line": 325,
+          "function": "execute_action",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0022171,
+          "cumulative_seconds": 61.25692660000001
+        },
+        {
+          "file": "apps/api/app/services/execution.py",
+          "line": 332,
+          "function": "_execute_action",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0061893,
+          "cumulative_seconds": 61.2124225
+        },
+        {
+          "file": "apps/api/app/services/audit_recording.py",
+          "line": 108,
+          "function": "_record",
+          "primitive_calls": 8,
+          "calls": 8,
+          "self_seconds": 0.0381776,
+          "cumulative_seconds": 54.7429143
+        },
+        {
+          "file": "apps/api/app/services/audit_chain.py",
+          "line": 451,
+          "function": "capture_audit_subject",
+          "primitive_calls": 126,
+          "calls": 126,
+          "self_seconds": 0.1336556,
+          "cumulative_seconds": 53.75411750000001
+        },
+        {
+          "file": "apps/api/app/services/audit_chain.py",
+          "line": 387,
+          "function": "capture_audit_subject_data",
+          "primitive_calls": 127,
+          "calls": 127,
+          "self_seconds": 0.10125250000000001,
+          "cumulative_seconds": 48.3074689
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 46,
+          "function": "canonical_bytes",
+          "primitive_calls": 3931,
+          "calls": 3931,
+          "self_seconds": 0.42401760000000005,
+          "cumulative_seconds": 47.296554300000004
+        }
+      ],
+      "selected": [
+        {
+          "file": "apps/api/app/services/execution.py",
+          "line": 325,
+          "function": "execute_action",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0022171,
+          "cumulative_seconds": 61.25692660000001
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 46,
+          "function": "canonical_bytes",
+          "primitive_calls": 3931,
+          "calls": 3931,
+          "self_seconds": 0.42401760000000005,
+          "cumulative_seconds": 47.296554300000004
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 3931,
+          "calls": 8021292,
+          "self_seconds": 35.868644,
+          "cumulative_seconds": 39.6298995
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 163,
+          "function": "build_subject",
+          "primitive_calls": 645,
+          "calls": 645,
+          "self_seconds": 0.1766417,
+          "cumulative_seconds": 33.9428572
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 24935,
+          "calls": 24936,
+          "self_seconds": 0.8668933000000001,
+          "cumulative_seconds": 33.205619500000005
+        },
+        {
+          "file": "apps/api/app/services/execution.py",
+          "line": 40,
+          "function": "prepare_action",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0034733000000000003,
+          "cumulative_seconds": 24.6170885
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 204,
+          "function": "subject_hash",
+          "primitive_calls": 127,
+          "calls": 127,
+          "self_seconds": 0.07106620000000001,
+          "cumulative_seconds": 20.243085800000003
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 199,
+          "function": "subject_canonical_text",
+          "primitive_calls": 127,
+          "calls": 127,
+          "self_seconds": 0.1249562,
+          "cumulative_seconds": 17.1115983
+        },
+        {
+          "file": "apps/api/app/domain/decision_trace.py",
+          "line": 142,
+          "function": "verify_trace",
+          "primitive_calls": 3,
+          "calls": 3,
+          "self_seconds": 0.0072427,
+          "cumulative_seconds": 6.146662200000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1826,
+          "function": "_exec_single_context",
+          "primitive_calls": 995,
+          "calls": 995,
+          "self_seconds": 0.0113325,
+          "cumulative_seconds": 5.6772914000000005
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/session.py",
+          "line": 2201,
+          "function": "_execute_internal",
+          "primitive_calls": 902,
+          "calls": 902,
+          "self_seconds": 0.018467400000000002,
+          "cumulative_seconds": 4.2950024
+        },
+        {
+          "file": "apps/api/app/services/execution_context.py",
+          "line": 32,
+          "function": "load_execution_context",
+          "primitive_calls": 3,
+          "calls": 3,
+          "self_seconds": 0.0015244000000000002,
+          "cumulative_seconds": 4.1009416000000005
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 9591,
+          "calls": 9591,
+          "self_seconds": 3.9849252,
+          "cumulative_seconds": 3.9849252
+        },
+        {
+          "file": "apps/api/app/domain/boundary.py",
+          "line": 610,
+          "function": "compute_boundary",
+          "primitive_calls": 70,
+          "calls": 70,
+          "self_seconds": 0.0030340000000000002,
+          "cumulative_seconds": 1.8309489
+        },
+        {
+          "file": "apps/api/app/domain/external_bank_fact.py",
+          "line": 288,
+          "function": "verify_external_projection",
+          "primitive_calls": 11,
+          "calls": 11,
+          "self_seconds": 0.0071955000000000005,
+          "cumulative_seconds": 0.3112469
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/_queries.py",
+          "line": 59,
+          "function": "convert",
+          "primitive_calls": 1001,
+          "calls": 1001,
+          "self_seconds": 0.008032000000000001,
+          "cumulative_seconds": 0.2566698
+        },
+        {
+          "file": "apps/api/app/services/simulated_bank.py",
+          "line": 129,
+          "function": "ledger_heads",
+          "primitive_calls": 30,
+          "calls": 30,
+          "self_seconds": 0.014348600000000001,
+          "cumulative_seconds": 0.21408600000000003
+        },
+        {
+          "file": ".venv/Lib/site-packages/pydantic/main.py",
+          "line": 742,
+          "function": "model_validate_json",
+          "primitive_calls": 227,
+          "calls": 227,
+          "self_seconds": 0.0007017000000000001,
+          "cumulative_seconds": 0.13548300000000002
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_json' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 227,
+          "calls": 227,
+          "self_seconds": 0.0637104,
+          "cumulative_seconds": 0.13478130000000002
+        },
+        {
+          "file": "apps/api/app/domain/external_bank_fact.py",
+          "line": 247,
+          "function": "verify_external_settlement",
+          "primitive_calls": 22,
+          "calls": 22,
+          "self_seconds": 0.004743600000000001,
+          "cumulative_seconds": 0.126354
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 654,
+          "function": "verify_event",
+          "primitive_calls": 8,
+          "calls": 8,
+          "self_seconds": 0.0001817,
+          "cumulative_seconds": 0.0416015
+        },
+        {
+          "file": ".venv/Lib/site-packages/pydantic/type_adapter.py",
+          "line": 398,
+          "function": "validate_python",
+          "primitive_calls": 84,
+          "calls": 84,
+          "self_seconds": 0.00023290000000000002,
+          "cumulative_seconds": 0.0082439
+        }
+      ]
+    },
+    {
+      "profile": ".runtime/MVP-401-browser-driver-fourth/funds-goal_confirmed.pstats",
+      "profile_sha256": "8c4fad6f3d3e3ab5d060e6b3d1d57c8220bc34fb0a38c267f133cd3527511dfe",
+      "as_of": null,
+      "wall_seconds": 0.2029999999795109,
+      "profile_total_self_seconds": 0.14580580000000004,
+      "top_self": [
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 42,
+          "calls": 42,
+          "self_seconds": 0.052510400000000006,
+          "cumulative_seconds": 0.052510400000000006
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/_cursor_base.py",
+          "line": 416,
+          "function": "_execute_send",
+          "primitive_calls": 40,
+          "calls": 40,
+          "self_seconds": 0.0034269,
+          "cumulative_seconds": 0.0034269
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 45,
+          "calls": 1504,
+          "self_seconds": 0.0026720000000000003,
+          "cumulative_seconds": 0.0035725
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.isinstance>",
+          "primitive_calls": 5792,
+          "calls": 5792,
+          "self_seconds": 0.0018557,
+          "cumulative_seconds": 0.0020472000000000003
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/_cursor_base.py",
+          "line": 275,
+          "function": "_maybe_prepare_gen",
+          "primitive_calls": 80,
+          "calls": 80,
+          "self_seconds": 0.0016186000000000002,
+          "cumulative_seconds": 0.0070898
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/json/encoder.py",
+          "line": 205,
+          "function": "iterencode",
+          "primitive_calls": 61,
+          "calls": 61,
+          "self_seconds": 0.0015553000000000001,
+          "cumulative_seconds": 0.0015553000000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/sql/cache_key.py",
+          "line": 209,
+          "function": "_generate_cache_key",
+          "primitive_calls": 38,
+          "calls": 38,
+          "self_seconds": 0.0015242,
+          "cumulative_seconds": 0.0032076
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/sql/coercions.py",
+          "line": 323,
+          "function": "expect",
+          "primitive_calls": 268,
+          "calls": 268,
+          "self_seconds": 0.0015044000000000001,
+          "cumulative_seconds": 0.0038938
+        }
+      ],
+      "top_cumulative": [
+        {
+          "file": ".runtime/drive_mvp401_e2e.py",
+          "line": 65,
+          "function": "<lambda>",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 1.97e-05,
+          "cumulative_seconds": 0.1459934
+        },
+        {
+          "file": "apps/api/app/tests/dashboard_scenario.py",
+          "line": 60,
+          "function": "advance",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 7.450000000000001e-05,
+          "cumulative_seconds": 0.1459714
+        },
+        {
+          "file": "apps/api/app/tests/test_boundary_service.py",
+          "line": 115,
+          "function": "confirmed_policy",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 6.890000000000001e-05,
+          "cumulative_seconds": 0.1418648
+        },
+        {
+          "file": "apps/api/app/services/policy_lifecycle.py",
+          "line": 621,
+          "function": "confirm_proposal",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 8.560000000000001e-05,
+          "cumulative_seconds": 0.1291451
+        },
+        {
+          "file": "apps/api/app/services/policy_lifecycle.py",
+          "line": 511,
+          "function": "_append_version",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 8.14e-05,
+          "cumulative_seconds": 0.10672100000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/sql/elements.py",
+          "line": 524,
+          "function": "_execute_on_connection",
+          "primitive_calls": 39,
+          "calls": 39,
+          "self_seconds": 0.0001318,
+          "cumulative_seconds": 0.09746250000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1618,
+          "function": "_execute_clauseelement",
+          "primitive_calls": 39,
+          "calls": 39,
+          "self_seconds": 0.0005857000000000001,
+          "cumulative_seconds": 0.0973307
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1404,
+          "function": "execute",
+          "primitive_calls": 35,
+          "calls": 35,
+          "self_seconds": 0.0001731,
+          "cumulative_seconds": 0.0922737
+        }
+      ],
+      "selected": [
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1826,
+          "function": "_exec_single_context",
+          "primitive_calls": 39,
+          "calls": 39,
+          "self_seconds": 0.00045700000000000005,
+          "cumulative_seconds": 0.0672707
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/session.py",
+          "line": 2201,
+          "function": "_execute_internal",
+          "primitive_calls": 25,
+          "calls": 25,
+          "self_seconds": 0.00039430000000000004,
+          "cumulative_seconds": 0.063261
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 42,
+          "calls": 42,
+          "self_seconds": 0.052510400000000006,
+          "cumulative_seconds": 0.052510400000000006
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 46,
+          "function": "canonical_bytes",
+          "primitive_calls": 45,
+          "calls": 45,
+          "self_seconds": 0.00024700000000000004,
+          "cumulative_seconds": 0.005664300000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/_queries.py",
+          "line": 59,
+          "function": "convert",
+          "primitive_calls": 40,
+          "calls": 40,
+          "self_seconds": 0.00029780000000000003,
+          "cumulative_seconds": 0.0041564
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 163,
+          "function": "build_subject",
+          "primitive_calls": 12,
+          "calls": 12,
+          "self_seconds": 0.0002462,
+          "cumulative_seconds": 0.0037642
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 45,
+          "calls": 1504,
+          "self_seconds": 0.0026720000000000003,
+          "cumulative_seconds": 0.0035725
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 23,
+          "calls": 25,
+          "self_seconds": 0.0011379,
+          "cumulative_seconds": 0.0030766
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 204,
+          "function": "subject_hash",
+          "primitive_calls": 4,
+          "calls": 4,
+          "self_seconds": 4.49e-05,
+          "cumulative_seconds": 0.0021268000000000003
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 199,
+          "function": "subject_canonical_text",
+          "primitive_calls": 4,
+          "calls": 4,
+          "self_seconds": 3.5000000000000004e-05,
+          "cumulative_seconds": 0.0017235000000000002
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 654,
+          "function": "verify_event",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 1.74e-05,
+          "cumulative_seconds": 0.0013083
+        },
+        {
+          "file": ".venv/Lib/site-packages/pydantic/type_adapter.py",
+          "line": 398,
+          "function": "validate_python",
+          "primitive_calls": 2,
+          "calls": 2,
+          "self_seconds": 7.2000000000000005e-06,
+          "cumulative_seconds": 0.0001718
+        }
+      ]
+    },
+    {
+      "profile": ".runtime/MVP-401-browser-driver-fourth/funds-goal_created.pstats",
+      "profile_sha256": "b48b62744658dbf77e232a7c9ea776c01ab3ab8bcbb6897997aa133d356b5dc2",
+      "as_of": null,
+      "wall_seconds": 0.6870000000344589,
+      "profile_total_self_seconds": 0.6525295999999994,
+      "top_self": [
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 170,
+          "calls": 170,
+          "self_seconds": 0.2785857,
+          "cumulative_seconds": 0.2785857
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.isinstance>",
+          "primitive_calls": 41554,
+          "calls": 41554,
+          "self_seconds": 0.0151672,
+          "cumulative_seconds": 0.0210105
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/json/encoder.py",
+          "line": 205,
+          "function": "iterencode",
+          "primitive_calls": 503,
+          "calls": 503,
+          "self_seconds": 0.012199000000000002,
+          "cumulative_seconds": 0.012199000000000002
+        },
+        {
+          "file": "apps/api/app/domain/asset_exposure.py",
+          "line": 36,
+          "function": "_json",
+          "primitive_calls": 3562,
+          "calls": 4550,
+          "self_seconds": 0.0097829,
+          "cumulative_seconds": 0.02066
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/_cursor_base.py",
+          "line": 416,
+          "function": "_execute_send",
+          "primitive_calls": 100,
+          "calls": 100,
+          "self_seconds": 0.009023100000000001,
+          "cumulative_seconds": 0.009023100000000001
+        },
+        {
+          "file": "apps/api/app/domain/policy_configuration.py",
+          "line": 215,
+          "function": "_require_json_value",
+          "primitive_calls": 381,
+          "calls": 7046,
+          "self_seconds": 0.008780300000000001,
+          "cumulative_seconds": 0.0106902
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 107,
+          "calls": 3490,
+          "self_seconds": 0.007300300000000001,
+          "cumulative_seconds": 0.010180400000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/_cursor_base.py",
+          "line": 275,
+          "function": "_maybe_prepare_gen",
+          "primitive_calls": 276,
+          "calls": 276,
+          "self_seconds": 0.007011300000000001,
+          "cumulative_seconds": 0.024889300000000003
+        }
+      ],
+      "top_cumulative": [
+        {
+          "file": ".runtime/drive_mvp401_e2e.py",
+          "line": 65,
+          "function": "<lambda>",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 6.8e-06,
+          "cumulative_seconds": 0.6528832
+        },
+        {
+          "file": "apps/api/app/tests/dashboard_scenario.py",
+          "line": 60,
+          "function": "advance",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0001461,
+          "cumulative_seconds": 0.6528764
+        },
+        {
+          "file": "apps/api/app/services/goals.py",
+          "line": 47,
+          "function": "create_goal_projection",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0014830000000000002,
+          "cumulative_seconds": 0.49172540000000003
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/sql/elements.py",
+          "line": 524,
+          "function": "_execute_on_connection",
+          "primitive_calls": 114,
+          "calls": 114,
+          "self_seconds": 0.0005659,
+          "cumulative_seconds": 0.38746630000000004
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1618,
+          "function": "_execute_clauseelement",
+          "primitive_calls": 114,
+          "calls": 114,
+          "self_seconds": 0.0018799,
+          "cumulative_seconds": 0.38690040000000003
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1404,
+          "function": "execute",
+          "primitive_calls": 106,
+          "calls": 106,
+          "self_seconds": 0.00042110000000000004,
+          "cumulative_seconds": 0.37006120000000003
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1767,
+          "function": "_execute_context",
+          "primitive_calls": 114,
+          "calls": 114,
+          "self_seconds": 0.0011922,
+          "cumulative_seconds": 0.347065
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1826,
+          "function": "_exec_single_context",
+          "primitive_calls": 114,
+          "calls": 114,
+          "self_seconds": 0.0014328000000000001,
+          "cumulative_seconds": 0.3349299
+        }
+      ],
+      "selected": [
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1826,
+          "function": "_exec_single_context",
+          "primitive_calls": 114,
+          "calls": 114,
+          "self_seconds": 0.0014328000000000001,
+          "cumulative_seconds": 0.3349299
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/session.py",
+          "line": 2201,
+          "function": "_execute_internal",
+          "primitive_calls": 89,
+          "calls": 89,
+          "self_seconds": 0.0017955,
+          "cumulative_seconds": 0.31492790000000004
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 170,
+          "calls": 170,
+          "self_seconds": 0.2785857,
+          "cumulative_seconds": 0.2785857
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 46,
+          "function": "canonical_bytes",
+          "primitive_calls": 107,
+          "calls": 107,
+          "self_seconds": 0.0006365,
+          "cumulative_seconds": 0.0158656
+        },
+        {
+          "file": "apps/api/app/services/simulated_bank.py",
+          "line": 129,
+          "function": "ledger_heads",
+          "primitive_calls": 2,
+          "calls": 2,
+          "self_seconds": 0.0004575,
+          "cumulative_seconds": 0.014860900000000002
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 107,
+          "calls": 3490,
+          "self_seconds": 0.007300300000000001,
+          "cumulative_seconds": 0.010180400000000001
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 163,
+          "function": "build_subject",
+          "primitive_calls": 30,
+          "calls": 30,
+          "self_seconds": 0.0007520000000000001,
+          "cumulative_seconds": 0.0096801
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/_queries.py",
+          "line": 59,
+          "function": "convert",
+          "primitive_calls": 115,
+          "calls": 115,
+          "self_seconds": 0.0008672,
+          "cumulative_seconds": 0.0082935
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 54,
+          "calls": 54,
+          "self_seconds": 0.0028117000000000003,
+          "cumulative_seconds": 0.008292
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 204,
+          "function": "subject_hash",
+          "primitive_calls": 10,
+          "calls": 10,
+          "self_seconds": 0.00010860000000000001,
+          "cumulative_seconds": 0.006182900000000001
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 199,
+          "function": "subject_canonical_text",
+          "primitive_calls": 10,
+          "calls": 10,
+          "self_seconds": 0.00010570000000000001,
+          "cumulative_seconds": 0.0051395
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 654,
+          "function": "verify_event",
+          "primitive_calls": 2,
+          "calls": 2,
+          "self_seconds": 3.63e-05,
+          "cumulative_seconds": 0.004174300000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/pydantic/type_adapter.py",
+          "line": 398,
+          "function": "validate_python",
+          "primitive_calls": 3,
+          "calls": 3,
+          "self_seconds": 9.9e-06,
+          "cumulative_seconds": 0.00018460000000000001
+        }
+      ]
+    },
+    {
+      "profile": ".runtime/MVP-401-browser-driver-fourth/funds-salary.pstats",
+      "profile_sha256": "69a0aab7cebfda5b186c36c3208941ff8f9d5fbf4dc47cc6e45c9de7a084b9e0",
+      "as_of": null,
+      "wall_seconds": 1.2189999999827705,
+      "profile_total_self_seconds": 1.2015818999999999,
+      "top_self": [
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 293,
+          "calls": 293,
+          "self_seconds": 0.43764810000000004,
+          "cumulative_seconds": 0.43764810000000004
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 1072,
+          "calls": 42325,
+          "self_seconds": 0.0750784,
+          "cumulative_seconds": 0.0961584
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/json/encoder.py",
+          "line": 205,
+          "function": "iterencode",
+          "primitive_calls": 1363,
+          "calls": 1363,
+          "self_seconds": 0.0365631,
+          "cumulative_seconds": 0.0365631
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/json/decoder.py",
+          "line": 343,
+          "function": "raw_decode",
+          "primitive_calls": 1784,
+          "calls": 1784,
+          "self_seconds": 0.027899100000000003,
+          "cumulative_seconds": 0.027899100000000003
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/cursor.py",
+          "line": 274,
+          "function": "fetchall",
+          "primitive_calls": 151,
+          "calls": 151,
+          "self_seconds": 0.0257297,
+          "cumulative_seconds": 0.08082700000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.isinstance>",
+          "primitive_calls": 93909,
+          "calls": 93909,
+          "self_seconds": 0.024051600000000003,
+          "cumulative_seconds": 0.026638500000000002
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/_connection_base.py",
+          "line": 436,
+          "function": "_connect_gen",
+          "primitive_calls": 7,
+          "calls": 7,
+          "self_seconds": 0.018120900000000002,
+          "cumulative_seconds": 0.0181879
+        },
+        {
+          "file": "apps/api/app/domain/external_bank_fact.py",
+          "line": 51,
+          "function": "arrays",
+          "primitive_calls": 600,
+          "calls": 6519,
+          "self_seconds": 0.013018400000000001,
+          "cumulative_seconds": 0.017333900000000003
+        }
+      ],
+      "top_cumulative": [
+        {
+          "file": ".runtime/drive_mvp401_e2e.py",
+          "line": 65,
+          "function": "<lambda>",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 3.6000000000000003e-06,
+          "cumulative_seconds": 1.2022350000000002
+        },
+        {
+          "file": "apps/api/app/tests/dashboard_scenario.py",
+          "line": 60,
+          "function": "advance",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 6.88e-05,
+          "cumulative_seconds": 1.2022314
+        },
+        {
+          "file": "apps/api/app/services/external_bank_facts.py",
+          "line": 818,
+          "function": "ingest_external_fact",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0007677000000000001,
+          "cumulative_seconds": 1.2020663
+        },
+        {
+          "file": "apps/api/app/services/external_bank_facts.py",
+          "line": 642,
+          "function": "_project",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0007165,
+          "cumulative_seconds": 0.9267614000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/sql/elements.py",
+          "line": 524,
+          "function": "_execute_on_connection",
+          "primitive_calls": 205,
+          "calls": 205,
+          "self_seconds": 0.0006379000000000001,
+          "cumulative_seconds": 0.5645199000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1618,
+          "function": "_execute_clauseelement",
+          "primitive_calls": 205,
+          "calls": 205,
+          "self_seconds": 0.0027239,
+          "cumulative_seconds": 0.563882
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1404,
+          "function": "execute",
+          "primitive_calls": 181,
+          "calls": 181,
+          "self_seconds": 0.0005506,
+          "cumulative_seconds": 0.5371661
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1767,
+          "function": "_execute_context",
+          "primitive_calls": 208,
+          "calls": 208,
+          "self_seconds": 0.0020268,
+          "cumulative_seconds": 0.5106941
+        }
+      ],
+      "selected": [
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1826,
+          "function": "_exec_single_context",
+          "primitive_calls": 208,
+          "calls": 208,
+          "self_seconds": 0.0021546,
+          "cumulative_seconds": 0.49085870000000004
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 293,
+          "calls": 293,
+          "self_seconds": 0.43764810000000004,
+          "cumulative_seconds": 0.43764810000000004
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/session.py",
+          "line": 2201,
+          "function": "_execute_internal",
+          "primitive_calls": 150,
+          "calls": 150,
+          "self_seconds": 0.0022436,
+          "cumulative_seconds": 0.43272340000000004
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 46,
+          "function": "canonical_bytes",
+          "primitive_calls": 1072,
+          "calls": 1072,
+          "self_seconds": 0.00732,
+          "cumulative_seconds": 0.1466086
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 1072,
+          "calls": 42325,
+          "self_seconds": 0.0750784,
+          "cumulative_seconds": 0.0961584
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 163,
+          "function": "build_subject",
+          "primitive_calls": 138,
+          "calls": 138,
+          "self_seconds": 0.0033332,
+          "cumulative_seconds": 0.09488880000000001
+        },
+        {
+          "file": "apps/api/app/domain/external_bank_fact.py",
+          "line": 288,
+          "function": "verify_external_projection",
+          "primitive_calls": 2,
+          "calls": 2,
+          "self_seconds": 0.0017129,
+          "cumulative_seconds": 0.0698439
+        },
+        {
+          "file": "apps/api/app/services/simulated_bank.py",
+          "line": 129,
+          "function": "ledger_heads",
+          "primitive_calls": 7,
+          "calls": 7,
+          "self_seconds": 0.0018928,
+          "cumulative_seconds": 0.06830610000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 263,
+          "calls": 263,
+          "self_seconds": 0.008438900000000001,
+          "cumulative_seconds": 0.046509800000000004
+        },
+        {
+          "file": "apps/api/app/domain/external_bank_fact.py",
+          "line": 247,
+          "function": "verify_external_settlement",
+          "primitive_calls": 6,
+          "calls": 6,
+          "self_seconds": 0.00042780000000000004,
+          "cumulative_seconds": 0.031363300000000004
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 204,
+          "function": "subject_hash",
+          "primitive_calls": 30,
+          "calls": 30,
+          "self_seconds": 0.0003101,
+          "cumulative_seconds": 0.0252257
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 199,
+          "function": "subject_canonical_text",
+          "primitive_calls": 30,
+          "calls": 30,
+          "self_seconds": 0.0002524,
+          "cumulative_seconds": 0.024307000000000002
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/_queries.py",
+          "line": 59,
+          "function": "convert",
+          "primitive_calls": 212,
+          "calls": 212,
+          "self_seconds": 0.0016243000000000002,
+          "cumulative_seconds": 0.0166179
+        },
+        {
+          "file": ".venv/Lib/site-packages/pydantic/main.py",
+          "line": 742,
+          "function": "model_validate_json",
+          "primitive_calls": 63,
+          "calls": 63,
+          "self_seconds": 0.0002425,
+          "cumulative_seconds": 0.007126800000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_json' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 63,
+          "calls": 63,
+          "self_seconds": 0.0037466,
+          "cumulative_seconds": 0.0068843
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 654,
+          "function": "verify_event",
+          "primitive_calls": 2,
+          "calls": 2,
+          "self_seconds": 2.8800000000000002e-05,
+          "cumulative_seconds": 0.0041904
+        }
+      ]
+    },
+    {
+      "profile": ".runtime/MVP-401-browser-driver-fourth/worker-profiles/c21daeb1-e80f-441f-a30c-ee8e27a062b9.pstats",
+      "profile_sha256": "6148800010161b2fb6969a86949802df90de8f9a2e46b592616b126ff4d3601f",
+      "as_of": "2026-10-04T01:00:00+00:00",
+      "wall_seconds": 0.7810000000172295,
+      "profile_total_self_seconds": 0.7348850000000007,
+      "top_self": [
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 149,
+          "calls": 149,
+          "self_seconds": 0.2184693,
+          "cumulative_seconds": 0.2184693
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.isinstance>",
+          "primitive_calls": 53138,
+          "calls": 53138,
+          "self_seconds": 0.0186675,
+          "cumulative_seconds": 0.0249651
+        },
+        {
+          "file": "apps/api/app/domain/policy_configuration.py",
+          "line": 215,
+          "function": "_require_json_value",
+          "primitive_calls": 467,
+          "calls": 9322,
+          "self_seconds": 0.0151943,
+          "cumulative_seconds": 0.0183626
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/json/encoder.py",
+          "line": 205,
+          "function": "iterencode",
+          "primitive_calls": 502,
+          "calls": 502,
+          "self_seconds": 0.0139018,
+          "cumulative_seconds": 0.0139018
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/cursor.py",
+          "line": 274,
+          "function": "fetchall",
+          "primitive_calls": 79,
+          "calls": 79,
+          "self_seconds": 0.012946200000000001,
+          "cumulative_seconds": 0.0354931
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/attributes.py",
+          "line": 561,
+          "function": "__get__",
+          "primitive_calls": 17009,
+          "calls": 17009,
+          "self_seconds": 0.0125704,
+          "cumulative_seconds": 0.0125704
+        },
+        {
+          "file": "apps/api/app/domain/asset_exposure.py",
+          "line": 36,
+          "function": "_json",
+          "primitive_calls": 3504,
+          "calls": 4448,
+          "self_seconds": 0.0100914,
+          "cumulative_seconds": 0.0208069
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/util/langhelpers.py",
+          "line": 1334,
+          "function": "__get__",
+          "primitive_calls": 736,
+          "calls": 764,
+          "self_seconds": 0.0098137,
+          "cumulative_seconds": 0.015835500000000002
+        }
+      ],
+      "top_cumulative": [
+        {
+          "file": "apps/api/app/services/dashboard.py",
+          "line": 360,
+          "function": "get_dashboard",
+          "primitive_calls": 1,
+          "calls": 2,
+          "self_seconds": 0.0012244,
+          "cumulative_seconds": 0.7349981000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/session.py",
+          "line": 2201,
+          "function": "_execute_internal",
+          "primitive_calls": 79,
+          "calls": 79,
+          "self_seconds": 0.0013993,
+          "cumulative_seconds": 0.4679145
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/context.py",
+          "line": 306,
+          "function": "orm_execute_statement",
+          "primitive_calls": 79,
+          "calls": 79,
+          "self_seconds": 0.00033800000000000003,
+          "cumulative_seconds": 0.46133240000000003
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1404,
+          "function": "execute",
+          "primitive_calls": 79,
+          "calls": 79,
+          "self_seconds": 0.0004291,
+          "cumulative_seconds": 0.44862060000000004
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/sql/elements.py",
+          "line": 524,
+          "function": "_execute_on_connection",
+          "primitive_calls": 79,
+          "calls": 79,
+          "self_seconds": 0.00025350000000000004,
+          "cumulative_seconds": 0.4481915
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1618,
+          "function": "_execute_clauseelement",
+          "primitive_calls": 79,
+          "calls": 79,
+          "self_seconds": 0.0015948000000000002,
+          "cumulative_seconds": 0.4471587
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/session.py",
+          "line": 2565,
+          "function": "scalars",
+          "primitive_calls": 54,
+          "calls": 54,
+          "self_seconds": 0.0005086,
+          "cumulative_seconds": 0.328963
+        },
+        {
+          "file": "apps/api/app/services/boundary.py",
+          "line": 743,
+          "function": "load_boundary_context",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0006913,
+          "cumulative_seconds": 0.3065542
+        }
+      ],
+      "selected": [
+        {
+          "file": "apps/api/app/services/dashboard.py",
+          "line": 360,
+          "function": "get_dashboard",
+          "primitive_calls": 1,
+          "calls": 2,
+          "self_seconds": 0.0012244,
+          "cumulative_seconds": 0.7349981000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/session.py",
+          "line": 2201,
+          "function": "_execute_internal",
+          "primitive_calls": 79,
+          "calls": 79,
+          "self_seconds": 0.0013993,
+          "cumulative_seconds": 0.4679145
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1826,
+          "function": "_exec_single_context",
+          "primitive_calls": 79,
+          "calls": 79,
+          "self_seconds": 0.0010323,
+          "cumulative_seconds": 0.2864841
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 149,
+          "calls": 149,
+          "self_seconds": 0.2184693,
+          "cumulative_seconds": 0.2184693
+        },
+        {
+          "file": "apps/api/app/services/audit_chain.py",
+          "line": 674,
+          "function": "verify_audit_chain",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.00031150000000000004,
+          "cumulative_seconds": 0.0459895
+        },
+        {
+          "file": "apps/api/app/services/simulated_bank.py",
+          "line": 129,
+          "function": "ledger_heads",
+          "primitive_calls": 4,
+          "calls": 4,
+          "self_seconds": 0.0012508,
+          "cumulative_seconds": 0.0317717
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 339,
+          "calls": 339,
+          "self_seconds": 0.0050378,
+          "cumulative_seconds": 0.0105597
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/_queries.py",
+          "line": 59,
+          "function": "convert",
+          "primitive_calls": 79,
+          "calls": 79,
+          "self_seconds": 0.0007963,
+          "cumulative_seconds": 0.008764300000000001
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 672,
+          "function": "parse_event",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 3.7300000000000005e-05,
+          "cumulative_seconds": 0.0070587
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 654,
+          "function": "verify_event",
+          "primitive_calls": 3,
+          "calls": 3,
+          "self_seconds": 7.33e-05,
+          "cumulative_seconds": 0.0067977
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 46,
+          "function": "canonical_bytes",
+          "primitive_calls": 15,
+          "calls": 15,
+          "self_seconds": 0.00032040000000000004,
+          "cumulative_seconds": 0.0049127
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 1999,
+          "function": "verify_epoch",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0001844,
+          "cumulative_seconds": 0.0037231
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 15,
+          "calls": 1019,
+          "self_seconds": 0.0022921,
+          "cumulative_seconds": 0.003285
+        },
+        {
+          "file": ".venv/Lib/site-packages/pydantic/main.py",
+          "line": 742,
+          "function": "model_validate_json",
+          "primitive_calls": 2,
+          "calls": 2,
+          "self_seconds": 1.3000000000000001e-05,
+          "cumulative_seconds": 0.0012699
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_json' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 2,
+          "calls": 2,
+          "self_seconds": 0.0007419000000000001,
+          "cumulative_seconds": 0.0012569
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 1571,
+          "function": "_references",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 2.8700000000000003e-05,
+          "cumulative_seconds": 3.21e-05
+        }
+      ]
+    },
+    {
+      "profile": ".runtime/MVP-401-browser-driver-fourth/worker-profiles/ca6083ce-aa15-4621-985c-a487185d0749.pstats",
+      "profile_sha256": "b8cd9179489216f572d6972d555c32a194c7bdeac7225e3ca75de7e84dafe489",
+      "as_of": "2026-10-04T01:00:30+00:00",
+      "wall_seconds": 1.922000000020489,
+      "profile_total_self_seconds": 1.8509998999999984,
+      "top_self": [
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 3339,
+          "calls": 105130,
+          "self_seconds": 0.4243635,
+          "cumulative_seconds": 0.5310904000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 204,
+          "calls": 204,
+          "self_seconds": 0.23339000000000001,
+          "cumulative_seconds": 0.23339000000000001
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/json/encoder.py",
+          "line": 205,
+          "function": "iterencode",
+          "primitive_calls": 3985,
+          "calls": 3985,
+          "self_seconds": 0.1739762,
+          "cumulative_seconds": 0.1739762
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.isinstance>",
+          "primitive_calls": 188532,
+          "calls": 188532,
+          "self_seconds": 0.09183820000000001,
+          "cumulative_seconds": 0.10189530000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'to_python' of 'pydantic_core._pydantic_core.SchemaSerializer' objects>",
+          "primitive_calls": 1067,
+          "calls": 1067,
+          "self_seconds": 0.041737300000000005,
+          "cumulative_seconds": 0.041737300000000005
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/json/decoder.py",
+          "line": 343,
+          "function": "raw_decode",
+          "primitive_calls": 2896,
+          "calls": 2896,
+          "self_seconds": 0.041062100000000004,
+          "cumulative_seconds": 0.042132300000000004
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 855,
+          "calls": 855,
+          "self_seconds": 0.0370284,
+          "cumulative_seconds": 0.2744804
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/uuid.py",
+          "line": 280,
+          "function": "__str__",
+          "primitive_calls": 6464,
+          "calls": 6464,
+          "self_seconds": 0.036046800000000004,
+          "cumulative_seconds": 0.036046800000000004
+        }
+      ],
+      "top_cumulative": [
+        {
+          "file": "apps/api/app/services/dashboard.py",
+          "line": 360,
+          "function": "get_dashboard",
+          "primitive_calls": 1,
+          "calls": 2,
+          "self_seconds": 0.0024528,
+          "cumulative_seconds": 1.8055684
+        },
+        {
+          "file": "apps/api/app/services/dashboard_helpers.py",
+          "line": 12,
+          "function": "current_epoch_audit",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0007173,
+          "cumulative_seconds": 1.0662178
+        },
+        {
+          "file": "apps/api/app/services/audit_chain.py",
+          "line": 674,
+          "function": "verify_audit_chain",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0059568,
+          "cumulative_seconds": 1.0636762
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 46,
+          "function": "canonical_bytes",
+          "primitive_calls": 3339,
+          "calls": 3339,
+          "self_seconds": 0.033940000000000005,
+          "cumulative_seconds": 0.7724514
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/asyncio/base_events.py",
+          "line": 1909,
+          "function": "_run_once",
+          "primitive_calls": 29,
+          "calls": 29,
+          "self_seconds": 0.0042921,
+          "cumulative_seconds": 0.6725019000000001
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 3339,
+          "calls": 105130,
+          "self_seconds": 0.4243635,
+          "cumulative_seconds": 0.5310904000000001
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 163,
+          "function": "build_subject",
+          "primitive_calls": 325,
+          "calls": 325,
+          "self_seconds": 0.011647300000000001,
+          "cumulative_seconds": 0.3903221
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/session.py",
+          "line": 2201,
+          "function": "_execute_internal",
+          "primitive_calls": 111,
+          "calls": 111,
+          "self_seconds": 0.0018002,
+          "cumulative_seconds": 0.35266800000000004
+        }
+      ],
+      "selected": [
+        {
+          "file": "apps/api/app/services/dashboard.py",
+          "line": 360,
+          "function": "get_dashboard",
+          "primitive_calls": 1,
+          "calls": 2,
+          "self_seconds": 0.0024528,
+          "cumulative_seconds": 1.8055684
+        },
+        {
+          "file": "apps/api/app/services/audit_chain.py",
+          "line": 674,
+          "function": "verify_audit_chain",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0059568,
+          "cumulative_seconds": 1.0636762
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 46,
+          "function": "canonical_bytes",
+          "primitive_calls": 3339,
+          "calls": 3339,
+          "self_seconds": 0.033940000000000005,
+          "cumulative_seconds": 0.7724514
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 3339,
+          "calls": 105130,
+          "self_seconds": 0.4243635,
+          "cumulative_seconds": 0.5310904000000001
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 163,
+          "function": "build_subject",
+          "primitive_calls": 325,
+          "calls": 325,
+          "self_seconds": 0.011647300000000001,
+          "cumulative_seconds": 0.3903221
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/session.py",
+          "line": 2201,
+          "function": "_execute_internal",
+          "primitive_calls": 111,
+          "calls": 111,
+          "self_seconds": 0.0018002,
+          "cumulative_seconds": 0.35266800000000004
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1826,
+          "function": "_exec_single_context",
+          "primitive_calls": 111,
+          "calls": 111,
+          "self_seconds": 0.0011262000000000002,
+          "cumulative_seconds": 0.3044195
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 855,
+          "calls": 855,
+          "self_seconds": 0.0370284,
+          "cumulative_seconds": 0.2744804
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 1571,
+          "function": "_references",
+          "primitive_calls": 6,
+          "calls": 6,
+          "self_seconds": 0.0012389,
+          "cumulative_seconds": 0.2439626
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 204,
+          "calls": 204,
+          "self_seconds": 0.23339000000000001,
+          "cumulative_seconds": 0.23339000000000001
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 1999,
+          "function": "verify_epoch",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 8e-05,
+          "cumulative_seconds": 0.17294530000000002
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 204,
+          "function": "subject_hash",
+          "primitive_calls": 81,
+          "calls": 81,
+          "self_seconds": 0.001454,
+          "cumulative_seconds": 0.1656891
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 654,
+          "function": "verify_event",
+          "primitive_calls": 18,
+          "calls": 18,
+          "self_seconds": 0.0006985,
+          "cumulative_seconds": 0.1295412
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 1460,
+          "function": "_immutable",
+          "primitive_calls": 33,
+          "calls": 33,
+          "self_seconds": 0.0047976,
+          "cumulative_seconds": 0.1094455
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 672,
+          "function": "parse_event",
+          "primitive_calls": 6,
+          "calls": 6,
+          "self_seconds": 0.0002516,
+          "cumulative_seconds": 0.10423020000000001
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 210,
+          "function": "parse_subject",
+          "primitive_calls": 36,
+          "calls": 36,
+          "self_seconds": 0.0012712,
+          "cumulative_seconds": 0.0849153
+        },
+        {
+          "file": "apps/api/app/domain/external_bank_fact.py",
+          "line": 247,
+          "function": "verify_external_settlement",
+          "primitive_calls": 9,
+          "calls": 9,
+          "self_seconds": 0.0009338,
+          "cumulative_seconds": 0.0609062
+        },
+        {
+          "file": "apps/api/app/domain/external_bank_fact.py",
+          "line": 288,
+          "function": "verify_external_projection",
+          "primitive_calls": 4,
+          "calls": 4,
+          "self_seconds": 0.0007422,
+          "cumulative_seconds": 0.054613800000000004
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 199,
+          "function": "subject_canonical_text",
+          "primitive_calls": 36,
+          "calls": 36,
+          "self_seconds": 0.000402,
+          "cumulative_seconds": 0.036728300000000005
+        },
+        {
+          "file": "apps/api/app/services/simulated_bank.py",
+          "line": 129,
+          "function": "ledger_heads",
+          "primitive_calls": 4,
+          "calls": 4,
+          "self_seconds": 0.0019692,
+          "cumulative_seconds": 0.035975400000000005
+        },
+        {
+          "file": ".venv/Lib/site-packages/pydantic/main.py",
+          "line": 742,
+          "function": "model_validate_json",
+          "primitive_calls": 179,
+          "calls": 179,
+          "self_seconds": 0.00043840000000000003,
+          "cumulative_seconds": 0.034162200000000004
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_json' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 179,
+          "calls": 179,
+          "self_seconds": 0.012188200000000001,
+          "cumulative_seconds": 0.033723800000000005
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/_queries.py",
+          "line": 59,
+          "function": "convert",
+          "primitive_calls": 111,
+          "calls": 111,
+          "self_seconds": 0.0007959000000000001,
+          "cumulative_seconds": 0.004887900000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/pydantic/type_adapter.py",
+          "line": 398,
+          "function": "validate_python",
+          "primitive_calls": 2,
+          "calls": 2,
+          "self_seconds": 4.800000000000001e-06,
+          "cumulative_seconds": 0.00015790000000000002
+        }
+      ]
+    },
+    {
+      "profile": ".runtime/MVP-401-browser-driver-fourth/worker-profiles/ea9497ae-17ad-4023-93b2-fb684c515fa0.pstats",
+      "profile_sha256": "f5babeb3202974064d2c34cfabe42c61dc5c7a3e953b83d0bcb8717d0cb06439",
+      "as_of": "2026-10-04T01:00:10+00:00",
+      "wall_seconds": 0.45300000003771856,
+      "profile_total_self_seconds": 0.42951039999999985,
+      "top_self": [
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 168,
+          "calls": 168,
+          "self_seconds": 0.1140289,
+          "cumulative_seconds": 0.1140289
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/json/encoder.py",
+          "line": 205,
+          "function": "iterencode",
+          "primitive_calls": 692,
+          "calls": 692,
+          "self_seconds": 0.0139395,
+          "cumulative_seconds": 0.0139395
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.isinstance>",
+          "primitive_calls": 46489,
+          "calls": 46489,
+          "self_seconds": 0.013277700000000002,
+          "cumulative_seconds": 0.018105200000000002
+        },
+        {
+          "file": "apps/api/app/domain/policy_configuration.py",
+          "line": 215,
+          "function": "_require_json_value",
+          "primitive_calls": 472,
+          "calls": 9432,
+          "self_seconds": 0.011069800000000001,
+          "cumulative_seconds": 0.013243600000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/attributes.py",
+          "line": 561,
+          "function": "__get__",
+          "primitive_calls": 17259,
+          "calls": 17259,
+          "self_seconds": 0.0090679,
+          "cumulative_seconds": 0.0090679
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 193,
+          "calls": 4884,
+          "self_seconds": 0.0089134,
+          "cumulative_seconds": 0.0114578
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/cursor.py",
+          "line": 274,
+          "function": "fetchall",
+          "primitive_calls": 83,
+          "calls": 83,
+          "self_seconds": 0.008459000000000001,
+          "cumulative_seconds": 0.029980100000000003
+        },
+        {
+          "file": "apps/api/app/domain/asset_exposure.py",
+          "line": 36,
+          "function": "_json",
+          "primitive_calls": 3504,
+          "calls": 4448,
+          "self_seconds": 0.0077695,
+          "cumulative_seconds": 0.016886
+        }
+      ],
+      "top_cumulative": [
+        {
+          "file": "apps/api/app/services/dashboard.py",
+          "line": 360,
+          "function": "get_dashboard",
+          "primitive_calls": 1,
+          "calls": 2,
+          "self_seconds": 0.0015672000000000001,
+          "cumulative_seconds": 0.3831233
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/session.py",
+          "line": 2201,
+          "function": "_execute_internal",
+          "primitive_calls": 83,
+          "calls": 83,
+          "self_seconds": 0.001453,
+          "cumulative_seconds": 0.20474460000000003
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/context.py",
+          "line": 306,
+          "function": "orm_execute_statement",
+          "primitive_calls": 83,
+          "calls": 83,
+          "self_seconds": 0.0003164,
+          "cumulative_seconds": 0.1985693
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1404,
+          "function": "execute",
+          "primitive_calls": 83,
+          "calls": 83,
+          "self_seconds": 0.0003102,
+          "cumulative_seconds": 0.1901362
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/sql/elements.py",
+          "line": 524,
+          "function": "_execute_on_connection",
+          "primitive_calls": 83,
+          "calls": 83,
+          "self_seconds": 0.00020510000000000003,
+          "cumulative_seconds": 0.18982600000000002
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1618,
+          "function": "_execute_clauseelement",
+          "primitive_calls": 83,
+          "calls": 83,
+          "self_seconds": 0.0012889000000000002,
+          "cumulative_seconds": 0.18954310000000002
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1767,
+          "function": "_execute_context",
+          "primitive_calls": 83,
+          "calls": 83,
+          "self_seconds": 0.0007226,
+          "cumulative_seconds": 0.1623878
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1826,
+          "function": "_exec_single_context",
+          "primitive_calls": 83,
+          "calls": 83,
+          "self_seconds": 0.0009176000000000001,
+          "cumulative_seconds": 0.15563290000000002
+        }
+      ],
+      "selected": [
+        {
+          "file": "apps/api/app/services/dashboard.py",
+          "line": 360,
+          "function": "get_dashboard",
+          "primitive_calls": 1,
+          "calls": 2,
+          "self_seconds": 0.0015672000000000001,
+          "cumulative_seconds": 0.3831233
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/session.py",
+          "line": 2201,
+          "function": "_execute_internal",
+          "primitive_calls": 83,
+          "calls": 83,
+          "self_seconds": 0.001453,
+          "cumulative_seconds": 0.20474460000000003
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1826,
+          "function": "_exec_single_context",
+          "primitive_calls": 83,
+          "calls": 83,
+          "self_seconds": 0.0009176000000000001,
+          "cumulative_seconds": 0.15563290000000002
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 168,
+          "calls": 168,
+          "self_seconds": 0.1140289,
+          "cumulative_seconds": 0.1140289
+        },
+        {
+          "file": "apps/api/app/services/audit_chain.py",
+          "line": 674,
+          "function": "verify_audit_chain",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0006364000000000001,
+          "cumulative_seconds": 0.0548915
+        },
+        {
+          "file": "apps/api/app/services/simulated_bank.py",
+          "line": 129,
+          "function": "ledger_heads",
+          "primitive_calls": 4,
+          "calls": 4,
+          "self_seconds": 0.0009219,
+          "cumulative_seconds": 0.0226171
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 46,
+          "function": "canonical_bytes",
+          "primitive_calls": 193,
+          "calls": 193,
+          "self_seconds": 0.0009117000000000001,
+          "cumulative_seconds": 0.0184226
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 1999,
+          "function": "verify_epoch",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0001923,
+          "cumulative_seconds": 0.014469200000000002
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 193,
+          "calls": 4884,
+          "self_seconds": 0.0089134,
+          "cumulative_seconds": 0.0114578
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 163,
+          "function": "build_subject",
+          "primitive_calls": 28,
+          "calls": 28,
+          "self_seconds": 0.0005881,
+          "cumulative_seconds": 0.008444700000000001
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 654,
+          "function": "verify_event",
+          "primitive_calls": 6,
+          "calls": 6,
+          "self_seconds": 8.31e-05,
+          "cumulative_seconds": 0.0084293
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 103,
+          "calls": 103,
+          "self_seconds": 0.0024813,
+          "cumulative_seconds": 0.0083431
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 672,
+          "function": "parse_event",
+          "primitive_calls": 2,
+          "calls": 2,
+          "self_seconds": 3.43e-05,
+          "cumulative_seconds": 0.007614200000000001
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 210,
+          "function": "parse_subject",
+          "primitive_calls": 4,
+          "calls": 4,
+          "self_seconds": 0.000111,
+          "cumulative_seconds": 0.0044402
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 204,
+          "function": "subject_hash",
+          "primitive_calls": 8,
+          "calls": 8,
+          "self_seconds": 0.00011810000000000001,
+          "cumulative_seconds": 0.0044387
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/_queries.py",
+          "line": 59,
+          "function": "convert",
+          "primitive_calls": 83,
+          "calls": 83,
+          "self_seconds": 0.0005377,
+          "cumulative_seconds": 0.0038149000000000004
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 1571,
+          "function": "_references",
+          "primitive_calls": 2,
+          "calls": 2,
+          "self_seconds": 9.2e-05,
+          "cumulative_seconds": 0.0025734
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 1460,
+          "function": "_immutable",
+          "primitive_calls": 4,
+          "calls": 4,
+          "self_seconds": 0.0001319,
+          "cumulative_seconds": 0.0023581
+        },
+        {
+          "file": ".venv/Lib/site-packages/pydantic/main.py",
+          "line": 742,
+          "function": "model_validate_json",
+          "primitive_calls": 7,
+          "calls": 7,
+          "self_seconds": 2.65e-05,
+          "cumulative_seconds": 0.0020001000000000003
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_json' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 7,
+          "calls": 7,
+          "self_seconds": 0.0007829,
+          "cumulative_seconds": 0.0019736000000000003
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 199,
+          "function": "subject_canonical_text",
+          "primitive_calls": 4,
+          "calls": 4,
+          "self_seconds": 3.2800000000000004e-05,
+          "cumulative_seconds": 0.0014962
+        },
+        {
+          "file": ".venv/Lib/site-packages/pydantic/type_adapter.py",
+          "line": 398,
+          "function": "validate_python",
+          "primitive_calls": 2,
+          "calls": 2,
+          "self_seconds": 3.9e-06,
+          "cumulative_seconds": 0.00016680000000000002
+        }
+      ]
+    },
+    {
+      "profile": ".runtime/MVP-401-browser-driver-fourth/worker-profiles/f6e274f1-3166-4536-8c3c-d853eb67a2d8.pstats",
+      "profile_sha256": "0a544283944db0d6dadbc5d5294cc7d5dfeae2ee70596075736992fcb72049f8",
+      "as_of": "2026-10-04T01:00:20+00:00",
+      "wall_seconds": 0.625,
+      "profile_total_self_seconds": 0.6135850999999997,
+      "top_self": [
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 163,
+          "calls": 163,
+          "self_seconds": 0.19310850000000002,
+          "cumulative_seconds": 0.19310850000000002
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 545,
+          "calls": 12070,
+          "self_seconds": 0.0245001,
+          "cumulative_seconds": 0.030765100000000004
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/json/encoder.py",
+          "line": 205,
+          "function": "iterencode",
+          "primitive_calls": 1077,
+          "calls": 1077,
+          "self_seconds": 0.0230915,
+          "cumulative_seconds": 0.0230915
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.isinstance>",
+          "primitive_calls": 60077,
+          "calls": 60077,
+          "self_seconds": 0.021547800000000002,
+          "cumulative_seconds": 0.027644400000000003
+        },
+        {
+          "file": "apps/api/app/domain/policy_configuration.py",
+          "line": 215,
+          "function": "_require_json_value",
+          "primitive_calls": 494,
+          "calls": 9842,
+          "self_seconds": 0.0156764,
+          "cumulative_seconds": 0.0184549
+        },
+        {
+          "file": "apps/api/app/domain/asset_exposure.py",
+          "line": 36,
+          "function": "_json",
+          "primitive_calls": 3620,
+          "calls": 4652,
+          "self_seconds": 0.0126712,
+          "cumulative_seconds": 0.025879500000000003
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/attributes.py",
+          "line": 561,
+          "function": "__get__",
+          "primitive_calls": 19241,
+          "calls": 19241,
+          "self_seconds": 0.0123992,
+          "cumulative_seconds": 0.0123992
+        },
+        {
+          "file": "C:/Users/starryzac/AppData/Local/Programs/Python/Python312/Lib/json/decoder.py",
+          "line": 343,
+          "function": "raw_decode",
+          "primitive_calls": 1100,
+          "calls": 1100,
+          "self_seconds": 0.008851000000000001,
+          "cumulative_seconds": 0.0090116
+        }
+      ],
+      "top_cumulative": [
+        {
+          "file": "apps/api/app/services/dashboard.py",
+          "line": 360,
+          "function": "get_dashboard",
+          "primitive_calls": 1,
+          "calls": 2,
+          "self_seconds": 0.0020769,
+          "cumulative_seconds": 0.5495431000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/session.py",
+          "line": 2201,
+          "function": "_execute_internal",
+          "primitive_calls": 87,
+          "calls": 87,
+          "self_seconds": 0.0014826000000000002,
+          "cumulative_seconds": 0.2846426
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/context.py",
+          "line": 306,
+          "function": "orm_execute_statement",
+          "primitive_calls": 87,
+          "calls": 87,
+          "self_seconds": 0.0003774,
+          "cumulative_seconds": 0.27726670000000003
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1404,
+          "function": "execute",
+          "primitive_calls": 87,
+          "calls": 87,
+          "self_seconds": 0.00030720000000000004,
+          "cumulative_seconds": 0.2678062
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/sql/elements.py",
+          "line": 524,
+          "function": "_execute_on_connection",
+          "primitive_calls": 87,
+          "calls": 87,
+          "self_seconds": 0.0002423,
+          "cumulative_seconds": 0.26749900000000004
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1618,
+          "function": "_execute_clauseelement",
+          "primitive_calls": 87,
+          "calls": 87,
+          "self_seconds": 0.0019029000000000001,
+          "cumulative_seconds": 0.2670999
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1767,
+          "function": "_execute_context",
+          "primitive_calls": 87,
+          "calls": 87,
+          "self_seconds": 0.0008466000000000001,
+          "cumulative_seconds": 0.2492097
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1826,
+          "function": "_exec_single_context",
+          "primitive_calls": 87,
+          "calls": 87,
+          "self_seconds": 0.00107,
+          "cumulative_seconds": 0.2409203
+        }
+      ],
+      "selected": [
+        {
+          "file": "apps/api/app/services/dashboard.py",
+          "line": 360,
+          "function": "get_dashboard",
+          "primitive_calls": 1,
+          "calls": 2,
+          "self_seconds": 0.0020769,
+          "cumulative_seconds": 0.5495431000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/orm/session.py",
+          "line": 2201,
+          "function": "_execute_internal",
+          "primitive_calls": 87,
+          "calls": 87,
+          "self_seconds": 0.0014826000000000002,
+          "cumulative_seconds": 0.2846426
+        },
+        {
+          "file": ".venv/Lib/site-packages/sqlalchemy/engine/base.py",
+          "line": 1826,
+          "function": "_exec_single_context",
+          "primitive_calls": 87,
+          "calls": 87,
+          "self_seconds": 0.00107,
+          "cumulative_seconds": 0.2409203
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method select.select>",
+          "primitive_calls": 163,
+          "calls": 163,
+          "self_seconds": 0.19310850000000002,
+          "cumulative_seconds": 0.19310850000000002
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 46,
+          "function": "canonical_bytes",
+          "primitive_calls": 545,
+          "calls": 545,
+          "self_seconds": 0.0024912000000000003,
+          "cumulative_seconds": 0.0500289
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 52,
+          "function": "convert",
+          "primitive_calls": 545,
+          "calls": 12070,
+          "self_seconds": 0.0245001,
+          "cumulative_seconds": 0.030765100000000004
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 442,
+          "calls": 442,
+          "self_seconds": 0.007132500000000001,
+          "cumulative_seconds": 0.026781100000000002
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 163,
+          "function": "build_subject",
+          "primitive_calls": 84,
+          "calls": 84,
+          "self_seconds": 0.0017069000000000001,
+          "cumulative_seconds": 0.0260196
+        },
+        {
+          "file": "apps/api/app/services/simulated_bank.py",
+          "line": 129,
+          "function": "ledger_heads",
+          "primitive_calls": 4,
+          "calls": 4,
+          "self_seconds": 0.0010969,
+          "cumulative_seconds": 0.0247806
+        },
+        {
+          "file": "apps/api/app/services/audit_chain.py",
+          "line": 674,
+          "function": "verify_audit_chain",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.00013240000000000002,
+          "cumulative_seconds": 0.0227773
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 1999,
+          "function": "verify_epoch",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_seconds": 0.0001907,
+          "cumulative_seconds": 0.022625600000000003
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 654,
+          "function": "verify_event",
+          "primitive_calls": 12,
+          "calls": 12,
+          "self_seconds": 0.0003791,
+          "cumulative_seconds": 0.020899
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 672,
+          "function": "parse_event",
+          "primitive_calls": 4,
+          "calls": 4,
+          "self_seconds": 7.350000000000001e-05,
+          "cumulative_seconds": 0.020433800000000002
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 204,
+          "function": "subject_hash",
+          "primitive_calls": 24,
+          "calls": 24,
+          "self_seconds": 0.0002209,
+          "cumulative_seconds": 0.013374800000000001
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 210,
+          "function": "parse_subject",
+          "primitive_calls": 12,
+          "calls": 12,
+          "self_seconds": 0.0002277,
+          "cumulative_seconds": 0.012212
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 1571,
+          "function": "_references",
+          "primitive_calls": 4,
+          "calls": 4,
+          "self_seconds": 0.00016140000000000002,
+          "cumulative_seconds": 0.00693
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 1460,
+          "function": "_immutable",
+          "primitive_calls": 11,
+          "calls": 11,
+          "self_seconds": 0.00039900000000000005,
+          "cumulative_seconds": 0.0064377
+        },
+        {
+          "file": "apps/api/app/domain/audit_chain.py",
+          "line": 199,
+          "function": "subject_canonical_text",
+          "primitive_calls": 12,
+          "calls": 12,
+          "self_seconds": 9.61e-05,
+          "cumulative_seconds": 0.005152100000000001
+        },
+        {
+          "file": ".venv/Lib/site-packages/psycopg/_queries.py",
+          "line": 59,
+          "function": "convert",
+          "primitive_calls": 87,
+          "calls": 87,
+          "self_seconds": 0.0006131,
+          "cumulative_seconds": 0.0044610000000000006
+        },
+        {
+          "file": ".venv/Lib/site-packages/pydantic/main.py",
+          "line": 742,
+          "function": "model_validate_json",
+          "primitive_calls": 17,
+          "calls": 17,
+          "self_seconds": 5.78e-05,
+          "cumulative_seconds": 0.0041786
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'validate_json' of 'pydantic_core._pydantic_core.SchemaValidator' objects>",
+          "primitive_calls": 17,
+          "calls": 17,
+          "self_seconds": 0.0014248000000000002,
+          "cumulative_seconds": 0.0041208
+        },
+        {
+          "file": ".venv/Lib/site-packages/pydantic/type_adapter.py",
+          "line": 398,
+          "function": "validate_python",
+          "primitive_calls": 2,
+          "calls": 2,
+          "self_seconds": 3.8e-06,
+          "cumulative_seconds": 0.0001315
+        }
+      ]
+    }
+  ]
+}

@@ -20,7 +20,7 @@ from app.domain.execution_types import BankCommand, ExecutionContext, ExecutionE
 from app.domain.policy_configuration import configuration_hash, validate_configuration
 from app.services.asset_allocation import _goal_projection_matches
 from app.services.asset_exposure_import import _scope, load_asset_exposure
-from app.services.boundary import BoundaryContext, load_boundary_context
+from app.services.boundary import BoundaryContext, clone_boundary_context, load_boundary_context
 from app.services.execution_sources import execution_return_account, load_execution_quote
 from app.services.income_ledger import income_lots_for_action, read_income_state
 from app.services.policy_lifecycle import PolicyLifecycleError, is_version_authorized
@@ -36,6 +36,7 @@ def load_execution_context(
     now: datetime,
     *,
     own_action_id: UUID | None = None,
+    base_context: BoundaryContext | None = None,
 ) -> ExecutionContext:
     effect = ExecutionEffect.model_validate(effect.model_dump(warnings=False))
     if effect.user_id != user_id:
@@ -57,7 +58,11 @@ def load_execution_context(
                 raise PolicyLifecycleError(
                     "INVALID_EXECUTION_RESERVATION", "不能隐藏其他动作的资源预留", 409
                 ) from error
-        base = load_boundary_context(session, user_id, now)
+        base = (
+            clone_boundary_context(base_context, user_id, now)
+            if base_context is not None
+            else load_boundary_context(session, user_id, now)
+        )
         versions = list(base.versions)
         selected = None
         for identity in effect.policy_version_ids:

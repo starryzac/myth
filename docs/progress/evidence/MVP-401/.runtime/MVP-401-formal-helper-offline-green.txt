@@ -1,0 +1,10 @@
+{
+  "status": "OFFLINE_READY",
+  "database_connected": false,
+  "source_pins": {
+    "docs/progress/evidence/MVP-304-targeted-close-formal-snapshot.json": "bf6d25daf144b52f161bee3dba1d6c3428329779f1f3bc0d92b59a004dae1991",
+    "apps/api/alembic/versions/0007_external_bank_facts.py": "b859958079f3e0f746796f726036b2134526c484e39473bb93bd89a67be1ca9d",
+    ".env": "96844669463bcc90ea46cba5f32cc17b3b84e6e823396ca0b6cec29babd68726"
+  },
+  "formal_database": "bounded_funds@127.0.0.1:54329"
+}

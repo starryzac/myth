@@ -1,0 +1,9 @@
+{
+  "verified_at": "2026-10-04T16:05:32.960842+00:00",
+  "staged_archives_exact_bytes": 247,
+  "indexed_raw_records": 858,
+  "tested_source_members_exact_bytes": 201,
+  "verified": true,
+  "method": "actual git cat-file --batch staged blob bytes; ZIP member SHA256 vs original index",
+  "index_sha256": "2159281843bf5838739c9db60a01561f7c0157e3a9cb54dd360dd41f8ddce5a1"
+}

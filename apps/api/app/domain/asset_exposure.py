@@ -5,6 +5,8 @@ from datetime import UTC, date, datetime
 from typing import Any, Literal
 from uuid import UUID
 
+from app.domain.bank_posting_codec import POSTING_V2_FIELDS, bank_posting_data
+from app.domain.external_bank_fact import EXTERNAL_FACT_FIELDS
 from app.domain.policy_configuration import MoneyCents, configuration_hash
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
@@ -70,6 +72,7 @@ def asset_exposure_snapshot(
     bank_postings: Iterable[object] | None = None,
     bank_operations: Iterable[object] | None = None,
     resource_reservations: Iterable[object] | None = None,
+    external_bank_facts: Iterable[object] | None = None,
 ) -> dict[str, Any]:
     """Importer helper accepting ORM objects or mappings, without depending on SQLAlchemy.
 
@@ -77,6 +80,19 @@ def asset_exposure_snapshot(
     them and verifies exact equality. Settlement declarations are importer assertions, never
     inferred from an action status or a sum of receipt attempts.
     """
+    if bank_postings is not None:
+        bank_postings = list(bank_postings)
+        if external_bank_facts is None and any(
+            str(_get(row, "ledger_key")).startswith("CLEARING:")
+            or (
+                row.get("external_fact_id")
+                if isinstance(row, Mapping)
+                else getattr(row, "external_fact_id", None)
+            )
+            is not None
+            for row in bank_postings
+        ):
+            raise ValueError("External bank origins require explicit exposure v4")
     bank_sources = {
         "SIMULATED_BANK_BALANCE",
         "SIMULATED_BANK_POSITION",
@@ -118,6 +134,9 @@ def asset_exposure_snapshot(
         ),
     }
     execution = bank_operations is not None or resource_reservations is not None
+    external = external_bank_facts is not None
+    if external and not execution:
+        raise ValueError("External fact exposure requires complete execution bank collections")
     if execution and (
         bank_operations is None
         or resource_reservations is None
@@ -156,5 +175,26 @@ def asset_exposure_snapshot(
             resource_reservations,
             "id user_id action_plan_id resource_kind resource_key amount_cents status "
             "resolved_at created_at",
+        )
+    if external:
+        assert bank_postings is not None and external_bank_facts is not None
+        # v1-v3 retain their exact old posting layouts and digests.
+        result["protocol"] = "asset-exposure-v4"
+        result["bank_postings"] = sorted(
+            (
+                {
+                    "id": str(_get(row, "id")),
+                    "digest": configuration_hash(
+                        _json(bank_posting_data({key: _get(row, key) for key in POSTING_V2_FIELDS}))
+                    ),
+                }
+                for row in bank_postings
+            ),
+            key=lambda item: item["id"],
+        )
+        if len({item["id"] for item in result["bank_postings"]}) != len(result["bank_postings"]):
+            raise ValueError("Exposure posting identities must be unique")
+        result["external_bank_facts"] = _manifest(
+            external_bank_facts, " ".join(sorted(EXTERNAL_FACT_FIELDS))
         )
     return result

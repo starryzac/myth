@@ -1,7 +1,7 @@
 """Read-only cash boundary adaptation against isolated real PostgreSQL databases."""
 
 import json
-from collections.abc import Iterator
+from collections.abc import Iterator, Mapping
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -24,6 +24,7 @@ from app.db.models import (
 from app.db.session import create_database_engine
 from app.db.testing import temporary_database
 from app.domain.policy_configuration import configuration_hash, validate_configuration
+from app.services import demo_seed, external_bank_facts
 from app.services.boundary import (
     AVAILABILITY_SOURCE,
     CONTRIBUTION_SOURCE,
@@ -31,7 +32,7 @@ from app.services.boundary import (
     SETTLEMENT_SOURCE,
     compute_user_boundary,
 )
-from app.services.demo_seed import DEMO_USER_ID, SEED_AS_OF, seed_demo
+from app.services.demo_seed import DEMO_USER_ID, SEED_AS_OF, SeedSummary
 from app.services.policy_lifecycle import (
     PolicyLifecycleError,
     change_policy,
@@ -47,6 +48,29 @@ ROOT = Path(__file__).resolve().parents[4]
 pytestmark = pytest.mark.integration
 
 
+def seed_legacy_income_fixture(engine: Engine) -> SeedSummary:
+    """Import the old initial bank shape before income and external clearing existed."""
+
+    def omit_income_import(_session: Session) -> None:
+        return None
+
+    def omit_external_clearing(
+        _session: Session,
+        _user_id: UUID,
+        _now: datetime,
+        *,
+        counterparty_reserves: Mapping[str, int],
+    ) -> None:
+        return None
+
+    # Omit these two fresh imports before genesis. Original CASH/POSITION
+    # openings and audit genesis still run; no persisted original is deleted.
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr(demo_seed, "_seed_income_ledger", omit_income_import)
+        patch.setattr(external_bank_facts, "open_external_clearing", omit_external_clearing)
+        return demo_seed.seed_demo(engine)
+
+
 @pytest.fixture
 def boundary_engine() -> Iterator[Engine]:
     with temporary_database() as url:
@@ -55,7 +79,7 @@ def boundary_engine() -> Iterator[Engine]:
         command.upgrade(config, "head")
         engine = create_database_engine(url)
         try:
-            seed_demo(engine)
+            seed_legacy_income_fixture(engine)
             yield engine
         finally:
             engine.dispose()
