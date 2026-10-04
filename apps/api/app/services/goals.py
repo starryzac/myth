@@ -44,6 +44,36 @@ class GoalList(BaseModel):
     items: list[GoalView]
 
 
+def _income_epoch_sources(
+    session: Session, user_id: UUID, policy_id: UUID, now: datetime
+) -> list[EvidenceItem]:
+    """A zero initialization can inherit intact provenance, never repair absent or bad facts."""
+    from app.services.boundary import load_boundary_context
+    from app.services.income_ledger import read_income_state
+
+    try:
+        state = read_income_state(session, user_id, now)
+    except PolicyLifecycleError:
+        # Income evidence is optional for creating zero ownership, but mandatory for allocation.
+        return []
+    context = load_boundary_context(session, user_id, now)
+    if any(
+        issue.code != "MISSING_GOAL_PROJECTION" or issue.source_ref != str(policy_id)
+        for issue in context.sources.issues
+    ):
+        return []
+    statement = context.sources.evidence.get(state.evidence_id)
+    if statement is None or statement.content_hash != state.evidence_hash:
+        return []
+    return [statement] + [
+        proof
+        for proof in context.sources.evidence.values()
+        if proof.source_type in {OWNERSHIP_SOURCE, CONTRIBUTION_SOURCE}
+        and proof.id in context.sources.used
+        and proof.status == "VALID"
+    ]
+
+
 def create_goal_projection(
     session: Session,
     user_id: UUID,
@@ -107,6 +137,7 @@ def create_goal_projection(
     # Do not let a zero goal initialization republish unrelated, inconsistent bank facts.
     validate_bank_projection(session, user_id, now)
     validate_recovery_exposure(session, user_id, now)
+    income_epoch_sources = _income_epoch_sources(session, user_id, policy_id, now)
     monthly, priority = config["monthly_contribution"], config["priority"]
     goal = Goal(
         id=uuid5(policy_id, "goal-projection-v1"),
@@ -179,6 +210,13 @@ def create_goal_projection(
     # Only this newly created, zero-owned goal receives an independent opening.
     # Existing positive projections return above; they can never repair bank truth here.
     open_execution_anchors(session, user_id, now, goal_balances={goal.id: (0, 0)})
+    from app.services.recovery_projection import replace_proof
+
+    for previous in income_epoch_sources:
+        # Keep original income, claims, ownership and month periods exactly as verified.
+        replace_proof(
+            session, previous, {**previous.content, "as_of": now.isoformat()}, now, goal.id
+        )
     refresh_execution_exposure(session, user_id, now, goal.id)
     session.flush()
     from app.services.audit_recording import record_goal_initialized

@@ -89,6 +89,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/policy-compilations/{compilation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Policy Compilation */
+        get: operations["read_policy_compilation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/policy-proposals/{proposal_id}/confirm": {
         parameters: {
             query?: never;
@@ -236,6 +253,23 @@ export interface paths {
         put?: never;
         /** Revoke */
         post: operations["revoke_policy"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/policies/{policy_id}/change-preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview Policy Change */
+        post: operations["preview_policy_change"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3284,6 +3318,102 @@ export interface components {
             /** Terms Digest */
             terms_digest: string;
         };
+        /** PolicyChangePreviewRequest */
+        PolicyChangePreviewRequest: {
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+        };
+        /** PolicyChangePreviewResponse */
+        PolicyChangePreviewResponse: {
+            /**
+             * Schema Version
+             * @default policy-change-preview-v1
+             * @constant
+             */
+            schema_version: "policy-change-preview-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Preview Only
+             * @default true
+             * @constant
+             */
+            preview_only: true;
+            /**
+             * Financial Only
+             * @default true
+             * @constant
+             */
+            financial_only: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Timezone
+             * @enum {string}
+             */
+            timezone: "Asia/Shanghai" | "UTC";
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+            /** Configuration Hash */
+            configuration_hash: string;
+            /**
+             * Assumed Status
+             * @enum {string}
+             */
+            assumed_status: "ACTIVE" | "CONFIRMED" | "SUSPENDED" | "EXPIRED";
+            /**
+             * Assumed Valid From
+             * Format: date-time
+             */
+            assumed_valid_from: string;
+            /** Assumed Valid Until */
+            assumed_valid_until: string | null;
+            /** Assumption Digest */
+            assumption_digest: string;
+            /** Current Fact Input Digest */
+            current_fact_input_digest: string;
+            /** Hypothetical Input Digest */
+            hypothetical_input_digest: string;
+            before: components["schemas"]["FinancialBoundaryCard"];
+            after: components["schemas"]["FinancialBoundaryCard"];
+            /** Delta Safe Idle Cents */
+            delta_safe_idle_cents: number | null;
+            /** Delta Minimum Margin Cents */
+            delta_minimum_margin_cents: number | null;
+            /** Notes */
+            notes: string[];
+        };
         /** PolicyChangeRequest */
         PolicyChangeRequest: {
             /** Accepted */
@@ -3554,6 +3684,8 @@ export interface components {
             validation_ready: boolean;
             /** Confirmed Policy Id */
             confirmed_policy_id: string | null;
+            /** Compilation Id */
+            compilation_id?: string | null;
         };
         /** PurchaseIntent */
         PurchaseIntent: {
@@ -4604,6 +4736,64 @@ export interface operations {
             };
         };
     };
+    read_policy_compilation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                compilation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CompilationResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
     confirm_policy_proposal: {
         parameters: {
             query?: never;
@@ -5117,6 +5307,68 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LifecycleResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_policy_change: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PolicyChangePreviewRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PolicyChangePreviewResponse"];
                 };
             };
             /** @description Not Found */

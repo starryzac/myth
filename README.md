@@ -2,9 +2,9 @@
 
 面向青年的可审计分级自主资金 Agent。全部账户、产品与动作均为合成模拟。
 
-当前完成18/92项：[MVP-401资金边界首页](docs/progress/MVP-401.md)已定向验收，真实Edge十阶段、资金/UNKNOWN与保留数据迁移通过。初版整体及完整版均未完成，目标持续ACTIVE；下一项MVP-402策略中心与目标页。全量留初版与完整版两个验收节点。见[开发状态](docs/progress/STATUS.md)与[92项追踪](docs/spec/requirements-traceability.md)。
+当前完成19/92项：[MVP-402策略中心与目标页](docs/progress/MVP-402.md)已定向验收，实际修改前边界、生命周期、版本、零Goal及合法收入时点继承通过。初版整体及完整版均未完成，目标持续ACTIVE；下一项MVP-403决策轨迹页。全量留初版与完整版两个验收节点。见[开发状态](docs/progress/STATUS.md)与[92项追踪](docs/spec/requirements-traceability.md)。
 
-正式库为0006_audit_chain（22业务表），金融seed mvp-301-v6。非重置迁移保留原20表原字段全部数据，新审计表为空，正式旧历史保持LEGACY_UNAUDITED；隔离临时库审计正向结果不代表正式全史VALID。`make seed`导入60天事实、129模拟流水、3账单、T0/T1/30天定存及7独立银行开户记录；成功reset业务摘要v2保持固定、审计历史增长。当前事实查询见[账户API](docs/architecture/account-facts-api.md)。
+正式库为0007_external_bank_facts（23业务表），金融seed mvp-301-v6。非重置迁移保留原20表原字段全部数据，审计表和external facts仍为空，正式旧历史保持LEGACY_UNAUDITED；隔离临时库审计正向结果不代表正式全史VALID。`make seed`导入60天事实、129模拟流水、3账单、T0/T1/30天定存及独立银行开户/收入位置记录；成功reset业务摘要v2保持固定、审计历史增长。当前事实查询见[账户API](docs/architecture/account-facts-api.md)。
 
 策略已支持明确确认、追加版本、暂停、撤销、到期及旧动作失效；[策略 API](docs/architecture/policy-api.md)。`make policy-refresh` 可落库刷新时间状态，授权检查不依赖刷新是否执行。历史模式发现和离线自然语言编译仅生成可复核候选，默认关闭外部 LLM。
 

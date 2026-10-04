@@ -1,7 +1,6 @@
 """Aggregate verified facts in the caller's read-only repeatable-read transaction."""
 
 import json
-from dataclasses import replace
 from datetime import UTC, datetime
 from typing import Any, Literal
 from uuid import UUID
@@ -24,16 +23,13 @@ from app.db.models import (
     User,
 )
 from app.domain.boundary import compute_boundary_with_details
-from app.domain.boundary_types import SourceIssue
 from app.domain.policy_configuration import configuration_hash
-from app.services.asset_exposure_import import load_all_asset_exposure
 from app.services.autonomy import assess_action
-from app.services.boundary import BoundaryContext, load_boundary_context
+from app.services.boundary import BoundaryContext
 from app.services.dashboard_helpers import current_epoch_audit
 from app.services.dashboard_types import (
     AccountFactsCard,
     DashboardResponse,
-    FinancialBoundaryCard,
     GoalOwnershipCard,
     GoalOwnershipItem,
     InterventionCard,
@@ -45,11 +41,14 @@ from app.services.dashboard_types import (
     RecoveryProposalsCard,
 )
 from app.services.execution import get_action
-from app.services.income_ledger import read_income_state
+from app.services.financial_read import (
+    finalize_financial_context,
+    financial_card,
+    load_verified_financial_context,
+)
 from app.services.policy_lifecycle import PolicyLifecycleError
 from app.services.recovery import RecoveryPreviewResponse
 from app.services.recovery_receipt_integrity import verify_recovery_receipt
-from app.services.simulated_bank import validate_bank_projection
 from sqlalchemy import case, exists, func, or_, select
 from sqlalchemy.orm import Session
 
@@ -376,22 +375,7 @@ def get_dashboard(
         if user is None or not user.is_simulated:
             raise PolicyLifecycleError("NOT_FOUND", "模拟用户不存在", 404)
         facts = account_summary(session, user)
-        context = load_boundary_context(session, user_id, now)
-        bank_matched = True
-        try:
-            validate_bank_projection(session, user_id, now)
-        except PolicyLifecycleError as error:
-            bank_matched = False
-            context.sources.issue(error.code, "independent_bank", error.message)
-        exposure = load_all_asset_exposure(session, context)
-        if any(
-            item.source_type == "SIMULATED_NEW_FUNDS_LEDGER" and item.status != "SUPERSEDED"
-            for item in context.sources.evidence.values()
-        ):
-            try:
-                read_income_state(session, user_id, now)
-            except PolicyLifecycleError as error:
-                context.sources.issue(error.code, "income_ledger", error.message)
+        context, bank_matched, exposure = load_verified_financial_context(session, user_id, now)
         pq, rq = _pending_query(user_id), _proposal_query(user_id)
         pending_total = session.scalar(select(func.count()).select_from(pq.subquery())) or 0
         recovery_total = session.scalar(select(func.count()).select_from(rq.subquery())) or 0
@@ -416,43 +400,12 @@ def get_dashboard(
                 {row.decision_run_id for row in action_rows} | {row.id for row in proposal_rows}
             ),
         )
-        if audit.status == "INTEGRITY_ERROR":
-            context.sources.issue(
-                "AUDIT_INTEGRITY_ERROR", str(audit.epoch_id), "当前审计链完整性失效"
-            )
-        issues = sorted(context.sources.issues, key=lambda item: (item.code, item.source_ref))
-        digest = configuration_hash(
-            {
-                "user_id": str(user_id),
-                "as_of": now.isoformat(),
-                "sources": [
-                    {"id": str(key), "hash": context.sources.evidence[key].content_hash}
-                    for key in sorted(context.sources.used)
-                ],
-                "issues": [item.model_dump() for item in issues],
-            }
-        )
-        context = replace(
-            context,
-            snapshot=context.snapshot.model_copy(
-                update={
-                    "source_digest": digest,
-                    "source_issues": [
-                        SourceIssue(code=i.code, entity_type="source", entity_id=i.source_ref)
-                        for i in issues
-                    ],
-                }
-            ),
-        )
+        context, issues, digest = finalize_financial_context(context, audit)
         computed = compute_boundary_with_details(
             context.snapshot, context.versions, context.positions, context.products
         )
         boundary, details = computed.boundary, computed.details
         proven = boundary.status != "INSUFFICIENT_EVIDENCE"
-        protection = details.current_protection.value
-        constraining = min(
-            boundary.calculation_trace, key=lambda point: point.margin_cents, default=None
-        )
         ownership = details.current_goal_ownership
         goal_names = {
             row.id: row.name for row in session.scalars(select(Goal).where(Goal.user_id == user_id))
@@ -528,27 +481,7 @@ def get_dashboard(
                 bank_projection_state="MATCHED" if bank_matched else "NOT_PROVEN",
                 issues=issues if not bank_matched else [],
             ),
-            boundary=FinancialBoundaryCard(
-                state="PROVEN" if proven else "NOT_PROVEN",
-                status=boundary.status,
-                safe_idle_cents=boundary.safe_idle_cents,
-                minimum_margin_cents=boundary.minimum_margin_cents,
-                deficit_cents=boundary.deficit_cents,
-                protected_cents_by_reason=boundary.protected_cents_by_reason if proven else None,
-                current_protected_cents=protection.total_cents if protection else None,
-                current_protected_cents_by_reason=protection.amounts_by_reason
-                if protection
-                else None,
-                current_margin_cents=protection.margin_cents if protection else None,
-                constraining_date=constraining.date if constraining else None,
-                window_start=details.window_start,
-                window_end=details.window_end,
-                input_digest=digest,
-                boundary_hash=boundary.boundary_hash,
-                blocking_constraints=boundary.blocking_constraints,
-                calculation_notes=boundary.calculation_notes,
-                issues=issues,
-            ),
+            boundary=financial_card(boundary, details, issues, digest),
             goal_ownership=GoalOwnershipCard(
                 state="PROVEN" if ownership.status == "PROVEN" else "NOT_PROVEN",
                 cash_owned_cents=ownership.cash_owned_cents,

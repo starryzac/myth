@@ -120,6 +120,39 @@ h4 > .badge { margin-left: 10px; }
 .loading-panel { background: white; border-color: #e0e6e1; font-size: 12px; color: #79917f; }
 .loading-line { border-radius: 6px; width: 150px; height: 16px; background: #e8efe9; margin-bottom: 15px; }
 .app-footer { display: flex; justify-content: space-between; gap: 15px; margin-top: 35px; padding-top: 20px; border-top: 1px solid #e0e6dc; font-size: 10px; line-height: 1.8; color: #929b8d; }
+.main-nav { display: flex; gap: 6px; margin: 22px 0; padding: 5px; border: 1px solid #dae3d8; border-radius: 10px; background: #f3f7f1; width: fit-content; }
+.main-nav a { padding: 10px 22px; border-radius: 7px; color: #5c6b5b; font-size: 13px; text-decoration: none; }
+.main-nav a[aria-current="page"] { color: white; background: #264f40; }
+button { cursor: pointer; font: inherit; background: #eef5ed; color: #315444; border: 1px solid #ccdacb; border-radius: 7px; padding: 9px 15px; }
+button:disabled { cursor: default; opacity: .5; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid #5d997e; outline-offset: 3px; }
+.policy-section { margin: 26px 0; }
+.policy-section > h3 { font-size: 19px; margin: 12px 0 18px; }
+.policy-card, .goal-card, .editor-panel { border: 1px solid #d8e2d6; border-radius: 12px; padding: 22px; margin: 16px 0; background: white; }
+.policy-card p, .goal-card p, .editor-panel p { font-size: 12px; line-height: 1.9; margin: 10px 0; overflow-wrap: anywhere; }
+.policy-card h3, .goal-card h3 { font-size: 17px; }
+.button-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+.field { display: grid; gap: 8px; font-size: 12px; margin: 17px 0; max-width: 760px; }
+input:not([type="checkbox"]), select, textarea { width: 100%; font: inherit; color: #334c3e; background: #fbfcf9; border: 1px solid #cdd9c9; border-radius: 6px; padding: 10px; min-width: 0; }
+textarea { min-height: 90px; resize: vertical; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 22px; margin: 16px 0; }
+.form-grid label { display: grid; align-content: start; gap: 8px; font-size: 12px; }
+.checkbox-field, .form-grid .checkbox-field { display: flex; align-items: flex-start; gap: 9px; font-size: 12px; line-height: 1.8; margin: 16px 0; }
+input[type="checkbox"] { accent-color: #356b51; margin-top: 3px; flex-shrink: 0; }
+fieldset { border: 0; padding: 0; min-width: 0; }
+.config-review dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px 25px; margin: 16px 0; font-size: 12px; }
+.config-review dt, .goal-metrics dt { color: #7d8e79; font-size: 11px; margin-bottom: 6px; }
+.config-review dd { overflow-wrap: anywhere; line-height: 1.7; }
+.change-preview, .state-review, .compile-notes, .allocation-preview, .command-result { padding: 18px; border-radius: 9px; background: #f0f5ec; border: 1px solid #d7e2d0; margin: 18px 0; }
+.change-preview table { width: 100%; text-align: left; border-collapse: collapse; font-size: 12px; margin: 16px 0; }
+.change-preview td, .change-preview th { padding: 10px 6px; border-bottom: 1px solid #d8e3d0; overflow-wrap: anywhere; }
+.form-issues, [role="alert"] { color: #8a502e; font-size: 12px; line-height: 1.9; }
+.goal-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 23px 16px; margin: 22px 0; }
+.goal-metrics .money { font-size: 16px; }
+.goal-card li { margin: 10px 0; line-height: 1.9; font-size: 12px; }
+.policy-card details, .goal-card details, .editor-panel details { margin: 15px 0; font-size: 12px; line-height: 1.9; }
+.empty { margin: 30px 0; font-size: 13px; color: #6d8068; }
+@media (max-width: 760px) { .form-grid, .config-review dl { grid-template-columns: 1fr; } .goal-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } .main-nav { width: 100%; } .main-nav a { flex: 1; text-align: center; padding: 10px 8px; } .policy-card, .goal-card, .editor-panel { padding: 17px; } }
 @media (max-width: 1150px) {
   .facts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .boundary-main > .money-large { font-size: 40px; }

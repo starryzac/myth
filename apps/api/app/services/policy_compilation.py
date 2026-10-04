@@ -106,18 +106,21 @@ def _valid_evidence(item: EvidenceItem, now: datetime) -> None:
 
 
 def _load(
-    session: Session, user_id: UUID, compilation_id: UUID, now: datetime
+    session: Session,
+    user_id: UUID,
+    compilation_id: UUID,
+    now: datetime,
+    *,
+    lock: bool = True,
 ) -> tuple[EvidenceItem, CompilationResult]:
-    item = session.scalar(
-        select(EvidenceItem)
-        .where(
-            EvidenceItem.id == compilation_id,
-            EvidenceItem.user_id == user_id,
-            EvidenceItem.source_type == SOURCE_TYPE,
-        )
-        .with_for_update()
-        .execution_options(populate_existing=True)
+    query = select(EvidenceItem).where(
+        EvidenceItem.id == compilation_id,
+        EvidenceItem.user_id == user_id,
+        EvidenceItem.source_type == SOURCE_TYPE,
     )
+    if lock:
+        query = query.with_for_update().execution_options(populate_existing=True)
+    item = session.scalar(query)
     if item is None:
         raise PolicyLifecycleError("NOT_FOUND", "编译记录不存在", 404)
     _valid_evidence(item, now)
@@ -142,6 +145,152 @@ def _load(
     except (KeyError, TypeError, ValueError) as error:
         raise PolicyLifecycleError("INVALID_EVIDENCE", "原始编译锚点或结果已变化") from error
     return item, result
+
+
+def _read_clock(now: datetime) -> datetime:
+    if now.tzinfo is None or now.utcoffset() is None:
+        raise PolicyLifecycleError("INVALID_CLOCK", "服务器时间必须带时区")
+    try:
+        return now.astimezone(UTC)
+    except (ValueError, OverflowError) as error:
+        raise PolicyLifecycleError("INVALID_CLOCK", "服务器时间无法转换为读取时钟") from error
+
+
+def _proposal_source(
+    session: Session, user_id: UUID, proposal: PolicyProposal, now: datetime
+) -> tuple[EvidenceItem, CompilationResult]:
+    try:
+        prefix, identifier, digest = proposal.idempotency_key.split(":")
+        if prefix != "compilation" or proposal.user_id != user_id:
+            raise ValueError("Proposal compilation ownership or key is invalid")
+        source, result = _load(session, user_id, UUID(identifier), now, lock=False)
+        configuration = validate_configuration(proposal.proposed_configuration)
+        original_configuration = (
+            validate_configuration(result.configuration)
+            if result.configuration is not None
+            else None
+        )
+        ids = [UUID(identity) for identity in proposal.evidence_ids]
+        if (
+            proposal.source_type != SOURCE_TYPE
+            or proposal.source_text != source.content["text"]
+            or proposal.compiler_version != result.compiler_version
+            or proposal.created_at > now
+            or proposal.created_at < source.created_at
+            or configuration != proposal.proposed_configuration
+            or digest != configuration_hash(configuration)
+            or len(ids) != len(set(ids))
+            or source.id not in ids
+        ):
+            raise ValueError("Proposal does not bind its exact original compilation")
+        expected_ids = {source.id}
+        model_id = source.content.get("model_evidence_id")
+        if model_id is not None:
+            expected_ids.add(UUID(model_id))
+        edits = []
+        for identity in ids:
+            if identity in expected_ids:
+                continue
+            edit = session.scalar(
+                select(EvidenceItem).where(
+                    EvidenceItem.id == identity,
+                    EvidenceItem.user_id == user_id,
+                    EvidenceItem.source_type == "POLICY_COMPILATION_EDIT",
+                )
+            )
+            if edit is None:
+                raise ValueError("Compilation revision lacks its actual owned edit evidence")
+            _valid_evidence(edit, now)
+            if (
+                edit.evidence_level != "USER_DECLARED"
+                or edit.source_ref != proposal.idempotency_key
+                or edit.content
+                != {
+                    "simulation": True,
+                    "user_id": str(user_id),
+                    "compilation_id": str(source.id),
+                    "source_hash": source.content_hash,
+                    "configuration": configuration,
+                    "configuration_hash": configuration_hash(configuration),
+                    "reference_date": source.content["reference_date"],
+                    "timezone": source.content["timezone"],
+                }
+            ):
+                raise ValueError(
+                    "Revision evidence differs from its original source or configuration"
+                )
+            edits.append(edit)
+        if len(edits) > 1 or (configuration != original_configuration and not edits):
+            raise ValueError("Revision must have one exact original edit evidence")
+        if set(ids) != expected_ids | {row.id for row in edits}:
+            raise ValueError("Compilation proposal evidence references are incomplete")
+        return source, result
+    except (KeyError, TypeError, ValueError) as error:
+        if isinstance(error, PolicyLifecycleError):
+            raise
+        raise PolicyLifecycleError("INVALID_EVIDENCE", "候选与原编译记录不一致", 409) from error
+
+
+def proposal_compilation_id(
+    session: Session, user_id: UUID, proposal: PolicyProposal, now: datetime
+) -> UUID | None:
+    """Return only a verified owned compilation identity, without locks or writes."""
+    if proposal.user_id != user_id:
+        raise PolicyLifecycleError("NOT_FOUND", "候选不存在", 404)
+    if proposal.source_type != SOURCE_TYPE:
+        return None
+    with session.no_autoflush:
+        source, _ = _proposal_source(session, user_id, proposal, _read_clock(now))
+        return source.id
+
+
+def read_compilation(
+    session: Session, user_id: UUID, compilation_id: UUID, now: datetime
+) -> CompilationResponse:
+    """Recover original anchored results and the current revision in a caller-owned snapshot."""
+    now = _read_clock(now)
+    with session.no_autoflush:
+        user = session.scalar(select(User).where(User.id == user_id))
+        if user is None or not user.is_simulated:
+            raise PolicyLifecycleError("NOT_FOUND", "模拟用户不存在", 404)
+        source, result = _load(session, user_id, compilation_id, now, lock=False)
+        proposals = session.scalars(
+            select(PolicyProposal)
+            .where(
+                PolicyProposal.user_id == user_id,
+                PolicyProposal.source_type == SOURCE_TYPE,
+                PolicyProposal.idempotency_key.startswith(f"compilation:{source.id}:"),
+            )
+            .order_by(PolicyProposal.created_at, PolicyProposal.id)
+            .limit(1001)
+        ).all()
+        if len(proposals) > 1000:
+            raise PolicyLifecycleError(
+                "COMPILATION_CAPACITY_EXCEEDED", "编译修订数量超出读取上限", 409
+            )
+        for proposal in proposals:
+            _proposal_source(session, user_id, proposal, now)
+        current = [row for row in proposals if row.status in {"PROPOSED", "CONFIRMED"}]
+        if len(current) > 1:
+            raise PolicyLifecycleError(
+                "CONFLICTING_COMPILATION_STATE", "原编译存在多个当前候选", 409
+            )
+        selected: PolicyProposal | None
+        if current:
+            selected = current[0]
+        elif proposals:
+            latest = [row for row in proposals if row.created_at == proposals[-1].created_at]
+            if len(latest) > 1:
+                raise PolicyLifecycleError(
+                    "CONFLICTING_COMPILATION_STATE", "原编译历史候选无法唯一定位", 409
+                )
+            selected = latest[0]
+        else:
+            selected = None
+        configuration = (
+            selected.proposed_configuration if selected is not None else result.configuration
+        )
+        return _response(source, result, configuration, selected)
 
 
 def _response(

@@ -1,6 +1,7 @@
 """Consent, immutable policy versions and conservative invalidation; no funds execution."""
 
 import hmac
+import json
 from datetime import UTC, date, datetime, time, timedelta, timezone
 from typing import Any, Literal
 from uuid import UUID, uuid4
@@ -9,6 +10,8 @@ from app.db.models import (
     Account,
     ActionPlan,
     ActionReceipt,
+    ActionResourceReservation,
+    BankOperation,
     DecisionConstraint,
     DecisionRun,
     EvidenceItem,
@@ -16,8 +19,12 @@ from app.db.models import (
     Policy,
     PolicyProposal,
     PolicyVersion,
+    SimulatedBankPosting,
+    SimulatedBankRedemption,
     User,
 )
+from app.domain.execution import ACTION_PLAN_TYPES
+from app.domain.execution_types import BankCommand
 from app.domain.policy_configuration import configuration_hash, validate_configuration
 from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import or_, select
@@ -344,6 +351,105 @@ def _goal_asset_reference(session: Session, user_id: UUID, configuration: dict[s
             raise PolicyLifecycleError("INVALID_BILL_ACCOUNT", "账单账户不存在或不是当前用户信用卡")
 
 
+def _unsubmitted_command(session: Session, plan: ActionPlan, now: datetime) -> BankCommand | None:
+    """Only a complete unsubmitted original with no bank effects may lose its claims."""
+    try:
+        command = BankCommand.model_validate_json(json.dumps(plan.request["execution"]))
+        effect = command.effect
+        source = effect.cash_uses[0].account_id if effect.cash_uses else effect.position_account_id
+        if (
+            configuration_hash(plan.request) != plan.request_hash
+            or effect.operation_id != plan.id
+            or effect.user_id != plan.user_id
+            or plan.action_type != ACTION_PLAN_TYPES[effect.action_type]
+            or plan.amount_cents != effect.amount_cents
+            or plan.policy_version_id != effect.policy_version_id
+            or plan.source_account_id != source
+            or plan.destination_account_id
+            != (effect.destination_account_id if effect.destination_account_id != source else None)
+            or plan.goal_id != effect.goal_id
+            or plan.product_id != effect.product_id
+            or plan.position_id
+            != (effect.position_id if effect.action_type == "REDEEM_ASSET" else None)
+            or plan.created_at > now
+        ):
+            raise ValueError("Action projection differs from its immutable execution command")
+    except (KeyError, TypeError, ValueError) as error:
+        raise PolicyLifecycleError("INVALID_EXECUTION_SOURCE", str(error), 409) from error
+    operation = session.scalar(
+        select(BankOperation).where(
+            BankOperation.user_id == plan.user_id, BankOperation.action_plan_id == plan.id
+        )
+    )
+    redemption = session.scalar(
+        select(SimulatedBankRedemption.id).where(
+            SimulatedBankRedemption.user_id == plan.user_id,
+            SimulatedBankRedemption.action_plan_id == plan.id,
+        )
+    )
+    posting = session.scalar(
+        select(SimulatedBankPosting.id).where(
+            SimulatedBankPosting.user_id == plan.user_id,
+            or_(
+                SimulatedBankPosting.operation_id == plan.id,
+                SimulatedBankPosting.redemption_id == plan.id,
+            ),
+        )
+    )
+    if redemption is not None or posting is not None:
+        return None
+    if operation is not None:
+        if operation.status != "REJECTED":
+            return None
+        if (
+            operation.id != plan.id
+            or operation.idempotency_key != plan.idempotency_key
+            or operation.business_key != effect.business_key
+            or operation.operation_type != effect.action_type
+            or operation.request != command.model_dump(mode="json")
+            or operation.request_hash != configuration_hash(operation.request)
+            or operation.requested_at > now
+        ):
+            raise PolicyLifecycleError(
+                "BANK_RECONCILIATION_REQUIRED", "原银行拒绝与待失效动作不一致", 409
+            )
+    return command
+
+
+def _release_unsubmitted_claims(
+    session: Session, plan: ActionPlan, command: BankCommand, now: datetime
+) -> list[UUID]:
+    from app.services.execution_reservations import resolve_resources
+    from app.services.income_ledger import read_income_state, release_income_for_action
+
+    claims = session.scalars(
+        select(ActionResourceReservation).where(
+            ActionResourceReservation.user_id == plan.user_id,
+            ActionResourceReservation.action_plan_id == plan.id,
+        )
+    ).all()
+    if any(row.status not in {"RESERVED", "RELEASED"} for row in claims):
+        raise PolicyLifecycleError("RESOURCE_CONFLICT", "已消费原资源不能因策略失效释放", 409)
+    released = [row.id for row in claims if row.status == "RESERVED"]
+    if command.effect.income_uses:
+        ledger = read_income_state(session, plan.user_id, now).ledger
+        reservation = next(
+            (item for item in ledger.reservations if item.action_id == plan.id), None
+        )
+        if reservation is not None:
+            if reservation.state == "COMMITTED":
+                raise PolicyLifecycleError(
+                    "INCOME_RECONCILIATION_REQUIRED", "已消费原收入不能因策略失效释放", 409
+                )
+            if reservation.state == "RESERVED":
+                release_income_for_action(
+                    session, plan.user_id, plan.id, now, confirmed_no_effect=True
+                )
+    if released:
+        resolve_resources(session, plan.user_id, plan.id, "RELEASED", now)
+    return released
+
+
 def _invalidation(
     session: Session,
     user_id: UUID,
@@ -402,6 +508,7 @@ def _invalidation(
         latest_receipts.setdefault(recorded_receipt.action_plan_id, recorded_receipt)
     receipts = set(latest_receipts)
     invalidated, inflight = [], []
+    changed_execution: list[UUID] = []
     for plan in plans:
         receipt = latest_receipts.get(plan.id)
         failed_with_uncertain_effect = (
@@ -420,7 +527,20 @@ def _invalidation(
 
             before_status = plan.status
             before_data = audit_subject_data(plan)
+            command = (
+                _unsubmitted_command(session, plan, now) if "execution" in plan.request else None
+            )
+            if "execution" in plan.request and command is None:
+                inflight.append(plan.id)
+                continue
             plan.status = "INVALIDATED"
+            released_ids = (
+                _release_unsubmitted_claims(session, plan, command, now)
+                if command is not None
+                else []
+            )
+            if command is not None:
+                changed_execution.append(plan.id)
             record_action_transition(
                 session,
                 plan,
@@ -429,13 +549,29 @@ def _invalidation(
                 reason_code=reason_code,
                 cause_ref=cause_ref,
                 details={
-                    "policy_version_ids": sorted(str(identifier) for identifier in version_ids)
+                    "policy_version_ids": sorted(str(identifier) for identifier in version_ids),
+                    **(
+                        {
+                            "no_effect_status": "CONFIRMED",
+                            "released_claim_ids": sorted(
+                                str(identifier) for identifier in released_ids
+                            ),
+                        }
+                        if command is not None
+                        else {}
+                    ),
                 },
                 before_data=before_data,
             )
             invalidated.append(plan.id)
         elif plan.status == "INVALIDATED" and plan.id not in receipts:
             invalidated.append(plan.id)
+    if changed_execution:
+        from app.services.execution_exposure import refresh_execution_exposure
+        from app.services.recovery_projection import _epochs
+
+        _epochs(session, user_id, now, changed_execution[0])
+        refresh_execution_exposure(session, user_id, now, changed_execution[0])
     return invalidated, inflight
 
 

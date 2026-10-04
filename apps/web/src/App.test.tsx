@@ -24,6 +24,7 @@ const api = createServer((request, response) => {
 });
 
 beforeEach(async () => {
+  window.history.replaceState(null, '', '/');
   disconnected = false; fixture = dashboardFixture(); requests = [];
   client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
   await new Promise<void>((resolve) => api.listen(0, '127.0.0.1', resolve));
@@ -58,6 +59,17 @@ test('所有卡片来自唯一总览请求，当前保护取今天分层而非�
   expect(protection).not.toHaveTextContent('¥0.01');
   expect(screen.getByText(/执行仍需满足对应策略和确认权限/)).toBeVisible();
   expect(screen.getByRole('region', { name: '已自主配置' })).toHaveTextContent('已排除 2 笔手工持仓');
+});
+
+test('页面导航实际切换并可回到总览，未出现403/404页面入口', async () => {
+  openApp(); await connected(); const nav = screen.getByRole('navigation', { name: '页面导航' });
+  expect(within(nav).getAllByRole('link')).toHaveLength(3);
+  fireEvent.click(within(nav).getByRole('link', { name: '策略中心' }));
+  await screen.findByRole('heading', { name: '策略中心' });
+  expect(within(nav).getByRole('link', { name: '策略中心' })).toHaveAttribute('aria-current', 'page');
+  fireEvent.click(within(nav).getByRole('link', { name: '目标储备' })); await screen.findByRole('heading', { name: '目标储备' });
+  fireEvent.click(within(nav).getByRole('link', { name: '资金总览' })); await connected();
+  expect(screen.getByRole('region', { name: '91日资金边界' })).toBeVisible();
 });
 
 test('待归属目标账户现金仍受保护，不能标成已归属现金', async () => {

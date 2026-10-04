@@ -1,0 +1,418 @@
+{
+  "verified_at": "2026-10-04T18:09:57.209075+00:00",
+  "classification": "INDEX_EQUALS_TESTED_SOURCE_OR_REPOSITORY_TEXT_EOL_ONLY",
+  "mapped_staged_files": 51,
+  "tested_source_zip_members_unchanged": 225,
+  "exact_evidence_bytes": true,
+  "records": [
+    {
+      "path": "README.md",
+      "git_blob": "f967d6a1e541e7519253741dc308f1b638c39ecb",
+      "working_sha256": "ea537dfbc49e392a8ab7b599b51bdb3ad5c1513a1c0053275519f9921803e06e",
+      "staged_sha256": "dd9c65e4cd0918d553d9b710a5bf05b66635b15c60ef6fcba792c32c6a273f0c",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "apps/api/app/api/dependencies.py",
+      "git_blob": "b54f45352461fa90292b2eb9e69a4a82b35474e4",
+      "working_sha256": "733c63153e0e1db85cf548cfd688405d77175d478f5837471c410a0e7ae15f15",
+      "staged_sha256": "1f41f3868c5cc1e028f5c1a3d49867dd6646f3449bbfd39527d3382cc5043483",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "apps/api/app/api/v1/policies.py",
+      "git_blob": "653225bbf56e21c43c02a9f480b34be62ee0463d",
+      "working_sha256": "b32dea9e91fc10371b37e2fdc1b2e101f394a7b3d239a92e3187d60a185be81a",
+      "staged_sha256": "14f7cf2dcce15933a528b88af32d244aee18cc7ae09c3ef462298007e30a558a",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "apps/api/app/api/v1/policy_preview.py",
+      "git_blob": "19dbe18afbdc42b6a01310a9e75c75d52a33eb77",
+      "working_sha256": "58ab7063f46b058c352716446c3220b1d751fee4e50bdbc4b65548e59918d0a5",
+      "staged_sha256": "581f08af794ef7eea3b34aefda5580a77ac2892039e2c762c5ca44c885743a30",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "apps/api/app/domain/boundary.py",
+      "git_blob": "3d027989040b418421d802343bc0ae83f3b40cac",
+      "working_sha256": "a607e220ed637a22c3dd7ec3efcae57a88d698d94104a36e00aad420143706cb",
+      "staged_sha256": "8b4d9c06015d5ba96e6f14e4610456cb7bb1fbc9a069153507db2536d2a0ca98",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "apps/api/app/domain/policy_change_types.py",
+      "git_blob": "428d4252dfd18050d2bf026ebdfbcb24940f064d",
+      "working_sha256": "627ca5546b3cb8e7033f2273e19dbafbb0cc1b206bbe77d825a63dc1f2d29500",
+      "staged_sha256": "627ca5546b3cb8e7033f2273e19dbafbb0cc1b206bbe77d825a63dc1f2d29500",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/api/app/main.py",
+      "git_blob": "6dfb0c0d7c0160d2c04c637fc83cffadf967119c",
+      "working_sha256": "c22a4c22e3153467a9560c325dde08c5a06bd3fffcc0e95e39c119e09df85695",
+      "staged_sha256": "3b9b6c04bb9ae49abd9a6cc05ea5a371d196e019a79704b7233d3d3cc5af8f89",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "apps/api/app/services/boundary.py",
+      "git_blob": "845a98d84a17911b1080d32e2f2d9ad3ac86603b",
+      "working_sha256": "89f4d59498e35e6646218a59622b0fd4086fd8a27a78467a2c9b30e2f4603ec2",
+      "staged_sha256": "fd1f6ecb44feb921c4259e016988f37182eee8933c27d6677e18be088a6680f0",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "apps/api/app/services/dashboard.py",
+      "git_blob": "8c8f6867e8b5c2fd0dec284c71822b74dea38289",
+      "working_sha256": "262baaed98a39effb1fb9bf4401ded44e67b69cde202a8bb9b82154fa6985e0f",
+      "staged_sha256": "73ab8d7d79d870b2a62d1902f95900d74e904aad8a2a7e07ce89227e998a2066",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "apps/api/app/services/financial_read.py",
+      "git_blob": "951f2cd7bd58a74b749ae513545d09cfde61960f",
+      "working_sha256": "c350b082e2fc7fdc2760d9f46103a47881e929b09b256cca21d27fdcafe453ad",
+      "staged_sha256": "93056a07d635e3fb3c6fc21e808dc9461b71810108c1099f1120157c9e1b8b00",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "apps/api/app/services/goals.py",
+      "git_blob": "1ed50da5b6384312ca0b3fd72950d46e650efabf",
+      "working_sha256": "a7179f401ab5d9a9649f6c9bc8a75ec1029e11f6ab409c6715c142cc450efe8e",
+      "staged_sha256": "a7179f401ab5d9a9649f6c9bc8a75ec1029e11f6ab409c6715c142cc450efe8e",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/api/app/services/policy_compilation.py",
+      "git_blob": "6beab62c91df7a0f9cdf529e7c4b367615362259",
+      "working_sha256": "51e1f31f7f32153cc21b6b464666538b4bc8a8795934b870e99e27c9e15c4808",
+      "staged_sha256": "51e1f31f7f32153cc21b6b464666538b4bc8a8795934b870e99e27c9e15c4808",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/api/app/services/policy_lifecycle.py",
+      "git_blob": "ee1bfb1eedd401a844bf0aa85174669d5b999e50",
+      "working_sha256": "5d21bf3d81a1878a590c171b197fcdbf164c979f675571c1cfc8f717ba1cb00c",
+      "staged_sha256": "5d21bf3d81a1878a590c171b197fcdbf164c979f675571c1cfc8f717ba1cb00c",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/api/app/services/policy_preview.py",
+      "git_blob": "a466d14bc0e5e35abb10728d4685f08e2ae91057",
+      "working_sha256": "926b55fbcf9f08805c3321ad72fa1269c6ec17a9afb20b7edea8d23b74bad9e0",
+      "staged_sha256": "6f45d2891d5f166734a49ff2af3eb2b9e2925b9168367851c85d33ee2b98b205",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "apps/api/app/services/policy_preview_types.py",
+      "git_blob": "b80d88af900fe21843e4cc249970007cf5bfeed6",
+      "working_sha256": "977e28b2cf9e7ce035eacddfdc5d3f1d3a2b47d4f996e5a81c317e445c0bf359",
+      "staged_sha256": "3b45c70f7be5be29455ceb8dd3c3b374f5c331539df97738c0aadb7800f3441a",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "apps/api/app/tests/test_boundary_service.py",
+      "git_blob": "155f3514fb909a5521e313086f1497cb8d744172",
+      "working_sha256": "db0e6dc03971f99ed85e85ba5714bcbd7eab5dccf503d5e2cb766b46313f5760",
+      "staged_sha256": "db0e6dc03971f99ed85e85ba5714bcbd7eab5dccf503d5e2cb766b46313f5760",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/api/app/tests/test_goal_creation_income_epoch.py",
+      "git_blob": "cfa8e55c24de31b53f0c1b7fb33e66a1d02c1d7a",
+      "working_sha256": "2f04c0d42564a0ba0ae66a492d5ddbdbd524e06bc3d22e647ad5a46de328b580",
+      "staged_sha256": "2f04c0d42564a0ba0ae66a492d5ddbdbd524e06bc3d22e647ad5a46de328b580",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/api/app/tests/test_policy_change_boundary.py",
+      "git_blob": "71bf78600546d2a2c350ce0094477bb624b5f862",
+      "working_sha256": "05b67f56a56d0d0499c0dd648eae5693e6b7ce2990df3948309e1dd034207e78",
+      "staged_sha256": "05b67f56a56d0d0499c0dd648eae5693e6b7ce2990df3948309e1dd034207e78",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/api/app/tests/test_policy_change_preview_api.py",
+      "git_blob": "2120deb38fc22e972b4732f6ea5eb68b9ebfcab4",
+      "working_sha256": "ac669c9cb298a53de91441d806f8740c692b6f5e419de46deb280ecbc6c67e54",
+      "staged_sha256": "2ca6b1f397b7f9404826699139e5dad55adf0b437e7f49ccfa163039d3e90a67",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "apps/api/app/tests/test_policy_compilation_read.py",
+      "git_blob": "9a6699fcf177687663dc04738c26ecfda5a0304f",
+      "working_sha256": "1fcb0b173b6b1ddde9228e772323a1683e98366badc4226ea4624877d420ff55",
+      "staged_sha256": "1fcb0b173b6b1ddde9228e772323a1683e98366badc4226ea4624877d420ff55",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/api/app/tests/test_policy_execution_lifecycle.py",
+      "git_blob": "06e7c8c945a149b3dca1d23dd3f74888815cddbb",
+      "working_sha256": "92cd4f856007bd85a1c0607791b3f5384e04d472a6f38cd2c404fbe5d4956cd6",
+      "staged_sha256": "92cd4f856007bd85a1c0607791b3f5384e04d472a6f38cd2c404fbe5d4956cd6",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/App.test.tsx",
+      "git_blob": "28787861a4d73f3e3ef0fffcb3b860c2793e3c42",
+      "working_sha256": "d5a35d59a8f4aefce9abf0bd1df114d997402c4143b6433688ad29f0e251291f",
+      "staged_sha256": "d5a35d59a8f4aefce9abf0bd1df114d997402c4143b6433688ad29f0e251291f",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/App.tsx",
+      "git_blob": "fbf05241713c97a02b43ee7a05379fc75ceb5fdd",
+      "working_sha256": "e587debf073442c3ab28b30f434e35b49e8db60a49b726ded69b1b7f358939db",
+      "staged_sha256": "e587debf073442c3ab28b30f434e35b49e8db60a49b726ded69b1b7f358939db",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/api/goals.ts",
+      "git_blob": "85b0837458a074373e64f4c91f0480bff28d8063",
+      "working_sha256": "cf7c38e7e0ea5dd5233e4ee3ae6990098180be93c05fcb036a0b6ecafa37117b",
+      "staged_sha256": "cf7c38e7e0ea5dd5233e4ee3ae6990098180be93c05fcb036a0b6ecafa37117b",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/api/http.ts",
+      "git_blob": "9d4817bd6cefbb79ba5ce0a1ab86cc196c97afc6",
+      "working_sha256": "5be661b5462f749c5a019b04f7461147d6ff61b10a1f7e57f12aa9f3b99016cb",
+      "staged_sha256": "5be661b5462f749c5a019b04f7461147d6ff61b10a1f7e57f12aa9f3b99016cb",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/api/policies.test.ts",
+      "git_blob": "fd8521681beaec7a867c048178c952ae2e7b6316",
+      "working_sha256": "ee294ce5596f8272460300cc71ad289895cb118969dadd12c0b78853f333c8fd",
+      "staged_sha256": "ee294ce5596f8272460300cc71ad289895cb118969dadd12c0b78853f333c8fd",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/api/policies.ts",
+      "git_blob": "d908ca789d6596e86283e8f5c7faad5cc0fc1f29",
+      "working_sha256": "84f140560262e6b54bceeaba51979e21a1f75757151b73f574edbd2a4655388f",
+      "staged_sha256": "84f140560262e6b54bceeaba51979e21a1f75757151b73f574edbd2a4655388f",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/components/PolicyConfigForm.tsx",
+      "git_blob": "22efb0d86951585ed1e9f4c0a618ff7c015957dc",
+      "working_sha256": "6ac6014bf215d7b41e48fdd215042e3c3fe2b3b4e64afd92f8eb0dbc1d433cd7",
+      "staged_sha256": "6ac6014bf215d7b41e48fdd215042e3c3fe2b3b4e64afd92f8eb0dbc1d433cd7",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/features/policy-form.test.ts",
+      "git_blob": "181b1068342f6cf29571122ca1ca05a5398d3147",
+      "working_sha256": "3f7797e5f9520801aef430d0161680f462bb1a7fa72a23476bf60bee7c8d658b",
+      "staged_sha256": "3f7797e5f9520801aef430d0161680f462bb1a7fa72a23476bf60bee7c8d658b",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/features/policy-form.ts",
+      "git_blob": "0fff4e875537da62e24b3cf8146de6966491c54c",
+      "working_sha256": "335f1ed39f9390bc6fa4b140db180b68f76918e6123e82577eb47d2a5498efc0",
+      "staged_sha256": "335f1ed39f9390bc6fa4b140db180b68f76918e6123e82577eb47d2a5498efc0",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/pages/DashboardPage.tsx",
+      "git_blob": "fab5fe616518fa4084682c6c23e66b6a4dd42bef",
+      "working_sha256": "cec120455f4b7c59819f4b39f1fb929e2d3b74e187d002d23217babb4b05b512",
+      "staged_sha256": "cec120455f4b7c59819f4b39f1fb929e2d3b74e187d002d23217babb4b05b512",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/pages/GoalsPage.test.tsx",
+      "git_blob": "c6935d7adf38a5aaf7052ac370ca8e728434df83",
+      "working_sha256": "2f53a66bc410f62312df4a4f4d44bcb71d9e15d658b389b6e673efd943abcfc3",
+      "staged_sha256": "2f53a66bc410f62312df4a4f4d44bcb71d9e15d658b389b6e673efd943abcfc3",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/pages/GoalsPage.tsx",
+      "git_blob": "d0673bc32e0307cdb87802c6d3f8d26885c63170",
+      "working_sha256": "571f83ea7810048e456d1805bbb27fe5fdecbe3979df453249c827c13cafc4ea",
+      "staged_sha256": "571f83ea7810048e456d1805bbb27fe5fdecbe3979df453249c827c13cafc4ea",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/pages/PolicyCenterPage.test.tsx",
+      "git_blob": "0211dcf497a70a23b4f8fd0e2c92a133b4fcabe8",
+      "working_sha256": "e45b3e0ffa286544a7df590b6d7d732dd07ebc54cce1a9afc692f8587d1cfc31",
+      "staged_sha256": "e45b3e0ffa286544a7df590b6d7d732dd07ebc54cce1a9afc692f8587d1cfc31",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/pages/PolicyCenterPage.tsx",
+      "git_blob": "b444f47e5f5611af79044fd4cdab7b77bc4783aa",
+      "working_sha256": "3888f532b5ba8a81a4d6d9165efc6230e67c9f97303f24df5cbdb2c5ab5d093a",
+      "staged_sha256": "3888f532b5ba8a81a4d6d9165efc6230e67c9f97303f24df5cbdb2c5ab5d093a",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/styles.css",
+      "git_blob": "fe63cd005dac2491e1f93e6c91870e68261d854f",
+      "working_sha256": "9d2e82d7a503d2faa03a57301826faf4c77d6700ed4aab949fe33f9faca53533",
+      "staged_sha256": "9d2e82d7a503d2faa03a57301826faf4c77d6700ed4aab949fe33f9faca53533",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "apps/web/src/tests/policy-fixture.ts",
+      "git_blob": "04e86b6a0c05271b2773496af0109a22e54bf10f",
+      "working_sha256": "46e72fb59188e892fea490a9bd5adb369c253dda51ecaa8e7d6a4e72d4d15726",
+      "staged_sha256": "46e72fb59188e892fea490a9bd5adb369c253dda51ecaa8e7d6a4e72d4d15726",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "docs/progress/HANDOFF.md",
+      "git_blob": "36bb01f72416330264b25e76ffc5518325651bbc",
+      "working_sha256": "f2604b9d10c86039047b4a37280ae547d53fb4749459cf7a1022ea4d826e75d1",
+      "staged_sha256": "f2604b9d10c86039047b4a37280ae547d53fb4749459cf7a1022ea4d826e75d1",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "docs/progress/MVP-402.md",
+      "git_blob": "b219a84bd823d10de0c08b645cfe3d52a04cdd3a",
+      "working_sha256": "2b579d86dff15923025780520deef8bc367c438f5f0a9190fe99f07180eada00",
+      "staged_sha256": "2b579d86dff15923025780520deef8bc367c438f5f0a9190fe99f07180eada00",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "docs/progress/QUOTA-HANDOFF-2026-10-04.md",
+      "git_blob": "36bb01f72416330264b25e76ffc5518325651bbc",
+      "working_sha256": "f2604b9d10c86039047b4a37280ae547d53fb4749459cf7a1022ea4d826e75d1",
+      "staged_sha256": "f2604b9d10c86039047b4a37280ae547d53fb4749459cf7a1022ea4d826e75d1",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "docs/progress/STATUS.md",
+      "git_blob": "1a97eb7d0b76c531953201c761a074d4ab5f6a24",
+      "working_sha256": "1d540af30a86a1a81d88d51a33210554de785bcddc8dfe92e7e4c8be518f17d3",
+      "staged_sha256": "3a328241ee00b8ef792c52ef431b8a495addfade99def83cfbc4e8f639f9d361",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "docs/progress/evidence/MVP-402/archive-command.json",
+      "git_blob": "a939ed6910c0ff9650d05cafe23c03b1b9f1da45",
+      "working_sha256": "4619d7f2237fac870f8f92b9881395247f8d3ff8dc15069c1fbc02702758f65a",
+      "staged_sha256": "4619d7f2237fac870f8f92b9881395247f8d3ff8dc15069c1fbc02702758f65a",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "docs/progress/evidence/MVP-402/archive-command.txt",
+      "git_blob": "74c924eb392591a03288970386432cc7841e47f1",
+      "working_sha256": "041620f7939e9c77e661756391e1dfa31e9244db140a9597dbb9b45c666f55ca",
+      "staged_sha256": "041620f7939e9c77e661756391e1dfa31e9244db140a9597dbb9b45c666f55ca",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "docs/progress/evidence/MVP-402/index.json",
+      "git_blob": "605a935d301bb8c098ce2ce87e58bd697897389a",
+      "working_sha256": "a313e77659c21aa2137cf9ca766850e7b350bad319d35135fe838d5191f7277b",
+      "staged_sha256": "a313e77659c21aa2137cf9ca766850e7b350bad319d35135fe838d5191f7277b",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "docs/progress/evidence/MVP-402/native-edge-command-logs.zip",
+      "git_blob": "1ad01076b60328772e91f53a9c00e5b37b11e456",
+      "working_sha256": "be7bae373df0465af21e5780b1b776c73979e1192dec7a1646a98a9af7141b09",
+      "staged_sha256": "be7bae373df0465af21e5780b1b776c73979e1192dec7a1646a98a9af7141b09",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "docs/progress/evidence/MVP-402/raw-runtime.zip",
+      "git_blob": "cb9ddd3f54275e2a8082897988d98156f3f444e4",
+      "working_sha256": "beb4b95874e03ae2aafd2d85be8f212cec149ea7359df43afe1c30e6bdb0017f",
+      "staged_sha256": "beb4b95874e03ae2aafd2d85be8f212cec149ea7359df43afe1c30e6bdb0017f",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "docs/progress/evidence/MVP-402/source-at-closure-snapshot.zip",
+      "git_blob": "7fc1036630816b4f8f3c7ef12461582babf76230",
+      "working_sha256": "997ee995e62bb6c44ee5e899101a58ae8d199f27578eae34248d84a8708ce00a",
+      "staged_sha256": "997ee995e62bb6c44ee5e899101a58ae8d199f27578eae34248d84a8708ce00a",
+      "exact_bytes": true,
+      "repository_lf_only_normalization": false
+    },
+    {
+      "path": "docs/spec/requirements-traceability.md",
+      "git_blob": "b6a3b99b63312131a319f4e415acb5dfb7717154",
+      "working_sha256": "1632aaaa6697a3a5afcb89d32f6a6c5f8cf8271c12cecb51a5657a8d593a2400",
+      "staged_sha256": "a15d36412d000699214a54856da0824edfe423759f974abf8f59b7726674fc64",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "docs/spec/verification-map.md",
+      "git_blob": "1faf38d7774be81ed98faf52f17abc0ee0963ad6",
+      "working_sha256": "f43316dd4e07d934d8e57bc29c5fa74ef319fc44e0a702160482a271fb758cf7",
+      "staged_sha256": "8833f2b1bf1b2eeb958d9366188de40bddd88f3e2153bb5e3ca929835c521b4c",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "packages/contracts/openapi.json",
+      "git_blob": "fbf927f8455a25e6a6cba70fdc958b5461930442",
+      "working_sha256": "7ae30d15249a7287e261446142bf828f5ca68caa69562e1cbbf59a7d6cce2e53",
+      "staged_sha256": "407262e2b5f625cc38fe65b8e8c23a52b3d8bf3d5541a4519ea3e308742c1e2d",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    },
+    {
+      "path": "packages/contracts/schema.d.ts",
+      "git_blob": "c00690f15b413922dc8526b23c7dfa710f8c3667",
+      "working_sha256": "a6bc48dfab89ffb1cd4038179822f9b62cf50cc2dcb2a507e23e86ccae314a02",
+      "staged_sha256": "8f9575788c7112a1756f0bdee4d22949b9315d9f97f07a0b8f385cc7058c2390",
+      "exact_bytes": false,
+      "repository_lf_only_normalization": true
+    }
+  ],
+  "self_record_added_after_this_snapshot": true
+}

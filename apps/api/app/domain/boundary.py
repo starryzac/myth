@@ -30,6 +30,13 @@ from app.domain.boundary_types import (
     BoundaryResult,
     BoundarySnapshot,
 )
+from app.domain.policy_change_types import (
+    LivingReserveChangeEstimate,
+    PolicyChangeAssumption,
+    PolicyChangeBoundaryComputation,
+    calculate_assumption_digest,
+    validated_assumption,
+)
 from app.domain.policy_configuration import configuration_hash, validate_configuration
 
 ALGORITHM_VERSION = "strict-cash-boundary-v1"
@@ -54,7 +61,18 @@ def _financial(value: Any) -> Any:
     return value
 
 
-def _active(policy: BoundaryPolicyVersion, day: date, zone: timezone) -> bool:
+@dataclass(frozen=True)
+class _FinancialPolicyParameters:
+    policy_id: UUID
+    source_version_id: UUID
+    known_from: datetime
+    valid_from: datetime
+    valid_until: datetime | None
+    evidence_ids: tuple[UUID, ...]
+    hypothetical: bool = False
+
+
+def _active(policy: _FinancialPolicyParameters, day: date, zone: timezone) -> bool:
     start = datetime.combine(day, time.min, zone)
     end = start + timedelta(days=1)
     return policy.valid_from < end and (policy.valid_until is None or policy.valid_until > start)
@@ -132,11 +150,48 @@ class _BoundaryCore:
     last: date
 
 
+def _generated_before_change(
+    version: BoundaryPolicyVersion, stop: datetime, zone: timezone
+) -> bool:
+    """Mirror conservative real lifecycle history detection without producing new facts."""
+    if version.confirmed_at >= stop:
+        return False
+    configuration = validate_configuration(version.configuration)
+    if configuration["type"] != "recurring_obligation" or (
+        configuration["amount_rule"]["kind"] == "bill_balance"
+    ):
+        return False
+    start = max(version.confirmed_at, version.valid_from)
+    end = min(stop, version.valid_until or stop)
+    if end <= start:
+        return False
+    first, last = start.astimezone(zone).date(), end.astimezone(zone).date()
+    count = (last.year - first.year) * 12 + last.month - first.month + 1
+    if count > 120:
+        return True
+    try:
+        for month in _months(first, last):
+            due = month.replace(
+                day=min(configuration["due_day"], monthrange(month.year, month.month)[1])
+            )
+            day_start = datetime.combine(due, time.min, zone)
+            if day_start < end and day_start + timedelta(days=1) > start:
+                return True
+    except (ValueError, OverflowError):
+        return True
+    return False
+
+
 def _compute_boundary_core(
     snapshot: BoundarySnapshot,
     active_policy_versions: Sequence[BoundaryPolicyVersion],
     positions: Sequence[BoundaryPosition],
     products: Sequence[BoundaryProduct],
+    *,
+    _change: tuple[
+        BoundaryPolicyVersion, PolicyChangeAssumption, LivingReserveChangeEstimate | None
+    ]
+    | None = None,
 ) -> _BoundaryCore:
     """Compute financial v1 once and retain its original obligation metadata."""
     snapshot = BoundarySnapshot.model_validate(snapshot.model_dump())
@@ -310,6 +365,101 @@ def _compute_boundary_core(
         maximum = rule["amount_cents"] if rule["kind"] == "exact" else rule["max_cents"]
         if not minimum <= final <= maximum:
             raise ValueError("Final occurrence total is outside its confirmed amount rule")
+    policy_parameters = [
+        _FinancialPolicyParameters(
+            policy_id=policy.policy_id,
+            source_version_id=policy.version_id,
+            known_from=policy.confirmed_at,
+            valid_from=policy.valid_from,
+            valid_until=policy.valid_until,
+            evidence_ids=tuple(policy.evidence_ids),
+        )
+        for policy in active_policy_versions
+    ]
+    hypothetical_blockers: list[BlockingConstraint] = []
+    if _change is not None:
+        source, assumption, estimate = _change
+        original_config = validate_configuration(source.configuration)
+        if configuration_hash(original_config) != source.content_hash:
+            raise ValueError("Actual source policy configuration hash does not match")
+        if (
+            source.policy_id != assumption.policy_id
+            or source.version_id != assumption.source_version_id
+            or original_config["type"] != assumption.configuration["type"]
+        ):
+            raise ValueError("Hypothetical change differs from the actual source identity or type")
+        if assumption.assumed_confirmation_at != snapshot.as_of or (
+            assumption.timezone != snapshot.timezone
+        ):
+            raise ValueError("Hypothetical change must use the actual snapshot clock and timezone")
+        if source.confirmed_at > snapshot.as_of:
+            raise ValueError("Actual source policy confirmation is not known at the snapshot")
+        if source.valid_until is not None and source.valid_until < source.valid_from:
+            raise ValueError("Actual source policy window is reversed")
+        if source.valid_until is not None and snapshot.as_of >= source.valid_until:
+            raise ValueError("Expired actual source policies cannot be changed")
+        if assumption.source_status != "SUSPENDED" and (
+            (assumption.source_status == "CONFIRMED") != (source.valid_from > snapshot.as_of)
+        ):
+            raise ValueError("Actual source status differs from its effective window")
+        included = [p for p in active_policy_versions if p.policy_id == source.policy_id]
+        if included and included[0].model_dump() != source.model_dump():
+            raise ValueError("Actual source differs from its supplied current boundary version")
+        digest = calculate_assumption_digest(assumption, estimate)
+        financial_hash = configuration_hash(
+            {
+                "algorithm": "policy-change-boundary-v1",
+                "actual_boundary_input": financial_hash,
+                "actual_source": _financial(source.model_dump(mode="json")),
+                "assumption_digest": digest,
+                "snapshot_source_digest": snapshot.source_digest,
+            }
+        )
+        notes.append(f"HYPOTHETICAL_POLICY_CHANGE:{source.policy_id}:{digest}")
+        ambiguous_history = _generated_before_change(source, snapshot.as_of, zone) or (
+            original_config["type"] == "recurring_obligation"
+            and any(item.policy_id == source.policy_id for item in snapshot.occurrence_settlements)
+        )
+        if ambiguous_history:
+            hypothetical_blockers.append(
+                BlockingConstraint(
+                    code="HISTORICAL_OBLIGATION_RECONCILIATION_REQUIRED",
+                    entity_id=str(source.policy_id),
+                )
+            )
+        policy_parameters = [p for p in policy_parameters if p.policy_id != source.policy_id]
+        configs = {**configs, source.policy_id: assumption.configuration}
+        if assumption.effective_status not in {"SUSPENDED", "EXPIRED"} and not ambiguous_history:
+            parameters = _FinancialPolicyParameters(
+                policy_id=source.policy_id,
+                source_version_id=source.version_id,
+                known_from=assumption.assumed_confirmation_at,
+                valid_from=max(assumption.assumed_valid_from, assumption.assumed_confirmation_at),
+                valid_until=assumption.assumed_valid_until,
+                evidence_ids=(),
+                hypothetical=True,
+            )
+            policy_parameters.append(parameters)
+            policy_parameters.sort(key=lambda p: p.policy_id)
+            if assumption.configuration["type"] == "living_reserve" and any(
+                _active(parameters, first + timedelta(days=i), zone) for i in range(91)
+            ):
+                life.pop(source.version_id, None)
+                if estimate is not None and estimate.status == "READY":
+                    assert estimate.amount_cents is not None
+                    life[source.version_id] = estimate.amount_cents
+                else:
+                    hypothetical_blockers.append(
+                        BlockingConstraint(
+                            code="MISSING_HYPOTHETICAL_LIVING_ESTIMATE",
+                            entity_id=str(source.version_id),
+                        )
+                    )
+                    if estimate is not None:
+                        hypothetical_blockers.extend(
+                            BlockingConstraint(code=item.code, entity_id=item.entity_id)
+                            for item in estimate.issues
+                        )
     goal_minimum: dict[Any, int] = {}
     ownership = {item.policy_id: item for item in snapshot.goals}
     contributions = {
@@ -319,7 +469,7 @@ def _compute_boundary_core(
     evidence_blockers = [
         BlockingConstraint(code=item.code, entity_id=item.entity_id)
         for item in snapshot.source_issues
-    ]
+    ] + hypothetical_blockers
     if not snapshot.cash_accounts:
         evidence_blockers.append(BlockingConstraint(code="MISSING_CASH_ACCOUNTS"))
     for account in snapshot.cash_accounts:
@@ -359,47 +509,49 @@ def _compute_boundary_core(
             evidence_blockers.append(
                 BlockingConstraint(code="MISSING_GOAL_OWNERSHIP", entity_id=str(position.goal_id))
             )
-    for policy in active_policy_versions:
-        config = configs[policy.policy_id]
+    for parameters in policy_parameters:
+        config = configs[parameters.policy_id]
         if config["type"] != "recurring_obligation" and not any(
-            _active(policy, first + timedelta(days=i), zone) for i in range(91)
+            _active(parameters, first + timedelta(days=i), zone) for i in range(91)
         ):
             continue
-        if config["type"] == "living_reserve" and policy.version_id not in life:
+        if config["type"] == "living_reserve" and parameters.source_version_id not in life:
             evidence_blockers.append(
-                BlockingConstraint(code="MISSING_LIVING_ESTIMATE", entity_id=str(policy.version_id))
+                BlockingConstraint(
+                    code="MISSING_LIVING_ESTIMATE", entity_id=str(parameters.source_version_id)
+                )
             )
             continue
         if config["type"] == "recurring_obligation":
             rule = config["amount_rule"]
             if rule["kind"] == "bill_balance":
                 notes.append(
-                    f"UNISSUED_BILL_NOT_AN_EXISTING_LIABILITY:{policy.policy_id}:新账单到达须重新计算"
+                    f"UNISSUED_BILL_NOT_AN_EXISTING_LIABILITY:{parameters.policy_id}:新账单到达须重新计算"
                 )
                 continue
             amount = rule["amount_cents"] if rule["kind"] == "exact" else rule["max_cents"]
-            earliest = max(policy.confirmed_at, policy.valid_from).astimezone(zone).date()
+            earliest = max(parameters.known_from, parameters.valid_from).astimezone(zone).date()
             for month in _months(earliest, last):
                 due = month.replace(
                     day=min(config["due_day"], monthrange(month.year, month.month)[1])
                 )
-                if due < earliest or due > last or not _active(policy, due, zone):
+                if due < earliest or due > last or not _active(parameters, due, zone):
                     continue
                 period = month.strftime("%Y-%m")
-                key = f"policy:{policy.policy_id}:{period}"
-                if due < first and (policy.policy_id, period) not in settlements:
+                key = f"policy:{parameters.policy_id}:{period}"
+                if due < first and (parameters.policy_id, period) not in settlements:
                     evidence_blockers.append(
                         BlockingConstraint(code="MISSING_OCCURRENCE_SETTLEMENT", entity_id=key)
                     )
-                occurrence_amount = final_totals.get((policy.policy_id, period), amount)
-                paid = settlements.get((policy.policy_id, period), 0)
+                occurrence_amount = final_totals.get((parameters.policy_id, period), amount)
+                paid = settlements.get((parameters.policy_id, period), 0)
                 if paid > occurrence_amount:
                     raise ValueError("Occurrence settlement exceeds its configured obligation")
                 if occurrence_amount > paid:
                     payment_date = max(first, due)
                     remaining = occurrence_amount - paid
                     obligations[key] = (payment_date, remaining)
-                    fact = settlement_facts.get((policy.policy_id, period))
+                    fact = settlement_facts.get((parameters.policy_id, period))
                     total_basis: TotalBasis = (
                         "SETTLEMENT_FINAL"
                         if fact is not None and fact.final_total_cents is not None
@@ -420,8 +572,10 @@ def _compute_boundary_core(
                             kind="RECURRING_ORDINARY",
                             bill_id=None,
                             account_id=None,
-                            policy_id=policy.policy_id,
-                            policy_version_id=policy.version_id,
+                            policy_id=parameters.policy_id,
+                            policy_version_id=(
+                                None if parameters.hypothetical else parameters.source_version_id
+                            ),
                             period=period,
                             payee_id=config["payee_id"],
                             due_date=due,
@@ -437,7 +591,7 @@ def _compute_boundary_core(
                             payment_fact=payment_fact,
                             evidence_ids=tuple(
                                 sorted(
-                                    set(policy.evidence_ids).union(
+                                    set(parameters.evidence_ids).union(
                                         fact.evidence_ids if fact is not None else []
                                     )
                                 )
@@ -445,14 +599,14 @@ def _compute_boundary_core(
                         )
                     )
         elif config["type"] == "goal_saving":
-            if policy.policy_id not in ownership:
+            if parameters.policy_id not in ownership:
                 evidence_blockers.append(
                     BlockingConstraint(
-                        code="MISSING_GOAL_OWNERSHIP", entity_id=str(policy.policy_id)
+                        code="MISSING_GOAL_OWNERSHIP", entity_id=str(parameters.policy_id)
                     )
                 )
                 continue
-            goal = ownership[policy.policy_id]
+            goal = ownership[parameters.policy_id]
             deadline = date.fromisoformat(config["deadline"])
             month_min = config["monthly_contribution"]["min_cents"]
             total = 0
@@ -461,7 +615,7 @@ def _compute_boundary_core(
                 start = max(first, month)
                 end = min(last, deadline, month_end)
                 if start > end or not any(
-                    _active(policy, start + timedelta(days=i), zone)
+                    _active(parameters, start + timedelta(days=i), zone)
                     for i in range((end - start).days + 1)
                 ):
                     continue
@@ -479,7 +633,7 @@ def _compute_boundary_core(
                 )
                 total += max(0, month_min - contributed)
             shortfall = max(0, config["priority"]["minimum_cents"] - goal.allocated_cents)
-            goal_minimum[policy.policy_id] = min(
+            goal_minimum[parameters.policy_id] = min(
                 max(0, config["target_cents"] - goal.allocated_cents), max(total, shortfall)
             )
     if evidence_blockers:
@@ -500,21 +654,21 @@ def _compute_boundary_core(
         protected = {
             "obligations": sum(amount for _, amount in obligations.values()),
             "living": sum(
-                life[item.version_id]
-                for item in active_policy_versions
+                life[item.source_version_id]
+                for item in policy_parameters
                 if configs[item.policy_id]["type"] == "living_reserve"
                 and _active(item, current, zone)
             ),
             "emergency": sum(
                 configs[item.policy_id]["amount_cents"]
-                for item in active_policy_versions
+                for item in policy_parameters
                 if configs[item.policy_id]["type"] == "emergency_buffer"
                 and _active(item, current, zone)
             ),
             "goal_cash": goal_cash,
             "goal_minimum": sum(
                 goal_minimum.get(item.policy_id, 0)
-                for item in active_policy_versions
+                for item in policy_parameters
                 if _active(item, current, zone)
             ),
         }
@@ -736,6 +890,51 @@ def compute_boundary_with_details(
     """Build independent display facts from the single validated financial v1 computation."""
     core = _compute_boundary_core(snapshot, active_policy_versions, positions, products)
     return BoundaryComputation(
+        boundary=core.boundary,
+        details=BoundaryDisplayDetails(
+            as_of=core.snapshot.as_of,
+            timezone=core.snapshot.timezone,
+            window_start=core.first,
+            window_end=core.last,
+            input_digest=core.snapshot.source_digest,
+            boundary_hash=core.boundary.boundary_hash,
+            next_obligations=_next_obligations(core),
+            current_protection=_current_protection(core),
+            current_goal_ownership=_current_goal_ownership(core),
+            blocking_constraints=list(core.boundary.blocking_constraints),
+            source_issues=list(core.snapshot.source_issues),
+        ),
+    )
+
+
+def compute_policy_change_boundary(
+    snapshot: BoundarySnapshot,
+    active_policy_versions: Sequence[BoundaryPolicyVersion],
+    positions: Sequence[BoundaryPosition],
+    products: Sequence[BoundaryProduct],
+    *,
+    source_version: BoundaryPolicyVersion,
+    assumption: PolicyChangeAssumption,
+    living_estimate: LivingReserveChangeEstimate | None = None,
+) -> PolicyChangeBoundaryComputation:
+    """Project server-built assumptions over actual facts, with no new version or authority."""
+    # Keep the full original financial validation, including old settlement amount rules.
+    # The output of this validation is never used as an authority or cached across calls.
+    _compute_boundary_core(snapshot, active_policy_versions, positions, products)
+    source_version = BoundaryPolicyVersion.model_validate(source_version.model_dump())
+    assumption = validated_assumption(assumption)
+    if living_estimate is not None:
+        living_estimate = LivingReserveChangeEstimate.model_validate(living_estimate.model_dump())
+    digest = calculate_assumption_digest(assumption, living_estimate)
+    core = _compute_boundary_core(
+        snapshot,
+        active_policy_versions,
+        positions,
+        products,
+        _change=(source_version, assumption, living_estimate),
+    )
+    return PolicyChangeBoundaryComputation(
+        assumption_digest=digest,
         boundary=core.boundary,
         details=BoundaryDisplayDetails(
             as_of=core.snapshot.as_of,

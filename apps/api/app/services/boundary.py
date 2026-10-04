@@ -576,6 +576,53 @@ def _settlements(
     return facts
 
 
+def read_goal_month_fact(
+    goal: Goal,
+    sources: Sources,
+    zone: timezone,
+    ownership_as_of: datetime,
+) -> GoalMonthFact | None:
+    """Read one actual complete monthly statement, also for explicit policy assumptions."""
+    period = sources.now.astimezone(zone).strftime("%Y-%m")
+    month_proofs = [
+        item
+        for item in sources.candidates(CONTRIBUTION_SOURCE, "goal_id", goal.id)
+        if item.content.get("period") == period
+    ]
+    sources.used.update(item.id for item in month_proofs)
+    try:
+        if len(month_proofs) != 1:
+            raise ValueError("Current month needs one complete contribution statement")
+        month = month_proofs[0]
+        as_of = _known_import(month, sources)
+        if as_of != ownership_as_of:
+            raise ValueError("Contribution and ownership must describe the same snapshot")
+        if as_of.astimezone(zone).strftime("%Y-%m") != period:
+            raise ValueError("Contribution statement predates this month")
+        if not sources.valid(
+            month,
+            {
+                **_identity(sources),
+                "protocol": "goal-month-contribution-v1",
+                "goal_id": str(goal.id),
+                "period": period,
+                "contributed_cents": month.content["contributed_cents"],
+                "complete": True,
+                "as_of": _stamp(as_of),
+            },
+        ):
+            raise ValueError("Invalid contribution statement")
+        return GoalMonthFact(
+            goal_id=goal.id,
+            period=period,
+            contributed_cents=month.content["contributed_cents"],
+            evidence_ids=[month.id],
+        )
+    except (KeyError, TypeError, ValueError):
+        sources.issue("INVALID_GOAL_MONTH_SOURCE", goal.id, "本月累计贡献缺少完整、当前证明")
+        return None
+
+
 def _goals(
     rows: list[Goal],
     accounts: list[CashFact],
@@ -594,7 +641,6 @@ def _goals(
     goal_by_policy = {item.policy_id: item for item in rows}
     for identifier in active_ids - goal_by_policy.keys():
         sources.issue("MISSING_GOAL_PROJECTION", identifier, "已确认目标尚无可验证的归属投影")
-    period = sources.now.astimezone(zone).strftime("%Y-%m")
     for goal in rows:
         owned_positions = [
             item for item in positions if item.goal_id == goal.id and item.status != "REDEEMED"
@@ -662,44 +708,9 @@ def _goals(
             or version.configuration["deadline"] < sources.now.astimezone(zone).date().isoformat()
         ):
             continue
-        month_proofs = [
-            item
-            for item in sources.candidates(CONTRIBUTION_SOURCE, "goal_id", goal.id)
-            if item.content.get("period") == period
-        ]
-        sources.used.update(item.id for item in month_proofs)
-        try:
-            if len(month_proofs) != 1:
-                raise ValueError("Current month needs one complete contribution statement")
-            month = month_proofs[0]
-            as_of = _known_import(month, sources)
-            if as_of != ownership_as_of:
-                raise ValueError("Contribution and ownership must describe the same snapshot")
-            if as_of.astimezone(zone).strftime("%Y-%m") != period:
-                raise ValueError("Contribution statement predates this month")
-            if not sources.valid(
-                month,
-                {
-                    **_identity(sources),
-                    "protocol": "goal-month-contribution-v1",
-                    "goal_id": str(goal.id),
-                    "period": period,
-                    "contributed_cents": month.content["contributed_cents"],
-                    "complete": True,
-                    "as_of": _stamp(as_of),
-                },
-            ):
-                raise ValueError("Invalid contribution statement")
-            contributions.append(
-                GoalMonthFact(
-                    goal_id=goal.id,
-                    period=period,
-                    contributed_cents=month.content["contributed_cents"],
-                    evidence_ids=[month.id],
-                )
-            )
-        except (KeyError, TypeError, ValueError):
-            sources.issue("INVALID_GOAL_MONTH_SOURCE", goal.id, "本月累计贡献缺少完整、当前证明")
+        month = read_goal_month_fact(goal, sources, zone, ownership_as_of)
+        if month is not None:
+            contributions.append(month)
     unassigned: list[UnassignedGoalCash] = []
     for account in accounts:
         amount = account.balance_cents - assigned.get(account.account_id, 0)

@@ -141,6 +141,7 @@ class ProposalView(BaseModel):
     configuration_hash: str
     validation_ready: bool
     confirmed_policy_id: UUID | None
+    compilation_id: UUID | None = None
 
 
 class ProposalList(BaseModel):
@@ -158,7 +159,13 @@ def current_version(session: Session, policy_id: UUID, user_id: UUID) -> PolicyV
 
 
 @router.get("/policy-proposals", response_model=ProposalList, operation_id="list_policy_proposals")
-def list_policy_proposals(session: SessionDependency, user: DemoUserDependency) -> ProposalList:
+def list_policy_proposals(
+    session: SessionDependency,
+    user: DemoUserDependency,
+    now: ClockDependency,
+) -> ProposalList:
+    from app.services.policy_compilation import proposal_compilation_id
+
     proposals = session.scalars(
         select(PolicyProposal)
         .where(PolicyProposal.user_id == user.id)
@@ -184,9 +191,26 @@ def list_policy_proposals(session: SessionDependency, user: DemoUserDependency) 
                 configuration_hash=configuration_hash(configuration),
                 validation_ready=ready,
                 confirmed_policy_id=proposal.confirmed_policy_id,
+                compilation_id=proposal_compilation_id(session, user.id, proposal, now),
             )
         )
     return ProposalList(items=items)
+
+
+@router.get(
+    "/policy-compilations/{compilation_id}",
+    response_model=CompilationResponse,
+    operation_id="read_policy_compilation",
+)
+def read_policy_compilation(
+    compilation_id: UUID,
+    session: SessionDependency,
+    user: DemoUserDependency,
+    now: ClockDependency,
+) -> CompilationResponse:
+    from app.services.policy_compilation import read_compilation
+
+    return read_compilation(session, user.id, compilation_id, now)
 
 
 @router.post(

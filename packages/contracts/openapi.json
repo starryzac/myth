@@ -331,6 +331,79 @@
         }
       }
     },
+    "/api/v1/policy-compilations/{compilation_id}": {
+      "get": {
+        "tags": [
+          "策略生命周期"
+        ],
+        "summary": "Read Policy Compilation",
+        "operationId": "read_policy_compilation",
+        "parameters": [
+          {
+            "name": "compilation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Compilation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompilationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
     "/api/v1/policy-proposals/{proposal_id}/confirm": {
       "post": {
         "tags": [
@@ -992,6 +1065,89 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LifecycleResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/api/v1/policies/{policy_id}/change-preview": {
+      "post": {
+        "tags": [
+          "策略变更预览"
+        ],
+        "summary": "Preview Policy Change",
+        "operationId": "preview_policy_change",
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Policy Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyChangePreviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyChangePreviewResponse"
                 }
               }
             }
@@ -9786,6 +9942,189 @@
         ],
         "title": "PlannedExit"
       },
+      "PolicyChangePreviewRequest": {
+        "properties": {
+          "expected_version_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Expected Version Id"
+          },
+          "configuration": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Configuration"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_version_id",
+          "configuration"
+        ],
+        "title": "PolicyChangePreviewRequest"
+      },
+      "PolicyChangePreviewResponse": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "policy-change-preview-v1",
+            "title": "Schema Version",
+            "default": "policy-change-preview-v1"
+          },
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "preview_only": {
+            "type": "boolean",
+            "const": true,
+            "title": "Preview Only",
+            "default": true
+          },
+          "financial_only": {
+            "type": "boolean",
+            "const": true,
+            "title": "Financial Only",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "timezone": {
+            "type": "string",
+            "enum": [
+              "Asia/Shanghai",
+              "UTC"
+            ],
+            "title": "Timezone"
+          },
+          "policy_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Id"
+          },
+          "expected_version_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Expected Version Id"
+          },
+          "configuration": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Configuration"
+          },
+          "configuration_hash": {
+            "type": "string",
+            "title": "Configuration Hash"
+          },
+          "assumed_status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "CONFIRMED",
+              "SUSPENDED",
+              "EXPIRED"
+            ],
+            "title": "Assumed Status"
+          },
+          "assumed_valid_from": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Assumed Valid From"
+          },
+          "assumed_valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assumed Valid Until"
+          },
+          "assumption_digest": {
+            "type": "string",
+            "title": "Assumption Digest"
+          },
+          "current_fact_input_digest": {
+            "type": "string",
+            "title": "Current Fact Input Digest"
+          },
+          "hypothetical_input_digest": {
+            "type": "string",
+            "title": "Hypothetical Input Digest"
+          },
+          "before": {
+            "$ref": "#/components/schemas/FinancialBoundaryCard"
+          },
+          "after": {
+            "$ref": "#/components/schemas/FinancialBoundaryCard"
+          },
+          "delta_safe_idle_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delta Safe Idle Cents"
+          },
+          "delta_minimum_margin_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delta Minimum Margin Cents"
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Notes"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "as_of",
+          "timezone",
+          "policy_id",
+          "expected_version_id",
+          "configuration",
+          "configuration_hash",
+          "assumed_status",
+          "assumed_valid_from",
+          "assumed_valid_until",
+          "assumption_digest",
+          "current_fact_input_digest",
+          "hypothetical_input_digest",
+          "before",
+          "after",
+          "delta_safe_idle_cents",
+          "delta_minimum_margin_cents",
+          "notes"
+        ],
+        "title": "PolicyChangePreviewResponse"
+      },
       "PolicyChangeRequest": {
         "properties": {
           "accepted": {
@@ -10432,6 +10771,18 @@
               }
             ],
             "title": "Confirmed Policy Id"
+          },
+          "compilation_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Compilation Id"
           }
         },
         "type": "object",

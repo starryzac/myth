@@ -33,6 +33,7 @@ from app.services.boundary import (
     compute_user_boundary,
 )
 from app.services.demo_seed import DEMO_USER_ID, SEED_AS_OF, SeedSummary
+from app.services.execution_exposure import refresh_execution_exposure
 from app.services.policy_lifecycle import (
     PolicyLifecycleError,
     change_policy,
@@ -354,6 +355,8 @@ def goal_fixture(session: Session, *, with_proofs: bool, starts_on: str | None =
                 "as_of": SEED_AS_OF.isoformat(),
             },
         )
+        # Trusted fixture import: inherit the complete new source manifest without moving funds.
+        refresh_execution_exposure(session, DEMO_USER_ID, SEED_AS_OF, goal.id)
     return goal.id
 
 

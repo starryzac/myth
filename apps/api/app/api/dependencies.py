@@ -28,10 +28,22 @@ def get_session(
     with database_session(engine) as session:
         audit_read = request.url.path.startswith("/api/v1/audit/")
         dashboard_read = request.url.path == "/api/v1/dashboard" and request.method == "GET"
-        if request.method == "GET" or (audit_read and request.method == "POST"):
+        policy_preview_read = (
+            request.method == "POST"
+            and request.url.path.startswith("/api/v1/policies/")
+            and request.url.path.endswith("/change-preview")
+        )
+        if (
+            request.method == "GET"
+            or (audit_read and request.method == "POST")
+            or policy_preview_read
+        ):
             # One database snapshot for aggregate facts across multiple SELECTs.
             session.connection(execution_options={"isolation_level": "REPEATABLE READ"})
-        if audit_read or dashboard_read:
+        compilation_read = request.method == "GET" and request.url.path.startswith(
+            "/api/v1/policy-compilations/"
+        )
+        if audit_read or dashboard_read or policy_preview_read or compilation_read:
             session.execute(text("SET TRANSACTION READ ONLY"))
         yield session
 
