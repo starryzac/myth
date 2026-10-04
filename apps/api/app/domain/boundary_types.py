@@ -53,6 +53,13 @@ class SettlementFact(SourcedFact):
     period: Annotated[str, Field(pattern=r"^[0-9]{4}-(0[1-9]|1[0-2])$")]
     paid_cents: MoneyCents
     settled_at: datetime
+    final_total_cents: MoneyCents | None = None
+
+    @model_validator(mode="after")
+    def paid_within_final_total(self) -> Self:
+        if self.final_total_cents is not None and self.paid_cents > self.final_total_cents:
+            raise ValueError("Paid amount exceeds the confirmed final occurrence total")
+        return self
 
 
 class GoalOwnership(SourcedFact):

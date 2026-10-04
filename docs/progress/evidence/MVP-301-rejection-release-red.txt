@@ -1,0 +1,38 @@
+F
+================================== FAILURES ===================================
+__ test_definite_bank_refusal_releases_only_independently_unaccepted_claims ___
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_1959a2c1b90741c5886776120829c706)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001ECF23108F0>
+
+    def test_definite_bank_refusal_releases_only_independently_unaccepted_claims(
+        boundary_engine: Engine, monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        goal_id, _ = zero_goal_income_setup(boundary_engine)
+        prepared = execution.prepare_action(boundary_engine, DEMO_USER_ID,
+            PrepareActionRequest(idempotency_key="revoke-at-bank", intent=GoalIntent(kind="allocate_goal", goal_id=goal_id)), SEED_AS_OF)
+        bank = execution.process_operation
+        def revoke_before_bank(engine: Engine, user: UUID, action_id: UUID, now: object) -> object:
+            with Session(engine) as session, session.begin():
+                action = session.get(ActionPlan, action_id)
+                assert action is not None
+                version = session.get(PolicyVersion, action.policy_version_id)
+                assert version is not None
+                revoke_policy(session, user, version.policy_id, version.id, now)
+            return bank(engine, user, action_id, now)
+        monkeypatch.setattr(execution, "process_operation", revoke_before_bank)
+        with pytest.raises(PolicyLifecycleError):
+            execution.execute_action(boundary_engine, DEMO_USER_ID, prepared.action_id, SEED_AS_OF)
+        with Session(boundary_engine) as session:
+            action = session.get(ActionPlan, prepared.action_id)
+>           assert action is not None and action.status == "INVALIDATED"
+E           AssertionError: assert (<app.db.models.ActionPlan object at 0x000001ECF247A6F0> is not None and 'UNKNOWN' == 'INVALIDATED'
+E             
+E             - INVALIDATED
+E             + UNKNOWN)
+
+apps\api\app\tests\test_execution_failures.py:124: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_failures.py::test_definite_bank_refusal_releases_only_independently_unaccepted_claims
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 3 deselected in 7.01s

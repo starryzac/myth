@@ -1,0 +1,85 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_context_excludes_only_own_reserved_purchase_without_double_counting_exposure _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_bfdaf18394854521851d399faeb383f6)
+
+    def test_context_excludes_only_own_reserved_purchase_without_double_counting_exposure(demo_engine: Engine) -> None:
+        from app.db.models import Account
+        from app.domain.execution import execution_effect_hash
+        from app.domain.execution_types import BankCommand, CashUse
+        from app.domain.policy_configuration import configuration_hash
+        from app.services.execution_exposure import refresh_execution_exposure
+        from app.services.execution_reservations import ResourceClaim, reserve_resources
+        from app.tests.test_asset_allocation_service import authorization, purchase_action
+        from app.tests.test_boundary_service import confirmed_policy
+    
+        seed_demo(demo_engine)
+        with Session(demo_engine) as session, session.begin():
+            policy_id, version_id = confirmed_policy(session,authorization())
+            source = session.scalars(select(Account).where(Account.account_type=="CASH")).first()
+            asset = session.scalars(select(Account).where(Account.account_type=="CASH_MANAGEMENT")).first()
+            assert source is not None and asset is not None
+            commands=[]
+            for amount in (50000,20000):
+                action=purchase_action(session,version_id,amount)
+                product=session.get(AssetProduct,action.product_id)
+                assert product is not None
+                effect=ExecutionEffect(operation_id=action.id,user_id=DEMO_USER_ID,
+                    business_key="purchase:"+str(action.id),action_type="PURCHASE_ASSET",amount_cents=amount,
+                    cash_uses=[CashUse(account_id=source.id,amount_cents=amount)],
+                    policy_id=policy_id,policy_version_id=version_id,policy_version_ids=[version_id],
+                    product_id=product.id,product_version_number=product.version_number,
+                    terms_digest=configuration_hash(product.maturity_rule),position_id=uuid4(),
+                    position_account_id=asset.id,valid_from=SEED_AS_OF,expires_at=SEED_AS_OF+timedelta(minutes=15))
+                action.request={"execution":BankCommand(effect=effect,effect_hash=execution_effect_hash(effect)).model_dump(mode="json")}
+                action.request_hash=configuration_hash(action.request)
+                action.status="SUBMITTED"
+                reserve_resources(session,DEMO_USER_ID,action.id,[
+                    ResourceClaim(resource_kind="CASH",resource_key=str(source.id),amount_cents=amount,capacity_cents=source.balance_cents),
+                    ResourceClaim(resource_kind="BUSINESS",resource_key=effect.business_key,amount_cents=1,capacity_cents=1)],SEED_AS_OF)
+                commands.append(effect)
+            refresh_execution_exposure(session,DEMO_USER_ID,SEED_AS_OF,uuid4())
+        before=database_snapshot(demo_engine)
+        with Session(demo_engine) as session:
+            all_reserved=load_execution_context(session,DEMO_USER_ID,commands[0],SEED_AS_OF)
+            assert all_reserved.source_issues == []
+>           assert all_reserved.reserved_cash_by_account == {source.id:70000}
+                                                             ^^^^^^^^^
+
+apps\api\app\tests\test_execution_context.py:177: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\orm\attributes.py:575: in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\attributes.py:1091: in get
+    value = self._fire_loader_callables(state, key, passive)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\attributes.py:1121: in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:833: in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+mapper = <Mapper at 0x2088d6aa3c0; Account>
+state = <sqlalchemy.orm.state.InstanceState object at 0x000002088E9FFEF0>
+attribute_names = {'account_type', 'balance_cents', 'bank_code', 'created_at', 'currency', 'external_ref', ...}
+passive = symbol('PASSIVE_OFF')
+
+    def _load_scalar_attributes(mapper, state, attribute_names, passive):
+        """initiate a column-based attribute refresh operation."""
+    
+        # assert mapper is _state_mapper(state)
+        session = state.session
+        if not session:
+>           raise orm_exc.DetachedInstanceError(
+                "Instance %s is not bound to a Session; "
+                "attribute refresh operation cannot proceed" % (state_str(state))
+            )
+E           sqlalchemy.orm.exc.DetachedInstanceError: Instance <Account at 0x2088ea86e70> is not bound to a Session; attribute refresh operation cannot proceed (Background on this error at: https://sqlalche.me/e/21/bhk3)
+
+.venv\Lib\site-packages\sqlalchemy\orm\loading.py:1633: DetachedInstanceError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_context.py::test_context_excludes_only_own_reserved_purchase_without_double_counting_exposure
+1 failed, 4 deselected in 5.21s

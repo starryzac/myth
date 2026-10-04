@@ -8,7 +8,9 @@ from app.db.models import (
     Account,
     ActionPlan,
     ActionReceipt,
+    ActionResourceReservation,
     AssetPosition,
+    BankOperation,
     PolicyVersion,
     SimulatedBankPosting,
     SimulatedBankRedemption,
@@ -111,7 +113,18 @@ def load_asset_exposure(
             select(SimulatedBankPosting).where(SimulatedBankPosting.user_id == sources.user_id)
         )
     )
-    is_v2 = statement.content.get("protocol") == "asset-exposure-v2"
+    is_v3 = statement.content.get("protocol") == "asset-exposure-v3"
+    is_v2 = statement.content.get("protocol") in {"asset-exposure-v2", "asset-exposure-v3"}
+    bank_operations = list(
+        session.scalars(select(BankOperation).where(BankOperation.user_id == sources.user_id))
+    )
+    resource_reservations = list(
+        session.scalars(
+            select(ActionResourceReservation).where(
+                ActionResourceReservation.user_id == sources.user_id
+            )
+        )
+    )
     try:
         if (
             len(positions) > 10000
@@ -138,6 +151,8 @@ def load_asset_exposure(
             settlements=settlements,
             bank_requests=bank_requests if is_v2 else None,
             bank_postings=bank_postings if is_v2 else None,
+            bank_operations=bank_operations if is_v3 else None,
+            resource_reservations=resource_reservations if is_v3 else None,
         )
         if configuration_hash(expected) != configuration_hash(
             statement.content
@@ -147,6 +162,12 @@ def load_asset_exposure(
             raise ValueError("Exposure epoch is not yet known")
         if is_v2:
             validate_bank_projection(session, sources.user_id, context.snapshot.as_of)
+        if not is_v3 and (
+            resource_reservations
+            or any(row.legacy_redemption_id is None for row in bank_operations)
+            or any("execution" in row.request for row in actions)
+        ):
+            raise ValueError("Generic execution requires complete independent exposure v3")
         watermarks = [row.observed_at for row in accounts]
         watermarks += [row.purchased_at for row in positions]
         watermarks += [row.created_at for row in actions]
@@ -155,6 +176,18 @@ def load_asset_exposure(
             stamp
             for row in receipts
             for stamp in (row.created_at, row.occurred_at, row.reconciled_at)
+            if stamp is not None
+        ]
+        watermarks += [
+            stamp
+            for row in bank_operations
+            for stamp in (row.created_at, row.requested_at, row.settled_at)
+            if stamp is not None
+        ]
+        watermarks += [
+            stamp
+            for row in resource_reservations
+            for stamp in (row.created_at, row.resolved_at)
             if stamp is not None
         ]
         watermarks += [
@@ -207,7 +240,7 @@ def load_asset_exposure(
         reserved_goals: dict[UUID, int] = {}
         materialized: dict[UUID, UUID] = {}
         acquisition_transactions: set[UUID] = set()
-        redemptions: dict[UUID, SimulatedBankRedemption] = {}
+        redemptions: dict[UUID, SimulatedBankRedemption | BankOperation] = {}
 
         def transaction_for(identifier: UUID) -> Transaction:
             row = by_transaction[identifier]
@@ -233,6 +266,50 @@ def load_asset_exposure(
             if configuration_hash(action.request) != action.request_hash:
                 raise ValueError("Action request hash mismatch")
             state = declaration.get("state")
+            if "execution" in action.request:
+                from app.services.execution_exposure import validate_execution_declaration
+
+                command = validate_execution_declaration(
+                    action,
+                    declaration,
+                    receipts,
+                    bank_operations,
+                    resource_reservations,
+                    bank_postings,
+                    epoch,
+                )
+                effect = command.effect
+                if state == "EXECUTION_RESERVED":
+                    for use in effect.cash_uses:
+                        reserved[use.account_id] = (
+                            reserved.get(use.account_id, 0) + use.amount_cents
+                        )
+                    if effect.action_type == "PURCHASE_ASSET":
+                        scope = _scope(session, context, effect.policy_version_id)
+                        if scope != _goal_scope(effect.goal_id):
+                            raise ValueError(
+                                "Reserved purchase scope differs from its authorization"
+                            )
+                        if effect.goal_id is not None:
+                            reserved_goals[effect.goal_id] = (
+                                reserved_goals.get(effect.goal_id, 0) + effect.amount_cents
+                            )
+                        if scope == _goal_scope(goal_id):
+                            pending += effect.amount_cents
+                            counted_actions.append(action.id)
+                    continue
+                if state == "EXECUTION_SETTLED" and effect.action_type == "REDEEM_ASSET":
+                    operation = next(
+                        row for row in bank_operations if row.action_plan_id == action.id
+                    )
+                    if (
+                        effect.position_id is None
+                        or by_position[effect.position_id].status != "REDEEMED"
+                    ):
+                        raise ValueError("Settled redemption has no closed original position")
+                    redemptions[effect.position_id] = operation
+                if state != "MATERIALIZED":
+                    continue
             if action.action_type in {"ASSET_REDEEM", "ASSET_MATURITY"}:
                 if not is_v2:
                     raise ValueError("Recovery requires complete independent bank exposure v2")
@@ -402,10 +479,26 @@ def load_asset_exposure(
                 position.status == "REDEEMED" and position.id not in redemptions
             ):
                 raise ValueError("Unknown or redeemed exposure needs reconciliation outside v1")
-            transaction = transaction_for(UUID(proof.content["purchase_transaction_id"]))
-            if (
-                transaction.amount_cents != position.principal_cents
-                or transaction.occurred_at != position.purchased_at
+            if proof.content.get("acquisition_protocol") == "execution-purchase-v1":
+                from app.services.execution_sources import (
+                    acquisition_transactions as purchase_sources,
+                )
+
+                purchases = purchase_sources(
+                    session, sources.user_id, position, proof, context.snapshot.as_of
+                )
+                for purchase in purchases:
+                    transaction_for(purchase.id)
+                transaction = next(
+                    row
+                    for row in purchases
+                    if str(row.id) == proof.content["purchase_transaction_id"]
+                )
+            else:
+                transaction = transaction_for(UUID(proof.content["purchase_transaction_id"]))
+                purchases = [transaction]
+            if sum(row.amount_cents for row in purchases) != position.principal_cents or any(
+                row.occurred_at != position.purchased_at for row in purchases
             ):
                 raise ValueError("Position principal does not match its original bank purchase")
             acquisition = proof.content.get("acquisition")

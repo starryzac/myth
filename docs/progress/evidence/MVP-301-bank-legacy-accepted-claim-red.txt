@@ -1,0 +1,9 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_________ test_generic_claim_cannot_reserve_legacy_accepted_principal _________
+apps\api\app\tests\test_execution_bank.py:638: in test_generic_claim_cannot_reserve_legacy_accepted_principal
+    with pytest.raises(PolicyLifecycleError),session.begin_nested():
+E   Failed: DID NOT RAISE PolicyLifecycleError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_bank.py::test_generic_claim_cannot_reserve_legacy_accepted_principal
+1 failed, 10 deselected in 5.19s

@@ -204,16 +204,37 @@ def test_allocation_preview_requires_complete_sources_and_is_read_only(
 def test_http_preview_allocates_only_verified_available_income_and_preserves_reservations(
     goal_client: tuple[TestClient, Engine],
 ) -> None:
+    from uuid import uuid5
+
+    from app.services.execution_bank import open_execution_anchors
+    from app.services.execution_exposure import refresh_execution_exposure
+    from app.services.income_ledger import read_income_ledger
+    from app.services.simulated_bank import open_simulated_bank
+
     client, engine = goal_client
     body = confirmed_goal_request(client, engine)
     created = client.post("/api/v1/goals", json=body)
     assert created.status_code == 200
     goal_id = created.json()["goal"]["id"]
     with Session(engine) as session, session.begin():
-        account = session.scalar(select(Account).where(Account.account_type == "CASH"))
-        assert account is not None
+        # Explicit synthetic import: a new account with its own independent opening.
+        # Existing seed bank balances are never rewritten to fit application facts.
+        account = Account(
+            id=uuid4(),
+            user_id=DEMO_USER_ID,
+            created_at=NOW,
+            external_ref="203-http-income-import",
+            name="模拟新增收入账户",
+            account_type="CASH",
+            bank_code="ICBC",
+            currency="CNY",
+            balance_cents=400000,
+            observed_at=NOW,
+        )
+        session.add(account)
+        session.flush()
         source_account_id = str(account.id)
-        starting = account.balance_cents
+        starting = 0
         income_id = uuid4()
         for identifier, direction, amount, balance, role in (
             (income_id, "CREDIT", 500000, starting + 500000, "INCOME"),
@@ -260,21 +281,37 @@ def test_http_preview_allocates_only_verified_available_income_and_preserves_res
                     observed_at=NOW,
                 )
             )
-        account.balance_cents = starting + 400000
-        account.observed_at = NOW
-        balance_proof = next(
-            item
-            for item in session.scalars(select(EvidenceItem)).all()
-            if item.source_type == "SIMULATED_BANK_BALANCE"
-            and item.content["account_id"] == str(account.id)
-        )
-        balance_proof.content = {
-            **balance_proof.content,
+        balance_content = {
+            "simulation": True,
+            "user_id": str(DEMO_USER_ID),
+            "account_id": str(account.id),
+            "account_type": "CASH",
+            "currency": "CNY",
             "balance_cents": account.balance_cents,
             "as_of": NOW.isoformat(),
         }
-        balance_proof.content_hash = configuration_hash(balance_proof.content)
-        balance_proof.observed_at = NOW
+        session.add(
+            EvidenceItem(
+                id=uuid4(),
+                user_id=DEMO_USER_ID,
+                created_at=NOW,
+                evidence_level="BANK_CONFIRMED",
+                source_type="SIMULATED_BANK_BALANCE",
+                source_ref="203-http-income-import",
+                content=balance_content,
+                content_hash=configuration_hash(balance_content),
+                valid_from=NOW,
+                observed_at=NOW,
+                status="VALID",
+            )
+        )
+        open_simulated_bank(
+            session,
+            DEMO_USER_ID,
+            NOW,
+            cash_balances={account.id: 400000},
+            position_principals={},
+        )
         session.flush()
         cash_accounts = list(session.scalars(select(Account).where(Account.account_type == "CASH")))
         evidence = {item.id: item for item in session.scalars(select(EvidenceItem))}
@@ -325,6 +362,10 @@ def test_http_preview_allocates_only_verified_available_income_and_preserves_res
                 status="VALID",
             )
         )
+        session.flush()
+        imported_ledger = read_income_ledger(session, DEMO_USER_ID, NOW)
+        open_execution_anchors(session, DEMO_USER_ID, NOW, income_ledger=imported_ledger)
+        refresh_execution_exposure(session, DEMO_USER_ID, NOW, income_id)
     before = all_tables(engine)
     path = f"/api/v1/goals/{goal_id}/allocation-preview"
     response = client.get(path)
@@ -339,6 +380,7 @@ def test_http_preview_allocates_only_verified_available_income_and_preserves_res
         {
             "origin_transaction_id": str(income_id),
             "account_id": source_account_id,
+            "fragment_id": str(uuid5(income_id, "income-location:" + source_account_id)),
             "amount_cents": 200000,
             "remaining_available_cents": 100000,
         }

@@ -55,7 +55,7 @@ def create_goal_projection(
     if now.tzinfo is None or now.utcoffset() is None:
         raise PolicyLifecycleError("INVALID_CLOCK", "服务器时间必须带时区")
     now = now.astimezone(UTC)
-    user = session.get(User, user_id)
+    user = session.scalar(select(User).where(User.id == user_id).with_for_update())
     if user is None or not user.is_simulated:
         raise PolicyLifecycleError("NOT_FOUND", "模拟用户不存在", 404)
     if user.timezone not in {"UTC", "Asia/Shanghai"}:
@@ -99,6 +99,11 @@ def create_goal_projection(
         return GoalResponse(goal=GoalView.model_validate(existing))
     if date.fromisoformat(config["deadline"]) < now.astimezone(zone).date():
         raise PolicyLifecycleError("GOAL_DEADLINE_PASSED", "目标截止日已过，需重新确认策略", 409)
+    from app.services.simulated_bank import validate_bank_projection, validate_recovery_exposure
+
+    # Do not let a zero goal initialization republish unrelated, inconsistent bank facts.
+    validate_bank_projection(session, user_id, now)
+    validate_recovery_exposure(session, user_id, now)
     monthly, priority = config["monthly_contribution"], config["priority"]
     goal = Goal(
         id=uuid5(policy_id, "goal-projection-v1"),
@@ -165,6 +170,13 @@ def create_goal_projection(
             )
         )
     session.flush()
+    from app.services.execution_bank import open_execution_anchors
+    from app.services.execution_exposure import refresh_execution_exposure
+
+    # Only this newly created, zero-owned goal receives an independent opening.
+    # Existing positive projections return above; they can never repair bank truth here.
+    open_execution_anchors(session, user_id, now, goal_balances={goal.id: (0, 0)})
+    refresh_execution_exposure(session, user_id, now, goal.id)
     return GoalResponse(goal=GoalView.model_validate(goal))
 
 

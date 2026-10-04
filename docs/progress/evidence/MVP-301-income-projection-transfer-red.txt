@@ -1,0 +1,38 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_transfer_projection_uses_bank_facts_once_and_preserves_income_origin __
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_c0fa5039d54b490eb29338d22209c9b5)
+
+    def test_transfer_projection_uses_bank_facts_once_and_preserves_income_origin(boundary_engine: Engine) -> None:
+        action_id, source_id, destination_id = transfer_action(boundary_engine)
+        with Session(boundary_engine) as session:
+            before = {row.id: row.balance_cents for row in session.scalars(select(Account))}
+            original = session.scalar(select(EvidenceItem).where(EvidenceItem.source_type == LEDGER_SOURCE, EvidenceItem.status == "VALID"))
+            assert original is not None
+            origins = original.content["origins"]
+            fragments = original.content["fragments"]
+        result = process_operation(boundary_engine, DEMO_USER_ID, action_id, SEED_AS_OF)
+        with Session(boundary_engine) as session, session.begin():
+            operation = session.get(BankOperation, result.operation_id)
+            assert operation is not None
+>           receipt = project_execution(session, operation, SEED_AS_OF)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_execution_projection.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000001ED33957C80>
+operation = <app.db.models.BankOperation object at 0x000001ED33C6BCB0>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def project_execution(
+        session: Session, operation: BankOperation, now: datetime
+    ) -> ActionReceipt | None:
+>       raise NotImplementedError
+E       NotImplementedError
+
+apps\api\app\services\execution_projection.py:12: NotImplementedError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_projection.py::test_transfer_projection_uses_bank_facts_once_and_preserves_income_origin
+1 failed in 5.62s

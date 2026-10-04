@@ -1,0 +1,32 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_transfer_preserves_total_cash_and_hash_survives_execution_clock _____
+
+    def test_transfer_preserves_total_cash_and_hash_survives_execution_clock() -> None:
+        effect = transfer()
+>       before_hash = execution_effect_hash(effect)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_execution_domain.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+effect = ExecutionEffect(simulation=True, operation_id=UUID('00000000-0000-0000-0000-000000000004'), user_id=UUID('00000000-000...4, 8, 0, tzinfo=datetime.timezone.utc), expires_at=datetime.datetime(2026, 10, 4, 8, 15, tzinfo=datetime.timezone.utc))
+
+    def execution_effect_hash(effect: ExecutionEffect) -> str:
+>       raise NotImplementedError
+E       NotImplementedError
+
+apps\api\app\domain\execution.py:11: NotImplementedError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] �ܾ����ʡ�: 'F:\\ѧУ�\\���б�\\Ǯ;�н�\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] �ܾ����ʡ�: 'F:\\ѧУ�\\���б�\\Ǯ;�н�\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_domain.py::test_transfer_preserves_total_cash_and_hash_survives_execution_clock
+1 failed, 2 warnings in 0.78s

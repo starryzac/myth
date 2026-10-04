@@ -1,0 +1,35 @@
+...F
+================================== FAILURES ===================================
+_ test_http_goal_asset_placement_preserves_total_ownership_and_monthly_contribution _
+apps\api\app\tests\test_asset_allocation_api.py:208: in test_http_goal_asset_placement_preserves_total_ownership_and_monthly_contribution
+    assert result["status"] == "READY"
+E   AssertionError: assert 'INSUFFICIENT_EVIDENCE' == 'READY'
+E     
+E     - READY
+E     + INSUFFICIENT_EVIDENCE
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "5d0d8be6-4b22-46d1-b627-8d07b50e6464", "method": "POST", "status": 200, "duration_ms": 141.0}
+{"event": "http_request", "request_id": "e2f38409-59cd-44b5-ba77-58c911bd6528", "method": "POST", "status": 200, "duration_ms": 47.0}
+{"event": "http_request", "request_id": "917cafcd-fcab-407a-9b20-95ca865cfc43", "method": "POST", "status": 200, "duration_ms": 157.0}
+{"event": "http_request", "request_id": "126795f3-3b81-43ab-9923-b4bf880ec5f2", "method": "POST", "status": 200, "duration_ms": 31.0}
+{"event": "http_request", "request_id": "453c7624-15b5-4678-872f-67d30404df9a", "method": "GET", "status": 200, "duration_ms": 16.0}
+{"event": "http_request", "request_id": "3527d078-868d-48fe-8e2a-5b15c3b65967", "method": "PATCH", "status": 200, "duration_ms": 46.0}
+{"event": "http_request", "request_id": "6ee53b1a-e423-4d34-8c7b-518cc1f7b799", "method": "GET", "status": 200, "duration_ms": 172.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:60 {"event": "http_request", "request_id": "5d0d8be6-4b22-46d1-b627-8d07b50e6464", "method": "POST", "status": 200, "duration_ms": 141.0}
+INFO     bounded_funds.http:main.py:60 {"event": "http_request", "request_id": "e2f38409-59cd-44b5-ba77-58c911bd6528", "method": "POST", "status": 200, "duration_ms": 47.0}
+INFO     bounded_funds.http:main.py:60 {"event": "http_request", "request_id": "917cafcd-fcab-407a-9b20-95ca865cfc43", "method": "POST", "status": 200, "duration_ms": 157.0}
+INFO     bounded_funds.http:main.py:60 {"event": "http_request", "request_id": "126795f3-3b81-43ab-9923-b4bf880ec5f2", "method": "POST", "status": 200, "duration_ms": 31.0}
+INFO     bounded_funds.http:main.py:60 {"event": "http_request", "request_id": "453c7624-15b5-4678-872f-67d30404df9a", "method": "GET", "status": 200, "duration_ms": 16.0}
+INFO     bounded_funds.http:main.py:60 {"event": "http_request", "request_id": "3527d078-868d-48fe-8e2a-5b15c3b65967", "method": "PATCH", "status": 200, "duration_ms": 46.0}
+INFO     bounded_funds.http:main.py:60 {"event": "http_request", "request_id": "6ee53b1a-e423-4d34-8c7b-518cc1f7b799", "method": "GET", "status": 200, "duration_ms": 172.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_asset_allocation_api.py::test_http_goal_asset_placement_preserves_total_ownership_and_monthly_contribution
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 3 passed, 1 warning in 13.27s

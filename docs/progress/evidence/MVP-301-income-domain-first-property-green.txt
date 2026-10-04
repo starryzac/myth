@@ -1,0 +1,12 @@
+...........                                                              [100%]
+============================ Hypothesis Statistics ============================
+apps/api/app/tests/test_income_ledger.py::test_transfer_then_goal_assignment_never_requalifies_or_reuses_origin:
+
+  - during generate phase (0.15 seconds):
+    - Typical runtimes: ~ 0-1 ms, of which < 1ms in data generation
+    - 100 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=100
+
+
+11 passed in 0.85s

@@ -1,0 +1,32 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_partial_transfer_retains_origin_and_splits_only_available_location ___
+
+    def test_partial_transfer_retains_origin_and_splits_only_available_location() -> None:
+        before = ledger_fixture()
+        use = IncomeUse(fragment_id=location_id(ORIGIN, SOURCE), origin_transaction_id=ORIGIN,
+            account_id=SOURCE, amount_cents=300)
+>       reserved = reserve_income(before, UUID(int=10), [use], "TRANSFER_INTERNAL", NOW,
+            destination_account_id=DESTINATION)
+
+apps\api\app\tests\test_income_ledger.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ledger = IncomeLedger(simulation=True, protocol='new-funds-ledger-v2', user_id=UUID('00000000-0000-0000-0000-000000000004'), co..._cents=100, assigned_cents=100, reserved_cents=100, legacy_reserved_cents=100, available_cents=700),), reservations=())
+action_id = UUID('00000000-0000-0000-0000-00000000000a')
+uses = [IncomeUse(fragment_id=UUID('ba94dda8-58a7-5b41-868e-c3c8973421df'), origin_transaction_id=UUID('00000000-0000-0000-0000-000000000001'), account_id=UUID('00000000-0000-0000-0000-000000000002'), amount_cents=300)]
+operation = 'TRANSFER_INTERNAL'
+now = datetime.datetime(2026, 10, 4, 0, 0, tzinfo=datetime.timezone.utc)
+destination_account_id = UUID('00000000-0000-0000-0000-000000000003')
+
+    def reserve_income(
+        ledger: IncomeLedger, action_id: UUID, uses: Sequence[IncomeUse],
+        operation: IncomeOperation, now: datetime, *, destination_account_id: UUID | None = None,
+    ) -> IncomeLedger:
+>       raise NotImplementedError
+E       NotImplementedError
+
+apps\api\app\domain\income_ledger.py:76: NotImplementedError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_income_ledger.py::test_partial_transfer_retains_origin_and_splits_only_available_location
+1 failed in 0.75s

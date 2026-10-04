@@ -1,0 +1,16 @@
+...............................F.......                                  [100%]
+================================== FAILURES ===================================
+____ test_prepared_loss_is_reviewable_before_confirmation_but_never_ready _____
+
+    def test_prepared_loss_is_reviewable_before_confirmation_but_never_ready() -> None:
+        effect, state = loss_example()
+        result = revalidate_execution(effect, state)
+        assert result.status == "CONFIRMATION_REQUIRED"
+>       assert result.projected_boundary is not None
+E       AssertionError: assert None is not None
+E        +  where None = ExecutionValidation(simulation=True, financial_only=True, status='CONFIRMATION_REQUIRED', effect_hash='addd2b9c951d173...justed_boundary=None, projected_snapshot=None, projected_positions=[], reasons=['EXPLICIT_COST_CONFIRMATION_REQUIRED']).projected_boundary
+
+apps\api\app\tests\test_execution_domain.py:644: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_domain.py::test_prepared_loss_is_reviewable_before_confirmation_but_never_ready
+1 failed, 38 passed in 1.15s

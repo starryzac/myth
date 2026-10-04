@@ -15,6 +15,7 @@ from app.domain.boundary_types import (
     BoundarySnapshot,
     SourceIssue,
 )
+from app.domain.income_ledger import location_id
 from app.domain.policy_configuration import MoneyCents, configuration_hash, validate_configuration
 from pydantic import Field, model_validator
 
@@ -27,6 +28,7 @@ AllocationStatus = Literal[
 class IncomeLot(BoundaryModel):
     origin_transaction_id: UUID
     account_id: UUID
+    fragment_id: UUID | None = None
     amount_cents: MoneyCents
     available_cents: MoneyCents
     occurred_at: datetime
@@ -38,6 +40,9 @@ class IncomeLot(BoundaryModel):
 
     @model_validator(mode="after")
     def available_is_part_of_origin(self) -> Self:
+        expected = location_id(self.origin_transaction_id, self.account_id)
+        if self.fragment_id is not None and self.fragment_id != expected:
+            raise ValueError("Income fragment must bind its origin and current account")
         if self.amount_cents == 0 or self.available_cents > self.amount_cents:
             raise ValueError("Income origin must be positive and available cannot exceed original")
         if self.observed_at < self.occurred_at:
@@ -48,6 +53,7 @@ class IncomeLot(BoundaryModel):
 class LotAllocation(BoundaryModel):
     origin_transaction_id: UUID
     account_id: UUID
+    fragment_id: UUID
     amount_cents: MoneyCents
     remaining_available_cents: MoneyCents
 
@@ -92,7 +98,7 @@ def plan_goal_allocation(
     snapshot = BoundarySnapshot.model_validate(snapshot.model_dump())
     lots = sorted(
         (IncomeLot.model_validate(lot.model_dump(warnings=False)) for lot in lots),
-        key=lambda lot: (lot.occurred_at, lot.origin_transaction_id),
+        key=lambda lot: (lot.occurred_at, lot.origin_transaction_id, lot.account_id),
     )
     source_issues = [SourceIssue.model_validate(issue.model_dump()) for issue in source_issues]
     baseline = compute_boundary(snapshot, active_policy_versions, positions, products)
@@ -212,9 +218,26 @@ def plan_goal_allocation(
 
 
 def _validate_lots(snapshot: BoundarySnapshot, lots: Sequence[IncomeLot]) -> None:
-    identities = [lot.origin_transaction_id for lot in lots]
+    identities = [
+        lot.fragment_id or location_id(lot.origin_transaction_id, lot.account_id) for lot in lots
+    ]
     if len(identities) != len(set(identities)):
-        raise ValueError("Duplicate original income transaction identities are not permitted")
+        raise ValueError("Duplicate income location identities are not permitted")
+    origins: dict[UUID, IncomeLot] = {}
+    origin_totals: dict[UUID, int] = {}
+    for lot in lots:
+        original = origins.setdefault(lot.origin_transaction_id, lot)
+        if (original.amount_cents, original.occurred_at, original.observed_at) != (
+            lot.amount_cents,
+            lot.occurred_at,
+            lot.observed_at,
+        ):
+            raise ValueError("Fragments cannot change their immutable original income facts")
+        origin_totals[lot.origin_transaction_id] = (
+            origin_totals.get(lot.origin_transaction_id, 0) + lot.available_cents
+        )
+        if origin_totals[lot.origin_transaction_id] > original.amount_cents:
+            raise ValueError("Available locations cannot duplicate the original income")
     accounts = {account.account_id: account for account in snapshot.cash_accounts}
     totals: dict[UUID, int] = {}
     owned: dict[UUID, int] = {}
@@ -257,7 +280,10 @@ def _allocation_hash(
             "policy_version_id": str(policy_version_id),
             "boundary_hash": baseline.boundary_hash,
             "lots": [
-                lot_json(lot) for lot in sorted(lots, key=lambda item: item.origin_transaction_id)
+                lot_json(lot)
+                for lot in sorted(
+                    lots, key=lambda item: (item.origin_transaction_id, item.account_id)
+                )
             ],
             "source_issues": sorted(
                 (issue.model_dump(mode="json") for issue in issues),
@@ -283,6 +309,8 @@ def _project(
                 LotAllocation(
                     origin_transaction_id=lot.origin_transaction_id,
                     account_id=lot.account_id,
+                    fragment_id=lot.fragment_id
+                    or location_id(lot.origin_transaction_id, lot.account_id),
                     amount_cents=used,
                     remaining_available_cents=lot.available_cents - used,
                 )

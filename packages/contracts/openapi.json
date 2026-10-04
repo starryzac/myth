@@ -1698,6 +1698,389 @@
         }
       }
     },
+    "/api/v1/actions/prepare": {
+      "post": {
+        "tags": [
+          "模拟资金动作"
+        ],
+        "summary": "Prepare",
+        "operationId": "prepare_action",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrepareActionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/actions/{action_id}": {
+      "get": {
+        "tags": [
+          "模拟资金动作"
+        ],
+        "summary": "Read",
+        "operationId": "get_action",
+        "parameters": [
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Action Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/api/v1/actions/{action_id}/confirm": {
+      "post": {
+        "tags": [
+          "模拟资金动作"
+        ],
+        "summary": "Confirm",
+        "operationId": "confirm_action",
+        "parameters": [
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Action Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmActionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/api/v1/actions/{action_id}/execute": {
+      "post": {
+        "tags": [
+          "模拟资金动作"
+        ],
+        "summary": "Execute",
+        "operationId": "execute_action",
+        "parameters": [
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Action Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecuteActionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/api/v1/actions/{action_id}/receipt": {
+      "get": {
+        "tags": [
+          "模拟资金动作"
+        ],
+        "summary": "Receipt",
+        "operationId": "get_action_receipt",
+        "parameters": [
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Action Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionReceiptResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
     "/api/v1/health": {
       "get": {
         "summary": "Health",
@@ -1876,6 +2259,176 @@
           "observed_at"
         ],
         "title": "AccountView"
+      },
+      "ActionReceiptResponse": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "receipt_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Receipt Id"
+          },
+          "action_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Action Id"
+          },
+          "bank_operation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Bank Operation Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "executed_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Executed Cents"
+          },
+          "fee_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Fee Cents"
+          },
+          "loss_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Loss Cents"
+          },
+          "posting_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Posting Ids"
+          },
+          "occurred_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Occurred At"
+          },
+          "reconciled_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reconciled At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "receipt_id",
+          "action_id",
+          "bank_operation_id",
+          "status",
+          "executed_cents",
+          "fee_cents",
+          "loss_cents",
+          "posting_ids",
+          "occurred_at",
+          "reconciled_at"
+        ],
+        "title": "ActionReceiptResponse"
+      },
+      "ActionResponse": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "action_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Action Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "autonomy_level": {
+            "type": "string",
+            "title": "Autonomy Level"
+          },
+          "effect": {
+            "$ref": "#/components/schemas/ExecutionEffect"
+          },
+          "effect_hash": {
+            "type": "string",
+            "title": "Effect Hash"
+          },
+          "prepared_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Prepared At"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "prepared_validation": {
+            "$ref": "#/components/schemas/ExecutionValidation"
+          },
+          "bank_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bank Status"
+          },
+          "receipt": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ActionReceiptResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "action_id",
+          "status",
+          "autonomy_level",
+          "effect",
+          "effect_hash",
+          "prepared_at",
+          "as_of",
+          "prepared_validation"
+        ],
+        "title": "ActionResponse"
       },
       "AssetAllocationResponse": {
         "properties": {
@@ -2284,6 +2837,102 @@
         ],
         "title": "AssetCashUse"
       },
+      "BillFact": {
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          },
+          "bill_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Bill Id"
+          },
+          "account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Account Id"
+          },
+          "statement_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Statement Date"
+          },
+          "due_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Due Date"
+          },
+          "total_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Total Cents"
+          },
+          "paid_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Paid Cents"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "UNPAID",
+              "PARTIALLY_PAID",
+              "PAID",
+              "OVERDUE"
+            ],
+            "title": "Status"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "bill_id",
+          "account_id",
+          "statement_date",
+          "due_date",
+          "total_cents",
+          "paid_cents",
+          "status"
+        ],
+        "title": "BillFact"
+      },
+      "BillReference": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "bill",
+            "title": "Kind",
+            "default": "bill"
+          },
+          "bill_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Bill Id"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "bill_id",
+          "evidence_ids"
+        ],
+        "title": "BillReference"
+      },
       "BillView": {
         "properties": {
           "id": {
@@ -2480,6 +3129,80 @@
         ],
         "title": "BoundaryPoint"
       },
+      "BoundaryPosition": {
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          },
+          "position_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Position Id"
+          },
+          "goal_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal Id"
+          },
+          "principal_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Principal Cents"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "HELD",
+              "REDEEMING",
+              "MATURED",
+              "REDEEMED",
+              "UNKNOWN"
+            ],
+            "title": "Status"
+          },
+          "principal_available_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Principal Available At"
+          },
+          "availability_evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Availability Evidence Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "position_id",
+          "principal_cents",
+          "status"
+        ],
+        "title": "BoundaryPosition"
+      },
       "BoundaryResponse": {
         "properties": {
           "simulation": {
@@ -2653,6 +3376,106 @@
         ],
         "title": "BoundaryResult"
       },
+      "BoundarySnapshot": {
+        "properties": {
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "timezone": {
+            "type": "string",
+            "enum": [
+              "Asia/Shanghai",
+              "UTC"
+            ],
+            "title": "Timezone"
+          },
+          "horizon_days": {
+            "type": "integer",
+            "const": 90,
+            "title": "Horizon Days",
+            "default": 90
+          },
+          "cash_accounts": {
+            "items": {
+              "$ref": "#/components/schemas/CashFact"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Cash Accounts"
+          },
+          "bills": {
+            "items": {
+              "$ref": "#/components/schemas/BillFact"
+            },
+            "type": "array",
+            "maxItems": 10000,
+            "title": "Bills"
+          },
+          "occurrence_settlements": {
+            "items": {
+              "$ref": "#/components/schemas/SettlementFact"
+            },
+            "type": "array",
+            "maxItems": 10000,
+            "title": "Occurrence Settlements"
+          },
+          "goals": {
+            "items": {
+              "$ref": "#/components/schemas/GoalOwnership"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Goals"
+          },
+          "goal_month_contributions": {
+            "items": {
+              "$ref": "#/components/schemas/GoalMonthFact"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "title": "Goal Month Contributions"
+          },
+          "living_reserves": {
+            "items": {
+              "$ref": "#/components/schemas/LivingReserveFact"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Living Reserves"
+          },
+          "unassigned_goal_cash": {
+            "items": {
+              "$ref": "#/components/schemas/UnassignedGoalCash"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Unassigned Goal Cash"
+          },
+          "source_issues": {
+            "items": {
+              "$ref": "#/components/schemas/SourceIssue"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "title": "Source Issues"
+          },
+          "source_digest": {
+            "type": "string",
+            "title": "Source Digest",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "as_of",
+          "timezone",
+          "cash_accounts"
+        ],
+        "title": "BoundarySnapshot"
+      },
       "BoundarySourceIssue": {
         "properties": {
           "code": {
@@ -2675,6 +3498,77 @@
           "message"
         ],
         "title": "BoundarySourceIssue"
+      },
+      "CashFact": {
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          },
+          "account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Account Id"
+          },
+          "account_type": {
+            "type": "string",
+            "enum": [
+              "CASH",
+              "GOAL",
+              "CREDIT_CARD",
+              "CASH_MANAGEMENT",
+              "FIXED_DEPOSIT"
+            ],
+            "title": "Account Type"
+          },
+          "balance_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Balance Cents"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "account_id",
+          "account_type",
+          "balance_cents",
+          "observed_at"
+        ],
+        "title": "CashFact"
+      },
+      "CashUse": {
+        "properties": {
+          "account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Account Id"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Amount Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "account_id",
+          "amount_cents"
+        ],
+        "title": "CashUse"
       },
       "CompilationIssue": {
         "properties": {
@@ -2882,6 +3776,26 @@
           "configuration"
         ],
         "title": "CompilationRevisionRequest"
+      },
+      "ConfirmActionRequest": {
+        "properties": {
+          "effect_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Effect Hash"
+          },
+          "accepted": {
+            "type": "boolean",
+            "title": "Accepted"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "effect_hash",
+          "accepted"
+        ],
+        "title": "ConfirmActionRequest"
       },
       "ConfirmationRequest": {
         "properties": {
@@ -3147,6 +4061,448 @@
         ],
         "title": "ExcludedReserveTransaction"
       },
+      "ExecuteActionRequest": {
+        "properties": {},
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ExecuteActionRequest"
+      },
+      "ExecutionEffect": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "operation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Operation Id"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "business_key": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Business Key"
+          },
+          "action_type": {
+            "type": "string",
+            "enum": [
+              "TRANSFER_INTERNAL",
+              "PAY_RECURRING",
+              "ALLOCATE_GOAL",
+              "PURCHASE_ASSET",
+              "REDEEM_ASSET"
+            ],
+            "title": "Action Type"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Amount Cents"
+          },
+          "cash_uses": {
+            "items": {
+              "$ref": "#/components/schemas/CashUse"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Cash Uses"
+          },
+          "income_uses": {
+            "items": {
+              "$ref": "#/components/schemas/IncomeUse"
+            },
+            "type": "array",
+            "maxItems": 10000,
+            "title": "Income Uses"
+          },
+          "destination_account_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Destination Account Id"
+          },
+          "goal_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal Id"
+          },
+          "policy_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy Id"
+          },
+          "policy_version_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy Version Id"
+          },
+          "policy_version_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Policy Version Ids"
+          },
+          "liability": {
+            "anyOf": [
+              {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/BillReference"
+                  },
+                  {
+                    "$ref": "#/components/schemas/OccurrenceReference"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "kind",
+                  "mapping": {
+                    "bill": "#/components/schemas/BillReference",
+                    "occurrence": "#/components/schemas/OccurrenceReference"
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Liability"
+          },
+          "payee_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Payee Id"
+          },
+          "payee_evidence_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Payee Evidence Id"
+          },
+          "product_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product Id"
+          },
+          "product_version_number": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product Version Number"
+          },
+          "terms_digest": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Terms Digest"
+          },
+          "position_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Position Id"
+          },
+          "position_account_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Position Account Id"
+          },
+          "return_account_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Return Account Id"
+          },
+          "purchase_exit": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlannedExit"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "original_policy_version_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Policy Version Id"
+          },
+          "fee_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Fee Cents",
+            "default": 0
+          },
+          "loss_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Loss Cents",
+            "default": 0
+          },
+          "net_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Net Cents"
+          },
+          "quote_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quote Id"
+          },
+          "settlement_delay_days": {
+            "type": "integer",
+            "maximum": 3660.0,
+            "minimum": 0.0,
+            "title": "Settlement Delay Days",
+            "default": 0
+          },
+          "latest_arrival_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Arrival At"
+          },
+          "valid_from": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Valid From"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "operation_id",
+          "user_id",
+          "business_key",
+          "action_type",
+          "amount_cents",
+          "valid_from",
+          "expires_at"
+        ],
+        "title": "ExecutionEffect",
+        "description": "An agreed economic command; no query clock or mutable financial snapshot hash."
+      },
+      "ExecutionValidation": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "financial_only": {
+            "type": "boolean",
+            "const": true,
+            "title": "Financial Only",
+            "default": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "CONFIRMATION_REQUIRED",
+              "BLOCKED",
+              "INSUFFICIENT_EVIDENCE"
+            ],
+            "title": "Status"
+          },
+          "effect_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Effect Hash"
+          },
+          "baseline_boundary": {
+            "$ref": "#/components/schemas/BoundaryResult"
+          },
+          "projected_boundary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BoundaryResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reservation_adjusted_baseline": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BoundaryResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reservation_adjusted_boundary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BoundaryResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "projected_snapshot": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BoundarySnapshot"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "projected_positions": {
+            "items": {
+              "$ref": "#/components/schemas/BoundaryPosition"
+            },
+            "type": "array",
+            "title": "Projected Positions"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "effect_hash",
+          "baseline_boundary"
+        ],
+        "title": "ExecutionValidation"
+      },
       "GoalAllocationResponse": {
         "properties": {
           "simulation": {
@@ -3379,6 +4735,27 @@
         ],
         "title": "GoalAllocationResult"
       },
+      "GoalIntent": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "allocate_goal",
+            "title": "Kind"
+          },
+          "goal_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Goal Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "goal_id"
+        ],
+        "title": "GoalIntent"
+      },
       "GoalList": {
         "properties": {
           "simulation": {
@@ -3400,6 +4777,104 @@
           "items"
         ],
         "title": "GoalList"
+      },
+      "GoalMonthFact": {
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          },
+          "goal_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Goal Id"
+          },
+          "period": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$",
+            "title": "Period"
+          },
+          "contributed_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Contributed Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "goal_id",
+          "period",
+          "contributed_cents"
+        ],
+        "title": "GoalMonthFact"
+      },
+      "GoalOwnership": {
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          },
+          "goal_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Goal Id"
+          },
+          "policy_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Id"
+          },
+          "account_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Id"
+          },
+          "cash_owned_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Cash Owned Cents"
+          },
+          "principal_owned_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Principal Owned Cents"
+          },
+          "allocated_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Allocated Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "goal_id",
+          "policy_id",
+          "cash_owned_cents",
+          "principal_owned_cents",
+          "allocated_cents"
+        ],
+        "title": "GoalOwnership"
       },
       "GoalResponse": {
         "properties": {
@@ -3555,6 +5030,41 @@
         },
         "type": "object",
         "title": "HealthResponse"
+      },
+      "IncomeUse": {
+        "properties": {
+          "fragment_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Fragment Id"
+          },
+          "origin_transaction_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Origin Transaction Id"
+          },
+          "account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Account Id"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Amount Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "fragment_id",
+          "origin_transaction_id",
+          "account_id",
+          "amount_cents"
+        ],
+        "title": "IncomeUse"
       },
       "LifecycleResult": {
         "properties": {
@@ -3820,6 +5330,33 @@
         ],
         "title": "LivingReserveEstimate"
       },
+      "LivingReserveFact": {
+        "properties": {
+          "policy_version_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Version Id"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Amount Cents"
+          },
+          "estimation_input_digest": {
+            "type": "string",
+            "title": "Estimation Input Digest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "policy_version_id",
+          "amount_cents",
+          "estimation_input_digest"
+        ],
+        "title": "LivingReserveFact"
+      },
       "LotAllocation": {
         "properties": {
           "origin_transaction_id": {
@@ -3831,6 +5368,11 @@
             "type": "string",
             "format": "uuid",
             "title": "Account Id"
+          },
+          "fragment_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Fragment Id"
           },
           "amount_cents": {
             "type": "integer",
@@ -3850,10 +5392,105 @@
         "required": [
           "origin_transaction_id",
           "account_id",
+          "fragment_id",
           "amount_cents",
           "remaining_available_cents"
         ],
         "title": "LotAllocation"
+      },
+      "OccurrenceReference": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "occurrence",
+            "title": "Kind",
+            "default": "occurrence"
+          },
+          "policy_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Id"
+          },
+          "period": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$",
+            "title": "Period"
+          },
+          "final_total_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final Total Cents"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "policy_id",
+          "period",
+          "evidence_ids"
+        ],
+        "title": "OccurrenceReference"
+      },
+      "PaymentIntent": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "pay_recurring",
+            "title": "Kind"
+          },
+          "policy_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Id"
+          },
+          "period": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period"
+          },
+          "bill_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bill Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "policy_id"
+        ],
+        "title": "PaymentIntent"
       },
       "PlannedExit": {
         "properties": {
@@ -4301,6 +5938,53 @@
         ],
         "title": "PositionView"
       },
+      "PrepareActionRequest": {
+        "properties": {
+          "idempotency_key": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Idempotency Key"
+          },
+          "intent": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TransferIntent"
+              },
+              {
+                "$ref": "#/components/schemas/PaymentIntent"
+              },
+              {
+                "$ref": "#/components/schemas/GoalIntent"
+              },
+              {
+                "$ref": "#/components/schemas/PurchaseIntent"
+              },
+              {
+                "$ref": "#/components/schemas/RedeemIntent"
+              }
+            ],
+            "title": "Intent",
+            "discriminator": {
+              "propertyName": "kind",
+              "mapping": {
+                "allocate_goal": "#/components/schemas/GoalIntent",
+                "pay_recurring": "#/components/schemas/PaymentIntent",
+                "purchase_asset": "#/components/schemas/PurchaseIntent",
+                "redeem_asset": "#/components/schemas/RedeemIntent",
+                "transfer_internal": "#/components/schemas/TransferIntent"
+              }
+            }
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "idempotency_key",
+          "intent"
+        ],
+        "title": "PrepareActionRequest"
+      },
       "ProductList": {
         "properties": {
           "simulation": {
@@ -4525,6 +6209,27 @@
           "confirmed_policy_id"
         ],
         "title": "ProposalView"
+      },
+      "PurchaseIntent": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "purchase_asset",
+            "title": "Kind"
+          },
+          "policy_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "policy_id"
+        ],
+        "title": "PurchaseIntent"
       },
       "RecoveryAction": {
         "properties": {
@@ -5133,6 +6838,27 @@
         ],
         "title": "RecoveryRunResponse"
       },
+      "RedeemIntent": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "redeem_asset",
+            "title": "Kind"
+          },
+          "position_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Position Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "position_id"
+        ],
+        "title": "RedeemIntent"
+      },
       "ReserveEstimationResponse": {
         "properties": {
           "simulation": {
@@ -5260,6 +6986,91 @@
           "amount_cents"
         ],
         "title": "ReserveWindow"
+      },
+      "SettlementFact": {
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          },
+          "policy_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Id"
+          },
+          "period": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$",
+            "title": "Period"
+          },
+          "paid_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Paid Cents"
+          },
+          "settled_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Settled At"
+          },
+          "final_total_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final Total Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "policy_id",
+          "period",
+          "paid_cents",
+          "settled_at"
+        ],
+        "title": "SettlementFact"
+      },
+      "SourceIssue": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "entity_type": {
+            "type": "string",
+            "title": "Entity Type"
+          },
+          "entity_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "entity_type"
+        ],
+        "title": "SourceIssue"
       },
       "StateChangeRequest": {
         "properties": {
@@ -5415,6 +7226,71 @@
           "observed_at"
         ],
         "title": "TransactionView"
+      },
+      "TransferIntent": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "transfer_internal",
+            "title": "Kind"
+          },
+          "source_account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Source Account Id"
+          },
+          "destination_account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Destination Account Id"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Amount Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "source_account_id",
+          "destination_account_id",
+          "amount_cents"
+        ],
+        "title": "TransferIntent"
+      },
+      "UnassignedGoalCash": {
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          },
+          "account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Account Id"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Amount Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "account_id",
+          "amount_cents"
+        ],
+        "title": "UnassignedGoalCash"
       }
     }
   }

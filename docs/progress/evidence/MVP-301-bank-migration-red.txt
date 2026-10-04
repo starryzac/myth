@@ -1,0 +1,14 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______ test_fresh_upgrade_downgrade_upgrade_matches_all_twenty_models ________
+apps\api\app\tests\test_migrations.py:103: in test_fresh_upgrade_downgrade_upgrade_matches_all_twenty_models
+    assert set(inspect(engine).get_table_names()) == EXPECTED_TABLES | {
+E   AssertionError: assert {'accounts', ...roducts', ...} == {'accounts', ...sitions', ...}
+E     
+E     Extra items in the right set:
+E     'action_resource_reservations'
+E     'bank_operations'
+E     Use -v to get more diff
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_migrations.py::test_fresh_upgrade_downgrade_upgrade_matches_all_twenty_models
+1 failed, 10 deselected in 2.18s

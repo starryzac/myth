@@ -1,0 +1,195 @@
+FFFFF                                                                    [100%]
+================================== FAILURES ===================================
+_ test_trusted_policy_confirmation_requirement_preserves_reviewable_projection _
+
+    def test_trusted_policy_confirmation_requirement_preserves_reviewable_projection() -> None:
+        state = context().model_copy(
+            update={"versions": [recurring()], "requires_confirmation": True}
+        )
+        checked = revalidate_execution(payment(), state)
+>       assert checked.status == "CONFIRMATION_REQUIRED"
+E       AssertionError: assert 'READY' == 'CONFIRMATION_REQUIRED'
+E         
+E         - CONFIRMATION_REQUIRED
+E         + READY
+
+apps\api\app\tests\test_execution_domain.py:234: AssertionError
+__ test_current_recovery_permission_restrictions_cannot_be_ignored[change0] ___
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_65c7df99d68843daafcf49d91464f20f)
+change = {'allow_auto_recovery_without_penalty': False}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"allow_auto_recovery_without_penalty": False},
+            {"single_action_cap_cents": 100000},
+            {"allowed_asset_classes": ["CASH"]},
+            {"max_redemption_delay_days": 0},
+        ],
+    )
+    def test_current_recovery_permission_restrictions_cannot_be_ignored(
+        demo_engine: Engine, change: dict[str, Any]
+    ) -> None:
+        from app.domain.policy_configuration import configuration_hash, validate_configuration
+        from app.services.policy_lifecycle import change_policy
+        from app.tests.test_asset_allocation_service import authorization
+    
+        seed_demo(demo_engine)
+        recovery_fixture(demo_engine, delay=1)
+        with Session(demo_engine) as session, session.begin():
+            effect = redemption_effect(session)
+            assert effect.policy_id is not None and effect.policy_version_id is not None
+            config = validate_configuration(authorization(**change))
+            changed = change_policy(
+                session, DEMO_USER_ID, effect.policy_id, effect.policy_version_id,
+                config, configuration_hash(config), True, "narrow authority", str(uuid4()), SEED_AS_OF,
+            )
+            effect = effect.model_copy(update={
+                "policy_version_id": changed.current_version_id,
+                "policy_version_ids": [changed.current_version_id],
+            })
+        with Session(demo_engine) as session:
+            loaded = load_execution_context(session, DEMO_USER_ID, effect, SEED_AS_OF)
+>           assert "EXECUTION_REDEMPTION_PERMISSION_DENIED" in {
+                issue.code for issue in loaded.source_issues
+            }
+E           AssertionError: assert 'EXECUTION_REDEMPTION_PERMISSION_DENIED' in set()
+
+apps\api\app\tests\test_execution_context.py:358: AssertionError
+__ test_current_recovery_permission_restrictions_cannot_be_ignored[change1] ___
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_2e2216c48f1744b1bdec16fa1125b51c)
+change = {'single_action_cap_cents': 100000}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"allow_auto_recovery_without_penalty": False},
+            {"single_action_cap_cents": 100000},
+            {"allowed_asset_classes": ["CASH"]},
+            {"max_redemption_delay_days": 0},
+        ],
+    )
+    def test_current_recovery_permission_restrictions_cannot_be_ignored(
+        demo_engine: Engine, change: dict[str, Any]
+    ) -> None:
+        from app.domain.policy_configuration import configuration_hash, validate_configuration
+        from app.services.policy_lifecycle import change_policy
+        from app.tests.test_asset_allocation_service import authorization
+    
+        seed_demo(demo_engine)
+        recovery_fixture(demo_engine, delay=1)
+        with Session(demo_engine) as session, session.begin():
+            effect = redemption_effect(session)
+            assert effect.policy_id is not None and effect.policy_version_id is not None
+            config = validate_configuration(authorization(**change))
+            changed = change_policy(
+                session, DEMO_USER_ID, effect.policy_id, effect.policy_version_id,
+                config, configuration_hash(config), True, "narrow authority", str(uuid4()), SEED_AS_OF,
+            )
+            effect = effect.model_copy(update={
+                "policy_version_id": changed.current_version_id,
+                "policy_version_ids": [changed.current_version_id],
+            })
+        with Session(demo_engine) as session:
+            loaded = load_execution_context(session, DEMO_USER_ID, effect, SEED_AS_OF)
+>           assert "EXECUTION_REDEMPTION_PERMISSION_DENIED" in {
+                issue.code for issue in loaded.source_issues
+            }
+E           AssertionError: assert 'EXECUTION_REDEMPTION_PERMISSION_DENIED' in set()
+
+apps\api\app\tests\test_execution_context.py:358: AssertionError
+__ test_current_recovery_permission_restrictions_cannot_be_ignored[change2] ___
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_9c9b15a0411743a79f63804da1ee8fcf)
+change = {'allowed_asset_classes': ['CASH']}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"allow_auto_recovery_without_penalty": False},
+            {"single_action_cap_cents": 100000},
+            {"allowed_asset_classes": ["CASH"]},
+            {"max_redemption_delay_days": 0},
+        ],
+    )
+    def test_current_recovery_permission_restrictions_cannot_be_ignored(
+        demo_engine: Engine, change: dict[str, Any]
+    ) -> None:
+        from app.domain.policy_configuration import configuration_hash, validate_configuration
+        from app.services.policy_lifecycle import change_policy
+        from app.tests.test_asset_allocation_service import authorization
+    
+        seed_demo(demo_engine)
+        recovery_fixture(demo_engine, delay=1)
+        with Session(demo_engine) as session, session.begin():
+            effect = redemption_effect(session)
+            assert effect.policy_id is not None and effect.policy_version_id is not None
+            config = validate_configuration(authorization(**change))
+            changed = change_policy(
+                session, DEMO_USER_ID, effect.policy_id, effect.policy_version_id,
+                config, configuration_hash(config), True, "narrow authority", str(uuid4()), SEED_AS_OF,
+            )
+            effect = effect.model_copy(update={
+                "policy_version_id": changed.current_version_id,
+                "policy_version_ids": [changed.current_version_id],
+            })
+        with Session(demo_engine) as session:
+            loaded = load_execution_context(session, DEMO_USER_ID, effect, SEED_AS_OF)
+>           assert "EXECUTION_REDEMPTION_PERMISSION_DENIED" in {
+                issue.code for issue in loaded.source_issues
+            }
+E           AssertionError: assert 'EXECUTION_REDEMPTION_PERMISSION_DENIED' in set()
+
+apps\api\app\tests\test_execution_context.py:358: AssertionError
+__ test_current_recovery_permission_restrictions_cannot_be_ignored[change3] ___
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_a0fa103547164e9880be84598425ff97)
+change = {'max_redemption_delay_days': 0}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"allow_auto_recovery_without_penalty": False},
+            {"single_action_cap_cents": 100000},
+            {"allowed_asset_classes": ["CASH"]},
+            {"max_redemption_delay_days": 0},
+        ],
+    )
+    def test_current_recovery_permission_restrictions_cannot_be_ignored(
+        demo_engine: Engine, change: dict[str, Any]
+    ) -> None:
+        from app.domain.policy_configuration import configuration_hash, validate_configuration
+        from app.services.policy_lifecycle import change_policy
+        from app.tests.test_asset_allocation_service import authorization
+    
+        seed_demo(demo_engine)
+        recovery_fixture(demo_engine, delay=1)
+        with Session(demo_engine) as session, session.begin():
+            effect = redemption_effect(session)
+            assert effect.policy_id is not None and effect.policy_version_id is not None
+            config = validate_configuration(authorization(**change))
+            changed = change_policy(
+                session, DEMO_USER_ID, effect.policy_id, effect.policy_version_id,
+                config, configuration_hash(config), True, "narrow authority", str(uuid4()), SEED_AS_OF,
+            )
+            effect = effect.model_copy(update={
+                "policy_version_id": changed.current_version_id,
+                "policy_version_ids": [changed.current_version_id],
+            })
+        with Session(demo_engine) as session:
+            loaded = load_execution_context(session, DEMO_USER_ID, effect, SEED_AS_OF)
+>           assert "EXECUTION_REDEMPTION_PERMISSION_DENIED" in {
+                issue.code for issue in loaded.source_issues
+            }
+E           AssertionError: assert 'EXECUTION_REDEMPTION_PERMISSION_DENIED' in set()
+
+apps\api\app\tests\test_execution_context.py:358: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_domain.py::test_trusted_policy_confirmation_requirement_preserves_reviewable_projection
+FAILED apps/api/app/tests/test_execution_context.py::test_current_recovery_permission_restrictions_cannot_be_ignored[change0]
+FAILED apps/api/app/tests/test_execution_context.py::test_current_recovery_permission_restrictions_cannot_be_ignored[change1]
+FAILED apps/api/app/tests/test_execution_context.py::test_current_recovery_permission_restrictions_cannot_be_ignored[change2]
+FAILED apps/api/app/tests/test_execution_context.py::test_current_recovery_permission_restrictions_cannot_be_ignored[change3]
+5 failed, 46 deselected in 11.52s

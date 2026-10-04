@@ -1,0 +1,112 @@
+.FFFFF                                                                   [100%]
+================================== FAILURES ===================================
+__________ test_internal_transfer_needs_exact_one_shot_confirmation ___________
+
+    def test_internal_transfer_needs_exact_one_shot_confirmation() -> None:
+        checked = revalidate_execution(transfer(), context())
+>       assert checked.status == "CONFIRMATION_REQUIRED"
+E       AssertionError: assert 'READY' == 'CONFIRMATION_REQUIRED'
+E         
+E         - CONFIRMATION_REQUIRED
+E         + READY
+
+apps\api\app\tests\test_execution_domain.py:56: AssertionError
+__________ test_fresh_facts_block_old_or_unfunded_transfer[expired] ___________
+
+change = 'expired'
+
+    @pytest.mark.parametrize("change", ["expired", "wrong_user", "reserved", "missing_destination"])
+    def test_fresh_facts_block_old_or_unfunded_transfer(change: str) -> None:
+        state = context()
+        if change == "expired":
+            state = context(NOW + timedelta(minutes=15))
+        elif change == "wrong_user":
+            state = state.model_copy(update={"user_id": UUID(int=99)})
+        elif change == "reserved":
+            state = state.model_copy(update={"reserved_cash_by_account": {A: 900}})
+        else:
+            state = state.model_copy(update={"snapshot": state.snapshot.model_copy(
+                update={"cash_accounts": [state.snapshot.cash_accounts[0]]})})
+>       assert revalidate_execution(transfer(), state, confirmation=grant(transfer())).status == "BLOCKED"
+E       AssertionError: assert 'READY' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + READY
+
+apps\api\app\tests\test_execution_domain.py:73: AssertionError
+_________ test_fresh_facts_block_old_or_unfunded_transfer[wrong_user] _________
+
+change = 'wrong_user'
+
+    @pytest.mark.parametrize("change", ["expired", "wrong_user", "reserved", "missing_destination"])
+    def test_fresh_facts_block_old_or_unfunded_transfer(change: str) -> None:
+        state = context()
+        if change == "expired":
+            state = context(NOW + timedelta(minutes=15))
+        elif change == "wrong_user":
+            state = state.model_copy(update={"user_id": UUID(int=99)})
+        elif change == "reserved":
+            state = state.model_copy(update={"reserved_cash_by_account": {A: 900}})
+        else:
+            state = state.model_copy(update={"snapshot": state.snapshot.model_copy(
+                update={"cash_accounts": [state.snapshot.cash_accounts[0]]})})
+>       assert revalidate_execution(transfer(), state, confirmation=grant(transfer())).status == "BLOCKED"
+E       AssertionError: assert 'READY' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + READY
+
+apps\api\app\tests\test_execution_domain.py:73: AssertionError
+__________ test_fresh_facts_block_old_or_unfunded_transfer[reserved] __________
+
+change = 'reserved'
+
+    @pytest.mark.parametrize("change", ["expired", "wrong_user", "reserved", "missing_destination"])
+    def test_fresh_facts_block_old_or_unfunded_transfer(change: str) -> None:
+        state = context()
+        if change == "expired":
+            state = context(NOW + timedelta(minutes=15))
+        elif change == "wrong_user":
+            state = state.model_copy(update={"user_id": UUID(int=99)})
+        elif change == "reserved":
+            state = state.model_copy(update={"reserved_cash_by_account": {A: 900}})
+        else:
+            state = state.model_copy(update={"snapshot": state.snapshot.model_copy(
+                update={"cash_accounts": [state.snapshot.cash_accounts[0]]})})
+>       assert revalidate_execution(transfer(), state, confirmation=grant(transfer())).status == "BLOCKED"
+E       AssertionError: assert 'READY' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + READY
+
+apps\api\app\tests\test_execution_domain.py:73: AssertionError
+____ test_fresh_facts_block_old_or_unfunded_transfer[missing_destination] _____
+
+change = 'missing_destination'
+
+    @pytest.mark.parametrize("change", ["expired", "wrong_user", "reserved", "missing_destination"])
+    def test_fresh_facts_block_old_or_unfunded_transfer(change: str) -> None:
+        state = context()
+        if change == "expired":
+            state = context(NOW + timedelta(minutes=15))
+        elif change == "wrong_user":
+            state = state.model_copy(update={"user_id": UUID(int=99)})
+        elif change == "reserved":
+            state = state.model_copy(update={"reserved_cash_by_account": {A: 900}})
+        else:
+            state = state.model_copy(update={"snapshot": state.snapshot.model_copy(
+                update={"cash_accounts": [state.snapshot.cash_accounts[0]]})})
+>       assert revalidate_execution(transfer(), state, confirmation=grant(transfer())).status == "BLOCKED"
+E       AssertionError: assert 'READY' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + READY
+
+apps\api\app\tests\test_execution_domain.py:73: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_domain.py::test_internal_transfer_needs_exact_one_shot_confirmation
+FAILED apps/api/app/tests/test_execution_domain.py::test_fresh_facts_block_old_or_unfunded_transfer[expired]
+FAILED apps/api/app/tests/test_execution_domain.py::test_fresh_facts_block_old_or_unfunded_transfer[wrong_user]
+FAILED apps/api/app/tests/test_execution_domain.py::test_fresh_facts_block_old_or_unfunded_transfer[reserved]
+FAILED apps/api/app/tests/test_execution_domain.py::test_fresh_facts_block_old_or_unfunded_transfer[missing_destination]
+5 failed, 1 passed in 0.85s

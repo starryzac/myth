@@ -1,0 +1,56 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_same_account_goal_projection_assigns_origin_without_fabricating_cash_transfer _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_64751a4ffdb8459d8ce093d6d1aa6044)
+
+    def test_same_account_goal_projection_assigns_origin_without_fabricating_cash_transfer(boundary_engine: Engine) -> None:
+        action_id, goal_id, cash_id = goal_command(boundary_engine)
+        with Session(boundary_engine) as session:
+            cash = session.get(Account, cash_id)
+            assert cash is not None
+            balance = cash.balance_cents
+>       process_operation(boundary_engine, DEMO_USER_ID, action_id, SEED_AS_OF)
+
+apps\api\app\tests\test_execution_projection.py:155: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\execution_bank.py:80: in process_operation
+    _validate_new(session, action, effect, command.effect_hash, now)
+apps\api\app\services\execution_bank.py:297: in _validate_new
+    verify_execution_sources(session, action.user_id, effect, now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x00000169FD27C350>
+user_id = UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')
+effect = ExecutionEffect(simulation=True, operation_id=UUID('13a3d111-645f-4119-9f84-b0fe9083132f'), user_id=UUID('271a9827-f82...me.datetime(2026, 10, 3, 16, 0, tzinfo=TzInfo(0)), expires_at=datetime.datetime(2026, 10, 3, 16, 15, tzinfo=TzInfo(0)))
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def verify_execution_sources(
+        session: Session, user_id: UUID, effect: ExecutionEffect, now: datetime,
+    ) -> None:
+        """Does not submit bank effects or trust an application validation label."""
+        from app.domain.execution import revalidate_execution
+        from app.services.execution_context import load_execution_context
+    
+        if effect.user_id != user_id:
+            raise _source_error("ִ�о��ö������ڵ�ǰ�û�")
+        if effect.action_type == "PAY_RECURRING":
+            if effect.payee_id is None or effect.payee_evidence_id is None or effect.liability is None:
+                raise _source_error("ȱ�پ�ȷ�տ�����")
+            if effect.liability.kind == "bill":
+                proof_id = _card_binding(session, user_id, effect.payee_id, effect.liability.bill_id, now)
+                if proof_id != effect.payee_evidence_id:
+                    raise _source_error("�տ��˵��ѱ仯����������׼��")
+            else:
+                _counterparty_binding(session, user_id, effect.payee_id, effect.payee_evidence_id, now)
+        context = load_execution_context(session, user_id, effect, now, own_action_id=effect.operation_id)
+        validation = revalidate_execution(effect, context,
+                                         confirmation=read_execution_confirmation(session, effect, now))
+        if validation.status != "READY":
+>           raise _source_error("ִ��ǰ��������δͨ����" + ",".join(validation.reasons))
+E           app.services.policy_lifecycle.PolicyLifecycleError: ִ��ǰ��������δͨ����CURRENT_GOAL_PLAN_DISALLOWS_AMOUNT
+
+apps\api\app\services\execution_sources.py:242: PolicyLifecycleError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_projection.py::test_same_account_goal_projection_assigns_origin_without_fabricating_cash_transfer
+1 failed, 3 deselected in 5.79s

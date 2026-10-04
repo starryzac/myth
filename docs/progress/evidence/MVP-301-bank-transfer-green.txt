@@ -1,0 +1,67 @@
+FF.                                                                      [100%]
+================================== FAILURES ===================================
+_______ test_internal_transfer_is_independent_conserved_and_replayable ________
+apps\api\app\services\execution_bank.py:41: in process_operation
+    command = BankCommand.model_validate(action.request["execution"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 6 validation errors for BankCommand
+E   effect.operation_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='d241e922-b5b8-4c11-ba60-430af1dce346', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   effect.user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='271a9827-f82a-5be6-9e0a-50f721029fb0', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   effect.cash_uses.0.account_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='61d172d3-9b8a-5f75-b00e-5d99b5e08dd1', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   effect.destination_account_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='4eb14153-fdd3-5778-bd0c-7b8b82d16411', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   effect.valid_from
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T16:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+E   effect.expires_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T16:15:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+
+The above exception was the direct cause of the following exception:
+apps\api\app\tests\test_execution_bank.py:65: in test_internal_transfer_is_independent_conserved_and_replayable
+    result = process_operation(boundary_engine, DEMO_USER_ID, action_id, SEED_AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution_bank.py:43: in process_operation
+    raise _error("A strict committed bank command is required") from error
+E   app.services.policy_lifecycle.PolicyLifecycleError: A strict committed bank command is required
+___________ test_changed_economic_content_cannot_reuse_the_same_key ___________
+apps\api\app\services\execution_bank.py:41: in process_operation
+    command = BankCommand.model_validate(action.request["execution"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 6 validation errors for BankCommand
+E   effect.operation_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='6031c6c8-2433-4044-b2b4-cf9ea8fc281b', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   effect.user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='271a9827-f82a-5be6-9e0a-50f721029fb0', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   effect.cash_uses.0.account_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='61d172d3-9b8a-5f75-b00e-5d99b5e08dd1', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   effect.destination_account_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='4eb14153-fdd3-5778-bd0c-7b8b82d16411', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   effect.valid_from
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T16:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+E   effect.expires_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T16:15:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+
+The above exception was the direct cause of the following exception:
+apps\api\app\tests\test_execution_bank.py:80: in test_changed_economic_content_cannot_reuse_the_same_key
+    process_operation(boundary_engine, DEMO_USER_ID, action_id, SEED_AS_OF)
+apps\api\app\services\execution_bank.py:43: in process_operation
+    raise _error("A strict committed bank command is required") from error
+E   app.services.policy_lifecycle.PolicyLifecycleError: A strict committed bank command is required
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_bank.py::test_internal_transfer_is_independent_conserved_and_replayable
+FAILED apps/api/app/tests/test_execution_bank.py::test_changed_economic_content_cannot_reuse_the_same_key
+2 failed, 1 passed in 8.88s

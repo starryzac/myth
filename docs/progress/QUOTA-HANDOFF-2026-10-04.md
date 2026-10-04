@@ -1,3 +1,18 @@
+## 2026-10-04 MVP-301 已完成验收（优先于后面的历史交接）
+
+总体目标保持初版25项→完整版67项。已完成14/92，下一项MVP-302；301前置提交0950db2，301代码及文档验收后待本轮git提交（以git log读取实际hash）。不得称初版/全项目完成。禁止LibreOffice；额度中断前保留本交接。
+
+最终完整check 20261004T015335Z-2add56ab已退出0，root session33930已结束，无仍运行质量检查。1006后端/2178.98秒、4前端、1真实Edge/22.7秒；11命令全部成功，162源码/配置摘要前后一致，验证UTC2026-10-04T02:32:27.645791。原始check日志、manifest、verification及coverage已保存docs/progress/evidence/MVP-301-*。首轮check因旧目标资产fixture直接改投影失败后中断，修成明确可信历史导入并4green后全量重跑；保留完整失败证据，不混入通过数。
+
+正式库0004_execution_bank、mvp-301-v6。最终两次seed 20261004T015411Z-c45e489d和20261004T015510Z-48180ea5均成功，20表313880字节完整业务JSON逐字相同，162源码哈希匹配，数据SHA256 dbbc4819f11e156ddcc11a2af3d08739cbe4101c9d2f547469fa3dd05101e2d0。无授权/目标/动作/资源预留/银行操作，7独立OPENING。旧dev8000/5173不证明当前源码；E2E自启18000/15173已完成。
+
+301要点：五类prepare/confirm/execute/read/receipt；精确effect_hash+15分钟窗口；银行前后真实commit、UNKNOWN留占用/原请求恢复、确定未受理拒绝才释放；收入origin/location守恒；range按已知final_total且ASK；多源申购真实逐账户扣款+explicit return_account_id；purchase_exit仅UNSUBMITTED_PLAN，不能假装已受理回款支持现金安全；T1承诺到账与晚观察分离、禁止倒序写；正常新目标仅开户零锚，既有正投影不补造banktruth；历史回执GET/重放独立校验，缺失/重复/金额篡改409。完整协议ADR0009及architecture执行/收入文档。
+
+覆盖7152/7810=91.574904%，MVP-501核心95%未完成。Edge仅工程连通，业务黄金链待401–404/502。302完整四级矩阵、303完整轨迹、304审计链、FULL后台/可靠消息均未实现；源级安全门不代替这些任务。所有代理已交还源码。web_foundation已生成MVP-302-preflight.md，只读矩阵及3项待冻结口径，未实现/未测试302。
+
+下一步：核git diff/状态后提交301；按302预审冻结四级与有限候选签名，不接受客户端authorized=True，不用用户回答代替银行事实。随后分工领域/服务/独立矩阵测试；保持301执行门和回执核验，逐项TDD、必要文档/合同、完整check及摘要，然后才能进入303。Windows使用 `.\make.cmd`；UV_CACHE_DIR=repo/.uv-cache，PYTHONUTF8=1，mypy命令 `uv run --frozen mypy`。默认沙箱TEMP或Docker/Edge不可用时已授权本地质量检查可升级执行；本轮无自动审批拒绝。不要清理缓存、卷、数据库或原始失败日志。
+
+---
 # 额度中断交接：已续接并完成MVP-205验收
 
 2026-10-04。用户已继续，工具恢复可用；完整目标是初版25项再完整版67项。当前13/92完成，下一项301；禁止LibreOffice，不清理或重置工作。

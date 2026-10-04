@@ -1,0 +1,14 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_bank_rejects_action_account_projection_different_from_frozen_redemption[source_account_id] _
+apps\api\app\tests\test_execution_bank.py:651: in test_bank_rejects_action_account_projection_different_from_frozen_redemption
+    with pytest.raises(PolicyLifecycleError):
+E   Failed: DID NOT RAISE PolicyLifecycleError
+_ test_bank_rejects_action_account_projection_different_from_frozen_redemption[destination_account_id] _
+apps\api\app\tests\test_execution_bank.py:651: in test_bank_rejects_action_account_projection_different_from_frozen_redemption
+    with pytest.raises(PolicyLifecycleError):
+E   Failed: DID NOT RAISE PolicyLifecycleError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_bank.py::test_bank_rejects_action_account_projection_different_from_frozen_redemption[source_account_id]
+FAILED apps/api/app/tests/test_execution_bank.py::test_bank_rejects_action_account_projection_different_from_frozen_redemption[destination_account_id]
+2 failed in 8.24s

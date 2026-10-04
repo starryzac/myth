@@ -1,0 +1,294 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+__ test_execution_seed_is_repeatable_without_fabricated_income_qualification __
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_fe98982c4a0b4c7d9ef6d90783e9bc71)
+
+    def test_execution_seed_is_repeatable_without_fabricated_income_qualification(demo_engine: Engine) -> None:
+        first = seed_demo(demo_engine)
+>       assert first.seed_version == "mvp-301-v6"
+E       AssertionError: assert 'mvp-205-v5' == 'mvp-301-v6'
+E         
+E         - mvp-301-v6
+E         + mvp-205-v5
+
+apps\api\app\tests\test_execution_seed.py:24: AssertionError
+____ test_reset_removes_execution_dependents_before_their_original_action _____
+
+self = <sqlalchemy.engine.base.Connection object at 0x000001E5AA5CF560>
+dialect = <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x000001E5AA332AE0>
+context = <sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x000001E5AA5CE840>
+statement = <sqlalchemy.dialects.postgresql.psycopg.PGCompiler_psycopg object at 0x000001E5AA476000>
+parameters = [{'user_id_1': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Unpack[TupleAny]]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        evt_handled: bool = False
+        try:
+            if self._has_events or self.engine._has_events:
+                for fn in self.dispatch.before_cursor_execute:
+                    str_statement, effective_parameters = fn(
+                        self,
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                        context.executemany,
+                    )
+    
+            if self._echo:
+                self._log_info(str_statement)
+    
+                stats = context._get_cache_stats()
+    
+                if not self.engine.hide_parameters:
+                    self._log_info(
+                        "[%s] %r",
+                        stats,
+                        sql_util._repr_params(
+                            effective_parameters,
+                            batches=10,
+                            ismulti=context.executemany,
+                        ),
+                    )
+                else:
+                    self._log_info(
+                        "[%s] [SQL parameters hidden due to "
+                        "hide_parameters=True]",
+                        stats,
+                    )
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1943: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_06def4847f934be1b0b62e9d2d6d3bfc) at 0x1e5aa596690>
+query = 'DELETE FROM simulated_bank_redemptions WHERE simulated_bank_redemptions.user_id = %(user_id_1)s::UUID RETURNING simulated_bank_redemptions.id'
+params = {'user_id_1': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')}
+prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.ForeignKeyViolation: update or delete on table "simulated_bank_redemptions" violates foreign key constraint "fk_bank_operations_legacy_redemption_id_simulated_bank__6b40" on table "bank_operations"
+E           DETAIL:  Key (id, user_id)=(7f9a35b9-55f8-4449-9d90-186c6e6eeca9, 271a9827-f82a-5be6-9e0a-50f721029fb0) is still referenced from table "bank_operations".
+
+.venv\Lib\site-packages\psycopg\cursor.py:117: ForeignKeyViolation
+
+The above exception was the direct cause of the following exception:
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_06def4847f934be1b0b62e9d2d6d3bfc)
+
+    def test_reset_removes_execution_dependents_before_their_original_action(demo_engine: Engine) -> None:
+        first = seed_demo(demo_engine)
+        before = database_snapshot(demo_engine)
+        with Session(demo_engine) as session, session.begin():
+            cash = session.scalar(select(Account).where(Account.account_type == "CASH"))
+            position = session.scalar(select(AssetPosition).order_by(AssetPosition.id))
+            assert cash is not None and position is not None
+            run = DecisionRun(id=uuid4(), user_id=DEMO_USER_ID, idempotency_key="execution-reset-run",
+                trigger_type="RESET_TEST", algorithm_version="fixture", as_of=SEED_AS_OF,
+                input_snapshot={}, snapshot_hash=configuration_hash({}))
+            session.add(run)
+            session.flush()
+            action = ActionPlan(id=uuid4(), user_id=DEMO_USER_ID, decision_run_id=run.id,
+                source_account_id=cash.id, position_id=position.id, product_id=position.product_id,
+                action_type="ASSET_REDEEM", amount_cents=100, idempotency_key="execution-reset-action",
+                status="SUBMITTED", request={}, request_hash=configuration_hash({}))
+            session.add(action)
+            session.flush()
+            redemption = SimulatedBankRedemption(id=uuid4(), user_id=DEMO_USER_ID,
+                action_plan_id=action.id, position_id=position.id, destination_account_id=cash.id,
+                product_id=position.product_id, principal_cents=100, idempotency_key="legacy-reset",
+                request={}, request_hash=configuration_hash({}), requested_at=SEED_AS_OF,
+                available_at=SEED_AS_OF, status="ACCEPTED")
+            session.add(redemption)
+            session.flush()
+            operation = BankOperation(id=uuid4(), user_id=DEMO_USER_ID, action_plan_id=action.id,
+                legacy_redemption_id=redemption.id, operation_type="REDEEM_ASSET", business_key="reset-business",
+                idempotency_key="execution-reset-bank", request={}, request_hash=configuration_hash({}),
+                requested_at=SEED_AS_OF, available_at=SEED_AS_OF, settled_at=SEED_AS_OF, status="SETTLED")
+            session.add(operation)
+            session.flush()
+            session.add(ActionResourceReservation(id=uuid4(), user_id=DEMO_USER_ID,
+                action_plan_id=action.id, resource_kind="POSITION", resource_key=str(position.id),
+                amount_cents=100, status="RESERVED"))
+            for key, delta in ((f"CASH:{cash.id}", 100), (f"POSITION:{position.id}", -100)):
+                opening = session.scalar(select(SimulatedBankPosting).where(SimulatedBankPosting.ledger_key == key))
+                assert opening is not None
+                session.add(SimulatedBankPosting(id=uuid4(), user_id=DEMO_USER_ID, ledger_key=key,
+                    ledger_dimension="ECONOMIC", ledger_metadata={}, account_id=opening.account_id,
+                    position_id=opening.position_id, operation_id=operation.id, leg_ref=key,
+                    previous_posting_id=opening.id, sequence_number=2, entry_kind="OPERATION",
+                    balance_before_cents=opening.balance_after_cents, delta_cents=delta,
+                    balance_after_cents=opening.balance_after_cents+delta, occurred_at=SEED_AS_OF))
+>       assert seed_demo(demo_engine) == first
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_execution_seed.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\demo_seed.py:715: in seed_demo
+    _clear_demo(session)
+apps\api\app\services\demo_seed.py:398: in _clear_demo
+    session.execute(delete(model).where(model.__table__.c.user_id == DEMO_USER_ID))
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:2473: in execute
+    return self._execute_internal(
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:2363: in _execute_internal
+    compile_state_cls.orm_execute_statement(
+.venv\Lib\site-packages\sqlalchemy\orm\bulk_persistence.py:2066: in orm_execute_statement
+    return super().orm_execute_statement(
+.venv\Lib\site-packages\sqlalchemy\orm\context.py:316: in orm_execute_statement
+    result = conn.execute(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1448: in execute
+    return meth(
+.venv\Lib\site-packages\sqlalchemy\sql\elements.py:533: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1668: in _execute_clauseelement
+    ret = self._execute_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1822: in _execute_context
+    return self._exec_single_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1962: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:2332: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1943: in _exec_single_context
+    self.dialect.do_execute(
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_06def4847f934be1b0b62e9d2d6d3bfc) at 0x1e5aa596690>
+query = 'DELETE FROM simulated_bank_redemptions WHERE simulated_bank_redemptions.user_id = %(user_id_1)s::UUID RETURNING simulated_bank_redemptions.id'
+params = {'user_id_1': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')}
+prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           sqlalchemy.exc.IntegrityError: (psycopg.errors.ForeignKeyViolation) update or delete on table "simulated_bank_redemptions" violates foreign key constraint "fk_bank_operations_legacy_redemption_id_simulated_bank__6b40" on table "bank_operations"
+E           DETAIL:  Key (id, user_id)=(7f9a35b9-55f8-4449-9d90-186c6e6eeca9, 271a9827-f82a-5be6-9e0a-50f721029fb0) is still referenced from table "bank_operations".
+E           [SQL: DELETE FROM simulated_bank_redemptions WHERE simulated_bank_redemptions.user_id = %(user_id_1)s::UUID RETURNING simulated_bank_redemptions.id]
+E           [parameters: {'user_id_1': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')}]
+E           (Background on this error at: https://sqlalche.me/e/21/gkpj)
+
+.venv\Lib\site-packages\psycopg\cursor.py:117: IntegrityError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_seed.py::test_execution_seed_is_repeatable_without_fabricated_income_qualification
+FAILED apps/api/app/tests/test_execution_seed.py::test_reset_removes_execution_dependents_before_their_original_action
+2 failed in 7.82s

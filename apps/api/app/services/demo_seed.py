@@ -12,9 +12,11 @@ from app.db.models import (
     Account,
     ActionPlan,
     ActionReceipt,
+    ActionResourceReservation,
     AssetPosition,
     AssetProduct,
     AuditEvent,
+    BankOperation,
     CreditCardBill,
     DecisionConstraint,
     DecisionRun,
@@ -38,7 +40,7 @@ from sqlalchemy import delete, or_, select, text, update
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
-SEED_VERSION = "mvp-205-v5"
+SEED_VERSION = "mvp-301-v6"
 SEED_START = date(2026, 8, 5)
 SEED_END = date(2026, 10, 3)
 SEED_AS_OF = datetime(2026, 10, 3, 16, tzinfo=UTC)
@@ -379,7 +381,9 @@ def _clear_demo(session: Session) -> None:
     )
     for model in [
         SimulatedBankPosting,
+        BankOperation,
         SimulatedBankRedemption,
+        ActionResourceReservation,
         AuditEvent,
         ActionReceipt,
         ActionPlan,

@@ -1,0 +1,241 @@
+...FFF                                                                   [100%]
+================================== FAILURES ===================================
+_ test_cost_confirmation_does_not_replace_both_historical_and_current_permissions[original] _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_531447fa5685496c9ce1740c0489a490)
+denied = 'original'
+
+    @pytest.mark.parametrize("denied", ["original", "current", "neither"])
+    def test_cost_confirmation_does_not_replace_both_historical_and_current_permissions(
+        demo_engine: Engine, denied: str
+    ) -> None:
+        from app.db.models import EvidenceItem
+        from app.domain.execution import execution_effect_hash
+        from app.domain.execution_types import ConfirmationGrant
+        from app.domain.policy_configuration import configuration_hash, validate_configuration
+        from app.services.policy_lifecycle import change_policy
+        from app.tests.test_asset_allocation_service import authorization
+        from app.tests.test_boundary_service import confirmed_policy
+    
+        seed_demo(demo_engine)
+        recovery_fixture(demo_engine)
+        with Session(demo_engine) as session, session.begin():
+            effect = redemption_effect(session)
+            quote = preview_recovery(session, DEMO_USER_ID, SEED_AS_OF).plan.steps[0].quote
+            position = session.get(AssetPosition, effect.position_id)
+            assert position is not None
+            original_config = authorization(allow_early_withdrawal_with_penalty=denied != "original")
+            policy_id, original_id = confirmed_policy(
+                session, original_config, position.purchased_at - timedelta(days=1)
+            )
+            proof = session.scalars(select(EvidenceItem).where(
+                EvidenceItem.source_type == "SIMULATED_BANK_POSITION",
+                EvidenceItem.content["position_id"].as_string() == str(position.id),
+            )).one()
+            action = session.get(ActionPlan, proof.content["purchase_action_id"])
+            assert action is not None
+            action.policy_version_id = position.policy_version_id = original_id
+            proof.content = {**proof.content, "policy_version_id": str(original_id)}
+            proof.content_hash = configuration_hash(proof.content)
+            current_config = validate_configuration(authorization(
+                allow_early_withdrawal_with_penalty=denied != "current"
+            ))
+            changed = change_policy(
+                session, DEMO_USER_ID, policy_id, original_id, current_config,
+                configuration_hash(current_config), True, "new authority", str(uuid4()), SEED_AS_OF,
+            )
+            quote = quote.model_copy(update={"fee_cents": 100, "net_cents": quote.principal_cents - 100})
+            payload = {
+                "simulation": True, "protocol": "recovery-quote-v1",
+                "user_id": str(DEMO_USER_ID), "position_id": str(position.id),
+                "destination_account_id": str(effect.destination_account_id), "goal_id": None,
+                "quote": quote.model_dump(mode="json"),
+            }
+            session.add(EvidenceItem(
+                id=uuid4(), user_id=DEMO_USER_ID, created_at=SEED_AS_OF,
+                evidence_level="BANK_CONFIRMED", source_type="SIMULATED_REDEMPTION_QUOTE",
+                source_ref="known-cost", content=payload, content_hash=configuration_hash(payload),
+                valid_from=SEED_AS_OF, observed_at=SEED_AS_OF, status="VALID",
+            ))
+            effect = effect.model_copy(update={
+                "policy_id": policy_id, "policy_version_id": changed.current_version_id,
+                "policy_version_ids": [changed.current_version_id],
+                "original_policy_version_id": original_id, "fee_cents": 100, "net_cents": quote.net_cents,
+            })
+        with Session(demo_engine) as session:
+            loaded = load_execution_context(session, DEMO_USER_ID, effect, SEED_AS_OF)
+            confirmed = ConfirmationGrant(
+                user_id=DEMO_USER_ID, operation_id=effect.operation_id,
+                effect_hash=execution_effect_hash(effect), evidence_id=uuid4(),
+                confirmed_at=SEED_AS_OF, expires_at=effect.expires_at,
+            )
+            if denied != "neither":
+>               assert "EXECUTION_REDEMPTION_PERMISSION_DENIED" in {
+                    issue.code for issue in loaded.source_issues
+                }
+E               AssertionError: assert 'EXECUTION_REDEMPTION_PERMISSION_DENIED' in {'INVALID_ASSET_EXPOSURE', 'INVALID_ORIGINAL_REDEMPTION_SOURCE'}
+
+apps\api\app\tests\test_execution_context.py:468: AssertionError
+_ test_cost_confirmation_does_not_replace_both_historical_and_current_permissions[current] _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_1a0c0d81a53945d4bbb9eb3bfc9c710b)
+denied = 'current'
+
+    @pytest.mark.parametrize("denied", ["original", "current", "neither"])
+    def test_cost_confirmation_does_not_replace_both_historical_and_current_permissions(
+        demo_engine: Engine, denied: str
+    ) -> None:
+        from app.db.models import EvidenceItem
+        from app.domain.execution import execution_effect_hash
+        from app.domain.execution_types import ConfirmationGrant
+        from app.domain.policy_configuration import configuration_hash, validate_configuration
+        from app.services.policy_lifecycle import change_policy
+        from app.tests.test_asset_allocation_service import authorization
+        from app.tests.test_boundary_service import confirmed_policy
+    
+        seed_demo(demo_engine)
+        recovery_fixture(demo_engine)
+        with Session(demo_engine) as session, session.begin():
+            effect = redemption_effect(session)
+            quote = preview_recovery(session, DEMO_USER_ID, SEED_AS_OF).plan.steps[0].quote
+            position = session.get(AssetPosition, effect.position_id)
+            assert position is not None
+            original_config = authorization(allow_early_withdrawal_with_penalty=denied != "original")
+            policy_id, original_id = confirmed_policy(
+                session, original_config, position.purchased_at - timedelta(days=1)
+            )
+            proof = session.scalars(select(EvidenceItem).where(
+                EvidenceItem.source_type == "SIMULATED_BANK_POSITION",
+                EvidenceItem.content["position_id"].as_string() == str(position.id),
+            )).one()
+            action = session.get(ActionPlan, proof.content["purchase_action_id"])
+            assert action is not None
+            action.policy_version_id = position.policy_version_id = original_id
+            proof.content = {**proof.content, "policy_version_id": str(original_id)}
+            proof.content_hash = configuration_hash(proof.content)
+            current_config = validate_configuration(authorization(
+                allow_early_withdrawal_with_penalty=denied != "current"
+            ))
+            changed = change_policy(
+                session, DEMO_USER_ID, policy_id, original_id, current_config,
+                configuration_hash(current_config), True, "new authority", str(uuid4()), SEED_AS_OF,
+            )
+            quote = quote.model_copy(update={"fee_cents": 100, "net_cents": quote.principal_cents - 100})
+            payload = {
+                "simulation": True, "protocol": "recovery-quote-v1",
+                "user_id": str(DEMO_USER_ID), "position_id": str(position.id),
+                "destination_account_id": str(effect.destination_account_id), "goal_id": None,
+                "quote": quote.model_dump(mode="json"),
+            }
+            session.add(EvidenceItem(
+                id=uuid4(), user_id=DEMO_USER_ID, created_at=SEED_AS_OF,
+                evidence_level="BANK_CONFIRMED", source_type="SIMULATED_REDEMPTION_QUOTE",
+                source_ref="known-cost", content=payload, content_hash=configuration_hash(payload),
+                valid_from=SEED_AS_OF, observed_at=SEED_AS_OF, status="VALID",
+            ))
+            effect = effect.model_copy(update={
+                "policy_id": policy_id, "policy_version_id": changed.current_version_id,
+                "policy_version_ids": [changed.current_version_id],
+                "original_policy_version_id": original_id, "fee_cents": 100, "net_cents": quote.net_cents,
+            })
+        with Session(demo_engine) as session:
+            loaded = load_execution_context(session, DEMO_USER_ID, effect, SEED_AS_OF)
+            confirmed = ConfirmationGrant(
+                user_id=DEMO_USER_ID, operation_id=effect.operation_id,
+                effect_hash=execution_effect_hash(effect), evidence_id=uuid4(),
+                confirmed_at=SEED_AS_OF, expires_at=effect.expires_at,
+            )
+            if denied != "neither":
+>               assert "EXECUTION_REDEMPTION_PERMISSION_DENIED" in {
+                    issue.code for issue in loaded.source_issues
+                }
+E               AssertionError: assert 'EXECUTION_REDEMPTION_PERMISSION_DENIED' in {'INVALID_ASSET_EXPOSURE', 'INVALID_ORIGINAL_REDEMPTION_SOURCE'}
+
+apps\api\app\tests\test_execution_context.py:468: AssertionError
+_ test_cost_confirmation_does_not_replace_both_historical_and_current_permissions[neither] _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_7303d0f290c9450281c14af7004953c5)
+denied = 'neither'
+
+    @pytest.mark.parametrize("denied", ["original", "current", "neither"])
+    def test_cost_confirmation_does_not_replace_both_historical_and_current_permissions(
+        demo_engine: Engine, denied: str
+    ) -> None:
+        from app.db.models import EvidenceItem
+        from app.domain.execution import execution_effect_hash
+        from app.domain.execution_types import ConfirmationGrant
+        from app.domain.policy_configuration import configuration_hash, validate_configuration
+        from app.services.policy_lifecycle import change_policy
+        from app.tests.test_asset_allocation_service import authorization
+        from app.tests.test_boundary_service import confirmed_policy
+    
+        seed_demo(demo_engine)
+        recovery_fixture(demo_engine)
+        with Session(demo_engine) as session, session.begin():
+            effect = redemption_effect(session)
+            quote = preview_recovery(session, DEMO_USER_ID, SEED_AS_OF).plan.steps[0].quote
+            position = session.get(AssetPosition, effect.position_id)
+            assert position is not None
+            original_config = authorization(allow_early_withdrawal_with_penalty=denied != "original")
+            policy_id, original_id = confirmed_policy(
+                session, original_config, position.purchased_at - timedelta(days=1)
+            )
+            proof = session.scalars(select(EvidenceItem).where(
+                EvidenceItem.source_type == "SIMULATED_BANK_POSITION",
+                EvidenceItem.content["position_id"].as_string() == str(position.id),
+            )).one()
+            action = session.get(ActionPlan, proof.content["purchase_action_id"])
+            assert action is not None
+            action.policy_version_id = position.policy_version_id = original_id
+            proof.content = {**proof.content, "policy_version_id": str(original_id)}
+            proof.content_hash = configuration_hash(proof.content)
+            current_config = validate_configuration(authorization(
+                allow_early_withdrawal_with_penalty=denied != "current"
+            ))
+            changed = change_policy(
+                session, DEMO_USER_ID, policy_id, original_id, current_config,
+                configuration_hash(current_config), True, "new authority", str(uuid4()), SEED_AS_OF,
+            )
+            quote = quote.model_copy(update={"fee_cents": 100, "net_cents": quote.principal_cents - 100})
+            payload = {
+                "simulation": True, "protocol": "recovery-quote-v1",
+                "user_id": str(DEMO_USER_ID), "position_id": str(position.id),
+                "destination_account_id": str(effect.destination_account_id), "goal_id": None,
+                "quote": quote.model_dump(mode="json"),
+            }
+            session.add(EvidenceItem(
+                id=uuid4(), user_id=DEMO_USER_ID, created_at=SEED_AS_OF,
+                evidence_level="BANK_CONFIRMED", source_type="SIMULATED_REDEMPTION_QUOTE",
+                source_ref="known-cost", content=payload, content_hash=configuration_hash(payload),
+                valid_from=SEED_AS_OF, observed_at=SEED_AS_OF, status="VALID",
+            ))
+            effect = effect.model_copy(update={
+                "policy_id": policy_id, "policy_version_id": changed.current_version_id,
+                "policy_version_ids": [changed.current_version_id],
+                "original_policy_version_id": original_id, "fee_cents": 100, "net_cents": quote.net_cents,
+            })
+        with Session(demo_engine) as session:
+            loaded = load_execution_context(session, DEMO_USER_ID, effect, SEED_AS_OF)
+            confirmed = ConfirmationGrant(
+                user_id=DEMO_USER_ID, operation_id=effect.operation_id,
+                effect_hash=execution_effect_hash(effect), evidence_id=uuid4(),
+                confirmed_at=SEED_AS_OF, expires_at=effect.expires_at,
+            )
+            if denied != "neither":
+                assert "EXECUTION_REDEMPTION_PERMISSION_DENIED" in {
+                    issue.code for issue in loaded.source_issues
+                }
+                assert revalidate_execution(effect, loaded, confirmation=confirmed).status == "INSUFFICIENT_EVIDENCE"
+            else:
+>               assert loaded.source_issues == []
+E               AssertionError: assert [SourceIssue(...41b8615e6d9')] == []
+E                 
+E                 Left contains 2 more items, first extra item: SourceIssue(code='INVALID_ASSET_EXPOSURE', entity_type='source', entity_id='88c6700e-6cb4-5ed6-ab81-f7087c3f17b6')
+E                 Use -v to get more diff
+
+apps\api\app\tests\test_execution_context.py:473: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_context.py::test_cost_confirmation_does_not_replace_both_historical_and_current_permissions[original]
+FAILED apps/api/app/tests/test_execution_context.py::test_cost_confirmation_does_not_replace_both_historical_and_current_permissions[current]
+FAILED apps/api/app/tests/test_execution_context.py::test_cost_confirmation_does_not_replace_both_historical_and_current_permissions[neither]
+3 failed, 3 passed, 10 deselected in 16.48s

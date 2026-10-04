@@ -1,0 +1,19 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_______ test_internal_transfer_is_independent_conserved_and_replayable ________
+apps\api\app\tests\test_execution_bank.py:65: in test_internal_transfer_is_independent_conserved_and_replayable
+    result = process_operation(boundary_engine, DEMO_USER_ID, action_id, SEED_AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution_bank.py:22: in process_operation
+    raise NotImplementedError
+E   NotImplementedError
+___________ test_changed_economic_content_cannot_reuse_the_same_key ___________
+apps\api\app\tests\test_execution_bank.py:80: in test_changed_economic_content_cannot_reuse_the_same_key
+    process_operation(boundary_engine, DEMO_USER_ID, action_id, SEED_AS_OF)
+apps\api\app\services\execution_bank.py:22: in process_operation
+    raise NotImplementedError
+E   NotImplementedError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_bank.py::test_internal_transfer_is_independent_conserved_and_replayable
+FAILED apps/api/app/tests/test_execution_bank.py::test_changed_economic_content_cannot_reuse_the_same_key
+2 failed in 7.01s

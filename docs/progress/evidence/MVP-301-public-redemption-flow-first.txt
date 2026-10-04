@@ -1,0 +1,120 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_ test_explicit_net_fee_loss_confirmation_executes_once_through_public_service _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_6474b4d2ab08490cacf2e9cb55793dc7)
+
+    def test_explicit_net_fee_loss_confirmation_executes_once_through_public_service(
+        boundary_engine: Engine,
+    ) -> None:
+        _, position_id, principal = recovery_fixture(boundary_engine)
+        with Session(boundary_engine) as session, session.begin():
+            # Trusted historical fixture: the acquisition itself allowed this cost;
+            # one-shot consent must not create that missing standing permission.
+            _, version_id = confirmed_policy(
+                session,
+                authorization(allow_early_withdrawal_with_penalty=True),
+                SEED_AS_OF - timedelta(days=40),
+            )
+            position = session.get(AssetPosition, position_id)
+            assert position is not None
+            proof = session.scalars(
+                select(EvidenceItem).where(
+                    EvidenceItem.source_type == "SIMULATED_BANK_POSITION",
+                    EvidenceItem.content["position_id"].as_string() == str(position_id),
+                    EvidenceItem.status == "VALID",
+                )
+            ).one()
+            purchase = session.get(ActionPlan, UUID(proof.content["purchase_action_id"]))
+            assert purchase is not None
+            run = session.get(DecisionRun, purchase.decision_run_id)
+            assert run is not None
+            position.policy_version_id = purchase.policy_version_id = version_id
+            run.policy_version_ids = [str(version_id)]
+            proof.content = {**proof.content, "policy_version_id": str(version_id)}
+            proof.content_hash = configuration_hash(proof.content)
+            session.flush()
+            quote = load_execution_quote(session, DEMO_USER_ID, position_id, SEED_AS_OF)
+            quote = quote.model_copy(
+                update={"fee_cents": 100, "loss_cents": 1000, "net_cents": principal - 1100}
+            )
+            from app.services.execution_sources import execution_return_account
+    
+            payload = {
+                "simulation": True,
+                "protocol": "recovery-quote-v1",
+                "user_id": str(DEMO_USER_ID),
+                "position_id": str(position_id),
+                "destination_account_id": str(
+                    execution_return_account(session, DEMO_USER_ID, position, SEED_AS_OF)
+                ),
+                "goal_id": None,
+                "quote": quote.model_dump(mode="json"),
+            }
+            session.add(
+                EvidenceItem(
+                    id=uuid4(),
+                    user_id=DEMO_USER_ID,
+                    created_at=SEED_AS_OF,
+                    evidence_level="BANK_CONFIRMED",
+                    source_type="SIMULATED_REDEMPTION_QUOTE",
+                    source_ref="public-cost-quote",
+                    content=payload,
+                    content_hash=configuration_hash(payload),
+                    status="VALID",
+                    valid_from=SEED_AS_OF,
+                    observed_at=SEED_AS_OF,
+                )
+            )
+>       prepared = prepare_action(
+            boundary_engine,
+            DEMO_USER_ID,
+            PrepareActionRequest(
+                idempotency_key="public-cost",
+                intent=RedeemIntent(kind="redeem_asset", position_id=position_id),
+            ),
+            SEED_AS_OF,
+        )
+
+apps\api\app\tests\test_execution_redemption_flow.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_6474b4d2ab08490cacf2e9cb55793dc7)
+user_id = UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')
+request = PrepareActionRequest(idempotency_key='public-cost', intent=RedeemIntent(kind='redeem_asset', position_id=UUID('7560448c-5d88-5dcd-87e7-541b8615e6d9')))
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def prepare_action(
+        engine: Engine, user_id: UUID, request: PrepareActionRequest, now: datetime
+    ) -> ActionResponse:
+        request = PrepareActionRequest.model_validate_json(request.model_dump_json())
+        now = _clock(now)
+        key = "action:" + configuration_hash({"key": request.idempotency_key})
+        intent = request.intent.model_dump(mode="json")
+        with Session(engine) as session, session.begin():
+            _lock_user(session, user_id)
+            existing = session.scalar(
+                select(ActionPlan).where(
+                    ActionPlan.user_id == user_id, ActionPlan.idempotency_key == key
+                )
+            )
+            if existing is not None:
+                if existing.request.get("intent") != intent:
+                    raise PolicyLifecycleError(
+                        "IDEMPOTENCY_CONFLICT", "同一幂等键不能改变原始意图", 409
+                    )
+                return get_action(session, user_id, existing.id, now)
+            action_id = uuid4()
+            effect = _build_effect(session, user_id, action_id, request, now)
+            context = load_execution_context(session, user_id, effect, now)
+            validation = revalidate_execution(effect, context)
+            if validation.status not in {"READY", "CONFIRMATION_REQUIRED"}:
+>               raise PolicyLifecycleError(
+                    "EXECUTION_NOT_READY", "动作不能安全准备：" + ",".join(validation.reasons), 409
+                )
+E               app.services.policy_lifecycle.PolicyLifecycleError: 动作不能安全准备：INCOMPLETE_EXECUTION_FACTS
+
+apps\api\app\services\execution.py:65: PolicyLifecycleError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_redemption_flow.py::test_explicit_net_fee_loss_confirmation_executes_once_through_public_service
+1 failed, 1 passed in 10.06s

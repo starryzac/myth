@@ -68,6 +68,8 @@ def asset_exposure_snapshot(
     settlements: list[dict[str, Any]] | None = None,
     bank_requests: Iterable[object] | None = None,
     bank_postings: Iterable[object] | None = None,
+    bank_operations: Iterable[object] | None = None,
+    resource_reservations: Iterable[object] | None = None,
 ) -> dict[str, Any]:
     """Importer helper accepting ORM objects or mappings, without depending on SQLAlchemy.
 
@@ -115,6 +117,14 @@ def asset_exposure_snapshot(
             (_json(item) for item in settlements or []), key=lambda item: item["action_id"]
         ),
     }
+    execution = bank_operations is not None or resource_reservations is not None
+    if execution and (
+        bank_operations is None
+        or resource_reservations is None
+        or bank_requests is None
+        or bank_postings is None
+    ):
+        raise ValueError("Execution exposure requires all four complete bank/resource collections")
     if bank_requests is not None or bank_postings is not None:
         if bank_requests is None or bank_postings is None:
             raise ValueError("Both complete bank request and posting collections are required")
@@ -129,6 +139,22 @@ def asset_exposure_snapshot(
             bank_postings,
             "id user_id ledger_key account_id position_id redemption_id previous_posting_id "
             "sequence_number entry_kind balance_before_cents delta_cents balance_after_cents "
-            "occurred_at created_at",
+            "occurred_at created_at"
+            + (" ledger_dimension ledger_metadata operation_id leg_ref" if execution else ""),
+        )
+    if execution:
+        assert bank_operations is not None and resource_reservations is not None
+        result["protocol"] = "asset-exposure-v3"
+        result["bank_operations"] = _manifest(
+            bank_operations,
+            "id user_id action_plan_id legacy_redemption_id closing_position_id operation_type "
+            "business_key idempotency_key request request_hash requested_at available_at "
+            "settled_at "
+            "status created_at",
+        )
+        result["resource_reservations"] = _manifest(
+            resource_reservations,
+            "id user_id action_plan_id resource_kind resource_key amount_cents status "
+            "resolved_at created_at",
         )
     return result

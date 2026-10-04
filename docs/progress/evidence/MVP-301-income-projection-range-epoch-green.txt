@@ -1,0 +1,39 @@
+...F                                                                     [100%]
+================================== FAILURES ===================================
+_______ test_pure_epoch_successor_keeps_prepared_income_identity[True] ________
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_8e3cc5d6393e4d58a56e817b291e424f)
+economic_change = True
+
+    @pytest.mark.parametrize("economic_change", [False, True])
+    def test_pure_epoch_successor_keeps_prepared_income_identity(boundary_engine: Engine, economic_change: bool) -> None:
+        with Session(boundary_engine) as session, session.begin():
+            goal_id = goal_fixture(session, with_proofs=True)
+            origin_id, proof_id = income_ledger(session)
+            initial = read_income_ledger(session, DEMO_USER_ID, NOW)
+            open_execution_anchors(session, DEMO_USER_ID, NOW, income_ledger=initial)
+            fragment = next(f for f in initial.fragments if f.origin_transaction_id == origin_id)
+            use = IncomeUse(fragment_id=fragment.fragment_id, origin_transaction_id=origin_id,
+                account_id=fragment.account_id, amount_cents=20000)
+            action = action_fixture(session, goal_id, use)
+            immutable_request = dict(action.request)
+            old = session.get(EvidenceItem, proof_id)
+            assert old is not None
+            later = NOW + timedelta(seconds=1)
+            content = {**old.content, "as_of": later.isoformat()}
+            if economic_change:
+                content["lots"] = [dict(lot) for lot in content["lots"]]
+                changed = next(lot for lot in content["lots"] if lot["transaction_id"] == str(origin_id))
+                changed["spent_cents"] += 1
+                changed["available_cents"] -= 1
+            replace_proof(session, old, content, later, uuid4())
+            if economic_change:
+>               with pytest.raises(PolicyLifecycleError, match="Prepared income evidence changed"):
+E               AssertionError: Regex pattern did not match.
+E                 Expected regex: 'Prepared income evidence changed'
+E                 Actual message: "1 validation error for LedgerPayload\nlots.2\n  Value error, The original income and all consumed or reserved parts must conserve [type=value_error, input_value={'account_id': '61d172d3-..._unspent_cents': 170000}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error"
+
+apps\api\app\tests\test_income_ledger_service.py:64: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_income_ledger_service.py::test_pure_epoch_successor_keeps_prepared_income_identity[True]
+1 failed, 3 passed, 18 deselected in 8.26s

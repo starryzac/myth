@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_zero_cost_quote_does_not_override_original_product_automatic_exit_flag _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_eb6c4be9a32244d28c848a12ddda6e87)
+
+    def test_zero_cost_quote_does_not_override_original_product_automatic_exit_flag(
+        demo_engine: Engine,
+    ) -> None:
+        seed_demo(demo_engine)
+        recovery_fixture(demo_engine)
+        with Session(demo_engine) as session, session.begin():
+            effect = redemption_effect(session)
+            product = session.get(AssetProduct, effect.product_id)
+            assert product is not None
+            product.auto_redeem_allowed = False
+        with Session(demo_engine) as session:
+            loaded = load_execution_context(session, DEMO_USER_ID, effect, SEED_AS_OF)
+>           assert "EXECUTION_REDEMPTION_PERMISSION_DENIED" in {
+                issue.code for issue in loaded.source_issues
+            }
+E           AssertionError: assert 'EXECUTION_REDEMPTION_PERMISSION_DENIED' in set()
+
+apps\api\app\tests\test_execution_context.py:495: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_context.py::test_zero_cost_quote_does_not_override_original_product_automatic_exit_flag
+1 failed, 16 deselected in 5.20s

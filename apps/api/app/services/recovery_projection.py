@@ -92,6 +92,11 @@ def refresh_exposure(
     declarations: dict[UUID, dict[str, Any]],
 ) -> None:
     previous = current_proof(session, user_id, EXPOSURE_SOURCE)
+    if previous.content.get("protocol") == "asset-exposure-v3":
+        from app.services.execution_exposure import refresh_execution_exposure
+
+        refresh_execution_exposure(session, user_id, now, operation_id, declarations=declarations)
+        return
     items = {UUID(item["action_id"]): item for item in previous.content["settlements"]}
     items.update(declarations)
     session.flush()

@@ -1,0 +1,31 @@
+F
+================================== FAILURES ===================================
+_ test_prepare_transfer_is_reviewable_idempotent_and_does_not_move_or_reserve_cash _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_4cf11b42b5d14c67bacf7096a81a0378)
+
+    def test_prepare_transfer_is_reviewable_idempotent_and_does_not_move_or_reserve_cash(boundary_engine: Engine) -> None:
+        source, target = transfer_accounts(boundary_engine)
+        request = PrepareActionRequest(idempotency_key="transfer-first", intent=TransferIntent(
+            kind="transfer_internal", source_account_id=source, destination_account_id=target, amount_cents=10000))
+        before = snapshot(boundary_engine)
+>       first = prepare_action(boundary_engine, DEMO_USER_ID, request, SEED_AS_OF)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_execution_service.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_4cf11b42b5d14c67bacf7096a81a0378)
+user_id = UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')
+request = PrepareActionRequest(idempotency_key='transfer-first', intent=TransferIntent(kind='transfer_internal', source_account_...b8a-5f75-b00e-5d99b5e08dd1'), destination_account_id=UUID('9446f241-e5dd-40a5-8815-a88a1ad0ea57'), amount_cents=10000))
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def prepare_action(engine: Engine, user_id: UUID, request: PrepareActionRequest, now: datetime) -> ActionResponse:
+>       raise NotImplementedError
+E       NotImplementedError
+
+apps\api\app\services\execution.py:10: NotImplementedError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_service.py::test_prepare_transfer_is_reviewable_idempotent_and_does_not_move_or_reserve_cash
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 4.92s

@@ -1,0 +1,49 @@
+.F.                                                                      [100%]
+================================== FAILURES ===================================
+_ test_payment_confirmation_requirement_comes_from_current_confirmed_policy[range-True] _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_afaa4623892441b5b321196b2169ae67)
+kind = 'range', auto = True
+
+    @pytest.mark.parametrize("kind,auto", [("exact", False), ("range", True), ("exact", True)])
+    def test_payment_confirmation_requirement_comes_from_current_confirmed_policy(
+        demo_engine: Engine, kind: str, auto: bool
+    ) -> None:
+        from app.db.models import Account
+        from app.domain.execution_types import CashUse, OccurrenceReference
+        from app.tests.test_boundary_service import confirmed_policy
+    
+        seed_demo(demo_engine)
+        with Session(demo_engine) as session, session.begin():
+            cash = session.scalars(select(Account).where(Account.account_type == "CASH")).one()
+            rule = (
+                {"kind": "exact", "amount_cents": 30000}
+                if kind == "exact"
+                else {"kind": "range", "min_cents": 20000, "max_cents": 40000}
+            )
+            policy_id, version_id = confirmed_policy(session, {
+                "type": "recurring_obligation", "payee_id": "landlord", "amount_rule": rule,
+                "due_day": 4, "auto_execute": auto,
+            })
+            effect = ExecutionEffect(
+                operation_id=uuid4(), user_id=DEMO_USER_ID, business_key="payment:2026-10",
+                action_type="PAY_RECURRING", amount_cents=30000,
+                cash_uses=[CashUse(account_id=cash.id, amount_cents=30000)],
+                policy_id=policy_id, policy_version_id=version_id, policy_version_ids=[version_id],
+                liability=OccurrenceReference(policy_id=policy_id, period="2026-10", evidence_ids=[]),
+                payee_id="landlord", payee_evidence_id=uuid4(),
+                valid_from=SEED_AS_OF, expires_at=SEED_AS_OF + timedelta(minutes=15),
+            )
+        with Session(demo_engine) as session:
+            loaded = load_execution_context(session, DEMO_USER_ID, effect, SEED_AS_OF)
+            assert loaded.source_issues == []
+>           assert loaded.requires_confirmation is (kind == "range" or not auto)
+E           AssertionError: assert False is (('range' == 'range'
+E            +  where False = ExecutionContext(user_id=UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), snapshot=BoundarySnapshot(as_of=datetime.dateti...irmation=False, reserved_cash_by_account={}, reserved_goal_cash_by_goal={}, reserved_position_ids=[], source_issues=[]).requires_confirmation
+E             
+E               range))
+
+apps\api\app\tests\test_execution_context.py:396: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_context.py::test_payment_confirmation_requirement_comes_from_current_confirmed_policy[range-True]
+1 failed, 2 passed, 10 deselected in 9.79s

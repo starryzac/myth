@@ -9,6 +9,7 @@ from app.db.models import Goal, PolicyVersion, Transaction
 from app.domain.boundary_types import SourceIssue
 from app.domain.goal_allocation import GoalAllocationResult, IncomeLot, plan_goal_allocation
 from app.domain.history_coverage import bank_fact_snapshot
+from app.domain.income_ledger import LEDGER_PROTOCOL_V2
 from app.domain.policy_configuration import MoneyCents, configuration_hash
 from app.services.boundary import (
     CONTRIBUTION_SOURCE,
@@ -90,6 +91,35 @@ def _income_lots(session: Session, context: BoundaryContext, goal_id: UUID) -> l
         return []
     statement = statements[0]
     try:
+        if statement.content.get("protocol") == LEDGER_PROTOCOL_V2:
+            from app.services.income_ledger import read_income_state
+
+            state = read_income_state(session, sources.user_id, sources.now)
+            ledger = state.ledger
+            for source in (OWNERSHIP_SOURCE, CONTRIBUTION_SOURCE):
+                proofs = sources.candidates(source, "goal_id", goal_id)
+                if source == CONTRIBUTION_SOURCE:
+                    proofs = [item for item in proofs if item.id in sources.used]
+                if len(proofs) != 1 or proofs[0].content.get("as_of") != ledger.as_of.isoformat():
+                    raise ValueError("Ledger and goal ownership/contribution must have one epoch")
+            origins = {item.origin_transaction_id: item for item in ledger.origins}
+            sources.used.update(origin.bank_evidence_id for origin in ledger.origins)
+            return [
+                IncomeLot(
+                    origin_transaction_id=fragment.origin_transaction_id,
+                    account_id=fragment.account_id,
+                    fragment_id=fragment.fragment_id,
+                    amount_cents=origins[fragment.origin_transaction_id].amount_cents,
+                    available_cents=fragment.available_cents,
+                    occurred_at=origins[fragment.origin_transaction_id].occurred_at,
+                    observed_at=origins[fragment.origin_transaction_id].observed_at,
+                    evidence_ids=[
+                        state.evidence_id,
+                        origins[fragment.origin_transaction_id].bank_evidence_id,
+                    ],
+                )
+                for fragment in ledger.fragments
+            ]
         payload = LedgerPayload.model_validate_json(json.dumps(statement.content))
         if not sources.valid(
             statement,
@@ -186,7 +216,7 @@ def _income_lots(session: Session, context: BoundaryContext, goal_id: UUID) -> l
             if available > accounts[identifier].balance_cents - owned:
                 raise ValueError("Available income exceeds remaining cash in the original account")
         return lots
-    except (KeyError, TypeError, ValueError, OverflowError) as error:
+    except (KeyError, TypeError, ValueError, OverflowError, PolicyLifecycleError) as error:
         sources.issue("INVALID_NEW_FUNDS_LEDGER", statement.id, str(error))
         return []
 

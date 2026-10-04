@@ -81,7 +81,7 @@ def test_seed_opens_independent_bank_once_without_creating_recovery_authority(
     demo_engine: Engine,
 ) -> None:
     first = seed_demo(demo_engine)
-    assert first.seed_version == "mvp-205-v5"
+    assert first.seed_version == "mvp-301-v6"
     assert first.counts["simulated_bank_redemptions"] == 0
     # Four non-credit-card cash ledgers and three exact existing positions.
     assert first.counts["simulated_bank_postings"] == 7
@@ -115,7 +115,7 @@ def test_new_product_versions_have_explicit_principal_yield_and_zero_fee_contrac
     demo_engine: Engine,
 ) -> None:
     summary = seed_demo(demo_engine)
-    assert summary.seed_version == "mvp-205-v5"
+    assert summary.seed_version == "mvp-301-v6"
     with Session(demo_engine) as session:
         products = session.scalars(select(AssetProduct)).all()
         old = {item.product_code: item for item in products if item.version_number == 1}
@@ -347,7 +347,7 @@ def test_v2_seed_declares_closed_history_scope_and_immutable_economic_roles(
             )
         )
         assert coverage is not None
-        assert summary.seed_version == "mvp-205-v5"
+        assert summary.seed_version == "mvp-301-v6"
         assert summary.as_of == datetime(2026, 10, 3, 16, tzinfo=UTC)
         assert coverage.evidence_level == "BANK_CONFIRMED"
         assert coverage.valid_from == coverage.observed_at == summary.as_of
@@ -475,7 +475,7 @@ def test_v2_reuses_real_v1_catalog_without_overwriting_shared_products(demo_engi
             ).mappings()
         ]
     summary = seed_demo(demo_engine)
-    assert summary.seed_version == "mvp-205-v5"
+    assert summary.seed_version == "mvp-301-v6"
     with demo_engine.connect() as connection:
         after = [
             dict(row)

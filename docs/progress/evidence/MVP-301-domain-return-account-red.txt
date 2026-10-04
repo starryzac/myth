@@ -1,0 +1,18 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_purchase_return_identity_is_hash_bound_independently_of_funding_order __
+
+    def test_purchase_return_identity_is_hash_bound_independently_of_funding_order() -> None:
+        effect, _ = purchase_example()
+        split = [CashUse(account_id=A, amount_cents=150), CashUse(account_id=B, amount_cents=150)]
+        first = effect.model_copy(update={"cash_uses": split, "return_account_id": A})
+        second = first.model_copy(update={"return_account_id": B})
+>       assert execution_effect_hash(first) != execution_effect_hash(second)
+E       AssertionError: assert '5e106309e32fb9a56673fe5984284a401ee3d02e6c445b39fc6be3f69684952f' != '5e106309e32fb9a56673fe5984284a401ee3d02e6c445b39fc6be3f69684952f'
+E        +  where '5e106309e32fb9a56673fe5984284a401ee3d02e6c445b39fc6be3f69684952f' = execution_effect_hash(ExecutionEffect(simulation=True, operation_id=UUID('00000000-0000-0000-0000-000000000004'), user_id=UUID('00000000-000...4, 8, 0, tzinfo=datetime.timezone.utc), expires_at=datetime.datetime(2026, 10, 4, 8, 15, tzinfo=datetime.timezone.utc)))
+E        +  and   '5e106309e32fb9a56673fe5984284a401ee3d02e6c445b39fc6be3f69684952f' = execution_effect_hash(ExecutionEffect(simulation=True, operation_id=UUID('00000000-0000-0000-0000-000000000004'), user_id=UUID('00000000-000...4, 8, 0, tzinfo=datetime.timezone.utc), expires_at=datetime.datetime(2026, 10, 4, 8, 15, tzinfo=datetime.timezone.utc)))
+
+apps\api\app\tests\test_execution_domain.py:389: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_domain.py::test_purchase_return_identity_is_hash_bound_independently_of_funding_order
+1 failed, 41 deselected in 0.85s

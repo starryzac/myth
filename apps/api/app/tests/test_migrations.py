@@ -16,7 +16,7 @@ from app.db.models import Account, ActionPlan, DecisionRun, Policy, PolicyVersio
 from app.db.session import create_database_engine
 from app.db.settings import DatabaseSettings
 from app.db.testing import require_test_database, temporary_database
-from sqlalchemy import BigInteger, CheckConstraint, DateTime, insert, inspect, select
+from sqlalchemy import BigInteger, CheckConstraint, DateTime, insert, inspect, select, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.exc import IntegrityError, StatementError
 from sqlalchemy.orm import Session
@@ -41,7 +41,48 @@ EXPECTED_TABLES = {
     "audit_events",
     "simulated_bank_redemptions",
     "simulated_bank_postings",
+    "bank_operations",
+    "action_resource_reservations",
 }
+
+
+@pytest.mark.integration
+def test_legacy_bank_migration_preserves_original_requests_and_posting_amounts(
+    migrated_database: tuple[Engine, Config],
+) -> None:
+    from app.services.demo_seed import DEMO_USER_ID, SEED_AS_OF, seed_demo
+    from app.services.simulated_bank import process_redemption
+    from app.tests.test_simulated_bank import bank_action
+
+    engine, config = migrated_database
+    seed_demo(engine)
+    action_id, _, _, _ = bank_action(engine)
+    result = process_redemption(engine, DEMO_USER_ID, action_id, SEED_AS_OF)
+    sql = (
+        "SELECT id,ledger_key,redemption_id,previous_posting_id,sequence_number,"
+        "entry_kind,balance_before_cents,delta_cents,balance_after_cents,occurred_at "
+        "FROM simulated_bank_postings ORDER BY id"
+    )
+    with engine.connect() as connection:
+        before = connection.execute(text(sql)).all()
+        request = connection.execute(text("SELECT * FROM simulated_bank_redemptions")).all()
+    command.downgrade(config, "0003_simulated_bank")
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert connection.execute(text(sql)).all() == before
+        assert connection.execute(text("SELECT * FROM simulated_bank_redemptions")).all() == request
+        assert (
+            connection.execute(text("SELECT id FROM bank_operations")).scalar() == result.request_id
+        )
+        assert (
+            connection.execute(
+                text(
+                    "SELECT count(*) FROM simulated_bank_postings "
+                    "WHERE operation_id = redemption_id AND operation_id IS NOT NULL"
+                )
+            ).scalar()
+            == 2
+        )
 
 
 def migration_config(url: str) -> Config:
@@ -86,7 +127,7 @@ def migrated_database() -> Iterator[tuple[Engine, Config]]:
 
 
 @pytest.mark.integration
-def test_fresh_upgrade_downgrade_upgrade_matches_all_eighteen_models() -> None:
+def test_fresh_upgrade_downgrade_upgrade_matches_all_twenty_models() -> None:
     with temporary_database() as url:
         config = migration_config(url)
         engine = create_database_engine(url)

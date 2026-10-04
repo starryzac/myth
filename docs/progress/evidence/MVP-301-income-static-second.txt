@@ -1,0 +1,2 @@
+apps\api\app\domain\execution.py:547: error: Incompatible types in assignment (expression has type "None", variable has type "datetime")  [assignment]
+Found 1 error in 1 file (checked 11 source files)

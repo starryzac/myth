@@ -1,0 +1,36 @@
+F
+================================== FAILURES ===================================
+_ test_known_payee_uses_the_original_bank_counterparty_without_granting_authority _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_b407e63b5e064b10bf38f3c9bed56303)
+
+    def test_known_payee_uses_the_original_bank_counterparty_without_granting_authority(
+        demo_engine: Engine,
+    ) -> None:
+        seed_demo(demo_engine)
+        with Session(demo_engine) as session:
+>           proof_id = resolve_payee_binding(
+                session, DEMO_USER_ID, "synthetic-landlord-001", SEED_AS_OF
+            )
+
+apps\api\app\tests\test_execution_sources.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000001FE9C27A4E0>
+user_id = UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')
+payee_id = 'synthetic-landlord-001'
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+bill_id = None
+
+    def resolve_payee_binding(
+        session: Session, user_id: UUID, payee_id: str, now: datetime,
+        *, bill_id: UUID | None = None,
+    ) -> UUID:
+>       raise NotImplementedError
+E       NotImplementedError
+
+apps\api\app\services\execution_sources.py:15: NotImplementedError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_sources.py::test_known_payee_uses_the_original_bank_counterparty_without_granting_authority
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 5.06s

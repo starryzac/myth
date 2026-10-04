@@ -1,0 +1,135 @@
+F
+================================== FAILURES ===================================
+___ test_range_payment_uses_bank_final_amount_instead_of_the_protection_max ___
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_474e3b59f7704d90a29bf5d132a5fa20)
+
+    def test_range_payment_uses_bank_final_amount_instead_of_the_protection_max(boundary_engine: Engine) -> None:
+        with Session(boundary_engine) as session, session.begin():
+            policy_id, _ = confirmed_policy(session, {"type": "recurring_obligation",
+                "payee_id": "synthetic-utilities-001", "due_day": 4, "auto_execute": True,
+                "amount_rule": {"kind": "range", "min_cents": 5000, "max_cents": 10000}})
+            imported_proof(session, "SIMULATED_RECURRING_SETTLEMENT", {
+                "protocol": "recurring-settlement-v1", "policy_id": str(policy_id), "period": "2026-10",
+                "paid_cents": 1000, "final_total_cents": 8000, "payee_id": "synthetic-utilities-001",
+                "complete": True, "as_of": SEED_AS_OF.isoformat()})
+>       result = prepare_action(boundary_engine, DEMO_USER_ID, PrepareActionRequest(idempotency_key="pay-final-range",
+            intent=PaymentIntent(kind="pay_recurring", policy_id=policy_id, period="2026-10")), SEED_AS_OF)
+
+apps\api\app\tests\test_execution_service.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\execution.py:37: in prepare_action
+    effect = _build_effect(session, user_id, action_id, request, now)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution.py:84: in _build_effect
+    return plan_execution_effect(session, user_id, action_id, request.intent, now)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000002177999FF20>
+user_id = UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')
+action_id = UUID('69a27859-30e3-4c16-b312-469cbbb0b3dd')
+intent = PaymentIntent(kind='pay_recurring', policy_id=UUID('724dceac-14fe-45e1-8144-3e2ce5216f00'), period='2026-10', bill_id=None)
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def plan_execution_effect(session: Session, user_id: UUID, action_id: UUID,
+                              intent: ActionIntent, now: datetime) -> ExecutionEffect:
+        common = dict(operation_id=action_id, user_id=user_id, valid_from=now,
+                      expires_at=now + timedelta(minutes=15))
+        if intent.kind == "transfer_internal":
+            cash = [CashUse(account_id=intent.source_account_id, amount_cents=intent.amount_cents)]
+            return ExecutionEffect(**common, business_key="transfer:" + str(action_id),
+                action_type="TRANSFER_INTERNAL", amount_cents=intent.amount_cents, cash_uses=cash,
+                income_uses=funding_income(session, user_id, cash, now), destination_account_id=intent.destination_account_id)
+        if intent.kind == "allocate_goal":
+            preview = preview_goal_allocation(session, user_id, intent.goal_id, now)
+            result = preview.allocation
+            if result.status != "READY" or not result.suggested_cents:
+                raise _error("目标储备尚不可执行：" + ",".join(result.reasons))
+            goal = session.get(Goal, intent.goal_id)
+            assert goal is not None
+            amounts: dict[UUID, int] = {}
+            for use in result.lot_allocations:
+                amounts[use.account_id] = amounts.get(use.account_id, 0) + use.amount_cents
+            return ExecutionEffect(**common, business_key="goal:" + str(action_id), action_type="ALLOCATE_GOAL",
+                amount_cents=result.suggested_cents, cash_uses=[CashUse(account_id=k, amount_cents=v) for k,v in sorted(amounts.items())],
+                income_uses=[IncomeUse(fragment_id=u.fragment_id, origin_transaction_id=u.origin_transaction_id,
+                    account_id=u.account_id, amount_cents=u.amount_cents) for u in result.lot_allocations],
+                destination_account_id=goal.account_id, goal_id=goal.id, policy_id=goal.policy_id,
+                policy_version_id=goal.policy_version_id, policy_version_ids=[goal.policy_version_id])
+        if intent.kind == "purchase_asset":
+            result = preview_asset_allocation(session, user_id, intent.policy_id, now).allocation
+            if result.status != "READY" or not result.suggested_cents or result.selected_product_id is None:
+                raise _error("资产申购尚不可执行：" + ",".join(result.reasons))
+            product = session.get(AssetProduct, result.selected_product_id)
+            assert product is not None
+            candidate = next(c for c in result.candidates if c.product_id == product.id)
+            assert candidate.exit_plan is not None
+            cash = [CashUse(account_id=u.account_id, amount_cents=u.amount_cents) for u in result.source_cash_uses]
+            position_account = session.scalar(select(Account).where(Account.user_id == user_id,
+                Account.account_type == ("FIXED_DEPOSIT" if product.asset_class == "FIXED_DEPOSIT" else "CASH_MANAGEMENT")).order_by(Account.id))
+            if position_account is None:
+                raise _error("缺少所属模拟持仓账户")
+            versions = [result.policy_version_id]
+            if result.goal_id is not None:
+                goal = session.get(Goal, result.goal_id)
+                assert goal is not None
+                versions.append(goal.policy_version_id)
+            return ExecutionEffect(**common, business_key="purchase:" + str(action_id), action_type="PURCHASE_ASSET",
+                amount_cents=result.suggested_cents, cash_uses=cash,
+                income_uses=[] if result.goal_id else funding_income(session, user_id, cash, now),
+                goal_id=result.goal_id, policy_id=intent.policy_id, policy_version_id=result.policy_version_id,
+                policy_version_ids=versions, product_id=product.id, product_version_number=product.version_number,
+                terms_digest=configuration_hash(product.maturity_rule), position_id=uuid5(action_id, "position"),
+                position_account_id=position_account.id, latest_arrival_at=candidate.exit_plan.principal_available_at)
+        if intent.kind == "redeem_asset":
+            position = session.get(AssetPosition, intent.position_id)
+            if position is None or position.user_id != user_id or position.policy_version_id is None:
+                raise _error("必须保留原自动购买仓位与历史权限")
+            original = session.get(PolicyVersion, position.policy_version_id)
+            assert original is not None
+            version = _current(session, user_id, original.policy_id, now)
+            quote = load_execution_quote(session, user_id, position.id, now)
+            delay = (quote.principal_available_at - quote.request_at).days
+            common["expires_at"] = min(common["expires_at"], quote.expires_at)
+            return ExecutionEffect(**common, business_key=f"redeem:{position.id}", action_type="REDEEM_ASSET",
+                amount_cents=position.principal_cents, destination_account_id=execution_return_account(session, user_id, position, now),
+                goal_id=position.goal_id, policy_id=version.policy_id, policy_version_id=version.id,
+                policy_version_ids=[version.id], product_id=quote.product_id,
+                product_version_number=quote.product_version_number, terms_digest=quote.terms_digest,
+                position_id=position.id, position_account_id=position.account_id,
+                original_policy_version_id=position.policy_version_id, fee_cents=quote.fee_cents,
+                loss_cents=quote.loss_cents, net_cents=quote.net_cents, quote_id=quote.quote_id,
+                settlement_delay_days=delay, latest_arrival_at=quote.expires_at + timedelta(days=delay))
+        version = _current(session, user_id, intent.policy_id, now)
+        config = version.configuration
+        if config["type"] != "recurring_obligation":
+            raise _error("此策略不是周期付款义务")
+        context = load_boundary_context(session, user_id, now)
+        rule = config["amount_rule"]
+        if rule["kind"] == "bill_balance":
+            if intent.bill_id is None or intent.period is not None:
+                raise _error("真实账单付款只接受精确bill_id")
+            bill = next((b for b in context.snapshot.bills if b.bill_id == intent.bill_id), None)
+            if bill is None or str(bill.account_id) != rule["account_id"]:
+                raise _error("账单与本策略原卡账户不匹配")
+            amount = bill.total_cents - bill.paid_cents
+            liability = BillReference(bill_id=bill.bill_id, evidence_ids=bill.evidence_ids)
+            key = f"bill:{bill.bill_id}"
+        else:
+            if intent.period is None or intent.bill_id is not None:
+                raise _error("周期付款只接受精确自然月")
+            old = next((s for s in context.snapshot.occurrence_settlements
+                        if s.policy_id == version.policy_id and s.period == intent.period), None)
+            if old is None:
+                raise _error("缺少该期完整已付金额证明，不能推定为零")
+            total = rule["amount_cents"] if rule["kind"] == "exact" else old.final_total_cents
+            if total is None:
+>               raise _error("范围上限不能当作实际应付金额，需本期最终金额")
+E               app.services.policy_lifecycle.PolicyLifecycleError: 范围上限不能当作实际应付金额，需本期最终金额
+
+apps\api\app\services\execution_planning.py:185: PolicyLifecycleError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_service.py::test_range_payment_uses_bank_final_amount_instead_of_the_protection_max
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 6 deselected in 4.76s

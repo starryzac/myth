@@ -1,0 +1,258 @@
+.FFF                                                                     [100%]
+================================== FAILURES ===================================
+_ test_redemption_projects_only_settled_net_principal_and_preserves_pending_claims[0-0] _
+
+session = <sqlalchemy.orm.session.Session object at 0x000001B6B2751E20>
+operation = <app.db.models.BankOperation object at 0x000001B6B27525D0>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def _identity(session: Session, operation: BankOperation, now: datetime) -> tuple[ActionPlan, ExecutionEffect]:
+        user = session.scalar(select(User).where(User.id == operation.user_id).with_for_update())
+        action = session.get(ActionPlan, operation.action_plan_id)
+        if user is None or not user.is_simulated or action is None or action.user_id != user.id:
+            raise _error("The bank operation has no matching simulated action owner")
+        try:
+            command = BankCommand.model_validate_json(json.dumps(operation.request))
+            effect = command.effect
+            if (operation.request_hash != configuration_hash(operation.request)
+                or action.request_hash != configuration_hash(action.request)
+                or action.request.get("execution") != operation.request
+                or effect.operation_id != operation.id or operation.id != action.id
+                or effect.user_id != user.id or operation.operation_type != effect.action_type
+                or operation.business_key != effect.business_key
+                or operation.idempotency_key != action.idempotency_key
+                or action.action_type != ACTION_PLAN_TYPES[effect.action_type]
+                or action.amount_cents != effect.amount_cents
+                or action.goal_id != effect.goal_id or action.product_id != effect.product_id
+                or action.policy_version_id != effect.policy_version_id
+                or (effect.action_type == "PURCHASE_ASSET" and action.position_id not in {None, effect.position_id})
+                or (effect.action_type != "PURCHASE_ASSET" and action.position_id != effect.position_id)
+                or action.destination_account_id != (effect.destination_account_id if effect.destination_account_id != action.source_account_id else None)
+                or operation.requested_at > now or operation.available_at < operation.requested_at):
+>               raise ValueError("Application and independent bank identities disagree")
+E               ValueError: Application and independent bank identities disagree
+
+apps\api\app\services\execution_projection.py:65: ValueError
+
+The above exception was the direct cause of the following exception:
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_61c7f34192524336937cc6fecff40bb8)
+delay = 0, loss = 0
+
+    @pytest.mark.parametrize("delay,loss", [(0, 0), (0, 1000), (1, 0)])
+    def test_redemption_projects_only_settled_net_principal_and_preserves_pending_claims(boundary_engine: Engine, delay: int, loss: int) -> None:
+        action_id, position_id, principal = redemption_command(boundary_engine, delay=delay, loss=loss)
+        with Session(boundary_engine) as session:
+            before = {a.id: a.balance_cents for a in session.scalars(select(Account))}
+        process_operation(boundary_engine, DEMO_USER_ID, action_id, SEED_AS_OF)
+        if delay:
+            with Session(boundary_engine) as session, session.begin():
+                operation = session.get(BankOperation, action_id)
+                assert operation is not None and operation.status == "ACCEPTED"
+                assert project_execution(session, operation, SEED_AS_OF) is None
+                assert {a.id: a.balance_cents for a in session.scalars(select(Account))} == before
+                assert all(r.status == "RESERVED" for r in session.scalars(select(ActionResourceReservation).where(ActionResourceReservation.action_plan_id == action_id)))
+            process_operation(boundary_engine, DEMO_USER_ID, action_id, SEED_AS_OF+timedelta(days=delay))
+        now = SEED_AS_OF + timedelta(days=delay)
+        with Session(boundary_engine) as session, session.begin():
+            operation = session.get(BankOperation, action_id)
+            assert operation is not None
+>           receipt = project_execution(session, operation, now)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_execution_projection.py:209: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\execution_projection.py:385: in project_execution
+    action, effect = _identity(session, operation, now)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000001B6B2751E20>
+operation = <app.db.models.BankOperation object at 0x000001B6B27525D0>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def _identity(session: Session, operation: BankOperation, now: datetime) -> tuple[ActionPlan, ExecutionEffect]:
+        user = session.scalar(select(User).where(User.id == operation.user_id).with_for_update())
+        action = session.get(ActionPlan, operation.action_plan_id)
+        if user is None or not user.is_simulated or action is None or action.user_id != user.id:
+            raise _error("The bank operation has no matching simulated action owner")
+        try:
+            command = BankCommand.model_validate_json(json.dumps(operation.request))
+            effect = command.effect
+            if (operation.request_hash != configuration_hash(operation.request)
+                or action.request_hash != configuration_hash(action.request)
+                or action.request.get("execution") != operation.request
+                or effect.operation_id != operation.id or operation.id != action.id
+                or effect.user_id != user.id or operation.operation_type != effect.action_type
+                or operation.business_key != effect.business_key
+                or operation.idempotency_key != action.idempotency_key
+                or action.action_type != ACTION_PLAN_TYPES[effect.action_type]
+                or action.amount_cents != effect.amount_cents
+                or action.goal_id != effect.goal_id or action.product_id != effect.product_id
+                or action.policy_version_id != effect.policy_version_id
+                or (effect.action_type == "PURCHASE_ASSET" and action.position_id not in {None, effect.position_id})
+                or (effect.action_type != "PURCHASE_ASSET" and action.position_id != effect.position_id)
+                or action.destination_account_id != (effect.destination_account_id if effect.destination_account_id != action.source_account_id else None)
+                or operation.requested_at > now or operation.available_at < operation.requested_at):
+                raise ValueError("Application and independent bank identities disagree")
+        except (KeyError, TypeError, ValueError) as error:
+>           raise _error(str(error)) from error
+E           app.services.policy_lifecycle.PolicyLifecycleError: Application and independent bank identities disagree
+
+apps\api\app\services\execution_projection.py:67: PolicyLifecycleError
+_ test_redemption_projects_only_settled_net_principal_and_preserves_pending_claims[0-1000] _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_f59f123faed1453699f91cb65e8dece2)
+delay = 0, loss = 1000
+
+    @pytest.mark.parametrize("delay,loss", [(0, 0), (0, 1000), (1, 0)])
+    def test_redemption_projects_only_settled_net_principal_and_preserves_pending_claims(boundary_engine: Engine, delay: int, loss: int) -> None:
+        action_id, position_id, principal = redemption_command(boundary_engine, delay=delay, loss=loss)
+        with Session(boundary_engine) as session:
+            before = {a.id: a.balance_cents for a in session.scalars(select(Account))}
+>       process_operation(boundary_engine, DEMO_USER_ID, action_id, SEED_AS_OF)
+
+apps\api\app\tests\test_execution_projection.py:196: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\execution_bank.py:80: in process_operation
+    _validate_new(session, action, effect, command.effect_hash, now)
+apps\api\app\services\execution_bank.py:297: in _validate_new
+    verify_execution_sources(session, action.user_id, effect, now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000001B6B2852FC0>
+user_id = UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')
+effect = ExecutionEffect(simulation=True, operation_id=UUID('645ec542-cdd4-4474-8fda-fc3df8cdee9d'), user_id=UUID('271a9827-f82...me.datetime(2026, 10, 3, 16, 0, tzinfo=TzInfo(0)), expires_at=datetime.datetime(2026, 10, 3, 16, 15, tzinfo=TzInfo(0)))
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def verify_execution_sources(
+        session: Session,
+        user_id: UUID,
+        effect: ExecutionEffect,
+        now: datetime,
+    ) -> None:
+        """Does not submit bank effects or trust an application validation label."""
+        from app.domain.execution import revalidate_execution
+        from app.services.execution_context import load_execution_context
+    
+        if effect.user_id != user_id:
+            raise _source_error("ִ�о��ö������ڵ�ǰ�û�")
+        if effect.action_type == "PAY_RECURRING":
+            if effect.payee_id is None or effect.payee_evidence_id is None or effect.liability is None:
+                raise _source_error("ȱ�پ�ȷ�տ�����")
+            if effect.liability.kind == "bill":
+                proof_id = _card_binding(
+                    session, user_id, effect.payee_id, effect.liability.bill_id, now
+                )
+                if proof_id != effect.payee_evidence_id:
+                    raise _source_error("�տ��˵��ѱ仯����������׼��")
+            else:
+                _counterparty_binding(session, user_id, effect.payee_id, effect.payee_evidence_id, now)
+        context = load_execution_context(
+            session, user_id, effect, now, own_action_id=effect.operation_id
+        )
+        validation = revalidate_execution(
+            effect, context, confirmation=read_execution_confirmation(session, effect, now)
+        )
+        if validation.status != "READY":
+>           raise _source_error("ִ��ǰ��������δͨ����" + ",".join(validation.reasons))
+E           app.services.policy_lifecycle.PolicyLifecycleError: ִ��ǰ��������δͨ����INCOMPLETE_EXECUTION_FACTS
+
+apps\api\app\services\execution_sources.py:363: PolicyLifecycleError
+_ test_redemption_projects_only_settled_net_principal_and_preserves_pending_claims[1-0] _
+
+session = <sqlalchemy.orm.session.Session object at 0x000001B6B2452EA0>
+operation = <app.db.models.BankOperation object at 0x000001B6B2561C70>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def _identity(session: Session, operation: BankOperation, now: datetime) -> tuple[ActionPlan, ExecutionEffect]:
+        user = session.scalar(select(User).where(User.id == operation.user_id).with_for_update())
+        action = session.get(ActionPlan, operation.action_plan_id)
+        if user is None or not user.is_simulated or action is None or action.user_id != user.id:
+            raise _error("The bank operation has no matching simulated action owner")
+        try:
+            command = BankCommand.model_validate_json(json.dumps(operation.request))
+            effect = command.effect
+            if (operation.request_hash != configuration_hash(operation.request)
+                or action.request_hash != configuration_hash(action.request)
+                or action.request.get("execution") != operation.request
+                or effect.operation_id != operation.id or operation.id != action.id
+                or effect.user_id != user.id or operation.operation_type != effect.action_type
+                or operation.business_key != effect.business_key
+                or operation.idempotency_key != action.idempotency_key
+                or action.action_type != ACTION_PLAN_TYPES[effect.action_type]
+                or action.amount_cents != effect.amount_cents
+                or action.goal_id != effect.goal_id or action.product_id != effect.product_id
+                or action.policy_version_id != effect.policy_version_id
+                or (effect.action_type == "PURCHASE_ASSET" and action.position_id not in {None, effect.position_id})
+                or (effect.action_type != "PURCHASE_ASSET" and action.position_id != effect.position_id)
+                or action.destination_account_id != (effect.destination_account_id if effect.destination_account_id != action.source_account_id else None)
+                or operation.requested_at > now or operation.available_at < operation.requested_at):
+>               raise ValueError("Application and independent bank identities disagree")
+E               ValueError: Application and independent bank identities disagree
+
+apps\api\app\services\execution_projection.py:65: ValueError
+
+The above exception was the direct cause of the following exception:
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_2cccf768bd2c400fa839ad8cacb5ec18)
+delay = 1, loss = 0
+
+    @pytest.mark.parametrize("delay,loss", [(0, 0), (0, 1000), (1, 0)])
+    def test_redemption_projects_only_settled_net_principal_and_preserves_pending_claims(boundary_engine: Engine, delay: int, loss: int) -> None:
+        action_id, position_id, principal = redemption_command(boundary_engine, delay=delay, loss=loss)
+        with Session(boundary_engine) as session:
+            before = {a.id: a.balance_cents for a in session.scalars(select(Account))}
+        process_operation(boundary_engine, DEMO_USER_ID, action_id, SEED_AS_OF)
+        if delay:
+            with Session(boundary_engine) as session, session.begin():
+                operation = session.get(BankOperation, action_id)
+                assert operation is not None and operation.status == "ACCEPTED"
+>               assert project_execution(session, operation, SEED_AS_OF) is None
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_execution_projection.py:201: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\execution_projection.py:385: in project_execution
+    action, effect = _identity(session, operation, now)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000001B6B2452EA0>
+operation = <app.db.models.BankOperation object at 0x000001B6B2561C70>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def _identity(session: Session, operation: BankOperation, now: datetime) -> tuple[ActionPlan, ExecutionEffect]:
+        user = session.scalar(select(User).where(User.id == operation.user_id).with_for_update())
+        action = session.get(ActionPlan, operation.action_plan_id)
+        if user is None or not user.is_simulated or action is None or action.user_id != user.id:
+            raise _error("The bank operation has no matching simulated action owner")
+        try:
+            command = BankCommand.model_validate_json(json.dumps(operation.request))
+            effect = command.effect
+            if (operation.request_hash != configuration_hash(operation.request)
+                or action.request_hash != configuration_hash(action.request)
+                or action.request.get("execution") != operation.request
+                or effect.operation_id != operation.id or operation.id != action.id
+                or effect.user_id != user.id or operation.operation_type != effect.action_type
+                or operation.business_key != effect.business_key
+                or operation.idempotency_key != action.idempotency_key
+                or action.action_type != ACTION_PLAN_TYPES[effect.action_type]
+                or action.amount_cents != effect.amount_cents
+                or action.goal_id != effect.goal_id or action.product_id != effect.product_id
+                or action.policy_version_id != effect.policy_version_id
+                or (effect.action_type == "PURCHASE_ASSET" and action.position_id not in {None, effect.position_id})
+                or (effect.action_type != "PURCHASE_ASSET" and action.position_id != effect.position_id)
+                or action.destination_account_id != (effect.destination_account_id if effect.destination_account_id != action.source_account_id else None)
+                or operation.requested_at > now or operation.available_at < operation.requested_at):
+                raise ValueError("Application and independent bank identities disagree")
+        except (KeyError, TypeError, ValueError) as error:
+>           raise _error(str(error)) from error
+E           app.services.policy_lifecycle.PolicyLifecycleError: Application and independent bank identities disagree
+
+apps\api\app\services\execution_projection.py:67: PolicyLifecycleError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_projection.py::test_redemption_projects_only_settled_net_principal_and_preserves_pending_claims[0-0]
+FAILED apps/api/app/tests/test_execution_projection.py::test_redemption_projects_only_settled_net_principal_and_preserves_pending_claims[0-1000]
+FAILED apps/api/app/tests/test_execution_projection.py::test_redemption_projects_only_settled_net_principal_and_preserves_pending_claims[1-0]
+3 failed, 1 passed, 4 deselected in 14.21s

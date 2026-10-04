@@ -1,0 +1,31 @@
+F
+================================== FAILURES ===================================
+_ test_prepare_transfer_is_reviewable_idempotent_and_does_not_move_or_reserve_cash _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_95472f8600c046798cd447847c7b6b9d)
+
+    def test_prepare_transfer_is_reviewable_idempotent_and_does_not_move_or_reserve_cash(boundary_engine: Engine) -> None:
+        source, target = transfer_accounts(boundary_engine)
+        request = PrepareActionRequest(idempotency_key="transfer-first", intent=TransferIntent(
+            kind="transfer_internal", source_account_id=source, destination_account_id=target, amount_cents=10000))
+        before = snapshot(boundary_engine)
+        first = prepare_action(boundary_engine, DEMO_USER_ID, request, SEED_AS_OF)
+        assert first.status == "PLANNED" and first.autonomy_level == "ASK_ONCE"
+        assert first.prepared_validation.status == "CONFIRMATION_REQUIRED"
+        second = prepare_action(boundary_engine, DEMO_USER_ID, request, SEED_AS_OF + timedelta(minutes=1))
+        assert second.action_id == first.action_id and second.effect_hash == first.effect_hash
+        assert second.effect == first.effect and first.receipt is None
+        with Session(boundary_engine) as session:
+            assert len(list(session.scalars(select(ActionPlan)))) == 1
+            assert list(session.scalars(select(ActionResourceReservation))) == []
+            assert list(session.scalars(select(BankOperation))) == []
+        after = snapshot(boundary_engine)
+>       assert before["accounts"] == after["accounts"]
+               ^^^^^^^^^^^^^^^^^^
+E       TypeError: string indices must be integers, not 'str'
+
+apps\api\app\tests\test_execution_service.py:60: TypeError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_service.py::test_prepare_transfer_is_reviewable_idempotent_and_does_not_move_or_reserve_cash
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 5.70s

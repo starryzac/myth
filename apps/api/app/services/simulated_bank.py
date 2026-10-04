@@ -1,15 +1,17 @@
 """Independent simulated bank ledger; application projections are never its balance source."""
 
 from datetime import UTC, datetime, timedelta
-from typing import Literal
+from typing import Any, Literal
 from uuid import NAMESPACE_URL, UUID, uuid5
 
 from app.db.models import (
     Account,
     ActionPlan,
     ActionReceipt,
+    ActionResourceReservation,
     AssetPosition,
     AssetProduct,
+    BankOperation,
     EvidenceItem,
     SimulatedBankPosting,
     SimulatedBankRedemption,
@@ -160,7 +162,11 @@ def validate_bank_projection(
     *,
     allow_unprojected: bool = False,
 ) -> None:
-    heads = ledger_heads(session, user_id)
+    heads = {
+        key: row
+        for key, row in ledger_heads(session, user_id).items()
+        if key.startswith(("CASH:", "POSITION:"))
+    }
     accounts = list(session.scalars(select(Account).where(Account.user_id == user_id)))
     positions = list(session.scalars(select(AssetPosition).where(AssetPosition.user_id == user_id)))
     expected = {
@@ -191,6 +197,35 @@ def validate_bank_projection(
                     raise _error("An unprojected bank operation lost its economic identity")
                 expected[cash_key] += request.principal_cents
                 expected[position_key] -= request.principal_cents
+        for operation in session.scalars(
+            select(BankOperation).where(
+                BankOperation.user_id == user_id,
+                BankOperation.legacy_redemption_id.is_(None),
+                BankOperation.status == "SETTLED",
+            )
+        ):
+            receipt = session.scalar(
+                select(ActionReceipt).where(
+                    ActionReceipt.action_plan_id == operation.action_plan_id
+                )
+            )
+            if receipt is None:
+                for posting in session.scalars(
+                    select(SimulatedBankPosting).where(
+                        SimulatedBankPosting.operation_id == operation.id
+                    )
+                ):
+                    if posting.ledger_key.startswith(("CASH:", "POSITION:")):
+                        if posting.ledger_key not in expected:
+                            if (
+                                operation.operation_type != "PURCHASE_ASSET"
+                                or not posting.ledger_key.startswith("POSITION:")
+                            ):
+                                raise _error(
+                                    "An unprojected operation lost an original economic identity"
+                                )
+                            expected[posting.ledger_key] = 0
+                        expected[posting.ledger_key] += posting.delta_cents
     if set(expected) != set(heads):
         raise _error("Independent bank ledger identities differ from application projections")
     if any(
@@ -208,11 +243,19 @@ def validate_recovery_exposure(session: Session, user_id: UUID, now: datetime) -
         )
     )
     evidence = list(session.scalars(select(EvidenceItem).where(EvidenceItem.user_id == user_id)))
+    operations = list(
+        session.scalars(select(BankOperation).where(BankOperation.user_id == user_id))
+    )
     statements = [
         row for row in evidence if row.source_type == EXPOSURE_SOURCE and row.status != "SUPERSEDED"
     ]
-    if not requests and not any(
-        row.content.get("protocol") == "asset-exposure-v2" for row in statements
+    if (
+        not requests
+        and not operations
+        and not any(
+            row.content.get("protocol") in {"asset-exposure-v2", "asset-exposure-v3"}
+            for row in statements
+        )
     ):
         return
     if len(statements) != 1:
@@ -237,8 +280,24 @@ def validate_recovery_exposure(session: Session, user_id: UUID, now: datetime) -
                 select(SimulatedBankPosting).where(SimulatedBankPosting.user_id == user_id)
             )
         )
-        if any(row.occurred_at > epoch for row in postings) or any(
-            row.created_at > epoch for row in requests
+        extra: dict[str, Any] = {}
+        if proof.content.get("protocol") == "asset-exposure-v3":
+            extra = {
+                "bank_operations": operations,
+                "resource_reservations": list(
+                    session.scalars(
+                        select(ActionResourceReservation).where(
+                            ActionResourceReservation.user_id == user_id
+                        )
+                    )
+                ),
+            }
+        elif any(row.legacy_redemption_id is None for row in operations):
+            raise ValueError("Generic bank effects require complete v3 exposure")
+        if (
+            any(row.occurred_at > epoch for row in postings)
+            or any(row.created_at > epoch for row in requests)
+            or any(row.created_at > epoch for row in operations)
         ):
             raise ValueError("Recovery exposure predates an independent bank fact")
         expected = asset_exposure_snapshot(
@@ -254,6 +313,7 @@ def validate_recovery_exposure(session: Session, user_id: UUID, now: datetime) -
             settlements=proof.content["settlements"],
             bank_requests=requests,
             bank_postings=postings,
+            **extra,
         )
         if configuration_hash(expected) != proof.content_hash:
             raise ValueError(
@@ -262,6 +322,26 @@ def validate_recovery_exposure(session: Session, user_id: UUID, now: datetime) -
         validate_bank_projection(session, user_id, now)
     except (KeyError, TypeError, ValueError) as error:
         raise _error(str(error)) from error
+
+
+def require_settlement_order(
+    session: Session, user_id: UUID, now: datetime, operation: BankOperation | None = None
+) -> None:
+    """Do not append newer economics while earlier accepted bank events need reconciliation."""
+    query = select(BankOperation.id).where(
+        BankOperation.user_id == user_id,
+        BankOperation.status == "ACCEPTED",
+        BankOperation.available_at <= now,
+    )
+    if operation is not None:
+        query = query.where(
+            BankOperation.id != operation.id,
+            BankOperation.available_at < operation.available_at,
+        )
+    if session.scalar(query.limit(1)) is not None:
+        raise _error(
+            "Earlier accepted bank settlement requires reconciliation before new economics"
+        )
 
 
 def _settle(session: Session, request: SimulatedBankRedemption, now: datetime) -> None:
@@ -274,6 +354,8 @@ def _settle(session: Session, request: SimulatedBankRedemption, now: datetime) -
         raise _error("A bank request lacks its original ledger anchors")
     if heads[position_key].balance_after_cents != request.principal_cents:
         raise _error("The complete position principal is no longer available")
+    if any(heads[key].occurred_at > request.available_at for key in (position_key, cash_key)):
+        raise _error("A promised settlement cannot be inserted behind newer bank economics")
     for key, kind, delta in (
         (position_key, "PRINCIPAL_DEBIT", -request.principal_cents),
         (cash_key, "CASH_CREDIT", request.principal_cents),
@@ -288,17 +370,19 @@ def _settle(session: Session, request: SimulatedBankRedemption, now: datetime) -
                 account_id=head.account_id,
                 position_id=head.position_id,
                 redemption_id=request.id,
+                operation_id=request.id,
+                leg_ref=kind,
                 previous_posting_id=head.id,
                 sequence_number=head.sequence_number + 1,
                 entry_kind=kind,
                 balance_before_cents=head.balance_after_cents,
                 delta_cents=delta,
                 balance_after_cents=head.balance_after_cents + delta,
-                occurred_at=now,
+                occurred_at=request.available_at,
             )
         )
     request.status = "SETTLED"
-    request.settled_at = now
+    request.settled_at = request.available_at
     session.flush()
 
 
@@ -334,6 +418,26 @@ def process_redemption(engine: Engine, user_id: UUID, action_id: UUID, now: date
             if request.action_plan_id != action_id or request.request_hash != payload_hash:
                 raise _error("The original bank idempotency key cannot change economic content")
         else:
+            require_settlement_order(session, user_id, now)
+            reserved = session.scalar(
+                select(ActionResourceReservation.id).where(
+                    ActionResourceReservation.user_id == user_id,
+                    ActionResourceReservation.resource_kind == "POSITION",
+                    ActionResourceReservation.resource_key == str(command.position_id),
+                    ActionResourceReservation.action_plan_id != action_id,
+                    ActionResourceReservation.status == "RESERVED",
+                )
+            )
+            if reserved is not None:
+                raise _error("This position is reserved by another committed application action")
+            unified = session.scalar(
+                select(BankOperation).where(
+                    BankOperation.closing_position_id == command.position_id,
+                    BankOperation.status != "REJECTED",
+                )
+            )
+            if unified is not None:
+                raise _error("This position already has a bank closing operation")
             collision = session.scalar(
                 select(SimulatedBankRedemption).where(
                     SimulatedBankRedemption.position_id == command.position_id
@@ -436,7 +540,34 @@ def process_redemption(engine: Engine, user_id: UUID, action_id: UUID, now: date
             )
             session.add(request)
             session.flush()
+        unified = session.get(BankOperation, request.id)
+        if unified is None:
+            unified = BankOperation(
+                id=request.id,
+                user_id=user_id,
+                created_at=request.created_at,
+                action_plan_id=request.action_plan_id,
+                legacy_redemption_id=request.id,
+                closing_position_id=request.position_id,
+                operation_type="LEGACY_REDEMPTION",
+                business_key=f"close:{request.position_id}",
+                idempotency_key=request.idempotency_key,
+                request=request.request,
+                request_hash=request.request_hash,
+                requested_at=request.requested_at,
+                available_at=request.available_at,
+                settled_at=request.settled_at,
+                status=request.status,
+            )
+            session.add(unified)
+            session.flush()
+        elif unified.request_hash != request.request_hash or unified.action_plan_id != action_id:
+            raise _error("Legacy and unified bank request identities disagree")
+        if request.status == "ACCEPTED" and request.available_at <= now:
+            require_settlement_order(session, user_id, now, unified)
         _settle(session, request, now)
+        unified.status, unified.settled_at = request.status, request.settled_at
+        session.flush()
         postings = list(
             session.scalars(
                 select(SimulatedBankPosting.id)

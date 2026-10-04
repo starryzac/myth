@@ -1,0 +1,20 @@
+.F..                                                                     [100%]
+================================== FAILURES ===================================
+___ test_another_action_cannot_be_named_as_self_to_hide_its_resource_claims ___
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_ce06cb70daf749f1a2eefeccdf964894)
+
+    def test_another_action_cannot_be_named_as_self_to_hide_its_resource_claims(demo_engine: Engine) -> None:
+        seed_demo(demo_engine)
+        recovery_fixture(demo_engine)
+        with Session(demo_engine) as session:
+            effect = redemption_effect(session)
+            other = session.scalars(select(ActionPlan)).first()
+            assert other is not None
+>           with pytest.raises(ValueError):
+E           Failed: DID NOT RAISE ValueError
+
+apps\api\app\tests\test_execution_context.py:81: Failed
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_context.py::test_another_action_cannot_be_named_as_self_to_hide_its_resource_claims
+1 failed, 3 passed in 12.16s

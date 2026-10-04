@@ -547,6 +547,14 @@ def _settlements(
                 if rule["kind"] == "bill_balance":
                     raise ValueError("Real bills use their own paid amount instead of settlements")
                 maximum = rule["amount_cents"] if rule["kind"] == "exact" else rule["max_cents"]
+                final_total = proof.content.get("final_total_cents")
+                if final_total is not None and (
+                    type(final_total) is not int
+                    or final_total < proof.content["paid_cents"]
+                    or (rule["kind"] == "range" and not rule["min_cents"] <= final_total <= maximum)
+                    or (rule["kind"] == "exact" and final_total != maximum)
+                ):
+                    raise ValueError("Final occurrence total is outside the confirmed rule")
                 if (
                     type(proof.content["paid_cents"]) is not int
                     or proof.content["paid_cents"] > maximum
@@ -557,6 +565,7 @@ def _settlements(
                         policy_id=version.policy_id,
                         period=proof.content["period"],
                         paid_cents=proof.content["paid_cents"],
+                        final_total_cents=final_total,
                         settled_at=as_of,
                         evidence_ids=[proof.id],
                     )

@@ -1,0 +1,4 @@
+apps\api\app\services\execution_sources.py:371: error: Incompatible types in assignment (expression has type "EvidenceItem | None", variable has type "EvidenceItem")  [assignment]
+apps\api\app\services\asset_exposure_import.py:483: error: Incompatible import of "acquisition_transactions" (imported name has type "Callable[[Session, UUID, AssetPosition, EvidenceItem, datetime], list[Transaction]]", local name has type "set[UUID]")  [assignment]
+apps\api\app\services\asset_exposure_import.py:485: error: "set[UUID]" not callable  [operator]
+Found 3 errors in 2 files (checked 7 source files)

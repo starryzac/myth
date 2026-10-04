@@ -1,0 +1,18 @@
+F.                                                                       [100%]
+================================== FAILURES ===================================
+_ test_trusted_policy_confirmation_requirement_preserves_reviewable_projection _
+
+    def test_trusted_policy_confirmation_requirement_preserves_reviewable_projection() -> None:
+        state = context().model_copy(update={"versions": [recurring()], "requires_confirmation": True})
+        checked = revalidate_execution(payment(), state)
+        assert checked.status == "CONFIRMATION_REQUIRED"
+>       assert checked.reasons == ["EXPLICIT_PAYMENT_CONFIRMATION_REQUIRED"]
+E       AssertionError: assert ['EXPLICIT_CO...ION_REQUIRED'] == ['EXPLICIT_PA...ION_REQUIRED']
+E         
+E         At index 0 diff: 'EXPLICIT_COST_CONFIRMATION_REQUIRED' != 'EXPLICIT_PAYMENT_CONFIRMATION_REQUIRED'
+E         Use -v to get more diff
+
+apps\api\app\tests\test_execution_domain.py:234: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_domain.py::test_trusted_policy_confirmation_requirement_preserves_reviewable_projection
+1 failed, 1 passed, 42 deselected in 1.02s

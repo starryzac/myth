@@ -1,0 +1,86 @@
+F
+================================== FAILURES ===================================
+__ test_multi_account_purchase_and_redemption_preserve_each_real_funding_leg __
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_3de0bd18bfa44e6c94f6f1e024077246)
+
+    def test_multi_account_purchase_and_redemption_preserve_each_real_funding_leg(boundary_engine: Engine) -> None:
+        from app.db.models import AssetPosition, Transaction
+        from app.services.asset_exposure_import import load_asset_exposure
+        from app.services.boundary import load_boundary_context
+        from app.services.execution_sources import execution_return_account
+    
+        source, target = transfer_accounts(boundary_engine)
+        with Session(boundary_engine) as session:
+            account = session.get(Account, source)
+            assert account is not None
+            half = account.balance_cents // 2
+        transfer = prepare_action(boundary_engine, DEMO_USER_ID, PrepareActionRequest(idempotency_key="split-funding",
+            intent=TransferIntent(kind="transfer_internal", source_account_id=source,
+                destination_account_id=target, amount_cents=half)), SEED_AS_OF)
+        confirm_action(boundary_engine, DEMO_USER_ID, transfer.action_id,
+            ConfirmActionRequest(effect_hash=transfer.effect_hash, accepted=True), SEED_AS_OF)
+        execute_action(boundary_engine, DEMO_USER_ID, transfer.action_id, SEED_AS_OF)
+        with Session(boundary_engine) as session, session.begin():
+            policy_id, _ = confirmed_policy(session, authorization(allowed_asset_classes=["CASH_MGMT_T0"],
+                max_auto_managed_cents=2000000, single_action_cap_cents=2000000))
+        purchase = prepare_action(boundary_engine, DEMO_USER_ID, PrepareActionRequest(idempotency_key="multi-purchase",
+            intent=PurchaseIntent(kind="purchase_asset", policy_id=policy_id)), SEED_AS_OF)
+        assert len(purchase.effect.cash_uses) == 2 and purchase.effect.amount_cents == 2000000
+        bought = execute_action(boundary_engine, DEMO_USER_ID, purchase.action_id, SEED_AS_OF)
+        assert bought.status == "SUCCEEDED" and bought.receipt is not None
+        with Session(boundary_engine) as session, session.begin():
+            position = session.get(AssetPosition, bought.effect.position_id)
+            assert position is not None and position.principal_cents == 2000000
+            proof = session.scalars(select(EvidenceItem).where(EvidenceItem.source_type == "SIMULATED_BANK_POSITION",
+                EvidenceItem.content["position_id"].as_string() == str(position.id), EvidenceItem.status == "VALID")).one()
+            transactions = [session.get(Transaction, UUID(key)) for key in proof.content["purchase_transaction_ids"]]
+            assert len(transactions) == 2 and all(row is not None for row in transactions)
+            assert sum(row.amount_cents for row in transactions if row is not None) == 2000000
+            assert all(row.amount_cents < 2000000 for row in transactions if row is not None)
+            assert execution_return_account(session, DEMO_USER_ID, position, SEED_AS_OF) == bought.effect.return_account_id
+            context = load_boundary_context(session, DEMO_USER_ID, SEED_AS_OF)
+            exposure = load_asset_exposure(session, context, {"scope": "general_idle_funds"})
+            assert context.sources.issues == [] and exposure.managed_principal_cents == 2000000
+            confirmed_policy(session, {"type": "emergency_buffer", "amount_cents": 1500000})
+        redemption = prepare_action(boundary_engine, DEMO_USER_ID, PrepareActionRequest(idempotency_key="multi-return",
+>           intent=RedeemIntent(kind="redeem_asset", position_id=position.id)), SEED_AS_OF)
+                                                                 ^^^^^^^^^^^
+
+apps\api\app\tests\test_execution_service.py:444: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\orm\attributes.py:575: in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\attributes.py:1091: in get
+    value = self._fire_loader_callables(state, key, passive)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\attributes.py:1121: in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:833: in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+mapper = <Mapper at 0x13a65823e30; AssetPosition>
+state = <sqlalchemy.orm.state.InstanceState object at 0x0000013A684AC3B0>
+attribute_names = {'account_id', 'accrued_yield_cents', 'available_at', 'created_at', 'goal_id', 'id', ...}
+passive = symbol('PASSIVE_OFF')
+
+    def _load_scalar_attributes(mapper, state, attribute_names, passive):
+        """initiate a column-based attribute refresh operation."""
+    
+        # assert mapper is _state_mapper(state)
+        session = state.session
+        if not session:
+>           raise orm_exc.DetachedInstanceError(
+                "Instance %s is not bound to a Session; "
+                "attribute refresh operation cannot proceed" % (state_str(state))
+            )
+E           sqlalchemy.orm.exc.DetachedInstanceError: Instance <AssetPosition at 0x13a66e97950> is not bound to a Session; attribute refresh operation cannot proceed (Background on this error at: https://sqlalche.me/e/21/bhk3)
+
+.venv\Lib\site-packages\sqlalchemy\orm\loading.py:1633: DetachedInstanceError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_service.py::test_multi_account_purchase_and_redemption_preserve_each_real_funding_leg
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 9 deselected in 6.28s

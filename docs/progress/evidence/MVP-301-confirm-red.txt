@@ -1,0 +1,35 @@
+.F
+================================== FAILURES ===================================
+_______ test_confirmation_binds_exact_consequences_without_cash_effect ________
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_ffe8d7d424a74302bd5d39ac47fb3bbd)
+
+    def test_confirmation_binds_exact_consequences_without_cash_effect(boundary_engine: Engine) -> None:
+        source, target = transfer_accounts(boundary_engine)
+        request = PrepareActionRequest(idempotency_key="confirm-transfer", intent=TransferIntent(
+            kind="transfer_internal", source_account_id=source, destination_account_id=target, amount_cents=10000))
+        action = prepare_action(boundary_engine, DEMO_USER_ID, request, SEED_AS_OF)
+        before = snapshot(boundary_engine)
+        with pytest.raises(PolicyLifecycleError):
+>           confirm_action(boundary_engine, DEMO_USER_ID, action.action_id,
+                           ConfirmActionRequest(effect_hash="f" * 64, accepted=True), SEED_AS_OF)
+
+apps\api\app\tests\test_execution_service.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_ffe8d7d424a74302bd5d39ac47fb3bbd)
+user_id = UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')
+action_id = UUID('ac1703b4-aa36-4a9e-98f3-9b7c51557e67')
+request = ConfirmActionRequest(effect_hash='ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff', accepted=True)
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def confirm_action(engine: Engine, user_id: UUID, action_id: UUID,
+                       request: ConfirmActionRequest, now: datetime) -> ActionResponse:
+>       raise NotImplementedError
+E       NotImplementedError
+
+apps\api\app\services\execution.py:118: NotImplementedError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_service.py::test_confirmation_binds_exact_consequences_without_cash_effect
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 passed in 8.00s

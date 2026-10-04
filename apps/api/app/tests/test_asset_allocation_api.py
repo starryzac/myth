@@ -1,13 +1,15 @@
 """Read-only single-product previews through real PostgreSQL and the public HTTP contract."""
 
+from datetime import date
 from typing import Any
 from uuid import UUID, uuid4
 
 import pytest
-from app.db.models import Account, AssetPosition, EvidenceItem, Goal, Policy, PolicyProposal, User
-from app.domain.asset_exposure import EXPOSURE_SOURCE, asset_exposure_snapshot
+from app.db.models import EvidenceItem, Goal, Policy, PolicyProposal, User
 from app.domain.demo_identity import DEMO_USER_ID
 from app.domain.policy_configuration import configuration_hash, validate_configuration
+from app.services.execution_bank import open_execution_anchors
+from app.services.execution_exposure import refresh_execution_exposure
 from app.tests.test_goal_api import NOW, all_tables, confirmed_goal_request
 from app.tests.test_goal_api import goal_client as goal_client
 from fastapi.testclient import TestClient
@@ -146,15 +148,90 @@ def test_http_goal_asset_placement_preserves_total_ownership_and_monthly_contrib
 ) -> None:
     client, engine = goal_client
     goal_request = confirmed_goal_request(client, engine)
-    created = client.post("/api/v1/goals", json=goal_request)
-    assert created.status_code == 200
-    goal_id = UUID(created.json()["goal"]["id"])
-    asset = confirm_asset_policy(
-        client, engine, {**AUTHORIZATION, "scope": "goal", "goal_id": str(goal_id)}
-    )
     current = client.get(f"/api/v1/policies/{goal_request['policy_id']}/versions").json()["items"][
         -1
     ]
+    config = current["configuration"]
+    goal_id = uuid4()
+    # Explicit import of existing ownership, independent of the public zero-goal API.
+    # Its first bank anchor is 150000; an existing zero anchor is never rewritten.
+    with Session(engine) as session, session.begin():
+        monthly, priority = config["monthly_contribution"], config["priority"]
+        session.add(
+            Goal(
+                id=goal_id,
+                user_id=DEMO_USER_ID,
+                policy_id=UUID(goal_request["policy_id"]),
+                policy_version_id=UUID(current["id"]),
+                account_id=UUID(goal_request["account_id"]),
+                name=config["name"],
+                target_cents=config["target_cents"],
+                allocated_cents=150000,
+                deadline=date.fromisoformat(config["deadline"]),
+                monthly_min_cents=monthly["min_cents"],
+                monthly_target_cents=monthly["target_cents"],
+                monthly_max_cents=monthly["max_cents"],
+                importance=priority["importance"],
+                minimum_protection_cents=priority["minimum_cents"],
+                reducible=priority["reducible"],
+                deferrable=priority["deferrable"],
+                cross_goal_reallocation_allowed=config["cross_goal_reallocation_allowed"],
+                created_at=NOW,
+            )
+        )
+        session.flush()
+        common: dict[str, Any] = {
+            "simulation": True,
+            "user_id": str(DEMO_USER_ID),
+            "goal_id": str(goal_id),
+            "as_of": NOW.isoformat(),
+        }
+        for source, content in (
+            (
+                "SIMULATED_GOAL_OWNERSHIP",
+                {
+                    **common,
+                    "protocol": "goal-ownership-v1",
+                    "policy_id": goal_request["policy_id"],
+                    "account_id": goal_request["account_id"],
+                    "allocated_cents": 150000,
+                    "cash_owned_cents": 150000,
+                    "principal_owned_cents": 0,
+                    "position_ids": [],
+                },
+            ),
+            (
+                "SIMULATED_GOAL_MONTH_CONTRIBUTION",
+                {
+                    **common,
+                    "protocol": "goal-month-contribution-v1",
+                    "period": "2026-10",
+                    "contributed_cents": 0,
+                    "complete": True,
+                },
+            ),
+        ):
+            session.add(
+                EvidenceItem(
+                    id=uuid4(),
+                    user_id=DEMO_USER_ID,
+                    created_at=NOW,
+                    evidence_level="BANK_CONFIRMED",
+                    source_type=source,
+                    source_ref=f"204-http-existing-goal:{goal_id}",
+                    content=content,
+                    content_hash=configuration_hash(content),
+                    valid_from=NOW,
+                    observed_at=NOW,
+                    status="VALID",
+                )
+            )
+        session.flush()
+        open_execution_anchors(session, DEMO_USER_ID, NOW, goal_balances={goal_id: (150000, 0)})
+        refresh_execution_exposure(session, DEMO_USER_ID, NOW, goal_id)
+    asset = confirm_asset_policy(
+        client, engine, {**AUTHORIZATION, "scope": "goal", "goal_id": str(goal_id)}
+    )
     goal_config = {**current["configuration"], "asset_policy_id": asset["policy_id"]}
     changed = client.patch(
         f"/api/v1/policies/{goal_request['policy_id']}",
@@ -168,39 +245,6 @@ def test_http_goal_asset_placement_preserves_total_ownership_and_monthly_contrib
         },
     )
     assert changed.status_code == 200
-    with Session(engine) as session, session.begin():
-        goal = session.get(Goal, goal_id)
-        assert goal is not None
-        goal.allocated_cents = 150000
-        ownership = session.scalar(
-            select(EvidenceItem).where(
-                EvidenceItem.source_type == "SIMULATED_GOAL_OWNERSHIP",
-                EvidenceItem.content["goal_id"].as_string() == str(goal_id),
-            )
-        )
-        assert ownership is not None
-        ownership.content = {
-            **ownership.content,
-            "allocated_cents": 150000,
-            "cash_owned_cents": 150000,
-        }
-        ownership.content_hash = configuration_hash(ownership.content)
-        session.flush()
-        exposure = session.scalar(
-            select(EvidenceItem).where(EvidenceItem.source_type == EXPOSURE_SOURCE)
-        )
-        assert exposure is not None
-        exposure.content = asset_exposure_snapshot(
-            DEMO_USER_ID,
-            NOW,
-            accounts=session.scalars(select(Account)),
-            positions=session.scalars(select(AssetPosition)),
-            actions=[],
-            receipts=[],
-            evidence=session.scalars(select(EvidenceItem)),
-        )
-        exposure.content_hash = configuration_hash(exposure.content)
-        exposure.observed_at = exposure.valid_from = NOW
     before = all_tables(engine)
     response = client.get(f"/api/v1/asset-policies/{asset['policy_id']}/allocation-preview")
     assert response.status_code == 200

@@ -1,0 +1,50 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_multi_source_purchase_records_each_actual_debit_without_double_counting _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_4382b3a8973742c3bb720e6f818d8690)
+
+    def test_multi_source_purchase_records_each_actual_debit_without_double_counting(boundary_engine: Engine) -> None:
+>       action_id, position_id = purchase_command(boundary_engine)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_execution_projection.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_4382b3a8973742c3bb720e6f818d8690)
+
+    def purchase_command(engine: Engine) -> tuple[UUID, UUID]:
+        with Session(engine) as session, session.begin():
+            policy_id, version_id = confirmed_policy(session, authorization())
+            action = purchase_action(session, version_id, amount=50000)
+            income = source_ledger(session)
+            product = session.get(AssetProduct, action.product_id)
+            assert product is not None
+            position_id = uuid4()
+>           effect = ExecutionEffect(
+                operation_id=action.id,
+                user_id=DEMO_USER_ID,
+                business_key="purchase:" + str(action.id),
+                action_type="PURCHASE_ASSET",
+                amount_cents=50000,
+                cash_uses=[CashUse(account_id=action.source_account_id, amount_cents=50000)],
+                policy_id=policy_id,
+                policy_version_id=version_id,
+                policy_version_ids=[version_id],
+                product_id=product.id,
+                product_version_number=product.version_number,
+                terms_digest=configuration_hash(product.maturity_rule),
+                position_id=position_id,
+                position_account_id=action.source_account_id,
+                return_account_id=action.source_account_id,
+                valid_from=SEED_AS_OF,
+                expires_at=SEED_AS_OF + timedelta(minutes=15),
+            )
+E           pydantic_core._pydantic_core.ValidationError: 1 validation error for ExecutionEffect
+E             Value error, Purchase requires its exact term-bound exit plan and arrival limit [type=value_error, input_value={'operation_id': UUID('d6...=datetime.timezone.utc)}, input_type=dict]
+E               For further information visit https://errors.pydantic.dev/2.13/v/value_error
+
+apps\api\app\tests\test_execution_bank.py:283: ValidationError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_projection.py::test_multi_source_purchase_records_each_actual_debit_without_double_counting
+1 failed, 11 deselected in 5.10s

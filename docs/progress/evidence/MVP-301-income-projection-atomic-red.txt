@@ -1,0 +1,32 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_projection_failure_rolls_back_earlier_cash_writes_even_when_caller_catches _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_3de7a234c893426fb2232b9347cb2200)
+
+    def test_projection_failure_rolls_back_earlier_cash_writes_even_when_caller_catches(boundary_engine: Engine) -> None:
+        action_id, position_id = purchase_command(boundary_engine)
+        process_operation(boundary_engine, DEMO_USER_ID, action_id, SEED_AS_OF)
+        with Session(boundary_engine) as session, session.begin():
+            action = session.get(ActionPlan, action_id)
+            assert action is not None
+            session.add(AssetPosition(id=position_id, user_id=DEMO_USER_ID, account_id=action.source_account_id,
+                product_id=action.product_id, principal_cents=1, purchased_at=SEED_AS_OF, status="HELD"))
+        with Session(boundary_engine) as session, session.begin():
+            operation = session.get(BankOperation, action_id)
+            assert operation is not None
+            before = {a.id: a.balance_cents for a in session.scalars(select(Account))}
+            with pytest.raises(PolicyLifecycleError, match="overwrite"):
+                project_execution(session, operation, SEED_AS_OF)
+>           assert {a.id: a.balance_cents for a in session.scalars(select(Account))} == before
+E           AssertionError: assert {UUID('d55af6...: 160000, ...} == {UUID('d55af6...: 160000, ...}
+E             
+E             Omitting 4 identical items, use -vv to show
+E             Differing items:
+E             {UUID('61d172d3-9b8a-5f75-b00e-5d99b5e08dd1'): 3252400} != {UUID('61d172d3-9b8a-5f75-b00e-5d99b5e08dd1'): 3302400}
+E             Use -v to get more diff
+
+apps\api\app\tests\test_execution_projection.py:127: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_projection.py::test_projection_failure_rolls_back_earlier_cash_writes_even_when_caller_catches
+1 failed, 8 deselected in 5.95s

@@ -219,6 +219,22 @@ def compute_boundary(
     settlements = {
         (item.policy_id, item.period): item.paid_cents for item in snapshot.occurrence_settlements
     }
+    final_totals = {
+        (item.policy_id, item.period): item.final_total_cents
+        for item in snapshot.occurrence_settlements
+        if item.final_total_cents is not None
+    }
+    for (policy_id, _), final in final_totals.items():
+        config = configs.get(policy_id)
+        if config is None or config["type"] != "recurring_obligation":
+            raise ValueError("Final occurrence total requires its confirmed recurring policy")
+        rule = config["amount_rule"]
+        if rule["kind"] == "bill_balance":
+            raise ValueError("Actual bills cannot also have ordinary occurrence totals")
+        minimum = rule["amount_cents"] if rule["kind"] == "exact" else rule["min_cents"]
+        maximum = rule["amount_cents"] if rule["kind"] == "exact" else rule["max_cents"]
+        if not minimum <= final <= maximum:
+            raise ValueError("Final occurrence total is outside its confirmed amount rule")
     goal_minimum: dict[Any, int] = {}
     ownership = {item.policy_id: item for item in snapshot.goals}
     contributions = {
@@ -300,11 +316,12 @@ def compute_boundary(
                     evidence_blockers.append(
                         BlockingConstraint(code="MISSING_OCCURRENCE_SETTLEMENT", entity_id=key)
                     )
+                occurrence_amount = final_totals.get((policy.policy_id, period), amount)
                 paid = settlements.get((policy.policy_id, period), 0)
-                if paid > amount:
+                if paid > occurrence_amount:
                     raise ValueError("Occurrence settlement exceeds its configured obligation")
-                if amount > paid:
-                    obligations[key] = (max(first, due), amount - paid)
+                if occurrence_amount > paid:
+                    obligations[key] = (max(first, due), occurrence_amount - paid)
         elif config["type"] == "goal_saving":
             if policy.policy_id not in ownership:
                 evidence_blockers.append(

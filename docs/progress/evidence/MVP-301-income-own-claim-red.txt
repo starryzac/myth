@@ -1,0 +1,35 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_action_revalidation_sees_only_its_own_claim_without_releasing_it ____
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_53165069ca814e4fa2a4545013f68e3d)
+
+    def test_action_revalidation_sees_only_its_own_claim_without_releasing_it(
+        boundary_engine: Engine,
+    ) -> None:
+        with Session(boundary_engine) as session, session.begin():
+            action_id, use = reserved_fixture(session)
+        before = snapshot(boundary_engine)
+        with Session(boundary_engine) as session:
+>           ordinary = income_lots_for_action(session, DEMO_USER_ID, NOW)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_income_ledger_service.py:326: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x0000026AA3DC2AB0>
+user_id = UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')
+now = datetime.datetime(2026, 10, 3, 17, 0, tzinfo=datetime.timezone.utc)
+action_id = None
+
+    def income_lots_for_action(
+        session: Session, user_id: UUID, now: datetime, *, action_id: UUID | None = None,
+    ) -> list[IncomeLot]:
+        """Read-only revalidation view; only the same reserved action sees its own claim again."""
+>       raise NotImplementedError
+E       NotImplementedError
+
+apps\api\app\services\income_ledger.py:57: NotImplementedError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_income_ledger_service.py::test_action_revalidation_sees_only_its_own_claim_without_releasing_it
+1 failed, 8 deselected in 5.56s

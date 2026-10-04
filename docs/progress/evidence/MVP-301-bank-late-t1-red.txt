@@ -1,0 +1,25 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+_______ test_late_t1_observation_keeps_promised_economic_time[generic] ________
+apps\api\app\tests\test_execution_bank.py:860: in test_late_t1_observation_keeps_promised_economic_time
+    assert operation.status == "SETTLED" and operation.settled_at == due
+E   AssertionError: assert ('SETTLED' == 'SETTLED'
+E     
+E       SETTLED and datetime.datetime(2026, 10, 5, 16, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 10, 4, 16, 0, tzinfo=datetime.timezone.utc))
+E    +  where datetime.datetime(2026, 10, 5, 16, 0, tzinfo=datetime.timezone.utc) = <app.db.models.BankOperation object at 0x000001B2E9892240>.settled_at
+________ test_late_t1_observation_keeps_promised_economic_time[legacy] ________
+apps\api\app\tests\test_execution_bank.py:860: in test_late_t1_observation_keeps_promised_economic_time
+    assert operation.status == "SETTLED" and operation.settled_at == due
+E   AssertionError: assert ('SETTLED' == 'SETTLED'
+E     
+E       SETTLED and datetime.datetime(2026, 10, 5, 16, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 10, 4, 16, 0, tzinfo=datetime.timezone.utc))
+E    +  where datetime.datetime(2026, 10, 5, 16, 0, tzinfo=datetime.timezone.utc) = <app.db.models.BankOperation object at 0x000001B2E99B40E0>.settled_at
+_______ test_new_bank_mutation_waits_for_earlier_due_accepted_economics _______
+apps\api\app\tests\test_execution_bank.py:893: in test_new_bank_mutation_waits_for_earlier_due_accepted_economics
+    with pytest.raises(PolicyLifecycleError, match="Earlier accepted bank settlement"):
+E   Failed: DID NOT RAISE PolicyLifecycleError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_bank.py::test_late_t1_observation_keeps_promised_economic_time[generic]
+FAILED apps/api/app/tests/test_execution_bank.py::test_late_t1_observation_keeps_promised_economic_time[legacy]
+FAILED apps/api/app/tests/test_execution_bank.py::test_new_bank_mutation_waits_for_earlier_due_accepted_economics
+3 failed, 13 deselected in 9.96s

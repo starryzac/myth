@@ -1,0 +1,9 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_legacy_entry_cannot_take_a_position_already_reserved_by_generic_action _
+apps\api\app\tests\test_execution_bank.py:616: in test_legacy_entry_cannot_take_a_position_already_reserved_by_generic_action
+    with pytest.raises(PolicyLifecycleError,match="reserved"):
+E   Failed: DID NOT RAISE PolicyLifecycleError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_execution_bank.py::test_legacy_entry_cannot_take_a_position_already_reserved_by_generic_action
+1 failed, 8 deselected in 5.40s

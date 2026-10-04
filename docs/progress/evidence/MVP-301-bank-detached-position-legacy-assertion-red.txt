@@ -1,0 +1,9 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_complete_statement_cannot_hide_a_live_bank_position_by_deleting_its_projection _
+apps\api\app\tests\test_asset_allocation_service.py:568: in test_complete_statement_cannot_hide_a_live_bank_position_by_deleting_its_projection
+    with (
+E   Failed: DID NOT RAISE IntegrityError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_asset_allocation_service.py::test_complete_statement_cannot_hide_a_live_bank_position_by_deleting_its_projection
+1 failed in 3.32s

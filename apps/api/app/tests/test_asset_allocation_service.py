@@ -33,7 +33,6 @@ from app.tests.test_boundary_service import boundary_engine as boundary_engine
 from app.tests.test_boundary_service import confirmed_policy, goal_fixture, snapshot
 from sqlalchemy import delete, select
 from sqlalchemy.engine import Engine
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 pytestmark = pytest.mark.integration
@@ -561,42 +560,32 @@ def test_goal_allocation_requires_current_mutual_authority_and_matching_projecti
 def test_complete_statement_cannot_hide_a_live_bank_position_by_deleting_its_projection(
     boundary_engine: Engine,
 ) -> None:
+    from app.db.models import SimulatedBankPosting
+
     with Session(boundary_engine) as session, session.begin():
         position = session.scalar(select(AssetPosition))
         assert position is not None
-        # The independent bank ledger now protects a known projection at the DB layer.
-        with (
-            pytest.raises(IntegrityError, match="fk_simulated_bank_postings_position_id"),
-            session.begin_nested(),
-        ):
-            session.delete(position)
-            session.flush()
-        # An imported bank position can still be absent from the local projection.
-        # The importer must reject this complete-statement claim independently of FK safety.
+        position_id, principal = position.id, position.principal_cents
         proof = session.scalar(
             select(EvidenceItem).where(
                 EvidenceItem.source_type == "SIMULATED_BANK_POSITION",
-                EvidenceItem.content["position_id"].as_string() == str(position.id),
+                EvidenceItem.content["position_id"].as_string() == str(position_id),
             )
         )
         assert proof is not None
-        missing_id = uuid4()
-        content = {**proof.content, "position_id": str(missing_id)}
-        session.add(
-            EvidenceItem(
-                user_id=DEMO_USER_ID,
-                source_type="SIMULATED_BANK_POSITION",
-                source_ref=f"unprojected-position:{missing_id}",
-                evidence_level="BANK_CONFIRMED",
-                content=content,
-                content_hash=configuration_hash(content),
-                observed_at=SEED_AS_OF,
-                valid_from=SEED_AS_OF,
-                status="VALID",
-            )
+        # 0004 intentionally decouples independent bank principal from app projection.
+        session.delete(position)
+        session.flush()
+        bank = session.scalar(
+            select(SimulatedBankPosting)
+            .where(SimulatedBankPosting.ledger_key == f"POSITION:{position_id}")
+            .order_by(SimulatedBankPosting.sequence_number.desc())
         )
+        assert bank is not None and bank.balance_after_cents == principal
+        assert proof.status == "VALID" and proof.content["position_id"] == str(position_id)
         exposure_statement(session)
     with Session(boundary_engine) as session:
+        assert session.get(AssetPosition, position_id) is None
         context = load_boundary_context(session, DEMO_USER_ID, SEED_AS_OF)
         load_asset_exposure(session, context, authorization())
         assert any(

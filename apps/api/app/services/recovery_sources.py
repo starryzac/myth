@@ -201,6 +201,10 @@ def recovery_inputs(
                 if purchase is None or purchase.account_id not in cash:
                     raise ValueError("The original cash account is required for principal return")
                 destination = purchase.account_id
+                if proof.content.get("acquisition_protocol") == "execution-purchase-v1":
+                    from app.services.execution_sources import execution_return_account
+
+                    destination = execution_return_account(session, user_id, row, now)
             else:
                 goal = next(
                     (item for item in context.snapshot.goals if item.goal_id == row.goal_id), None

@@ -1,0 +1,5 @@
+apps\api\app\domain\execution.py:541: error: Unsupported operand types for < ("datetime" and "None")  [operator]
+apps\api\app\domain\execution.py:541: note: Left operand is of type "datetime | None"
+apps\api\app\tests\test_asset_allocation_service.py:580: error: Argument 1 to "scalar" of "Session" has incompatible type "Select[SimulatedBankPosting]"; expected "TypedReturnsRows[Never]"  [arg-type]
+apps\api\app\tests\test_asset_allocation_service.py:582: error: "type[SimulatedBankPosting]" has no attribute "ledger_sequence"  [attr-defined]
+Found 3 errors in 2 files (checked 9 source files)
