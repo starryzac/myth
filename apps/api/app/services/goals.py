@@ -55,6 +55,9 @@ def create_goal_projection(
     if now.tzinfo is None or now.utcoffset() is None:
         raise PolicyLifecycleError("INVALID_CLOCK", "服务器时间必须带时区")
     now = now.astimezone(UTC)
+    from app.db.audit_guard import transaction_gate
+
+    transaction_gate(session, user_id)
     user = session.scalar(select(User).where(User.id == user_id).with_for_update())
     if user is None or not user.is_simulated:
         raise PolicyLifecycleError("NOT_FOUND", "模拟用户不存在", 404)
@@ -177,6 +180,10 @@ def create_goal_projection(
     # Existing positive projections return above; they can never repair bank truth here.
     open_execution_anchors(session, user_id, now, goal_balances={goal.id: (0, 0)})
     refresh_execution_exposure(session, user_id, now, goal.id)
+    session.flush()
+    from app.services.audit_recording import record_goal_initialized
+
+    record_goal_initialized(session, goal, now)
     return GoalResponse(goal=GoalView.model_validate(goal))
 
 

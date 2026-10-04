@@ -1,0 +1,9 @@
+...F                                                                     [100%]
+================================== FAILURES ===================================
+___ test_full_original_decision_chain_detects_deleted_tail_and_empty_chain ____
+apps\api\app\tests\test_audit_chain_domain.py:113: in test_full_original_decision_chain_detects_deleted_tail_and_empty_chain
+    from app.domain.audit_chain import verify_epoch, build_checkpoint
+E   ImportError: cannot import name 'verify_epoch' from 'app.domain.audit_chain' (F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\apps\api\app\domain\audit_chain.py)
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_audit_chain_domain.py::test_full_original_decision_chain_detects_deleted_tail_and_empty_chain
+1 failed, 3 passed in 0.78s

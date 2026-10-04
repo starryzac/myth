@@ -1,0 +1,2 @@
+AST read-only comparison: all module content outside the authorized function unchanged.
+Original non-budget assertions retained exactly: 9; only three budget expressions replaced.

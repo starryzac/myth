@@ -43,19 +43,33 @@ EXPECTED_TABLES = {
     "simulated_bank_postings",
     "bank_operations",
     "action_resource_reservations",
+    "audit_epochs",
+    "audit_subject_snapshots",
 }
 
 
 @pytest.mark.integration
 def test_legacy_bank_migration_preserves_original_requests_and_posting_amounts(
     migrated_database: tuple[Engine, Config],
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    from app.services.demo_seed import DEMO_USER_ID, SEED_AS_OF, seed_demo
+    from app.services import audit_recording, demo_seed
+    from app.services.demo_seed import DEMO_USER_ID, SEED_AS_OF
     from app.services.simulated_bank import process_redemption
     from app.tests.test_simulated_bank import bank_action
 
     engine, config = migrated_database
-    seed_demo(engine)
+    # This probes the pre-audit 0004 bank migration. Construct its original fixed
+    # financial fixture on 0005 without deleting any retained 0006 history.
+    command.downgrade(config, "0005_decision_trace")
+    with Session(engine) as session, session.begin():
+        demo_seed._ensure_products(session)
+        demo_seed._insert_facts(session)
+        demo_seed._open_seed_bank(session)
+    monkeypatch.setattr(audit_recording, "record_bank_accepted", lambda *args: None)
+    monkeypatch.setattr(audit_recording, "record_bank_settled", lambda *args: None)
+    monkeypatch.setattr(audit_recording, "record_policy_version", lambda *args: None)
+    monkeypatch.setattr(audit_recording, "record_decision", lambda *args: None)
     action_id, _, _, _ = bank_action(engine)
     result = process_redemption(engine, DEMO_USER_ID, action_id, SEED_AS_OF)
     sql = (
@@ -127,7 +141,7 @@ def migrated_database() -> Iterator[tuple[Engine, Config]]:
 
 
 @pytest.mark.integration
-def test_fresh_upgrade_downgrade_upgrade_matches_all_twenty_models() -> None:
+def test_fresh_upgrade_downgrade_upgrade_matches_all_twenty_two_models() -> None:
     with temporary_database() as url:
         config = migration_config(url)
         engine = create_database_engine(url)

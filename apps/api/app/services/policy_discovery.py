@@ -122,6 +122,9 @@ def _consecutive(days: list[date]) -> bool:
 def discover_policies(session: Session, user_id: UUID, now: datetime) -> DiscoveryResult:
     """Write proposals and observation evidence inside the caller's transaction."""
     with session.begin_nested():
+        from app.db.audit_guard import transaction_gate
+
+        transaction_gate(session, user_id)
         user = session.scalar(
             select(User)
             .where(User.id == user_id)

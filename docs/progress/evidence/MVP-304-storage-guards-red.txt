@@ -1,0 +1,55 @@
+.F.......F.                                                              [100%]
+================================== FAILURES ===================================
+__________ test_sql_insert_cannot_omit_hashed_required_tenant_header __________
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_8250aadeb414427e9f855e4774178ffe)
+
+    def test_sql_insert_cannot_omit_hashed_required_tenant_header(demo_engine: Engine) -> None:
+        identity, epoch_id = uuid4(), uuid4()
+        with Session(demo_engine) as session, session.begin():
+            session.add(User(id=identity, external_ref=str(identity), display_name="Synthetic"))
+        with Session(demo_engine) as session:
+            session.add(AuditEpoch(id=epoch_id, user_id=identity, epoch_number=1, opened_at=NOW))
+            session.flush()
+            intent = AuditIntent(user_id=identity, event_type="EPOCH_STARTED", aggregate_type="EPOCH",
+                aggregate_id=epoch_id, correlation_id=epoch_id, idempotency_key="malformed-genesis",
+                occurred_at=NOW, payload=AuditPayload(fact_key="malformed-genesis", correlation_kind="EPOCH",
+                    epoch_transition=AuditEpochTransition(kind="INIT")))
+            event = domain.build_event(intent, event_id=uuid4(), epoch_id=epoch_id, sequence_number=1,
+                previous_hash=None, observed_at=NOW, appended_at=NOW)
+            fields = event.model_dump(mode="python", exclude={"id", "epoch_id", "event_hash", "appended_at", "simulation"})
+            fields["payload"] = event.payload.model_dump(mode="json")
+            body = event.model_dump(mode="json")
+            body.pop("user_id")
+            body.pop("event_hash")
+            body["event_hash"] = hashlib.sha256(b"bounded-funds/audit-event-v1\0"+domain.canonical_bytes(body)).hexdigest()
+            session.add(AuditEvent(id=event.id, epoch_id=epoch_id, event_hash=body["event_hash"],
+                created_at=NOW, canonical_text=domain.canonical_text(body), **fields))
+>           with pytest.raises(DBAPIError, match="AUDIT_EVENT_INVALID"):
+E           Failed: DID NOT RAISE DBAPIError
+
+apps\api\app\tests\test_audit_storage.py:60: Failed
+__________ test_reading_absent_chain_is_unaudited_and_has_no_writes ___________
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_2aa0dafc616e4098be61502f7bef320e)
+
+    def test_reading_absent_chain_is_unaudited_and_has_no_writes(demo_engine: Engine) -> None:
+        from app.services.audit_chain import get_audit_head, list_audit_events, verify_audit_chain
+        with Session(demo_engine) as session:
+            identity = uuid4()
+            session.add(User(id=identity, external_ref=str(identity), display_name="uncommitted"))
+            assert get_audit_head(session, identity) is None
+            assert list_audit_events(session, identity).items == []
+            assert verify_audit_chain(session, identity).status == "LEGACY_UNAUDITED"
+            assert len(session.new) == 1
+>           assert session.scalar(text("SELECT count(*) FROM users")) == 0
+E           AssertionError: assert 1 == 0
+E            +  where 1 = scalar(<sqlalchemy.sql.elements.TextClause object at 0x000001E621E000B0>)
+E            +    where scalar = <sqlalchemy.orm.session.Session object at 0x000001E621E3A2A0>.scalar
+E            +    and   <sqlalchemy.sql.elements.TextClause object at 0x000001E621E000B0> = text('SELECT count(*) FROM users')
+
+apps\api\app\tests\test_audit_storage.py:89: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_audit_storage.py::test_sql_insert_cannot_omit_hashed_required_tenant_header
+FAILED apps/api/app/tests/test_audit_storage.py::test_reading_absent_chain_is_unaudited_and_has_no_writes
+2 failed, 9 passed in 22.09s

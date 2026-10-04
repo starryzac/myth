@@ -20,6 +20,7 @@ from app.api.errors import (
 from app.api.v1.accounts import router as account_router
 from app.api.v1.actions import router as action_router
 from app.api.v1.assets import router as asset_router
+from app.api.v1.audit import router as audit_router
 from app.api.v1.boundary import router as boundary_router
 from app.api.v1.decisions import router as decision_router
 from app.api.v1.goals import router as goal_router
@@ -82,6 +83,7 @@ def create_app() -> FastAPI:
     api.include_router(recovery_router)
     api.include_router(action_router)
     api.include_router(decision_router)
+    api.include_router(audit_router)
 
     async def lifecycle_error_handler(request: Request, exception: Exception) -> JSONResponse:
         assert isinstance(exception, PolicyLifecycleError)

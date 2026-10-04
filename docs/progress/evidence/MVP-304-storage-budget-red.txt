@@ -1,0 +1,36 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________ test_verification_refuses_budget_before_loading_original_text ________
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_8dd8cff5b0104461a65c3da2f27aaf15)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002144FFC24B0>
+
+    def test_verification_refuses_budget_before_loading_original_text(demo_engine: Engine, monkeypatch: pytest.MonkeyPatch) -> None:
+        from app.services import audit_chain
+        from app.services.demo_seed import DEMO_USER_ID, seed_demo
+        seed_demo(demo_engine)
+        monkeypatch.setattr(audit_chain, "VERIFY_BYTE_LIMIT", 1)
+        def forbidden_parse(_: str) -> None:
+            raise AssertionError("bounded read must stop before parsing original text")
+        monkeypatch.setattr(domain, "parse_event", forbidden_parse)
+        with Session(demo_engine) as session:
+>           result = audit_chain.verify_audit_chain(session, DEMO_USER_ID)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_audit_storage.py:154: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\audit_chain.py:379: in verify_audit_chain
+    events = [domain.parse_event(row.canonical_text or "") for row in rows]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+_ = '{"action_plan_id":null,"action_receipt_id":null,"aggregate_id":"682ac54e-8d8b-45cd-9f2e-4d0b426f2264","aggregate_type...hema_version":"audit-event-v1","sequence_number":1,"simulation":true,"user_id":"271a9827-f82a-5be6-9e0a-50f721029fb0"}'
+
+    def forbidden_parse(_: str) -> None:
+>       raise AssertionError("bounded read must stop before parsing original text")
+E       AssertionError: bounded read must stop before parsing original text
+
+apps\api\app\tests\test_audit_storage.py:151: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_audit_storage.py::test_verification_refuses_budget_before_loading_original_text
+1 failed in 5.14s

@@ -53,6 +53,9 @@ def process_operation(
         raise _error("An aware trusted bank clock is required")
     now = now.astimezone(UTC)
     with Session(engine) as session, session.begin():
+        from app.db.audit_guard import transaction_gate
+
+        transaction_gate(session, user_id)
         user = session.scalar(select(User).where(User.id == user_id).with_for_update())
         action = session.get(ActionPlan, action_id)
         if user is None or not user.is_simulated or action is None or action.user_id != user_id:
@@ -124,6 +127,9 @@ def process_operation(
             )
             session.add(operation)
             session.flush()
+            from app.services.audit_recording import record_bank_accepted
+
+            record_bank_accepted(session, operation, now)
         if operation.status == "ACCEPTED" and operation.available_at <= now:
             require_settlement_order(session, user_id, now, operation)
             _settle_operation(session, operation, effect, now)
@@ -493,6 +499,9 @@ def _settle_operation(
         raise _error("Cash, principal, payee, fees and loss do not conserve the economic amount")
     operation.status, operation.settled_at = "SETTLED", operation.available_at
     session.flush()
+    from app.services.audit_recording import record_bank_settled
+
+    record_bank_settled(session, operation, now)
 
 
 def _valid_bank_evidence(

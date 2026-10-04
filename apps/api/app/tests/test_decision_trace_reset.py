@@ -1,15 +1,28 @@
 """Reset real simulated execution traces atomically inside a disposable database."""
 
+import json
+from collections import Counter
+from typing import Any
 from uuid import UUID, uuid4
 
 import pytest
-from app.db.models import Account, ActionPlan, DecisionRun, User
+from app.db.models import (
+    Account,
+    ActionPlan,
+    ActionReceipt,
+    BankOperation,
+    DecisionRun,
+    SimulatedBankPosting,
+    User,
+)
+from app.domain import audit_chain as audit_domain
 from app.domain.policy_configuration import configuration_hash
 from app.services import demo_seed
 from app.services.action_contracts import ConfirmActionRequest, PrepareActionRequest, TransferIntent
+from app.services.audit_chain import verify_audit_chain
 from app.services.demo_seed import DEMO_USER_ID, SEED_AS_OF, seed_demo
 from app.services.execution import confirm_action, execute_action, prepare_action
-from app.tests.test_demo_seed import database_snapshot
+from app.tests.test_demo_seed import business_snapshot, database_snapshot
 from app.tests.test_demo_seed import demo_engine as demo_engine
 from app.tests.test_execution_service import transfer_accounts
 from sqlalchemy import select
@@ -103,13 +116,109 @@ def other_tenant_links(engine: Engine) -> tuple[UUID, UUID, UUID]:
     return root, action_id, child
 
 
+def _audit_snapshot(engine: Engine) -> dict[str, dict[str, dict[str, Any]]]:
+    snapshot: dict[str, list[dict[str, Any]]] = json.loads(database_snapshot(engine))
+    return {
+        name: {row["id"]: row for row in snapshot[name]}
+        for name in ("audit_epochs", "audit_events", "audit_subject_snapshots")
+    }
+
+
+def _assert_retained_reset(
+    engine: Engine,
+    before: dict[str, dict[str, dict[str, Any]]],
+    expected_number: int,
+) -> dict[str, dict[str, dict[str, Any]]]:
+    after = _audit_snapshot(engine)
+    for table in ("audit_events", "audit_subject_snapshots"):
+        assert before[table]
+        assert before[table].keys() <= after[table].keys()
+        for identity, original in before[table].items():
+            assert after[table][identity] == original
+
+    previous_epochs = before["audit_epochs"]
+    current_epochs = after["audit_epochs"]
+    assert previous_epochs.keys() <= current_epochs.keys()
+    assert len(current_epochs) == len(previous_epochs) + 1
+    old = next(
+        row
+        for row in previous_epochs.values()
+        if row["user_id"] == str(DEMO_USER_ID) and row["status"] == "OPEN"
+    )
+    sealed = current_epochs[old["id"]]
+    new_ids = current_epochs.keys() - previous_epochs.keys()
+    assert len(new_ids) == 1
+    current = current_epochs[new_ids.pop()]
+    assert sealed["status"] == "SEALED" and current["status"] == "OPEN"
+    assert current["user_id"] == str(DEMO_USER_ID)
+    assert current["epoch_number"] == old["epoch_number"] + 1 == expected_number
+    assert current["previous_epoch_id"] == old["id"]
+    assert current["previous_seal_hash"] == sealed["seal_hash"]
+    assert sealed["seal_canonical_text"] and sealed["sealed_at"]
+    assert sealed["event_count"] == sealed["last_sequence"] == old["event_count"] + 1
+    for field in (
+        "genesis_event_id",
+        "genesis_event_hash",
+        "previous_epoch_id",
+        "previous_seal_hash",
+    ):
+        assert sealed[field] == old[field]
+    for identity, original in previous_epochs.items():
+        if identity != old["id"]:
+            assert current_epochs[identity] == original
+
+    new_events = [
+        after["audit_events"][identity]
+        for identity in after["audit_events"].keys() - before["audit_events"].keys()
+    ]
+    assert Counter((row["epoch_id"], row["event_type"]) for row in new_events) == {
+        (old["id"], "EPOCH_SEALED"): 1,
+        (current["id"], "EPOCH_STARTED"): 1,
+    }
+    seal_event = after["audit_events"][sealed["last_event_id"]]
+    assert seal_event["previous_hash"] == old["last_event_hash"]
+    assert seal_event["event_hash"] == sealed["last_event_hash"]
+    assert current["event_count"] == current["last_sequence"] == 1
+    assert current["genesis_event_id"] == current["last_event_id"]
+    assert current["genesis_event_hash"] == current["last_event_hash"]
+    new_subjects = [
+        after["audit_subject_snapshots"][identity]
+        for identity in (
+            after["audit_subject_snapshots"].keys() - before["audit_subject_snapshots"].keys()
+        )
+    ]
+    assert new_subjects
+    assert all(
+        row["user_id"] == str(DEMO_USER_ID) and row["epoch_id"] == old["id"] for row in new_subjects
+    )
+    assert sealed["archive_record_counts"] == dict(
+        Counter(
+            row["kind"]
+            for row in after["audit_subject_snapshots"].values()
+            if row["epoch_id"] == old["id"]
+        )
+    )
+    demo_epochs = sorted(
+        (row for row in current_epochs.values() if row["user_id"] == str(DEMO_USER_ID)),
+        key=lambda row: row["epoch_number"],
+    )
+    assert [row["epoch_number"] for row in demo_epochs] == list(range(1, expected_number + 1))
+    assert [row["status"] for row in demo_epochs] == ["SEALED"] * (expected_number - 1) + ["OPEN"]
+    with Session(engine) as session:
+        for row in demo_epochs:
+            verification = verify_audit_chain(session, DEMO_USER_ID, UUID(row["id"]))
+            assert verification.status == "VALID", verification.model_dump(mode="json")
+    return after
+
+
 def test_reset_after_actual_three_phase_execution_is_repeatable_and_preserves_other_tenant(
     demo_engine: Engine,
 ) -> None:
     initial = seed_demo(demo_engine)
     root_id, action_id, child_id = other_tenant_links(demo_engine)
-    baseline = database_snapshot(demo_engine)
-    completed_transfer(demo_engine)
+    baseline = business_snapshot(demo_engine)
+    executed_action_id = completed_transfer(demo_engine)
+    originals: dict[tuple[str, str], str] = {}
     with Session(demo_engine) as session:
         assert (
             session.scalar(
@@ -120,10 +229,79 @@ def test_reset_after_actual_three_phase_execution_is_repeatable_and_preserves_ot
             )
             is not None
         )
-    assert seed_demo(demo_engine) == initial
-    assert database_snapshot(demo_engine) == baseline
-    assert seed_demo(demo_engine) == initial
-    assert database_snapshot(demo_engine) == baseline
+        operation = session.scalars(
+            select(BankOperation).where(BankOperation.action_plan_id == executed_action_id)
+        ).one()
+        receipt = session.scalars(
+            select(ActionReceipt).where(ActionReceipt.action_plan_id == executed_action_id)
+        ).one()
+        assert operation.status == "SETTLED" and receipt.status == "SUCCEEDED"
+        assert receipt.executed_cents == 10000 and receipt.fee_cents == receipt.loss_cents == 0
+        queries = {
+            "ACTION_PLAN": select(ActionPlan.__table__).where(ActionPlan.id == executed_action_id),
+            "DECISION_RUN": select(DecisionRun.__table__).where(
+                DecisionRun.user_id == DEMO_USER_ID,
+                DecisionRun.subject_action_plan_id == executed_action_id,
+            ),
+            "ACTION_RECEIPT": select(ActionReceipt.__table__).where(ActionReceipt.id == receipt.id),
+            "BANK_OPERATION": select(BankOperation.__table__).where(
+                BankOperation.id == operation.id
+            ),
+            "BANK_POSTING": select(SimulatedBankPosting.__table__).where(
+                SimulatedBankPosting.operation_id == operation.id
+            ),
+        }
+        for kind, query in queries.items():
+            rows = session.execute(query).mappings().all()
+            assert rows, kind
+            for economic_row in rows:
+                originals[(kind, str(economic_row["id"]))] = audit_domain.canonical_text(
+                    dict(economic_row), raw=True
+                )
+    retained = _audit_snapshot(demo_engine)
+    original_epoch = next(
+        row["id"]
+        for row in retained["audit_epochs"].values()
+        if row["user_id"] == str(DEMO_USER_ID) and row["status"] == "OPEN"
+    )
+    for expected_number in (2, 3):
+        assert seed_demo(demo_engine) == initial
+        assert business_snapshot(demo_engine) == baseline
+        retained = _assert_retained_reset(demo_engine, retained, expected_number)
+        original_events = [
+            row["event_type"]
+            for row in retained["audit_events"].values()
+            if row["epoch_id"] == original_epoch
+            and row["action_plan_id"] == str(executed_action_id)
+        ]
+        for kind in ("BANK_ACCEPTED", "BANK_SETTLED", "ACTION_PROJECTED"):
+            assert original_events.count(kind) == 1
+        versions: dict[tuple[str, str], list[str]] = {}
+        for row in retained["audit_subject_snapshots"].values():
+            if row["epoch_id"] != original_epoch:
+                continue
+            subject = audit_domain.parse_subject(row["canonical_text"])
+            assert audit_domain.subject_hash(subject) == row["snapshot_hash"]
+            versions.setdefault((row["kind"], row["entity_id"]), []).append(
+                audit_domain.canonical_text(subject.data, raw=True)
+            )
+        for original_key, original in originals.items():
+            assert original in versions[original_key], original_key
+        for kind in ("DECISION_RUN", "ACTION_PLAN"):
+            assert all(
+                (kind, str(identity)) not in versions for identity in (root_id, action_id, child_id)
+            )
+        with Session(demo_engine) as session:
+            assert session.get(ActionPlan, executed_action_id) is None
+            for kind, entity_id in originals:
+                if kind == "DECISION_RUN":
+                    assert session.get(DecisionRun, UUID(entity_id)) is None
+                elif kind == "ACTION_RECEIPT":
+                    assert session.get(ActionReceipt, UUID(entity_id)) is None
+                elif kind == "BANK_OPERATION":
+                    assert session.get(BankOperation, UUID(entity_id)) is None
+                elif kind == "BANK_POSTING":
+                    assert session.get(SimulatedBankPosting, UUID(entity_id)) is None
     with Session(demo_engine) as session:
         root, child = session.get(DecisionRun, root_id), session.get(DecisionRun, child_id)
         assert root is not None and child is not None

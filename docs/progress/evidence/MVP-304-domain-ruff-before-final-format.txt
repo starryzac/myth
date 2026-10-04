@@ -1,0 +1,23 @@
+E501 Line too long (118 > 100)
+    --> apps\api\app\domain\audit_chain.py:1938:101
+     |
+1936 |             if not isinstance(value, dict):
+1937 |                 raise AuditContractError("Audit original event is not an object")
+1938 |             total_bytes += len(raw.encode("utf-8")) if isinstance(raw, str) else len(canonical_bytes(value, raw=True))
+     |                                                                                                     ^^^^^^^^^^^^^^^^^^
+1939 |             if total_bytes > byte_limit:
+1940 |                 incomplete = True
+     |
+
+E501 Line too long (111 > 100)
+    --> apps\api\app\tests\test_audit_chain_domain.py:1421:101
+     |
+1419 |     unsupported["canonical_version"] = "future-codec"
+1420 |     first_head = head.model_copy(update={"event_count": 1, "last_sequence": 1,
+1421 |                                        "last_event_id": events[0].id, "last_event_hash": events[0].event_hash})
+     |                                                                                                     ^^^^^^^^^^^
+1422 |     unknown_limit = verify_epoch([unsupported], head=first_head, expected_user_id=head.user_id,
+1423 |                                   references=ReferenceBundle(), byte_limit=1)
+     |
+
+Found 2 errors.

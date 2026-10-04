@@ -64,6 +64,9 @@ def _now(value: datetime) -> datetime:
 
 
 def _user(session: Session, user_id: UUID) -> User:
+    from app.db.audit_guard import transaction_gate
+
+    transaction_gate(session, user_id)
     user = session.scalar(select(User).where(User.id == user_id).with_for_update())
     if user is None or not user.is_simulated:
         raise PolicyLifecycleError("NOT_FOUND", "模拟用户不存在", 404)
@@ -342,7 +345,13 @@ def _goal_asset_reference(session: Session, user_id: UUID, configuration: dict[s
 
 
 def _invalidation(
-    session: Session, user_id: UUID, version_ids: list[UUID]
+    session: Session,
+    user_id: UUID,
+    version_ids: list[UUID],
+    now: datetime,
+    *,
+    reason_code: str = "POLICY_AUTHORITY_INVALIDATED",
+    cause_ref: str | None = None,
 ) -> tuple[list[UUID], list[UUID]]:
     if not version_ids:
         return [], []
@@ -407,7 +416,23 @@ def _invalidation(
         ):
             inflight.append(plan.id)
         elif plan.status in {"PLANNED", "AUTHORIZED"} and plan.id not in receipts:
+            from app.services.audit_recording import audit_subject_data, record_action_transition
+
+            before_status = plan.status
+            before_data = audit_subject_data(plan)
             plan.status = "INVALIDATED"
+            record_action_transition(
+                session,
+                plan,
+                before_status,
+                now,
+                reason_code=reason_code,
+                cause_ref=cause_ref,
+                details={
+                    "policy_version_ids": sorted(str(identifier) for identifier in version_ids)
+                },
+                before_data=before_data,
+            )
             invalidated.append(plan.id)
         elif plan.status == "INVALIDATED" and plan.id not in receipts:
             invalidated.append(plan.id)
@@ -451,10 +476,31 @@ def _refresh_one(
     status = effective_status(policy, version, now)
     if status == policy.status or status not in {"ACTIVE", "CONFIRMED", "EXPIRED"}:
         return False, [], []
+    from app.services.audit_recording import audit_subject_data, record_policy_state
+
+    before_status = policy.status
+    before_data = audit_subject_data(policy)
     policy.status = status
     policy.updated_at = now
+    assert version is not None
+    record_policy_state(
+        session,
+        policy,
+        version,
+        before_status,
+        now,
+        reason_code="POLICY_TIME_REFRESHED",
+        before_data=before_data,
+    )
     invalidated, inflight = (
-        _invalidation(session, policy.user_id, _version_ids(session, policy))
+        _invalidation(
+            session,
+            policy.user_id,
+            _version_ids(session, policy),
+            now,
+            reason_code="POLICY_EXPIRED",
+            cause_ref=str(version.id),
+        )
         if status == "EXPIRED"
         else ([], [])
     )
@@ -537,6 +583,9 @@ def _append_version(
     session.add(version)
     session.flush()
     _project_goal(session, policy, version)
+    from app.services.audit_recording import record_policy_version
+
+    record_policy_version(session, policy, version, previous, now)
     return version, result
 
 
@@ -702,7 +751,12 @@ def change_policy(
         evidence = [item for item in evidence if item.source_type != "POLICY_CONFIRMATION"]
         _goal_asset_reference(session, user_id, canonical)
         invalidated, inflight = _invalidation(
-            session, user_id, [version.id for version in versions]
+            session,
+            user_id,
+            [version.id for version in versions],
+            now,
+            reason_code="POLICY_VERSION_REPLACED",
+            cause_ref=request_hash,
         )
         policy.name = canonical.get("name") or policy.name
         _, result = _append_version(
@@ -742,9 +796,29 @@ def _stop_policy(
         if target == "SUSPENDED" and policy.status in {"REVOKED", "EXPIRED"}:
             raise PolicyLifecycleError("INVALID_POLICY_STATE", "已终止策略不能暂停或复活", 409)
         if policy.status != target:
+            from app.services.audit_recording import audit_subject_data, record_policy_state
+
+            before_status = policy.status
+            before_data = audit_subject_data(policy)
             policy.status = target
             policy.updated_at = now
-        invalidated, inflight = _invalidation(session, user_id, _version_ids(session, policy))
+            record_policy_state(
+                session,
+                policy,
+                version,
+                before_status,
+                now,
+                reason_code="POLICY_" + target,
+                before_data=before_data,
+            )
+        invalidated, inflight = _invalidation(
+            session,
+            user_id,
+            _version_ids(session, policy),
+            now,
+            reason_code="POLICY_" + target,
+            cause_ref=str(version.id),
+        )
         session.flush()
         return _result(policy, version, now, None, invalidated, inflight)
 

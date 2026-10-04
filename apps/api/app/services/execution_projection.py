@@ -936,4 +936,7 @@ def _project_execution(
     resolve_resources(session, operation.user_id, action.id, "CONSUMED", now)
     refresh_execution_exposure(session, operation.user_id, now, operation.id)
     session.flush()
+    from app.services.audit_recording import record_action_projected
+
+    record_action_projected(session, action, operation, receipt, now)
     return receipt

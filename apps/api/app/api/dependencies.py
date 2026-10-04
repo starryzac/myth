@@ -6,6 +6,7 @@ from functools import lru_cache
 from typing import Annotated
 
 from fastapi import Depends, HTTPException, Request
+from sqlalchemy import text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
@@ -25,9 +26,12 @@ def get_session(
     request: Request, engine: Annotated[Engine, Depends(get_engine)]
 ) -> Iterator[Session]:
     with database_session(engine) as session:
-        if request.method == "GET":
+        audit_read = request.url.path.startswith("/api/v1/audit/")
+        if request.method == "GET" or (audit_read and request.method == "POST"):
             # One database snapshot for aggregate facts across multiple SELECTs.
             session.connection(execution_options={"isolation_level": "REPEATABLE READ"})
+        if audit_read:
+            session.execute(text("SET TRANSACTION READ ONLY"))
         yield session
 
 

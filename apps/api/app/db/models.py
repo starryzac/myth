@@ -477,6 +477,10 @@ class ActionReceipt(OwnedMixin, Base):
 
 class AuditEvent(OwnedMixin, Base):
     __tablename__ = "audit_events"
+    epoch_id: Mapped[UUID | None]
+    schema_version: Mapped[str | None] = mapped_column(String(48))
+    canonical_version: Mapped[str | None] = mapped_column(String(48))
+    canonical_text: Mapped[str | None] = mapped_column(Text)
     sequence_number: Mapped[int] = mapped_column(Integer)
     event_type: Mapped[str] = mapped_column(String(80))
     aggregate_type: Mapped[str] = mapped_column(String(48))
@@ -494,13 +498,58 @@ class AuditEvent(OwnedMixin, Base):
     occurred_at: Mapped[datetime] = mapped_column(UTCDateTime())
     observed_at: Mapped[datetime] = mapped_column(UTCDateTime(), server_default=func.now())
     __table_args__ = owned_args(
-        owned_reference("decision_run_id", "decision_runs"),
-        owned_reference("action_plan_id", "action_plans"),
-        owned_reference("action_receipt_id", "action_receipts"),
         owned_reference("causation_id", "audit_events"),
-        UniqueConstraint("user_id", "sequence_number", name="uq_audit_events_user_sequence"),
-        UniqueConstraint("user_id", "idempotency_key", name="uq_audit_events_user_idempotency"),
-        UniqueConstraint("user_id", "event_hash", name="uq_audit_events_user_hash"),
+        ForeignKeyConstraint(
+            ["epoch_id", "user_id"],
+            ["audit_epochs.id", "audit_epochs.user_id"],
+            ondelete="RESTRICT",
+            use_alter=True,
+            name="fk_audit_events_epoch",
+        ),
+        ForeignKeyConstraint(
+            ["causation_id", "user_id", "epoch_id"],
+            ["audit_events.id", "audit_events.user_id", "audit_events.epoch_id"],
+            ondelete="RESTRICT",
+            name="fk_audit_events_epoch_causation",
+        ),
+        UniqueConstraint("id", "user_id", "epoch_id", name="uq_audit_events_epoch_identity"),
+        UniqueConstraint(
+            "user_id", "epoch_id", "sequence_number", name="uq_audit_events_epoch_sequence"
+        ),
+        UniqueConstraint(
+            "user_id", "epoch_id", "idempotency_key", name="uq_audit_events_epoch_key"
+        ),
+        UniqueConstraint("user_id", "epoch_id", "event_hash", name="uq_audit_events_epoch_hash"),
+        Index(
+            "uq_audit_events_legacy_sequence",
+            "user_id",
+            "sequence_number",
+            unique=True,
+            postgresql_where=text("epoch_id IS NULL"),
+        ),
+        Index(
+            "uq_audit_events_legacy_key",
+            "user_id",
+            "idempotency_key",
+            unique=True,
+            postgresql_where=text("epoch_id IS NULL"),
+        ),
+        Index(
+            "uq_audit_events_legacy_hash",
+            "user_id",
+            "event_hash",
+            unique=True,
+            postgresql_where=text("epoch_id IS NULL"),
+        ),
+        Index(
+            "uq_audit_events_fact",
+            "user_id",
+            "epoch_id",
+            "event_type",
+            text("(payload->>'fact_key')"),
+            unique=True,
+            postgresql_where=text("epoch_id IS NOT NULL"),
+        ),
         CheckConstraint(
             "sequence_number > 0 AND payload_version > 0", name="positive_sequence_version"
         ),
@@ -509,6 +558,104 @@ class AuditEvent(OwnedMixin, Base):
             "previous_hash IS NULL OR previous_hash ~ '^[0-9a-f]{64}$'", name="previous_hash"
         ),
         Index("ix_audit_events_user_occurred", "user_id", "occurred_at"),
+        CheckConstraint(
+            "(epoch_id IS NULL AND schema_version IS NULL AND canonical_version IS NULL "
+            "AND canonical_text IS NULL) OR (epoch_id IS NOT NULL AND schema_version = "
+            "'audit-event-v1' AND canonical_version = 'audit-canonical-json-v1' "
+            "AND canonical_text IS NOT NULL AND octet_length(canonical_text) <= 1048576)",
+            name="envelope",
+        ),
+    )
+
+
+class AuditEpoch(OwnedMixin, Base):
+    __tablename__ = "audit_epochs"
+    epoch_number: Mapped[int] = mapped_column(Integer)
+    schema_version: Mapped[str] = mapped_column(String(48), server_default="audit-head-v1")
+    canonical_version: Mapped[str] = mapped_column(
+        String(48), server_default="audit-canonical-json-v1"
+    )
+    status: Mapped[str] = mapped_column(String(16), server_default="OPEN")
+    opened_at: Mapped[datetime] = mapped_column(UTCDateTime())
+    previous_epoch_id: Mapped[UUID | None]
+    previous_seal_hash: Mapped[str | None] = mapped_column(String(64))
+    event_count: Mapped[int] = mapped_column(Integer, server_default="0")
+    last_sequence: Mapped[int] = mapped_column(Integer, server_default="0")
+    last_event_id: Mapped[UUID | None]
+    last_event_hash: Mapped[str | None] = mapped_column(String(64))
+    genesis_event_id: Mapped[UUID | None]
+    genesis_event_hash: Mapped[str | None] = mapped_column(String(64))
+    sealed_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
+    seal_canonical_text: Mapped[str | None] = mapped_column(Text)
+    seal_hash: Mapped[str | None] = mapped_column(String(64))
+    archive_manifest_hash: Mapped[str | None] = mapped_column(String(64))
+    archive_record_counts: Mapped[JsonObject] = mapped_column(
+        JSONB, server_default=text("'{}'::jsonb")
+    )
+    __table_args__ = owned_args(
+        UniqueConstraint("user_id", "epoch_number", name="uq_audit_epochs_number"),
+        owned_reference("previous_epoch_id", "audit_epochs"),
+        ForeignKeyConstraint(
+            ["last_event_id", "user_id", "id"],
+            ["audit_events.id", "audit_events.user_id", "audit_events.epoch_id"],
+            ondelete="RESTRICT",
+            use_alter=True,
+            deferrable=True,
+            initially="DEFERRED",
+            name="fk_audit_epochs_tail",
+        ),
+        ForeignKeyConstraint(
+            ["genesis_event_id", "user_id", "id"],
+            ["audit_events.id", "audit_events.user_id", "audit_events.epoch_id"],
+            ondelete="RESTRICT",
+            use_alter=True,
+            deferrable=True,
+            initially="DEFERRED",
+            name="fk_audit_epochs_genesis",
+        ),
+        Index(
+            "uq_audit_epochs_open", "user_id", unique=True, postgresql_where=text("status = 'OPEN'")
+        ),
+        CheckConstraint(
+            "epoch_number > 0 AND event_count >= 0 AND last_sequence = event_count",
+            name="head_count",
+        ),
+        CheckConstraint("status IN ('OPEN', 'SEALED')", name="status"),
+        CheckConstraint(
+            "(status = 'OPEN' AND seal_hash IS NULL "
+            "AND seal_canonical_text IS NULL AND sealed_at IS NULL) "
+            "OR (status = 'SEALED' AND seal_hash ~ '^[0-9a-f]{64}$' "
+            "AND seal_canonical_text IS NOT NULL AND sealed_at IS NOT NULL)",
+            name="seal",
+        ),
+    )
+
+
+class AuditSubjectSnapshot(OwnedMixin, Base):
+    __tablename__ = "audit_subject_snapshots"
+    epoch_id: Mapped[UUID]
+    kind: Mapped[str] = mapped_column(String(48))
+    entity_id: Mapped[UUID]
+    scope: Mapped[str] = mapped_column(String(24))
+    snapshot_version: Mapped[int] = mapped_column(Integer, server_default="1")
+    canonical_text: Mapped[str] = mapped_column(Text)
+    snapshot_hash: Mapped[str] = mapped_column(String(64))
+    captured_at: Mapped[datetime] = mapped_column(UTCDateTime())
+    __table_args__ = owned_args(
+        owned_reference("epoch_id", "audit_epochs"),
+        UniqueConstraint(
+            "user_id",
+            "epoch_id",
+            "kind",
+            "entity_id",
+            "snapshot_hash",
+            name="uq_audit_subject_version",
+        ),
+        CheckConstraint(
+            "scope IN ('TENANT', 'GLOBAL_CATALOG') AND snapshot_version > 0", name="scope_version"
+        ),
+        CheckConstraint("snapshot_hash ~ '^[0-9a-f]{64}$'", name="hash"),
+        CheckConstraint("octet_length(canonical_text) <= 16777216", name="size"),
     )
 
 

@@ -1,0 +1,80 @@
+run_id=20261004T084307Z-d15f418b
++ uv run --frozen python scripts/verify_audit_chain.py
+{
+  "schema_version": "audit-cli-verification-v1",
+  "simulation": true,
+  "user_id": "271a9827-f82a-5be6-9e0a-50f721029fb0",
+  "status": "VALID",
+  "verification_scope": "ALL_RETAINED_EPOCHS",
+  "isolation": "repeatable read",
+  "read_only": true,
+  "selected_epoch_count": 3,
+  "registered_epoch_count": 3,
+  "legacy_event_count": 0,
+  "issues": [],
+  "checkpoint_origin": null,
+  "epochs": [
+    {
+      "schema_version": "audit-verification-v1",
+      "simulation": true,
+      "user_id": "271a9827-f82a-5be6-9e0a-50f721029fb0",
+      "epoch_id": "ab433e2d-ef80-4c2c-9f03-d61a394ad9ff",
+      "status": "VALID",
+      "chain_status": "VALID",
+      "reference_status": "VALID",
+      "checkpoint_status": "NOT_REQUESTED",
+      "actual_count": 2,
+      "expected_count": 2,
+      "actual_tail_id": "176573d1-f0ec-4207-888e-26c503ad74e0",
+      "actual_tail_hash": "9415c13cba4b421093755d5b0eabf62e4f51e1b98fb855a14748f73f7cb54d36",
+      "expected_tail_id": "176573d1-f0ec-4207-888e-26c503ad74e0",
+      "expected_tail_hash": "9415c13cba4b421093755d5b0eabf62e4f51e1b98fb855a14748f73f7cb54d36",
+      "verified_through_sequence": 2,
+      "errors": [],
+      "warnings": [],
+      "errors_truncated": false
+    },
+    {
+      "schema_version": "audit-verification-v1",
+      "simulation": true,
+      "user_id": "271a9827-f82a-5be6-9e0a-50f721029fb0",
+      "epoch_id": "d86cf65a-a200-412d-8b59-175e25378bca",
+      "status": "VALID",
+      "chain_status": "VALID",
+      "reference_status": "VALID",
+      "checkpoint_status": "NOT_REQUESTED",
+      "actual_count": 2,
+      "expected_count": 2,
+      "actual_tail_id": "6cd848dc-f213-455d-bcf1-ab1d9fdb9b86",
+      "actual_tail_hash": "bee055ce50ecf754ed9b773c7dfd235aefe40cc1a7952e1b3405a418e62092bf",
+      "expected_tail_id": "6cd848dc-f213-455d-bcf1-ab1d9fdb9b86",
+      "expected_tail_hash": "bee055ce50ecf754ed9b773c7dfd235aefe40cc1a7952e1b3405a418e62092bf",
+      "verified_through_sequence": 2,
+      "errors": [],
+      "warnings": [],
+      "errors_truncated": false
+    },
+    {
+      "schema_version": "audit-verification-v1",
+      "simulation": true,
+      "user_id": "271a9827-f82a-5be6-9e0a-50f721029fb0",
+      "epoch_id": "3d00d1bc-b1a0-4805-8c1e-8559b54da2f7",
+      "status": "VALID",
+      "chain_status": "VALID",
+      "reference_status": "VALID",
+      "checkpoint_status": "NOT_REQUESTED",
+      "actual_count": 1,
+      "expected_count": 1,
+      "actual_tail_id": "a0708f93-87ff-46ba-b214-7ad6e55b8edf",
+      "actual_tail_hash": "b291f5fac072c7d2bb1157b7805c3e2820ccbae84903dd3813aaa80e846dcfda",
+      "expected_tail_id": "a0708f93-87ff-46ba-b214-7ad6e55b8edf",
+      "expected_tail_hash": "b291f5fac072c7d2bb1157b7805c3e2820ccbae84903dd3813aaa80e846dcfda",
+      "verified_through_sequence": 1,
+      "errors": [],
+      "warnings": [],
+      "errors_truncated": false
+    }
+  ]
+}
+
+--- stderr ---

@@ -1,0 +1,3053 @@
+E501 Line too long (108 > 100)
+   --> apps\api\app\domain\audit_chain.py:119:101
+    |
+118 | def _protocol(value: dict[str, Any], schema: str) -> None:
+119 |     if value.get("schema_version") != schema or value.get("canonical_version") != "audit-canonical-json-v1":
+    |                                                                                                     ^^^^^^^^
+120 |         raise AuditUnsupportedVersion("Unsupported original audit schema or canonical version")
+    |
+
+E501 Line too long (121 > 100)
+   --> apps\api\app\domain\audit_chain.py:141:101
+    |
+139 |         raise AuditContractError("Audit subject row belongs to another tenant")
+140 |     for key, value in subject.data.items():
+141 |         if key.endswith("_cents") and value is not None and (type(value) is not int or not -(2**63) <= value <= 2**63-1):
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^
+142 |             raise AuditContractError("Original row money must be strict signed integer cents")
+143 |     canonical_bytes(subject.model_dump(mode="python"), raw=True)
+    |
+
+E501 Line too long (114 > 100)
+   --> apps\api\app\domain\audit_chain.py:178:101
+    |
+177 |     _declared(intent)
+178 |     restored = AuditIntent.model_validate(intent.model_dump(mode="python", include=set(AuditIntent.model_fields)))
+    |                                                                                                     ^^^^^^^^^^^^^^
+179 |     refs = sorted(restored.payload.references, key=lambda r: (r.kind, str(r.id), r.role, r.snapshot_hash))
+180 |     anchors = sorted(restored.payload.anchors, key=lambda a: (a.kind, str(a.reference_id), a.snapshot_hash, a.hash_algorithm))
+    |
+
+E501 Line too long (106 > 100)
+   --> apps\api\app\domain\audit_chain.py:179:101
+    |
+177 |     _declared(intent)
+178 |     restored = AuditIntent.model_validate(intent.model_dump(mode="python", include=set(AuditIntent.model_fields)))
+179 |     refs = sorted(restored.payload.references, key=lambda r: (r.kind, str(r.id), r.role, r.snapshot_hash))
+    |                                                                                                     ^^^^^^
+180 |     anchors = sorted(restored.payload.anchors, key=lambda a: (a.kind, str(a.reference_id), a.snapshot_hash, a.hash_algorithm))
+181 |     payload = restored.payload.model_copy(update={"references": refs, "anchors": anchors,
+    |
+
+E501 Line too long (126 > 100)
+   --> apps\api\app\domain\audit_chain.py:180:101
+    |
+178 |     restored = AuditIntent.model_validate(intent.model_dump(mode="python", include=set(AuditIntent.model_fields)))
+179 |     refs = sorted(restored.payload.references, key=lambda r: (r.kind, str(r.id), r.role, r.snapshot_hash))
+180 |     anchors = sorted(restored.payload.anchors, key=lambda a: (a.kind, str(a.reference_id), a.snapshot_hash, a.hash_algorithm))
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+181 |     payload = restored.payload.model_copy(update={"references": refs, "anchors": anchors,
+182 |                                                  "missing_evidence_ids": sorted(restored.payload.missing_evidence_ids)})
+    |
+
+E501 Line too long (120 > 100)
+   --> apps\api\app\domain\audit_chain.py:182:101
+    |
+180 |     anchors = sorted(restored.payload.anchors, key=lambda a: (a.kind, str(a.reference_id), a.snapshot_hash, a.hash_algorithm))
+181 |     payload = restored.payload.model_copy(update={"references": refs, "anchors": anchors,
+182 |                                                  "missing_evidence_ids": sorted(restored.payload.missing_evidence_ids)})
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^
+183 |     return restored.model_copy(update={"payload": payload})
+    |
+
+E501 Line too long (114 > 100)
+   --> apps\api\app\domain\audit_chain.py:217:101
+    |
+215 |     payload = event.payload
+216 |     keys = [(r.kind, r.id, r.role) for r in payload.references]
+217 |     if len(keys) != len(set(keys)) or len(payload.missing_evidence_ids) != len(set(payload.missing_evidence_ids)):
+    |                                                                                                     ^^^^^^^^^^^^^^
+218 |         raise AuditContractError("Audit original references contain duplicate identities")
+219 |     for ref in payload.references:
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\domain\audit_chain.py:224:101
+    |
+222 |         if ref.scope == "TENANT" and ref.user_id != event.user_id:
+223 |             raise AuditContractError("Audit reference belongs to another tenant")
+224 |         if ref.scope == "GLOBAL_CATALOG" and (ref.kind != "ASSET_PRODUCT" or ref.user_id is not None):
+    |                                                                                                     ^^
+225 |             raise AuditContractError("Only original catalog products may have global scope")
+226 |     meta = event.event_type in {"EPOCH_STARTED", "EPOCH_SEALED"}
+    |
+
+E501 Line too long (186 > 100)
+   --> apps\api\app\domain\audit_chain.py:229:101
+    |
+227 | …
+228 | …
+229 | ….aggregate_type != "EPOCH" or event.aggregate_id != event.epoch_id or event.correlation_id != event.epoch_id:
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+230 | …ch")
+231 | …id, event.action_receipt_id)):
+    |
+
+E501 Line too long (107 > 100)
+   --> apps\api\app\domain\audit_chain.py:231:101
+    |
+229 | …     if transition is None or payload.correlation_kind != "EPOCH" or event.aggregate_type != "EPOCH" or event.aggregate_id != event.…
+230 | …         raise AuditContractError("Epoch metadata must bind its actual epoch")
+231 | …     if any((event.causation_id, event.decision_run_id, event.action_plan_id, event.action_receipt_id)):
+    |                                                                                                   ^^^^^^^
+232 | …         raise AuditContractError("Epoch metadata cannot invent business references")
+233 | …     if event.event_type == "EPOCH_STARTED":
+    |
+
+E501 Line too long (138 > 100)
+   --> apps\api\app\domain\audit_chain.py:236:101
+    |
+234 | …on.kind not in {"INIT", "RESET"}:
+235 | …is must be the first actual event")
+236 | …nsition.previous_epoch_id, transition.previous_seal_hash, transition.pre_seal_head)):
+    |                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+237 | …ch cannot invent a previous seal")
+238 | …((transition.previous_epoch_id, transition.previous_seal_hash, transition.reset_key, transition.reason, transition.principal, transi…
+    |
+
+E501 Line too long (205 > 100)
+   --> apps\api\app\domain\audit_chain.py:238:101
+    |
+236 | …ion.previous_seal_hash, transition.pre_seal_head)):
+237 | …
+238 | …ansition.previous_seal_hash, transition.reset_key, transition.reason, transition.principal, transition.dataset_hash)):
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+239 | … and new dataset")
+240 | …transition.reset_key, transition.reason, transition.principal, transition.archive_manifest_hash)):
+    |
+
+E501 Line too long (105 > 100)
+   --> apps\api\app\domain\audit_chain.py:239:101
+    |
+237 | …             raise AuditContractError("Initial epoch cannot invent a previous seal")
+238 | …         if transition.kind == "RESET" and not all((transition.previous_epoch_id, transition.previous_seal_hash, transition.reset_ke…
+239 | …             raise AuditContractError("Reset genesis must bind the actual prior seal and new dataset")
+    |                                                                                                   ^^^^^
+240 | …     elif transition.kind != "SEAL" or transition.pre_seal_head is None or not all((transition.reset_key, transition.reason, transit…
+241 | …         raise AuditContractError("Epoch sealing must bind the actual archive and old head")
+    |
+
+E501 Line too long (185 > 100)
+   --> apps\api\app\domain\audit_chain.py:240:101
+    |
+238 | …och_id, transition.previous_seal_hash, transition.reset_key, transition.reason, transition.principal, transition.dataset_hash)):
+239 | …prior seal and new dataset")
+240 | … not all((transition.reset_key, transition.reason, transition.principal, transition.archive_manifest_hash)):
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+241 | …ive and old head")
+242 | …
+    |
+
+E501 Line too long (314 > 100)
+   --> apps\api\app\domain\audit_chain.py:246:101
+    |
+244 | …
+245 | …
+246 | …och_id or old.last_sequence + 1 != event.sequence_number or old.last_event_hash != event.previous_hash or transition.previous_epoch_id != old.previous_epoch_id or transition.previous_seal_hash != old.previous_seal_hash:
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+247 | …predecessor head")
+248 | …
+    |
+
+E501 Line too long (113 > 100)
+   --> apps\api\app\domain\audit_chain.py:247:101
+    |
+245 |             _head(old)
+246 |             if old.status != "OPEN" or old.user_id != event.user_id or old.epoch_id != event.epoch_id or old.last_sequence + 1 != eve…
+247 |                 raise AuditContractError("Epoch sealing differs from the actual immediate OPEN predecessor head")
+    |                                                                                                     ^^^^^^^^^^^^^
+248 |     elif payload.epoch_transition is not None or payload.correlation_kind == "EPOCH":
+249 |         raise AuditContractError("Ordinary business events cannot impersonate epoch transitions")
+    |
+
+E501 Line too long (106 > 100)
+   --> apps\api\app\domain\audit_chain.py:262:101
+    |
+260 |                   "GOAL_INITIALIZED": ("GOAL", "GOAL")}
+261 |         if (event.aggregate_type, payload.correlation_kind) != shapes[event.event_type]:
+262 |             raise AuditContractError("Audit event does not have its registered aggregate and correlation")
+    |                                                                                                     ^^^^^^
+263 |         if payload.correlation_kind == "DECISION_RUN" and event.decision_run_id is None:
+264 |             raise AuditContractError("Business audit event lacks its actual decision run identity")
+    |
+
+E501 Line too long (160 > 100)
+   --> apps\api\app\domain\audit_chain.py:265:101
+    |
+263 | …decision_run_id is None:
+264 | … its actual decision run identity")
+265 | …CHANGED", "BANK_ACCEPTED", "BANK_SETTLED", "ACTION_PROJECTED"} and event.action_plan_id is None:
+    |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+266 | …ts actual action identity")
+267 | …egate_id != event.decision_run_id or event.aggregate_type == "ACTION_PLAN" and event.aggregate_id != event.action_plan_id or event.a…
+    |
+
+E501 Line too long (280 > 100)
+   --> apps\api\app\domain\audit_chain.py:267:101
+    |
+265 | …K_SETTLED", "ACTION_PROJECTED"} and event.action_plan_id is None:
+266 | …
+267 | …id or event.aggregate_type == "ACTION_PLAN" and event.aggregate_id != event.action_plan_id or event.aggregate_type == "ACTION_RECEIPT" and event.aggregate_id != event.action_receipt_id:
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+268 | …)
+269 | …
+    |
+
+E501 Line too long (138 > 100)
+   --> apps\api\app\domain\audit_chain.py:271:101
+    |
+269 | … event.action_receipt_id is not None:
+270 | …jection may declare its application receipt")
+271 | …AL"} and any((event.decision_run_id, event.action_plan_id, event.action_receipt_id)):
+    |                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+272 | …adata cannot invent action relationships")
+273 | …", "GOAL_INITIALIZED"} and event.aggregate_id != event.correlation_id:
+    |
+
+E501 Line too long (123 > 100)
+   --> apps\api\app\domain\audit_chain.py:273:101
+    |
+271 | …     if payload.correlation_kind in {"POLICY", "GOAL"} and any((event.decision_run_id, event.action_plan_id, event.action_receipt_id…
+272 | …         raise AuditContractError("Policy/goal metadata cannot invent action relationships")
+273 | …     if event.event_type in {"POLICY_STATE_CHANGED", "GOAL_INITIALIZED"} and event.aggregate_id != event.correlation_id:
+    |                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^
+274 | …         raise AuditContractError("Policy/goal fact correlation differs from its original aggregate")
+275 | …     required = {"DECISION_RECORDED": {"DECISION_TRACE"}, "ACTION_CREATED": {"EXECUTION_REQUEST"},
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\domain\audit_chain.py:274:101
+    |
+272 |             raise AuditContractError("Policy/goal metadata cannot invent action relationships")
+273 |         if event.event_type in {"POLICY_STATE_CHANGED", "GOAL_INITIALIZED"} and event.aggregate_id != event.correlation_id:
+274 |             raise AuditContractError("Policy/goal fact correlation differs from its original aggregate")
+    |                                                                                                     ^^^^
+275 |         required = {"DECISION_RECORDED": {"DECISION_TRACE"}, "ACTION_CREATED": {"EXECUTION_REQUEST"},
+276 |                     "BANK_ACCEPTED": {"EXECUTION_REQUEST"}, "BANK_SETTLED": {"EXECUTION_REQUEST", "BANK_POSTING_SET"},
+    |
+
+E501 Line too long (101 > 100)
+   --> apps\api\app\domain\audit_chain.py:275:101
+    |
+273 |         if event.event_type in {"POLICY_STATE_CHANGED", "GOAL_INITIALIZED"} and event.aggregate_id != event.correlation_id:
+274 |             raise AuditContractError("Policy/goal fact correlation differs from its original aggregate")
+275 |         required = {"DECISION_RECORDED": {"DECISION_TRACE"}, "ACTION_CREATED": {"EXECUTION_REQUEST"},
+    |                                                                                                     ^
+276 |                     "BANK_ACCEPTED": {"EXECUTION_REQUEST"}, "BANK_SETTLED": {"EXECUTION_REQUEST", "BANK_POSTING_SET"},
+277 |                     "ACTION_PROJECTED": {"ACTION_RECEIPT", "BANK_POSTING_SET"},
+    |
+
+E501 Line too long (118 > 100)
+   --> apps\api\app\domain\audit_chain.py:276:101
+    |
+274 |             raise AuditContractError("Policy/goal fact correlation differs from its original aggregate")
+275 |         required = {"DECISION_RECORDED": {"DECISION_TRACE"}, "ACTION_CREATED": {"EXECUTION_REQUEST"},
+276 |                     "BANK_ACCEPTED": {"EXECUTION_REQUEST"}, "BANK_SETTLED": {"EXECUTION_REQUEST", "BANK_POSTING_SET"},
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^
+277 |                     "ACTION_PROJECTED": {"ACTION_RECEIPT", "BANK_POSTING_SET"},
+278 |                     "POLICY_VERSION_CONFIRMED": {"POLICY_CONFIGURATION"}}
+    |
+
+E501 Line too long (107 > 100)
+   --> apps\api\app\domain\audit_chain.py:280:101
+    |
+278 |                     "POLICY_VERSION_CONFIRMED": {"POLICY_CONFIGURATION"}}
+279 |         if not required.get(event.event_type, set()).issubset({a.kind for a in payload.anchors}):
+280 |             raise AuditContractError("Registered audit event lacks its mandatory original content anchors")
+    |                                                                                                     ^^^^^^^
+281 |         anchor_keys = [(a.kind, a.reference_id) for a in payload.anchors]
+282 |         if len(anchor_keys) != len(set(anchor_keys)):
+    |
+
+E501 Line too long (128 > 100)
+   --> apps\api\app\domain\audit_chain.py:285:101
+    |
+283 |             raise AuditContractError("Audit event duplicates an original content anchor")
+284 |     for change in payload.changes:
+285 |         if change.field.endswith("_cents") and any(v is not None and type(v) is not int for v in (change.before, change.after)):
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+286 |             raise AuditContractError("Changed audit money must be strict signed integer cents")
+287 |     def trusted_owners(value: Any) -> None:
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\domain\audit_chain.py:301:101
+    |
+299 |     if payload.observation is not None:
+300 |         observation = payload.observation
+301 |         if observation.run_id != event.decision_run_id or observation.action_id != event.action_plan_id:
+    |                                                                                                     ^^^^
+302 |             raise AuditContractError("Recovery observation differs from its actual run/action")
+303 |         if observation.kind in {"PROJECTION_FAILED", "BANK_ERROR"} and observation.error_code is None:
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\domain\audit_chain.py:303:101
+    |
+301 | …     if observation.run_id != event.decision_run_id or observation.action_id != event.action_plan_id:
+302 | …         raise AuditContractError("Recovery observation differs from its actual run/action")
+303 | …     if observation.kind in {"PROJECTION_FAILED", "BANK_ERROR"} and observation.error_code is None:
+    |                                                                                                   ^^
+304 | …         raise AuditContractError("Failed recovery observation needs its stable original error code")
+305 | …     if observation.kind == "RUN_COMPLETED" and any((observation.action_id, observation.request_id, observation.error_code, observat…
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\domain\audit_chain.py:304:101
+    |
+302 | …         raise AuditContractError("Recovery observation differs from its actual run/action")
+303 | …     if observation.kind in {"PROJECTION_FAILED", "BANK_ERROR"} and observation.error_code is None:
+304 | …         raise AuditContractError("Failed recovery observation needs its stable original error code")
+    |                                                                                                   ^^^^
+305 | …     if observation.kind == "RUN_COMPLETED" and any((observation.action_id, observation.request_id, observation.error_code, observat…
+306 | …         raise AuditContractError("Completed run cannot invent a per-action bank error")
+    |
+
+E501 Line too long (153 > 100)
+   --> apps\api\app\domain\audit_chain.py:305:101
+    |
+303 | …ROR"} and observation.error_code is None:
+304 | …tion needs its stable original error code")
+305 | …vation.action_id, observation.request_id, observation.error_code, observation.bank_status)):
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+306 | …vent a per-action bank error")
+307 | …
+    |
+
+E501 Line too long (110 > 100)
+   --> apps\api\app\domain\audit_chain.py:333:101
+    |
+331 |     _declared(event)
+332 |     event = AuditEnvelope.model_validate(event.model_dump(mode="python"))
+333 |     if _digest("audit-event-v1", event.model_dump(mode="python", exclude={"event_hash"})) != event.event_hash:
+    |                                                                                                     ^^^^^^^^^^
+334 |         raise AuditContractError("Audit event hash differs from its frozen content")
+335 |     _event_content(event)
+    |
+
+E501 Line too long (195 > 100)
+   --> apps\api\app\domain\audit_chain.py:365:101
+    |
+363 | …
+364 | …
+365 | …ount, restored.last_event_id, restored.last_event_hash, restored.genesis_event_id, restored.genesis_event_hash)):
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+366 | …al genesis and tail")
+367 | …tored.previous_seal_hash is None):
+    |
+
+E501 Line too long (103 > 100)
+   --> apps\api\app\domain\audit_chain.py:366:101
+    |
+364 |     restored = AuditHead.model_validate(head.model_dump(mode="python"))
+365 |     if restored.event_count != restored.last_sequence or not all((restored.event_count, restored.last_event_id, restored.last_event_h…
+366 |         raise AuditContractError("Published audit head must have its complete actual genesis and tail")
+    |                                                                                                     ^^^
+367 |     if (restored.epoch_number == 1) != (restored.previous_epoch_id is None and restored.previous_seal_hash is None):
+368 |         raise AuditContractError("Audit head epoch predecessor is inconsistent")
+    |
+
+E501 Line too long (116 > 100)
+   --> apps\api\app\domain\audit_chain.py:367:101
+    |
+365 |     if restored.event_count != restored.last_sequence or not all((restored.event_count, restored.last_event_id, restored.last_event_h…
+366 |         raise AuditContractError("Published audit head must have its complete actual genesis and tail")
+367 |     if (restored.epoch_number == 1) != (restored.previous_epoch_id is None and restored.previous_seal_hash is None):
+    |                                                                                                     ^^^^^^^^^^^^^^^^
+368 |         raise AuditContractError("Audit head epoch predecessor is inconsistent")
+369 |     if (restored.previous_epoch_id is None) != (restored.previous_seal_hash is None):
+    |
+
+E501 Line too long (159 > 100)
+   --> apps\api\app\domain\audit_chain.py:391:101
+    |
+389 | …
+390 | …
+391 | …est("audit-checkpoint-v1", checkpoint.model_dump(mode="python", exclude={"checkpoint_hash"}))})
+    |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+E501 Line too long (252 > 100)
+   --> apps\api\app\domain\audit_chain.py:399:101
+    |
+397 | …
+398 | …
+399 | …dump(mode="python"))) > 65536 or _digest("audit-checkpoint-v1", restored.model_dump(mode="python", exclude={"checkpoint_hash"})) != restored.checkpoint_hash:
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+400 | …
+    |
+
+E501 Line too long (263 > 100)
+   --> apps\api\app\domain\audit_chain.py:422:101
+    |
+420 | …
+421 | …
+422 | …evious_epoch_id, seal.previous_seal_hash) != (seal.head.user_id, seal.head.epoch_id, seal.head.epoch_number, seal.head.previous_epoch_id, seal.head.previous_seal_hash):
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+423 | …
+424 | …
+    |
+
+E501 Line too long (135 > 100)
+   --> apps\api\app\domain\audit_chain.py:435:101
+    |
+433 | …"seal_hash": "0" * 64})
+434 | …
+435 | …est("audit-epoch-seal-v1", seal.model_dump(mode="python", exclude={"seal_hash"}))})
+    |                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+E501 Line too long (119 > 100)
+   --> apps\api\app\domain\audit_chain.py:444:101
+    |
+442 |     restored = AuditEpochSeal.model_validate(seal.model_dump(mode="python"))
+443 |     _seal_content(restored)
+444 |     if restored.seal_hash != _digest("audit-epoch-seal-v1", restored.model_dump(mode="python", exclude={"seal_hash"})):
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^
+445 |         raise AuditContractError("Audit epoch seal differs from its original hash")
+446 |     if previous is not None:
+    |
+
+E501 Line too long (305 > 100)
+   --> apps\api\app\domain\audit_chain.py:448:101
+    |
+446 | …
+447 | …
+448 | …n", exclude={"seal_hash"})) or previous.user_id != seal.user_id or previous.epoch_number + 1 != seal.epoch_number or previous.epoch_id != seal.previous_epoch_id or previous.seal_hash != seal.previous_seal_hash:
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+449 | …")
+    |
+
+E501 Line too long (108 > 100)
+   --> apps\api\app\domain\audit_chain.py:499:101
+    |
+497 |     from app.domain.policy_configuration import configuration_hash
+498 |
+499 |     originals = [json.loads(canonical_bytes(row)) for row in postings if row.get("entry_kind") != "OPENING"]
+    |                                                                                                     ^^^^^^^^
+500 |     if not originals or len(originals) > 10000:
+501 |         raise AuditContractError("Audit settlement needs its bounded actual non-opening posting set")
+    |
+
+E501 Line too long (101 > 100)
+   --> apps\api\app\domain\audit_chain.py:501:101
+    |
+499 |     originals = [json.loads(canonical_bytes(row)) for row in postings if row.get("entry_kind") != "OPENING"]
+500 |     if not originals or len(originals) > 10000:
+501 |         raise AuditContractError("Audit settlement needs its bounded actual non-opening posting set")
+    |                                                                                                     ^
+502 |     if len({row["id"] for row in originals}) != len(originals):
+503 |         raise AuditContractError("Audit settlement posting identities are duplicated")
+    |
+
+E501 Line too long (106 > 100)
+   --> apps\api\app\domain\audit_chain.py:527:101
+    |
+526 | def _financial_identity(operation: dict[str, Any], action: dict[str, Any], observed_at: datetime,
+527 |                         redemption: dict[str, Any] | None) -> tuple[Any, dict[str, tuple[str, str, int]]]:
+    |                                                                                                     ^^^^^^
+528 |     from app.domain.execution import ACTION_PLAN_TYPES
+529 |     from app.domain.execution_types import BankCommand
+    |
+
+E501 Line too long (286 > 100)
+   --> apps\api\app\domain\audit_chain.py:539:101
+    |
+537 | …
+538 | …
+539 | …on["idempotency_key"] != action["idempotency_key"] or configuration_hash(action["request"]) != action["request_hash"] or configuration_hash(operation["request"]) != operation["request_hash"]:
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+540 | …
+541 | …
+    |
+
+E501 Line too long (218 > 100)
+   --> apps\api\app\domain\audit_chain.py:547:101
+    |
+545 | …
+546 | …
+547 | …iginal_policy_version_id", "destination_account_id", "principal_cents", "requested_at", "available_at", "expires_at", "kind"}
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+548 | …EM", "MATURE"}:
+549 | …
+    |
+
+E501 Line too long (108 > 100)
+   --> apps\api\app\domain\audit_chain.py:548:101
+    |
+546 | …     command = operation["request"]
+547 | …     keys = {"user_id", "position_id", "position_account_id", "product_id", "goal_id", "original_policy_version_id", "destination_ac…
+548 | …     if type(command) is not dict or set(command) != keys or command["kind"] not in {"REDEEM", "MATURE"}:
+    |                                                                                                   ^^^^^^^^
+549 | …         raise AuditContractError("Frozen legacy request shape is unsupported")
+550 | …     canonical_bytes(command)
+    |
+
+E501 Line too long (501 > 100)
+   --> apps\api\app\domain\audit_chain.py:552:101
+    |
+550 | …
+551 | …
+552 | …dentity != uuid5(UUID(action["id"]), "simulated-b…nd["kind"] == "MATURE" else "ASSET_REDEEM"):
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^…^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+553 | …
+554 | …duct_id": "product_id", "goal_id": "goal_id", "amount_cents": "principal_cents", "expires_at": "expires_at"}
+    |
+
+E501 Line too long (203 > 100)
+   --> apps\api\app\domain\audit_chain.py:554:101
+    |
+552 | …ser) or identity != uuid5(UUID(action["id"]), "simulated-bank-redemption") or operation.get("legacy_redemption_id") != str(identity)…
+553 | … action")
+554 | …id", "product_id": "product_id", "goal_id": "goal_id", "amount_cents": "principal_cents", "expires_at": "expires_at"}
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+555 | …
+556 | …
+    |
+
+E501 Line too long (103 > 100)
+   --> apps\api\app\domain\audit_chain.py:557:101
+    |
+555 |         for field, command_field in pairs.items():
+556 |             actual, expected = action.get(field), command[command_field]
+557 |             if (_clock(actual) != _clock(expected)) if field == "expires_at" else (actual != expected):
+    |                                                                                                     ^^^
+558 |                 raise AuditContractError("Frozen legacy action field differs: " + field)
+559 |         destination = command["destination_account_id"]
+    |
+
+E501 Line too long (301 > 100)
+   --> apps\api\app\domain\audit_chain.py:560:101
+    |
+558 | …
+559 | …
+560 | …e_account_id"] else None) or requested != _clock(command["requested_at"]) or available != _clock(command["available_at"]) or not requested <= _clock(operation["created_at"]) < _clock(command["expires_at"]):
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+561 | …
+562 | …
+    |
+
+E501 Line too long (177 > 100)
+   --> apps\api\app\domain\audit_chain.py:563:101
+    |
+561 | …tination differ")
+562 | …
+563 | …request_hash", "idempotency_key", "requested_at", "available_at", "settled_at", "status", "created_at"):
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+564 | …) != canonical_bytes({"v": operation.get(field)}, raw=True):
+565 | …fers from the original redemption: " + field)
+    |
+
+E501 Line too long (133 > 100)
+   --> apps\api\app\domain\audit_chain.py:564:101
+    |
+562 | …
+563 | …plan_id", "request", "request_hash", "idempotency_key", "requested_at", "available_at", "settled_at", "status", "created_at"):
+564 | ….get(field)}, raw=True) != canonical_bytes({"v": operation.get(field)}, raw=True):
+    |                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+565 | …n unified bank row differs from the original redemption: " + field)
+566 | …ion, "ECONOMIC", principal),
+    |
+
+E501 Line too long (118 > 100)
+   --> apps\api\app\domain\audit_chain.py:565:101
+    |
+563 | …         for field in ("id", "user_id", "action_plan_id", "request", "request_hash", "idempotency_key", "requested_at", "available_a…
+564 | …             if canonical_bytes({"v": redemption.get(field)}, raw=True) != canonical_bytes({"v": operation.get(field)}, raw=True):
+565 | …                 raise AuditContractError("Frozen unified bank row differs from the original redemption: " + field)
+    |                                                                                                   ^^^^^^^^^^^^^^^^^^
+566 | …     specs = {"CASH_CREDIT": ("CASH:" + destination, "ECONOMIC", principal),
+567 | …              "PRINCIPAL_DEBIT": ("POSITION:" + command["position_id"], "ECONOMIC", -principal)}
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\domain\audit_chain.py:569:101
+    |
+567 |                  "PRINCIPAL_DEBIT": ("POSITION:" + command["position_id"], "ECONOMIC", -principal)}
+568 |         return command, specs
+569 |     command_model = BankCommand.model_validate_json(json.dumps(operation["request"], allow_nan=False))
+    |                                                                                                     ^^
+570 |     effect = command_model.effect
+571 |     if "expires_at" in action and _clock(action["expires_at"]) != effect.expires_at or not effect.valid_from <= requested < effect.ex…
+    |
+
+E501 Line too long (142 > 100)
+   --> apps\api\app\domain\audit_chain.py:571:101
+    |
+569 | …n.dumps(operation["request"], allow_nan=False))
+570 | …
+571 | …s_at"]) != effect.expires_at or not effect.valid_from <= requested < effect.expires_at:
+    |                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+572 | …t occur inside its original effect validity")
+573 | …ct.cash_uses else effect.position_account_id)
+    |
+
+E501 Line too long (423 > 100)
+   --> apps\api\app\domain\audit_chain.py:574:101
+    |
+572 | …ity")
+573 | …t_id)
+574 | …ntity or operation["id"] != action["id"] or effec…ts or action["source_account_id"] != source:
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^…^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+575 | …ction")
+576 | …
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\domain\audit_chain.py:575:101
+    |
+573 |     source = str(effect.cash_uses[0].account_id if effect.cash_uses else effect.position_account_id)
+574 |     if action["request"].get("execution") != operation["request"] or effect.operation_id != identity or operation["id"] != action["id…
+575 |         raise AuditContractError("Frozen execution command differs from its complete original action")
+    |                                                                                                     ^^
+576 |     for field in ("goal_id", "product_id", "policy_version_id"):
+577 |         value = getattr(effect, field)
+    |
+
+E501 Line too long (146 > 100)
+   --> apps\api\app\domain\audit_chain.py:581:101
+    |
+579 | …tion identity differs: " + field)
+580 | …_id else None
+581 | …) if effect.action_type == "PURCHASE_ASSET" else (action.get("position_id") != position):
+    |                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+582 | … position differs")
+583 | …ffect.destination_account_id else None
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\domain\audit_chain.py:591:101
+    |
+589 |         assert credit is not None
+590 |         cash[destination] = cash.get(destination, 0) + credit
+591 |     specs.update({"cash:" + key: ("CASH:" + key, "ECONOMIC", value) for key, value in cash.items() if value})
+    |                                                                                                     ^^^^^^^^^
+592 |     if effect.action_type in {"PURCHASE_ASSET", "REDEEM_ASSET"}:
+593 |         specs["position"] = ("POSITION:" + str(effect.position_id), "ECONOMIC", effect.amount_cents if effect.action_type == "PURCHAS…
+    |
+
+E501 Line too long (168 > 100)
+   --> apps\api\app\domain\audit_chain.py:593:101
+    |
+591 | …for key, value in cash.items() if value})
+592 | …
+593 | …"ECONOMIC", effect.amount_cents if effect.action_type == "PURCHASE_ASSET" else -effect.amount_cents)
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+594 | …
+595 | …e_id))), "ECONOMIC", effect.amount_cents)
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\domain\audit_chain.py:595:101
+    |
+593 |         specs["position"] = ("POSITION:" + str(effect.position_id), "ECONOMIC", effect.amount_cents if effect.action_type == "PURCHAS…
+594 |     if effect.action_type == "PAY_RECURRING":
+595 |         specs["payee"] = ("PAYEE:" + str(uuid5(user, str(effect.payee_id))), "ECONOMIC", effect.amount_cents)
+    |                                                                                                     ^^^^^^^^^
+596 |         liability = str(uuid5(user, "liability:" + effect.business_key))
+597 |         specs["liability_due"] = ("LIABILITY_DUE:" + liability, "LIABILITY", -effect.amount_cents)
+    |
+
+E501 Line too long (171 > 100)
+   --> apps\api\app\domain\audit_chain.py:603:101
+    |
+601 | …", value)
+602 | …
+603 | …OCATE_GOAL" else -effect.amount_cents if effect.action_type == "PURCHASE_ASSET" else effect.net_cents
+    |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+604 | … "PURCHASE_ASSET" else -effect.amount_cents if effect.action_type == "REDEEM_ASSET" else 0
+605 | …AL", principal_value), ("GOAL_LOSS", effect.fee_cents + effect.loss_cents)):
+    |
+
+E501 Line too long (160 > 100)
+   --> apps\api\app\domain\audit_chain.py:604:101
+    |
+602 | …
+603 | …= "ALLOCATE_GOAL" else -effect.amount_cents if effect.action_type == "PURCHASE_ASSET" else effect.net_cents
+604 | …ype == "PURCHASE_ASSET" else -effect.amount_cents if effect.action_type == "REDEEM_ASSET" else 0
+    |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+605 | …RINCIPAL", principal_value), ("GOAL_LOSS", effect.fee_cents + effect.loss_cents)):
+606 | …
+    |
+
+E501 Line too long (146 > 100)
+   --> apps\api\app\domain\audit_chain.py:605:101
+    |
+603 | …_type == "ALLOCATE_GOAL" else -effect.amount_cents if effect.action_type == "PURCHASE_ASSET" else effect.net_cents
+604 | …ction_type == "PURCHASE_ASSET" else -effect.amount_cents if effect.action_type == "REDEEM_ASSET" else 0
+605 | …"GOAL_PRINCIPAL", principal_value), ("GOAL_LOSS", effect.fee_cents + effect.loss_cents)):
+    |                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+606 | …
+607 | …(effect.goal_id), "GOAL_OWNERSHIP", value)
+    |
+
+E501 Line too long (133 > 100)
+   --> apps\api\app\domain\audit_chain.py:609:101
+    |
+607 | … + str(effect.goal_id), "GOAL_OWNERSHIP", value)
+608 | …
+609 | … = ("LOT_AVAILABLE:" + str(use.fragment_id), "INCOME_LOCATION", -use.amount_cents)
+    |                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+610 | …_id, effect.destination_account_id) if effect.action_type == "TRANSFER_INTERNAL" and effect.destination_account_id is not None else …
+611 | …== "TRANSFER_INTERNAL" else "ASSIGNED" if effect.action_type == "ALLOCATE_GOAL" else "SPENT"
+    |
+
+E501 Line too long (198 > 100)
+   --> apps\api\app\domain\audit_chain.py:610:101
+    |
+608 | …
+609 | …ragment_id), "INCOME_LOCATION", -use.amount_cents)
+610 | …id) if effect.action_type == "TRANSFER_INTERNAL" and effect.destination_account_id is not None else use.fragment_id
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+611 | …IGNED" if effect.action_type == "ALLOCATE_GOAL" else "SPENT"
+612 | …arget), "INCOME_LOCATION", use.amount_cents)
+    |
+
+E501 Line too long (143 > 100)
+   --> apps\api\app\domain\audit_chain.py:611:101
+    |
+609 | …LOT_AVAILABLE:" + str(use.fragment_id), "INCOME_LOCATION", -use.amount_cents)
+610 | …effect.destination_account_id) if effect.action_type == "TRANSFER_INTERNAL" and effect.destination_account_id is not None else use.f…
+611 | …RANSFER_INTERNAL" else "ASSIGNED" if effect.action_type == "ALLOCATE_GOAL" else "SPENT"
+    |                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+612 | …OT_" + bucket + ":" + str(target), "INCOME_LOCATION", use.amount_cents)
+613 | …
+    |
+
+E501 Line too long (127 > 100)
+   --> apps\api\app\domain\audit_chain.py:612:101
+    |
+610 |         target = location_id(use.origin_transaction_id, effect.destination_account_id) if effect.action_type == "TRANSFER_INTERNAL" a…
+611 |         bucket = "AVAILABLE" if effect.action_type == "TRANSFER_INTERNAL" else "ASSIGNED" if effect.action_type == "ALLOCATE_GOAL" el…
+612 |         specs["income_in:" + str(use.fragment_id)] = ("LOT_" + bucket + ":" + str(target), "INCOME_LOCATION", use.amount_cents)
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+613 |     return effect, specs
+    |
+
+E501 Line too long (192 > 100)
+   --> apps\api\app\domain\audit_chain.py:616:101
+    |
+616 | …postings: Iterable[dict[str, Any]], *, observed_at: datetime, redemption: dict[str, Any] | None = None) -> None:
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+617 | …lances."""
+618 | …
+    |
+
+E501 Line too long (147 > 100)
+   --> apps\api\app\domain\audit_chain.py:624:101
+    |
+622 | …ave its actual complete posting set")
+623 | …
+624 | … observed_at or (type(command) is dict and settled != _clock(operation["available_at"])):
+    |                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+625 | … impossible fact clock")
+626 | …
+    |
+
+E501 Line too long (325 > 100)
+   --> apps\api\app\domain\audit_chain.py:630:101
+    |
+628 | …
+629 | …
+630 | …on["user_id"] or row["entry_kind"] == "OPENING" or _clock(row["occurred_at"]) != settled or not settled <= _clock(row["created_at"]) <= observed_at or row["balance_after_cents"] != row["balance_before_cents"] + row["delta_cents"]:
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+631 | …sistent")
+632 | …leg)
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\domain\audit_chain.py:631:101
+    |
+629 | …     leg = row["leg_ref"]
+630 | …     if leg in actual or row["operation_id"] != operation["id"] or row["user_id"] != operation["user_id"] or row["entry_kind"] == "O…
+631 | …         raise AuditContractError("Frozen posting identity, clock or signed balance is inconsistent")
+    |                                                                                                   ^^^^
+632 | …     identity = uuid5(UUID(operation["id"]), leg if type(command) is dict else "posting:" + leg)
+633 | …     if row["id"] != str(identity):
+    |
+
+E501 Line too long (177 > 100)
+   --> apps\api\app\domain\audit_chain.py:636:101
+    |
+634 | …iginal bank operation")
+635 | …elta_cents"])
+636 | …on["id"] or row["entry_kind"] != leg or (leg == "PRINCIPAL_DEBIT" and row["balance_after_cents"] != 0)):
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+637 | … its original redemption")
+638 | …") != row["ledger_key"][5:] or row.get("position_id") is not None):
+    |
+
+E501 Line too long (140 > 100)
+   --> apps\api\app\domain\audit_chain.py:638:101
+    |
+636 | …ion_id") != operation["id"] or row["entry_kind"] != leg or (leg == "PRINCIPAL_DEBIT" and row["balance_after_cents"] != 0)):
+637 | …sting does not bind its original redemption")
+638 | …row.get("account_id") != row["ledger_key"][5:] or row.get("position_id") is not None):
+    |                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+639 | …ing has a different actual account")
+640 | …nd (row.get("position_id") != row["ledger_key"][9:] or row.get("account_id") is not None):
+    |
+
+E501 Line too long (144 > 100)
+   --> apps\api\app\domain\audit_chain.py:640:101
+    |
+638 | …w.get("account_id") != row["ledger_key"][5:] or row.get("position_id") is not None):
+639 | …g has a different actual account")
+640 | … (row.get("position_id") != row["ledger_key"][9:] or row.get("account_id") is not None):
+    |                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+641 | …osting has a different actual position")
+642 | …ION:")) and min(row["balance_before_cents"], row["balance_after_cents"]) < 0:
+    |
+
+E501 Line too long (133 > 100)
+   --> apps\api\app\domain\audit_chain.py:642:101
+    |
+640 | …) and (row.get("position_id") != row["ledger_key"][9:] or row.get("account_id") is not None):
+641 | …pal posting has a different actual position")
+642 | …POSITION:")) and min(row["balance_before_cents"], row["balance_after_cents"]) < 0:
+    |                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+643 | …r principal posting has an impossible negative balance")
+644 | …r row in rows if row["ledger_dimension"] == "ECONOMIC") != 0:
+    |
+
+E501 Line too long (107 > 100)
+   --> apps\api\app\domain\audit_chain.py:643:101
+    |
+641 |             raise AuditContractError("Frozen principal posting has a different actual position")
+642 |         if row["ledger_key"].startswith(("CASH:", "POSITION:")) and min(row["balance_before_cents"], row["balance_after_cents"]) < 0:
+643 |             raise AuditContractError("Frozen cash or principal posting has an impossible negative balance")
+    |                                                                                                     ^^^^^^^
+644 |     if actual != specs or sum(row["delta_cents"] for row in rows if row["ledger_dimension"] == "ECONOMIC") != 0:
+645 |         raise AuditContractError("Frozen settlement differs from the exact economic and ownership effect")
+    |
+
+E501 Line too long (112 > 100)
+   --> apps\api\app\domain\audit_chain.py:644:101
+    |
+642 |         if row["ledger_key"].startswith(("CASH:", "POSITION:")) and min(row["balance_before_cents"], row["balance_after_cents"]) < 0:
+643 |             raise AuditContractError("Frozen cash or principal posting has an impossible negative balance")
+644 |     if actual != specs or sum(row["delta_cents"] for row in rows if row["ledger_dimension"] == "ECONOMIC") != 0:
+    |                                                                                                     ^^^^^^^^^^^^
+645 |         raise AuditContractError("Frozen settlement differs from the exact economic and ownership effect")
+    |
+
+E501 Line too long (106 > 100)
+   --> apps\api\app\domain\audit_chain.py:645:101
+    |
+643 |             raise AuditContractError("Frozen cash or principal posting has an impossible negative balance")
+644 |     if actual != specs or sum(row["delta_cents"] for row in rows if row["ledger_dimension"] == "ECONOMIC") != 0:
+645 |         raise AuditContractError("Frozen settlement differs from the exact economic and ownership effect")
+    |                                                                                                     ^^^^^^
+
+E501 Line too long (258 > 100)
+   --> apps\api\app\domain\audit_chain.py:648:101
+    |
+648 | …tr, Any], postings: Iterable[dict[str, Any]], *, observed_at: datetime, redemption: dict[str, Any] | None = None, subjects: Iterable["AuditSubject"] = ()) -> None:
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+649 | …
+650 | …
+    |
+
+E501 Line too long (101 > 100)
+   --> apps\api\app\domain\audit_chain.py:651:101
+    |
+649 |     """Verify the original receipt and optional explicitly declared projection originals."""
+650 |     rows = list(postings)
+651 |     verify_frozen_settlement(operation, action, rows, observed_at=observed_at, redemption=redemption)
+    |                                                                                                     ^
+652 |     command, _ = _financial_identity(operation, action, _clock(observed_at), redemption)
+653 |     receipt_digest(receipt)
+    |
+
+E501 Line too long (680 > 100)
+   --> apps\api\app\domain\audit_chain.py:660:101
+    |
+658 | …
+659 | …
+660 | …peration["id"]), "receipt")) or receipt["user_id"…set(posting_ids) != {r["id"] for r in rows}:
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^…^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+661 | …ct")
+662 | …
+    |
+
+E501 Line too long (212 > 100)
+   --> apps\api\app\domain\audit_chain.py:663:101
+    |
+661 | … effect")
+662 | …
+663 | …bserved_at) or _clock(receipt["created_at"]) != reconciled or any(_clock(row["created_at"]) > reconciled for row in rows):
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+664 | …e")
+665 | …
+    |
+
+E501 Line too long (176 > 100)
+   --> apps\api\app\domain\audit_chain.py:669:101
+    |
+667 | …
+668 | …
+669 | …transaction_id"} or response.get("transaction_id") != str(uuid5(UUID(operation["id"]), "transaction"))):
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+670 | …original transaction")
+671 | …
+    |
+
+E501 Line too long (189 > 100)
+   --> apps\api\app\domain\audit_chain.py:678:101
+    |
+676 | …ssing")
+677 | …
+678 | …t("account_id") == transaction.get("account_id") and abs(r["delta_cents"]) == transaction.get("amount_cents")]
+    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+679 | …0]["delta_cents"] > 0 else "DEBIT") or transaction.get("balance_after_cents") != cash[0]["balance_after_cents"] or _clock(transactio…
+680 | …l original cash leg")
+    |
+
+E501 Line too long (240 > 100)
+   --> apps\api\app\domain\audit_chain.py:679:101
+    |
+677 | …
+678 | …== transaction.get("account_id") and abs(r["delta_cents"]) == transaction.get("amount_cents")]
+679 | …] > 0 else "DEBIT") or transaction.get("balance_after_cents") != cash[0]["balance_after_cents"] or _clock(transaction["occurred_at"]) != settled:
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+680 | …leg")
+681 | …
+    |
+
+E501 Line too long (496 > 100)
+   --> apps\api\app\domain\audit_chain.py:686:101
+    |
+684 | …
+685 | …
+686 | …ION" or evidence.get("evidence_level") != "BANK_C…lock(content.get("occurred_at")) != settled:
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^…^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+687 | … transaction")
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\domain\audit_chain.py:687:101
+    |
+685 | …     content = evidence.get("content")
+686 | …     if type(content) is not dict or evidence.get("source_type") != "SIMULATED_BANK_TRANSACTION" or evidence.get("evidence_level") !…
+687 | …         raise AuditContractError("Frozen transaction proof differs from its actual original transaction")
+    |                                                                                                   ^^^^^^^^^
+
+E501 Line too long (124 > 100)
+   --> apps\api\app\domain\audit_chain.py:690:101
+    |
+690 | def _subject_index(bundle: "ReferenceBundle", user_id: UUID, epoch_id: UUID) -> dict[tuple[str, UUID, str], "AuditSubject"]:
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+691 |     result = {}
+692 |     for subject in bundle.subjects:
+    |
+
+E501 Line too long (119 > 100)
+   --> apps\api\app\domain\audit_chain.py:703:101
+    |
+703 | def _current_index(bundle: "ReferenceBundle", user_id: UUID, epoch_id: UUID) -> dict[tuple[str, UUID], "AuditSubject"]:
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^
+704 |     result = {}
+705 |     for subject in bundle.current_subjects:
+    |
+
+E501 Line too long (121 > 100)
+   --> apps\api\app\domain\audit_chain.py:716:101
+    |
+716 | def _immutable(original: "AuditSubject", current: dict[tuple[str, UUID], "AuditSubject"], fields: Iterable[str]) -> None:
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^
+717 |     latest = current.get((original.kind, original.id))
+718 |     if latest is not None:
+    |
+
+E501 Line too long (142 > 100)
+   --> apps\api\app\domain\audit_chain.py:720:101
+    |
+718 | …
+719 | …
+720 | …t(field)}, raw=True) != canonical_bytes({"value": original.data.get(field)}, raw=True):
+    |                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+721 | …able " + original.kind + "." + field + " differs from its original anchor")
+    |
+
+E501 Line too long (130 > 100)
+   --> apps\api\app\domain\audit_chain.py:721:101
+    |
+719 | …     for field in fields:
+720 | …         if canonical_bytes({"value": latest.data.get(field)}, raw=True) != canonical_bytes({"value": original.data.get(field)}, raw…
+721 | …             raise AuditContractError("Current immutable " + original.kind + "." + field + " differs from its original anchor")
+    |                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+E501 Line too long (149 > 100)
+   --> apps\api\app\domain\audit_chain.py:724:101
+    |
+724 | …tr, UUID, str], "AuditSubject"], current: dict[tuple[str, UUID], "AuditSubject"]) -> None:
+    |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+725 | …
+726 | …ce
+    |
+
+E501 Line too long (103 > 100)
+   --> apps\api\app\domain\audit_chain.py:731:101
+    |
+729 |     refs = event.payload.references
+730 |     available = {(r.kind, r.id) for r in refs}
+731 |     if event.aggregate_type != "EPOCH" and (event.aggregate_type, event.aggregate_id) not in available:
+    |                                                                                                     ^^^
+732 |         raise AuditContractError("Audit aggregate lacks its actual typed original reference")
+733 |     if event.payload.correlation_kind != "EPOCH" and (event.payload.correlation_kind, event.correlation_id) not in available:
+    |
+
+E501 Line too long (125 > 100)
+   --> apps\api\app\domain\audit_chain.py:733:101
+    |
+731 |     if event.aggregate_type != "EPOCH" and (event.aggregate_type, event.aggregate_id) not in available:
+732 |         raise AuditContractError("Audit aggregate lacks its actual typed original reference")
+733 |     if event.payload.correlation_kind != "EPOCH" and (event.payload.correlation_kind, event.correlation_id) not in available:
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+734 |         raise AuditContractError("Audit correlation lacks its actual typed original reference")
+735 |     for kind, identity in (("DECISION_RUN", event.decision_run_id), ("ACTION_PLAN", event.action_plan_id), ("ACTION_RECEIPT", event.a…
+    |
+
+E501 Line too long (152 > 100)
+   --> apps\api\app\domain\audit_chain.py:735:101
+    |
+733 | …payload.correlation_kind, event.correlation_id) not in available:
+734 | …s actual typed original reference")
+735 | …un_id), ("ACTION_PLAN", event.action_plan_id), ("ACTION_RECEIPT", event.action_receipt_id)):
+    |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+736 | …available:
+737 | …ip lacks its original reference")
+    |
+
+E501 Line too long (175 > 100)
+   --> apps\api\app\domain\audit_chain.py:747:101
+    |
+745 | …
+746 | …
+747 | …vidence_level", "source_type", "source_ref", "observed_at", "valid_from", "valid_to", "supersedes_id"))
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+748 | …
+749 | …
+    |
+
+E501 Line too long (234 > 100)
+   --> apps\api\app\domain\audit_chain.py:753:101
+    |
+751 | …
+752 | …
+753 | …"request", "request_hash", "idempotency_key", "requested_at", "available_at", "legacy_redemption_id", "closing_position_id", "created_at"))
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+754 | …
+755 | …
+    |
+
+E501 Line too long (122 > 100)
+   --> apps\api\app\domain\audit_chain.py:757:101
+    |
+755 |                 _immutable(original, current, ("status", "settled_at"))
+756 |     for change in event.payload.changes:
+757 |         before = index.get((change.kind, change.id, change.before_snapshot_hash)) if change.before_snapshot_hash else None
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^
+758 |         after = index.get((change.kind, change.id, change.after_snapshot_hash))
+759 |         if after is None or not any(r.kind == change.kind and r.id == change.id and r.role == "AFTER" and r.snapshot_hash == change.a…
+    |
+
+E501 Line too long (313 > 100)
+   --> apps\api\app\domain\audit_chain.py:759:101
+    |
+757 | …ore_snapshot_hash else None
+758 | …
+759 | …AFTER" and r.snapshot_hash == change.after_snapshot_hash for r in refs) or change.field not in after.data or canonical_bytes({"v": after.data[change.field]}, raw=True) != canonical_bytes({"v": change.after}, raw=True):
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+760 | …l")
+761 | …"BEFORE" and r.snapshot_hash == change.before_snapshot_hash for r in refs) or change.field not in before.data or canonical_bytes({"v": before.data[change.field]}, raw=True) != canonical_bytes({"v": change.before}, raw=True):
+    |
+
+E501 Line too long (319 > 100)
+   --> apps\api\app\domain\audit_chain.py:761:101
+    |
+759 | …AFTER" and r.snapshot_hash == change.after_snapshot_hash for r in refs) or change.field not in after.data or canonical_bytes({"v": after.data[change.field]}, raw=True) != canonical_bytes({"v": change.after}, raw=True):
+760 | …l")
+761 | …"BEFORE" and r.snapshot_hash == change.before_snapshot_hash for r in refs) or change.field not in before.data or canonical_bytes({"v": before.data[change.field]}, raw=True) != canonical_bytes({"v": change.before}, raw=True):
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+762 | …al")
+763 | …
+    |
+
+E501 Line too long (114 > 100)
+   --> apps\api\app\domain\audit_chain.py:771:101
+    |
+769 | …         raise AuditContractError("Trace anchor must refer to an original decision run")
+770 | …     snapshot = original.data.get("input_snapshot", {})
+771 | …     trace = DecisionTrace.model_validate_json(json.dumps(snapshot.get("decision_trace"), allow_nan=False))
+    |                                                                                               ^^^^^^^^^^^^^^
+772 | …     verify_trace(trace)
+773 | …     if trace.run_id != original.id or trace.user_id != event.user_id or trace.trace_hash != anchor.digest or configuration_hash(sna…
+    |
+
+E501 Line too long (184 > 100)
+   --> apps\api\app\domain\audit_chain.py:773:101
+    |
+771 | …t("decision_trace"), allow_nan=False))
+772 | …
+773 | … or trace.trace_hash != anchor.digest or configuration_hash(snapshot) != original.data.get("snapshot_hash"):
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+774 | … the original frozen trace")
+775 | …_run_id != (UUID(original.data["parent_run_id"]) if original.data.get("parent_run_id") else None) or trace.action_id != (UUID(origin…
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\domain\audit_chain.py:774:101
+    |
+772 | …     verify_trace(trace)
+773 | …     if trace.run_id != original.id or trace.user_id != event.user_id or trace.trace_hash != anchor.digest or configuration_hash(sna…
+774 | …         raise AuditContractError("Audit decision anchor differs from the original frozen trace")
+    |                                                                                               ^^^^
+775 | …     if trace.as_of != _clock(original.data["as_of"]) or trace.parent_run_id != (UUID(original.data["parent_run_id"]) if original.da…
+776 | …         raise AuditContractError("Audit trace identity differs from the original decision row")
+    |
+
+E501 Line too long (301 > 100)
+   --> apps\api\app\domain\audit_chain.py:775:101
+    |
+773 | …h != anchor.digest or configuration_hash(snapshot) != original.data.get("snapshot_hash"):
+774 | …n trace")
+775 | …iginal.data["parent_run_id"]) if original.data.get("parent_run_id") else None) or trace.action_id != (UUID(original.data["subject_action_plan_id"]) if original.data.get("subject_action_plan_id") else None):
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+776 | …on row")
+777 | …id or trace.action_id != event.action_plan_id or trace.as_of != event.occurred_at):
+    |
+
+E501 Line too long (103 > 100)
+   --> apps\api\app\domain\audit_chain.py:776:101
+    |
+774 | …         raise AuditContractError("Audit decision anchor differs from the original frozen trace")
+775 | …     if trace.as_of != _clock(original.data["as_of"]) or trace.parent_run_id != (UUID(original.data["parent_run_id"]) if original.da…
+776 | …         raise AuditContractError("Audit trace identity differs from the original decision row")
+    |                                                                                               ^^^
+777 | …     if event.event_type == "DECISION_RECORDED" and (trace.run_id != event.decision_run_id or trace.action_id != event.action_plan_i…
+778 | …         raise AuditContractError("Recorded decision fact differs from its original trace identity/clock")
+    |
+
+E501 Line too long (178 > 100)
+   --> apps\api\app\domain\audit_chain.py:777:101
+    |
+775 | …ent_run_id != (UUID(original.data["parent_run_id"]) if original.data.get("parent_run_id") else None) or trace.action_id != (UUID(ori…
+776 | …om the original decision row")
+777 | …!= event.decision_run_id or trace.action_id != event.action_plan_id or trace.as_of != event.occurred_at):
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+778 | …from its original trace identity/clock")
+779 | …
+    |
+
+E501 Line too long (113 > 100)
+   --> apps\api\app\domain\audit_chain.py:778:101
+    |
+776 | …         raise AuditContractError("Audit trace identity differs from the original decision row")
+777 | …     if event.event_type == "DECISION_RECORDED" and (trace.run_id != event.decision_run_id or trace.action_id != event.action_plan_i…
+778 | …         raise AuditContractError("Recorded decision fact differs from its original trace identity/clock")
+    |                                                                                               ^^^^^^^^^^^^^
+779 | …     missing: set[UUID] = set()
+    |
+
+B023 Function definition does not bind loop variable `missing`
+   --> apps\api\app\domain\audit_chain.py:785:29
+    |
+783 |                     for key, child in value.items():
+784 |                         if key == "missing_evidence_references":
+785 |                             missing.update(UUID(identity) for identity in child)
+    |                             ^^^^^^^
+786 |                         else:
+787 |                             original_missing(child)
+    |
+
+E501 Line too long (106 > 100)
+   --> apps\api\app\domain\audit_chain.py:794:101
+    |
+792 | …         original_missing(trace.inputs)
+793 | …         if missing != set(event.payload.missing_evidence_ids):
+794 | …             raise AuditContractError("Missing source claims differ from the original frozen decision")
+    |                                                                                                   ^^^^^^
+795 | …         _immutable(original, current, ("input_snapshot", "snapshot_hash", "as_of", "parent_run_id", "subject_action_plan_id", "trig…
+796 | …     elif anchor.kind == "EVIDENCE_CONTENT" and anchor.hash_algorithm == "configuration-sha256-v1":
+    |
+
+E501 Line too long (205 > 100)
+   --> apps\api\app\domain\audit_chain.py:795:101
+    |
+793 | …
+794 | …l frozen decision")
+795 | …"parent_run_id", "subject_action_plan_id", "trigger_type", "algorithm_version", "policy_version_ids", "evidence_ids"))
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+796 | …ion-sha256-v1":
+797 | …nt_hash"):
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\domain\audit_chain.py:796:101
+    |
+794 | …             raise AuditContractError("Missing source claims differ from the original frozen decision")
+795 | …         _immutable(original, current, ("input_snapshot", "snapshot_hash", "as_of", "parent_run_id", "subject_action_plan_id", "trig…
+796 | …     elif anchor.kind == "EVIDENCE_CONTENT" and anchor.hash_algorithm == "configuration-sha256-v1":
+    |                                                                                                   ^^
+797 | …         if original.kind != "EVIDENCE" or anchor.digest != original.data.get("content_hash"):
+798 | …             raise AuditContractError("Audit evidence anchor differs from its original declared hash")
+    |
+
+E501 Line too long (105 > 100)
+   --> apps\api\app\domain\audit_chain.py:798:101
+    |
+796 |         elif anchor.kind == "EVIDENCE_CONTENT" and anchor.hash_algorithm == "configuration-sha256-v1":
+797 |             if original.kind != "EVIDENCE" or anchor.digest != original.data.get("content_hash"):
+798 |                 raise AuditContractError("Audit evidence anchor differs from its original declared hash")
+    |                                                                                                     ^^^^^
+799 |             # Invalid original declarations are legal frozen BLOCKED provenance.
+800 |             # The subject digest binds the actual raw copy; this is not financial validity.
+    |
+
+E501 Line too long (175 > 100)
+   --> apps\api\app\domain\audit_chain.py:801:101
+    |
+799 | …venance.
+800 | …financial validity.
+801 | …vidence_level", "source_type", "source_ref", "observed_at", "valid_from", "valid_to", "supersedes_id"))
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+802 | …} and anchor.hash_algorithm == "configuration-sha256-v1":
+803 | …n", "content_hash") if anchor.kind == "POLICY_CONFIGURATION" else ("ACTION_PLAN", "request", "request_hash")
+    |
+
+E501 Line too long (129 > 100)
+   --> apps\api\app\domain\audit_chain.py:802:101
+    |
+800 | …         # The subject digest binds the actual raw copy; this is not financial validity.
+801 | …         _immutable(original, current, ("content", "content_hash", "evidence_level", "source_type", "source_ref", "observed_at", "va…
+802 | …     elif anchor.kind in {"POLICY_CONFIGURATION", "EXECUTION_REQUEST"} and anchor.hash_algorithm == "configuration-sha256-v1":
+    |                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+803 | …         kind, field, digest_field = ("POLICY_VERSION", "configuration", "content_hash") if anchor.kind == "POLICY_CONFIGURATION" el…
+804 | …         content = original.data.get(field)
+    |
+
+E501 Line too long (180 > 100)
+   --> apps\api\app\domain\audit_chain.py:803:101
+    |
+801 | …dence_level", "source_type", "source_ref", "observed_at", "valid_from", "valid_to", "supersedes_id"))
+802 | …and anchor.hash_algorithm == "configuration-sha256-v1":
+803 | …, "content_hash") if anchor.kind == "POLICY_CONFIGURATION" else ("ACTION_PLAN", "request", "request_hash")
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+804 | …
+805 | …guration_hash(content) != anchor.digest or original.data.get(digest_field) != anchor.digest:
+    |
+
+E501 Line too long (166 > 100)
+   --> apps\api\app\domain\audit_chain.py:805:101
+    |
+803 | …ration", "content_hash") if anchor.kind == "POLICY_CONFIGURATION" else ("ACTION_PLAN", "request", "request_hash")
+804 | …
+805 | …r configuration_hash(content) != anchor.digest or original.data.get(digest_field) != anchor.digest:
+    |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+806 | …r differs from its full original content")
+807 | …
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\domain\audit_chain.py:806:101
+    |
+804 | …     content = original.data.get(field)
+805 | …     if original.kind != kind or type(content) is not dict or configuration_hash(content) != anchor.digest or original.data.get(dige…
+806 | …         raise AuditContractError("Audit configuration anchor differs from its full original content")
+    |                                                                                               ^^^^^^^^^
+807 | …     _immutable(original, current, (field, digest_field))
+808 | …     if original.kind == "ACTION_PLAN":
+    |
+
+E501 Line too long (237 > 100)
+   --> apps\api\app\domain\audit_chain.py:809:101
+    |
+807 | …
+808 | …
+809 | …, "source_account_id", "destination_account_id", "goal_id", "product_id", "policy_version_id", "idempotency_key", "expires_at", "created_at"))
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+810 | …-v1":
+811 | …est:
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\domain\audit_chain.py:813:101
+    |
+811 |             if original.kind != "ACTION_RECEIPT" or receipt_digest(original.data) != anchor.digest:
+812 |                 raise AuditContractError("Audit receipt anchor differs from its original full row")
+813 |         elif anchor.kind == "BANK_POSTING_SET" and anchor.hash_algorithm == "configuration-sha256-v1":
+    |                                                                                                     ^^
+814 |             if original.kind != "BANK_OPERATION":
+815 |                 raise AuditContractError("Audit posting set anchor must bind its actual bank operation")
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\domain\audit_chain.py:815:101
+    |
+813 | …     elif anchor.kind == "BANK_POSTING_SET" and anchor.hash_algorithm == "configuration-sha256-v1":
+814 | …         if original.kind != "BANK_OPERATION":
+815 | …             raise AuditContractError("Audit posting set anchor must bind its actual bank operation")
+    |                                                                                                   ^^^^
+816 | …         rows = [s.data for s in referenced.values() if s.kind == "BANK_POSTING" and s.data.get("operation_id") == str(original.id) …
+817 | …         if posting_set_digest(rows) != anchor.digest:
+    |
+
+E501 Line too long (177 > 100)
+   --> apps\api\app\domain\audit_chain.py:816:101
+    |
+814 | …
+815 | …ind its actual bank operation")
+816 | …K_POSTING" and s.data.get("operation_id") == str(original.id) and s.data.get("entry_kind") != "OPENING"]
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+817 | …
+818 | …s from the complete frozen set")
+    |
+
+E501 Line too long (105 > 100)
+   --> apps\api\app\domain\audit_chain.py:818:101
+    |
+816 | …     rows = [s.data for s in referenced.values() if s.kind == "BANK_POSTING" and s.data.get("operation_id") == str(original.id) and …
+817 | …     if posting_set_digest(rows) != anchor.digest:
+818 | …         raise AuditContractError("Audit posting set anchor differs from the complete frozen set")
+    |                                                                                               ^^^^^
+819 | …     actions = [s for s in referenced.values() if s.kind == "ACTION_PLAN" and str(s.id) == original.data.get("action_plan_id") and a…
+820 | …     if len(actions) != 1:
+    |
+
+E501 Line too long (232 > 100)
+   --> apps\api\app\domain\audit_chain.py:819:101
+    |
+817 | …
+818 | …ozen set")
+819 | …== original.data.get("action_plan_id") and any(r.id == s.id and r.snapshot_hash == subject_hash(s) and r.role != "BEFORE" for r in refs)]
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+820 | …
+821 | …ion")
+    |
+
+E501 Line too long (118 > 100)
+   --> apps\api\app\domain\audit_chain.py:822:101
+    |
+820 | …         if len(actions) != 1:
+821 | …             raise AuditContractError("Audit settlement lacks its unique actual original action")
+822 | …         redemptions = [s.data for s in referenced.values() if s.kind == "BANK_REDEMPTION" and s.id == original.id]
+    |                                                                                                   ^^^^^^^^^^^^^^^^^^
+823 | …         verify_frozen_settlement(original.data, actions[0].data, rows, observed_at=event.observed_at, redemption=redemptions[0] if …
+824 | …     else:
+    |
+
+E501 Line too long (157 > 100)
+   --> apps\api\app\domain\audit_chain.py:823:101
+    |
+821 | …s its unique actual original action")
+822 | …if s.kind == "BANK_REDEMPTION" and s.id == original.id]
+823 | …data, rows, observed_at=event.observed_at, redemption=redemptions[0] if redemptions else None)
+    |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+824 | …
+825 | …iginal anchor kind or hash algorithm")
+    |
+
+E501 Line too long (101 > 100)
+   --> apps\api\app\domain\audit_chain.py:825:101
+    |
+823 |             verify_frozen_settlement(original.data, actions[0].data, rows, observed_at=event.observed_at, redemption=redemptions[0] i…
+824 |         else:
+825 |             raise AuditUnsupportedVersion("Unsupported audit original anchor kind or hash algorithm")
+    |                                                                                                     ^
+826 |     if event.event_type == "DECISION_RECORDED" and not any(a.kind == "DECISION_TRACE" and a.reference_id == event.decision_run_id for…
+827 |         raise AuditContractError("Recorded decision needs its exact original trace anchor")
+    |
+
+E501 Line too long (162 > 100)
+   --> apps\api\app\domain\audit_chain.py:826:101
+    |
+824 | …
+825 | …inal anchor kind or hash algorithm")
+826 | … == "DECISION_TRACE" and a.reference_id == event.decision_run_id for a in event.payload.anchors):
+    |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+827 | …ct original trace anchor")
+828 | …
+    |
+
+E501 Line too long (117 > 100)
+   --> apps\api\app\domain\audit_chain.py:829:101
+    |
+827 |         raise AuditContractError("Recorded decision needs its exact original trace anchor")
+828 |     if event.event_type == "ACTION_PROJECTED":
+829 |         receipts = [s for s in referenced.values() if s.kind == "ACTION_RECEIPT" and s.id == event.action_receipt_id]
+    |                                                                                                     ^^^^^^^^^^^^^^^^^
+830 |         actions = [s for s in referenced.values() if s.kind == "ACTION_PLAN" and s.id == event.action_plan_id and any(r.id == s.id an…
+831 |         banks = [s for s in referenced.values() if s.kind == "BANK_OPERATION" and s.data.get("action_plan_id") == str(event.action_pl…
+    |
+
+E501 Line too long (208 > 100)
+   --> apps\api\app\domain\audit_chain.py:830:101
+    |
+828 | …
+829 | …d == event.action_receipt_id]
+830 | … event.action_plan_id and any(r.id == s.id and r.snapshot_hash == subject_hash(s) and r.role != "BEFORE" for r in refs)]
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+831 | ….get("action_plan_id") == str(event.action_plan_id)]
+832 | …
+    |
+
+E501 Line too long (140 > 100)
+   --> apps\api\app\domain\audit_chain.py:831:101
+    |
+829 | …s.kind == "ACTION_RECEIPT" and s.id == event.action_receipt_id]
+830 | ….kind == "ACTION_PLAN" and s.id == event.action_plan_id and any(r.id == s.id and r.snapshot_hash == subject_hash(s) and r.role != "B…
+831 | …ind == "BANK_OPERATION" and s.data.get("action_plan_id") == str(event.action_plan_id)]
+    |                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+832 | …len(banks) != 1:
+833 | … lacks its unique original receipt/action/bank relation")
+    |
+
+E501 Line too long (111 > 100)
+   --> apps\api\app\domain\audit_chain.py:833:101
+    |
+831 | …     banks = [s for s in referenced.values() if s.kind == "BANK_OPERATION" and s.data.get("action_plan_id") == str(event.action_plan…
+832 | …     if len(receipts) != 1 or len(actions) != 1 or len(banks) != 1:
+833 | …         raise AuditContractError("Audit projection lacks its unique original receipt/action/bank relation")
+    |                                                                                                   ^^^^^^^^^^^
+834 | …     postings = [s.data for s in referenced.values() if s.kind == "BANK_POSTING" and s.data.get("operation_id") == str(banks[0].id)]
+835 | …     redemptions = [s.data for s in referenced.values() if s.kind == "BANK_REDEMPTION" and s.id == banks[0].id]
+    |
+
+E501 Line too long (135 > 100)
+   --> apps\api\app\domain\audit_chain.py:834:101
+    |
+832 | …r len(banks) != 1:
+833 | …on lacks its unique original receipt/action/bank relation")
+834 | …s() if s.kind == "BANK_POSTING" and s.data.get("operation_id") == str(banks[0].id)]
+    |                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+835 | …lues() if s.kind == "BANK_REDEMPTION" and s.id == banks[0].id]
+836 | …ons[0].data, receipts[0].data, postings, observed_at=event.observed_at, redemption=redemptions[0] if redemptions else None, subjects…
+    |
+
+E501 Line too long (114 > 100)
+   --> apps\api\app\domain\audit_chain.py:835:101
+    |
+833 | …         raise AuditContractError("Audit projection lacks its unique original receipt/action/bank relation")
+834 | …     postings = [s.data for s in referenced.values() if s.kind == "BANK_POSTING" and s.data.get("operation_id") == str(banks[0].id)]
+835 | …     redemptions = [s.data for s in referenced.values() if s.kind == "BANK_REDEMPTION" and s.id == banks[0].id]
+    |                                                                                                   ^^^^^^^^^^^^^^
+836 | …     verify_frozen_projection(banks[0].data, actions[0].data, receipts[0].data, postings, observed_at=event.observed_at, redemption=…
+    |
+
+E501 Line too long (205 > 100)
+   --> apps\api\app\domain\audit_chain.py:836:101
+    |
+834 | … s.data.get("operation_id") == str(banks[0].id)]
+835 | …N" and s.id == banks[0].id]
+836 | …ings, observed_at=event.observed_at, redemption=redemptions[0] if redemptions else None, subjects=referenced.values())
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\domain\audit_chain.py:842:101
+    |
+840 |                  references: "ReferenceBundle", checkpoint: "AuditCheckpoint | None" = None,
+841 |                  checkpoint_mode: Literal["PREFIX", "EXACT"] = "PREFIX",
+842 |                  event_limit: int = 100000, byte_limit: int = 512 * 1024 * 1024) -> "AuditVerification":
+    |                                                                                                     ^^^^
+843 |     """Check a complete stable epoch against an independent expected head, without writes."""
+844 |     from app.domain.audit_chain_types import AuditDiagnostic, AuditEnvelope, AuditVerification
+    |
+
+E501 Line too long (191 > 100)
+   --> apps\api\app\domain\audit_chain.py:846:101
+    |
+844 | …itVerification
+845 | …
+846 | …t or not 1 <= event_limit <= 100000 or type(byte_limit) is not int or not 1 <= byte_limit <= 512 * 1024 * 1024:
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+847 | … contract")
+848 | …
+    |
+
+E501 Line too long (117 > 100)
+   --> apps\api\app\domain\audit_chain.py:864:101
+    |
+862 |     total_bytes = 0
+863 |     incomplete = False
+864 |     priorities = {"VALID": 0, "LEGACY_UNAUDITED": 1, "INCOMPLETE": 2, "UNSUPPORTED_VERSION": 3, "INTEGRITY_ERROR": 4}
+    |                                                                                                     ^^^^^^^^^^^^^^^^^
+865 |
+866 |     def error(code: str, message: str, event: AuditEnvelope | None = None, *, status: str = "INTEGRITY_ERROR", reference: bool = Fals…
+    |
+
+E501 Line too long (144 > 100)
+   --> apps\api\app\domain\audit_chain.py:866:101
+    |
+864 | …COMPLETE": 2, "UNSUPPORTED_VERSION": 3, "INTEGRITY_ERROR": 4}
+865 | …
+866 | …ope | None = None, *, status: str = "INTEGRITY_ERROR", reference: bool = False) -> None:
+    |                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+867 | …
+868 | …
+    |
+
+E501 Line too long (169 > 100)
+   --> apps\api\app\domain\audit_chain.py:873:101
+    |
+871 | …
+872 | …
+873 | …0], sequence_number=event.sequence_number if event else None, event_id=event.id if event else None))
+    |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+874 | …
+875 | …
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\domain\audit_chain.py:877:101
+    |
+875 |     if head is None:
+876 |         return AuditVerification(user_id=expected_user_id, epoch_id=None, status="LEGACY_UNAUDITED",
+877 |                                  chain_status="LEGACY_UNAUDITED", reference_status="LEGACY_UNAUDITED",
+    |                                                                                                     ^^
+878 |                                  checkpoint_status="UNAVAILABLE" if checkpoint else "NOT_REQUESTED",
+879 |                                  actual_count=0, expected_count=0, actual_tail_id=None, actual_tail_hash=None,
+    |
+
+E501 Line too long (110 > 100)
+   --> apps\api\app\domain\audit_chain.py:879:101
+    |
+877 | …                     chain_status="LEGACY_UNAUDITED", reference_status="LEGACY_UNAUDITED",
+878 | …                     checkpoint_status="UNAVAILABLE" if checkpoint else "NOT_REQUESTED",
+879 | …                     actual_count=0, expected_count=0, actual_tail_id=None, actual_tail_hash=None,
+    |                                                                                          ^^^^^^^^^^
+880 | …                     expected_tail_id=None, expected_tail_hash=None, verified_through_sequence=0,
+881 | …                     errors=[AuditDiagnostic(code="HEAD_MISSING", message="No registered original audit epoch exists")])
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\domain\audit_chain.py:880:101
+    |
+878 |                                  checkpoint_status="UNAVAILABLE" if checkpoint else "NOT_REQUESTED",
+879 |                                  actual_count=0, expected_count=0, actual_tail_id=None, actual_tail_hash=None,
+880 |                                  expected_tail_id=None, expected_tail_hash=None, verified_through_sequence=0,
+    |                                                                                                     ^^^^^^^^^
+881 |                                  errors=[AuditDiagnostic(code="HEAD_MISSING", message="No registered original audit epoch exists")])
+882 |     try:
+    |
+
+E501 Line too long (132 > 100)
+   --> apps\api\app\domain\audit_chain.py:881:101
+    |
+879 |                                  actual_count=0, expected_count=0, actual_tail_id=None, actual_tail_hash=None,
+880 |                                  expected_tail_id=None, expected_tail_hash=None, verified_through_sequence=0,
+881 |                                  errors=[AuditDiagnostic(code="HEAD_MISSING", message="No registered original audit epoch exists")])
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+882 |     try:
+883 |         _head(head)
+    |
+
+E501 Line too long (120 > 100)
+   --> apps\api\app\domain\audit_chain.py:901:101
+    |
+899 | …         raise AuditContractError("Audit checkpoint belongs to another tenant")
+900 | …     if checkpoint.epoch_id != head.epoch_id:
+901 | …         error("CHECKPOINT_EPOCH_UNAVAILABLE", "Original checkpoint epoch was not supplied", status="INCOMPLETE")
+    |                                                                                               ^^^^^^^^^^^^^^^^^^^^
+902 | …         checkpoint_status = "UNAVAILABLE"
+903 | …     elif checkpoint.genesis_event_id != head.genesis_event_id or checkpoint.genesis_event_hash != head.genesis_event_hash or checkp…
+    |
+
+E501 Line too long (238 > 100)
+   --> apps\api\app\domain\audit_chain.py:903:101
+    |
+901 | …ed", status="INCOMPLETE")
+902 | …
+903 | …nt_hash != head.genesis_event_hash or checkpoint.epoch_number != head.epoch_number or checkpoint.previous_seal_hash != head.previous_seal_hash:
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+904 | …
+905 | …
+    |
+
+E501 Line too long (132 > 100)
+   --> apps\api\app\domain\audit_chain.py:916:101
+    |
+914 |         event = None
+915 |         try:
+916 |             value = raw.model_dump(mode="python") if isinstance(raw, AuditEnvelope) else _read(raw) if isinstance(raw, str) else raw
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+917 |             if not isinstance(value, dict):
+918 |                 raise AuditContractError("Audit original event is not an object")
+    |
+
+E501 Line too long (149 > 100)
+   --> apps\api\app\domain\audit_chain.py:921:101
+    |
+919 | …
+920 | …
+921 | …ce <= 2**31-1 or type(digest) is not str or re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+    |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+922 | …w header is invalid")
+923 | …, sequence)
+    |
+
+E501 Line too long (112 > 100)
+   --> apps\api\app\domain\audit_chain.py:926:101
+    |
+924 |             if original_first is None:
+925 |                 original_first = original_tail
+926 |             if UUID(str(value["user_id"])) != expected_user_id or UUID(str(value["epoch_id"])) != head.epoch_id:
+    |                                                                                                     ^^^^^^^^^^^^
+927 |                 raise AuditContractError("Audit original row header belongs to another tenant or epoch")
+928 |             if value.get("schema_version") != "audit-event-v1" or value.get("canonical_version") != "audit-canonical-json-v1":
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\domain\audit_chain.py:927:101
+    |
+925 |                 original_first = original_tail
+926 |             if UUID(str(value["user_id"])) != expected_user_id or UUID(str(value["epoch_id"])) != head.epoch_id:
+927 |                 raise AuditContractError("Audit original row header belongs to another tenant or epoch")
+    |                                                                                                     ^^^^
+928 |             if value.get("schema_version") != "audit-event-v1" or value.get("canonical_version") != "audit-canonical-json-v1":
+929 |                 raise AuditUnsupportedVersion("Audit original protocol is unsupported")
+    |
+
+E501 Line too long (126 > 100)
+   --> apps\api\app\domain\audit_chain.py:928:101
+    |
+926 |             if UUID(str(value["user_id"])) != expected_user_id or UUID(str(value["epoch_id"])) != head.epoch_id:
+927 |                 raise AuditContractError("Audit original row header belongs to another tenant or epoch")
+928 |             if value.get("schema_version") != "audit-event-v1" or value.get("canonical_version") != "audit-canonical-json-v1":
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+929 |                 raise AuditUnsupportedVersion("Audit original protocol is unsupported")
+930 |             event = raw if isinstance(raw, AuditEnvelope) else AuditEnvelope.model_validate_json(json.dumps(value, allow_nan=False))
+    |
+
+E501 Line too long (132 > 100)
+   --> apps\api\app\domain\audit_chain.py:930:101
+    |
+928 |             if value.get("schema_version") != "audit-event-v1" or value.get("canonical_version") != "audit-canonical-json-v1":
+929 |                 raise AuditUnsupportedVersion("Audit original protocol is unsupported")
+930 |             event = raw if isinstance(raw, AuditEnvelope) else AuditEnvelope.model_validate_json(json.dumps(value, allow_nan=False))
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+931 |             tail = event
+932 |             if first is None:
+    |
+
+E501 Line too long (193 > 100)
+   --> apps\api\app\domain\audit_chain.py:951:101
+    |
+949 | …
+950 | …
+951 | …nsition.previous_epoch_id != head.previous_epoch_id or transition.previous_seal_hash != head.previous_seal_hash:
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+952 | …ts expected predecessor seal")
+953 | …
+    |
+
+E501 Line too long (111 > 100)
+   --> apps\api\app\domain\audit_chain.py:952:101
+    |
+950 | …     assert transition is not None
+951 | …     if (transition.kind == "INIT") != (head.epoch_number == 1) or transition.previous_epoch_id != head.previous_epoch_id or transit…
+952 | …         raise AuditContractError("Actual epoch genesis differs from its expected predecessor seal")
+    |                                                                                           ^^^^^^^^^^^
+953 | …     if transition.legacy_history and reference_status == "VALID":
+954 | …         reference_status = "LEGACY_UNAUDITED"
+    |
+
+E501 Line too long (285 > 100)
+   --> apps\api\app\domain\audit_chain.py:958:101
+    |
+956 | …
+957 | …
+958 | …e_seal_head.genesis_event_id != head.genesis_event_id or transition.pre_seal_head.genesis_event_hash != head.genesis_event_hash or transition.pre_seal_head.epoch_number != head.epoch_number:
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+959 | … SEALED head")
+960 | …
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\domain\audit_chain.py:959:101
+    |
+957 | …     assert transition is not None and transition.pre_seal_head is not None
+958 | …     if head.status != "SEALED" or actual_count != head.event_count or transition.pre_seal_head.genesis_event_id != head.genesis_eve…
+959 | …         raise AuditContractError("Actual terminal epoch seal differs from its final SEALED head")
+    |                                                                                           ^^^^^^^^^
+960 | …     manifest = archive_manifest(references.subjects)
+961 | …     if archive_manifest_digest(references.subjects) != transition.archive_manifest_hash or manifest["counts"] != transition.archive…
+    |
+
+E501 Line too long (158 > 100)
+   --> apps\api\app\domain\audit_chain.py:961:101
+    |
+959 | …poch seal differs from its final SEALED head")
+960 | …)
+961 | … != transition.archive_manifest_hash or manifest["counts"] != transition.archive_record_counts:
+    |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+962 | …riginals differ from the terminal epoch manifest")
+963 | …n_keys or (event.event_type, event.payload.fact_key) in seen_facts:
+    |
+
+E501 Line too long (113 > 100)
+   --> apps\api\app\domain\audit_chain.py:962:101
+    |
+960 | …         manifest = archive_manifest(references.subjects)
+961 | …         if archive_manifest_digest(references.subjects) != transition.archive_manifest_hash or manifest["counts"] != transition.arc…
+962 | …             raise AuditContractError("Actual archived originals differ from the terminal epoch manifest")
+    |                                                                                               ^^^^^^^^^^^^^
+963 | …     if event.id in seen or event.idempotency_key in seen_keys or (event.event_type, event.payload.fact_key) in seen_facts:
+964 | …         raise AuditContractError("Audit event identity, key or fact is duplicated")
+    |
+
+E501 Line too long (130 > 100)
+   --> apps\api\app\domain\audit_chain.py:963:101
+    |
+961 | …         if archive_manifest_digest(references.subjects) != transition.archive_manifest_hash or manifest["counts"] != transition.arc…
+962 | …             raise AuditContractError("Actual archived originals differ from the terminal epoch manifest")
+963 | …     if event.id in seen or event.idempotency_key in seen_keys or (event.event_type, event.payload.fact_key) in seen_facts:
+    |                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+964 | …         raise AuditContractError("Audit event identity, key or fact is duplicated")
+965 | …     if event.causation_id is not None:
+    |
+
+E501 Line too long (273 > 100)
+   --> apps\api\app\domain\audit_chain.py:967:101
+    |
+965 | …
+966 | …
+967 | …ad.correlation_kind != event.payload.correlation_kind or (event.action_plan_id is not None and cause.action_plan_id is not None and event.action_plan_id != cause.action_plan_id):
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+968 | …usiness event")
+969 | …
+    |
+
+E501 Line too long (110 > 100)
+   --> apps\api\app\domain\audit_chain.py:968:101
+    |
+966 | …         cause = seen.get(event.causation_id)
+967 | …         if cause is None or cause.correlation_id != event.correlation_id or cause.payload.correlation_kind != event.payload.correla…
+968 | …             raise AuditContractError("Audit cause is not an earlier matching original business event")
+    |                                                                                               ^^^^^^^^^^
+969 | …     _references(event, index, current)
+970 | …     if event.payload.legacy_origin is not None:
+    |
+
+E501 Line too long (106 > 100)
+   --> apps\api\app\domain\audit_chain.py:971:101
+    |
+969 |             _references(event, index, current)
+970 |             if event.payload.legacy_origin is not None:
+971 |                 reference_status = "LEGACY_UNAUDITED" if reference_status == "VALID" else reference_status
+    |                                                                                                     ^^^^^^
+972 |             if checkpoint is not None and checkpoint_status == "VERIFIED" and event.sequence_number == checkpoint.last_sequence:
+973 |                 if event.id != checkpoint.tail_id or event.event_hash != checkpoint.tail_hash:
+    |
+
+E501 Line too long (128 > 100)
+   --> apps\api\app\domain\audit_chain.py:972:101
+    |
+970 |             if event.payload.legacy_origin is not None:
+971 |                 reference_status = "LEGACY_UNAUDITED" if reference_status == "VALID" else reference_status
+972 |             if checkpoint is not None and checkpoint_status == "VERIFIED" and event.sequence_number == checkpoint.last_sequence:
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+973 |                 if event.id != checkpoint.tail_id or event.event_hash != checkpoint.tail_hash:
+974 |                     checkpoint_status = "MISMATCH"
+    |
+
+E501 Line too long (244 > 100)
+   --> apps\api\app\domain\audit_chain.py:986:101
+    |
+984 | …
+985 | …
+986 | …t_id, head.last_event_hash, head.last_sequence) or original_first is None or original_first[:2] != (head.genesis_event_id, head.genesis_event_hash)):
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+987 | …ected head")
+988 | …H_SEALED"):
+    |
+
+E501 Line too long (107 > 100)
+   --> apps\api\app\domain\audit_chain.py:987:101
+    |
+985 |             previous = event.event_hash
+986 |     if not incomplete and (actual_count != head.event_count or original_tail != (head.last_event_id, head.last_event_hash, head.last_…
+987 |         error("HEAD_MISMATCH", "Actual complete count/genesis/tail differs from independent expected head")
+    |                                                                                                     ^^^^^^^
+988 |     if not incomplete and head.status == "SEALED" and (tail is None or tail.event_type != "EPOCH_SEALED"):
+989 |         error("SEAL_MISSING", "A sealed epoch lacks its actual terminal sealing event")
+    |
+
+E501 Line too long (106 > 100)
+   --> apps\api\app\domain\audit_chain.py:988:101
+    |
+986 |     if not incomplete and (actual_count != head.event_count or original_tail != (head.last_event_id, head.last_event_hash, head.last_…
+987 |         error("HEAD_MISMATCH", "Actual complete count/genesis/tail differs from independent expected head")
+988 |     if not incomplete and head.status == "SEALED" and (tail is None or tail.event_type != "EPOCH_SEALED"):
+    |                                                                                                     ^^^^^^
+989 |         error("SEAL_MISSING", "A sealed epoch lacks its actual terminal sealing event")
+990 |     if checkpoint is not None and checkpoint_status == "VERIFIED":
+    |
+
+E501 Line too long (227 > 100)
+   --> apps\api\app\domain\audit_chain.py:991:101
+    |
+989 | …
+990 | …
+991 | …nt.expected_count != head.event_count or checkpoint.tail_id != head.last_event_id or checkpoint.tail_hash != head.last_event_hash)):
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+992 | …e")
+993 | …
+    |
+
+E501 Line too long (121 > 100)
+    --> apps\api\app\domain\audit_chain.py:999:101
+     |
+ 997 | …                     chain_status=chain_status, reference_status=reference_status,
+ 998 | …                     checkpoint_status=checkpoint_status, actual_count=actual_count,
+ 999 | …                     expected_count=head.event_count, actual_tail_id=original_tail[0] if original_tail else None,
+     |                                                                                              ^^^^^^^^^^^^^^^^^^^^^
+1000 | …                     actual_tail_hash=original_tail[1] if original_tail else None,
+1001 | …                     expected_tail_id=head.last_event_id, expected_tail_hash=head.last_event_hash,
+     |
+
+E501 Line too long (106 > 100)
+    --> apps\api\app\domain\audit_chain.py:1001:101
+     |
+ 999 | …                     expected_count=head.event_count, actual_tail_id=original_tail[0] if original_tail else None,
+1000 | …                     actual_tail_hash=original_tail[1] if original_tail else None,
+1001 | …                     expected_tail_id=head.last_event_id, expected_tail_hash=head.last_event_hash,
+     |                                                                                              ^^^^^^
+1002 | …                     verified_through_sequence=verified_through, errors=errors[:100],
+1003 | …                     errors_truncated=len(errors) > 100)
+     |
+
+E501 Line too long (102 > 100)
+  --> apps\api\app\domain\audit_chain_types.py:41:101
+   |
+40 | class AuditModel(BaseModel):
+41 |     model_config = ConfigDict(extra="forbid", strict=True, frozen=True, revalidate_instances="always")
+   |                                                                                                     ^^
+42 |
+43 |     @field_validator("simulation", mode="before", check_fields=False)
+   |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\domain\audit_chain_types.py:158:101
+    |
+156 |     fact_key: Label
+157 |     correlation_kind: Literal["EPOCH", "DECISION_RUN", "POLICY", "GOAL"]
+158 |     references: Annotated[list[AuditReference], Field(max_length=10000)] = Field(default_factory=list)
+    |                                                                                                     ^^
+159 |     anchors: Annotated[list[AuditAnchor], Field(max_length=10000)] = Field(default_factory=list)
+160 |     changes: Annotated[list[AuditChange], Field(max_length=10000)] = Field(default_factory=list)
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\domain\audit_chain_types.py:161:101
+    |
+159 |     anchors: Annotated[list[AuditAnchor], Field(max_length=10000)] = Field(default_factory=list)
+160 |     changes: Annotated[list[AuditChange], Field(max_length=10000)] = Field(default_factory=list)
+161 |     missing_evidence_ids: Annotated[list[UUID], Field(max_length=10000)] = Field(default_factory=list)
+    |                                                                                                     ^^
+162 |     legacy_origin: AuditLegacyOrigin | None = None
+163 |     epoch_transition: AuditEpochTransition | None = None
+    |
+
+E501 Line too long (107 > 100)
+   --> apps\api\app\domain\audit_chain_types.py:248:101
+    |
+246 | class ReferenceBundle(AuditModel):
+247 |     subjects: Annotated[list[AuditSubject], Field(max_length=100000)] = Field(default_factory=list)
+248 |     current_subjects: Annotated[list[AuditSubject], Field(max_length=100000)] = Field(default_factory=list)
+    |                                                                                                     ^^^^^^^
+249 |     original_errors: Annotated[list[AuditDiagnostic], Field(max_length=1000)] = Field(default_factory=list)
+    |
+
+E501 Line too long (107 > 100)
+   --> apps\api\app\domain\audit_chain_types.py:249:101
+    |
+247 |     subjects: Annotated[list[AuditSubject], Field(max_length=100000)] = Field(default_factory=list)
+248 |     current_subjects: Annotated[list[AuditSubject], Field(max_length=100000)] = Field(default_factory=list)
+249 |     original_errors: Annotated[list[AuditDiagnostic], Field(max_length=1000)] = Field(default_factory=list)
+    |                                                                                                     ^^^^^^^
+
+E501 Line too long (101 > 100)
+   --> apps\api\app\domain\audit_chain_types.py:252:101
+    |
+252 | Status = Literal["VALID", "INTEGRITY_ERROR", "UNSUPPORTED_VERSION", "LEGACY_UNAUDITED", "INCOMPLETE"]
+    |                                                                                                     ^
+
+E501 Line too long (102 > 100)
+  --> apps\api\app\tests\test_audit_chain_domain.py:66:101
+   |
+64 |         correlation_id=epoch, idempotency_key="start", occurred_at=now,
+65 |         payload=AuditPayload(fact_key="start", correlation_kind="EPOCH",
+66 |                              epoch_transition=AuditEpochTransition(kind="INIT", legacy_history=True)),
+   |                                                                                                     ^^
+67 |     )
+68 |     event = build_event(intent, event_id=UUID("00000000-0000-0000-0000-000000000005"),
+   |
+
+E501 Line too long (108 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:101:101
+    |
+ 99 |     now = datetime(2026, 10, 4, tzinfo=UTC)
+100 |     intent = AuditIntent(user_id=user, event_type="EPOCH_STARTED", aggregate_type="EPOCH",
+101 |                          aggregate_id=epoch, correlation_id=epoch, idempotency_key="start", occurred_at=now,
+    |                                                                                                     ^^^^^^^^
+102 |                          payload=AuditPayload(fact_key="start", correlation_kind="EPOCH",
+103 |                                               epoch_transition=AuditEpochTransition(kind="INIT")))
+    |
+
+E501 Line too long (112 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:105:101
+    |
+103 |                                               epoch_transition=AuditEpochTransition(kind="INIT")))
+104 |     first = build_event(intent, event_id=UUID("00000000-0000-0000-0000-000000000005"),
+105 |                         epoch_id=epoch, sequence_number=1, previous_hash=None, observed_at=now, appended_at=now)
+    |                                                                                                     ^^^^^^^^^^^^
+106 |     trace = build_trace(run_id=run, user_id=user, phase="EVALUATION", as_of=now,
+107 |                         algorithm_versions={"trace": "decision-trace-v1"}, inputs={},
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:112:101
+    |
+110 |     subject = build_subject(user_id=user, epoch_id=epoch, kind="DECISION_RUN", id=run,
+111 |                             data={"id": str(run), "user_id": str(user), "as_of": now,
+112 |                                   "input_snapshot": snapshot, "snapshot_hash": configuration_hash(snapshot)})
+    |                                                                                                     ^^^^^^^^^
+113 |     digest = subject_hash(subject)
+114 |     payload = AuditPayload(fact_key="decision", correlation_kind="DECISION_RUN",
+    |
+
+E501 Line too long (120 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:115:101
+    |
+113 |     digest = subject_hash(subject)
+114 |     payload = AuditPayload(fact_key="decision", correlation_kind="DECISION_RUN",
+115 |                            references=[AuditReference(kind="DECISION_RUN", id=run, user_id=user, snapshot_hash=digest)],
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^
+116 |                            anchors=[AuditAnchor(kind="DECISION_TRACE", reference_id=run, snapshot_hash=digest,
+117 |                                                 digest=trace.trace_hash, hash_algorithm="decision-trace-v1")])
+    |
+
+E501 Line too long (110 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:116:101
+    |
+114 |     payload = AuditPayload(fact_key="decision", correlation_kind="DECISION_RUN",
+115 |                            references=[AuditReference(kind="DECISION_RUN", id=run, user_id=user, snapshot_hash=digest)],
+116 |                            anchors=[AuditAnchor(kind="DECISION_TRACE", reference_id=run, snapshot_hash=digest,
+    |                                                                                                     ^^^^^^^^^^
+117 |                                                 digest=trace.trace_hash, hash_algorithm="decision-trace-v1")])
+118 |     second = build_event(AuditIntent(user_id=user, event_type="DECISION_RECORDED", aggregate_type="DECISION_RUN",
+    |
+
+E501 Line too long (110 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:117:101
+    |
+115 |                            references=[AuditReference(kind="DECISION_RUN", id=run, user_id=user, snapshot_hash=digest)],
+116 |                            anchors=[AuditAnchor(kind="DECISION_TRACE", reference_id=run, snapshot_hash=digest,
+117 |                                                 digest=trace.trace_hash, hash_algorithm="decision-trace-v1")])
+    |                                                                                                     ^^^^^^^^^^
+118 |     second = build_event(AuditIntent(user_id=user, event_type="DECISION_RECORDED", aggregate_type="DECISION_RUN",
+119 |                                      aggregate_id=run, correlation_id=run, decision_run_id=run,
+    |
+
+E501 Line too long (113 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:118:101
+    |
+116 |                            anchors=[AuditAnchor(kind="DECISION_TRACE", reference_id=run, snapshot_hash=digest,
+117 |                                                 digest=trace.trace_hash, hash_algorithm="decision-trace-v1")])
+118 |     second = build_event(AuditIntent(user_id=user, event_type="DECISION_RECORDED", aggregate_type="DECISION_RUN",
+    |                                                                                                     ^^^^^^^^^^^^^
+119 |                                      aggregate_id=run, correlation_id=run, decision_run_id=run,
+120 |                                      idempotency_key="decision", payload=payload, occurred_at=now),
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:122:101
+    |
+120 |                                      idempotency_key="decision", payload=payload, occurred_at=now),
+121 |                          event_id=UUID("00000000-0000-0000-0000-000000000007"), epoch_id=epoch,
+122 |                          sequence_number=2, previous_hash=first.event_hash, observed_at=now, appended_at=now)
+    |                                                                                                     ^^^^^^^^^
+123 |     head = AuditHead(user_id=user, epoch_id=epoch, epoch_number=1, event_count=2, last_sequence=2,
+124 |                      last_event_id=second.id, last_event_hash=second.event_hash,
+    |
+
+E501 Line too long (105 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:137:101
+    |
+135 |                          checkpoint=checkpoint)
+136 |     assert valid.status == "VALID" and valid.actual_count == 2
+137 |     truncated = verify_epoch(events[:1], head=head, expected_user_id=head.user_id, references=references)
+    |                                                                                                     ^^^^^
+138 |     cleared = verify_epoch([], head=head, expected_user_id=head.user_id, references=references)
+139 |     assert truncated.status == cleared.status == "INTEGRITY_ERROR"
+    |
+
+E501 Line too long (103 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:166:101
+    |
+164 |     events, head, references = recorded_chain()
+165 |     source_id = UUID("00000000-0000-0000-0000-000000000008")
+166 |     source = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind="EVIDENCE", id=source_id,
+    |                                                                                                     ^^^
+167 |                            data={"id": str(source_id), "user_id": str(head.user_id),
+168 |                                  "content": {"user_id": "false raw owner", "balance_cents": True},
+    |
+
+E501 Line too long (108 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:178:101
+    |
+176 |         "references": events[1].payload.references + [AuditReference(kind="EVIDENCE", id=source_id,
+177 |                                         user_id=head.user_id, snapshot_hash=digest)],
+178 |         "anchors": events[1].payload.anchors + [AuditAnchor(kind="EVIDENCE_CONTENT", reference_id=source_id,
+    |                                                                                                     ^^^^^^^^
+179 |                                         snapshot_hash=digest, digest="f"*64, hash_algorithm="configuration-sha256-v1")],
+180 |     })
+    |
+
+E501 Line too long (120 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:179:101
+    |
+177 |                                         user_id=head.user_id, snapshot_hash=digest)],
+178 |         "anchors": events[1].payload.anchors + [AuditAnchor(kind="EVIDENCE_CONTENT", reference_id=source_id,
+179 |                                         snapshot_hash=digest, digest="f"*64, hash_algorithm="configuration-sha256-v1")],
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^
+180 |     })
+181 |     event = build_event(events[1].model_copy(update={"payload": payload}), event_id=events[1].id,
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:182:101
+    |
+180 |     })
+181 |     event = build_event(events[1].model_copy(update={"payload": payload}), event_id=events[1].id,
+182 |                         epoch_id=head.epoch_id, sequence_number=2, previous_hash=events[0].event_hash,
+    |                                                                                                     ^^
+183 |                         observed_at=events[1].observed_at, appended_at=events[1].appended_at)
+184 |     new_head = head.model_copy(update={"last_event_hash": event.event_hash})
+    |
+
+E501 Line too long (112 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:186:101
+    |
+184 |     new_head = head.model_copy(update={"last_event_hash": event.event_hash})
+185 |     bundle = references.model_copy(update={"subjects": references.subjects+[source]})
+186 |     verified = verify_epoch([events[0], event], head=new_head, expected_user_id=head.user_id, references=bundle)
+    |                                                                                                     ^^^^^^^^^^^^
+187 |     assert verified.status == "VALID"
+    |
+
+E501 Line too long (108 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:217:101
+    |
+215 |     raw = events[1].model_dump(mode="json")
+216 |     raw[field] = value
+217 |     result = verify_epoch([events[0], raw], head=head, expected_user_id=head.user_id, references=references)
+    |                                                                                                     ^^^^^^^^
+218 |     assert result.status == "UNSUPPORTED_VERSION"
+219 |     assert "HEAD_MISMATCH" not in {error.code for error in result.errors}
+    |
+
+E501 Line too long (116 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:226:101
+    |
+224 |     ("ACTION_PLAN", "EXECUTION_REQUEST", "request", "request_hash"),
+225 | ])
+226 | def test_original_configuration_anchors_and_current_immutable_content(kind, anchor_kind, field, hash_field) -> None:
+    |                                                                                                     ^^^^^^^^^^^^^^^^
+227 |     from app.domain.audit_chain import build_event, build_subject, subject_hash, verify_epoch
+228 |     from app.domain.audit_chain_types import AuditAnchor, AuditReference
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:238:101
+    |
+236 |     if kind == "ACTION_PLAN":
+237 |         data["status"] = "CONFIRMED"
+238 |     original = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind=kind, id=identity, data=data)
+    |                                                                                                     ^^^^^^^^^
+239 |     digest = subject_hash(original)
+240 |     payload = events[1].payload.model_copy(update={
+    |
+
+E501 Line too long (138 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:241:101
+    |
+239 | …
+240 | …
+241 | …[AuditReference(kind=kind, id=identity, user_id=head.user_id, snapshot_hash=digest)],
+    |                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+242 | …Anchor(kind=anchor_kind, reference_id=identity, snapshot_hash=digest,
+243 | …     digest=data[hash_field], hash_algorithm="configuration-sha256-v1")],
+    |
+
+E501 Line too long (122 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:242:101
+    |
+240 |     payload = events[1].payload.model_copy(update={
+241 |         "references": events[1].payload.references + [AuditReference(kind=kind, id=identity, user_id=head.user_id, snapshot_hash=dige…
+242 |         "anchors": events[1].payload.anchors + [AuditAnchor(kind=anchor_kind, reference_id=identity, snapshot_hash=digest,
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^
+243 |                                                           digest=data[hash_field], hash_algorithm="configuration-sha256-v1")],
+244 |     })
+    |
+
+E501 Line too long (126 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:243:101
+    |
+241 |         "references": events[1].payload.references + [AuditReference(kind=kind, id=identity, user_id=head.user_id, snapshot_hash=dige…
+242 |         "anchors": events[1].payload.anchors + [AuditAnchor(kind=anchor_kind, reference_id=identity, snapshot_hash=digest,
+243 |                                                           digest=data[hash_field], hash_algorithm="configuration-sha256-v1")],
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+244 |     })
+245 |     event = build_event(events[1].model_copy(update={"payload": payload}), event_id=events[1].id,
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:246:101
+    |
+244 |     })
+245 |     event = build_event(events[1].model_copy(update={"payload": payload}), event_id=events[1].id,
+246 |                         epoch_id=head.epoch_id, sequence_number=2, previous_hash=events[0].event_hash,
+    |                                                                                                     ^^
+247 |                         observed_at=events[1].observed_at, appended_at=events[1].appended_at)
+248 |     head = head.model_copy(update={"last_event_hash": event.event_hash})
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:250:101
+    |
+248 |     head = head.model_copy(update={"last_event_hash": event.event_hash})
+249 |     current = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind=kind, id=identity,
+250 |                             data={**data, **({"status": "SUCCEEDED"} if kind == "ACTION_PLAN" else {})})
+    |                                                                                                     ^^^^
+251 |     bundle = bundle.model_copy(update={"subjects": bundle.subjects + [original], "current_subjects": [current]})
+252 |     assert verify_epoch([events[0], event], head=head, expected_user_id=head.user_id, references=bundle).status == "VALID"
+    |
+
+E501 Line too long (112 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:251:101
+    |
+249 |     current = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind=kind, id=identity,
+250 |                             data={**data, **({"status": "SUCCEEDED"} if kind == "ACTION_PLAN" else {})})
+251 |     bundle = bundle.model_copy(update={"subjects": bundle.subjects + [original], "current_subjects": [current]})
+    |                                                                                                     ^^^^^^^^^^^^
+252 |     assert verify_epoch([events[0], event], head=head, expected_user_id=head.user_id, references=bundle).status == "VALID"
+253 |     changed_value = {"amount_cents": 101}
+    |
+
+E501 Line too long (122 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:252:101
+    |
+250 |                             data={**data, **({"status": "SUCCEEDED"} if kind == "ACTION_PLAN" else {})})
+251 |     bundle = bundle.model_copy(update={"subjects": bundle.subjects + [original], "current_subjects": [current]})
+252 |     assert verify_epoch([events[0], event], head=head, expected_user_id=head.user_id, references=bundle).status == "VALID"
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^
+253 |     changed_value = {"amount_cents": 101}
+254 |     corrupted = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind=kind, id=identity,
+    |
+
+E501 Line too long (112 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:255:101
+    |
+253 |     changed_value = {"amount_cents": 101}
+254 |     corrupted = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind=kind, id=identity,
+255 |                              data={**data, field: changed_value, hash_field: configuration_hash(changed_value)})
+    |                                                                                                     ^^^^^^^^^^^^
+256 |     broken = bundle.model_copy(update={"current_subjects": [corrupted]})
+257 |     assert verify_epoch([events[0], event], head=head, expected_user_id=head.user_id, references=broken).status == "INTEGRITY_ERROR"
+    |
+
+E501 Line too long (132 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:257:101
+    |
+255 |                              data={**data, field: changed_value, hash_field: configuration_hash(changed_value)})
+256 |     broken = bundle.model_copy(update={"current_subjects": [corrupted]})
+257 |     assert verify_epoch([events[0], event], head=head, expected_user_id=head.user_id, references=broken).status == "INTEGRITY_ERROR"
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+E501 Line too long (107 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:277:101
+    |
+275 |                              destination_account_id=target, valid_from=now,
+276 |                              expires_at=now+timedelta(hours=1))
+277 |     command = BankCommand(effect=effect, effect_hash=execution_effect_hash(effect)).model_dump(mode="json")
+    |                                                                                                     ^^^^^^^
+278 |     request = {"execution": command}
+279 |     action = {"id": str(action_id), "user_id": str(user), "action_type": "TRANSFER_INTERNAL",
+    |
+
+E501 Line too long (107 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:280:101
+    |
+278 |     request = {"execution": command}
+279 |     action = {"id": str(action_id), "user_id": str(user), "action_type": "TRANSFER_INTERNAL",
+280 |               "amount_cents": 100, "source_account_id": str(source), "destination_account_id": str(target),
+    |                                                                                                     ^^^^^^^
+281 |               "goal_id": None, "product_id": None, "policy_version_id": None, "position_id": None,
+282 |               "request": request, "request_hash": configuration_hash(request),
+    |
+
+E501 Line too long (110 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:297:101
+    |
+295 |                  "occurred_at": now, "created_at": now}
+296 |                 for account, delta, before in [(source, -100, 1000), (target, 100, 0)]]
+297 |     receipt = {"id": str(uuid5(action_id, "receipt")), "user_id": str(user), "action_plan_id": str(action_id),
+    |                                                                                                     ^^^^^^^^^^
+298 |                "status": "SUCCEEDED", "attempt_number": 1, "receipt_ref": "bank-operation:"+str(action_id),
+299 |                "executed_cents": 100, "fee_cents": 0, "loss_cents": 0,
+    |
+
+E501 Line too long (107 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:298:101
+    |
+296 |                 for account, delta, before in [(source, -100, 1000), (target, 100, 0)]]
+297 |     receipt = {"id": str(uuid5(action_id, "receipt")), "user_id": str(user), "action_plan_id": str(action_id),
+298 |                "status": "SUCCEEDED", "attempt_number": 1, "receipt_ref": "bank-operation:"+str(action_id),
+    |                                                                                                     ^^^^^^^
+299 |                "executed_cents": 100, "fee_cents": 0, "loss_cents": 0,
+300 |                "response": {"bank_operation_id": str(action_id), "posting_ids": [p["id"] for p in postings]},
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:300:101
+    |
+298 |                "status": "SUCCEEDED", "attempt_number": 1, "receipt_ref": "bank-operation:"+str(action_id),
+299 |                "executed_cents": 100, "fee_cents": 0, "loss_cents": 0,
+300 |                "response": {"bank_operation_id": str(action_id), "posting_ids": [p["id"] for p in postings]},
+    |                                                                                                     ^^^^^^^^^
+301 |                "occurred_at": now, "reconciled_at": now, "created_at": now}
+302 |     return operation, action, postings, receipt, now
+    |
+
+E501 Line too long (106 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:313:101
+    |
+311 |     verify_frozen_settlement(operation, action, reversed(postings), observed_at=now)
+312 |     forged = [{**p, "delta_cents": p["delta_cents"] * 2,
+313 |                "balance_after_cents": p["balance_before_cents"] + p["delta_cents"] * 2} for p in postings]
+    |                                                                                                     ^^^^^^
+314 |     with pytest.raises(ValueError):
+315 |         verify_frozen_projection(operation, action, receipt, forged, observed_at=now)
+    |
+
+E501 Line too long (113 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:317:101
+    |
+315 |         verify_frozen_projection(operation, action, receipt, forged, observed_at=now)
+316 |     with pytest.raises(ValueError):
+317 |         verify_frozen_projection(operation, action, {**receipt, "executed_cents": 99}, postings, observed_at=now)
+    |                                                                                                     ^^^^^^^^^^^^^
+318 |     with pytest.raises(ValueError):
+319 |         verify_frozen_projection(operation, {**action, "source_account_id": postings[1]["account_id"]}, receipt, postings, observed_a…
+    |
+
+E501 Line too long (139 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:319:101
+    |
+317 | …*receipt, "executed_cents": 99}, postings, observed_at=now)
+318 | …
+319 | … "source_account_id": postings[1]["account_id"]}, receipt, postings, observed_at=now)
+    |                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+320 | …
+321 | …t_hash": configuration_hash({})}, action, postings, observed_at=now)
+    |
+
+E501 Line too long (122 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:321:101
+    |
+319 |         verify_frozen_projection(operation, {**action, "source_account_id": postings[1]["account_id"]}, receipt, postings, observed_a…
+320 |     with pytest.raises(ValueError):
+321 |         verify_frozen_settlement({**operation, "request_hash": configuration_hash({})}, action, postings, observed_at=now)
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^
+
+E501 Line too long (112 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:340:101
+    |
+338 |                                id=UUID(data["id"]), data=data)
+339 |                  for kind, data in [("ACTION_PLAN", action), ("BANK_OPERATION", operation),
+340 |                                      ("ACTION_RECEIPT", receipt)] + [("BANK_POSTING", row) for row in postings]]
+    |                                                                                                     ^^^^^^^^^^^^
+341 |     refs = events[1].payload.references + [AuditReference(kind=s.kind, id=s.id, user_id=head.user_id,
+342 |                                                         snapshot_hash=subject_hash(s), role="AFTER") for s in originals]
+    |
+
+E501 Line too long (101 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:341:101
+    |
+339 |                  for kind, data in [("ACTION_PLAN", action), ("BANK_OPERATION", operation),
+340 |                                      ("ACTION_RECEIPT", receipt)] + [("BANK_POSTING", row) for row in postings]]
+341 |     refs = events[1].payload.references + [AuditReference(kind=s.kind, id=s.id, user_id=head.user_id,
+    |                                                                                                     ^
+342 |                                                         snapshot_hash=subject_hash(s), role="AFTER") for s in originals]
+343 |     anchors = [AuditAnchor(kind="ACTION_RECEIPT", reference_id=originals[2].id,
+    |
+
+E501 Line too long (120 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:342:101
+    |
+340 |                                      ("ACTION_RECEIPT", receipt)] + [("BANK_POSTING", row) for row in postings]]
+341 |     refs = events[1].payload.references + [AuditReference(kind=s.kind, id=s.id, user_id=head.user_id,
+342 |                                                         snapshot_hash=subject_hash(s), role="AFTER") for s in originals]
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^
+343 |     anchors = [AuditAnchor(kind="ACTION_RECEIPT", reference_id=originals[2].id,
+344 |                            snapshot_hash=subject_hash(originals[2]), digest=receipt_digest(originals[2].data),
+    |
+
+E501 Line too long (110 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:344:101
+    |
+342 |                                                         snapshot_hash=subject_hash(s), role="AFTER") for s in originals]
+343 |     anchors = [AuditAnchor(kind="ACTION_RECEIPT", reference_id=originals[2].id,
+344 |                            snapshot_hash=subject_hash(originals[2]), digest=receipt_digest(originals[2].data),
+    |                                                                                                     ^^^^^^^^^^
+345 |                            hash_algorithm="configuration-sha256-v1"),
+346 |                AuditAnchor(kind="BANK_POSTING_SET", reference_id=originals[1].id,
+    |
+
+E501 Line too long (126 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:347:101
+    |
+345 |                            hash_algorithm="configuration-sha256-v1"),
+346 |                AuditAnchor(kind="BANK_POSTING_SET", reference_id=originals[1].id,
+347 |                            snapshot_hash=subject_hash(originals[1]), digest=posting_set_digest(s.data for s in originals[3:]),
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+348 |                            hash_algorithm="configuration-sha256-v1")]
+349 |     intent = AuditIntent(user_id=head.user_id, event_type="ACTION_PROJECTED", aggregate_type="ACTION_RECEIPT",
+    |
+
+E501 Line too long (110 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:349:101
+    |
+347 |                            snapshot_hash=subject_hash(originals[1]), digest=posting_set_digest(s.data for s in originals[3:]),
+348 |                            hash_algorithm="configuration-sha256-v1")]
+349 |     intent = AuditIntent(user_id=head.user_id, event_type="ACTION_PROJECTED", aggregate_type="ACTION_RECEIPT",
+    |                                                                                                     ^^^^^^^^^^
+350 |                          aggregate_id=originals[2].id, correlation_id=events[1].correlation_id,
+351 |                          causation_id=events[1].id, decision_run_id=events[1].decision_run_id,
+    |
+
+E501 Line too long (107 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:357:101
+    |
+355 |                                               references=refs, anchors=anchors))
+356 |     projected = build_event(intent, event_id=UUID("00000000-0000-0000-0000-000000000025"),
+357 |                             epoch_id=head.epoch_id, sequence_number=3, previous_hash=events[-1].event_hash,
+    |                                                                                                     ^^^^^^^
+358 |                             observed_at=now, appended_at=now)
+359 |     head = head.model_copy(update={"event_count": 3, "last_sequence": 3,
+    |
+
+E501 Line too long (106 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:360:101
+    |
+358 |                             observed_at=now, appended_at=now)
+359 |     head = head.model_copy(update={"event_count": 3, "last_sequence": 3,
+360 |                                   "last_event_id": projected.id, "last_event_hash": projected.event_hash})
+    |                                                                                                     ^^^^^^
+361 |     return events + [projected], head, bundle.model_copy(update={"subjects": bundle.subjects+originals})
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:361:101
+    |
+359 |     head = head.model_copy(update={"event_count": 3, "last_sequence": 3,
+360 |                                   "last_event_id": projected.id, "last_event_hash": projected.event_hash})
+361 |     return events + [projected], head, bundle.model_copy(update={"subjects": bundle.subjects+originals})
+    |                                                                                                     ^^^^
+
+E501 Line too long (121 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:374:101
+    |
+372 |                             id=posting.id, data={**posting.data, "delta_cents": -200})
+373 |     current = bundle.model_copy(update={"current_subjects": [changed]})
+374 |     assert verify_epoch(events, head=head, expected_user_id=head.user_id, references=current).status == "INTEGRITY_ERROR"
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:396:101
+    |
+394 |     events, head, _ = recorded_chain()
+395 |     with pytest.raises(ValueError):
+396 |         build_event(events[1].model_copy(update=updates), event_id=events[1].id, epoch_id=head.epoch_id,
+    |                                                                                                     ^^^^
+397 |                     sequence_number=2, previous_hash=events[0].event_hash,
+398 |                     observed_at=events[1].observed_at, appended_at=events[1].appended_at)
+    |
+
+E501 Line too long (117 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:407:101
+    |
+405 |     old = head.model_copy(update={"last_event_hash": "f"*64})
+406 |     checkpoint = build_checkpoint(old, captured_at=events[1].appended_at)
+407 |     result = verify_epoch(events, head=head, expected_user_id=head.user_id, references=bundle, checkpoint=checkpoint)
+    |                                                                                                     ^^^^^^^^^^^^^^^^^
+408 |     assert result.checkpoint_status == "MISMATCH"
+409 |     limited = verify_epoch(events, head=head, expected_user_id=head.user_id, references=bundle, event_limit=1)
+    |
+
+E501 Line too long (110 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:409:101
+    |
+407 |     result = verify_epoch(events, head=head, expected_user_id=head.user_id, references=bundle, checkpoint=checkpoint)
+408 |     assert result.checkpoint_status == "MISMATCH"
+409 |     limited = verify_epoch(events, head=head, expected_user_id=head.user_id, references=bundle, event_limit=1)
+    |                                                                                                     ^^^^^^^^^^
+410 |     assert limited.status == "INCOMPLETE"
+411 |     assert "HEAD_MISMATCH" not in {e.code for e in limited.errors}
+    |
+
+E501 Line too long (105 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:420:101
+    |
+418 |     events, head, bundle = recorded_chain()
+419 |     identity = UUID("00000000-0000-0000-0000-000000000026")
+420 |     before = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind="ACTION_PLAN", id=identity,
+    |                                                                                                     ^^^^^
+421 |                            data={"id": str(identity), "user_id": str(head.user_id), "status": "PREPARED"})
+422 |     after = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind="ACTION_PLAN", id=identity,
+    |
+
+E501 Line too long (106 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:421:101
+    |
+419 |     identity = UUID("00000000-0000-0000-0000-000000000026")
+420 |     before = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind="ACTION_PLAN", id=identity,
+421 |                            data={"id": str(identity), "user_id": str(head.user_id), "status": "PREPARED"})
+    |                                                                                                     ^^^^^^
+422 |     after = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind="ACTION_PLAN", id=identity,
+423 |                           data={"id": str(identity), "user_id": str(head.user_id), "status": "CONFIRMED"})
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:422:101
+    |
+420 |     before = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind="ACTION_PLAN", id=identity,
+421 |                            data={"id": str(identity), "user_id": str(head.user_id), "status": "PREPARED"})
+422 |     after = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind="ACTION_PLAN", id=identity,
+    |                                                                                                     ^^^^
+423 |                           data={"id": str(identity), "user_id": str(head.user_id), "status": "CONFIRMED"})
+424 |     payload = events[1].payload.model_copy(update={
+    |
+
+E501 Line too long (106 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:423:101
+    |
+421 |                            data={"id": str(identity), "user_id": str(head.user_id), "status": "PREPARED"})
+422 |     after = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind="ACTION_PLAN", id=identity,
+423 |                           data={"id": str(identity), "user_id": str(head.user_id), "status": "CONFIRMED"})
+    |                                                                                                     ^^^^^^
+424 |     payload = events[1].payload.model_copy(update={
+425 |         "references": events[1].payload.references + [AuditReference(kind=s.kind, id=s.id, user_id=head.user_id,
+    |
+
+E501 Line too long (112 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:425:101
+    |
+423 |                           data={"id": str(identity), "user_id": str(head.user_id), "status": "CONFIRMED"})
+424 |     payload = events[1].payload.model_copy(update={
+425 |         "references": events[1].payload.references + [AuditReference(kind=s.kind, id=s.id, user_id=head.user_id,
+    |                                                                                                     ^^^^^^^^^^^^
+426 |                                                   snapshot_hash=subject_hash(s), role=role) for s, role in [(before, "BEFORE"), (afte…
+427 |         "changes": [AuditChange(kind="ACTION_PLAN", id=identity, field="status", before="PREPARED", after="SUCCEEDED",
+    |
+
+E501 Line too long (147 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:426:101
+    |
+424 | …
+425 | …tReference(kind=s.kind, id=s.id, user_id=head.user_id,
+426 | …_hash=subject_hash(s), role=role) for s, role in [(before, "BEFORE"), (after, "AFTER")]],
+    |                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+427 | …ntity, field="status", before="PREPARED", after="SUCCEEDED",
+428 | …ct_hash(before), after_snapshot_hash=subject_hash(after))],
+    |
+
+E501 Line too long (118 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:427:101
+    |
+425 |         "references": events[1].payload.references + [AuditReference(kind=s.kind, id=s.id, user_id=head.user_id,
+426 |                                                   snapshot_hash=subject_hash(s), role=role) for s, role in [(before, "BEFORE"), (afte…
+427 |         "changes": [AuditChange(kind="ACTION_PLAN", id=identity, field="status", before="PREPARED", after="SUCCEEDED",
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^
+428 |                                 before_snapshot_hash=subject_hash(before), after_snapshot_hash=subject_hash(after))],
+429 |     })
+    |
+
+E501 Line too long (117 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:428:101
+    |
+426 |                                                   snapshot_hash=subject_hash(s), role=role) for s, role in [(before, "BEFORE"), (afte…
+427 |         "changes": [AuditChange(kind="ACTION_PLAN", id=identity, field="status", before="PREPARED", after="SUCCEEDED",
+428 |                                 before_snapshot_hash=subject_hash(before), after_snapshot_hash=subject_hash(after))],
+    |                                                                                                     ^^^^^^^^^^^^^^^^^
+429 |     })
+430 |     event = build_event(events[1].model_copy(update={"payload": payload}), event_id=events[1].id,
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:431:101
+    |
+429 |     })
+430 |     event = build_event(events[1].model_copy(update={"payload": payload}), event_id=events[1].id,
+431 |                         epoch_id=head.epoch_id, sequence_number=2, previous_hash=events[0].event_hash,
+    |                                                                                                     ^^
+432 |                         observed_at=events[1].observed_at, appended_at=events[1].appended_at)
+433 |     head = head.model_copy(update={"last_event_hash": event.event_hash})
+    |
+
+E501 Line too long (111 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:435:101
+    |
+433 |     head = head.model_copy(update={"last_event_hash": event.event_hash})
+434 |     result = verify_epoch([events[0], event], head=head, expected_user_id=head.user_id,
+435 |                           references=bundle.model_copy(update={"subjects": bundle.subjects + [before, after]}))
+    |                                                                                                     ^^^^^^^^^^^
+436 |     assert result.status == "INTEGRITY_ERROR"
+    |
+
+E501 Line too long (107 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:454:101
+    |
+452 |     events, head, bundle = projected_chain()
+453 |     identity = UUID("00000000-0000-0000-0000-000000000027")
+454 |     original = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind="ACTION_PLAN", id=identity,
+    |                                                                                                     ^^^^^^^
+455 |                              data={"id": str(identity), "user_id": str(head.user_id), "status": "CONFIRMED"})
+456 |     payload = AuditPayload(fact_key="other-action-state", correlation_kind="DECISION_RUN",
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:455:101
+    |
+453 |     identity = UUID("00000000-0000-0000-0000-000000000027")
+454 |     original = build_subject(user_id=head.user_id, epoch_id=head.epoch_id, kind="ACTION_PLAN", id=identity,
+455 |                              data={"id": str(identity), "user_id": str(head.user_id), "status": "CONFIRMED"})
+    |                                                                                                     ^^^^^^^^^
+456 |     payload = AuditPayload(fact_key="other-action-state", correlation_kind="DECISION_RUN",
+457 |                             references=events[1].payload.references + [AuditReference(kind="ACTION_PLAN", id=identity,
+    |
+
+E501 Line too long (118 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:457:101
+    |
+455 |                              data={"id": str(identity), "user_id": str(head.user_id), "status": "CONFIRMED"})
+456 |     payload = AuditPayload(fact_key="other-action-state", correlation_kind="DECISION_RUN",
+457 |                             references=events[1].payload.references + [AuditReference(kind="ACTION_PLAN", id=identity,
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^
+458 |                                 user_id=head.user_id, snapshot_hash=subject_hash(original), role="AFTER")])
+459 |     unrelated = build_event(AuditIntent(user_id=head.user_id, event_type="ACTION_STATE_CHANGED",
+    |
+
+E501 Line too long (107 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:458:101
+    |
+456 |     payload = AuditPayload(fact_key="other-action-state", correlation_kind="DECISION_RUN",
+457 |                             references=events[1].payload.references + [AuditReference(kind="ACTION_PLAN", id=identity,
+458 |                                 user_id=head.user_id, snapshot_hash=subject_hash(original), role="AFTER")])
+    |                                                                                                     ^^^^^^^
+459 |     unrelated = build_event(AuditIntent(user_id=head.user_id, event_type="ACTION_STATE_CHANGED",
+460 |         aggregate_type="ACTION_PLAN", aggregate_id=identity, correlation_id=events[1].correlation_id,
+    |
+
+E501 Line too long (101 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:460:101
+    |
+458 |                                 user_id=head.user_id, snapshot_hash=subject_hash(original), role="AFTER")])
+459 |     unrelated = build_event(AuditIntent(user_id=head.user_id, event_type="ACTION_STATE_CHANGED",
+460 |         aggregate_type="ACTION_PLAN", aggregate_id=identity, correlation_id=events[1].correlation_id,
+    |                                                                                                     ^
+461 |         decision_run_id=events[1].decision_run_id, action_plan_id=identity, idempotency_key="other-action",
+462 |         occurred_at=events[1].occurred_at, payload=payload), event_id=identity, epoch_id=head.epoch_id,
+    |
+
+E501 Line too long (107 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:461:101
+    |
+459 |     unrelated = build_event(AuditIntent(user_id=head.user_id, event_type="ACTION_STATE_CHANGED",
+460 |         aggregate_type="ACTION_PLAN", aggregate_id=identity, correlation_id=events[1].correlation_id,
+461 |         decision_run_id=events[1].decision_run_id, action_plan_id=identity, idempotency_key="other-action",
+    |                                                                                                     ^^^^^^^
+462 |         occurred_at=events[1].occurred_at, payload=payload), event_id=identity, epoch_id=head.epoch_id,
+463 |         sequence_number=3, previous_hash=events[1].event_hash, observed_at=events[1].observed_at,
+    |
+
+E501 Line too long (103 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:462:101
+    |
+460 |         aggregate_type="ACTION_PLAN", aggregate_id=identity, correlation_id=events[1].correlation_id,
+461 |         decision_run_id=events[1].decision_run_id, action_plan_id=identity, idempotency_key="other-action",
+462 |         occurred_at=events[1].occurred_at, payload=payload), event_id=identity, epoch_id=head.epoch_id,
+    |                                                                                                     ^^^
+463 |         sequence_number=3, previous_hash=events[1].event_hash, observed_at=events[1].observed_at,
+464 |         appended_at=events[1].appended_at)
+    |
+
+E501 Line too long (106 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:465:101
+    |
+463 |         sequence_number=3, previous_hash=events[1].event_hash, observed_at=events[1].observed_at,
+464 |         appended_at=events[1].appended_at)
+465 |     last = build_event(events[2].model_copy(update={"causation_id": unrelated.id}), event_id=events[2].id,
+    |                                                                                                     ^^^^^^
+466 |                        epoch_id=head.epoch_id, sequence_number=4, previous_hash=unrelated.event_hash,
+467 |                        observed_at=events[2].observed_at, appended_at=events[2].appended_at)
+    |
+
+E501 Line too long (101 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:466:101
+    |
+464 |         appended_at=events[1].appended_at)
+465 |     last = build_event(events[2].model_copy(update={"causation_id": unrelated.id}), event_id=events[2].id,
+466 |                        epoch_id=head.epoch_id, sequence_number=4, previous_hash=unrelated.event_hash,
+    |                                                                                                     ^
+467 |                        observed_at=events[2].observed_at, appended_at=events[2].appended_at)
+468 |     head = head.model_copy(update={"event_count": 4, "last_sequence": 4, "last_event_hash": last.event_hash})
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:468:101
+    |
+466 |                        epoch_id=head.epoch_id, sequence_number=4, previous_hash=unrelated.event_hash,
+467 |                        observed_at=events[2].observed_at, appended_at=events[2].appended_at)
+468 |     head = head.model_copy(update={"event_count": 4, "last_sequence": 4, "last_event_hash": last.event_hash})
+    |                                                                                                     ^^^^^^^^^
+469 |     bundle = bundle.model_copy(update={"subjects": bundle.subjects + [original]})
+470 |     result = verify_epoch(events[:2] + [unrelated, last], head=head, expected_user_id=head.user_id, references=bundle)
+    |
+
+E501 Line too long (118 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:470:101
+    |
+468 |     head = head.model_copy(update={"event_count": 4, "last_sequence": 4, "last_event_hash": last.event_hash})
+469 |     bundle = bundle.model_copy(update={"subjects": bundle.subjects + [original]})
+470 |     result = verify_epoch(events[:2] + [unrelated, last], head=head, expected_user_id=head.user_id, references=bundle)
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^
+471 |     assert result.status == "INTEGRITY_ERROR"
+    |
+
+E501 Line too long (136 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:490:101
+    |
+488 | …
+489 | …model_copy(update={"legacy_history": True})
+490 | …{"payload": events[0].payload.model_copy(update={"epoch_transition": transition})}),
+    |                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+491 | …_id=head.epoch_id, sequence_number=1, previous_hash=None,
+492 | …ed_at, appended_at=events[0].appended_at)
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:491:101
+    |
+489 |     transition = events[0].payload.epoch_transition.model_copy(update={"legacy_history": True})
+490 |     first = build_event(events[0].model_copy(update={"payload": events[0].payload.model_copy(update={"epoch_transition": transition})…
+491 |                         event_id=events[0].id, epoch_id=head.epoch_id, sequence_number=1, previous_hash=None,
+    |                                                                                                     ^^^^^^^^^
+492 |                         observed_at=events[0].observed_at, appended_at=events[0].appended_at)
+493 |     second = build_event(events[1], event_id=events[1].id, epoch_id=head.epoch_id, sequence_number=2,
+    |
+
+E501 Line too long (101 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:493:101
+    |
+491 |                         event_id=events[0].id, epoch_id=head.epoch_id, sequence_number=1, previous_hash=None,
+492 |                         observed_at=events[0].observed_at, appended_at=events[0].appended_at)
+493 |     second = build_event(events[1], event_id=events[1].id, epoch_id=head.epoch_id, sequence_number=2,
+    |                                                                                                     ^
+494 |                          previous_hash=first.event_hash, observed_at=events[1].observed_at,
+495 |                          appended_at=events[1].appended_at)
+    |
+
+E501 Line too long (113 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:496:101
+    |
+494 |                          previous_hash=first.event_hash, observed_at=events[1].observed_at,
+495 |                          appended_at=events[1].appended_at)
+496 |     head = head.model_copy(update={"genesis_event_hash": first.event_hash, "last_event_hash": second.event_hash})
+    |                                                                                                     ^^^^^^^^^^^^^
+497 |     result = verify_epoch([first, second], head=head, expected_user_id=head.user_id, references=bundle)
+498 |     assert result.status == result.reference_status == "LEGACY_UNAUDITED"
+    |
+
+E501 Line too long (103 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:497:101
+    |
+495 |                          appended_at=events[1].appended_at)
+496 |     head = head.model_copy(update={"genesis_event_hash": first.event_hash, "last_event_hash": second.event_hash})
+497 |     result = verify_epoch([first, second], head=head, expected_user_id=head.user_id, references=bundle)
+    |                                                                                                     ^^^
+498 |     assert result.status == result.reference_status == "LEGACY_UNAUDITED"
+499 |     assert result.chain_status == "VALID"
+    |
+
+E501 Line too long (122 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:525:101
+    |
+523 |     events, head, bundle = recorded_chain()
+524 |     checkpoint = build_checkpoint(head, captured_at=events[-1].appended_at)
+525 |     transition = AuditEpochTransition(kind="SEAL", reset_key="reset-original", reason="simulated reset", principal="demo",
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^
+526 |                                      pre_seal_head=head, archive_manifest_hash=archive_manifest_digest(bundle.subjects),
+527 |                                      archive_record_counts=archive_manifest(bundle.subjects)["counts"])
+    |
+
+E501 Line too long (120 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:526:101
+    |
+524 |     checkpoint = build_checkpoint(head, captured_at=events[-1].appended_at)
+525 |     transition = AuditEpochTransition(kind="SEAL", reset_key="reset-original", reason="simulated reset", principal="demo",
+526 |                                      pre_seal_head=head, archive_manifest_hash=archive_manifest_digest(bundle.subjects),
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^
+527 |                                      archive_record_counts=archive_manifest(bundle.subjects)["counts"])
+528 |     sealed = build_event(AuditIntent(user_id=head.user_id, event_type="EPOCH_SEALED", aggregate_type="EPOCH",
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:528:101
+    |
+526 |                                      pre_seal_head=head, archive_manifest_hash=archive_manifest_digest(bundle.subjects),
+527 |                                      archive_record_counts=archive_manifest(bundle.subjects)["counts"])
+528 |     sealed = build_event(AuditIntent(user_id=head.user_id, event_type="EPOCH_SEALED", aggregate_type="EPOCH",
+    |                                                                                                     ^^^^^^^^^
+529 |         aggregate_id=head.epoch_id, correlation_id=head.epoch_id, idempotency_key="sealed", occurred_at=events[-1].occurred_at,
+530 |         payload=AuditPayload(fact_key="sealed", correlation_kind="EPOCH", epoch_transition=transition)),
+    |
+
+E501 Line too long (127 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:529:101
+    |
+527 |                                      archive_record_counts=archive_manifest(bundle.subjects)["counts"])
+528 |     sealed = build_event(AuditIntent(user_id=head.user_id, event_type="EPOCH_SEALED", aggregate_type="EPOCH",
+529 |         aggregate_id=head.epoch_id, correlation_id=head.epoch_id, idempotency_key="sealed", occurred_at=events[-1].occurred_at,
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+530 |         payload=AuditPayload(fact_key="sealed", correlation_kind="EPOCH", epoch_transition=transition)),
+531 |         event_id=UUID("00000000-0000-0000-0000-000000000030"), epoch_id=head.epoch_id,
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:530:101
+    |
+528 |     sealed = build_event(AuditIntent(user_id=head.user_id, event_type="EPOCH_SEALED", aggregate_type="EPOCH",
+529 |         aggregate_id=head.epoch_id, correlation_id=head.epoch_id, idempotency_key="sealed", occurred_at=events[-1].occurred_at,
+530 |         payload=AuditPayload(fact_key="sealed", correlation_kind="EPOCH", epoch_transition=transition)),
+    |                                                                                                     ^^^^
+531 |         event_id=UUID("00000000-0000-0000-0000-000000000030"), epoch_id=head.epoch_id,
+532 |         sequence_number=3, previous_hash=events[-1].event_hash,
+    |
+
+E501 Line too long (105 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:535:101
+    |
+533 |         observed_at=events[-1].observed_at, appended_at=events[-1].appended_at)
+534 |     final_head = head.model_copy(update={"status": "SEALED", "event_count": 3, "last_sequence": 3,
+535 |                                        "last_event_id": sealed.id, "last_event_hash": sealed.event_hash})
+    |                                                                                                     ^^^^^
+536 |     result = verify_epoch(events+[sealed], head=final_head, expected_user_id=head.user_id, references=bundle, checkpoint=checkpoint)
+537 |     assert result.status == "VALID", result.errors
+    |
+
+E501 Line too long (132 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:536:101
+    |
+534 |     final_head = head.model_copy(update={"status": "SEALED", "event_count": 3, "last_sequence": 3,
+535 |                                        "last_event_id": sealed.id, "last_event_hash": sealed.event_hash})
+536 |     result = verify_epoch(events+[sealed], head=final_head, expected_user_id=head.user_id, references=bundle, checkpoint=checkpoint)
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+537 |     assert result.status == "VALID", result.errors
+538 |     exact = verify_epoch(events+[sealed], head=final_head, expected_user_id=head.user_id, references=bundle,
+    |
+
+E501 Line too long (108 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:538:101
+    |
+536 |     result = verify_epoch(events+[sealed], head=final_head, expected_user_id=head.user_id, references=bundle, checkpoint=checkpoint)
+537 |     assert result.status == "VALID", result.errors
+538 |     exact = verify_epoch(events+[sealed], head=final_head, expected_user_id=head.user_id, references=bundle,
+    |                                                                                                     ^^^^^^^^
+539 |                           checkpoint=checkpoint, checkpoint_mode="EXACT")
+540 |     assert exact.checkpoint_status == "MISMATCH"
+    |
+
+E501 Line too long (120 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:557:101
+    |
+555 |     position_account = UUID("00000000-0000-0000-0000-000000000032")
+556 |     target = UUID("00000000-0000-0000-0000-000000000022")
+557 |     command = {"user_id": action["user_id"], "position_id": str(position), "position_account_id": str(position_account),
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^
+558 |                "product_id": "00000000-0000-0000-0000-000000000033", "goal_id": None,
+559 |                "original_policy_version_id": None, "destination_account_id": str(target), "principal_cents": 100,
+    |
+
+E501 Line too long (113 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:559:101
+    |
+557 |     command = {"user_id": action["user_id"], "position_id": str(position), "position_account_id": str(position_account),
+558 |                "product_id": "00000000-0000-0000-0000-000000000033", "goal_id": None,
+559 |                "original_policy_version_id": None, "destination_account_id": str(target), "principal_cents": 100,
+    |                                                                                                     ^^^^^^^^^^^^^
+560 |                "requested_at": now.isoformat(), "available_at": now.isoformat(), "expires_at": (now+timedelta(hours=1)).isoformat(), …
+561 |     request = {"bank_request": command}
+    |
+
+E501 Line too long (150 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:560:101
+    |
+558 | …0000033", "goal_id": None,
+559 | …tion_account_id": str(target), "principal_cents": 100,
+560 | …at": now.isoformat(), "expires_at": (now+timedelta(hours=1)).isoformat(), "kind": "MATURE"}
+    |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+561 | …
+562 | …osition_id": str(position), "source_account_id": str(position_account),
+    |
+
+E501 Line too long (130 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:562:101
+    |
+560 | …available_at": now.isoformat(), "expires_at": (now+timedelta(hours=1)).isoformat(), "kind": "MATURE"}
+561 | …
+562 | …URITY", "position_id": str(position), "source_account_id": str(position_account),
+    |                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+563 | …t), "product_id": command["product_id"], "request": request,
+564 | …request), "expires_at": command["expires_at"]}
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:563:101
+    |
+561 |     request = {"bank_request": command}
+562 |     action = {**action, "action_type": "ASSET_MATURITY", "position_id": str(position), "source_account_id": str(position_account),
+563 |               "destination_account_id": str(target), "product_id": command["product_id"], "request": request,
+    |                                                                                                     ^^^^^^^^^
+564 |               "request_hash": configuration_hash(request), "expires_at": command["expires_at"]}
+565 |     operation = {"id": str(operation_id), "user_id": action["user_id"], "action_plan_id": action["id"],
+    |
+
+E501 Line too long (103 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:565:101
+    |
+563 |               "destination_account_id": str(target), "product_id": command["product_id"], "request": request,
+564 |               "request_hash": configuration_hash(request), "expires_at": command["expires_at"]}
+565 |     operation = {"id": str(operation_id), "user_id": action["user_id"], "action_plan_id": action["id"],
+    |                                                                                                     ^^^
+566 |                  "operation_type": "LEGACY_REDEMPTION", "business_key": "close:"+str(position),
+567 |                  "legacy_redemption_id": str(operation_id), "closing_position_id": str(position),
+    |
+
+E501 Line too long (127 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:568:101
+    |
+566 |                  "operation_type": "LEGACY_REDEMPTION", "business_key": "close:"+str(position),
+567 |                  "legacy_redemption_id": str(operation_id), "closing_position_id": str(position),
+568 |                  "request": command, "request_hash": configuration_hash(command), "idempotency_key": action["idempotency_key"],
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+569 |                  "requested_at": now, "available_at": now, "settled_at": now, "created_at": now, "status": "SETTLED"}
+570 |     postings = [{"id": str(uuid5(operation_id, leg)), "user_id": action["user_id"], "operation_id": str(operation_id),
+    |
+
+E501 Line too long (117 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:569:101
+    |
+567 |                  "legacy_redemption_id": str(operation_id), "closing_position_id": str(position),
+568 |                  "request": command, "request_hash": configuration_hash(command), "idempotency_key": action["idempotency_key"],
+569 |                  "requested_at": now, "available_at": now, "settled_at": now, "created_at": now, "status": "SETTLED"}
+    |                                                                                                     ^^^^^^^^^^^^^^^^^
+570 |     postings = [{"id": str(uuid5(operation_id, leg)), "user_id": action["user_id"], "operation_id": str(operation_id),
+571 |                  "redemption_id": str(operation_id), "leg_ref": leg, "entry_kind": leg, "ledger_key": key,
+    |
+
+E501 Line too long (118 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:570:101
+    |
+568 |                  "request": command, "request_hash": configuration_hash(command), "idempotency_key": action["idempotency_key"],
+569 |                  "requested_at": now, "available_at": now, "settled_at": now, "created_at": now, "status": "SETTLED"}
+570 |     postings = [{"id": str(uuid5(operation_id, leg)), "user_id": action["user_id"], "operation_id": str(operation_id),
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^
+571 |                  "redemption_id": str(operation_id), "leg_ref": leg, "entry_kind": leg, "ledger_key": key,
+572 |                  "ledger_dimension": "ECONOMIC", "delta_cents": delta, "balance_before_cents": before,
+    |
+
+E501 Line too long (106 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:571:101
+    |
+569 |                  "requested_at": now, "available_at": now, "settled_at": now, "created_at": now, "status": "SETTLED"}
+570 |     postings = [{"id": str(uuid5(operation_id, leg)), "user_id": action["user_id"], "operation_id": str(operation_id),
+571 |                  "redemption_id": str(operation_id), "leg_ref": leg, "entry_kind": leg, "ledger_key": key,
+    |                                                                                                     ^^^^^^
+572 |                  "ledger_dimension": "ECONOMIC", "delta_cents": delta, "balance_before_cents": before,
+573 |                  "balance_after_cents": before+delta, "account_id": account, "position_id": position_id,
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:572:101
+    |
+570 |     postings = [{"id": str(uuid5(operation_id, leg)), "user_id": action["user_id"], "operation_id": str(operation_id),
+571 |                  "redemption_id": str(operation_id), "leg_ref": leg, "entry_kind": leg, "ledger_key": key,
+572 |                  "ledger_dimension": "ECONOMIC", "delta_cents": delta, "balance_before_cents": before,
+    |                                                                                                     ^^
+573 |                  "balance_after_cents": before+delta, "account_id": account, "position_id": position_id,
+574 |                  "occurred_at": now, "created_at": now, "sequence_number": 2}
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:573:101
+    |
+571 |                  "redemption_id": str(operation_id), "leg_ref": leg, "entry_kind": leg, "ledger_key": key,
+572 |                  "ledger_dimension": "ECONOMIC", "delta_cents": delta, "balance_before_cents": before,
+573 |                  "balance_after_cents": before+delta, "account_id": account, "position_id": position_id,
+    |                                                                                                     ^^^^
+574 |                  "occurred_at": now, "created_at": now, "sequence_number": 2}
+575 |                 for leg, key, delta, before, account, position_id in [
+    |
+
+E501 Line too long (101 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:578:101
+    |
+576 |                     ("CASH_CREDIT", "CASH:"+str(target), 100, 0, str(target), None),
+577 |                     ("PRINCIPAL_DEBIT", "POSITION:"+str(position), -100, 100, None, str(position))]]
+578 |     tx_id, proof_id = uuid5(operation_id, "transaction"), uuid5(operation_id, "transaction-evidence")
+    |                                                                                                     ^
+579 |     transaction = {"id": str(tx_id), "user_id": action["user_id"], "account_id": str(target), "evidence_id": str(proof_id),
+580 |                    "direction": "CREDIT", "amount_cents": 100, "balance_after_cents": 100, "occurred_at": now}
+    |
+
+E501 Line too long (123 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:579:101
+    |
+577 |                     ("PRINCIPAL_DEBIT", "POSITION:"+str(position), -100, 100, None, str(position))]]
+578 |     tx_id, proof_id = uuid5(operation_id, "transaction"), uuid5(operation_id, "transaction-evidence")
+579 |     transaction = {"id": str(tx_id), "user_id": action["user_id"], "account_id": str(target), "evidence_id": str(proof_id),
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^
+580 |                    "direction": "CREDIT", "amount_cents": 100, "balance_after_cents": 100, "occurred_at": now}
+581 |     content = {**{k:v for k,v in transaction.items() if k not in {"id", "evidence_id", "occurred_at"}},
+    |
+
+E501 Line too long (110 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:580:101
+    |
+578 |     tx_id, proof_id = uuid5(operation_id, "transaction"), uuid5(operation_id, "transaction-evidence")
+579 |     transaction = {"id": str(tx_id), "user_id": action["user_id"], "account_id": str(target), "evidence_id": str(proof_id),
+580 |                    "direction": "CREDIT", "amount_cents": 100, "balance_after_cents": 100, "occurred_at": now}
+    |                                                                                                     ^^^^^^^^^^
+581 |     content = {**{k:v for k,v in transaction.items() if k not in {"id", "evidence_id", "occurred_at"}},
+582 |                "transaction_id": str(tx_id), "simulation": True, "occurred_at": now.isoformat()}
+    |
+
+E501 Line too long (103 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:581:101
+    |
+579 |     transaction = {"id": str(tx_id), "user_id": action["user_id"], "account_id": str(target), "evidence_id": str(proof_id),
+580 |                    "direction": "CREDIT", "amount_cents": 100, "balance_after_cents": 100, "occurred_at": now}
+581 |     content = {**{k:v for k,v in transaction.items() if k not in {"id", "evidence_id", "occurred_at"}},
+    |                                                                                                     ^^^
+582 |                "transaction_id": str(tx_id), "simulation": True, "occurred_at": now.isoformat()}
+583 |     evidence = {"id": str(proof_id), "user_id": action["user_id"], "evidence_level": "BANK_CONFIRMED",
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:583:101
+    |
+581 |     content = {**{k:v for k,v in transaction.items() if k not in {"id", "evidence_id", "occurred_at"}},
+582 |                "transaction_id": str(tx_id), "simulation": True, "occurred_at": now.isoformat()}
+583 |     evidence = {"id": str(proof_id), "user_id": action["user_id"], "evidence_level": "BANK_CONFIRMED",
+    |                                                                                                     ^^
+584 |                 "source_type": "SIMULATED_BANK_TRANSACTION", "content": content, "content_hash": configuration_hash(content)}
+585 |     epoch = UUID("00000000-0000-0000-0000-000000000003")
+    |
+
+E501 Line too long (125 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:584:101
+    |
+582 |                "transaction_id": str(tx_id), "simulation": True, "occurred_at": now.isoformat()}
+583 |     evidence = {"id": str(proof_id), "user_id": action["user_id"], "evidence_level": "BANK_CONFIRMED",
+584 |                 "source_type": "SIMULATED_BANK_TRANSACTION", "content": content, "content_hash": configuration_hash(content)}
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+585 |     epoch = UUID("00000000-0000-0000-0000-000000000003")
+586 |     subjects = [build_subject(user_id=UUID(action["user_id"]), epoch_id=epoch, kind=kind, id=UUID(row["id"]), data=row)
+    |
+
+E501 Line too long (119 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:586:101
+    |
+584 |                 "source_type": "SIMULATED_BANK_TRANSACTION", "content": content, "content_hash": configuration_hash(content)}
+585 |     epoch = UUID("00000000-0000-0000-0000-000000000003")
+586 |     subjects = [build_subject(user_id=UUID(action["user_id"]), epoch_id=epoch, kind=kind, id=UUID(row["id"]), data=row)
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^
+587 |                 for kind,row in [("TRANSACTION",transaction),("EVIDENCE",evidence)]]
+588 |     receipt = {"id": str(uuid5(operation_id, "receipt")), "user_id": action["user_id"], "action_plan_id": action["id"],
+    |
+
+E501 Line too long (119 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:588:101
+    |
+586 |     subjects = [build_subject(user_id=UUID(action["user_id"]), epoch_id=epoch, kind=kind, id=UUID(row["id"]), data=row)
+587 |                 for kind,row in [("TRANSACTION",transaction),("EVIDENCE",evidence)]]
+588 |     receipt = {"id": str(uuid5(operation_id, "receipt")), "user_id": action["user_id"], "action_plan_id": action["id"],
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^
+589 |                "status": "SUCCEEDED", "attempt_number": 1, "receipt_ref": "bank:"+str(operation_id), "executed_cents": 100,
+590 |                "fee_cents": 0, "loss_cents": 0, "occurred_at": now, "reconciled_at": now, "created_at": now,
+    |
+
+E501 Line too long (123 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:589:101
+    |
+587 |                 for kind,row in [("TRANSACTION",transaction),("EVIDENCE",evidence)]]
+588 |     receipt = {"id": str(uuid5(operation_id, "receipt")), "user_id": action["user_id"], "action_plan_id": action["id"],
+589 |                "status": "SUCCEEDED", "attempt_number": 1, "receipt_ref": "bank:"+str(operation_id), "executed_cents": 100,
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^
+590 |                "fee_cents": 0, "loss_cents": 0, "occurred_at": now, "reconciled_at": now, "created_at": now,
+591 |                "response": {"bank_request_id": str(operation_id), "posting_ids": [p["id"] for p in postings], "transaction_id": str(t…
+    |
+
+E501 Line too long (108 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:590:101
+    |
+588 |     receipt = {"id": str(uuid5(operation_id, "receipt")), "user_id": action["user_id"], "action_plan_id": action["id"],
+589 |                "status": "SUCCEEDED", "attempt_number": 1, "receipt_ref": "bank:"+str(operation_id), "executed_cents": 100,
+590 |                "fee_cents": 0, "loss_cents": 0, "occurred_at": now, "reconciled_at": now, "created_at": now,
+    |                                                                                                     ^^^^^^^^
+591 |                "response": {"bank_request_id": str(operation_id), "posting_ids": [p["id"] for p in postings], "transaction_id": str(t…
+592 |     verify_frozen_projection(operation, action, receipt, postings, observed_at=now, subjects=subjects)
+    |
+
+E501 Line too long (140 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:591:101
+    |
+589 | …: 1, "receipt_ref": "bank:"+str(operation_id), "executed_cents": 100,
+590 | …red_at": now, "reconciled_at": now, "created_at": now,
+591 | …ration_id), "posting_ids": [p["id"] for p in postings], "transaction_id": str(tx_id)}}
+    |                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+592 | …t, postings, observed_at=now, subjects=subjects)
+593 | …
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:592:101
+    |
+590 |                "fee_cents": 0, "loss_cents": 0, "occurred_at": now, "reconciled_at": now, "created_at": now,
+591 |                "response": {"bank_request_id": str(operation_id), "posting_ids": [p["id"] for p in postings], "transaction_id": str(t…
+592 |     verify_frozen_projection(operation, action, receipt, postings, observed_at=now, subjects=subjects)
+    |                                                                                                     ^^
+593 |     with pytest.raises(ValueError):
+594 |         verify_frozen_projection(operation, action, receipt, postings, observed_at=now, subjects=[])
+    |
+
+E501 Line too long (126 > 100)
+   --> apps\api\app\tests\test_audit_chain_domain.py:596:101
+    |
+594 |         verify_frozen_projection(operation, action, receipt, postings, observed_at=now, subjects=[])
+595 |     with pytest.raises(ValueError):
+596 |         verify_frozen_projection(operation, action, {**receipt, "fee_cents": 1}, postings, observed_at=now, subjects=subjects)
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Found 308 errors (24 fixed, 284 remaining).

@@ -135,7 +135,10 @@ def test_record_is_idempotent_and_conflicting_trace_never_overwrites(trace_engin
         result = get_decision_trace(session, OWNER, trace.run_id, NOW)
         assert result.completeness == "COMPLETE"
         assert result.trace == trace
-        assert result.audit_chain_status == "NOT_IMPLEMENTED"
+        # This fixture imported account/policy facts before audit activation.
+        assert result.audit_chain_status == "LEGACY_UNAUDITED"
+        assert result.explanation is not None
+        assert result.explanation.audit_chain == "NOT_IMPLEMENTED"
         assert len(session.scalars(select(DecisionRun)).all()) == 1
 
 
@@ -327,9 +330,11 @@ def test_unrecorded_legacy_and_unknown_algorithm_are_explicit(trace_engine: Engi
         result = get_decision_trace(session, OWNER, legacy_id, NOW)
         assert result.completeness == "LEGACY_PARTIAL" and result.trace is None
         assert result.legacy_snapshot == {"only_old_fact": 1}
+        assert result.audit_chain_status == "LEGACY_UNAUDITED"
         result = get_decision_trace(session, OWNER, unknown.run_id, NOW)
         assert result.completeness == "UNSUPPORTED_VERSION"
         assert result.explanation is None
+        assert result.audit_chain_status == "UNSUPPORTED_VERSION"
 
 
 def test_record_rollback_does_not_leave_constraints_or_trace(trace_engine: Engine) -> None:

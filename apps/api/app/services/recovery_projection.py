@@ -9,6 +9,7 @@ from app.db.models import (
     ActionPlan,
     ActionReceipt,
     AssetPosition,
+    DecisionRun,
     EvidenceItem,
     Goal,
     SimulatedBankPosting,
@@ -267,6 +268,22 @@ def project_request(
                 )
             )
         session.flush()
+        from app.services.audit_recording import record_recovery_observed
+
+        run = session.get(DecisionRun, action.decision_run_id)
+        assert run is not None
+        record_recovery_observed(
+            session,
+            run,
+            now,
+            kind="WAITING_PROJECTION",
+            action_id=action.id,
+            request=request,
+            details={
+                "position_status": position.status,
+                "available_at": request.available_at.isoformat(),
+            },
+        )
         return {"action_id": str(action.id), "state": "REDEMPTION_ACCEPTED"}
     legs = list(
         session.scalars(
@@ -385,29 +402,31 @@ def project_request(
             observed_at=now,
         )
     )
-    session.add(
-        ActionReceipt(
-            id=uuid5(request.id, "receipt"),
-            user_id=request.user_id,
-            created_at=now,
-            action_plan_id=action.id,
-            attempt_number=1,
-            receipt_ref=f"bank:{request.id}",
-            status="SUCCEEDED",
-            executed_cents=request.principal_cents,
-            fee_cents=0,
-            loss_cents=0,
-            response={
-                "bank_request_id": str(request.id),
-                "posting_ids": sorted(str(row.id) for row in legs),
-                "transaction_id": str(transaction_id),
-            },
-            occurred_at=cash.occurred_at,
-            reconciled_at=now,
-        )
+    receipt = ActionReceipt(
+        id=uuid5(request.id, "receipt"),
+        user_id=request.user_id,
+        created_at=now,
+        action_plan_id=action.id,
+        attempt_number=1,
+        receipt_ref=f"bank:{request.id}",
+        status="SUCCEEDED",
+        executed_cents=request.principal_cents,
+        fee_cents=0,
+        loss_cents=0,
+        response={
+            "bank_request_id": str(request.id),
+            "posting_ids": sorted(str(row.id) for row in legs),
+            "transaction_id": str(transaction_id),
+        },
+        occurred_at=cash.occurred_at,
+        reconciled_at=now,
     )
+    session.add(receipt)
     action.status = "SUCCEEDED"
     session.flush()
+    from app.services.audit_recording import record_action_projected
+
+    record_action_projected(session, action, request, receipt, now)
     return {
         "action_id": str(action.id),
         "state": "REDEMPTION_SETTLED",

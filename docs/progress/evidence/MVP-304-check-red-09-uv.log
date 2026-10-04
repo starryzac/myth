@@ -1,0 +1,83 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+testpaths: apps/api/app/tests
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collected 1300 items
+
+apps\api\app\tests\test_account_api.py .........                         [  0%]
+apps\api\app\tests\test_asset_allocation.py ............................ [  2%]
+.......                                                                  [  3%]
+apps\api\app\tests\test_asset_allocation_api.py ....                     [  3%]
+apps\api\app\tests\test_asset_allocation_properties.py ................. [  5%]
+                                                                         [  5%]
+apps\api\app\tests\test_asset_allocation_service.py .................... [  6%]
+................                                                         [  7%]
+apps\api\app\tests\test_audit_api.py ....                                [  8%]
+apps\api\app\tests\test_audit_chain_domain.py .......................... [ 10%]
+..                                                                       [ 10%]
+apps\api\app\tests\test_audit_cli.py .......                             [ 10%]
+apps\api\app\tests\test_audit_guard.py ..                                [ 10%]
+apps\api\app\tests\test_audit_migration.py ..                            [ 11%]
+apps\api\app\tests\test_audit_reset.py .....                             [ 11%]
+apps\api\app\tests\test_audit_storage.py ...............                 [ 12%]
+apps\api\app\tests\test_audit_workflow_integration.py .......F
+
+================================== FAILURES ===================================
+_ test_real_reset_waits_across_bank_commit_and_original_application_projection _
+
+goal_client = (<starlette.testclient.TestClient object at 0x0000029C11222E40>, Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_169f5a0a8be44e9d83122676adc71dc3))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000029C0BFD9D00>
+
+    def test_real_reset_waits_across_bank_commit_and_original_application_projection(
+        goal_client: tuple[TestClient, Engine], monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        client, engine = goal_client
+        action = prepared_transfer(client, engine)
+        identity = UUID(action["action_id"])
+        confirmation = client.post(
+            f"/api/v1/actions/{identity}/confirm",
+            json={"effect_hash": action["effect_hash"], "accepted": True},
+        )
+        assert confirmation.status_code == 200, confirmation.text
+        bank_committed, resume_projection = Event(), Event()
+    
+        def pause_after_real_bank_commit(
+            original_engine: Engine, user_id: UUID, action_id: UUID, now: datetime
+        ) -> BankOperationResult:
+            operation = process_operation(original_engine, user_id, action_id, now)
+            bank_committed.set()
+            assert resume_projection.wait(30), "The test must release the real application phase"
+            return operation
+    
+        monkeypatch.setattr(execution, "process_operation", pause_after_real_bank_commit)
+        with Session(engine) as session:
+            epoch_id = session.scalar(select(AuditEpoch.id).where(AuditEpoch.status == "OPEN"))
+        assert epoch_id is not None
+        with ThreadPoolExecutor(max_workers=2) as workers:
+            action_future = workers.submit(execute_action, engine, DEMO_USER_ID, identity, NOW)
+            try:
+>               assert bank_committed.wait(45), "Real bank phase did not commit"
+E               AssertionError: Real bank phase did not commit
+E               assert False
+E                +  where False = wait(45)
+E                +    where wait = <threading.Event at 0x29c0e543b90: set>.wait
+
+apps\api\app\tests\test_audit_workflow_integration.py:323: AssertionError
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "c4424b2a-8457-4dd2-9b34-1d86adca38ff", "method": "POST", "status": 200, "duration_ms": 20718.0}
+{"event": "http_request", "request_id": "4b11f56f-0714-4c6f-ad9f-54427df947d8", "method": "POST", "status": 200, "duration_ms": 20344.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:62 {"event": "http_request", "request_id": "c4424b2a-8457-4dd2-9b34-1d86adca38ff", "method": "POST", "status": 200, "duration_ms": 20718.0}
+INFO     bounded_funds.http:main.py:62 {"event": "http_request", "request_id": "4b11f56f-0714-4c6f-ad9f-54427df947d8", "method": "POST", "status": 200, "duration_ms": 20344.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_audit_workflow_integration.py::test_real_reset_waits_across_bank_commit_and_original_application_projection
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+============ 1 failed, 171 passed, 1 warning in 2447.88s (0:40:47) ============

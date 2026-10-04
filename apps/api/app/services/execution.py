@@ -147,6 +147,10 @@ def prepare_action(
             }
             action.request, action.request_hash = payload, configuration_hash(payload)
         refresh_execution_exposure(session, user_id, now, action.id)
+        session.flush()
+        from app.services.audit_recording import record_action_created
+
+        record_action_created(session, action, now)
         return get_action(session, user_id, action.id, now)
 
 
@@ -237,6 +241,10 @@ def confirm_action(
             raise PolicyLifecycleError("CONFIRMATION_MISMATCH", "确认与原经济后果不一致", 409)
         action = session.get(ActionPlan, action_id)
         assert action is not None
+        from app.services.audit_recording import audit_subject_data
+
+        before_status = action.status
+        before_data = audit_subject_data(action)
         existing = read_execution_confirmation(session, previous.effect, now)
         if existing is not None:
             return previous
@@ -295,10 +303,35 @@ def confirm_action(
         action.status, action.authorized_at = "AUTHORIZED", now
         _epochs(session, user_id, now, action.id)
         refresh_execution_exposure(session, user_id, now, action.id)
+        session.flush()
+        from app.services.audit_recording import record_action_transition
+
+        record_action_transition(
+            session,
+            action,
+            before_status,
+            now,
+            reason_code="USER_ACTION_CONFIRMED",
+            cause_ref=str(identity),
+            details={
+                "confirmation_evidence_id": str(identity),
+                "effect_hash": previous.effect_hash,
+            },
+            before_data=before_data,
+        )
         return get_action(session, user_id, action.id, now)
 
 
 def execute_action(engine: Engine, user_id: UUID, action_id: UUID, now: datetime) -> ActionResponse:
+    from app.db.audit_guard import audit_command_guard
+
+    with audit_command_guard(engine, user_id):
+        return _execute_action(engine, user_id, action_id, now)
+
+
+def _execute_action(
+    engine: Engine, user_id: UUID, action_id: UUID, now: datetime
+) -> ActionResponse:
     from app.services.execution_sources import read_execution_confirmation
     from app.services.income_ledger import reserve_income_for_action
 
@@ -310,6 +343,10 @@ def execute_action(engine: Engine, user_id: UUID, action_id: UUID, now: datetime
             return current
         action = session.get(ActionPlan, action_id)
         assert action is not None
+        from app.services.audit_recording import audit_subject_data
+
+        before_status = action.status
+        before_data = audit_subject_data(action)
         operation = session.scalar(
             select(BankOperation).where(BankOperation.action_plan_id == action.id)
         )
@@ -345,7 +382,7 @@ def execute_action(engine: Engine, user_id: UUID, action_id: UUID, now: datetime
                 raise PolicyLifecycleError(
                     "EXECUTION_NOT_READY", "执行重验未通过：" + ",".join(validation.reasons), 409
                 )
-            record_execution_trace(
+            reserve_run = record_execution_trace(
                 session,
                 current.effect,
                 validation,
@@ -380,6 +417,34 @@ def execute_action(engine: Engine, user_id: UUID, action_id: UUID, now: datetime
             action.status, action.authorized_at = "SUBMITTED", action.authorized_at or now
             _epochs(session, user_id, now, action.id)
             refresh_execution_exposure(session, user_id, now, action.id)
+            session.flush()
+            from app.services.audit_recording import record_action_transition
+
+            claim_ids = list(
+                session.scalars(
+                    select(ActionResourceReservation.id)
+                    .where(
+                        ActionResourceReservation.user_id == user_id,
+                        ActionResourceReservation.action_plan_id == action.id,
+                        ActionResourceReservation.status == "RESERVED",
+                    )
+                    .order_by(ActionResourceReservation.id)
+                )
+            )
+            record_action_transition(
+                session,
+                action,
+                before_status,
+                now,
+                reason_code="RESOURCES_RESERVED",
+                cause_ref=str(reserve_run.id),
+                details={
+                    "reservation_run_id": str(reserve_run.id),
+                    "resource_claim_ids": [str(identity) for identity in claim_ids],
+                    "income_reserved": bool(current.effect.income_uses),
+                },
+                before_data=before_data,
+            )
     # Phase 1 above is committed. Bank mutations commit independently.
     try:
         process_operation(engine, user_id, action_id, now)
@@ -491,8 +556,24 @@ def _mark_unknown(engine: Engine, user_id: UUID, action_id: UUID, now: datetime)
             or action.status in {"SUCCEEDED", "RECONCILED"}
         ):
             return
+        from app.services.audit_recording import audit_subject_data
+
+        before_status = action.status
+        before_data = audit_subject_data(action)
         action.status = "UNKNOWN"
         refresh_execution_exposure(session, user_id, now, action_id)
+        session.flush()
+        from app.services.audit_recording import record_action_transition
+
+        record_action_transition(
+            session,
+            action,
+            before_status,
+            now,
+            reason_code="BANK_OR_PROJECTION_RESULT_UNKNOWN",
+            cause_ref=str(action_id),
+            before_data=before_data,
+        )
 
 
 def _record_bank_refusal(engine: Engine, user_id: UUID, action_id: UUID, now: datetime) -> None:
@@ -506,6 +587,19 @@ def _record_bank_refusal(engine: Engine, user_id: UUID, action_id: UUID, now: da
         assert action is not None
         if action.status in {"SUCCEEDED", "RECONCILED"}:
             return
+        from app.services.audit_recording import audit_subject_data
+
+        before_status = action.status
+        before_data = audit_subject_data(action)
+        reserved_ids = list(
+            session.scalars(
+                select(ActionResourceReservation.id).where(
+                    ActionResourceReservation.user_id == user_id,
+                    ActionResourceReservation.action_plan_id == action_id,
+                    ActionResourceReservation.status == "RESERVED",
+                )
+            )
+        )
         operation = session.scalar(
             select(BankOperation).where(
                 BankOperation.user_id == user_id, BankOperation.action_plan_id == action_id
@@ -539,9 +633,30 @@ def _record_bank_refusal(engine: Engine, user_id: UUID, action_id: UUID, now: da
             resolve_resources(session, user_id, action_id, "RELEASED", now)
             _epochs(session, user_id, now, action_id)
         refresh_execution_exposure(session, user_id, now, action_id)
+        session.flush()
+        from app.services.audit_recording import record_action_transition
+
+        record_action_transition(
+            session,
+            action,
+            before_status,
+            now,
+            reason_code="CONFIRMED_NO_EFFECT" if absent or rejected else "BANK_RESULT_UNKNOWN",
+            cause_ref=str(action_id),
+            details={
+                "no_effect_status": "ABSENT" if absent else "REJECTED" if rejected else "UNKNOWN",
+                "released_claim_ids": sorted(str(identity) for identity in reserved_ids)
+                if absent or rejected
+                else [],
+            },
+            before_data=before_data,
+        )
 
 
 def _lock_user(session: Session, user_id: UUID) -> User:
+    from app.db.audit_guard import transaction_gate
+
+    transaction_gate(session, user_id)
     user = session.scalar(select(User).where(User.id == user_id).with_for_update())
     if user is None or not user.is_simulated:
         raise PolicyLifecycleError("NOT_FOUND", "模拟用户不存在", 404)

@@ -1,0 +1,24 @@
+{
+  "started_at": "2026-10-04T09:42:21.3275143Z",
+  "node": "apps/api/app/tests/test_audit_workflow_integration.py::test_real_reset_waits_across_bank_commit_and_original_application_projection",
+  "source_sha256": "32f5b1e8110f6dffd88a4ea774c3fdd0ee5c4543b3c5458d0c38af6fefa45f78",
+  "original_sha256": "77f89d67e7ed9169faefebe2a8040e18880f8491be69f95274098d24e85f2f3f",
+  "coverage_file": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.runtime\\MVP-304-reset-sync.coverage",
+  "uv_cache_dir": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.uv-cache",
+  "pythonutf8": "1",
+  "pytest_addopts": null,
+  "finished_at": "2026-10-04T09:46:18.0721623Z",
+  "wall_seconds": 236.7372061,
+  "exit_code": 0,
+  "coverage_sha256": "7a2cae9aebadfec495ebcd6c31629f7ace529e4dc3fc6aa9ae9191a8e987b8f1",
+  "output_sha256": "faa50bb708c93ae7599ab52b848e7278da6a6df1f584f315fc72e01ebe28a085",
+  "handle_final_exit_code": 0,
+  "phase_seconds": {
+    "reserve_and_command_guard": 23.359,
+    "bank_transaction": 22.454,
+    "application_projection": 4.531,
+    "reset_gate_archive_seed": 124.156
+  },
+  "pytest_elapsed_seconds": 233.33,
+  "call_seconds": 214.4
+}

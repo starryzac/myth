@@ -1,0 +1,9 @@
+{
+  "run_id": "20261004T094808Z-2e990d57",
+  "environment": {
+    "PLAYWRIGHT_CHANNEL": "msedge",
+    "PYTEST_ADDOPTS": "-x"
+  },
+  "captured_at": "2026-10-04T09:48:08.6324246Z",
+  "declaration_kind": "launch_environment"
+}

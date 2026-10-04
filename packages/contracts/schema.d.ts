@@ -583,6 +583,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/audit/events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Events */
+        get: operations["events_api_v1_audit_events_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/audit/head": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Head */
+        get: operations["head_api_v1_audit_head_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/audit/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Verify */
+        post: operations["verify_api_v1_audit_verify_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/health": {
         parameters: {
             query?: never;
@@ -891,6 +942,492 @@ export interface components {
             account_id: string;
             /** Amount Cents */
             amount_cents: number;
+        };
+        /** AuditAnchor */
+        AuditAnchor: {
+            /** Kind */
+            kind: string;
+            /**
+             * Reference Id
+             * Format: uuid
+             */
+            reference_id: string;
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /** Digest */
+            digest: string;
+            /** Hash Algorithm */
+            hash_algorithm: string;
+        };
+        /** AuditChange */
+        AuditChange: {
+            /** Kind */
+            kind: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Field */
+            field: string;
+            /** Before */
+            before?: unknown;
+            /** After */
+            after: unknown;
+            /** Before Snapshot Hash */
+            before_snapshot_hash?: string | null;
+            /** After Snapshot Hash */
+            after_snapshot_hash: string;
+        };
+        /** AuditCheckpoint */
+        AuditCheckpoint: {
+            /**
+             * Schema Version
+             * @default audit-checkpoint-v1
+             * @constant
+             */
+            schema_version: "audit-checkpoint-v1";
+            /**
+             * Canonical Version
+             * @default audit-canonical-json-v1
+             * @constant
+             */
+            canonical_version: "audit-canonical-json-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Epoch Number */
+            epoch_number: number;
+            /**
+             * Genesis Event Id
+             * Format: uuid
+             */
+            genesis_event_id: string;
+            /** Genesis Event Hash */
+            genesis_event_hash: string;
+            /** Expected Count */
+            expected_count: number;
+            /** Last Sequence */
+            last_sequence: number;
+            /**
+             * Tail Id
+             * Format: uuid
+             */
+            tail_id: string;
+            /** Tail Hash */
+            tail_hash: string;
+            /** Previous Epoch Id */
+            previous_epoch_id?: string | null;
+            /** Previous Seal Hash */
+            previous_seal_hash?: string | null;
+            /**
+             * Captured At
+             * Format: date-time
+             */
+            captured_at: string;
+            /** Checkpoint Hash */
+            checkpoint_hash: string;
+        };
+        /** AuditDiagnostic */
+        AuditDiagnostic: {
+            /** Code */
+            code: string;
+            /** Sequence Number */
+            sequence_number?: number | null;
+            /** Event Id */
+            event_id?: string | null;
+            /** Reference */
+            reference?: string | null;
+            /** Message */
+            message: string;
+        };
+        /** AuditEnvelope */
+        AuditEnvelope: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Event Type */
+            event_type: string;
+            /** Aggregate Type */
+            aggregate_type: string;
+            /**
+             * Aggregate Id
+             * Format: uuid
+             */
+            aggregate_id: string;
+            /**
+             * Correlation Id
+             * Format: uuid
+             */
+            correlation_id: string;
+            /** Causation Id */
+            causation_id?: string | null;
+            /** Decision Run Id */
+            decision_run_id?: string | null;
+            /** Action Plan Id */
+            action_plan_id?: string | null;
+            /** Action Receipt Id */
+            action_receipt_id?: string | null;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Payload Version
+             * @default 1
+             */
+            payload_version: number;
+            payload: components["schemas"]["AuditPayload"];
+            /**
+             * Occurred At
+             * Format: date-time
+             */
+            occurred_at: string;
+            /**
+             * Schema Version
+             * @default audit-event-v1
+             * @constant
+             */
+            schema_version: "audit-event-v1";
+            /**
+             * Canonical Version
+             * @default audit-canonical-json-v1
+             * @constant
+             */
+            canonical_version: "audit-canonical-json-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Sequence Number */
+            sequence_number: number;
+            /** Previous Hash */
+            previous_hash: string | null;
+            /**
+             * Observed At
+             * Format: date-time
+             */
+            observed_at: string;
+            /**
+             * Appended At
+             * Format: date-time
+             */
+            appended_at: string;
+            /** Event Hash */
+            event_hash: string;
+        };
+        /** AuditEpochTransition */
+        AuditEpochTransition: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "INIT" | "RESET" | "SEAL";
+            /** Reset Key */
+            reset_key?: string | null;
+            /** Reason */
+            reason?: string | null;
+            /** Principal */
+            principal?: string | null;
+            /** Previous Epoch Id */
+            previous_epoch_id?: string | null;
+            /** Previous Seal Hash */
+            previous_seal_hash?: string | null;
+            /** Seed Version */
+            seed_version?: string | null;
+            /** Summary Version */
+            summary_version?: string | null;
+            /** Dataset Hash */
+            dataset_hash?: string | null;
+            /** Archive Manifest Hash */
+            archive_manifest_hash?: string | null;
+            /** Archive Record Counts */
+            archive_record_counts?: {
+                [key: string]: number;
+            };
+            pre_seal_head?: components["schemas"]["AuditHead"] | null;
+            /**
+             * Legacy History
+             * @default false
+             */
+            legacy_history: boolean;
+        };
+        /** AuditEventPage */
+        AuditEventPage: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Epoch Id */
+            epoch_id: string | null;
+            /** Items */
+            items: components["schemas"]["AuditEventView"][];
+            /** Next Cursor */
+            next_cursor: string | null;
+        };
+        /** AuditEventView */
+        AuditEventView: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Epoch Id */
+            epoch_id: string | null;
+            /**
+             * Completeness
+             * @enum {string}
+             */
+            completeness: "COMPLETE" | "LEGACY_UNAUDITED" | "UNSUPPORTED_VERSION";
+            envelope: components["schemas"]["AuditEnvelope"] | null;
+            /** Original */
+            original: {
+                [key: string]: unknown;
+            } | null;
+        };
+        /** AuditFactContext */
+        AuditFactContext: {
+            /** Reason Code */
+            reason_code?: string | null;
+            /** Cause Ref */
+            cause_ref?: string | null;
+            /** Details */
+            details?: {
+                [key: string]: unknown;
+            };
+        };
+        /** AuditHead */
+        AuditHead: {
+            /**
+             * Schema Version
+             * @default audit-head-v1
+             * @constant
+             */
+            schema_version: "audit-head-v1";
+            /**
+             * Canonical Version
+             * @default audit-canonical-json-v1
+             * @constant
+             */
+            canonical_version: "audit-canonical-json-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Epoch Number */
+            epoch_number: number;
+            /**
+             * Status
+             * @default OPEN
+             * @enum {string}
+             */
+            status: "OPEN" | "SEALED";
+            /** Event Count */
+            event_count: number;
+            /** Last Sequence */
+            last_sequence: number;
+            /** Last Event Id */
+            last_event_id: string | null;
+            /** Last Event Hash */
+            last_event_hash: string | null;
+            /** Genesis Event Id */
+            genesis_event_id: string | null;
+            /** Genesis Event Hash */
+            genesis_event_hash: string | null;
+            /** Previous Epoch Id */
+            previous_epoch_id?: string | null;
+            /** Previous Seal Hash */
+            previous_seal_hash?: string | null;
+        };
+        /** AuditLegacyOrigin */
+        AuditLegacyOrigin: {
+            /**
+             * Reason
+             * @constant
+             */
+            reason: "UNRECORDED_BEFORE_ACTIVATION";
+            /** Original Request Hash */
+            original_request_hash: string;
+        };
+        /** AuditObservation */
+        AuditObservation: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "WAITING_PROJECTION" | "PROJECTION_FAILED" | "BANK_ERROR" | "RUN_COMPLETED";
+            /** Error Code */
+            error_code?: string | null;
+            /** Bank Status */
+            bank_status?: string | null;
+            /** Run Id */
+            run_id?: string | null;
+            /** Action Id */
+            action_id?: string | null;
+            /** Request Id */
+            request_id?: string | null;
+        };
+        /** AuditPayload */
+        AuditPayload: {
+            /** Fact Key */
+            fact_key: string;
+            /**
+             * Correlation Kind
+             * @enum {string}
+             */
+            correlation_kind: "EPOCH" | "DECISION_RUN" | "POLICY" | "GOAL";
+            /** References */
+            references?: components["schemas"]["AuditReference"][];
+            /** Anchors */
+            anchors?: components["schemas"]["AuditAnchor"][];
+            /** Changes */
+            changes?: components["schemas"]["AuditChange"][];
+            /** Missing Evidence Ids */
+            missing_evidence_ids?: string[];
+            legacy_origin?: components["schemas"]["AuditLegacyOrigin"] | null;
+            epoch_transition?: components["schemas"]["AuditEpochTransition"] | null;
+            observation?: components["schemas"]["AuditObservation"] | null;
+            context?: components["schemas"]["AuditFactContext"];
+        };
+        /** AuditReference */
+        AuditReference: {
+            /** Kind */
+            kind: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Scope
+             * @default TENANT
+             * @enum {string}
+             */
+            scope: "TENANT" | "GLOBAL_CATALOG";
+            /** User Id */
+            user_id: string | null;
+            /**
+             * Role
+             * @default BASIS
+             * @enum {string}
+             */
+            role: "BASIS" | "BEFORE" | "AFTER";
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /**
+             * Snapshot Version
+             * @default 1
+             */
+            snapshot_version: number;
+        };
+        /** AuditVerification */
+        AuditVerification: {
+            /**
+             * Schema Version
+             * @default audit-verification-v1
+             * @constant
+             */
+            schema_version: "audit-verification-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Epoch Id */
+            epoch_id: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "VALID" | "INTEGRITY_ERROR" | "UNSUPPORTED_VERSION" | "LEGACY_UNAUDITED" | "INCOMPLETE";
+            /**
+             * Chain Status
+             * @enum {string}
+             */
+            chain_status: "VALID" | "INTEGRITY_ERROR" | "UNSUPPORTED_VERSION" | "LEGACY_UNAUDITED" | "INCOMPLETE";
+            /**
+             * Reference Status
+             * @enum {string}
+             */
+            reference_status: "VALID" | "INTEGRITY_ERROR" | "UNSUPPORTED_VERSION" | "LEGACY_UNAUDITED" | "INCOMPLETE";
+            /**
+             * Checkpoint Status
+             * @enum {string}
+             */
+            checkpoint_status: "VERIFIED" | "NOT_REQUESTED" | "MISMATCH" | "UNAVAILABLE";
+            /** Actual Count */
+            actual_count: number;
+            /** Expected Count */
+            expected_count: number;
+            /** Actual Tail Id */
+            actual_tail_id: string | null;
+            /** Actual Tail Hash */
+            actual_tail_hash: string | null;
+            /** Expected Tail Id */
+            expected_tail_id: string | null;
+            /** Expected Tail Hash */
+            expected_tail_hash: string | null;
+            /** Verified Through Sequence */
+            verified_through_sequence: number;
+            /** Errors */
+            errors?: components["schemas"]["AuditDiagnostic"][];
+            /** Warnings */
+            warnings?: components["schemas"]["AuditDiagnostic"][];
+            /**
+             * Errors Truncated
+             * @default false
+             */
+            errors_truncated: boolean;
         };
         /** AutonomyDecision */
         AutonomyDecision: {
@@ -1541,10 +2078,10 @@ export interface components {
             } | null;
             /**
              * Audit Chain Status
-             * @default NOT_IMPLEMENTED
-             * @constant
+             * @default LEGACY_UNAUDITED
+             * @enum {string}
              */
-            audit_chain_status: "NOT_IMPLEMENTED";
+            audit_chain_status: "VALID" | "INTEGRITY_ERROR" | "UNSUPPORTED_VERSION" | "LEGACY_UNAUDITED" | "INCOMPLETE";
         };
         /** DecisionTraceSummary */
         DecisionTraceSummary: {
@@ -1988,6 +2525,26 @@ export interface components {
             cross_goal_reallocation_allowed: boolean;
             /** Asset Policy Id */
             asset_policy_id: string | null;
+        };
+        /** HeadResponse */
+        HeadResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Completeness
+             * @enum {string}
+             */
+            completeness: "COMPLETE" | "LEGACY_UNAUDITED";
+            head: components["schemas"]["AuditHead"] | null;
         };
         /** HealthResponse */
         HealthResponse: {
@@ -3235,6 +3792,18 @@ export interface components {
             account_id: string;
             /** Amount Cents */
             amount_cents: number;
+        };
+        /** VerifyRequest */
+        VerifyRequest: {
+            /** Epoch Id */
+            epoch_id?: string | null;
+            checkpoint?: components["schemas"]["AuditCheckpoint"] | null;
+            /**
+             * Mode
+             * @default PREFIX
+             * @enum {string}
+             */
+            mode: "PREFIX" | "EXACT";
         };
     };
     responses: never;
@@ -5243,6 +5812,130 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    events_api_v1_audit_events_get: {
+        parameters: {
+            query?: {
+                epoch_id?: string | null;
+                limit?: number;
+                cursor?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuditEventPage"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    head_api_v1_audit_head_get: {
+        parameters: {
+            query?: {
+                epoch_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HeadResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    verify_api_v1_audit_verify_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerifyRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuditVerification"];
                 };
             };
             /** @description Unprocessable Entity */

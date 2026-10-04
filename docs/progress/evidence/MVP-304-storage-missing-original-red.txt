@@ -1,0 +1,46 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_open_missing_original_fails_but_lifecycle_and_sealed_reset_remain_valid _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_218a82fe10694bb79f7907fd5a5ccff7)
+
+    def test_open_missing_original_fails_but_lifecycle_and_sealed_reset_remain_valid(demo_engine: Engine) -> None:
+        from app.db.models import EvidenceItem
+        from app.domain.autonomy import ALGORITHM_VERSION
+        from app.domain.decision_trace import build_trace
+        from app.domain.policy_configuration import configuration_hash
+        from app.services.audit_chain import current_audit_epoch, verify_audit_chain
+        from app.services.decision_trace import evidence_copy, record_trace
+        from app.services.demo_seed import DEMO_USER_ID, SEED_AS_OF, seed_demo
+        seed_demo(demo_engine)
+        evidence_id = uuid4()
+        with Session(demo_engine) as session, session.begin():
+            content = {"simulation": True, "declared": "original server fixture"}
+            evidence = EvidenceItem(id=evidence_id, user_id=DEMO_USER_ID, evidence_level="USER_DECLARED",
+                source_type="TEST_USER_INTENT", source_ref="original-audit-proof", content=content,
+                content_hash=configuration_hash(content), observed_at=SEED_AS_OF, valid_from=SEED_AS_OF)
+            session.add(evidence)
+            session.flush()
+            trace = build_trace(run_id=uuid4(), user_id=DEMO_USER_ID, phase="EVALUATION", as_of=SEED_AS_OF,
+                algorithm_versions={"autonomy": ALGORITHM_VERSION}, inputs={}, sources=[evidence_copy(evidence)],
+                policies=[], constraints=[], candidates=[], outcome={"status": "BLOCKED"})
+            record_trace(session, trace)
+            epoch = current_audit_epoch(session, DEMO_USER_ID)
+            assert epoch is not None
+            old_epoch = epoch.id
+        with Session(demo_engine) as session:
+            evidence = session.get(EvidenceItem, evidence_id)
+            assert evidence is not None
+            session.delete(evidence)
+            session.flush()
+            result = verify_audit_chain(session, DEMO_USER_ID)
+>           assert result.status == "INTEGRITY_ERROR"
+E           AssertionError: assert 'VALID' == 'INTEGRITY_ERROR'
+E             
+E             - INTEGRITY_ERROR
+E             + VALID
+
+apps\api\app\tests\test_audit_storage.py:254: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_audit_storage.py::test_open_missing_original_fails_but_lifecycle_and_sealed_reset_remain_valid
+1 failed in 5.47s

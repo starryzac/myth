@@ -1,0 +1,20 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_projected_original_receipt_and_posting_anchors_verify_without_session __
+
+    def test_projected_original_receipt_and_posting_anchors_verify_without_session() -> None:
+        from app.domain.audit_chain import verify_epoch, build_subject
+    
+        events, head, bundle = projected_chain()
+        valid = verify_epoch(events, head=head, expected_user_id=head.user_id, references=bundle)
+>       assert valid.status == "VALID", valid.errors
+E       AssertionError: [AuditDiagnostic(code='UNSUPPORTED_VERSION', sequence_number=3, event_id=UUID('00000000-0000-0000-0000-000000000025'), reference=None, message='Unsupported audit original anchor kind or hash algorithm')]
+E       assert 'UNSUPPORTED_VERSION' == 'VALID'
+E         
+E         - VALID
+E         + UNSUPPORTED_VERSION
+
+apps\api\app\tests\test_audit_chain_domain.py:345: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_audit_chain_domain.py::test_projected_original_receipt_and_posting_anchors_verify_without_session
+1 failed, 12 deselected in 0.95s

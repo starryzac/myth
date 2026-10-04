@@ -1,0 +1,47 @@
+F
+================================== FAILURES ===================================
+__________ test_unrecorded_legacy_and_unknown_algorithm_are_explicit __________
+
+trace_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_156a54948f644e2dbc69aa7dcce7ef8e)
+
+    def test_unrecorded_legacy_and_unknown_algorithm_are_explicit(trace_engine: Engine) -> None:
+        with Session(trace_engine) as session, session.begin():
+            legacy = DecisionRun(
+                user_id=OWNER,
+                idempotency_key="old-decision",
+                trigger_type="ACTION_PREPARE",
+                algorithm_version="old-unavailable-version",
+                as_of=NOW,
+                input_snapshot={"only_old_fact": 1},
+                snapshot_hash=configuration_hash({"only_old_fact": 1}),
+            )
+            session.add(legacy)
+            session.flush()
+            legacy_id = legacy.id
+            trace = storage_trace(session)
+            unknown = build_trace(
+                **{
+                    **trace.model_dump(exclude={"input_hash", "trace_hash"}),
+                    "algorithm_versions": {"boundary": "future-version-v99"},
+                }
+            )
+            record_trace(session, unknown)
+        with Session(trace_engine) as session:
+            result = get_decision_trace(session, OWNER, legacy_id, NOW)
+            assert result.completeness == "LEGACY_PARTIAL" and result.trace is None
+            assert result.legacy_snapshot == {"only_old_fact": 1}
+            assert result.audit_chain_status == "LEGACY_UNAUDITED"
+            result = get_decision_trace(session, OWNER, unknown.run_id, NOW)
+            assert result.completeness == "UNSUPPORTED_VERSION"
+            assert result.explanation is None
+>           assert result.audit_chain_status == "UNSUPPORTED_VERSION"
+E           AssertionError: assert 'INTEGRITY_ERROR' == 'UNSUPPORTED_VERSION'
+E             
+E             - UNSUPPORTED_VERSION
+E             + INTEGRITY_ERROR
+
+apps\api\app\tests\test_decision_trace_storage.py:337: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_decision_trace_storage.py::test_unrecorded_legacy_and_unknown_algorithm_are_explicit
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 5.20s

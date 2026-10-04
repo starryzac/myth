@@ -392,6 +392,9 @@ def process_redemption(engine: Engine, user_id: UUID, action_id: UUID, now: date
         raise _error("The simulated bank requires a trusted aware clock")
     now = now.astimezone(UTC)
     with Session(engine) as session, session.begin():
+        from app.db.audit_guard import transaction_gate
+
+        transaction_gate(session, user_id)
         user = session.scalar(select(User).where(User.id == user_id).with_for_update())
         if user is None or not user.is_simulated:
             raise _error("Unknown simulated bank owner")
@@ -414,6 +417,7 @@ def process_redemption(engine: Engine, user_id: UUID, action_id: UUID, now: date
                 SimulatedBankRedemption.idempotency_key == action.idempotency_key,
             )
         )
+        new_request = request is None
         if request is not None:
             if request.action_plan_id != action_id or request.request_hash != payload_hash:
                 raise _error("The original bank idempotency key cannot change economic content")
@@ -599,11 +603,18 @@ def process_redemption(engine: Engine, user_id: UUID, action_id: UUID, now: date
             session.flush()
         elif unified.request_hash != request.request_hash or unified.action_plan_id != action_id:
             raise _error("Legacy and unified bank request identities disagree")
+        from app.services.audit_recording import record_bank_accepted, record_bank_settled
+
+        if new_request:
+            record_bank_accepted(session, unified, now)
+        before_status = request.status
         if request.status == "ACCEPTED" and request.available_at <= now:
             require_settlement_order(session, user_id, now, unified)
         _settle(session, request, now)
         unified.status, unified.settled_at = request.status, request.settled_at
         session.flush()
+        if before_status == "ACCEPTED" and request.status == "SETTLED":
+            record_bank_settled(session, unified, now)
         postings = list(
             session.scalars(
                 select(SimulatedBankPosting.id)

@@ -1,0 +1,10 @@
+E501 Line too long (103 > 100)
+  --> apps\api\app\tests\test_audit_reset.py:70:101
+   |
+70 | def test_current_epoch_checks_real_previous_seal_not_only_its_local_claim(demo_engine: Engine) -> None:
+   |                                                                                                     ^^^
+71 |     from sqlalchemy import text
+72 |     seed_demo(demo_engine)
+   |
+
+Found 3 errors (2 fixed, 1 remaining).

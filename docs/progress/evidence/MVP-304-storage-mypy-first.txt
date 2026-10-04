@@ -1,0 +1,9 @@
+apps\api\app\services\audit_chain.py:261: error: Need type annotation for "row"  [var-annotated]
+apps\api\app\services\audit_chain.py:295: error: Argument "occurred_at" to "AuditIntent" has incompatible type "Any | None"; expected "datetime"  [arg-type]
+apps\api\app\services\audit_chain.py:298: error: Argument 4 to "_save_event" has incompatible type "Any | None"; expected "datetime"  [arg-type]
+apps\api\app\services\audit_chain.py:298: error: Argument 5 to "_save_event" has incompatible type "Any | None"; expected "datetime"  [arg-type]
+apps\api\app\services\audit_chain.py:335: error: Argument 3 to "_new_epoch" has incompatible type "Any | None"; expected "datetime"  [arg-type]
+apps\api\app\services\audit_chain.py:662: error: Unsupported operand types for < ("int" and "object")  [operator]
+apps\api\app\services\audit_chain.py:663: error: Unsupported operand types for < ("int" and "object")  [operator]
+apps\api\app\services\audit_chain.py:664: error: Unsupported left operand type for + ("object")  [operator]
+Found 8 errors in 1 file (checked 9 source files)

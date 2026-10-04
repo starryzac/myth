@@ -1,0 +1,125 @@
+{
+  "archived_at": "2026-10-04T12:31:16.593165+00:00",
+  "run_id": "20261004T094808Z-2e990d57",
+  "check_finished_at": "2026-10-04T12:23:54.182507+00:00",
+  "result": "RED",
+  "full_check_verified": false,
+  "command_count": 9,
+  "command_exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+  ],
+  "actual_result": {
+    "collected": 1300,
+    "passed": 464,
+    "failed": 1,
+    "warnings": 1,
+    "seconds": 9263.84
+  },
+  "failed_node": "apps/api/app/tests/test_decision_trace_reset.py::test_reset_after_actual_three_phase_execution_is_repeatable_and_preserves_other_tenant",
+  "failure": "Original full-database snapshot assertion after reset; retained audit rows differ. No production diagnosis asserted here.",
+  "current_source_hashes_match_before_repair": true,
+  "source_capture_count": 201,
+  "current_source_path_set_matches": true,
+  "current_head_matches": true,
+  "head": "70ef87734e9c3feea5e34c19a7080b9aad1d4ede",
+  "launch_environment_declarations_byte_identical": true,
+  "verified_launch_environment": {
+    "PLAYWRIGHT_CHANNEL": "msedge",
+    "PYTEST_ADDOPTS": "-x"
+  },
+  "environment_evidence_boundary": "Same-run captured launch declarations; not a later shell environment assertion.",
+  "first_red_unchanged": true,
+  "first_red_file_count": 12,
+  "failed_source_original_sha256": "3427df987001849d94b8927386bf11fe36fa7657b7efa32bb47c6b83e7ca4496",
+  "frontend_unit_and_e2e_not_reached": true,
+  "helper": ".runtime\\archive_mvp304_second_red.py",
+  "helper_sha256": "efaadd336157b983c5e5b7ccac7686337efed438c7ac6b5e4e08fbe845b0368e",
+  "archived": [
+    {
+      "source": ".runtime/quality/20261004T094808Z-2e990d57/manifest.json",
+      "file": "MVP-304-check-second-red-manifest.json",
+      "sha256": "e83dcf2eb44124685cb6144a9cab14ff34b6f5c5eb982f996f0138b39e976320",
+      "bytes_identical": true
+    },
+    {
+      "source": ".runtime/quality/20261004T094808Z-2e990d57/environment.json",
+      "file": "MVP-304-check-second-red-environment.json",
+      "sha256": "5ad5f05ac7259ebf7f021f161d5e3a131ee199c6d04998d17b17687326b05c01",
+      "bytes_identical": true
+    },
+    {
+      "source": ".runtime/quality/20261004T094808Z-2e990d57/01-uv.log",
+      "file": "MVP-304-check-second-red-01-uv.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+      "bytes_identical": true
+    },
+    {
+      "source": ".runtime/quality/20261004T094808Z-2e990d57/02-uv.log",
+      "file": "MVP-304-check-second-red-02-uv.log",
+      "sha256": "ba79708eec80e55e5da9225c62b0e300f541a8beed38859b6aab5c5e166f170b",
+      "bytes_identical": true
+    },
+    {
+      "source": ".runtime/quality/20261004T094808Z-2e990d57/03-uv.log",
+      "file": "MVP-304-check-second-red-03-uv.log",
+      "sha256": "066ec88f3228d93b674fd2f3cb0033ed1ee9558cf96b1e52b5f104e3d33f8132",
+      "bytes_identical": true
+    },
+    {
+      "source": ".runtime/quality/20261004T094808Z-2e990d57/04-pnpm.log",
+      "file": "MVP-304-check-second-red-04-pnpm.log",
+      "sha256": "9f55fa4f442193f038d9ed374e8109193ef8f404f0e87c8a57c77a8f64a3aa40",
+      "bytes_identical": true
+    },
+    {
+      "source": ".runtime/quality/20261004T094808Z-2e990d57/05-uv.log",
+      "file": "MVP-304-check-second-red-05-uv.log",
+      "sha256": "a1572108c857a40c569e03906eefdd9390f14871ed19229d57bb5219843fae2b",
+      "bytes_identical": true
+    },
+    {
+      "source": ".runtime/quality/20261004T094808Z-2e990d57/06-uv.log",
+      "file": "MVP-304-check-second-red-06-uv.log",
+      "sha256": "066ec88f3228d93b674fd2f3cb0033ed1ee9558cf96b1e52b5f104e3d33f8132",
+      "bytes_identical": true
+    },
+    {
+      "source": ".runtime/quality/20261004T094808Z-2e990d57/07-pnpm.log",
+      "file": "MVP-304-check-second-red-07-pnpm.log",
+      "sha256": "5a3973f79ed9becd5f23c4feff467513814de7ea381d75a4d2e339aa8b8edca9",
+      "bytes_identical": true
+    },
+    {
+      "source": ".runtime/quality/20261004T094808Z-2e990d57/08-docker.log",
+      "file": "MVP-304-check-second-red-08-docker.log",
+      "sha256": "8ace0a4623491574dad714258a6a7c09f205577232bb9522566f0b85bd5f51c1",
+      "bytes_identical": true
+    },
+    {
+      "source": ".runtime/quality/20261004T094808Z-2e990d57/09-uv.log",
+      "file": "MVP-304-check-second-red-09-uv.log",
+      "sha256": "b1f2c602224e46d16e481969349d1437df365dede6fd0f9d249282d100fd53a6",
+      "bytes_identical": true
+    },
+    {
+      "source": ".runtime/MVP-304-collected.txt",
+      "file": "MVP-304-check-second-red-collected.txt",
+      "sha256": "64a2da1aa53ad6c61b97d7a48ac55c80873bc2d46cfd7e45c186273139aaf04f",
+      "bytes_identical": true
+    },
+    {
+      "source": "apps/api/app/tests/test_decision_trace_reset.py",
+      "file": "MVP-304-check-second-red-test_decision_trace_reset.py.txt",
+      "sha256": "3427df987001849d94b8927386bf11fe36fa7657b7efa32bb47c6b83e7ca4496",
+      "bytes_identical": true
+    }
+  ]
+}

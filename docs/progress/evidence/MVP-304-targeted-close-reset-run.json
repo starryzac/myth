@@ -1,0 +1,82 @@
+{
+  "command": [
+    "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_decision_trace_reset.py::test_reset_after_actual_three_phase_execution_is_repeatable_and_preserves_other_tenant",
+    "apps/api/app/tests/test_decision_trace_reset.py::test_failed_reset_restores_original_links_and_economic_history",
+    "--no-cov",
+    "-vv"
+  ],
+  "nodes": [
+    "apps/api/app/tests/test_decision_trace_reset.py::test_reset_after_actual_three_phase_execution_is_repeatable_and_preserves_other_tenant",
+    "apps/api/app/tests/test_decision_trace_reset.py::test_failed_reset_restores_original_links_and_economic_history"
+  ],
+  "prepared_at": "2026-10-04T12:45:54.317190+00:00",
+  "started_at": "2026-10-04T12:45:55.675363+00:00",
+  "finished_at": "2026-10-04T12:53:13.620371+00:00",
+  "exit_code": 0,
+  "seconds": 437.93699999997625,
+  "passed_count": 2,
+  "environment": {
+    "PYTHONUTF8": "1",
+    "UV_CACHE_DIR": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.uv-cache",
+    "PYTEST_ADDOPTS": "-x"
+  },
+  "log_file": ".runtime/MVP-304-reset-targeted-pytest.txt",
+  "log_sha256": "d15cb0dbec4f79680480358a4229784caa0d7a6068caeb0887b8b29a118f0f8b",
+  "source_sha256": {
+    "apps/api/app/tests/test_decision_trace_reset.py": "acb5d478ef229e95f7f963330ebb450dfab9ca6d8748a1b5cfddd54bae99896a"
+  },
+  "static": [
+    {
+      "command": [
+        "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Scripts\\ruff.exe",
+        "check",
+        "--no-cache",
+        "apps/api/app/tests/test_decision_trace_reset.py"
+      ],
+      "started_at": "2026-10-04T12:45:54.318841+00:00",
+      "finished_at": "2026-10-04T12:45:54.368540+00:00",
+      "exit_code": 0,
+      "log_file": ".runtime/MVP-304-reset-targeted-ruff-check-final.txt",
+      "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "command": [
+        "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Scripts\\ruff.exe",
+        "format",
+        "--check",
+        "--no-cache",
+        "apps/api/app/tests/test_decision_trace_reset.py"
+      ],
+      "started_at": "2026-10-04T12:45:54.371546+00:00",
+      "finished_at": "2026-10-04T12:45:54.426938+00:00",
+      "exit_code": 0,
+      "log_file": ".runtime/MVP-304-reset-targeted-ruff-format-final.txt",
+      "log_sha256": "fd2299c9f1c6dc869070883e281051bfe93aacf66c1a3b0069f45b4aa410ca50"
+    },
+    {
+      "command": [
+        "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Scripts\\python.exe",
+        "-m",
+        "mypy",
+        "apps/api/app/tests/test_decision_trace_reset.py"
+      ],
+      "started_at": "2026-10-04T12:45:54.432462+00:00",
+      "finished_at": "2026-10-04T12:45:55.649635+00:00",
+      "exit_code": 0,
+      "log_file": ".runtime/MVP-304-reset-targeted-mypy-final.txt",
+      "log_sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+    }
+  ],
+  "prior_static_metadata": ".runtime/MVP-304-reset-targeted-static-first.json",
+  "prior_static_metadata_sha256": "ba49b76623862c50eba820fafb9d394b7ef23e4604540c9cb9b5b670edf59520",
+  "formal_seed_reset": false,
+  "test_database_policy": "Existing temporary_database + require_test_database; generated bf_test_<32hex> only",
+  "pytest_reported_seconds": 435.91,
+  "source_sha256_after": {
+    "apps/api/app/tests/test_decision_trace_reset.py": "acb5d478ef229e95f7f963330ebb450dfab9ca6d8748a1b5cfddd54bae99896a"
+  },
+  "source_unchanged_during_run": true
+}

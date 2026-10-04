@@ -2606,6 +2606,205 @@
         }
       }
     },
+    "/api/v1/audit/events": {
+      "get": {
+        "tags": [
+          "simulated-audit"
+        ],
+        "summary": "Events",
+        "operationId": "events_api_v1_audit_events_get",
+        "parameters": [
+          {
+            "name": "epoch_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Epoch Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditEventPage"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/audit/head": {
+      "get": {
+        "tags": [
+          "simulated-audit"
+        ],
+        "summary": "Head",
+        "operationId": "head_api_v1_audit_head_get",
+        "parameters": [
+          {
+            "name": "epoch_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Epoch Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeadResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/audit/verify": {
+      "post": {
+        "tags": [
+          "simulated-audit"
+        ],
+        "summary": "Verify",
+        "operationId": "verify_api_v1_audit_verify_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditVerification"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/health": {
       "get": {
         "summary": "Health",
@@ -3407,6 +3606,1362 @@
           "amount_cents"
         ],
         "title": "AssetCashUse"
+      },
+      "AuditAnchor": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Kind"
+          },
+          "reference_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Reference Id"
+          },
+          "snapshot_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Snapshot Hash"
+          },
+          "digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest"
+          },
+          "hash_algorithm": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Hash Algorithm"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "reference_id",
+          "snapshot_hash",
+          "digest",
+          "hash_algorithm"
+        ],
+        "title": "AuditAnchor"
+      },
+      "AuditChange": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Kind"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "field": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Field"
+          },
+          "before": {
+            "title": "Before"
+          },
+          "after": {
+            "title": "After"
+          },
+          "before_snapshot_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Before Snapshot Hash"
+          },
+          "after_snapshot_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "After Snapshot Hash"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "field",
+          "after",
+          "after_snapshot_hash"
+        ],
+        "title": "AuditChange"
+      },
+      "AuditCheckpoint": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "audit-checkpoint-v1",
+            "title": "Schema Version",
+            "default": "audit-checkpoint-v1"
+          },
+          "canonical_version": {
+            "type": "string",
+            "const": "audit-canonical-json-v1",
+            "title": "Canonical Version",
+            "default": "audit-canonical-json-v1"
+          },
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "epoch_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Epoch Id"
+          },
+          "epoch_number": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "title": "Epoch Number"
+          },
+          "genesis_event_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Genesis Event Id"
+          },
+          "genesis_event_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Genesis Event Hash"
+          },
+          "expected_count": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "title": "Expected Count"
+          },
+          "last_sequence": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "title": "Last Sequence"
+          },
+          "tail_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Tail Id"
+          },
+          "tail_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Tail Hash"
+          },
+          "previous_epoch_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Epoch Id"
+          },
+          "previous_seal_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Seal Hash"
+          },
+          "captured_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Captured At"
+          },
+          "checkpoint_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Checkpoint Hash"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "epoch_id",
+          "epoch_number",
+          "genesis_event_id",
+          "genesis_event_hash",
+          "expected_count",
+          "last_sequence",
+          "tail_id",
+          "tail_hash",
+          "captured_at",
+          "checkpoint_hash"
+        ],
+        "title": "AuditCheckpoint"
+      },
+      "AuditDiagnostic": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Code"
+          },
+          "sequence_number": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2147483647.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sequence Number"
+          },
+          "event_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Id"
+          },
+          "reference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference"
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "AuditDiagnostic"
+      },
+      "AuditEnvelope": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "event_type": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Event Type"
+          },
+          "aggregate_type": {
+            "type": "string",
+            "maxLength": 48,
+            "minLength": 1,
+            "title": "Aggregate Type"
+          },
+          "aggregate_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Aggregate Id"
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Correlation Id"
+          },
+          "causation_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Causation Id"
+          },
+          "decision_run_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decision Run Id"
+          },
+          "action_plan_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Plan Id"
+          },
+          "action_receipt_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Receipt Id"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Idempotency Key"
+          },
+          "payload_version": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "title": "Payload Version",
+            "default": 1
+          },
+          "payload": {
+            "$ref": "#/components/schemas/AuditPayload"
+          },
+          "occurred_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Occurred At"
+          },
+          "schema_version": {
+            "type": "string",
+            "const": "audit-event-v1",
+            "title": "Schema Version",
+            "default": "audit-event-v1"
+          },
+          "canonical_version": {
+            "type": "string",
+            "const": "audit-canonical-json-v1",
+            "title": "Canonical Version",
+            "default": "audit-canonical-json-v1"
+          },
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "epoch_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Epoch Id"
+          },
+          "sequence_number": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "title": "Sequence Number"
+          },
+          "previous_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Hash"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "appended_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Appended At"
+          },
+          "event_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Event Hash"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "event_type",
+          "aggregate_type",
+          "aggregate_id",
+          "correlation_id",
+          "idempotency_key",
+          "payload",
+          "occurred_at",
+          "id",
+          "epoch_id",
+          "sequence_number",
+          "previous_hash",
+          "observed_at",
+          "appended_at",
+          "event_hash"
+        ],
+        "title": "AuditEnvelope"
+      },
+      "AuditEpochTransition": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "INIT",
+              "RESET",
+              "SEAL"
+            ],
+            "title": "Kind"
+          },
+          "reset_key": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reset Key"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "principal": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Principal"
+          },
+          "previous_epoch_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Epoch Id"
+          },
+          "previous_seal_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Seal Hash"
+          },
+          "seed_version": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seed Version"
+          },
+          "summary_version": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary Version"
+          },
+          "dataset_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dataset Hash"
+          },
+          "archive_manifest_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archive Manifest Hash"
+          },
+          "archive_record_counts": {
+            "additionalProperties": {
+              "type": "integer",
+              "maximum": 2147483647.0,
+              "minimum": 0.0
+            },
+            "propertyNames": {
+              "maxLength": 160,
+              "minLength": 1
+            },
+            "type": "object",
+            "title": "Archive Record Counts"
+          },
+          "pre_seal_head": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AuditHead"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "legacy_history": {
+            "type": "boolean",
+            "title": "Legacy History",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "title": "AuditEpochTransition"
+      },
+      "AuditEventPage": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "epoch_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epoch Id"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AuditEventView"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "epoch_id",
+          "items",
+          "next_cursor"
+        ],
+        "title": "AuditEventPage"
+      },
+      "AuditEventView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "epoch_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epoch Id"
+          },
+          "completeness": {
+            "type": "string",
+            "enum": [
+              "COMPLETE",
+              "LEGACY_UNAUDITED",
+              "UNSUPPORTED_VERSION"
+            ],
+            "title": "Completeness"
+          },
+          "envelope": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AuditEnvelope"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "original": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "epoch_id",
+          "completeness",
+          "envelope",
+          "original"
+        ],
+        "title": "AuditEventView"
+      },
+      "AuditFactContext": {
+        "properties": {
+          "reason_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason Code"
+          },
+          "cause_ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cause Ref"
+          },
+          "details": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Details"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "AuditFactContext"
+      },
+      "AuditHead": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "audit-head-v1",
+            "title": "Schema Version",
+            "default": "audit-head-v1"
+          },
+          "canonical_version": {
+            "type": "string",
+            "const": "audit-canonical-json-v1",
+            "title": "Canonical Version",
+            "default": "audit-canonical-json-v1"
+          },
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "epoch_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Epoch Id"
+          },
+          "epoch_number": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "title": "Epoch Number"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "SEALED"
+            ],
+            "title": "Status",
+            "default": "OPEN"
+          },
+          "event_count": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "title": "Event Count"
+          },
+          "last_sequence": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "title": "Last Sequence"
+          },
+          "last_event_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Event Id"
+          },
+          "last_event_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Event Hash"
+          },
+          "genesis_event_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Genesis Event Id"
+          },
+          "genesis_event_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Genesis Event Hash"
+          },
+          "previous_epoch_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Epoch Id"
+          },
+          "previous_seal_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Seal Hash"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "epoch_id",
+          "epoch_number",
+          "event_count",
+          "last_sequence",
+          "last_event_id",
+          "last_event_hash",
+          "genesis_event_id",
+          "genesis_event_hash"
+        ],
+        "title": "AuditHead"
+      },
+      "AuditLegacyOrigin": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "const": "UNRECORDED_BEFORE_ACTIVATION",
+            "title": "Reason"
+          },
+          "original_request_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Original Request Hash"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reason",
+          "original_request_hash"
+        ],
+        "title": "AuditLegacyOrigin"
+      },
+      "AuditObservation": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "WAITING_PROJECTION",
+              "PROJECTION_FAILED",
+              "BANK_ERROR",
+              "RUN_COMPLETED"
+            ],
+            "title": "Kind"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "bank_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bank Status"
+          },
+          "run_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Run Id"
+          },
+          "action_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Id"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "title": "AuditObservation"
+      },
+      "AuditPayload": {
+        "properties": {
+          "fact_key": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Fact Key"
+          },
+          "correlation_kind": {
+            "type": "string",
+            "enum": [
+              "EPOCH",
+              "DECISION_RUN",
+              "POLICY",
+              "GOAL"
+            ],
+            "title": "Correlation Kind"
+          },
+          "references": {
+            "items": {
+              "$ref": "#/components/schemas/AuditReference"
+            },
+            "type": "array",
+            "maxItems": 10000,
+            "title": "References"
+          },
+          "anchors": {
+            "items": {
+              "$ref": "#/components/schemas/AuditAnchor"
+            },
+            "type": "array",
+            "maxItems": 10000,
+            "title": "Anchors"
+          },
+          "changes": {
+            "items": {
+              "$ref": "#/components/schemas/AuditChange"
+            },
+            "type": "array",
+            "maxItems": 10000,
+            "title": "Changes"
+          },
+          "missing_evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "maxItems": 10000,
+            "title": "Missing Evidence Ids"
+          },
+          "legacy_origin": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AuditLegacyOrigin"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "epoch_transition": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AuditEpochTransition"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "observation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AuditObservation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "context": {
+            "$ref": "#/components/schemas/AuditFactContext"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "fact_key",
+          "correlation_kind"
+        ],
+        "title": "AuditPayload"
+      },
+      "AuditReference": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Kind"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "TENANT",
+              "GLOBAL_CATALOG"
+            ],
+            "title": "Scope",
+            "default": "TENANT"
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Id"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "BASIS",
+              "BEFORE",
+              "AFTER"
+            ],
+            "title": "Role",
+            "default": "BASIS"
+          },
+          "snapshot_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Snapshot Hash"
+          },
+          "snapshot_version": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "title": "Snapshot Version",
+            "default": 1
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "user_id",
+          "snapshot_hash"
+        ],
+        "title": "AuditReference"
+      },
+      "AuditVerification": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "audit-verification-v1",
+            "title": "Schema Version",
+            "default": "audit-verification-v1"
+          },
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "epoch_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epoch Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "VALID",
+              "INTEGRITY_ERROR",
+              "UNSUPPORTED_VERSION",
+              "LEGACY_UNAUDITED",
+              "INCOMPLETE"
+            ],
+            "title": "Status"
+          },
+          "chain_status": {
+            "type": "string",
+            "enum": [
+              "VALID",
+              "INTEGRITY_ERROR",
+              "UNSUPPORTED_VERSION",
+              "LEGACY_UNAUDITED",
+              "INCOMPLETE"
+            ],
+            "title": "Chain Status"
+          },
+          "reference_status": {
+            "type": "string",
+            "enum": [
+              "VALID",
+              "INTEGRITY_ERROR",
+              "UNSUPPORTED_VERSION",
+              "LEGACY_UNAUDITED",
+              "INCOMPLETE"
+            ],
+            "title": "Reference Status"
+          },
+          "checkpoint_status": {
+            "type": "string",
+            "enum": [
+              "VERIFIED",
+              "NOT_REQUESTED",
+              "MISMATCH",
+              "UNAVAILABLE"
+            ],
+            "title": "Checkpoint Status"
+          },
+          "actual_count": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "title": "Actual Count"
+          },
+          "expected_count": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "title": "Expected Count"
+          },
+          "actual_tail_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actual Tail Id"
+          },
+          "actual_tail_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actual Tail Hash"
+          },
+          "expected_tail_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Tail Id"
+          },
+          "expected_tail_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Tail Hash"
+          },
+          "verified_through_sequence": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "title": "Verified Through Sequence"
+          },
+          "errors": {
+            "items": {
+              "$ref": "#/components/schemas/AuditDiagnostic"
+            },
+            "type": "array",
+            "title": "Errors"
+          },
+          "warnings": {
+            "items": {
+              "$ref": "#/components/schemas/AuditDiagnostic"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "errors_truncated": {
+            "type": "boolean",
+            "title": "Errors Truncated",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "epoch_id",
+          "status",
+          "chain_status",
+          "reference_status",
+          "checkpoint_status",
+          "actual_count",
+          "expected_count",
+          "actual_tail_id",
+          "actual_tail_hash",
+          "expected_tail_id",
+          "expected_tail_hash",
+          "verified_through_sequence"
+        ],
+        "title": "AuditVerification"
       },
       "AutonomyDecision": {
         "properties": {
@@ -4954,9 +6509,15 @@
           },
           "audit_chain_status": {
             "type": "string",
-            "const": "NOT_IMPLEMENTED",
+            "enum": [
+              "VALID",
+              "INTEGRITY_ERROR",
+              "UNSUPPORTED_VERSION",
+              "LEGACY_UNAUDITED",
+              "INCOMPLETE"
+            ],
             "title": "Audit Chain Status",
-            "default": "NOT_IMPLEMENTED"
+            "default": "LEGACY_UNAUDITED"
           }
         },
         "additionalProperties": false,
@@ -6153,6 +7714,46 @@
           "asset_policy_id"
         ],
         "title": "GoalView"
+      },
+      "HeadResponse": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "completeness": {
+            "type": "string",
+            "enum": [
+              "COMPLETE",
+              "LEGACY_UNAUDITED"
+            ],
+            "title": "Completeness"
+          },
+          "head": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AuditHead"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "completeness",
+          "head"
+        ],
+        "title": "HeadResponse"
       },
       "HealthResponse": {
         "properties": {
@@ -9138,6 +10739,44 @@
           "amount_cents"
         ],
         "title": "UnassignedGoalCash"
+      },
+      "VerifyRequest": {
+        "properties": {
+          "epoch_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epoch Id"
+          },
+          "checkpoint": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AuditCheckpoint"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "PREFIX",
+              "EXACT"
+            ],
+            "title": "Mode",
+            "default": "PREFIX"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "VerifyRequest"
       }
     }
   }

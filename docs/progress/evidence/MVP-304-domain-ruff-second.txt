@@ -1,0 +1,12 @@
+B023 Function definition does not bind loop variable `missing`
+    --> apps\api\app\domain\audit_chain.py:1361:29
+     |
+1359 |                     for key, child in value.items():
+1360 |                         if key == "missing_evidence_references":
+1361 |                             missing.update(UUID(identity) for identity in child)
+     |                             ^^^^^^^
+1362 |                         else:
+1363 |                             original_missing(child)
+     |
+
+Found 1 error.

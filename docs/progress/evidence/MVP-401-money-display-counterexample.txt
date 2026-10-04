@@ -1,0 +1,2 @@
+{"kind":"runtime","node":"v24.14.1"}
+{"kind":"precision_counterexample","cents":9007199254740990,"safe_integer":true,"floating_display":"90071992547409.91","integer_display":"90071992547409.90"}

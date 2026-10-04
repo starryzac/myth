@@ -5,9 +5,9 @@ import json
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, time, timedelta, timezone
 from typing import Any, Literal
-from uuid import UUID, uuid5
+from uuid import UUID, uuid4, uuid5
 
-from app.db.base import Base
+from app.db.audit_guard import DEMO_GATE_KEY
 from app.db.models import (
     Account,
     ActionPlan,
@@ -31,9 +31,20 @@ from app.db.models import (
     User,
 )
 from app.domain.asset_exposure import EXPOSURE_SOURCE, asset_exposure_snapshot
+from app.domain.audit_chain import parse_event
 from app.domain.demo_identity import DEMO_USER_ID as DEMO_USER_ID
 from app.domain.demo_identity import DEMO_USER_REF as DEMO_USER_REF
 from app.domain.history_coverage import COVERAGE_SOURCE_TYPE, build_history_coverage
+from app.services.audit_chain import (
+    SUBJECT_MODELS,
+    can_continue_audit,
+    current_audit_epoch,
+    ensure_audit_epoch,
+    has_business_history,
+    reset_archive_epoch,
+    start_seed_epoch,
+    verify_audit_chain,
+)
 from app.services.simulated_bank import open_simulated_bank
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import delete, or_, select, text, update
@@ -41,6 +52,7 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
 SEED_VERSION = "mvp-301-v6"
+SUMMARY_VERSION = "seed-summary-v2"
 SEED_START = date(2026, 8, 5)
 SEED_END = date(2026, 10, 3)
 SEED_AS_OF = datetime(2026, 10, 3, 16, tzinfo=UTC)
@@ -57,6 +69,7 @@ class SeedConflictError(ValueError):
 class SeedSummary(BaseModel):
     model_config = ConfigDict(frozen=True)
     simulation: Literal[True] = True
+    summary_version: Literal["seed-summary-v2"] = "seed-summary-v2"
     seed_version: str
     user_id: UUID
     as_of: datetime
@@ -371,11 +384,7 @@ def _ensure_products(session: Session) -> None:
 
 
 def _clear_demo(session: Session) -> None:
-    # Existing self-references are severed only inside this tenant's atomic reset.
-    # A later append-only audit service must give reset its own audited mechanism.
-    session.execute(
-        update(AuditEvent).where(AuditEvent.user_id == DEMO_USER_ID).values(causation_id=None)
-    )
+    # The original graph has already been sealed; retained audit objects are untouched.
     session.execute(
         update(EvidenceItem).where(EvidenceItem.user_id == DEMO_USER_ID).values(supersedes_id=None)
     )
@@ -389,7 +398,6 @@ def _clear_demo(session: Session) -> None:
         BankOperation,
         SimulatedBankRedemption,
         ActionResourceReservation,
-        AuditEvent,
         ActionReceipt,
         ActionPlan,
         DecisionConstraint,
@@ -405,7 +413,6 @@ def _clear_demo(session: Session) -> None:
         Account,
     ]:
         session.execute(delete(model).where(model.__table__.c.user_id == DEMO_USER_ID))
-    session.execute(delete(User).where(User.id == DEMO_USER_ID))
 
 
 def _evidence(
@@ -431,16 +438,17 @@ def _evidence(
 
 
 def _insert_facts(session: Session) -> None:
-    session.add(
-        User(
-            id=DEMO_USER_ID,
-            external_ref=DEMO_USER_REF,
-            display_name="小钱（合成演示用户）",
-            timezone="Asia/Shanghai",
-            is_simulated=True,
-            created_at=SEED_AS_OF,
+    if session.get(User, DEMO_USER_ID) is None:
+        session.add(
+            User(
+                id=DEMO_USER_ID,
+                external_ref=DEMO_USER_REF,
+                display_name="小钱（合成演示用户）",
+                timezone="Asia/Shanghai",
+                is_simulated=True,
+                created_at=SEED_AS_OF,
+            )
         )
-    )
     session.flush()
     accounts: dict[str, Account] = {}
     for key, kind, name in [
@@ -657,7 +665,9 @@ def _insert_facts(session: Session) -> None:
 def _summary(session: Session) -> SeedSummary:
     dataset: dict[str, list[dict[str, Any]]] = {}
     product_ids = [values["id"] for values in _product_values()]
-    for table in Base.metadata.sorted_tables:
+    for table in sorted(
+        (model.__table__ for model in SUBJECT_MODELS.values()), key=lambda t: t.name
+    ):
         if table.name == "users":
             predicate = table.c.id == DEMO_USER_ID
         elif table.name == "asset_products":
@@ -713,14 +723,55 @@ def _open_seed_bank(session: Session) -> None:
     )
 
 
-def seed_demo(engine: Engine) -> SeedSummary:
+def seed_demo(
+    engine: Engine,
+    *,
+    reset_key: str | None = None,
+    reason: str = "SYNTHETIC_DEMO_RESET",
+    principal: str = "demo-seed",
+) -> SeedSummary:
     """Atomically replace demo facts in an already migrated PostgreSQL database."""
     if engine.dialect.name != "postgresql":
         raise ValueError("Demo seeding requires PostgreSQL")
+    if any(
+        type(value) is not str or not 1 <= len(value) <= 160 for value in [reason, principal]
+    ) or (reset_key is not None and (type(reset_key) is not str or not 1 <= len(reset_key) <= 160)):
+        raise SeedConflictError("reset_key, reason and principal must be nonempty bounded strings")
     with Session(engine) as session, session.begin():
-        session.execute(text("SELECT pg_advisory_xact_lock(:key)"), {"key": 0x424644454D4F})
+        session.execute(text("SELECT pg_advisory_xact_lock(:key)"), {"key": DEMO_GATE_KEY})
         _check_identity(session)
         _ensure_products(session)
+        if reset_key is not None:
+            replay = session.scalar(
+                select(AuditEvent).where(
+                    AuditEvent.user_id == DEMO_USER_ID,
+                    AuditEvent.event_type == "EPOCH_STARTED",
+                    AuditEvent.payload["epoch_transition"]["reset_key"].astext == reset_key,
+                )
+            )
+            if replay is not None:
+                original = parse_event(replay.canonical_text or "")
+                transition = original.payload.epoch_transition
+                if (
+                    transition is None
+                    or transition.reason != reason
+                    or transition.principal != principal
+                ):
+                    raise SeedConflictError("reset_key cannot change original reset intent")
+                if not can_continue_audit(
+                    verify_audit_chain(session, DEMO_USER_ID, replay.epoch_id)
+                ):
+                    raise SeedConflictError("reset_key original epoch cannot pass verification")
+                return SeedSummary.model_validate_json(
+                    json.dumps(original.payload.context.details.get("seed_summary"))
+                )
+        previous = current_audit_epoch(session, DEMO_USER_ID)
+        if previous is None and has_business_history(session, DEMO_USER_ID):
+            # First 304 reset archives surviving pre-activation facts before clearing them.
+            previous = ensure_audit_epoch(session, DEMO_USER_ID, datetime.now(UTC))
+        key = reset_key or str(uuid4())
+        if previous is not None:
+            reset_archive_epoch(session, previous, key, reason, principal)
         _clear_demo(session)
         _insert_facts(session)
         _open_seed_bank(session)
@@ -747,4 +798,17 @@ def seed_demo(engine: Engine) -> SeedSummary:
             )
         )
         session.flush()
-        return _summary(session)
+        summary = _summary(session)
+        start_seed_epoch(
+            session,
+            DEMO_USER_ID,
+            key,
+            reason,
+            principal,
+            SEED_VERSION,
+            SUMMARY_VERSION,
+            summary.dataset_sha256,
+            previous,
+            summary.model_dump(mode="json"),
+        )
+        return summary

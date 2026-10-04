@@ -5,6 +5,7 @@ from datetime import UTC, datetime
 from typing import Annotated
 from uuid import UUID, uuid5
 
+from app.db.audit_guard import transaction_gate
 from app.db.models import DecisionRun, User
 from app.domain.autonomy import ALGORITHM_VERSION
 from app.domain.decision_trace import build_trace
@@ -44,6 +45,7 @@ def save_assessment(
         "amount_options_cents": request.amount_options_cents,
     }
     with Session(engine) as session, session.begin():
+        transaction_gate(session, user_id)
         user = session.scalar(select(User).where(User.id == user_id).with_for_update())
         if user is None or not user.is_simulated:
             raise PolicyLifecycleError("NOT_FOUND", "模拟用户不存在", 404)

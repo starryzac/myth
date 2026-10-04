@@ -1,0 +1,61 @@
+{
+  "archived_at": "2026-10-04T09:31:21.032557+00:00",
+  "run_id": "20261004T084600Z-09f4a398",
+  "full_check_verified": false,
+  "actual_result": {
+    "passed": 171,
+    "failed": 1,
+    "seconds": 2447.88
+  },
+  "failed_node": "apps/api/app/tests/test_audit_workflow_integration.py::test_real_reset_waits_across_bank_commit_and_original_application_projection",
+  "failure": "bank_committed.wait(45) returned false; diagnosis pending",
+  "current_source_hashes_match_before_repair": true,
+  "source_capture_count": 201,
+  "frontend_unit_and_e2e_not_reached": true,
+  "archived": [
+    {
+      "file": "MVP-304-check-red-manifest.json",
+      "sha256": "8903ebd0e9bafdbdb45565f4bbf480b50e7ba6127e875a5a154afa7203c5b29d"
+    },
+    {
+      "file": "MVP-304-check-red-environment.json",
+      "sha256": "b69b4031b6f9b9b0c3a2fadaf6b4042fd477e1dca6e411cab2b05a94f074ea1b"
+    },
+    {
+      "file": "MVP-304-check-red-01-uv.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "file": "MVP-304-check-red-02-uv.log",
+      "sha256": "ba79708eec80e55e5da9225c62b0e300f541a8beed38859b6aab5c5e166f170b"
+    },
+    {
+      "file": "MVP-304-check-red-03-uv.log",
+      "sha256": "066ec88f3228d93b674fd2f3cb0033ed1ee9558cf96b1e52b5f104e3d33f8132"
+    },
+    {
+      "file": "MVP-304-check-red-04-pnpm.log",
+      "sha256": "9f55fa4f442193f038d9ed374e8109193ef8f404f0e87c8a57c77a8f64a3aa40"
+    },
+    {
+      "file": "MVP-304-check-red-05-uv.log",
+      "sha256": "a7d6e6475139a6343ae4b72c6d11c3943fbb64fa844bf5a28294df4b2e3127a5"
+    },
+    {
+      "file": "MVP-304-check-red-06-uv.log",
+      "sha256": "066ec88f3228d93b674fd2f3cb0033ed1ee9558cf96b1e52b5f104e3d33f8132"
+    },
+    {
+      "file": "MVP-304-check-red-07-pnpm.log",
+      "sha256": "5a3973f79ed9becd5f23c4feff467513814de7ea381d75a4d2e339aa8b8edca9"
+    },
+    {
+      "file": "MVP-304-check-red-08-docker.log",
+      "sha256": "8ace0a4623491574dad714258a6a7c09f205577232bb9522566f0b85bd5f51c1"
+    },
+    {
+      "file": "MVP-304-check-red-09-uv.log",
+      "sha256": "d92285364a314453728dcf911216c343e709aa5778882d65c967b1fe026dc7ad"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_frozen_receipt_core_rejects_balanced_fabrication_without_latest_rows __
+
+    def test_frozen_receipt_core_rejects_balanced_fabrication_without_latest_rows() -> None:
+>       from app.domain.audit_chain import verify_frozen_projection, verify_frozen_settlement
+E       ImportError: cannot import name 'verify_frozen_projection' from 'app.domain.audit_chain' (F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\apps\api\app\domain\audit_chain.py)
+
+apps\api\app\tests\test_audit_chain_domain.py:288: ImportError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_audit_chain_domain.py::test_frozen_receipt_core_rejects_balanced_fabrication_without_latest_rows
+1 failed, 11 deselected in 0.62s

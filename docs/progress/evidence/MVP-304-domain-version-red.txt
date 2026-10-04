@@ -1,0 +1,20 @@
+.......FF                                                                [100%]
+================================== FAILURES ===================================
+_ test_unknown_original_protocol_is_unsupported_not_a_fake_missing_tail[schema_version-audit-event-v99] _
+apps\api\app\tests\test_audit_chain_domain.py:203: in test_unknown_original_protocol_is_unsupported_not_a_fake_missing_tail
+    assert result.status == "UNSUPPORTED_VERSION"
+E   AssertionError: assert 'INTEGRITY_ERROR' == 'UNSUPPORTED_VERSION'
+E     
+E     - UNSUPPORTED_VERSION
+E     + INTEGRITY_ERROR
+_ test_unknown_original_protocol_is_unsupported_not_a_fake_missing_tail[canonical_version-audit-canonical-json-v99] _
+apps\api\app\tests\test_audit_chain_domain.py:203: in test_unknown_original_protocol_is_unsupported_not_a_fake_missing_tail
+    assert result.status == "UNSUPPORTED_VERSION"
+E   AssertionError: assert 'INTEGRITY_ERROR' == 'UNSUPPORTED_VERSION'
+E     
+E     - UNSUPPORTED_VERSION
+E     + INTEGRITY_ERROR
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_audit_chain_domain.py::test_unknown_original_protocol_is_unsupported_not_a_fake_missing_tail[schema_version-audit-event-v99]
+FAILED apps/api/app/tests/test_audit_chain_domain.py::test_unknown_original_protocol_is_unsupported_not_a_fake_missing_tail[canonical_version-audit-canonical-json-v99]
+2 failed, 7 passed in 0.82s

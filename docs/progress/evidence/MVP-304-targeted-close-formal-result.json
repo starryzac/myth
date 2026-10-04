@@ -1,0 +1,14 @@
+{
+  "successful": true,
+  "source_run_id": "20261004T094808Z-2e990d57",
+  "database_name": "bounded_funds",
+  "read_only": true,
+  "isolation": "repeatable read",
+  "data_sha256": "281b302813a75cda170f2b20195e9719283cef699300db34741cc7c4db09b85f",
+  "original_20_data_sha256": "dbbc4819f11e156ddcc11a2af3d08739cbe4101c9d2f547469fa3dd05101e2d0",
+  "snapshot_file": ".runtime\\MVP-304-formal-targeted-final\\20261004T094808Z-2e990d57-snapshot.json",
+  "snapshot_file_sha256": "bf6d25daf144b52f161bee3dba1d6c3428329779f1f3bc0d92b59a004dae1991",
+  "verification_file": ".runtime\\MVP-304-formal-targeted-final\\20261004T094808Z-2e990d57-verification.json",
+  "verification_file_sha256": "96dc02e10ab1eeca4f548d27ccf6c6f28e63e8bc88e543ba862668dde846fdf1",
+  "audit_chain_claim": "UNCHANGED_LEGACY_UNAUDITED; not chain VALID"
+}

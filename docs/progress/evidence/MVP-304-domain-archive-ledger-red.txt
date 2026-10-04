@@ -1,0 +1,181 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_legacy_redemption_frozen_receipt_preserves_actual_original_transaction _
+
+    def test_legacy_redemption_frozen_receipt_preserves_actual_original_transaction() -> None:
+        from uuid import uuid5
+    
+        from app.domain.audit_chain import build_subject, verify_frozen_projection
+        from app.domain.policy_configuration import configuration_hash
+    
+        _, action, _, _, now = transfer_originals()
+        operation_id = uuid5(UUID(action["id"]), "simulated-bank-redemption")
+        position = UUID("00000000-0000-0000-0000-000000000031")
+        position_account = UUID("00000000-0000-0000-0000-000000000032")
+        target = UUID("00000000-0000-0000-0000-000000000022")
+        command = {
+            "user_id": action["user_id"],
+            "position_id": str(position),
+            "position_account_id": str(position_account),
+            "product_id": "00000000-0000-0000-0000-000000000033",
+            "goal_id": None,
+            "original_policy_version_id": None,
+            "destination_account_id": str(target),
+            "principal_cents": 100,
+            "requested_at": now.isoformat(),
+            "available_at": now.isoformat(),
+            "expires_at": (now + timedelta(hours=1)).isoformat(),
+            "kind": "MATURE",
+        }
+        request = {"bank_request": command}
+        action = {
+            **action,
+            "action_type": "ASSET_MATURITY",
+            "position_id": str(position),
+            "source_account_id": str(position_account),
+            "destination_account_id": str(target),
+            "product_id": command["product_id"],
+            "request": request,
+            "request_hash": configuration_hash(request),
+            "expires_at": command["expires_at"],
+        }
+        operation = {
+            "id": str(operation_id),
+            "user_id": action["user_id"],
+            "action_plan_id": action["id"],
+            "operation_type": "LEGACY_REDEMPTION",
+            "business_key": "close:" + str(position),
+            "legacy_redemption_id": str(operation_id),
+            "closing_position_id": str(position),
+            "request": command,
+            "request_hash": configuration_hash(command),
+            "idempotency_key": action["idempotency_key"],
+            "requested_at": now,
+            "available_at": now,
+            "settled_at": now,
+            "created_at": now,
+            "status": "SETTLED",
+        }
+        postings = [
+            {
+                "id": str(uuid5(operation_id, leg)),
+                "user_id": action["user_id"],
+                "operation_id": str(operation_id),
+                "redemption_id": str(operation_id),
+                "leg_ref": leg,
+                "entry_kind": leg,
+                "ledger_key": key,
+                "ledger_dimension": "ECONOMIC",
+                "delta_cents": delta,
+                "balance_before_cents": before,
+                "balance_after_cents": before + delta,
+                "account_id": account,
+                "position_id": position_id,
+                "occurred_at": now,
+                "created_at": now,
+                "sequence_number": 2,
+            }
+            for leg, key, delta, before, account, position_id in [
+                ("CASH_CREDIT", "CASH:" + str(target), 100, 0, str(target), None),
+                ("PRINCIPAL_DEBIT", "POSITION:" + str(position), -100, 100, None, str(position)),
+            ]
+        ]
+        tx_id, proof_id = (
+            uuid5(operation_id, "transaction"),
+            uuid5(operation_id, "transaction-evidence"),
+        )
+        transaction = {
+            "id": str(tx_id),
+            "user_id": action["user_id"],
+            "account_id": str(target),
+            "evidence_id": str(proof_id),
+            "direction": "CREDIT",
+            "amount_cents": 100,
+            "balance_after_cents": 100,
+            "occurred_at": now,
+            "source_ref": "bank-redemption:"+str(operation_id)+":principal",
+            "counterparty_ref": "position:"+str(position),
+            "observed_at": now,
+            "created_at": now,
+        }
+        content = {
+            **{k: v for k, v in transaction.items() if k not in {"id", "evidence_id", "occurred_at", "source_ref", "observed_at", "created_at"}},
+            "transaction_id": str(tx_id),
+            "simulation": True,
+            "occurred_at": now.isoformat(),
+            "economic_role": "PRINCIPAL_RETURN",
+            "bank_request_id": str(operation_id),
+            "bank_posting_id": postings[0]["id"],
+        }
+        evidence = {
+            "id": str(proof_id),
+            "user_id": action["user_id"],
+            "evidence_level": "BANK_CONFIRMED",
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "content": content,
+            "content_hash": configuration_hash(content),
+            "source_ref": transaction["source_ref"],
+            "valid_from": now,
+            "observed_at": now,
+            "created_at": now,
+        }
+        epoch = UUID("00000000-0000-0000-0000-000000000003")
+        subjects = [
+            build_subject(
+                user_id=UUID(action["user_id"]), epoch_id=epoch, kind=kind, id=UUID(row["id"]), data=row
+            )
+            for kind, row in [("TRANSACTION", transaction), ("EVIDENCE", evidence)]
+        ]
+        receipt = {
+            "id": str(uuid5(operation_id, "receipt")),
+            "user_id": action["user_id"],
+            "action_plan_id": action["id"],
+            "status": "SUCCEEDED",
+            "attempt_number": 1,
+            "receipt_ref": "bank:" + str(operation_id),
+            "executed_cents": 100,
+            "fee_cents": 0,
+            "loss_cents": 0,
+            "occurred_at": now,
+            "reconciled_at": now,
+            "created_at": now,
+            "response": {
+                "bank_request_id": str(operation_id),
+                "posting_ids": [p["id"] for p in postings],
+                "transaction_id": str(tx_id),
+            },
+        }
+        verify_frozen_projection(
+            operation, action, receipt, postings, observed_at=now, subjects=subjects
+        )
+        with pytest.raises(ValueError):
+            verify_frozen_projection(operation, action, receipt, postings, observed_at=now, subjects=[])
+        with pytest.raises(ValueError):
+            verify_frozen_projection(
+                operation,
+                action,
+                {**receipt, "fee_cents": 1},
+                postings,
+                observed_at=now,
+                subjects=subjects,
+            )
+    
+    
+        false_content = {**content, "economic_role": "INCOME"}
+        false_proof = build_subject(user_id=UUID(action["user_id"]), epoch_id=epoch, kind="EVIDENCE", id=proof_id,
+                                     data={**evidence, "content": false_content, "content_hash": configuration_hash(false_content)})
+>       with pytest.raises(ValueError):
+E       Failed: DID NOT RAISE ValueError
+
+apps\api\app\tests\test_audit_chain_domain.py:1233: Failed
+_ test_frozen_archive_ledgers_require_the_actual_opening_and_predecessor_balances _
+
+    def test_frozen_archive_ledgers_require_the_actual_opening_and_predecessor_balances() -> None:
+>       from app.domain.audit_chain import verify_frozen_ledgers
+E       ImportError: cannot import name 'verify_frozen_ledgers' from 'app.domain.audit_chain' (F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\apps\api\app\domain\audit_chain.py)
+
+apps\api\app\tests\test_audit_chain_domain.py:1238: ImportError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_audit_chain_domain.py::test_legacy_redemption_frozen_receipt_preserves_actual_original_transaction
+FAILED apps/api/app/tests/test_audit_chain_domain.py::test_frozen_archive_ledgers_require_the_actual_opening_and_predecessor_balances
+2 failed, 26 deselected in 0.92s

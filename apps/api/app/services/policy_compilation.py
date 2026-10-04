@@ -4,6 +4,7 @@ from datetime import UTC, date, datetime, timedelta, timezone
 from typing import Any, Literal, Protocol
 from uuid import UUID, uuid4
 
+from app.db.audit_guard import transaction_gate
 from app.db.models import EvidenceItem, PolicyProposal, User
 from app.domain.policy_compiler import (
     COMPILER_VERSION,
@@ -41,6 +42,7 @@ class CompilationResponse(BaseModel):
 def _context(session: Session, user_id: UUID, now: datetime) -> tuple[datetime, CompileContext]:
     if now.tzinfo is None or now.utcoffset() is None:
         raise PolicyLifecycleError("INVALID_CLOCK", "服务器时间必须带时区")
+    transaction_gate(session, user_id)
     user = session.scalar(
         select(User)
         .where(User.id == user_id)

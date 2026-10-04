@@ -17,7 +17,6 @@ from app.db.models import (
     ActionReceipt,
     AssetPosition,
     AssetProduct,
-    AuditEvent,
     CreditCardBill,
     DecisionConstraint,
     DecisionRun,
@@ -77,6 +76,21 @@ def database_snapshot(engine: Engine) -> str:
     return json.dumps(result, ensure_ascii=False, sort_keys=True, default=str)
 
 
+def business_snapshot(engine: Engine) -> str:
+    """Reset deliberately grows audit history; the original financial graph stays deterministic."""
+    from app.services.audit_chain import SUBJECT_MODELS
+
+    with engine.connect() as connection:
+        result = {
+            model.__tablename__: [
+                dict(row)
+                for row in connection.execute(select(model.__table__).order_by(model.id)).mappings()
+            ]
+            for model in SUBJECT_MODELS.values()
+        }
+    return json.dumps(result, ensure_ascii=False, sort_keys=True, default=str)
+
+
 def test_seed_opens_independent_bank_once_without_creating_recovery_authority(
     demo_engine: Engine,
 ) -> None:
@@ -105,10 +119,10 @@ def test_seed_opens_independent_bank_once_without_creating_recovery_authority(
             assert entry.delta_cents == entry.balance_after_cents
             assert entry.redemption_id is entry.previous_posting_id is None
             assert entry.created_at == entry.occurred_at == SEED_AS_OF
-    before = database_snapshot(demo_engine)
+    before = business_snapshot(demo_engine)
     second = seed_demo(demo_engine)
     assert second == first
-    assert database_snapshot(demo_engine) == before
+    assert business_snapshot(demo_engine) == before
 
 
 def test_new_product_versions_have_explicit_principal_yield_and_zero_fee_contracts(
@@ -237,10 +251,10 @@ def test_seed_declares_complete_empty_automatic_exposure_without_claiming_author
 
 def test_seed_repeats_exact_database_content_and_all_required_facts(demo_engine: Engine) -> None:
     first = seed_demo(demo_engine)
-    snapshot = database_snapshot(demo_engine)
+    snapshot = business_snapshot(demo_engine)
     second = seed_demo(demo_engine)
     assert first == second
-    assert database_snapshot(demo_engine) == snapshot
+    assert business_snapshot(demo_engine) == snapshot
     assert first.user_id == DEMO_USER_ID
     assert first.as_of == SEED_AS_OF
     assert first.days == 60
@@ -619,7 +633,7 @@ def test_reset_clears_the_demo_dependency_graph_including_self_references(
     baseline = seed_demo(demo_engine)
     with Session(demo_engine) as session:
         policy_id, version_id, goal_id, run_id = uuid4(), uuid4(), uuid4(), uuid4()
-        plan_id, receipt_id, first_event_id = uuid4(), uuid4(), uuid4()
+        plan_id, receipt_id = uuid4(), uuid4()
         account = session.scalars(select(Account).where(Account.account_type == "CASH")).one()
         position = session.scalars(select(AssetPosition).order_by(AssetPosition.id)).first()
         assert position is not None
@@ -711,27 +725,8 @@ def test_reset_clears_the_demo_dependency_graph_including_self_references(
             )
         )
         session.flush()
-        for sequence in (1, 2):
-            session.add(
-                AuditEvent(
-                    id=first_event_id if sequence == 1 else uuid4(),
-                    user_id=DEMO_USER_ID,
-                    sequence_number=sequence,
-                    event_type="TestEvent",
-                    aggregate_type="Action",
-                    aggregate_id=plan_id,
-                    correlation_id=run_id,
-                    causation_id=None if sequence == 1 else first_event_id,
-                    decision_run_id=run_id,
-                    action_plan_id=plan_id,
-                    action_receipt_id=receipt_id,
-                    idempotency_key=f"test-event-{sequence}",
-                    payload={},
-                    event_hash=str(sequence) * 64,
-                    occurred_at=SEED_AS_OF,
-                )
-            )
-            session.flush()
+        # Audit rows now remain permanent. Valid genesis/seal preservation is covered
+        # by test_audit_reset; unsupported pre-304 originals by test_audit_migration.
         evidence = session.scalars(select(EvidenceItem).order_by(EvidenceItem.id)).first()
         assert evidence is not None
         session.add(

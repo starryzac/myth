@@ -1,0 +1,3 @@
+apps\api\app\tests\test_audit_storage.py:272: error: Incompatible types in assignment (expression has type "EvidenceItem | None", variable has type "EvidenceItem")  [assignment]
+apps\api\app\tests\test_audit_storage.py:281: error: Incompatible types in assignment (expression has type "EvidenceItem | None", variable has type "EvidenceItem")  [assignment]
+Found 2 errors in 1 file (checked 10 source files)

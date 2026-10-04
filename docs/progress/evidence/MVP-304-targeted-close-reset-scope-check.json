@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-04T12:47:32.794493+00:00",
+  "baseline_run_id": "20261004T094808Z-2e990d57",
+  "original_source_file_count": 201,
+  "unchanged_other_source_count": 200,
+  "changed_source_paths": [
+    "apps/api/app/tests/test_decision_trace_reset.py"
+  ],
+  "unchanged_original_function_ast": {
+    "completed_transfer": true,
+    "other_tenant_links": true,
+    "test_failed_reset_restores_original_links_and_economic_history": true
+  },
+  "rollback_full_text_unchanged": true,
+  "new_private_helpers": [
+    "_assert_retained_reset",
+    "_audit_snapshot"
+  ],
+  "original_test_sha256": "3427df987001849d94b8927386bf11fe36fa7657b7efa32bb47c6b83e7ca4496",
+  "current_test_sha256": "acb5d478ef229e95f7f963330ebb450dfab9ca6d8748a1b5cfddd54bae99896a"
+}

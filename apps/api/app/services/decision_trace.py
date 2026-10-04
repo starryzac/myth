@@ -20,6 +20,7 @@ from app.db.models import (
     PolicyVersion,
     SimulatedBankRedemption,
 )
+from app.domain.audit_chain_types import Status as AuditStatus
 from app.domain.decision_trace import explain_trace, verify_trace
 from app.domain.decision_trace_types import (
     DecisionTrace,
@@ -75,7 +76,7 @@ class DecisionTraceResponse(BaseModel):
     children: list[UUID]
     legacy_snapshot: dict[str, Any] | None = None
     legacy_result: dict[str, Any] | None = None
-    audit_chain_status: Literal["NOT_IMPLEMENTED"] = "NOT_IMPLEMENTED"
+    audit_chain_status: AuditStatus = "LEGACY_UNAUDITED"
 
 
 class DecisionTraceSummary(BaseModel):
@@ -360,6 +361,9 @@ def record_trace(
     session: Session, trace: DecisionTrace, existing_run: DecisionRun | None = None
 ) -> DecisionRun:
     """Caller owns the transaction; frozen decisions never commit unrelated economic mutations."""
+    from app.db.audit_guard import transaction_gate
+
+    transaction_gate(session, trace.user_id)
     try:
         verify_trace(trace)
     except (ValueError, TypeError) as error:
@@ -457,6 +461,9 @@ def record_trace(
             )
         )
     session.flush()
+    from app.services.audit_recording import record_decision
+
+    record_decision(session, trace)
     return row
 
 
@@ -686,6 +693,8 @@ def get_decision_trace(
             raise PolicyLifecycleError("DECISION_NOT_YET_OCCURRED", "决策时钟晚于当前读取时钟", 409)
         completeness, trace = _stored_trace(session, row)
         references = _current_references(session, trace, allow_missing=True) if trace else []
+        from app.services.audit_chain import get_decision_audit_status
+
         return DecisionTraceResponse(
             user_id=user_id,
             run_id=run_id,
@@ -705,6 +714,7 @@ def get_decision_trace(
             ),
             legacy_snapshot=json.loads(json.dumps(row.input_snapshot)) if trace is None else None,
             legacy_result=json.loads(json.dumps(row.result)) if trace is None else None,
+            audit_chain_status=get_decision_audit_status(session, user_id, run_id),
         )
 
 

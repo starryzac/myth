@@ -1,0 +1,129 @@
+..F
+================================== FAILURES ===================================
+_ test_real_reset_waits_across_bank_commit_and_original_application_projection _
+
+goal_client = (<starlette.testclient.TestClient object at 0x000002569255E2A0>, Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_4d8dca4b030f437f95d05d7b07f9cd40))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002569255F3B0>
+
+    def test_real_reset_waits_across_bank_commit_and_original_application_projection(
+        goal_client: tuple[TestClient, Engine], monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        client, engine = goal_client
+        action = prepared_transfer(client, engine)
+        identity = UUID(action["action_id"])
+        confirmation = client.post(
+            f"/api/v1/actions/{identity}/confirm",
+            json={"effect_hash": action["effect_hash"], "accepted": True},
+        )
+        assert confirmation.status_code == 200, confirmation.text
+        bank_committed, resume_projection = Event(), Event()
+    
+        def pause_after_real_bank_commit(
+            original_engine: Engine, user_id: UUID, action_id: UUID, now: datetime
+        ) -> BankOperationResult:
+            operation = process_operation(original_engine, user_id, action_id, now)
+            bank_committed.set()
+            assert resume_projection.wait(30), "The test must release the real application phase"
+            return operation
+    
+        monkeypatch.setattr(execution, "process_operation", pause_after_real_bank_commit)
+        with Session(engine) as session:
+            epoch_id = session.scalar(select(AuditEpoch.id).where(AuditEpoch.status == "OPEN"))
+        assert epoch_id is not None
+        with ThreadPoolExecutor(max_workers=2) as workers:
+            action_future = workers.submit(execute_action, engine, DEMO_USER_ID, identity, NOW)
+            try:
+                assert bank_committed.wait(45), "Real bank phase did not commit"
+                with Session(engine) as session:
+                    operation = session.get(BankOperation, identity)
+                    assert operation is not None and operation.status == "SETTLED"
+                    assert session.scalar(select(ActionReceipt.id)) is None
+                reset_future = workers.submit(seed_demo, engine, reset_key="real-command-gate")
+                deadline = monotonic() + 10
+                key = gate_key(DEMO_USER_ID)
+                reset_waiting = False
+                while monotonic() < deadline:
+                    with engine.connect() as connection:
+                        reset_waiting = bool(
+                            connection.scalar(
+                                text("""
+                                SELECT EXISTS (
+                                    SELECT 1 FROM pg_locks
+                                    WHERE locktype = 'advisory' AND mode = 'ExclusiveLock'
+                                        AND NOT granted AND classid = :high AND objid = :low
+                                        AND database = (
+                                            SELECT oid FROM pg_database
+                                            WHERE datname = current_database()
+                                        )
+                                )
+                                """),
+                                {"high": key >> 32, "low": key & 0xFFFFFFFF},
+                            )
+                        )
+                    if reset_waiting:
+                        break
+                    sleep(0.02)
+                assert reset_waiting and not reset_future.done()
+            finally:
+                resume_projection.set()
+            completed = action_future.result(timeout=60)
+            assert completed.status == "SUCCEEDED" and completed.receipt is not None
+            assert reset_future.result(timeout=60).user_id == DEMO_USER_ID
+>       with Session(engine) as session:
+                   ^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_audit_workflow_integration.py:359: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = None, timeout = 60
+
+    def result(self, timeout=None):
+        """Return the result of the call that the future represents.
+    
+        Args:
+            timeout: The number of seconds to wait for the result if the future
+                isn't done. If None, then there is no limit on the wait time.
+    
+        Returns:
+            The result of the call that the future represents.
+    
+        Raises:
+            CancelledError: If the future was cancelled.
+            TimeoutError: If the future didn't finish executing before the given
+                timeout.
+            Exception: If the call raised then that exception will be raised.
+        """
+        try:
+            with self._condition:
+                if self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
+                    raise CancelledError()
+                elif self._state == FINISHED:
+                    return self.__get_result()
+    
+                self._condition.wait(timeout)
+    
+                if self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
+                    raise CancelledError()
+                elif self._state == FINISHED:
+                    return self.__get_result()
+                else:
+>                   raise TimeoutError()
+E                   TimeoutError
+
+C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:458: TimeoutError
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "2d9a9f00-0287-460a-a557-42d692031fa7", "method": "POST", "status": 200, "duration_ms": 6172.0}
+{"event": "http_request", "request_id": "f2fb1c59-6e0a-4cea-b625-6f6f9214eebb", "method": "POST", "status": 200, "duration_ms": 6156.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:62 {"event": "http_request", "request_id": "2d9a9f00-0287-460a-a557-42d692031fa7", "method": "POST", "status": 200, "duration_ms": 6172.0}
+INFO     bounded_funds.http:main.py:62 {"event": "http_request", "request_id": "f2fb1c59-6e0a-4cea-b625-6f6f9214eebb", "method": "POST", "status": 200, "duration_ms": 6156.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_audit_workflow_integration.py::test_real_reset_waits_across_bank_commit_and_original_application_projection
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 2 passed, 5 deselected, 1 warning in 241.93s (0:04:01)

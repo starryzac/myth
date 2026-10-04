@@ -128,6 +128,18 @@ def preview_recovery(session: Session, user_id: UUID, now: datetime) -> Recovery
 def run_recovery(
     engine: Engine, user_id: UUID, idempotency_key: str, now: datetime
 ) -> RecoveryRunResponse:
+    from app.db.audit_guard import audit_command_guard
+
+    with audit_command_guard(engine, user_id):
+        return _run_recovery(engine, user_id, idempotency_key, now)
+
+
+def _run_recovery(
+    engine: Engine, user_id: UUID, idempotency_key: str, now: datetime
+) -> RecoveryRunResponse:
+    from app.db.audit_guard import transaction_gate
+    from app.services.audit_recording import record_action_created, record_recovery_observed
+
     if not 1 <= len(idempotency_key) <= 160 or not idempotency_key.strip():
         raise PolicyLifecycleError("INVALID_IDEMPOTENCY_KEY", "恢复请求键必须为1到160个非空白字符")
     if now.tzinfo is None or now.utcoffset() is None:
@@ -135,6 +147,7 @@ def run_recovery(
     key = "recovery:" + configuration_hash({"key": idempotency_key})
     # Phase 1 commits the application request before any separate bank transaction starts.
     with Session(engine) as session, session.begin():
+        transaction_gate(session, user_id)
         user = session.scalar(select(User).where(User.id == user_id).with_for_update())
         if user is None or not user.is_simulated:
             raise PolicyLifecycleError("NOT_FOUND", "模拟用户不存在", 404)
@@ -306,6 +319,15 @@ def run_recovery(
                 refresh_exposure(session, user_id, now, run.id, declarations)
             else:
                 run.status, run.completed_at = "SUCCEEDED", now
+                record_recovery_observed(
+                    session, run, now, kind="RUN_COMPLETED", details={"action_ids": []}
+                )
+            for created_action in session.scalars(
+                select(ActionPlan)
+                .where(ActionPlan.user_id == user_id, ActionPlan.decision_run_id == run.id)
+                .order_by(ActionPlan.id)
+            ):
+                record_action_created(session, created_action, now)
         elif (
             run.trigger_type != "SAFETY_RECOVERY"
             or run.input_snapshot.get("idempotency_key") != idempotency_key
@@ -333,6 +355,7 @@ def run_recovery(
     projection_errors: list[PolicyLifecycleError] = []
     if action_ids:
         with Session(engine) as session, session.begin():
+            transaction_gate(session, user_id)
             session.scalar(select(User).where(User.id == user_id).with_for_update())
             requests = list(
                 session.scalars(
@@ -367,6 +390,18 @@ def run_recovery(
                         changed = True
                     except PolicyLifecycleError as error:
                         projection_errors.append(error)
+                        failed_run = session.get(DecisionRun, run_id)
+                        assert failed_run is not None
+                        record_recovery_observed(
+                            session,
+                            failed_run,
+                            now,
+                            kind="PROJECTION_FAILED",
+                            action_id=request.action_plan_id,
+                            request=request,
+                            error_code=error.code,
+                            details={"bank_status": request.status},
+                        )
             if changed:
                 finalize_projections(session, user_id, now, run_id, declarations)
                 row = session.get(DecisionRun, run_id)
@@ -405,11 +440,23 @@ def run_recovery(
                     and not bank_errors
                     and not projection_errors
                 ):
+                    before_status = row.status
                     row.status, row.completed_at = "SUCCEEDED", now
+                    if before_status != row.status:
+                        record_recovery_observed(
+                            session,
+                            row,
+                            now,
+                            kind="RUN_COMPLETED",
+                            details={
+                                "action_ids": sorted(str(identity) for identity in action_ids)
+                            },
+                        )
             if bank_errors:
                 row = session.get(DecisionRun, run_id)
                 assert row is not None
                 notifications = list(row.result.get("notifications", []))
+                new_bank_errors: list[tuple[UUID, PolicyLifecycleError]] = []
                 for action_id, bank_error in bank_errors:
                     entry = {
                         "code": "BANK_REQUEST_NOT_CONFIRMED",
@@ -418,8 +465,23 @@ def run_recovery(
                     }
                     if entry not in notifications:
                         notifications.append(entry)
+                        new_bank_errors.append((action_id, bank_error))
                 if notifications != row.result.get("notifications", []):
                     row.result = {**row.result, "notifications": notifications}
+                for action_id, bank_error in new_bank_errors:
+                    known_request = next(
+                        (request for request in requests if request.action_plan_id == action_id),
+                        None,
+                    )
+                    record_recovery_observed(
+                        session,
+                        row,
+                        now,
+                        kind="BANK_ERROR",
+                        action_id=action_id,
+                        request=known_request,
+                        error_code=bank_error.code,
+                    )
     if projection_errors:
         raise projection_errors[0]
     with Session(engine) as session:

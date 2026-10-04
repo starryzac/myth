@@ -1,0 +1,275 @@
+................F                                                        [100%]
+================================== FAILURES ===================================
+_ test_legacy_bank_migration_preserves_original_requests_and_posting_amounts __
+
+self = <sqlalchemy.engine.base.Connection object at 0x000002C0773BED20>
+dialect = <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x000002C0777748C0>
+context = <sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x000002C0773F7E00>
+statement = <sqlalchemy.dialects.postgresql.psycopg.PGCompiler_psycopg object at 0x000002C0773F53A0>
+parameters = [{'user_id_1': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'status_1': 'OPEN'}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Unpack[TupleAny]]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        evt_handled: bool = False
+        try:
+            if self._has_events or self.engine._has_events:
+                for fn in self.dispatch.before_cursor_execute:
+                    str_statement, effective_parameters = fn(
+                        self,
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                        context.executemany,
+                    )
+    
+            if self._echo:
+                self._log_info(str_statement)
+    
+                stats = context._get_cache_stats()
+    
+                if not self.engine.hide_parameters:
+                    self._log_info(
+                        "[%s] %r",
+                        stats,
+                        sql_util._repr_params(
+                            effective_parameters,
+                            batches=10,
+                            ismulti=context.executemany,
+                        ),
+                    )
+                else:
+                    self._log_info(
+                        "[%s] [SQL parameters hidden due to "
+                        "hide_parameters=True]",
+                        stats,
+                    )
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1943: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_7f132c5725d14a539beafbb56eabd2c3) at 0x2c074e747d0>
+query = 'SELECT audit_epochs.epoch_number, audit_epochs.schema_version, audit_epochs.canonical_version, audit_epochs.status, a...\nFROM audit_epochs \nWHERE audit_epochs.user_id = %(user_id_1)s::UUID AND audit_epochs.status = %(status_1)s::VARCHAR'
+params = {'user_id_1': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'status_1': 'OPEN'}
+prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.UndefinedTable: relation "audit_epochs" does not exist
+E           LINE 2: FROM audit_epochs 
+E                        ^
+
+.venv\Lib\site-packages\psycopg\cursor.py:117: UndefinedTable
+
+The above exception was the direct cause of the following exception:
+
+migrated_database = (Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_7f132c5725d14a539beafbb56eabd2c3), <alembic.config.Config object at 0x000002C077775E20>)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C077276A80>
+
+    @pytest.mark.integration
+    def test_legacy_bank_migration_preserves_original_requests_and_posting_amounts(
+        migrated_database: tuple[Engine, Config],
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        from app.services import audit_recording, demo_seed
+        from app.services.demo_seed import DEMO_USER_ID, SEED_AS_OF
+        from app.services.simulated_bank import process_redemption
+        from app.tests.test_simulated_bank import bank_action
+    
+        engine, config = migrated_database
+        # This probes the pre-audit 0004 bank migration. Construct its original fixed
+        # financial fixture on 0005 without deleting any retained 0006 history.
+        command.downgrade(config, "0005_decision_trace")
+        with Session(engine) as session, session.begin():
+            demo_seed._ensure_products(session)
+            demo_seed._insert_facts(session)
+            demo_seed._open_seed_bank(session)
+        monkeypatch.setattr(audit_recording, "record_bank_accepted", lambda *args: None)
+        monkeypatch.setattr(audit_recording, "record_bank_settled", lambda *args: None)
+>       action_id, _, _, _ = bank_action(engine)
+                             ^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_migrations.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_simulated_bank.py:56: in bank_action
+    _, version_id = confirmed_policy(session, authorization())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\tests\test_boundary_service.py:121: in confirmed_policy
+    result = confirm_proposal(
+apps\api\app\services\policy_lifecycle.py:671: in confirm_proposal
+    _, result = _append_version(
+apps\api\app\services\policy_lifecycle.py:588: in _append_version
+    record_policy_version(session, policy, version, previous, now)
+apps\api\app\services\audit_recording.py:577: in record_policy_version
+    _record(
+apps\api\app\services\audit_recording.py:139: in _record
+    epoch = ensure_audit_epoch(session, user_id, appended_at)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\audit_chain.py:230: in ensure_audit_epoch
+    row = current_audit_epoch(session, user_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\audit_chain.py:106: in current_audit_epoch
+    return session.scalar(
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:2534: in scalar
+    return self._execute_internal(
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:2363: in _execute_internal
+    compile_state_cls.orm_execute_statement(
+.venv\Lib\site-packages\sqlalchemy\orm\context.py:316: in orm_execute_statement
+    result = conn.execute(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1448: in execute
+    return meth(
+.venv\Lib\site-packages\sqlalchemy\sql\elements.py:533: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1668: in _execute_clauseelement
+    ret = self._execute_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1822: in _execute_context
+    return self._exec_single_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1962: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:2332: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1943: in _exec_single_context
+    self.dialect.do_execute(
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_7f132c5725d14a539beafbb56eabd2c3) at 0x2c074e747d0>
+query = 'SELECT audit_epochs.epoch_number, audit_epochs.schema_version, audit_epochs.canonical_version, audit_epochs.status, a...\nFROM audit_epochs \nWHERE audit_epochs.user_id = %(user_id_1)s::UUID AND audit_epochs.status = %(status_1)s::VARCHAR'
+params = {'user_id_1': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'status_1': 'OPEN'}
+prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           sqlalchemy.exc.ProgrammingError: (psycopg.errors.UndefinedTable) relation "audit_epochs" does not exist
+E           LINE 2: FROM audit_epochs 
+E                        ^
+E           [SQL: SELECT audit_epochs.epoch_number, audit_epochs.schema_version, audit_epochs.canonical_version, audit_epochs.status, audit_epochs.opened_at, audit_epochs.previous_epoch_id, audit_epochs.previous_seal_hash, audit_epochs.event_count, audit_epochs.last_sequence, audit_epochs.last_event_id, audit_epochs.last_event_hash, audit_epochs.genesis_event_id, audit_epochs.genesis_event_hash, audit_epochs.sealed_at, audit_epochs.seal_canonical_text, audit_epochs.seal_hash, audit_epochs.archive_manifest_hash, audit_epochs.archive_record_counts, audit_epochs.user_id, audit_epochs.id, audit_epochs.created_at 
+E           FROM audit_epochs 
+E           WHERE audit_epochs.user_id = %(user_id_1)s::UUID AND audit_epochs.status = %(status_1)s::VARCHAR]
+E           [parameters: {'user_id_1': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'status_1': 'OPEN'}]
+E           (Background on this error at: https://sqlalche.me/e/21/f405)
+
+.venv\Lib\site-packages\psycopg\cursor.py:117: ProgrammingError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_migrations.py::test_legacy_bank_migration_preserves_original_requests_and_posting_amounts
+1 failed, 16 passed in 77.60s (0:01:17)

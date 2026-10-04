@@ -1,0 +1,28 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_current_epoch_checks_real_previous_seal_not_only_its_local_claim ____
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_70370f2a793a4798a73e1fdeb09ee0cb)
+
+    def test_current_epoch_checks_real_previous_seal_not_only_its_local_claim(demo_engine: Engine) -> None:
+        from sqlalchemy import text
+        seed_demo(demo_engine)
+        seed_demo(demo_engine)
+        with demo_engine.begin() as connection:
+            # Owner DDL is explicitly outside prevention; a subsequent read must detect damage.
+            connection.exec_driver_sql("ALTER TABLE audit_epochs DISABLE TRIGGER audit_epoch_guard")
+            connection.execute(text("UPDATE audit_epochs SET seal_hash=:hash WHERE status='SEALED'"),
+                               {"hash": "f"*64})
+            connection.exec_driver_sql("SET CONSTRAINTS ALL IMMEDIATE")
+            connection.exec_driver_sql("ALTER TABLE audit_epochs ENABLE TRIGGER audit_epoch_guard")
+        with Session(demo_engine) as session:
+>           assert verify_audit_chain(session, DEMO_USER_ID).status == "INTEGRITY_ERROR"
+E           AssertionError: assert 'VALID' == 'INTEGRITY_ERROR'
+E             
+E             - INTEGRITY_ERROR
+E             + VALID
+
+apps\api\app\tests\test_audit_reset.py:82: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_audit_reset.py::test_current_epoch_checks_real_previous_seal_not_only_its_local_claim
+1 failed in 11.73s

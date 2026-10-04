@@ -1,3 +1,156 @@
+## 当前交接：MVP-304已定向关闭，17/92，下一项401
+
+本节优先于下方历史。用户新节奏已落AGENTS1.4：全量仅初版完成/完整版完成两个节点，节点失败修复后可重跑；开发模块及直接相关验证，资金守恒/防重复/UNKNOWN/迁移集成，前端types和页面。304两轮历史full保持RED，不启动第三轮逐任务full，不以.partial coverage冒完整覆盖。
+
+真实reset2节点2passed435.91秒/exit0，静态3项0；只改成功节点与两个私有helper，原rollback全文AST不变，其它200源码与secondRED相同。正式库2026-10-04T12:56:52Z真实RR/RO末次核对成功，全23表rows/columns/count/hash和原20typed列完全相同；audit三表0/旧formal Legacy未补历史。source201前后同；原full失败、target meta/log/static/diff/scope及正式snapshot/verification在docs/progress/evidence/，详MVP-304.md。唯一pytest38538已经closed0，23914closed1，不再poll旧句柄/用livecheckpoint。
+
+目标ACTIVE，17/92。root完成304文档与本地commit后正式部署401候选。trace_domain ignored .runtime/MVP-401-boundary-draft 有单core展示DTO/接口/测试候选，旧算法30变体完整JSON真实捕获exit0，部署后必须完整旧输出/hash等价。root ignored .runtime/MVP-401-dashboard-draft 有只读DTO/API/请求内审计和整数金额候选（21 Node检查PASS，仅candidate非页面验收）。trace_audit/trace_storage将协同401 models/0007/18字段v1兼容/new外部v2与可信银行fact adapter；分工及8设计preflight汇总继续有效，候选不计task通过。
+
+下一步：304本地commit→401边界候选部署/纯域与直接回归→迁移+审计codec/银行外部facts两真实事务+幂等/UNKNOWN金融集成→RR/RO首页聚合/真实Edge三黄金链/前端type与相关页面验证。仅受信内部runner入账，404再做公开事件/reset按钮。禁止LibreOffice、正式seed/reset或资金写入、缓存/卷/证据清理、PR/upstream；正式迁移必须非重置保留原数据。额度限制终止前更新本交接。完整92目标尚未达到，不能goal complete。
+
+---
+## 当前执行口径：第二轮 RED 已结束，按用户新节奏推进
+
+本节优先于下方历史。目标 ACTIVE，16/92；MVP-304 正在关闭，401 尚未实施。第二轮 `20261004T094808Z-2e990d57` / session23914 已终止 exit1：1300 collected、464 passed、1 failed、9263.84 秒；前8命令 exit0，前端单测和 E2E 未执行。失败在 test_decision_trace_reset.py 成功 reset 后的全表相等断言。manifest、9日志、环境、原稿及201源码/hash核对已独立归档至 evidence/MVP-304-check-second-red-*，首轮原证据保持不变。不要再 poll23914 或使用要求进程存活的旧 checkpoint。
+
+2026-10-04 用户明确：全量只集中在初版完成和完整版完成两个验收节点，失败后可在同一节点修复重跑。开发采用模块及直接相关测试，资金守恒/防重复扣款/UNKNOWN/迁移采用对应集成，前端类型+页面验证。仓库 AGENTS 1.4、README、验收清单和追踪表已同步，原计划保留原文。304 不再启动第三轮全量；失败记录保持 RED。
+
+trace_storage 获授权仅修成功 reset 节点：业务表复位原样，旧审计事件和原件完整保留、epoch/seal 承接，外租户隔离；失败 rollback 的全表相等断言保留。随后真实 PG 两节点定向验收，不并发pytest。trace_audit 准备定向证据门禁下的正式库 RR/READ ONLY 全23表及原20字段末次核对；旧要求11命令全绿的 final helper 保留为历史，不冒充本轮全绿。trace_domain 只读提取401真实源码接缝。实际相关验证成功后关闭304文档/本地commit，再实现401；完整版92项尚未完成。
+
+禁止 LibreOffice、正式复位或资金写入、缓存/卷/证据清理、PR/upstream；额度限制终止前更新本交接。下方等待和逐任务 full 要求为历史，不能覆盖本节。
+
+---
+## 2026-10-04 20:18 历史 verified wait
+
+同一 check `20261004T094808Z-2e990d57` / exec23914 仍运行，Python PID56356 CPU 5051.00 秒，最终 manifest 不存在。19:46:30新stdout决策记录integration11通过，19:51:39 `test_decision_trace_api.py ... [31%]`整组3通过；不能据此推断精确当前测试名或完成比例，audit workflow8已在本 full run 通过。实际重核201 source/tests/contracts路径集合与全部SHA、启动环境声明字节一致，仅保留已核验同步修复。目标ACTIVE16/92，304未验收commit，401源码尚未开始。
+
+19:16/19:18只读系统观察显示不同 bf_test UUID 的连接均等待客户端，未观察到锁等待；原始第二采样在 evidence/MVP-304-live-resource-observation.txt，说明见 MVP-304-runtime-cost-review.md 附录。它不是函数profile或验收，不为静默启动第二pytest/cov或重启当前check。所有agent均已完成且无其它pytest/cov句柄；trace_storage已交还MVP-401-external-consumption-review.md及6个待验证case，root源查并合入preflight候选4。消费前完整原件/顺序核验，U=B-G-ΣA-ΣI-R逐effect去重预留，优先消耗真正AVAILABLE；侵犯预留/目标或来源不明保留银行ECONOMIC已SETTLED与projection UNKNOWN，应用/memo原子回滚，不修改原claims/目标/月贡献。银行经济digest与归因memo分开。该设计未实现/未验证，不声称通用goal drawdown或pending-aware取消；401共8设计文档，不计验收。
+
+本turn准备并静态复核 ignored .runtime/profile_mvp304_calls.py，hash7e6317acc6ba931a688b4af7a713155b3fb638f57d4918dabf9e653384b603fa；仅明确单node调用启用，分类INSTRUMENTED_TEST_CALL_NOT_PRODUCT_SLA，原call.pstats/UTC墙钟/三phase/真实session退出码，三个phase齐全passed+退出0才PASSED。推荐TRANSFER_INTERNAL完整node在原1300collection恰一次。未导入/启用插件、无第二pytest或DB访问；未来命令和边界见runtime-cost-review末节。先当前check真正终态、归档完整coverage再诊断，不把instrumented call作为请求SLA或验收。
+
+已实际核对原计划性能要求，见runtime-cost-review：MVP-401真实写后状态实时反映，MVP-403理解视图，404无手改库连续三次、504断网三链、FULL-904四分钟现场演示；FULL-807才是既定大规模并发/重启/重复/UNKNOWN/负载时延故障实验。原计划未规定毫秒/P95 SLA，但仍须实际交互/演示达标；当前资源采样或suite时间不能替代。所有future项仍PENDING，未新建阶段。
+
+formal最终只读关闭证明已READY：ignored .runtime/verify_mvp304_formal_final.py，hashc5fb7134bd195ab97e8c63cc632125331b13ade971baa2cc7b10490877335c2f；root已审查安全门与RR/RO/全23JSON+原20typed列两个算法。20:15:39仅纯文件preflight真实通过（.runtime/MVP-304-formal-final-preflight.json），7个pins/23完整基线hash281b302…85f/20原列hashdbbc4819…2d0，未DB连接/执行final verify。成功full后root直接运行 `.venv/Scripts/python.exe -B .runtime/verify_mvp304_formal_final.py --check-run-id 20261004T094808Z-2e990d57`；脚本先完全重核11命令/原日志/collection/Edge/source201，才允许已授权正式只读。单RR+RO读完整23表及原20列比对，exclusive输出.runtime/MVP-304-formal-final/<run>-snapshot.json/-verification.json，再归档到docs evidence并核原hash。保留LEGACY/HEAD_MISSING，不冒全史VALID；不需要额外向用户请求只读许可。脚本固定当前run；如真RED导致新run，先按事实更新guard并记录新toolhash，不能绕过成功门。
+
+继续poll23914。真实GREEN后 verify_mvp304_check.py 新run --dry-run→归档11命令/动态1300backend/4unit/1Edge/source集合与hash→actual coverage/上述formal只读关闭证明→docs17/92/localcommit→401；真实RED保存manifest/log、按实证窄修并重新完整check。READY verifier、首轮RED与233.33秒同步修复、正式0006/seedv6原数据保留和audit-verify正/负证据见下方。当前是有运行证据的等待，无需blocked；完整版92项未达，不得complete。
+
+禁止LibreOffice、正式reset/金融写入、缓存/卷/证据清理、PR/upstream。额度终止前保持交接。
+
+---
+## 2026-10-04 18:57 当前 verified wait
+
+同一check run20261004T094808Z-2e990d57 / exec23914持续运行。18:53:48实际输出autonomy_service剩余6项、boundary域42项及boundary API3项通过，最后显示25%；PID56356 CPU2142.16秒，最终manifest仍不存在。所有201源码/test/contracts冻结，无第二pytest/cov或agent运行句柄。继续poll23914，不以25%或部分GREEN代替完整1300+4unit+1Edge/11命令门。目标ACTIVE16/92，未进入401源码；成功后的verifier/coverage/formal只读零变/文档与commit流程见下方。当前goal turn属于已确认live句柄的verified wait，无真实阻塞。禁止LibreOffice/正式reset/清理/PR，上限中断前保留交接。
+
+---
+## 2026-10-04 18:39 最新交接：304整组workflow在完整coverage中通过，继续23914
+
+目标ACTIVE16/92，HEAD70ef877；304未完整验收/commit，不进入401源码。唯一check run20261004T094808Z-2e990d57/root exec23914继续运行。18:37:02实际poll输出audit_workflow_integration八个dot/13%，整组8全部通过并越过首轮失败点，原并发reset已获本完整run正向证据；其前allocation properties/service与audit API/domain/CLI/guard/migration/reset/storage也通过。18:39:51新输出autonomy API/audit/domain整组通过（最后19%）；PID56356 CPU1694.28秒，启动17:49:24，仍无终态manifest。不要把13%当精确当前进度；按整模块stdout/写缓冲解释长静默，不重启/终止当前check。
+
+上一goal turn是实际进展（最小同步修复+相同cov233.33s实证+新full启动）；本turn是经PID/exec确认的verified wait并产生新证据：整组workflow在full通过、首页安全整数显示反例实测。所有201 source/tests/contracts仍冻结，无其它pytest/cov、所有agent关闭。旧20秒/15秒竞争测试仅静态风险，无新的实际RED，维持冻结；若后续真失败先分段实測/原异常/锁证据再窄修并rerunfull。
+
+Money显示反例已实际当前Node24.14.1运行：safe整数分9007199254740990用浮点除100/toFixed得90071992547409.91，整数商余数应.90，差1分。原始两JSON行evidence/MVP-401-money-display-counterexample.txt，SHA b0ec1279a93ed2b70cf332df80990a0478fc9a50aa4e3ae4a8fd057de0410840；MVP-401-preflight尾部已定safe check后BigInt整数元/分+负号，不做浮点舍入/隐式转换。该独立数学实证不计首页实现/组件通过，不改应用/API/DB。其余401全部7设计仍未实现/未验收。
+
+优先poll23914至真实终态：成功只用新runverify_mvp304_check.py --dry-run→归档全部11命令/动态1300backend/4unit/1Edge工程/pathset+hash→actualcoverage JSON/formal只读22表零变→304/ADR/SEM/STATUS17/92/README/追踪与localcommit→401真实实施。失败保留准确log/manifest，修真实原因，不用本13%通过代替全量。READY verifier、233.33s修复原稿/diff/AST/200不变实证、正式非reset0006原20表全保留和audit-verify正/负只读证据详下方18:12/17:50。
+
+禁止LibreOffice、cache/卷/证据清理、正式reset/资金写入、PR/upstream；额度终止前更新交接；完整92目标未达不得goal complete。
+
+---
+## 2026-10-04 18:12 最新交接：恢复同一23914，304后端完整检查仍在运行
+
+本节优先。目标ACTIVE16/92，304未验收/commit，HEAD70ef877。唯一run20261004T094808Z-2e990d57/root session23914继续运行；所有8条静态/合同/环境命令已实际exit0，后端实际收集1300、启动17:49:24，最后完整stdout是account_api/allocation/allocation_api已通过（显示3%），正在allocation properties的长模块。pytestPID56356在18:08:25实际CPU701.11秒递增；没有终态manifest、没有backend最终通过数。tasks.py按行读stdout、日志有缓冲，禁止把静默当挂起或精确当前进度。不要启动第二cov/pytest/改source或杀掉安静测试。
+
+本次checkpoint已再次实际核201原source/test/contracts全部hash：除已核验的同一reset测试修复外200原件相同；新test32f5b1e…冻结。两份新run环境声明字节一致，PLAYWRIGHT_CHANNEL=msedge/PYTEST_ADDOPTS=-x无排除。所有三个agents已交还完成，无运行句柄；等待期间仅静态只读/文档，不需要再次启动agent进程。
+
+首轮RED及233.33秒真实coverage修复完整见下方17:50和evidence/MVP-304-hooks-reset-cov-repair-*、MVP-304-sync-repair-verification.json。新collection1300/4.95秒在.runtime，旧7.24秒collection留在precheck历史证据。后续成功必须 verify_mvp304_check.py 新run --dry-run→实际归档全部11commands/1300backend/4unit/1Edge工程/source集合/hash/coverage；formal只读全表零变→304文档17/92与localcommit→401，完整目标仍不得markcomplete。
+
+静态预查额外旧timeout：execution_failures::test_two_different_keys_cannot_spend_the_same_reserved_source_cash 的 entered/release/winner各20s；recovery_audit::test_different_idempotency_keys_competing_for_one_position_have_one_bank_effect 的entered15/release30/second20/first20。boundary_engine与goal_client同seed60天，恢复还多策略/购买来源；有潜在coverage预算风险，但目前未实测失败，不能改冻结测试或取消本check。若后续真实RED，先记录实际phase/future原异常/PG锁，再只修有证据的同步预算，保留竞争者拒绝/唯一action、BankOperation、双腿/回执和一次投影全部断言；任何新修复后要重新完整check。
+
+401交叉审查8候选已合入MVP-401-preflight.md尾部，仍DESIGN_ONLY：one-table external fact+immutable bank/mutable projection、18字段v1和external/clearing v2、可信bootstrap、AVAILABLE消费/侵入预留归属须保留真实fact并待对账、summary-v3/seed-v6/20归档实体、payload2显式registry、exposure-v3/v4、完整边界门+局部账面/配置卡。303只捕获DTO/Evidence，不反射posting：旧content/hash保留，新增稳定ID v4 Evidence并SUPERSEDED旧状态；单加银行实体不自动需要trace-v2，新增顶层/phase/default才须明确版本。新origin完整ledger/旧receipt校验仍必补。全部为未实现/未运行设计，禁止提前count401或金融测试PASS。
+
+git diff --check实际exit0，CRLF转LF警告非失败；不要为了行尾改冻结源码。formal0006/seedv6无reset/写金融事实，原20表保留实证仍有效；禁止LibreOffice、缓存/卷/证据清理、PR/upstream。额度中断前保持本交接。继续poll23914，失败保留真实证据/修复，成功按门提交并继续401，不结束完整目标。
+
+---
+## 2026-10-04 17:50 当前交接：304同步RED修复通过，第二轮完整check运行中
+
+优先于下方历史。目标ACTIVE16/92，HEAD70ef877；304未验收/提交，禁止开始401源码。唯一root make check run20261004T094808Z-2e990d57 / exec session23914正在运行；第一轮39817已exit1关闭，targeted33323已exit0关闭，所有agent完成且无其它pytest/cov。当前刚进入静态阶段，尚无最终manifest/后台pass数。保持201 source/tests/contracts冻结，仅docs/ignored.runtime可写，不因静默终止或重启测试。
+
+首轮171passed/1failed/2447.88秒的准确9命令manifest/log/environment已保存在evidence/MVP-304-check-red-*；45秒银行事件等待发生在reset启动前。最小修复仅test_audit_workflow_integration中原函数，原件77f89d67…hash与首轮一致，新test32f5b1e…，其它200逐字节不变。原锁/金融终态断言保留，ready/resume/projection240秒、archive600秒是同步预算非线程硬终止/SLA。相同--cov原node真实1passed/233.33秒，guard+RESERVE23.359+银行22.454=45.813秒，投影4.531/reset124.156秒；future均done。最终静态/source-check/原稿/diff/实测notes/运行meta已归档，root独立evidence/MVP-304-sync-repair-verification.json核11原assert预算归一化+函数外AST/201pathset。无服务/迁移/金额/状态改动。
+
+修复后独立collection1300/4.95秒写入.runtime/MVP-304-collected.txt；旧7.24秒collection与precheck证据仍保留原时点。新launch同shell环境PLAYWRIGHT_CHANNEL=msedge/PYTEST_ADDOPTS=-x绑定.run/environment.json与.runtime/MVP-304-check-environment.json；failfast不排除测试。
+
+先poll23914至真正终态。成功才 .\.venv\Scripts\python.exe .\.runtime\verify_mvp304_check.py 20261004T094808Z-2e990d57 --dry-run，随后实际归档11log/manifest/环境/新collection，实际coverage json+formal只读全表零变→304/ADR/SEM/STATUS17/92/README/追踪→本地commit→401合同冻结实施。RED则保留原证据，修真实原因/必要复核/重新冻结+完整check；不可用targeted绿色替代。
+
+401全部7设计MD已交还，外部银行事实缺口、单一posting链/独立原点、v1审计原文codec/升级合法性、三黄金链手算均NOT_IMPLEMENTED/NOT_VERIFIED。没有401应用/DB/合同/迁移动作。formal现0006/seedv6，未reset，原20表全数据保留实证有效。禁止LibreOffice、cache/卷/证据清理、正式reset、PR/upstream；完整目标未达不得goal complete，额度中断前更新交接。
+
+---
+## 2026-10-04 17:35 当前交接：304完整check首轮RED，禁止进入401实现
+
+优先于下方历史。目标ACTIVE，16/92，HEAD70ef877；304尚未验收/提交。root session39817已exit1且关闭，pytestPID79460已退出，无后台check/第二cov。完整run20261004T084600Z-09f4a398的9命令manifest已生成：前8条exit0，backend171 passed/1 failed/2447.88秒，failfast未进入frontendunit/E2E。实际失败是test_audit_workflow_integration::test_real_reset_waits_across_bank_commit_and_original_application_projection 的bank_committed.wait(45)超时，repr事件后来set，reset尚未启动；不可推断为死锁或已通过。原manifest/9日志/environment与201路径hash匹配-before-repair证明保存在evidence/MVP-304-check-red-*。READY完结verifier不得将失败run计为通过。
+
+trace_audit正在只读诊断此用例等待边界和实际phase，尚未授权源码修改或pytest；trace_storage的401迁移设计已完成，trace_domain仍写401审计演进设计。401全部仍DESIGN_ONLY，禁止401source/DB/migration/合同实现。原304源码冻结只在确认最小修复后解冻对应测试；正式0006/seedv6，无reset/金融写入。修复后同cov定向验证、重新冻结collection/source、新完整check（唯一cov），完成actualverifier/coverage/formal零变/最终docs17/92/localcommit，再401。
+
+READY .runtime/verify_mvp304_check.py接受新run动态核对collection、全部11命令、实际backend/4unit/1Edge工程、source集合/hash；须真实成功后dry-run再归档。旧precheck/auditcommand/migration证据保持历史有效，不冒充修复后当前树哈希。禁止LibreOffice、cache/卷/证据清理、正式reset、PR/upstream；完整92目标未达不得goal complete，额度中断前更新交接。
+
+---
+## 2026-10-04 17:17 当前交接补充
+
+目标仍ACTIVE，完成16/92；304待全量，不得标完成或开始401源码。root完整check仍run20261004T084600Z-09f4a398/session39817，最后实际输出12%：allocation properties/service以及新增audit API/domain/CLI/guard/migration/reset/storage整组已通过，workflow还未出现完整行。17:16:16实际pytestPID79460 CPU1034.06秒持续执行，manifest尚未生成，无第二pytest/cov。所有201源/test/contracts冻结，所有agent均已完成且无运行句柄。
+
+401仅设计MD现已全部交还：preflight、boundary-contract-design、dashboard-storage-design、real-e2e-fixture-design；没有401实现/测试/DB动作。source真实gap和可信external-fact接缝要求见最新fixture设计，不能以旧恢复emergency夹具当真消费，也不能改旧OPENING/余额或造新工资账户冒工资到账。404产品控制台尚未提前开发。
+
+先恢复poll39817，完整check结束再按下方17:07 verifier dry-run→归档/coverage/formal零变→更新304/ADR/SEM/STATUS17/92/README/追踪→本地提交→401最小合同冻结。全量失败则保留实际RED、修真实原因并重新必要验证+完整check，不能绕过门。下方全部migrate/auditverify实证有效；formal0006/seedv6无正式reset。禁止LibreOffice、不清理缓存/卷/证据、不做PR/upstream；额度中断前保留本交接，完整目标未达不得goal complete。
+
+---
+## 2026-10-04 17:07 最新运行补充：304同一fullcheck继续，401仅设计
+
+完整check仍是20261004T084600Z-09f4a398/session39817，未完成、未失败、未启动第二份。后端1300已实际收集，当前输出停在allocation properties前一完整module；pytest stdout按整行由tasks.py读出，09-uv.log自身有写缓冲，不能用静默或空log推断停机/精确当前百分比。实际pytestPID79460在17:05:20 CPU717.44秒，持续上升。源码/test/contracts201文件继续冻结，无其它pytest/cov或金融进程。完整验收/coverage/pathset+hash/304commit仍待；目标ACTIVE16/92。
+
+独立完结verifier已READY，仅ignored.runtime，31个模拟解析+静态通过，不代表check通过。结束先 .\.venv\Scripts\python.exe .\.runtime\verify_mvp304_check.py 20261004T084600Z-09f4a398 --dry-run；成功后去掉dry-run归档11日志/manifest/environment/collection及MVP-304-verification.json；实际collection动态读1300。随后实际coverage json导出真实分子分母、formal只读快照零变、最终文档17/92+本地提交，然后顺序401。
+
+等待期间仅docs设计：MVP-304-runtime-cost-review.md（静态/未profile/未优化；fresh append无Python全verify，详情/重放/reset有全epoch及重复303/ledger核验；纯属性测试原本亦昂贵）；MVP-401-boundary-contract-design.md（保留原due与projection日、同义务单生成、旧v1完整JSON/hash和303原件等价）；MVP-401-dashboard-storage-design.md（单RR+RO快照、完整本金来源/局部null、ASK原consent/已提交不再分级、205旧有损proposal无ActionPlan不能漏报、一次epochverify而各run独立anchor）。均DESIGN_ONLY/NOT_IMPLEMENTED/NOT_VERIFIED，没有401source/test/contracts或DB动作。
+
+trace_audit仍只设计MVP-401-real-e2e-fixture-design.md，查明确切gap：现执行器五动作不支持普通工资/消费外部事实；bankposting非OPENING绑定operation与ActionPlan。source_ledger导入收入位置不增加现金，旧恢复fixture用emergency更改制造缺口不是真消费。未来401黄金链需要最小可信模拟外部事实接缝，不允许改最终余额/旧OPENING/内部转账/虚构消费义务冒充。当前不补404控制台/不改304协议，必须等304验收后冻结最小必要合同。
+
+禁止LibreOffice、cache/卷/证据清理、正式reset、PR/upstream。所有以前正式库0005记载过时：现在0006/seedv6，无正式reset，20表原数据全等证明已归档。额度中断前更新交接；不要提前标complete。
+
+---
+## 2026-10-04 16:46 最新交接：MVP-304完整check运行中
+
+优先于下方历史。目标92项仍ACTIVE，16/92完成，HEAD70ef877；304未验收/未提交，禁止开始401源码。完整make check run20261004T084600Z-09f4a398，root exec session39817仍运行，刚过静态/实际API合同。显式PYTEST_ADDOPTS=-x无排除、PLAYWRIGHT_CHANNEL=msedge，同shell启动环境声明 .runtime/quality/<run>/environment.json 与 .runtime/MVP-304-check-environment.json 字节一致。测试冻结collection1300，201源码/测试/合同/配置hash。所有源码/test/contracts冻结，只允许docs与ignored .runtime，禁止其它cov进程；不要因长静默终止或重复check。
+
+统一audit-verify已完成：临时run20261004T084307Z-d15f418b exit0，真实seed三轮(两次reset)3epochs全部VALID/5events/816snapshots，generatedDB已guarded cleanup。正式只读expectednegative20261004T084311Z-303ce2e7 exit1 NOT_VERIFIED/LEGACY_UNAUDITED/HEAD_MISSING、0epochs，无补历史，两次前后23表全部rows/cols/count/hash相同。说明及全JSON/manifest/log已归档evidence/MVP-304-audit-target-*，负向不得标正式PASS。trace_storage已冻结，无运行句柄。
+
+正式DB当前0006_audit_chain/seedmvp-301-v6，16:38非重置迁移核原20表所有原数据相等/两新表0；下方16:42有精确migration/source/定向记录。trace_domain只ignored.runtime做304fullverifier，trace_audit只docs做静态运行代价审查，无应用写入。root等待完整11命令/1300后台/4前端/1实际Edge工程health，运行 .runtime/verify_mvp304_check.py <runid>，核source pathset+hash及真实coverage分子分母、正式DB只读零变更，再更新304/ADR0012/SEM13/STATUS17/92/README/追踪并本地提交，之后顺序401。401-preflight设计已保存，未实现。
+
+恢复先poll39817；句柄丢失则核真实进程+quality/<run>/09-uv.log+manifest，不能将静默当完成。禁止LibreOffice，不清理缓存/卷/证据，不做PR/upstream。额度中断前更新交接，goal不标complete。
+
+---
+## 2026-10-04 16:42 最新交接：304源码冻结，正式非重置迁移已核验
+
+优先于下方历史。goal ACTIVE，目标初版25项→完整版67项，完成16/92；HEAD 70ef877（303），304尚未完整验收或提交，不能称完整版。所有应用源码/测试/合同已冻结；只允许docs和ignored .runtime更新。禁止LibreOffice，不清理缓存/卷/证据，不做PR/upstream。
+
+域28项0.83s、storage52项122.58s+顺序3项10.67s、业务挂钩8项386.77s、root HTTP/CLI+既有storage最终29项106.84s全部通过。各owner已完成并冻结，无pytest/cov运行。root独立只读审查未见阻断。真实 make types run20261004T081007Z-71f24680；统一lint20261004T083104Z-2fabc658与typecheck20261004T083626Z-9e5ff1b2全部exit0，164格式文件/150mypy源码、eslint、tsc、真实API合同比对通过。真实collect-only1300 tests in7.24s：.runtime/MVP-304-collected.txt，session20477已exit0，仅收集不冒充执行。
+
+正式模拟库已由root migrate run20261004T083758Z-40b013b9 exit0应用0006_audit_chain。RR/READ ONLY全表前后捕获与runtime verifier已实际执行：原20表全部原字段/数据/count一致，SHA dbbc4819f11e156ddcc11a2af3d08739cbe4101c9d2f547469fa3dd05101e2d0；新增audit_epochs/audit_subject_snapshots均0，原audit_events0，金融seed仍mvp-301-v6，无formal seed/reset。evidence/MVP-304-migration-verification.json和两份完整db JSON已归档。
+
+trace_storage 正在只写ignored .runtime helper与docs/evidence，bf_test随机隔离库迁移/真实seed三次→统一make audit-verify正向，并正式库只读target缺历史非零负向，均核前后全表零写，禁止正式创建epoch或seed/reset。trace_domain 正在仅ignored .runtime/verify_mvp304_check.py适配303验证器，从真实collection1300读数而非hardcode1229；禁止源码测试合同修改和pytest/cov/DB动作。trace_audit已完成401设计MD，当前无运行工作。
+
+root完整make check尚未启动；audit-verify证据完成后以UV_CACHE_DIR=.uv-cache、PYTHONUTF8=1、PYTEST_ADDOPTS=-x运行，记录实际runid/session。全量期间不得编辑源码/测试/合同或启动其它cov，不因静默终止。结果须11子命令0、actual后台数和1300 collected一致、4前端/1真实Edge工程health、全部source pathset+hash完全匹配、coverage真分子/分母、正式数据保持。然后304文档/ADR/SEM/STATUS17/92/README/追踪全部更新，本地提交，再顺序401。401-preflight只设计，工程health不能当业务黄金链证明。
+
+恢复先确认现有运行/agent状态，不重复fullcheck；旧303验证器不能用于304树。额度终止前更新本交接，goal保持ACTIVE。
+
+---
+## 2026-10-04 15:50 最新交接：MVP-304 实现与真实定向验证
+
+优先于下方历史。goal仍ACTIVE，已完成16/92；HEAD70ef877为已验收303，304未提交/未完整验收，正式库0005/seedmvp-301-v6未重置。当前所有新源码/0006均在304工作树。禁止LibreOffice/缓存卷证据清理/PRupstream。
+
+三agent持续并行：trace_domain域及纯测试，trace_storage模型迁移存储复位及PG tests，trace_audit九业务hook/决策response当前状态及PG workflow。root公共audit_recording、HTTP/CLI与测试/合同/文档。typedanchor UUID碰撞已修正；当前301执行200和四trace/单资金事件通过，但verify重复current主体identity待domain/storage修复。各经济锚/封存DTO完整性还在实现，不能越过304。
+
+root实测API3 GREEN12.05s、HTTP/CLI7 GREEN30.77s（api-cli-second）；实际RR/READ ONLY+全表无写+不能覆盖原检查点+未知对象非VALID+管理员bf_test故意历史篡改exit1均实测。CLI首次输出非规范JSON真实失败已修canonical_text。root5文件isolatedmypyPASS（root-static-third），fullmypy/check仍待。新CLI retained三epoch/PREFIX/EXACT正在session26232，日志cli-retained-first；其它root sessions16602/6307/42370已结束。
+
+恢复时先poll26232及各agent结果；检查当前真实git/时间/进程后继续修自有代码。等所有owner冻结，生成合同/静态检查、正式非重置0006迁移原表核对、audit-verify，再完整makecheck并锁源码/测试/合同。保存全部失败真实原因、最终manifest/pathset/hash/coverage，才标304完成和本地提交。303完整1229pass与证据仍有效历史，旧verifier不得对新304树重跑。下一项401只在304全验收后推进。进一步中断前更新本交接，完整92未达不markcomplete。
+
+---
 ## 2026-10-04 15:02 最新交接：MVP-303 完整验收通过
 
 优先于全部下方历史。目标初版25项→完整版67项仍active，完成16/92，不能称项目完成。303 fullcheck20261004T051331Z-0c360f9c已结束，session14979不再运行；11命令exit0，1229后端6381.27秒/4前端/1真实Edge工程连通，185源码/测试/合同/配置路径集合+SHA256完全匹配。runtime verifier已执行成功，完整manifest/11日志/verification/coverage归档evidence/MVP-303-*。整体覆盖8611/9374=91.86046511627907%，核心95%门仍待501。

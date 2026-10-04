@@ -1,0 +1,33 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0
+rootdir: F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collected 1 item
+
+apps\api\app\tests\test_audit_storage.py F
+
+================================== FAILURES ===================================
+__________ test_first_epoch_has_real_genesis_and_repeat_is_readonly ___________
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_9f11f2f96313412587a2ec7fb3c320f9)
+
+    def test_first_epoch_has_real_genesis_and_repeat_is_readonly(demo_engine: Engine) -> None:
+>       from app.services.audit_chain import ensure_audit_epoch, get_audit_head, verify_audit_chain
+E       ModuleNotFoundError: No module named 'app.services.audit_chain'
+
+apps\api\app\tests\test_audit_storage.py:17: ModuleNotFoundError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] �ܾ����ʡ�: 'F:\\ѧУ�\\���б�\\Ǯ;�н�\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] �ܾ����ʡ�: 'F:\\ѧУ�\\���б�\\Ǯ;�н�\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_audit_storage.py::test_first_epoch_has_real_genesis_and_repeat_is_readonly
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+======================== 1 failed, 2 warnings in 2.69s ========================

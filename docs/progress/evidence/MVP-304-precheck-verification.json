@@ -1,0 +1,103 @@
+{
+  "verified_at": "2026-10-04T08:43:33.745107+00:00",
+  "full_check_verified": false,
+  "collection_only_not_execution": true,
+  "results": {
+    "types": {
+      "run_id": "20261004T081007Z-71f24680",
+      "command_count": 1,
+      "all_exit_codes_zero": true,
+      "current_source_hashes_match": null,
+      "source_capture_count": 201,
+      "types_capture_precedes_generated_contracts": true,
+      "archived": [
+        {
+          "file": "MVP-304-types-manifest.json",
+          "sha256": "ba5121b4513894bb0b4b521ee5e870a01fe382276357b9c6b05bebca751a7d0a"
+        },
+        {
+          "file": "MVP-304-types-01-uv.log",
+          "sha256": "118c67f8a95d7d38e0739785e19153638fc03200d38bcfaa3ec4b22cb53537a6"
+        }
+      ]
+    },
+    "lint": {
+      "run_id": "20261004T083104Z-2fabc658",
+      "command_count": 4,
+      "all_exit_codes_zero": true,
+      "current_source_hashes_match": true,
+      "source_capture_count": 201,
+      "types_capture_precedes_generated_contracts": false,
+      "archived": [
+        {
+          "file": "MVP-304-lint-manifest.json",
+          "sha256": "b5f87d521778d4ea9331330b6cdcc2541ed9a136616c89b84942c750737191d2"
+        },
+        {
+          "file": "MVP-304-lint-01-uv.log",
+          "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+        },
+        {
+          "file": "MVP-304-lint-02-uv.log",
+          "sha256": "ba79708eec80e55e5da9225c62b0e300f541a8beed38859b6aab5c5e166f170b"
+        },
+        {
+          "file": "MVP-304-lint-03-uv.log",
+          "sha256": "066ec88f3228d93b674fd2f3cb0033ed1ee9558cf96b1e52b5f104e3d33f8132"
+        },
+        {
+          "file": "MVP-304-lint-04-pnpm.log",
+          "sha256": "9f55fa4f442193f038d9ed374e8109193ef8f404f0e87c8a57c77a8f64a3aa40"
+        }
+      ]
+    },
+    "typecheck": {
+      "run_id": "20261004T083626Z-9e5ff1b2",
+      "command_count": 3,
+      "all_exit_codes_zero": true,
+      "current_source_hashes_match": true,
+      "source_capture_count": 201,
+      "types_capture_precedes_generated_contracts": false,
+      "archived": [
+        {
+          "file": "MVP-304-typecheck-manifest.json",
+          "sha256": "93ade92fa32a6871dfff225a8f0279a46cab41d8803a4e4ada70311adacd6480"
+        },
+        {
+          "file": "MVP-304-typecheck-01-uv.log",
+          "sha256": "9ce20737bf77cfca5db68598771115f80495bd1759e61ff9ae24dde39ecdfbc2"
+        },
+        {
+          "file": "MVP-304-typecheck-02-uv.log",
+          "sha256": "066ec88f3228d93b674fd2f3cb0033ed1ee9558cf96b1e52b5f104e3d33f8132"
+        },
+        {
+          "file": "MVP-304-typecheck-03-pnpm.log",
+          "sha256": "5a3973f79ed9becd5f23c4feff467513814de7ea381d75a4d2e339aa8b8edca9"
+        }
+      ]
+    },
+    "migrate": {
+      "run_id": "20261004T083758Z-40b013b9",
+      "command_count": 2,
+      "all_exit_codes_zero": true,
+      "current_source_hashes_match": true,
+      "source_capture_count": 201,
+      "types_capture_precedes_generated_contracts": false,
+      "archived": [
+        {
+          "file": "MVP-304-migrate-manifest.json",
+          "sha256": "95b204d58a16357da721ac5f2be9d8ad2094bc84b0213653d31c39d1875e6ecc"
+        },
+        {
+          "file": "MVP-304-migrate-01-docker.log",
+          "sha256": "8ace0a4623491574dad714258a6a7c09f205577232bb9522566f0b85bd5f51c1"
+        },
+        {
+          "file": "MVP-304-migrate-02-uv.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  }
+}
