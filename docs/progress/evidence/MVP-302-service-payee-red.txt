@@ -1,0 +1,12 @@
+F......                                                                  [100%]
+================================== FAILURES ===================================
+______ test_suspended_payment_advice_requires_real_payee_identity[True] _______
+apps\api\app\tests\test_autonomy_service.py:267: in test_suspended_payment_advice_requires_real_payee_identity
+    assert result.decision.level == ("ADVISE_ONLY" if known else "BLOCKED")
+E   AssertionError: assert 'BLOCKED' == 'ADVISE_ONLY'
+E     
+E     - ADVISE_ONLY
+E     + BLOCKED
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_autonomy_service.py::test_suspended_payment_advice_requires_real_payee_identity[True]
+1 failed, 6 passed, 15 deselected in 19.58s

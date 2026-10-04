@@ -1,0 +1,421 @@
+.FFFFFFFFFFFFF                                                           [100%]
+================================== FAILURES ===================================
+_ test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change0] _
+
+change = {'source_evidence_ids': []}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"source_evidence_ids": []},
+            {"source_issues": [SourceIssue(code="CONFLICT", entity_type="cash")]},
+            {"authority": AuthorityAssessment(status="STALE_VERSION", evidence_ids=[EVIDENCE])},
+            {"authority": AuthorityAssessment(status="MISSING_EVIDENCE")},
+            {"authority": AuthorityAssessment(status="AUTHORIZED", policy_version_ids=[VERSION])},
+            {"action_type": "SEND_EXTERNAL"},
+            {"payee": PayeeAssessment(status="AGENT_NEW")},
+            {"payee": PayeeAssessment(status="MISSING_IDENTITY")},
+            {"payee": PayeeAssessment(status="UNSUPPORTED")},
+            {"user_id": UUID(int=900)},
+            {"validation": None},
+            {"hard_block_reasons": ["LIQUIDITY_RISK"]},
+        ],
+    )
+    def test_non_user_repairable_gates_block_even_an_otherwise_safe_payment(
+        change: dict[str, Any],
+    ) -> None:
+        result = classify_autonomy(authorized_payment().model_copy(update=change))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'AUTO_EXECUTE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + AUTO_EXECUTE
+
+apps\api\app\tests\test_autonomy_domain.py:65: AssertionError
+_ test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change1] _
+
+change = {'source_issues': [SourceIssue(code='CONFLICT', entity_type='cash', entity_id=None)]}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"source_evidence_ids": []},
+            {"source_issues": [SourceIssue(code="CONFLICT", entity_type="cash")]},
+            {"authority": AuthorityAssessment(status="STALE_VERSION", evidence_ids=[EVIDENCE])},
+            {"authority": AuthorityAssessment(status="MISSING_EVIDENCE")},
+            {"authority": AuthorityAssessment(status="AUTHORIZED", policy_version_ids=[VERSION])},
+            {"action_type": "SEND_EXTERNAL"},
+            {"payee": PayeeAssessment(status="AGENT_NEW")},
+            {"payee": PayeeAssessment(status="MISSING_IDENTITY")},
+            {"payee": PayeeAssessment(status="UNSUPPORTED")},
+            {"user_id": UUID(int=900)},
+            {"validation": None},
+            {"hard_block_reasons": ["LIQUIDITY_RISK"]},
+        ],
+    )
+    def test_non_user_repairable_gates_block_even_an_otherwise_safe_payment(
+        change: dict[str, Any],
+    ) -> None:
+        result = classify_autonomy(authorized_payment().model_copy(update=change))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'AUTO_EXECUTE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + AUTO_EXECUTE
+
+apps\api\app\tests\test_autonomy_domain.py:65: AssertionError
+_ test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change2] _
+
+change = {'authority': AuthorityAssessment(status='STALE_VERSION', policy_version_ids=[], evidence_ids=[UUID('00000000-0000-0000-0000-00000000000c')], reasons=[])}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"source_evidence_ids": []},
+            {"source_issues": [SourceIssue(code="CONFLICT", entity_type="cash")]},
+            {"authority": AuthorityAssessment(status="STALE_VERSION", evidence_ids=[EVIDENCE])},
+            {"authority": AuthorityAssessment(status="MISSING_EVIDENCE")},
+            {"authority": AuthorityAssessment(status="AUTHORIZED", policy_version_ids=[VERSION])},
+            {"action_type": "SEND_EXTERNAL"},
+            {"payee": PayeeAssessment(status="AGENT_NEW")},
+            {"payee": PayeeAssessment(status="MISSING_IDENTITY")},
+            {"payee": PayeeAssessment(status="UNSUPPORTED")},
+            {"user_id": UUID(int=900)},
+            {"validation": None},
+            {"hard_block_reasons": ["LIQUIDITY_RISK"]},
+        ],
+    )
+    def test_non_user_repairable_gates_block_even_an_otherwise_safe_payment(
+        change: dict[str, Any],
+    ) -> None:
+        result = classify_autonomy(authorized_payment().model_copy(update=change))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'AUTO_EXECUTE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + AUTO_EXECUTE
+
+apps\api\app\tests\test_autonomy_domain.py:65: AssertionError
+_ test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change3] _
+
+change = {'authority': AuthorityAssessment(status='MISSING_EVIDENCE', policy_version_ids=[], evidence_ids=[], reasons=[])}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"source_evidence_ids": []},
+            {"source_issues": [SourceIssue(code="CONFLICT", entity_type="cash")]},
+            {"authority": AuthorityAssessment(status="STALE_VERSION", evidence_ids=[EVIDENCE])},
+            {"authority": AuthorityAssessment(status="MISSING_EVIDENCE")},
+            {"authority": AuthorityAssessment(status="AUTHORIZED", policy_version_ids=[VERSION])},
+            {"action_type": "SEND_EXTERNAL"},
+            {"payee": PayeeAssessment(status="AGENT_NEW")},
+            {"payee": PayeeAssessment(status="MISSING_IDENTITY")},
+            {"payee": PayeeAssessment(status="UNSUPPORTED")},
+            {"user_id": UUID(int=900)},
+            {"validation": None},
+            {"hard_block_reasons": ["LIQUIDITY_RISK"]},
+        ],
+    )
+    def test_non_user_repairable_gates_block_even_an_otherwise_safe_payment(
+        change: dict[str, Any],
+    ) -> None:
+        result = classify_autonomy(authorized_payment().model_copy(update=change))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'AUTO_EXECUTE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + AUTO_EXECUTE
+
+apps\api\app\tests\test_autonomy_domain.py:65: AssertionError
+_ test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change4] _
+
+change = {'authority': AuthorityAssessment(status='AUTHORIZED', policy_version_ids=[UUID('00000000-0000-0000-0000-00000000000b')], evidence_ids=[], reasons=[])}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"source_evidence_ids": []},
+            {"source_issues": [SourceIssue(code="CONFLICT", entity_type="cash")]},
+            {"authority": AuthorityAssessment(status="STALE_VERSION", evidence_ids=[EVIDENCE])},
+            {"authority": AuthorityAssessment(status="MISSING_EVIDENCE")},
+            {"authority": AuthorityAssessment(status="AUTHORIZED", policy_version_ids=[VERSION])},
+            {"action_type": "SEND_EXTERNAL"},
+            {"payee": PayeeAssessment(status="AGENT_NEW")},
+            {"payee": PayeeAssessment(status="MISSING_IDENTITY")},
+            {"payee": PayeeAssessment(status="UNSUPPORTED")},
+            {"user_id": UUID(int=900)},
+            {"validation": None},
+            {"hard_block_reasons": ["LIQUIDITY_RISK"]},
+        ],
+    )
+    def test_non_user_repairable_gates_block_even_an_otherwise_safe_payment(
+        change: dict[str, Any],
+    ) -> None:
+        result = classify_autonomy(authorized_payment().model_copy(update=change))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'AUTO_EXECUTE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + AUTO_EXECUTE
+
+apps\api\app\tests\test_autonomy_domain.py:65: AssertionError
+_ test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change5] _
+
+change = {'action_type': 'SEND_EXTERNAL'}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"source_evidence_ids": []},
+            {"source_issues": [SourceIssue(code="CONFLICT", entity_type="cash")]},
+            {"authority": AuthorityAssessment(status="STALE_VERSION", evidence_ids=[EVIDENCE])},
+            {"authority": AuthorityAssessment(status="MISSING_EVIDENCE")},
+            {"authority": AuthorityAssessment(status="AUTHORIZED", policy_version_ids=[VERSION])},
+            {"action_type": "SEND_EXTERNAL"},
+            {"payee": PayeeAssessment(status="AGENT_NEW")},
+            {"payee": PayeeAssessment(status="MISSING_IDENTITY")},
+            {"payee": PayeeAssessment(status="UNSUPPORTED")},
+            {"user_id": UUID(int=900)},
+            {"validation": None},
+            {"hard_block_reasons": ["LIQUIDITY_RISK"]},
+        ],
+    )
+    def test_non_user_repairable_gates_block_even_an_otherwise_safe_payment(
+        change: dict[str, Any],
+    ) -> None:
+        result = classify_autonomy(authorized_payment().model_copy(update=change))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'AUTO_EXECUTE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + AUTO_EXECUTE
+
+apps\api\app\tests\test_autonomy_domain.py:65: AssertionError
+_ test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change6] _
+
+change = {'payee': PayeeAssessment(status='AGENT_NEW', evidence_ids=[])}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"source_evidence_ids": []},
+            {"source_issues": [SourceIssue(code="CONFLICT", entity_type="cash")]},
+            {"authority": AuthorityAssessment(status="STALE_VERSION", evidence_ids=[EVIDENCE])},
+            {"authority": AuthorityAssessment(status="MISSING_EVIDENCE")},
+            {"authority": AuthorityAssessment(status="AUTHORIZED", policy_version_ids=[VERSION])},
+            {"action_type": "SEND_EXTERNAL"},
+            {"payee": PayeeAssessment(status="AGENT_NEW")},
+            {"payee": PayeeAssessment(status="MISSING_IDENTITY")},
+            {"payee": PayeeAssessment(status="UNSUPPORTED")},
+            {"user_id": UUID(int=900)},
+            {"validation": None},
+            {"hard_block_reasons": ["LIQUIDITY_RISK"]},
+        ],
+    )
+    def test_non_user_repairable_gates_block_even_an_otherwise_safe_payment(
+        change: dict[str, Any],
+    ) -> None:
+        result = classify_autonomy(authorized_payment().model_copy(update=change))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'AUTO_EXECUTE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + AUTO_EXECUTE
+
+apps\api\app\tests\test_autonomy_domain.py:65: AssertionError
+_ test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change7] _
+
+change = {'payee': PayeeAssessment(status='MISSING_IDENTITY', evidence_ids=[])}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"source_evidence_ids": []},
+            {"source_issues": [SourceIssue(code="CONFLICT", entity_type="cash")]},
+            {"authority": AuthorityAssessment(status="STALE_VERSION", evidence_ids=[EVIDENCE])},
+            {"authority": AuthorityAssessment(status="MISSING_EVIDENCE")},
+            {"authority": AuthorityAssessment(status="AUTHORIZED", policy_version_ids=[VERSION])},
+            {"action_type": "SEND_EXTERNAL"},
+            {"payee": PayeeAssessment(status="AGENT_NEW")},
+            {"payee": PayeeAssessment(status="MISSING_IDENTITY")},
+            {"payee": PayeeAssessment(status="UNSUPPORTED")},
+            {"user_id": UUID(int=900)},
+            {"validation": None},
+            {"hard_block_reasons": ["LIQUIDITY_RISK"]},
+        ],
+    )
+    def test_non_user_repairable_gates_block_even_an_otherwise_safe_payment(
+        change: dict[str, Any],
+    ) -> None:
+        result = classify_autonomy(authorized_payment().model_copy(update=change))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'AUTO_EXECUTE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + AUTO_EXECUTE
+
+apps\api\app\tests\test_autonomy_domain.py:65: AssertionError
+_ test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change8] _
+
+change = {'payee': PayeeAssessment(status='UNSUPPORTED', evidence_ids=[])}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"source_evidence_ids": []},
+            {"source_issues": [SourceIssue(code="CONFLICT", entity_type="cash")]},
+            {"authority": AuthorityAssessment(status="STALE_VERSION", evidence_ids=[EVIDENCE])},
+            {"authority": AuthorityAssessment(status="MISSING_EVIDENCE")},
+            {"authority": AuthorityAssessment(status="AUTHORIZED", policy_version_ids=[VERSION])},
+            {"action_type": "SEND_EXTERNAL"},
+            {"payee": PayeeAssessment(status="AGENT_NEW")},
+            {"payee": PayeeAssessment(status="MISSING_IDENTITY")},
+            {"payee": PayeeAssessment(status="UNSUPPORTED")},
+            {"user_id": UUID(int=900)},
+            {"validation": None},
+            {"hard_block_reasons": ["LIQUIDITY_RISK"]},
+        ],
+    )
+    def test_non_user_repairable_gates_block_even_an_otherwise_safe_payment(
+        change: dict[str, Any],
+    ) -> None:
+        result = classify_autonomy(authorized_payment().model_copy(update=change))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'AUTO_EXECUTE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + AUTO_EXECUTE
+
+apps\api\app\tests\test_autonomy_domain.py:65: AssertionError
+_ test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change9] _
+
+change = {'user_id': UUID('00000000-0000-0000-0000-000000000384')}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"source_evidence_ids": []},
+            {"source_issues": [SourceIssue(code="CONFLICT", entity_type="cash")]},
+            {"authority": AuthorityAssessment(status="STALE_VERSION", evidence_ids=[EVIDENCE])},
+            {"authority": AuthorityAssessment(status="MISSING_EVIDENCE")},
+            {"authority": AuthorityAssessment(status="AUTHORIZED", policy_version_ids=[VERSION])},
+            {"action_type": "SEND_EXTERNAL"},
+            {"payee": PayeeAssessment(status="AGENT_NEW")},
+            {"payee": PayeeAssessment(status="MISSING_IDENTITY")},
+            {"payee": PayeeAssessment(status="UNSUPPORTED")},
+            {"user_id": UUID(int=900)},
+            {"validation": None},
+            {"hard_block_reasons": ["LIQUIDITY_RISK"]},
+        ],
+    )
+    def test_non_user_repairable_gates_block_even_an_otherwise_safe_payment(
+        change: dict[str, Any],
+    ) -> None:
+        result = classify_autonomy(authorized_payment().model_copy(update=change))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'AUTO_EXECUTE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + AUTO_EXECUTE
+
+apps\api\app\tests\test_autonomy_domain.py:65: AssertionError
+_ test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change10] _
+
+change = {'validation': None}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"source_evidence_ids": []},
+            {"source_issues": [SourceIssue(code="CONFLICT", entity_type="cash")]},
+            {"authority": AuthorityAssessment(status="STALE_VERSION", evidence_ids=[EVIDENCE])},
+            {"authority": AuthorityAssessment(status="MISSING_EVIDENCE")},
+            {"authority": AuthorityAssessment(status="AUTHORIZED", policy_version_ids=[VERSION])},
+            {"action_type": "SEND_EXTERNAL"},
+            {"payee": PayeeAssessment(status="AGENT_NEW")},
+            {"payee": PayeeAssessment(status="MISSING_IDENTITY")},
+            {"payee": PayeeAssessment(status="UNSUPPORTED")},
+            {"user_id": UUID(int=900)},
+            {"validation": None},
+            {"hard_block_reasons": ["LIQUIDITY_RISK"]},
+        ],
+    )
+    def test_non_user_repairable_gates_block_even_an_otherwise_safe_payment(
+        change: dict[str, Any],
+    ) -> None:
+        result = classify_autonomy(authorized_payment().model_copy(update=change))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'AUTO_EXECUTE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + AUTO_EXECUTE
+
+apps\api\app\tests\test_autonomy_domain.py:65: AssertionError
+_ test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change11] _
+
+change = {'hard_block_reasons': ['LIQUIDITY_RISK']}
+
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"source_evidence_ids": []},
+            {"source_issues": [SourceIssue(code="CONFLICT", entity_type="cash")]},
+            {"authority": AuthorityAssessment(status="STALE_VERSION", evidence_ids=[EVIDENCE])},
+            {"authority": AuthorityAssessment(status="MISSING_EVIDENCE")},
+            {"authority": AuthorityAssessment(status="AUTHORIZED", policy_version_ids=[VERSION])},
+            {"action_type": "SEND_EXTERNAL"},
+            {"payee": PayeeAssessment(status="AGENT_NEW")},
+            {"payee": PayeeAssessment(status="MISSING_IDENTITY")},
+            {"payee": PayeeAssessment(status="UNSUPPORTED")},
+            {"user_id": UUID(int=900)},
+            {"validation": None},
+            {"hard_block_reasons": ["LIQUIDITY_RISK"]},
+        ],
+    )
+    def test_non_user_repairable_gates_block_even_an_otherwise_safe_payment(
+        change: dict[str, Any],
+    ) -> None:
+        result = classify_autonomy(authorized_payment().model_copy(update=change))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'AUTO_EXECUTE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + AUTO_EXECUTE
+
+apps\api\app\tests\test_autonomy_domain.py:65: AssertionError
+_ test_full_known_permission_denial_without_effect_is_only_unevaluated_advice _
+
+    def test_full_known_permission_denial_without_effect_is_only_unevaluated_advice() -> None:
+        facts = authorized_payment().model_copy(
+            update={
+                "effect": None,
+                "validation": None,
+                "authority": AuthorityAssessment(
+                    status="OUTSIDE_AUTHORITY", evidence_ids=[EVIDENCE], reasons=["AMOUNT_CAP"]
+                ),
+            }
+        )
+        result = classify_autonomy(facts)
+>       assert result.level == "ADVISE_ONLY"
+E       AssertionError: assert 'AUTO_EXECUTE' == 'ADVISE_ONLY'
+E         
+E         - ADVISE_ONLY
+E         + AUTO_EXECUTE
+
+apps\api\app\tests\test_autonomy_domain.py:81: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change0]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change1]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change2]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change3]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change4]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change5]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change6]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change7]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change8]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change9]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change10]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_non_user_repairable_gates_block_even_an_otherwise_safe_payment[change11]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_full_known_permission_denial_without_effect_is_only_unevaluated_advice
+13 failed, 1 passed in 1.09s

@@ -1,0 +1,12 @@
+.F..                                                                     [100%]
+================================== FAILURES ===================================
+_ test_fixed_deposit_cost_permission_quote_and_confirmation_are_separate[False-False-ADVISE_ONLY] _
+apps\api\app\tests\test_autonomy_service.py:424: in test_fixed_deposit_cost_permission_quote_and_confirmation_are_separate
+    assert response.decision.level == level
+E   AssertionError: assert 'BLOCKED' == 'ADVISE_ONLY'
+E     
+E     - ADVISE_ONLY
+E     + BLOCKED
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_autonomy_service.py::test_fixed_deposit_cost_permission_quote_and_confirmation_are_separate[False-False-ADVISE_ONLY]
+1 failed, 3 passed, 22 deselected in 15.29s

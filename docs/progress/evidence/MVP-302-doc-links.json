@@ -1,0 +1,157 @@
+{
+  "checked_files": 5,
+  "link_count": 25,
+  "all_exist": true,
+  "links": [
+    {
+      "file": "docs\\adr\\0010-evidence-bound-autonomy-levels.md",
+      "label": "初版计划",
+      "target": "../../../开发计划/钱途有界_初版开发计划_Codex执行版.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\adr\\0010-evidence-bound-autonomy-levels.md",
+      "label": "只读矩阵",
+      "target": "../progress/MVP-302-preflight.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\architecture\\autonomy-api.md",
+      "label": "任务进度",
+      "target": "../progress/MVP-302.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\architecture\\autonomy-api.md",
+      "label": "ADR0010",
+      "target": "../adr/0010-evidence-bound-autonomy-levels.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\architecture\\autonomy-api.md",
+      "label": "准备动作",
+      "target": "execution-api.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-302.md",
+      "label": "ADR0010",
+      "target": "../adr/0010-evidence-bound-autonomy-levels.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-302.md",
+      "label": "MVP-302-preflight",
+      "target": "MVP-302-preflight.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-302.md",
+      "label": "autonomy-api",
+      "target": "../architecture/autonomy-api.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-302.md",
+      "label": "服务说明",
+      "target": "../architecture/autonomy-service.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "MVP-302",
+      "target": "MVP-302.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "初版计划",
+      "target": "../../钱途有界_初版开发计划_Codex执行版.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "初版计划",
+      "target": "../../钱途有界_初版开发计划_Codex执行版.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "初版计划",
+      "target": "../../钱途有界_初版开发计划_Codex执行版.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "完整计划",
+      "target": "../../钱途有界_完整开发计划_Codex执行版.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "完整计划",
+      "target": "../../钱途有界_完整开发计划_Codex执行版.md",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "模型",
+      "target": "../../apps/api/app/db/models.py",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "301 准备与执行",
+      "target": "../../apps/api/app/services/execution.py",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "301 回执核验",
+      "target": "../../apps/api/app/services/execution_projection.py",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "202 上下文",
+      "target": "../../apps/api/app/services/boundary.py",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "203 目标规划",
+      "target": "../../apps/api/app/services/goal_allocation.py",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "204 资产规划",
+      "target": "../../apps/api/app/services/asset_allocation.py",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "205 恢复",
+      "target": "../../apps/api/app/services/recovery.py",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "恢复来源",
+      "target": "../../apps/api/app/services/recovery_sources.py",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "302 适配",
+      "target": "../../apps/api/app/services/autonomy.py",
+      "exists": true
+    },
+    {
+      "file": "docs\\progress\\MVP-303-preflight.md",
+      "label": "领域",
+      "target": "../../apps/api/app/domain/autonomy.py",
+      "exists": true
+    }
+  ]
+}

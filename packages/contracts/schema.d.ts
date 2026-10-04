@@ -379,6 +379,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/actions/assess": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Assess */
+        post: operations["assess_action_intent"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/actions/{action_id}/autonomy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Autonomy */
+        get: operations["assess_existing_action"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/actions/prepare": {
         parameters: {
             query?: never;
@@ -626,6 +660,11 @@ export interface components {
             bank_status?: string | null;
             receipt?: components["schemas"]["ActionReceiptResponse"] | null;
         };
+        /** AssessActionRequest */
+        AssessActionRequest: {
+            /** Intent */
+            intent: components["schemas"]["TransferIntent"] | components["schemas"]["PaymentIntent"] | components["schemas"]["GoalIntent"] | components["schemas"]["PurchaseIntent"] | components["schemas"]["RedeemIntent"];
+        };
         /** AssetAllocationResponse */
         AssetAllocationResponse: {
             /**
@@ -762,6 +801,94 @@ export interface components {
             account_id: string;
             /** Amount Cents */
             amount_cents: number;
+        };
+        /** AutonomyDecision */
+        AutonomyDecision: {
+            /** Algorithm Version */
+            algorithm_version: string;
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Evaluation Only
+             * @default true
+             * @constant
+             */
+            evaluation_only: true;
+            /**
+             * Level
+             * @enum {string}
+             */
+            level: "AUTO_EXECUTE" | "ASK_ONCE" | "ADVISE_ONLY" | "BLOCKED";
+            /** Execution Eligible */
+            execution_eligible: boolean;
+            /**
+             * Financial Evaluation
+             * @enum {string}
+             */
+            financial_evaluation: "VERIFIED" | "NOT_EVALUATED" | "REJECTED";
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Confirmation Required
+             * @default false
+             */
+            confirmation_required: boolean;
+            /**
+             * Confirmation Satisfied
+             * @default false
+             */
+            confirmation_satisfied: boolean;
+            /** Effect Hash */
+            effect_hash?: string | null;
+            /** Economic Signature */
+            economic_signature?: string | null;
+            /**
+             * Uncertainty Status
+             * @default NONE
+             * @enum {string}
+             */
+            uncertainty_status: "NONE" | "STABLE" | "DIVERGENT" | "BLOCKED";
+            /** Candidate Signatures */
+            candidate_signatures?: {
+                [key: string]: string | null;
+            };
+        };
+        /** AutonomyResponse */
+        AutonomyResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @default ASSESSED
+             * @constant
+             */
+            status: "ASSESSED";
+            /** Action Id */
+            action_id?: string | null;
+            decision: components["schemas"]["AutonomyDecision"];
+            effect?: components["schemas"]["ExecutionEffect"] | null;
+            /** Source Evidence Ids */
+            source_evidence_ids?: string[];
+            /** Input Digest */
+            input_digest: string;
         };
         /** BillFact */
         BillFact: {
@@ -3887,6 +4014,124 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RecoveryRunResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    assess_action_intent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssessActionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AutonomyResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    assess_existing_action: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AutonomyResponse"];
                 };
             };
             /** @description Not Found */

@@ -1,0 +1,13 @@
+.F
+================================== FAILURES ===================================
+_ test_audit_complete_denial_and_missing_authority_are_not_the_same_question[OUTSIDE_AUTHORITY-ADVISE_ONLY] _
+apps\api\app\tests\test_autonomy_audit.py:220: in test_audit_complete_denial_and_missing_authority_are_not_the_same_question
+    assert result.level == expected
+E   AssertionError: assert 'BLOCKED' == 'ADVISE_ONLY'
+E     
+E     - ADVISE_ONLY
+E     + BLOCKED
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_autonomy_audit.py::test_audit_complete_denial_and_missing_authority_are_not_the_same_question[OUTSIDE_AUTHORITY-ADVISE_ONLY]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 passed in 1.36s

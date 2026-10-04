@@ -304,6 +304,7 @@ Q_finance[s,p]
 | SEM-08 | 当前已有缺口时如何允许改善安全的恢复动作，以及部分恢复过程状态。 | 不得为恢复放宽普通投资门；独立账本确认前持续保留 LIQUIDITY_RISK。 | FROZEN / VERIFIED MVP-205：[ADR0008](../adr/0008-evidence-bound-safety-recovery.md)，逐点不劣与负点改善、整仓、独立银行posting及实际对账；[验收记录](../progress/MVP-205.md) |
 | SEM-09 | 模拟收益在排名与硬现金保障之间的隔离。 | 未来未到账收入不可扩大当前边界；收益展示不能变成安全事实。 | FROZEN MVP-202：ADR 0005 展示收益/未来收入不进财务 DTO/hash |
 | SEM-10 | 五类动作的确认、同源收入消耗、独立结算和重复请求。 | 换键不能重复付款；UNKNOWN不释放；明确费用不成为自动授权；未来未提交退出不能充当承诺到账。 | FROZEN / VERIFIED MVP-301：[ADR0009](../adr/0009-atomic-simulated-action-execution.md)，固定经济载荷、收入origin/location、三阶段提交与只读回执核验 |
+| SEM-11 | 四级判定、已确认ASK的人工来源、有限用户候选及已知超权限建议。 | 分类不授银行权限；根本缺证不得变成可确认问题；候选必须同一可信数据库快照；只读财务建议不绕过执行器。 | FROZEN / VERIFIED MVP-302：[ADR0010](../adr/0010-evidence-bound-autonomy-levels.md)，完整check及169源码集合摘要核验见MVP-302 |
 
 ## 9. 后续使用约束
 

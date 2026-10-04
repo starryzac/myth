@@ -1,0 +1,66 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+___ test_finite_readonly_snapshot_can_verify_existing_automatic_acquisition ___
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1943: in _exec_single_context
+    self.dialect.do_execute(
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+.venv\Lib\site-packages\psycopg\cursor.py:117: in execute
+    raise ex.with_traceback(None)
+E   psycopg.errors.ReadOnlySqlTransaction: cannot execute SELECT FOR UPDATE in a read-only transaction
+
+The above exception was the direct cause of the following exception:
+apps\api\app\tests\test_autonomy_service.py:475: in test_finite_readonly_snapshot_can_verify_existing_automatic_acquisition
+    result = assess_transfer_preferences(session, DEMO_USER_ID, source, target, [10000, 20000], SEED_AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\autonomy.py:502: in assess_transfer_preferences
+    return _transfer_worlds(reading, user_id, source_account_id, destination_account_id, amount_options, now)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\autonomy.py:517: in _transfer_worlds
+    basis = _basis(session, user_id, now)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\autonomy.py:78: in _basis
+    exposure = load_asset_exposure(session, base, {"scope": "general_idle_funds"})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\asset_exposure_import.py:409: in load_asset_exposure
+    scope = _scope(session, context, action.policy_version_id)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\asset_exposure_import.py:45: in _scope
+    proofs = _evidence(session, version.user_id, version.evidence_ids, context.snapshot.as_of)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\policy_lifecycle.py:175: in _evidence
+    rows = session.scalars(query.with_for_update() if lock else query).all()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:2594: in scalars
+    return self._execute_internal(
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:2363: in _execute_internal
+    compile_state_cls.orm_execute_statement(
+.venv\Lib\site-packages\sqlalchemy\orm\context.py:316: in orm_execute_statement
+    result = conn.execute(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1448: in execute
+    return meth(
+.venv\Lib\site-packages\sqlalchemy\sql\elements.py:533: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1668: in _execute_clauseelement
+    ret = self._execute_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1822: in _execute_context
+    return self._exec_single_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1962: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:2332: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1943: in _exec_single_context
+    self.dialect.do_execute(
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+.venv\Lib\site-packages\psycopg\cursor.py:117: in execute
+    raise ex.with_traceback(None)
+E   sqlalchemy.exc.InternalError: (psycopg.errors.ReadOnlySqlTransaction) cannot execute SELECT FOR UPDATE in a read-only transaction
+E   [SQL: SELECT evidence_items.evidence_level, evidence_items.source_type, evidence_items.source_ref, evidence_items.content, evidence_items.content_hash, evidence_items.valid_from, evidence_items.valid_to, evidence_items.observed_at, evidence_items.supersedes_id, evidence_items.status, evidence_items.user_id, evidence_items.id, evidence_items.created_at 
+E   FROM evidence_items 
+E   WHERE evidence_items.id IN (%(id_1_1)s::UUID, %(id_1_2)s::UUID) AND evidence_items.user_id = %(user_id_1)s::UUID FOR UPDATE]
+E   [parameters: {'user_id_1': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'id_1_1': UUID('021fae51-9086-4f8a-bd17-daea445bc6f7'), 'id_1_2': UUID('6f73cb7d-d2dd-4f72-8738-1346112250fa')}]
+E   (Background on this error at: https://sqlalche.me/e/21/2j85)
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_autonomy_service.py::test_finite_readonly_snapshot_can_verify_existing_automatic_acquisition
+1 failed, 1 passed, 26 deselected in 8.92s

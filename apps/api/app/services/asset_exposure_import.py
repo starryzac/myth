@@ -42,7 +42,9 @@ def _scope(session: Session, context: BoundaryContext, version_id: UUID | None) 
         or configuration_hash(config) != version.content_hash
     ):
         raise ValueError("Invalid historical asset authorization")
-    proofs = _evidence(session, version.user_id, version.evidence_ids, context.snapshot.as_of)
+    proofs = _evidence(
+        session, version.user_id, version.evidence_ids, context.snapshot.as_of, lock=False
+    )
     if (
         version.confirmed_at is None
         or version.confirmed_at > context.snapshot.as_of

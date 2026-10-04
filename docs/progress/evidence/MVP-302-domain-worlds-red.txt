@@ -1,0 +1,146 @@
+....................FFF.FFFF                                             [100%]
+================================== FAILURES ===================================
+_____ test_stable_worlds_preserve_base_transfer_confirmation_requirement ______
+
+    def test_stable_worlds_preserve_base_transfer_confirmation_requirement() -> None:
+        facts = transfer_facts()
+        result = classify_autonomy(facts, variable(facts, facts))
+        assert result.level == "ASK_ONCE"
+>       assert result.uncertainty_status == "STABLE"
+E       AssertionError: assert 'NONE' == 'STABLE'
+E         
+E         - STABLE
+E         + NONE
+
+apps\api\app\tests\test_autonomy_domain.py:194: AssertionError
+__ test_user_amount_divergence_or_safe_unsafe_split_requires_reprepare[600] ___
+
+other_amount = 600
+
+    @pytest.mark.parametrize("other_amount", [600, 1200])
+    def test_user_amount_divergence_or_safe_unsafe_split_requires_reprepare(other_amount: int) -> None:
+        facts = transfer_facts()
+        candidates = variable(facts, transfer_facts(other_amount))
+        result = classify_autonomy(facts, candidates)
+        assert result.level == "ASK_ONCE"
+>       assert result.uncertainty_status == "DIVERGENT"
+E       AssertionError: assert 'NONE' == 'DIVERGENT'
+E         
+E         - DIVERGENT
+E         + NONE
+
+apps\api\app\tests\test_autonomy_domain.py:205: AssertionError
+__ test_user_amount_divergence_or_safe_unsafe_split_requires_reprepare[1200] __
+
+other_amount = 1200
+
+    @pytest.mark.parametrize("other_amount", [600, 1200])
+    def test_user_amount_divergence_or_safe_unsafe_split_requires_reprepare(other_amount: int) -> None:
+        facts = transfer_facts()
+        candidates = variable(facts, transfer_facts(other_amount))
+        result = classify_autonomy(facts, candidates)
+        assert result.level == "ASK_ONCE"
+>       assert result.uncertainty_status == "DIVERGENT"
+E       AssertionError: assert 'NONE' == 'DIVERGENT'
+E         
+E         - DIVERGENT
+E         + NONE
+
+apps\api\app\tests\test_autonomy_domain.py:205: AssertionError
+_ test_candidate_bank_identity_or_context_conflict_is_not_user_choice[change0] _
+
+change = {'source_context_hash': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'}
+
+    @pytest.mark.parametrize("change", [
+        {"source_context_hash": "b" * 64},
+        {"user_id": UUID(int=99)},
+        {"as_of": NOW + timedelta(seconds=1)},
+        {"source_issues": [SourceIssue(code="BANK_CONFLICT", entity_type="cash")]},
+    ])
+    def test_candidate_bank_identity_or_context_conflict_is_not_user_choice(
+        change: dict[str, Any],
+    ) -> None:
+        facts = transfer_facts()
+        result = classify_autonomy(facts, variable(facts, facts.model_copy(update=change)))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'ASK_ONCE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + ASK_ONCE
+
+apps\api\app\tests\test_autonomy_domain.py:232: AssertionError
+_ test_candidate_bank_identity_or_context_conflict_is_not_user_choice[change1] _
+
+change = {'user_id': UUID('00000000-0000-0000-0000-000000000063')}
+
+    @pytest.mark.parametrize("change", [
+        {"source_context_hash": "b" * 64},
+        {"user_id": UUID(int=99)},
+        {"as_of": NOW + timedelta(seconds=1)},
+        {"source_issues": [SourceIssue(code="BANK_CONFLICT", entity_type="cash")]},
+    ])
+    def test_candidate_bank_identity_or_context_conflict_is_not_user_choice(
+        change: dict[str, Any],
+    ) -> None:
+        facts = transfer_facts()
+        result = classify_autonomy(facts, variable(facts, facts.model_copy(update=change)))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'ASK_ONCE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + ASK_ONCE
+
+apps\api\app\tests\test_autonomy_domain.py:232: AssertionError
+_ test_candidate_bank_identity_or_context_conflict_is_not_user_choice[change2] _
+
+change = {'as_of': datetime.datetime(2026, 10, 4, 8, 0, 1, tzinfo=datetime.timezone.utc)}
+
+    @pytest.mark.parametrize("change", [
+        {"source_context_hash": "b" * 64},
+        {"user_id": UUID(int=99)},
+        {"as_of": NOW + timedelta(seconds=1)},
+        {"source_issues": [SourceIssue(code="BANK_CONFLICT", entity_type="cash")]},
+    ])
+    def test_candidate_bank_identity_or_context_conflict_is_not_user_choice(
+        change: dict[str, Any],
+    ) -> None:
+        facts = transfer_facts()
+        result = classify_autonomy(facts, variable(facts, facts.model_copy(update=change)))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'ASK_ONCE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + ASK_ONCE
+
+apps\api\app\tests\test_autonomy_domain.py:232: AssertionError
+_ test_candidate_bank_identity_or_context_conflict_is_not_user_choice[change3] _
+
+change = {'source_issues': [SourceIssue(code='BANK_CONFLICT', entity_type='cash', entity_id=None)]}
+
+    @pytest.mark.parametrize("change", [
+        {"source_context_hash": "b" * 64},
+        {"user_id": UUID(int=99)},
+        {"as_of": NOW + timedelta(seconds=1)},
+        {"source_issues": [SourceIssue(code="BANK_CONFLICT", entity_type="cash")]},
+    ])
+    def test_candidate_bank_identity_or_context_conflict_is_not_user_choice(
+        change: dict[str, Any],
+    ) -> None:
+        facts = transfer_facts()
+        result = classify_autonomy(facts, variable(facts, facts.model_copy(update=change)))
+>       assert result.level == "BLOCKED"
+E       AssertionError: assert 'ASK_ONCE' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + ASK_ONCE
+
+apps\api\app\tests\test_autonomy_domain.py:232: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_stable_worlds_preserve_base_transfer_confirmation_requirement
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_user_amount_divergence_or_safe_unsafe_split_requires_reprepare[600]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_user_amount_divergence_or_safe_unsafe_split_requires_reprepare[1200]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_candidate_bank_identity_or_context_conflict_is_not_user_choice[change0]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_candidate_bank_identity_or_context_conflict_is_not_user_choice[change1]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_candidate_bank_identity_or_context_conflict_is_not_user_choice[change2]
+FAILED apps/api/app/tests/test_autonomy_domain.py::test_candidate_bank_identity_or_context_conflict_is_not_user_choice[change3]
+7 failed, 21 passed in 1.23s

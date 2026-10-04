@@ -1698,6 +1698,150 @@
         }
       }
     },
+    "/api/v1/actions/assess": {
+      "post": {
+        "tags": [
+          "模拟资金动作"
+        ],
+        "summary": "Assess",
+        "operationId": "assess_action_intent",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssessActionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutonomyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/actions/{action_id}/autonomy": {
+      "get": {
+        "tags": [
+          "模拟资金动作"
+        ],
+        "summary": "Autonomy",
+        "operationId": "assess_existing_action",
+        "parameters": [
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Action Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutonomyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
     "/api/v1/actions/prepare": {
       "post": {
         "tags": [
@@ -2430,6 +2574,46 @@
         ],
         "title": "ActionResponse"
       },
+      "AssessActionRequest": {
+        "properties": {
+          "intent": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TransferIntent"
+              },
+              {
+                "$ref": "#/components/schemas/PaymentIntent"
+              },
+              {
+                "$ref": "#/components/schemas/GoalIntent"
+              },
+              {
+                "$ref": "#/components/schemas/PurchaseIntent"
+              },
+              {
+                "$ref": "#/components/schemas/RedeemIntent"
+              }
+            ],
+            "title": "Intent",
+            "discriminator": {
+              "propertyName": "kind",
+              "mapping": {
+                "allocate_goal": "#/components/schemas/GoalIntent",
+                "pay_recurring": "#/components/schemas/PaymentIntent",
+                "purchase_asset": "#/components/schemas/PurchaseIntent",
+                "redeem_asset": "#/components/schemas/RedeemIntent",
+                "transfer_internal": "#/components/schemas/TransferIntent"
+              }
+            }
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "intent"
+        ],
+        "title": "AssessActionRequest"
+      },
       "AssetAllocationResponse": {
         "properties": {
           "simulation": {
@@ -2836,6 +3020,195 @@
           "amount_cents"
         ],
         "title": "AssetCashUse"
+      },
+      "AutonomyDecision": {
+        "properties": {
+          "algorithm_version": {
+            "type": "string",
+            "title": "Algorithm Version"
+          },
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "evaluation_only": {
+            "type": "boolean",
+            "const": true,
+            "title": "Evaluation Only",
+            "default": true
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "AUTO_EXECUTE",
+              "ASK_ONCE",
+              "ADVISE_ONLY",
+              "BLOCKED"
+            ],
+            "title": "Level"
+          },
+          "execution_eligible": {
+            "type": "boolean",
+            "title": "Execution Eligible"
+          },
+          "financial_evaluation": {
+            "type": "string",
+            "enum": [
+              "VERIFIED",
+              "NOT_EVALUATED",
+              "REJECTED"
+            ],
+            "title": "Financial Evaluation"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          },
+          "confirmation_required": {
+            "type": "boolean",
+            "title": "Confirmation Required",
+            "default": false
+          },
+          "confirmation_satisfied": {
+            "type": "boolean",
+            "title": "Confirmation Satisfied",
+            "default": false
+          },
+          "effect_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effect Hash"
+          },
+          "economic_signature": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Economic Signature"
+          },
+          "uncertainty_status": {
+            "type": "string",
+            "enum": [
+              "NONE",
+              "STABLE",
+              "DIVERGENT",
+              "BLOCKED"
+            ],
+            "title": "Uncertainty Status",
+            "default": "NONE"
+          },
+          "candidate_signatures": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Candidate Signatures"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "algorithm_version",
+          "level",
+          "execution_eligible",
+          "financial_evaluation",
+          "reasons"
+        ],
+        "title": "AutonomyDecision"
+      },
+      "AutonomyResponse": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "status": {
+            "type": "string",
+            "const": "ASSESSED",
+            "title": "Status",
+            "default": "ASSESSED"
+          },
+          "action_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Id"
+          },
+          "decision": {
+            "$ref": "#/components/schemas/AutonomyDecision"
+          },
+          "effect": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ExecutionEffect"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Source Evidence Ids"
+          },
+          "input_digest": {
+            "type": "string",
+            "title": "Input Digest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "as_of",
+          "decision",
+          "input_digest"
+        ],
+        "title": "AutonomyResponse"
       },
       "BillFact": {
         "properties": {

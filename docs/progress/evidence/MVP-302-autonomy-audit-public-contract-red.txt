@@ -1,0 +1,13 @@
+...............F
+================================== FAILURES ===================================
+_ test_audit_complete_user_worlds_distinguish_safe_divergence_from_bank_uncertainty _
+apps\api\app\tests\test_autonomy_audit.py:331: in test_audit_complete_user_worlds_distinguish_safe_divergence_from_bank_uncertainty
+    assert result.level == "ASK_ONCE" and result.uncertainty_status == "DIVERGENT"
+E   AssertionError: assert ('AUTO_EXECUTE' == 'ASK_ONCE'
+E     
+E     - ASK_ONCE
+E     + AUTO_EXECUTE)
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_autonomy_audit.py::test_audit_complete_user_worlds_distinguish_safe_divergence_from_bank_uncertainty
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 15 passed in 1.42s

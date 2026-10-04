@@ -1,0 +1,17 @@
+unformatted: File would be reformatted
+  --> apps\api\app\domain\autonomy_types.py:38:1
+   |
+37 |     """
+38 +
+39 |     status: Literal["AUTHORIZED", "OUTSIDE_AUTHORITY", "STALE_VERSION", "MISSING_EVIDENCE"]
+--------------------------------------------------------------------------------
+63 |     """
+64 +
+65 |     user_id: UUID
+--------------------------------------------------------------------------------
+93 |     """
+94 +
+95 |     variable_id: Annotated[str, Field(min_length=1, max_length=80)]
+   |
+
+1 file would be reformatted, 2 files already formatted

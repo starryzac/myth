@@ -1,0 +1,30 @@
+...............................                                          [100%]
+============================ Hypothesis Statistics ============================
+apps/api/app/tests/test_autonomy_audit.py::test_audit_hard_financial_block_dominates_permission_cost_and_consent:
+
+  - during generate phase (0.19 seconds):
+    - Typical runtimes: ~ 1ms, of which < 1ms in data generation
+    - 100 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=100
+
+
+apps/api/app/tests/test_autonomy_audit.py::test_audit_non_economic_identity_order_and_surplus_do_not_create_questions:
+
+  - during generate phase (0.56 seconds):
+    - Typical runtimes: ~ 2-8 ms, of which < 1ms in data generation
+    - 100 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=100
+
+
+apps/api/app/tests/test_autonomy_audit.py::test_audit_a_one_cent_or_larger_economic_change_is_never_stable:
+
+  - during generate phase (0.62 seconds):
+    - Typical runtimes: ~ 3-8 ms, of which < 1ms in data generation
+    - 100 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=100
+
+
+31 passed in 8.36s

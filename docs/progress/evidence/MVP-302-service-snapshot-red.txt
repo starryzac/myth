@@ -1,0 +1,12 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_finite_worlds_use_a_real_readonly_repeatable_snapshot_during_concurrent_commit _
+apps\api\app\tests\test_autonomy_service.py:457: in test_finite_worlds_use_a_real_readonly_repeatable_snapshot_during_concurrent_commit
+    assert result.decision.level == "ASK_ONCE"
+E   AssertionError: assert 'BLOCKED' == 'ASK_ONCE'
+E     
+E     - ASK_ONCE
+E     + BLOCKED
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_autonomy_service.py::test_finite_worlds_use_a_real_readonly_repeatable_snapshot_during_concurrent_commit
+1 failed, 27 deselected in 5.74s

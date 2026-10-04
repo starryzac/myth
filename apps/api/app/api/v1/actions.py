@@ -6,12 +6,14 @@ from uuid import UUID
 from app.api.dependencies import ClockDependency, DemoUserDependency, SessionDependency, get_engine
 from app.api.errors import ErrorEnvelope
 from app.services.action_contracts import (
+    ActionIntent,
     ActionReceiptResponse,
     ActionResponse,
     ConfirmActionRequest,
     IntentModel,
     PrepareActionRequest,
 )
+from app.services.autonomy import AutonomyResponse, assess_action, assess_intent
 from app.services.execution import confirm_action, execute_action, get_action, prepare_action
 from app.services.policy_lifecycle import PolicyLifecycleError
 from fastapi import APIRouter, Depends, Query
@@ -30,6 +32,34 @@ class ActionQuery(IntentModel):
 
 class ExecuteActionRequest(IntentModel):
     pass
+
+
+class AssessActionRequest(IntentModel):
+    intent: ActionIntent
+
+
+@router.post("/assess", response_model=AutonomyResponse, operation_id="assess_action_intent")
+def assess(
+    body: AssessActionRequest,
+    query: Annotated[ActionQuery, Query()],
+    session: SessionDependency,
+    user: DemoUserDependency,
+    now: ClockDependency,
+) -> AutonomyResponse:
+    return assess_intent(session, user.id, body.intent, now)
+
+
+@router.get(
+    "/{action_id}/autonomy", response_model=AutonomyResponse, operation_id="assess_existing_action"
+)
+def autonomy(
+    action_id: UUID,
+    query: Annotated[ActionQuery, Query()],
+    session: SessionDependency,
+    user: DemoUserDependency,
+    now: ClockDependency,
+) -> AutonomyResponse:
+    return assess_action(session, user.id, action_id, now)
 
 
 @router.post("/prepare", response_model=ActionResponse, operation_id="prepare_action")
