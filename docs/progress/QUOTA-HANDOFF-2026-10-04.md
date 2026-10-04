@@ -1,11 +1,11 @@
-# 额度中断交接：已续接至MVP-204完成
+# 额度中断交接：已续接并完成MVP-205验收
 
-更新时间：2026-10-04。三位子代理此前被额度中断，用户要求继续后root接管实现；再次继续后三位已恢复可用，完成205只读预审。本文件保留中断边界，当前精确下一步以HANDOFF.md及STATUS.md为准。
+2026-10-04。用户已继续，工具恢复可用；完整目标是初版25项再完整版67项。当前13/92完成，下一项301；禁止LibreOffice，不清理或重置工作。
 
-MVP-204完整check 20261003T221328Z-b46e2a5e exit0：733后端/4前端/1Edge、113源码摘要一致、11命令成功。session78558已结束，无仍在运行的root质量检查。第一轮旧目录数量断言失败及真实复现/修正均保留在MVP-204-check-first*、boundary-api-regression-*；不能把首轮视为成功。完整证据和coverage已保存。
+205完整check 20261003T233659Z-bec8c501 / session4387已退出0：850后端、4前端、1Edge，11命令成功，129源码摘要一致，manifest/verification/coverage已归档。当前无root质量检查运行。整体覆盖4855/5166=93.979868%，MVP-501核心95%仍待补；Edge仅工程连通。
 
-当前12/92项完成，204正在提交；下一项205须冻结SEM-08，做真实模拟赎回/独立银行posting/对账/回执/本地通知，不能只做预览。具体前置风险、阶段划分与独立预审记录见MVP-204.md。
+正式模拟库0003_simulated_bank、seed mvp-205-v5，重复seed完整业务JSON相同，数据SHA d748e8bb577734b6f1a433a7473e254523c806290205e341e30988fbe4bd354b。详见MVP-205-seed-repeat.json。旧v4/0002仅是历史状态。
 
-目录F:\学校活动\工行杯\钱途有界\bounded-funds。当前变更均为授权的204工作，多数已暂存，勿清理或重置。禁止LibreOffice。原始证据日志有pytest尾随空格，git diff检查排除docs/progress/evidence/**，不改写原始输出。
+下一步：核对并提交205全部代码/测试/证据/文档，再按MVP-301-preflight.md冻结ADR与共享DTO后开发301。301包括有损确认后执行，不能留为永久提案。当前前置HEAD ca43d0f；提交后以git log的实际hash为准。精确工作和后续状态以HANDOFF.md为准。
 
-实际演示库迁移0002、seed mvp-204-v4，两次正式导入业务JSON一致，SHA256 cd2650207e2221426f3607645aae7cfd6bec4067f93438ed105a1286ad6f8d1a。项目PostgreSQL端口54329；测试随机bf_test库。首次强制中止可能有临时测试库残留，未做清理。缓存、venv、node_modules、.runtime及项目卷保留。E2E自启18000/15173，不以旧dev服务为证。
+目录F:\学校活动\工行杯\钱途有界\bounded-funds；PowerShell .\make.cmd，UV_CACHE_DIR设仓库.uv-cache、PYTHONUTF8=1。PostgreSQL16端口54329；测试仅操作自身bf_test_<32hex>库。缓存、venv、node_modules、.runtime、项目卷与可能残留的旧随机库均保留。E2E自启18000/15173，不能用旧dev进程证明当前代码。原始pytest日志尾随空格不改写，diff检查排除docs/progress/evidence/**。

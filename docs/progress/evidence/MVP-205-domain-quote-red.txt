@@ -1,0 +1,106 @@
+.....................FFFFFF..FFFFFFFFF                                   [100%]
+================================== FAILURES ===================================
+_____ test_contradictory_or_non_integer_quote_is_rejected[user_id-value0] _____
+apps\api\app\tests\test_recovery.py:366: in test_contradictory_or_non_integer_quote_is_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+___ test_contradictory_or_non_integer_quote_is_rejected[position_id-value1] ___
+apps\api\app\tests\test_recovery.py:366: in test_contradictory_or_non_integer_quote_is_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+___ test_contradictory_or_non_integer_quote_is_rejected[product_id-value2] ____
+apps\api\app\tests\test_recovery.py:366: in test_contradictory_or_non_integer_quote_is_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_contradictory_or_non_integer_quote_is_rejected[product_version_number-1] _
+apps\api\app\tests\test_recovery.py:366: in test_contradictory_or_non_integer_quote_is_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_contradictory_or_non_integer_quote_is_rejected[terms_digest-wrong-version-terms] _
+apps\api\app\tests\test_recovery.py:366: in test_contradictory_or_non_integer_quote_is_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_contradictory_or_non_integer_quote_is_rejected[principal_cents-50001] __
+apps\api\app\tests\test_recovery.py:366: in test_contradictory_or_non_integer_quote_is_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_missing_or_stale_facts_never_create_a_recovery_request[missing_quote] __
+apps\api\app\tests\test_recovery.py:390: in test_missing_or_stale_facts_never_create_a_recovery_request
+    result = plan_recovery(snapshot(), [reserve()], [held], [], [candidate], [authorization()], user_id=USER)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\domain\recovery.py:82: in plan_recovery
+    raise ValueError("A recovery quote and original authorization are required")
+E   ValueError: A recovery quote and original authorization are required
+_ test_missing_or_stale_facts_never_create_a_recovery_request[unknown_acquisition] _
+apps\api\app\tests\test_recovery.py:391: in test_missing_or_stale_facts_never_create_a_recovery_request
+    assert result.steps == []
+E   AssertionError: assert [RecoveryActi...cc6159770ae')] == []
+E     
+E     Left contains one more item: RecoveryAction(user_id=UUID('00000000-0000-0000-0000-000000000001'), position_id=UUID('00000000-0000-0000-0000-0000000..., 8, 5, tzinfo=datetime.timezone.utc), request_hash='43e559726b5d75d30628e7105381f9fc329e137aa4bd90e447e74cc6159770ae')
+E     Use -v to get more diff
+_ test_missing_or_stale_facts_never_create_a_recovery_request[missing_original] _
+apps\api\app\tests\test_recovery.py:390: in test_missing_or_stale_facts_never_create_a_recovery_request
+    result = plan_recovery(snapshot(), [reserve()], [held], [], [candidate], [authorization()], user_id=USER)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\domain\recovery.py:82: in plan_recovery
+    raise ValueError("A recovery quote and original authorization are required")
+E   ValueError: A recovery quote and original authorization are required
+__ test_missing_or_stale_facts_never_create_a_recovery_request[stale_quote] ___
+apps\api\app\tests\test_recovery.py:392: in test_missing_or_stale_facts_never_create_a_recovery_request
+    assert result.candidates[0].decision == "ASK_ONCE"
+E   AssertionError: assert 'BLOCKED' == 'ASK_ONCE'
+E     
+E     - ASK_ONCE
+E     + BLOCKED
+__ test_missing_or_stale_facts_never_create_a_recovery_request[legacy_terms] __
+apps\api\app\tests\test_recovery.py:391: in test_missing_or_stale_facts_never_create_a_recovery_request
+    assert result.steps == []
+E   AssertionError: assert [RecoveryActi...ab886f3fd83')] == []
+E     
+E     Left contains one more item: RecoveryAction(user_id=UUID('00000000-0000-0000-0000-000000000001'), position_id=UUID('00000000-0000-0000-0000-0000000..., 8, 5, tzinfo=datetime.timezone.utc), request_hash='cef73b90f75e1ef1f5cd39e1803f7e6485059bdfa8efa3f647777ab886f3fd83')
+E     Use -v to get more diff
+____ test_already_committed_principal_cannot_be_requested_again[inflight] _____
+apps\api\app\tests\test_recovery.py:405: in test_already_committed_principal_cannot_be_requested_again
+    assert result.steps == []
+E   AssertionError: assert [RecoveryActi...a026e35b760')] == []
+E     
+E     Left contains one more item: RecoveryAction(user_id=UUID('00000000-0000-0000-0000-000000000001'), position_id=UUID('00000000-0000-0000-0000-0000000..., 8, 5, tzinfo=datetime.timezone.utc), request_hash='f395ab1384d9f9508a317ce7d2ca05e5bbb3c00cfbd3ec135c2f6a026e35b760')
+E     Use -v to get more diff
+____ test_already_committed_principal_cannot_be_requested_again[reserved] _____
+apps\api\app\tests\test_recovery.py:405: in test_already_committed_principal_cannot_be_requested_again
+    assert result.steps == []
+E   AssertionError: assert [RecoveryActi...0c600b1e86a')] == []
+E     
+E     Left contains one more item: RecoveryAction(user_id=UUID('00000000-0000-0000-0000-000000000001'), position_id=UUID('00000000-0000-0000-0000-0000000..., 8, 5, tzinfo=datetime.timezone.utc), request_hash='a4145aba5dd6832571f08edf3b61f0ccab272a627635c648583670c600b1e86a')
+E     Use -v to get more diff
+_ test_already_committed_principal_cannot_be_requested_again[already_redeemed] _
+apps\api\app\tests\test_recovery.py:405: in test_already_committed_principal_cannot_be_requested_again
+    assert result.steps == []
+E   AssertionError: assert [RecoveryActi...78c9bb71dd7')] == []
+E     
+E     Left contains one more item: RecoveryAction(user_id=UUID('00000000-0000-0000-0000-000000000001'), position_id=UUID('00000000-0000-0000-0000-0000000..., 8, 5, tzinfo=datetime.timezone.utc), request_hash='e0b98650f44c3ba0ff477e5446cb1b6ee1fd23eedbe0a4e60371978c9bb71dd7')
+E     Use -v to get more diff
+_ test_due_unreconciled_original_principal_requires_bank_reconciliation_first _
+apps\api\app\tests\test_recovery.py:414: in test_due_unreconciled_original_principal_requires_bank_reconciliation_first
+    assert result.status == "INSUFFICIENT_EVIDENCE"
+E   AssertionError: assert 'ADVISE_ONLY' == 'INSUFFICIENT_EVIDENCE'
+E     
+E     - INSUFFICIENT_EVIDENCE
+E     + ADVISE_ONLY
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_recovery.py::test_contradictory_or_non_integer_quote_is_rejected[user_id-value0]
+FAILED apps/api/app/tests/test_recovery.py::test_contradictory_or_non_integer_quote_is_rejected[position_id-value1]
+FAILED apps/api/app/tests/test_recovery.py::test_contradictory_or_non_integer_quote_is_rejected[product_id-value2]
+FAILED apps/api/app/tests/test_recovery.py::test_contradictory_or_non_integer_quote_is_rejected[product_version_number-1]
+FAILED apps/api/app/tests/test_recovery.py::test_contradictory_or_non_integer_quote_is_rejected[terms_digest-wrong-version-terms]
+FAILED apps/api/app/tests/test_recovery.py::test_contradictory_or_non_integer_quote_is_rejected[principal_cents-50001]
+FAILED apps/api/app/tests/test_recovery.py::test_missing_or_stale_facts_never_create_a_recovery_request[missing_quote]
+FAILED apps/api/app/tests/test_recovery.py::test_missing_or_stale_facts_never_create_a_recovery_request[unknown_acquisition]
+FAILED apps/api/app/tests/test_recovery.py::test_missing_or_stale_facts_never_create_a_recovery_request[missing_original]
+FAILED apps/api/app/tests/test_recovery.py::test_missing_or_stale_facts_never_create_a_recovery_request[stale_quote]
+FAILED apps/api/app/tests/test_recovery.py::test_missing_or_stale_facts_never_create_a_recovery_request[legacy_terms]
+FAILED apps/api/app/tests/test_recovery.py::test_already_committed_principal_cannot_be_requested_again[inflight]
+FAILED apps/api/app/tests/test_recovery.py::test_already_committed_principal_cannot_be_requested_again[reserved]
+FAILED apps/api/app/tests/test_recovery.py::test_already_committed_principal_cannot_be_requested_again[already_redeemed]
+FAILED apps/api/app/tests/test_recovery.py::test_due_unreconciled_original_principal_requires_bank_reconciliation_first
+15 failed, 23 passed in 1.22s

@@ -1,4 +1,4 @@
-"""The sixteen MVP tables. This module stores facts; it does not grant action authority."""
+"""Application facts and independent simulated bank economic records."""
 
 from datetime import date, datetime
 from typing import Any
@@ -497,4 +497,89 @@ class AuditEvent(OwnedMixin, Base):
             "previous_hash IS NULL OR previous_hash ~ '^[0-9a-f]{64}$'", name="previous_hash"
         ),
         Index("ix_audit_events_user_occurred", "user_id", "occurred_at"),
+    )
+
+
+class SimulatedBankRedemption(OwnedMixin, Base):
+    __tablename__ = "simulated_bank_redemptions"
+    action_plan_id: Mapped[UUID]
+    position_id: Mapped[UUID]
+    destination_account_id: Mapped[UUID]
+    product_id: Mapped[UUID] = mapped_column(ForeignKey("asset_products.id", ondelete="RESTRICT"))
+    goal_id: Mapped[UUID | None]
+    principal_cents: Mapped[int] = mapped_column(MoneyCents())
+    idempotency_key: Mapped[str] = mapped_column(String(160))
+    request: Mapped[JsonObject] = mapped_column(JSONB)
+    request_hash: Mapped[str] = mapped_column(String(64))
+    requested_at: Mapped[datetime] = mapped_column(UTCDateTime())
+    available_at: Mapped[datetime] = mapped_column(UTCDateTime())
+    settled_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
+    status: Mapped[str] = mapped_column(String(24), server_default="ACCEPTED")
+    __table_args__ = owned_args(
+        owned_reference("action_plan_id", "action_plans"),
+        owned_reference("position_id", "asset_positions"),
+        owned_reference("destination_account_id", "accounts"),
+        owned_reference("goal_id", "goals"),
+        UniqueConstraint("action_plan_id", name="uq_simulated_bank_redemptions_action"),
+        UniqueConstraint("position_id", name="uq_simulated_bank_redemptions_position"),
+        UniqueConstraint("user_id", "idempotency_key", name="uq_simulated_bank_redemptions_key"),
+        CheckConstraint("principal_cents > 0", name="principal"),
+        CheckConstraint("request_hash ~ '^[0-9a-f]{64}$'", name="request_hash"),
+        CheckConstraint("jsonb_typeof(request) = 'object'", name="request_object"),
+        CheckConstraint("available_at >= requested_at", name="availability"),
+        CheckConstraint("status IN ('ACCEPTED', 'SETTLED', 'UNKNOWN')", name="status"),
+        CheckConstraint(
+            "(status = 'SETTLED' AND settled_at IS NOT NULL AND settled_at >= available_at) "
+            "OR (status <> 'SETTLED' AND settled_at IS NULL)",
+            name="settlement",
+        ),
+    )
+
+
+class SimulatedBankPosting(OwnedMixin, Base):
+    __tablename__ = "simulated_bank_postings"
+    ledger_key: Mapped[str] = mapped_column(String(64))
+    account_id: Mapped[UUID | None]
+    position_id: Mapped[UUID | None]
+    redemption_id: Mapped[UUID | None]
+    previous_posting_id: Mapped[UUID | None]
+    sequence_number: Mapped[int] = mapped_column(Integer)
+    entry_kind: Mapped[str] = mapped_column(String(32))
+    balance_before_cents: Mapped[int] = mapped_column(MoneyCents())
+    delta_cents: Mapped[int] = mapped_column(MoneyCents())
+    balance_after_cents: Mapped[int] = mapped_column(MoneyCents())
+    occurred_at: Mapped[datetime] = mapped_column(UTCDateTime())
+    __table_args__ = owned_args(
+        owned_reference("account_id", "accounts"),
+        owned_reference("position_id", "asset_positions"),
+        owned_reference("redemption_id", "simulated_bank_redemptions"),
+        owned_reference("previous_posting_id", "simulated_bank_postings"),
+        UniqueConstraint(
+            "user_id", "ledger_key", "sequence_number", name="uq_bank_posting_sequence"
+        ),
+        UniqueConstraint("redemption_id", "entry_kind", name="uq_bank_posting_redemption_leg"),
+        CheckConstraint("sequence_number > 0", name="sequence"),
+        CheckConstraint(
+            "balance_before_cents >= 0 AND balance_after_cents >= 0 "
+            "AND balance_after_cents = balance_before_cents + delta_cents",
+            name="conservation",
+        ),
+        CheckConstraint(
+            "(account_id IS NOT NULL AND position_id IS NULL "
+            "AND ledger_key = 'CASH:' || account_id::text) OR "
+            "(account_id IS NULL AND position_id IS NOT NULL "
+            "AND ledger_key = 'POSITION:' || position_id::text)",
+            name="ledger_identity",
+        ),
+        CheckConstraint(
+            "(entry_kind = 'OPENING' AND redemption_id IS NULL AND sequence_number = 1 "
+            "AND previous_posting_id IS NULL AND balance_before_cents = 0 AND delta_cents >= 0) "
+            "OR (entry_kind = 'PRINCIPAL_DEBIT' AND redemption_id IS NOT NULL "
+            "AND position_id IS NOT NULL AND previous_posting_id IS NOT NULL "
+            "AND sequence_number > 1 AND delta_cents < 0) "
+            "OR (entry_kind = 'CASH_CREDIT' AND redemption_id IS NOT NULL "
+            "AND account_id IS NOT NULL AND previous_posting_id IS NOT NULL "
+            "AND sequence_number > 1 AND delta_cents > 0)",
+            name="entry",
+        ),
     )

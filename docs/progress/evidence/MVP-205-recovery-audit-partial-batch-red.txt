@@ -1,0 +1,67 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_later_bank_rejection_cannot_strand_an_earlier_committed_batch_effect __
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_e8def8f5cf5443eb9decab6d9c0898a9)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024FB231C560>
+
+    def test_later_bank_rejection_cannot_strand_an_earlier_committed_batch_effect(
+        boundary_engine: Engine,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        _, first_principal, second_principal = multiple_recovery_fixture(boundary_engine)
+        assert (first_principal, second_principal) == (250000, 150000)
+        with Session(boundary_engine) as session:
+            preview = preview_recovery(session, DEMO_USER_ID, SEED_AS_OF)
+            assert len(preview.plan.steps) == 2
+            amounts = {step.position_id: step.quote.principal_cents for step in preview.plan.steps}
+            account_ids = {step.destination_account_id for step in preview.plan.steps}
+            assert len(account_ids) == 1
+            account_id = next(iter(account_ids))
+            cash = session.get(Account, account_id)
+            assert cash is not None
+            initial_cash = cash.balance_cents
+        accepted_action: UUID | None = None
+    
+        def reject_other_bank_call(
+            engine: Engine, user_id: UUID, action_id: UUID, now: datetime
+        ) -> BankResult:
+            nonlocal accepted_action
+            if accepted_action is None:
+                accepted_action = action_id
+            if action_id != accepted_action:
+                raise PolicyLifecycleError(
+                    "SIMULATED_BANK_REJECTED", "Injected later-bank rejection", 409
+                )
+            return bank_process_redemption(engine, user_id, action_id, now)
+    
+        monkeypatch.setattr(recovery_service, "process_redemption", reject_other_bank_call)
+        for _ in range(2):
+            try:
+                partial = run_recovery(boundary_engine, DEMO_USER_ID, "audit-partial-batch", SEED_AS_OF)
+            except PolicyLifecycleError as error:
+                assert error.code == "SIMULATED_BANK_REJECTED"
+            else:
+                assert partial.status != "RECOVERED"
+            with Session(boundary_engine) as session:
+                requests = list(session.scalars(select(SimulatedBankRedemption)))
+                assert len(requests) == 1 and requests[0].status == "SETTLED"
+                committed = requests[0]
+                receipts = list(
+                    session.scalars(
+                        select(ActionReceipt).where(
+                            ActionReceipt.action_plan_id == committed.action_plan_id
+                        )
+                    )
+                )
+>               assert len(receipts) == 1, (
+                    "A later rejection cannot prevent an earlier bank effect's projection"
+                )
+E               AssertionError: A later rejection cannot prevent an earlier bank effect's projection
+E               assert 0 == 1
+E                +  where 0 = len([])
+
+apps\api\app\tests\test_recovery_audit.py:377: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_recovery_audit.py::test_later_bank_rejection_cannot_strand_an_earlier_committed_batch_effect
+1 failed, 5 deselected in 5.39s

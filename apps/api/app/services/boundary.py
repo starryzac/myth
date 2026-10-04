@@ -36,6 +36,7 @@ from app.domain.boundary_types import (
 from app.domain.policy_configuration import configuration_hash, validate_configuration
 from app.services.living_reserve import estimate_living_reserve
 from app.services.policy_lifecycle import PolicyLifecycleError, _evidence, effective_status
+from app.services.simulated_bank import validate_recovery_exposure
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -740,6 +741,10 @@ def load_boundary_context(session: Session, user_id: UUID, now: datetime) -> Bou
             now,
             list(session.scalars(select(EvidenceItem).where(EvidenceItem.user_id == user_id))),
         )
+        try:
+            validate_recovery_exposure(session, user_id, now)
+        except PolicyLifecycleError as error:
+            sources.issue(error.code, "independent_bank", error.message)
         accounts = list(session.scalars(select(Account).where(Account.user_id == user_id)))
         bills = list(
             session.scalars(select(CreditCardBill).where(CreditCardBill.user_id == user_id))

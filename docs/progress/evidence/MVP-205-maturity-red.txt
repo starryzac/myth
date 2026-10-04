@@ -1,0 +1,12 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_____ test_mature_contract_returns_once_even_if_authorization_was_revoked _____
+apps\api\app\tests\test_recovery_service.py:155: in test_mature_contract_returns_once_even_if_authorization_was_revoked
+    assert result.status == "RECOVERED"
+E   AssertionError: assert 'INSUFFICIENT_EVIDENCE' == 'RECOVERED'
+E     
+E     - RECOVERED
+E     + INSUFFICIENT_EVIDENCE
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_recovery_service.py::test_mature_contract_returns_once_even_if_authorization_was_revoked
+1 failed, 1 passed, 3 deselected in 9.01s

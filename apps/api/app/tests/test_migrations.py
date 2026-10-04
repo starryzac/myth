@@ -39,6 +39,8 @@ EXPECTED_TABLES = {
     "action_plans",
     "action_receipts",
     "audit_events",
+    "simulated_bank_redemptions",
+    "simulated_bank_postings",
 }
 
 
@@ -84,7 +86,7 @@ def migrated_database() -> Iterator[tuple[Engine, Config]]:
 
 
 @pytest.mark.integration
-def test_fresh_upgrade_downgrade_upgrade_matches_all_sixteen_models() -> None:
+def test_fresh_upgrade_downgrade_upgrade_matches_all_eighteen_models() -> None:
     with temporary_database() as url:
         config = migration_config(url)
         engine = create_database_engine(url)

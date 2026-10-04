@@ -10,6 +10,8 @@ from app.db.models import (
     ActionReceipt,
     AssetPosition,
     PolicyVersion,
+    SimulatedBankPosting,
+    SimulatedBankRedemption,
     Transaction,
 )
 from app.domain.asset_exposure import (
@@ -21,6 +23,7 @@ from app.domain.history_coverage import bank_fact_snapshot
 from app.domain.policy_configuration import configuration_hash, validate_configuration
 from app.services.boundary import OWNERSHIP_SOURCE, BoundaryContext
 from app.services.policy_lifecycle import PolicyLifecycleError, _evidence
+from app.services.simulated_bank import validate_bank_projection
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -96,6 +99,19 @@ def load_asset_exposure(
     transactions = list(
         session.scalars(select(Transaction).where(Transaction.user_id == sources.user_id))
     )
+    bank_requests = list(
+        session.scalars(
+            select(SimulatedBankRedemption).where(
+                SimulatedBankRedemption.user_id == sources.user_id
+            )
+        )
+    )
+    bank_postings = list(
+        session.scalars(
+            select(SimulatedBankPosting).where(SimulatedBankPosting.user_id == sources.user_id)
+        )
+    )
+    is_v2 = statement.content.get("protocol") == "asset-exposure-v2"
     try:
         if (
             len(positions) > 10000
@@ -120,6 +136,8 @@ def load_asset_exposure(
             receipts=receipts,
             evidence=sources.evidence.values(),
             settlements=settlements,
+            bank_requests=bank_requests if is_v2 else None,
+            bank_postings=bank_postings if is_v2 else None,
         )
         if configuration_hash(expected) != configuration_hash(
             statement.content
@@ -127,6 +145,8 @@ def load_asset_exposure(
             raise ValueError("Exposure statement does not bind the complete current row set")
         if epoch > context.snapshot.as_of or statement.observed_at < epoch:
             raise ValueError("Exposure epoch is not yet known")
+        if is_v2:
+            validate_bank_projection(session, sources.user_id, context.snapshot.as_of)
         watermarks = [row.observed_at for row in accounts]
         watermarks += [row.purchased_at for row in positions]
         watermarks += [row.created_at for row in actions]
@@ -150,7 +170,7 @@ def load_asset_exposure(
             owned = sources.candidates(OWNERSHIP_SOURCE, "goal_id", goal_id)
             if len(owned) != 1 or owned[0].content.get("as_of") != epoch.isoformat():
                 raise ValueError("Goal ownership and exposure epochs differ")
-    except (KeyError, TypeError, ValueError, OverflowError) as error:
+    except (KeyError, TypeError, ValueError, OverflowError, PolicyLifecycleError) as error:
         sources.issue("INVALID_ASSET_EXPOSURE", statement.id, str(error))
         return empty
 
@@ -187,6 +207,7 @@ def load_asset_exposure(
         reserved_goals: dict[UUID, int] = {}
         materialized: dict[UUID, UUID] = {}
         acquisition_transactions: set[UUID] = set()
+        redemptions: dict[UUID, SimulatedBankRedemption] = {}
 
         def transaction_for(identifier: UUID) -> Transaction:
             row = by_transaction[identifier]
@@ -212,6 +233,86 @@ def load_asset_exposure(
             if configuration_hash(action.request) != action.request_hash:
                 raise ValueError("Action request hash mismatch")
             state = declaration.get("state")
+            if action.action_type in {"ASSET_REDEEM", "ASSET_MATURITY"}:
+                if not is_v2:
+                    raise ValueError("Recovery requires complete independent bank exposure v2")
+                requests = [row for row in bank_requests if row.action_plan_id == action.id]
+                if len(requests) != 1:
+                    raise ValueError(
+                        "An in-flight bank request must be reconciled before precise exposure"
+                    )
+                request = requests[0]
+                if (
+                    request.request_hash != configuration_hash(request.request)
+                    or request.request_hash != configuration_hash(action.request["bank_request"])
+                    or request.position_id != action.position_id
+                    or request.principal_cents != action.amount_cents
+                    or request.goal_id != action.goal_id
+                    or request.product_id != action.product_id
+                    or request.requested_at > epoch
+                    or request.created_at > epoch
+                    or request.status == "UNKNOWN"
+                ):
+                    raise ValueError("Bank redemption and immutable application request disagree")
+                legs = [row for row in bank_postings if row.redemption_id == request.id]
+                if request.status == "ACCEPTED":
+                    if (
+                        state != "REDEMPTION_ACCEPTED"
+                        or legs
+                        or action_receipts
+                        or action.status != "SUBMITTED"
+                        or by_position[request.position_id].status != "REDEEMING"
+                    ):
+                        raise ValueError(
+                            "Accepted redemption has an inconsistent application effect"
+                        )
+                elif request.status == "SETTLED":
+                    if (
+                        state != "REDEMPTION_SETTLED"
+                        or len(legs) != 2
+                        or sorted(row.delta_cents for row in legs)
+                        != [-request.principal_cents, request.principal_cents]
+                        or len(action_receipts) != 1
+                        or action.status not in {"SUCCEEDED", "RECONCILED"}
+                        or by_position[request.position_id].status != "REDEEMED"
+                    ):
+                        raise ValueError(
+                            "Settled redemption requires unique conserved postings and projection"
+                        )
+                    receipt = action_receipts[0]
+                    if (
+                        receipt.status != "SUCCEEDED"
+                        or receipt.executed_cents != request.principal_cents
+                        or receipt.fee_cents
+                        or receipt.loss_cents
+                        or receipt.response.get("bank_request_id") != str(request.id)
+                        or set(receipt.response.get("posting_ids", []))
+                        != {str(row.id) for row in legs}
+                    ):
+                        raise ValueError(
+                            "A recovery receipt does not bind independent economic postings"
+                        )
+                    returned = by_transaction[UUID(declaration["transaction_id"])]
+                    returned_proof = (
+                        sources.evidence[returned.evidence_id] if returned.evidence_id else None
+                    )
+                    if returned_proof is None or not sources.valid(returned_proof, {}):
+                        raise ValueError(
+                            "A principal return needs observed bank transaction evidence"
+                        )
+                    bank_fact_snapshot(returned, returned_proof)
+                    if (
+                        returned.direction != "CREDIT"
+                        or returned.amount_cents != request.principal_cents
+                        or returned.account_id != request.destination_account_id
+                        or returned_proof.content.get("economic_role") != "PRINCIPAL_RETURN"
+                        or returned_proof.content.get("bank_request_id") != str(request.id)
+                    ):
+                        raise ValueError(
+                            "The actual principal return transaction disagrees with the bank"
+                        )
+                redemptions[request.position_id] = request
+                continue
             if state == "NO_EFFECT":
                 if (
                     set(declaration) != {"action_id", "state"}
@@ -297,7 +398,9 @@ def load_asset_exposure(
             ):
                 raise ValueError("Position exposure needs one current bank source")
             proof = proofs[0]
-            if position.status in {"UNKNOWN", "REDEEMED"}:
+            if position.status == "UNKNOWN" or (
+                position.status == "REDEEMED" and position.id not in redemptions
+            ):
                 raise ValueError("Unknown or redeemed exposure needs reconciliation outside v1")
             transaction = transaction_for(UUID(proof.content["purchase_transaction_id"]))
             if (
@@ -310,7 +413,11 @@ def load_asset_exposure(
                 if (
                     position.policy_version_id is not None
                     or position.id in materialized
-                    or any(row.position_id == position.id for row in actions)
+                    or any(
+                        row.position_id == position.id
+                        and row.action_type not in {"ASSET_REDEEM", "ASSET_MATURITY"}
+                        for row in actions
+                    )
                 ):
                     raise ValueError("A manual position has an automatic authority or action link")
                 manual_positions.append(position.id)
@@ -329,7 +436,7 @@ def load_asset_exposure(
             scope = _scope(session, context, position.policy_version_id)
             if scope != _goal_scope(position.goal_id):
                 raise ValueError("Position scope does not match historical authorization")
-            if scope == _goal_scope(goal_id):
+            if scope == _goal_scope(goal_id) and position.status != "REDEEMED":
                 managed += position.principal_cents
                 counted_positions.append(position.id)
         for account_id, amount in reserved.items():

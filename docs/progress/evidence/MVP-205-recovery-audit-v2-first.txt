@@ -1,0 +1,93 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_rehashed_application_cash_tampering_closes_all_four_v2_consumers ____
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_ac519497d1cb4943a7a3565512095a81)
+
+    def test_rehashed_application_cash_tampering_closes_all_four_v2_consumers(
+        boundary_engine: Engine,
+    ) -> None:
+        with Session(boundary_engine) as session, session.begin():
+            goal_id = goal_fixture(session, with_proofs=True)
+            policy_id = asset_policy(session)
+            exhausted_income_statement(session)
+            refresh_v2_manifest(session)
+        with Session(boundary_engine) as session:
+            assert compute_user_boundary(session, DEMO_USER_ID, SEED_AS_OF).boundary.status == "READY"
+            goal_before = preview_goal_allocation(session, DEMO_USER_ID, goal_id, SEED_AS_OF)
+            assert goal_before.allocation.status == "MINIMUM_SHORTFALL"
+            assert goal_before.allocation.suggested_cents == 0
+            assert goal_before.source_issues == []
+            assert (
+                preview_asset_allocation(session, DEMO_USER_ID, policy_id, SEED_AS_OF).allocation.status
+                == "READY"
+            )
+            assert (
+>               preview_recovery(session, DEMO_USER_ID, SEED_AS_OF).plan.status == "NO_RECOVERY_NEEDED"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            )
+
+apps\api\app\tests\test_recovery_audit.py:366: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\recovery.py:73: in preview_recovery
+    plan = plan_recovery(
+apps\api\app\domain\recovery.py:81: in plan_recovery
+    _validate_links(snapshot, positions, recovery_positions, current_authorizations, user_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+snapshot = BoundarySnapshot(as_of=datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc), timezone='Asia/Shanghai', ..., amount_cents=0)], source_issues=[], source_digest='3f641303304c53974c13b95714a04d9c66db6c6cff4bc2f6f199b4973d1767b5')
+positions = [BoundaryPosition(evidence_ids=[UUID('a202e1ac-860c-5509-bdb5-56e7e364a98c')], position_id=UUID('7560448c-5d88-5dcd-87...c59'), goal_id=None, principal_cents=100000, status='HELD', principal_available_at=None, availability_evidence_ids=[])]
+candidates = [RecoveryPosition(evidence_ids=[UUID('c017dfc1-3d62-560f-9d70-a494eeeeed99')], position_id=UUID('71418810-fc8c-549b-94...dc4ea14b3a95e713c53958a515d93b3e7057ee541ba459'), original_authorization=None, reserved_principal_cents=0, quote=None)]
+authorities = [RecoveryAuthorization(evidence_ids=[UUID('19308d19-6172-448c-b0d0-1f05929742d1'), UUID('7323d857-e189-4493-a460-1a1ce...f82a-5be6-9e0a-50f721029fb0'), policy_status='ACTIVE', latest_version_id=UUID('440c44a9-874d-4433-a3a5-4e4aee558f1f'))]
+user_id = UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')
+
+    def _validate_links(
+        snapshot: BoundarySnapshot,
+        positions: Sequence[BoundaryPosition],
+        candidates: Sequence[RecoveryPosition],
+        authorities: Sequence[RecoveryAuthorization],
+        user_id: UUID,
+    ) -> None:
+        held = {p.position_id: p for p in positions}
+        accounts = {a.account_id: a for a in snapshot.cash_accounts}
+        goals = {g.goal_id: g for g in snapshot.goals}
+        for identities in (
+            [p.position_id for p in candidates],
+            [a.policy_id for a in authorities],
+            [a.version_id for a in authorities],
+            [p.quote.quote_id for p in candidates if p.quote is not None],
+        ):
+            if len(set(identities)) != len(identities):
+                raise ValueError("Recovery metadata, quote and authority identities must be unique")
+        for authority in authorities:
+            if authority.user_id != user_id:
+                raise ValueError("Current recovery authority must belong to the user")
+            _authorization_config(authority)
+        for candidate in candidates:
+            if candidate.position_id not in held:
+                raise ValueError("Recovery position must reference a financial position")
+            position = held[candidate.position_id]
+            if (
+                candidate.goal_id != position.goal_id
+                or candidate.reserved_principal_cents > position.principal_cents
+            ):
+                raise ValueError("Recovery ownership or reserved principal contradicts the position")
+            quote = candidate.quote
+            product = candidate.product
+            if candidate.original_authorization is not None:
+                _authorization_config(candidate.original_authorization)
+            if (
+                candidate.purchased_at > snapshot.as_of
+                or max(product.created_at, product.effective_from) > candidate.purchased_at
+                or (
+                    product.effective_until is not None
+                    and candidate.purchased_at >= product.effective_until
+                )
+            ):
+>               raise ValueError("Original product must be known and effective at actual purchase")
+E               ValueError: Original product must be known and effective at actual purchase
+
+apps\api\app\domain\recovery.py:402: ValueError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_recovery_audit.py::test_rehashed_application_cash_tampering_closes_all_four_v2_consumers
+1 failed, 3 deselected in 6.58s

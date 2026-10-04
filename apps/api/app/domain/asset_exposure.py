@@ -66,6 +66,8 @@ def asset_exposure_snapshot(
     receipts: Iterable[object],
     evidence: Iterable[object],
     settlements: list[dict[str, Any]] | None = None,
+    bank_requests: Iterable[object] | None = None,
+    bank_postings: Iterable[object] | None = None,
 ) -> dict[str, Any]:
     """Importer helper accepting ORM objects or mappings, without depending on SQLAlchemy.
 
@@ -81,7 +83,7 @@ def asset_exposure_snapshot(
         "SIMULATED_GOAL_MONTH_CONTRIBUTION",
         "SIMULATED_PRINCIPAL_AVAILABILITY",
     }
-    return {
+    result = {
         "simulation": True,
         "protocol": EXPOSURE_PROTOCOL,
         "user_id": str(user_id),
@@ -113,3 +115,20 @@ def asset_exposure_snapshot(
             (_json(item) for item in settlements or []), key=lambda item: item["action_id"]
         ),
     }
+    if bank_requests is not None or bank_postings is not None:
+        if bank_requests is None or bank_postings is None:
+            raise ValueError("Both complete bank request and posting collections are required")
+        result["protocol"] = "asset-exposure-v2"
+        result["bank_requests"] = _manifest(
+            bank_requests,
+            "id user_id action_plan_id position_id destination_account_id product_id goal_id "
+            "principal_cents idempotency_key request request_hash requested_at available_at "
+            "settled_at status created_at",
+        )
+        result["bank_postings"] = _manifest(
+            bank_postings,
+            "id user_id ledger_key account_id position_id redemption_id previous_posting_id "
+            "sequence_number entry_kind balance_before_cents delta_cents balance_after_cents "
+            "occurred_at created_at",
+        )
+    return result

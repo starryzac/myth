@@ -17,6 +17,7 @@ ECONOMIC_ROLES = frozenset(
         "INTERNAL_TRANSFER",
         "ASSET_PURCHASE",
         "CREDIT_CARD_PAYMENT",
+        "PRINCIPAL_RETURN",
     }
 )
 

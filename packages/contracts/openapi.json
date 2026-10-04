@@ -1493,6 +1493,211 @@
         }
       }
     },
+    "/api/v1/recovery/preview": {
+      "get": {
+        "tags": [
+          "模拟安全恢复"
+        ],
+        "summary": "Read Recovery Preview",
+        "operationId": "preview_recovery",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecoveryPreviewResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/recovery/runs": {
+      "post": {
+        "tags": [
+          "模拟安全恢复"
+        ],
+        "summary": "Create Recovery Run",
+        "operationId": "run_recovery",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecoveryRunRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecoveryRunResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/recovery/runs/{run_id}": {
+      "get": {
+        "tags": [
+          "模拟安全恢复"
+        ],
+        "summary": "Read Recovery Run",
+        "operationId": "get_recovery_run",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecoveryRunResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
     "/api/v1/health": {
       "get": {
         "summary": "Health",
@@ -4320,6 +4525,613 @@
           "confirmed_policy_id"
         ],
         "title": "ProposalView"
+      },
+      "RecoveryAction": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "position_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Position Id"
+          },
+          "source_account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Source Account Id"
+          },
+          "destination_account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Destination Account Id"
+          },
+          "goal_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal Id"
+          },
+          "product_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Product Id"
+          },
+          "product_version_number": {
+            "type": "integer",
+            "title": "Product Version Number"
+          },
+          "terms_digest": {
+            "type": "string",
+            "title": "Terms Digest"
+          },
+          "original_policy_version_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Original Policy Version Id"
+          },
+          "current_policy_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Current Policy Id"
+          },
+          "current_policy_version_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Current Policy Version Id"
+          },
+          "current_authorization_hash": {
+            "type": "string",
+            "title": "Current Authorization Hash"
+          },
+          "quote": {
+            "$ref": "#/components/schemas/RecoveryQuote"
+          },
+          "autonomy_level": {
+            "type": "string",
+            "enum": [
+              "AUTO_EXECUTE",
+              "ASK_ONCE"
+            ],
+            "title": "Autonomy Level"
+          },
+          "baseline_boundary_hash": {
+            "type": "string",
+            "title": "Baseline Boundary Hash"
+          },
+          "plan_inputs_hash": {
+            "type": "string",
+            "title": "Plan Inputs Hash"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          },
+          "request_hash": {
+            "type": "string",
+            "title": "Request Hash"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "position_id",
+          "source_account_id",
+          "destination_account_id",
+          "product_id",
+          "product_version_number",
+          "terms_digest",
+          "original_policy_version_id",
+          "current_policy_id",
+          "current_policy_version_id",
+          "current_authorization_hash",
+          "quote",
+          "autonomy_level",
+          "baseline_boundary_hash",
+          "plan_inputs_hash",
+          "expires_at",
+          "request_hash"
+        ],
+        "title": "RecoveryAction"
+      },
+      "RecoveryActionStatus": {
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Action Id"
+          },
+          "position_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Position Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "bank_request_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bank Request Id"
+          },
+          "bank_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bank Status"
+          },
+          "receipt_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Receipt Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "action_id",
+          "position_id",
+          "status"
+        ],
+        "title": "RecoveryActionStatus"
+      },
+      "RecoveryCandidate": {
+        "properties": {
+          "position_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Position Id"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "AUTO_EXECUTE",
+              "ASK_ONCE",
+              "ADVISE_ONLY",
+              "BLOCKED"
+            ],
+            "title": "Decision"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          },
+          "action": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RecoveryAction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "projected_boundary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BoundaryResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "position_id",
+          "decision"
+        ],
+        "title": "RecoveryCandidate"
+      },
+      "RecoveryNotification": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "action_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "RecoveryNotification"
+      },
+      "RecoveryPlan": {
+        "properties": {
+          "algorithm_version": {
+            "type": "string",
+            "title": "Algorithm Version"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "preview_only": {
+            "type": "boolean",
+            "const": true,
+            "title": "Preview Only",
+            "default": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "NO_RECOVERY_NEEDED",
+              "AUTO_RECOVERY_AVAILABLE",
+              "PARTIAL_RECOVERY_AVAILABLE",
+              "ASK_ONCE",
+              "ADVISE_ONLY",
+              "NO_SAFE_RECOVERY",
+              "INSUFFICIENT_EVIDENCE"
+            ],
+            "title": "Status"
+          },
+          "actual_boundary": {
+            "$ref": "#/components/schemas/BoundaryResult"
+          },
+          "projected_boundary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BoundaryResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/RecoveryAction"
+            },
+            "type": "array",
+            "title": "Steps"
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/RecoveryCandidate"
+            },
+            "type": "array",
+            "title": "Candidates"
+          },
+          "uncovered_checkpoints": {
+            "items": {
+              "$ref": "#/components/schemas/BoundaryPoint"
+            },
+            "type": "array",
+            "title": "Uncovered Checkpoints"
+          },
+          "first_sustained_safe_point": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BoundaryPoint"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "plan_hash": {
+            "type": "string",
+            "title": "Plan Hash"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "algorithm_version",
+          "user_id",
+          "as_of",
+          "status",
+          "actual_boundary",
+          "plan_hash"
+        ],
+        "title": "RecoveryPlan"
+      },
+      "RecoveryPreviewResponse": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "plan": {
+            "$ref": "#/components/schemas/RecoveryPlan"
+          },
+          "source_evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Source Evidence Ids"
+          },
+          "input_digest": {
+            "type": "string",
+            "title": "Input Digest"
+          },
+          "source_issues": {
+            "items": {
+              "$ref": "#/components/schemas/BoundarySourceIssue"
+            },
+            "type": "array",
+            "title": "Source Issues"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "as_of",
+          "plan",
+          "source_evidence_ids",
+          "input_digest",
+          "source_issues"
+        ],
+        "title": "RecoveryPreviewResponse"
+      },
+      "RecoveryQuote": {
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          },
+          "quote_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Quote Id"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "position_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Position Id"
+          },
+          "product_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Product Id"
+          },
+          "product_version_number": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Product Version Number"
+          },
+          "terms_digest": {
+            "type": "string",
+            "title": "Terms Digest"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "REDEEM",
+              "EARLY_WITHDRAW",
+              "MATURE"
+            ],
+            "title": "Kind"
+          },
+          "principal_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "exclusiveMinimum": 0.0,
+            "title": "Principal Cents"
+          },
+          "fee_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Fee Cents"
+          },
+          "loss_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Loss Cents"
+          },
+          "net_cents": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Net Cents"
+          },
+          "request_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Request At"
+          },
+          "principal_available_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Principal Available At"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "quote_id",
+          "user_id",
+          "position_id",
+          "product_id",
+          "product_version_number",
+          "terms_digest",
+          "kind",
+          "principal_cents",
+          "fee_cents",
+          "loss_cents",
+          "net_cents",
+          "request_at",
+          "principal_available_at",
+          "expires_at"
+        ],
+        "title": "RecoveryQuote"
+      },
+      "RecoveryRunRequest": {
+        "properties": {
+          "idempotency_key": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Idempotency Key"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "idempotency_key"
+        ],
+        "title": "RecoveryRunRequest"
+      },
+      "RecoveryRunResponse": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "plan": {
+            "$ref": "#/components/schemas/RecoveryPlan"
+          },
+          "actual_boundary": {
+            "$ref": "#/components/schemas/BoundaryResult"
+          },
+          "actions": {
+            "items": {
+              "$ref": "#/components/schemas/RecoveryActionStatus"
+            },
+            "type": "array",
+            "title": "Actions"
+          },
+          "notifications": {
+            "items": {
+              "$ref": "#/components/schemas/RecoveryNotification"
+            },
+            "type": "array",
+            "title": "Notifications"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "run_id",
+          "as_of",
+          "status",
+          "plan",
+          "actual_boundary",
+          "actions",
+          "notifications"
+        ],
+        "title": "RecoveryRunResponse"
       },
       "ReserveEstimationResponse": {
         "properties": {

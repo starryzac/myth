@@ -1,0 +1,81 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_later_bank_rejection_cannot_strand_an_earlier_committed_batch_effect __
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_2b3ca8e3538d461b8be1445777e26453)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000230BBFFD820>
+
+    def test_later_bank_rejection_cannot_strand_an_earlier_committed_batch_effect(
+        boundary_engine: Engine,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        _, first_principal, second_principal = multiple_recovery_fixture(boundary_engine)
+        assert (first_principal, second_principal) == (250000, 150000)
+        with Session(boundary_engine) as session:
+            preview = preview_recovery(session, DEMO_USER_ID, SEED_AS_OF)
+            assert len(preview.plan.steps) == 2
+            amounts = {
+                position.id: position.principal_cents
+                for position in session.scalars(
+                    select(AssetPosition).where(
+                        AssetPosition.id.in_([step.position_id for step in preview.plan.steps])
+                    )
+                )
+            }
+            assert sorted(amounts.values()) == [150000, 250000]
+            assert all(
+                step.quote.principal_cents == amounts[step.position_id] for step in preview.plan.steps
+            )
+            account_ids = {step.destination_account_id for step in preview.plan.steps}
+            assert len(account_ids) == 1
+            account_id = next(iter(account_ids))
+            cash = session.get(Account, account_id)
+            assert cash is not None
+            initial_cash = cash.balance_cents
+        accepted_action: UUID | None = None
+    
+        def reject_other_bank_call(
+            engine: Engine, user_id: UUID, action_id: UUID, now: datetime
+        ) -> BankResult:
+            nonlocal accepted_action
+            if accepted_action is None:
+                accepted_action = action_id
+            if action_id != accepted_action:
+                raise PolicyLifecycleError(
+                    "SIMULATED_BANK_REJECTED", "Injected later-bank rejection", 409
+                )
+            return bank_process_redemption(engine, user_id, action_id, now)
+    
+        monkeypatch.setattr(recovery_service, "process_redemption", reject_other_bank_call)
+        for _ in range(2):
+            try:
+                partial = run_recovery(boundary_engine, DEMO_USER_ID, "audit-partial-batch", SEED_AS_OF)
+            except PolicyLifecycleError as error:
+                assert error.code == "SIMULATED_BANK_REJECTED"
+            else:
+                assert partial.status != "RECOVERED"
+            with Session(boundary_engine) as session:
+                requests = list(session.scalars(select(SimulatedBankRedemption)))
+                assert len(requests) == 1 and requests[0].status == "SETTLED"
+                committed = requests[0]
+                receipts = list(
+                    session.scalars(
+                        select(ActionReceipt).where(
+                            ActionReceipt.action_plan_id == committed.action_plan_id
+                        )
+                    )
+                )
+                assert len(receipts) == 1, (
+                    "A later rejection cannot prevent an earlier bank effect's projection"
+                )
+                committed_action = session.get(ActionPlan, committed.action_plan_id)
+                assert committed_action is not None and committed_action.decision_run_id is not None
+                run = session.get(DecisionRun, committed_action.decision_run_id)
+>               assert run is not None and run.status != "SUCCEEDED" and run.completed_at is None
+E               AssertionError: assert (<app.db.models.DecisionRun object at 0x00000230BD3AE330> is not None and 'SUCCEEDED' != 'SUCCEEDED')
+E                +  where 'SUCCEEDED' = <app.db.models.DecisionRun object at 0x00000230BD3AE330>.status
+
+apps\api\app\tests\test_recovery_audit.py:395: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_recovery_audit.py::test_later_bank_rejection_cannot_strand_an_earlier_committed_batch_effect
+1 failed, 5 deselected in 6.84s

@@ -23,6 +23,8 @@ from app.db.models import (
     Policy,
     PolicyProposal,
     PolicyVersion,
+    SimulatedBankPosting,
+    SimulatedBankRedemption,
     Transaction,
     User,
 )
@@ -30,12 +32,13 @@ from app.domain.asset_exposure import EXPOSURE_SOURCE, asset_exposure_snapshot
 from app.domain.demo_identity import DEMO_USER_ID as DEMO_USER_ID
 from app.domain.demo_identity import DEMO_USER_REF as DEMO_USER_REF
 from app.domain.history_coverage import COVERAGE_SOURCE_TYPE, build_history_coverage
+from app.services.simulated_bank import open_simulated_bank
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import delete, or_, select, text, update
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
-SEED_VERSION = "mvp-204-v4"
+SEED_VERSION = "mvp-205-v5"
 SEED_START = date(2026, 8, 5)
 SEED_END = date(2026, 10, 3)
 SEED_AS_OF = datetime(2026, 10, 3, 16, tzinfo=UTC)
@@ -375,6 +378,8 @@ def _clear_demo(session: Session) -> None:
         update(EvidenceItem).where(EvidenceItem.user_id == DEMO_USER_ID).values(supersedes_id=None)
     )
     for model in [
+        SimulatedBankPosting,
+        SimulatedBankRedemption,
         AuditEvent,
         ActionReceipt,
         ActionPlan,
@@ -677,6 +682,28 @@ def _summary(session: Session) -> SeedSummary:
     )
 
 
+def _open_seed_bank(session: Session) -> None:
+    # Independent openings are reconstructed from the fixed synthetic seed
+    # instructions, never copied from mutable application account projections.
+    balances = {key: 0 for key in ("cash", "goal", "management", "fixed")}
+    for entry in _ledger():
+        if entry.account in balances:
+            balances[entry.account] += (
+                entry.amount_cents if entry.direction == "CREDIT" else -entry.amount_cents
+            )
+    open_simulated_bank(
+        session,
+        DEMO_USER_ID,
+        SEED_AS_OF,
+        cash_balances={_id(f"account:{key}"): amount for key, amount in balances.items()},
+        position_principals={
+            _id("position:t0"): 250000,
+            _id("position:t1"): 150000,
+            _id("position:fixed"): 100000,
+        },
+    )
+
+
 def seed_demo(engine: Engine) -> SeedSummary:
     """Atomically replace demo facts in an already migrated PostgreSQL database."""
     if engine.dialect.name != "postgresql":
@@ -687,6 +714,7 @@ def seed_demo(engine: Engine) -> SeedSummary:
         _ensure_products(session)
         _clear_demo(session)
         _insert_facts(session)
+        _open_seed_bank(session)
         session.add(
             _evidence(
                 "asset-exposure",

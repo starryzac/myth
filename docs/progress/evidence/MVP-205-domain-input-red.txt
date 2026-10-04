@@ -1,0 +1,73 @@
+......................................FFFFFFF....FFFFF....               [100%]
+================================== FAILURES ===================================
+_ test_untrusted_linked_input_cannot_silently_change_the_selected_effect[duplicate_metadata] _
+apps\api\app\tests\test_recovery.py:457: in test_untrusted_linked_input_cannot_silently_change_the_selected_effect
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_untrusted_linked_input_cannot_silently_change_the_selected_effect[duplicate_authority] _
+apps\api\app\tests\test_recovery.py:457: in test_untrusted_linked_input_cannot_silently_change_the_selected_effect
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_untrusted_linked_input_cannot_silently_change_the_selected_effect[different_user] _
+apps\api\app\tests\test_recovery.py:457: in test_untrusted_linked_input_cannot_silently_change_the_selected_effect
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_untrusted_linked_input_cannot_silently_change_the_selected_effect[missing_destination] _
+apps\api\app\tests\test_recovery.py:457: in test_untrusted_linked_input_cannot_silently_change_the_selected_effect
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_untrusted_linked_input_cannot_silently_change_the_selected_effect[credit_destination] _
+apps\api\app\tests\test_recovery.py:457: in test_untrusted_linked_input_cannot_silently_change_the_selected_effect
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_untrusted_linked_input_cannot_silently_change_the_selected_effect[future_purchase] _
+apps\api\app\tests\test_recovery.py:457: in test_untrusted_linked_input_cannot_silently_change_the_selected_effect
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_untrusted_linked_input_cannot_silently_change_the_selected_effect[catalog_created_after_purchase] _
+apps\api\app\tests\test_recovery.py:457: in test_untrusted_linked_input_cannot_silently_change_the_selected_effect
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_untrusted_linked_input_cannot_silently_change_the_selected_effect[duplicate_evidence] _
+apps\api\app\tests\test_recovery.py:457: in test_untrusted_linked_input_cannot_silently_change_the_selected_effect
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_untrusted_linked_input_cannot_silently_change_the_selected_effect[capacity] _
+apps\api\app\tests\test_recovery.py:457: in test_untrusted_linked_input_cannot_silently_change_the_selected_effect
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_product_and_authorization_timing_limits_are_not_bypassed_by_a_quote[current_delay] _
+apps\api\app\tests\test_recovery.py:484: in test_product_and_authorization_timing_limits_are_not_bypassed_by_a_quote
+    assert result.steps == []
+E   AssertionError: assert [RecoveryActi...8594873ece2')] == []
+E     
+E     Left contains one more item: RecoveryAction(user_id=UUID('00000000-0000-0000-0000-000000000001'), position_id=UUID('00000000-0000-0000-0000-0000000..., 8, 5, tzinfo=datetime.timezone.utc), request_hash='cde5c7d3724c0dbd0182712c9fc0c7804e6d2a1fd18bea353ebcb8594873ece2')
+E     Use -v to get more diff
+_ test_product_and_authorization_timing_limits_are_not_bypassed_by_a_quote[original_delay] _
+apps\api\app\tests\test_recovery.py:484: in test_product_and_authorization_timing_limits_are_not_bypassed_by_a_quote
+    assert result.steps == []
+E   AssertionError: assert [RecoveryActi...d8b7186d14e')] == []
+E     
+E     Left contains one more item: RecoveryAction(user_id=UUID('00000000-0000-0000-0000-000000000001'), position_id=UUID('00000000-0000-0000-0000-0000000..., 8, 5, tzinfo=datetime.timezone.utc), request_hash='54baeb69795e7e8859a106e03cf55110b93dab827db834e3e3c1ad8b7186d14e')
+E     Use -v to get more diff
+_ test_product_and_authorization_timing_limits_are_not_bypassed_by_a_quote[current_lock] _
+apps\api\app\tests\test_recovery.py:484: in test_product_and_authorization_timing_limits_are_not_bypassed_by_a_quote
+    assert result.steps == []
+E   AssertionError: assert [RecoveryActi...3d8c32b2e1a')] == []
+E     
+E     Left contains one more item: RecoveryAction(user_id=UUID('00000000-0000-0000-0000-000000000001'), position_id=UUID('00000000-0000-0000-0000-0000000..., 8, 5, tzinfo=datetime.timezone.utc), request_hash='3bf0a8cfc6d12967e0e52d0f90de1c5210b97911d59b3bc8b4ae33d8c32b2e1a')
+E     Use -v to get more diff
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_recovery.py::test_untrusted_linked_input_cannot_silently_change_the_selected_effect[duplicate_metadata]
+FAILED apps/api/app/tests/test_recovery.py::test_untrusted_linked_input_cannot_silently_change_the_selected_effect[duplicate_authority]
+FAILED apps/api/app/tests/test_recovery.py::test_untrusted_linked_input_cannot_silently_change_the_selected_effect[different_user]
+FAILED apps/api/app/tests/test_recovery.py::test_untrusted_linked_input_cannot_silently_change_the_selected_effect[missing_destination]
+FAILED apps/api/app/tests/test_recovery.py::test_untrusted_linked_input_cannot_silently_change_the_selected_effect[credit_destination]
+FAILED apps/api/app/tests/test_recovery.py::test_untrusted_linked_input_cannot_silently_change_the_selected_effect[future_purchase]
+FAILED apps/api/app/tests/test_recovery.py::test_untrusted_linked_input_cannot_silently_change_the_selected_effect[catalog_created_after_purchase]
+FAILED apps/api/app/tests/test_recovery.py::test_untrusted_linked_input_cannot_silently_change_the_selected_effect[duplicate_evidence]
+FAILED apps/api/app/tests/test_recovery.py::test_untrusted_linked_input_cannot_silently_change_the_selected_effect[capacity]
+FAILED apps/api/app/tests/test_recovery.py::test_product_and_authorization_timing_limits_are_not_bypassed_by_a_quote[current_delay]
+FAILED apps/api/app/tests/test_recovery.py::test_product_and_authorization_timing_limits_are_not_bypassed_by_a_quote[original_delay]
+FAILED apps/api/app/tests/test_recovery.py::test_product_and_authorization_timing_limits_are_not_bypassed_by_a_quote[current_lock]
+12 failed, 46 passed in 1.53s

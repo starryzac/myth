@@ -1,0 +1,16 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_multiple_whole_positions_follow_bank_cash_sequence_and_wait_for_t1[0] __
+apps\api\app\tests\test_recovery_service.py:301: in test_multiple_whole_positions_follow_bank_cash_sequence_and_wait_for_t1
+    emergency = session.scalar(select(PolicyVersion).where(PolicyVersion.policy_type == "emergency_buffer"))
+                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: type object 'PolicyVersion' has no attribute 'policy_type'
+_ test_multiple_whole_positions_follow_bank_cash_sequence_and_wait_for_t1[1] __
+apps\api\app\tests\test_recovery_service.py:301: in test_multiple_whole_positions_follow_bank_cash_sequence_and_wait_for_t1
+    emergency = session.scalar(select(PolicyVersion).where(PolicyVersion.policy_type == "emergency_buffer"))
+                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: type object 'PolicyVersion' has no attribute 'policy_type'
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_recovery_service.py::test_multiple_whole_positions_follow_bank_cash_sequence_and_wait_for_t1[0]
+FAILED apps/api/app/tests/test_recovery_service.py::test_multiple_whole_positions_follow_bank_cash_sequence_and_wait_for_t1[1]
+2 failed, 5 deselected in 6.75s

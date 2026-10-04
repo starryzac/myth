@@ -1,0 +1,22 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_seed_opens_independent_bank_once_without_creating_recovery_authority __
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_066559a3f856406087f5dd13f546c434)
+
+    def test_seed_opens_independent_bank_once_without_creating_recovery_authority(
+        demo_engine: Engine,
+    ) -> None:
+        first = seed_demo(demo_engine)
+>       assert first.seed_version == "mvp-205-v5"
+E       AssertionError: assert 'mvp-204-v4' == 'mvp-205-v5'
+E         
+E         - mvp-205-v5
+E         ?       ^  ^
+E         + mvp-204-v4
+E         ?       ^  ^
+
+apps\api\app\tests\test_demo_seed.py:82: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_demo_seed.py::test_seed_opens_independent_bank_once_without_creating_recovery_authority
+1 failed in 4.40s

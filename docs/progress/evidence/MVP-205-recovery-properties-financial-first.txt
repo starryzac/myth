@@ -1,0 +1,30 @@
+....                                                                     [100%]
+============================ Hypothesis Statistics ============================
+apps/api/app/tests/test_recovery_properties.py::test_whole_position_sequence_matches_independent_pointwise_improvement_oracle:
+
+  - during generate phase (5.05 seconds):
+    - Typical runtimes: ~ 13-60 ms, of which ~ 0-3 ms in data generation
+    - 150 passing, 0 failing, and 4 invalid test cases
+
+  - Stopped because settings.max_examples=150
+
+
+apps/api/app/tests/test_recovery_properties.py::test_delayed_recovery_keeps_global_minimum_but_can_improve_future_deficit:
+
+  - during generate phase (3.50 seconds):
+    - Typical runtimes: ~ 14-31 ms, of which ~ 0-1 ms in data generation
+    - 150 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=150
+
+
+apps/api/app/tests/test_recovery_properties.py::test_early_return_replaces_original_event_and_ordering_cannot_change_hash:
+
+  - during generate phase (10.03 seconds):
+    - Typical runtimes: ~ 47-97 ms, of which ~ 0-1 ms in data generation
+    - 150 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=150
+
+
+4 passed, 8 deselected in 19.22s

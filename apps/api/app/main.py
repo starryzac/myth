@@ -23,6 +23,7 @@ from app.api.v1.boundary import router as boundary_router
 from app.api.v1.goals import router as goal_router
 from app.api.v1.living_reserve import router as reserve_router
 from app.api.v1.policies import router as policy_router
+from app.api.v1.recovery import router as recovery_router
 from app.services.policy_lifecycle import PolicyLifecycleError
 
 logger = logging.getLogger("bounded_funds.http")
@@ -76,6 +77,7 @@ def create_app() -> FastAPI:
     api.include_router(boundary_router)
     api.include_router(goal_router)
     api.include_router(asset_router)
+    api.include_router(recovery_router)
 
     async def lifecycle_error_handler(request: Request, exception: Exception) -> JSONResponse:
         assert isinstance(exception, PolicyLifecycleError)

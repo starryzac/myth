@@ -1,0 +1,12 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_cumulative_safe_plan_stops_before_asking_for_an_unnecessary_costly_redemption _
+apps\api\app\tests\test_recovery.py:787: in test_cumulative_safe_plan_stops_before_asking_for_an_unnecessary_costly_redemption
+    assert result.candidates[1].decision == "BLOCKED"
+E   AssertionError: assert 'ASK_ONCE' == 'BLOCKED'
+E     
+E     - BLOCKED
+E     + ASK_ONCE
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_recovery.py::test_cumulative_safe_plan_stops_before_asking_for_an_unnecessary_costly_redemption
+1 failed, 66 deselected in 0.85s

@@ -33,6 +33,7 @@ from app.tests.test_boundary_service import boundary_engine as boundary_engine
 from app.tests.test_boundary_service import confirmed_policy, goal_fixture, snapshot
 from sqlalchemy import delete, select
 from sqlalchemy.engine import Engine
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 pytestmark = pytest.mark.integration
@@ -563,7 +564,37 @@ def test_complete_statement_cannot_hide_a_live_bank_position_by_deleting_its_pro
     with Session(boundary_engine) as session, session.begin():
         position = session.scalar(select(AssetPosition))
         assert position is not None
-        session.delete(position)
+        # The independent bank ledger now protects a known projection at the DB layer.
+        with (
+            pytest.raises(IntegrityError, match="fk_simulated_bank_postings_position_id"),
+            session.begin_nested(),
+        ):
+            session.delete(position)
+            session.flush()
+        # An imported bank position can still be absent from the local projection.
+        # The importer must reject this complete-statement claim independently of FK safety.
+        proof = session.scalar(
+            select(EvidenceItem).where(
+                EvidenceItem.source_type == "SIMULATED_BANK_POSITION",
+                EvidenceItem.content["position_id"].as_string() == str(position.id),
+            )
+        )
+        assert proof is not None
+        missing_id = uuid4()
+        content = {**proof.content, "position_id": str(missing_id)}
+        session.add(
+            EvidenceItem(
+                user_id=DEMO_USER_ID,
+                source_type="SIMULATED_BANK_POSITION",
+                source_ref=f"unprojected-position:{missing_id}",
+                evidence_level="BANK_CONFIRMED",
+                content=content,
+                content_hash=configuration_hash(content),
+                observed_at=SEED_AS_OF,
+                valid_from=SEED_AS_OF,
+                status="VALID",
+            )
+        )
         exposure_statement(session)
     with Session(boundary_engine) as session:
         context = load_boundary_context(session, DEMO_USER_ID, SEED_AS_OF)

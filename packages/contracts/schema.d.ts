@@ -328,6 +328,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/recovery/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Recovery Preview */
+        get: operations["preview_recovery"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/recovery/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Recovery Run */
+        post: operations["run_recovery"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/recovery/runs/{run_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Recovery Run */
+        get: operations["get_recovery_run"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/health": {
         parameters: {
             query?: never;
@@ -1487,6 +1538,286 @@ export interface components {
             validation_ready: boolean;
             /** Confirmed Policy Id */
             confirmed_policy_id: string | null;
+        };
+        /** RecoveryAction */
+        RecoveryAction: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /**
+             * Source Account Id
+             * Format: uuid
+             */
+            source_account_id: string;
+            /**
+             * Destination Account Id
+             * Format: uuid
+             */
+            destination_account_id: string;
+            /** Goal Id */
+            goal_id?: string | null;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Product Version Number */
+            product_version_number: number;
+            /** Terms Digest */
+            terms_digest: string;
+            /**
+             * Original Policy Version Id
+             * Format: uuid
+             */
+            original_policy_version_id: string;
+            /**
+             * Current Policy Id
+             * Format: uuid
+             */
+            current_policy_id: string;
+            /**
+             * Current Policy Version Id
+             * Format: uuid
+             */
+            current_policy_version_id: string;
+            /** Current Authorization Hash */
+            current_authorization_hash: string;
+            quote: components["schemas"]["RecoveryQuote"];
+            /**
+             * Autonomy Level
+             * @enum {string}
+             */
+            autonomy_level: "AUTO_EXECUTE" | "ASK_ONCE";
+            /** Baseline Boundary Hash */
+            baseline_boundary_hash: string;
+            /** Plan Inputs Hash */
+            plan_inputs_hash: string;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            /** Request Hash */
+            request_hash: string;
+        };
+        /** RecoveryActionStatus */
+        RecoveryActionStatus: {
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /** Status */
+            status: string;
+            /** Bank Request Id */
+            bank_request_id?: string | null;
+            /** Bank Status */
+            bank_status?: string | null;
+            /** Receipt Id */
+            receipt_id?: string | null;
+        };
+        /** RecoveryCandidate */
+        RecoveryCandidate: {
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "AUTO_EXECUTE" | "ASK_ONCE" | "ADVISE_ONLY" | "BLOCKED";
+            /** Reasons */
+            reasons?: string[];
+            action?: components["schemas"]["RecoveryAction"] | null;
+            projected_boundary?: components["schemas"]["BoundaryResult"] | null;
+        };
+        /** RecoveryNotification */
+        RecoveryNotification: {
+            /** Code */
+            code: string;
+            /** Message */
+            message: string;
+            /** Action Id */
+            action_id?: string | null;
+        };
+        /** RecoveryPlan */
+        RecoveryPlan: {
+            /** Algorithm Version */
+            algorithm_version: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Preview Only
+             * @default true
+             * @constant
+             */
+            preview_only: true;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "NO_RECOVERY_NEEDED" | "AUTO_RECOVERY_AVAILABLE" | "PARTIAL_RECOVERY_AVAILABLE" | "ASK_ONCE" | "ADVISE_ONLY" | "NO_SAFE_RECOVERY" | "INSUFFICIENT_EVIDENCE";
+            actual_boundary: components["schemas"]["BoundaryResult"];
+            projected_boundary?: components["schemas"]["BoundaryResult"] | null;
+            /** Steps */
+            steps?: components["schemas"]["RecoveryAction"][];
+            /** Candidates */
+            candidates?: components["schemas"]["RecoveryCandidate"][];
+            /** Uncovered Checkpoints */
+            uncovered_checkpoints?: components["schemas"]["BoundaryPoint"][];
+            first_sustained_safe_point?: components["schemas"]["BoundaryPoint"] | null;
+            /** Plan Hash */
+            plan_hash: string;
+            /** Reasons */
+            reasons?: string[];
+        };
+        /** RecoveryPreviewResponse */
+        RecoveryPreviewResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            plan: components["schemas"]["RecoveryPlan"];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Input Digest */
+            input_digest: string;
+            /** Source Issues */
+            source_issues: components["schemas"]["BoundarySourceIssue"][];
+        };
+        /** RecoveryQuote */
+        RecoveryQuote: {
+            /** Evidence Ids */
+            evidence_ids?: string[];
+            /**
+             * Quote Id
+             * Format: uuid
+             */
+            quote_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Product Version Number */
+            product_version_number: number;
+            /** Terms Digest */
+            terms_digest: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "REDEEM" | "EARLY_WITHDRAW" | "MATURE";
+            /** Principal Cents */
+            principal_cents: number;
+            /** Fee Cents */
+            fee_cents: number;
+            /** Loss Cents */
+            loss_cents: number;
+            /** Net Cents */
+            net_cents: number;
+            /**
+             * Request At
+             * Format: date-time
+             */
+            request_at: string;
+            /**
+             * Principal Available At
+             * Format: date-time
+             */
+            principal_available_at: string;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+        };
+        /** RecoveryRunRequest */
+        RecoveryRunRequest: {
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** RecoveryRunResponse */
+        RecoveryRunResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Status */
+            status: string;
+            plan: components["schemas"]["RecoveryPlan"];
+            actual_boundary: components["schemas"]["BoundaryResult"];
+            /** Actions */
+            actions: components["schemas"]["RecoveryActionStatus"][];
+            /** Notifications */
+            notifications: components["schemas"]["RecoveryNotification"][];
         };
         /** ReserveEstimationResponse */
         ReserveEstimationResponse: {
@@ -2717,6 +3048,180 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AssetAllocationResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_recovery: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecoveryPreviewResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    run_recovery: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecoveryRunRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecoveryRunResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    get_recovery_run: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecoveryRunResponse"];
                 };
             };
             /** @description Not Found */

@@ -1,0 +1,12 @@
+.                                                                        [100%]
+============================ Hypothesis Statistics ============================
+apps/api/app/tests/test_recovery_properties.py::test_goal_principal_and_yield_cannot_fill_the_remaining_general_deficit:
+
+  - during generate phase (8.42 seconds):
+    - Typical runtimes: ~ 20-100 ms, of which ~ 0-1 ms in data generation
+    - 150 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=150
+
+
+1 passed, 11 deselected in 9.00s
