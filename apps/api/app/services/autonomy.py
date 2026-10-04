@@ -119,6 +119,13 @@ def _basis(session: Session, user_id: UUID, now: datetime) -> _Basis:
         ],
     }
     digest = configuration_hash(json.loads(json.dumps(payload, sort_keys=True, default=str)))
+    from app.services.decision_recording import capture_boundary, current_capture
+
+    capture = current_capture(session)
+    if capture is not None:
+        capture_boundary(session, "autonomy_boundary", base)
+        capture.inputs["autonomy_basis"] = json.loads(json.dumps(payload, default=str))
+        capture.inputs["autonomy_baseline"] = boundary.model_dump(mode="json")
     return _Basis(base, boundary, issues, digest)
 
 
@@ -382,6 +389,19 @@ def _facts(
                 update={"source_issues": [], "redemption_quote": quote}
             )
             validation = revalidate_execution(effect, financial_context, confirmation=confirmation)
+            from app.services.decision_recording import current_capture
+
+            capture = current_capture(session)
+            if capture is not None:
+                capture.inputs["financial_advice_context"] = financial_context.model_dump(
+                    mode="json"
+                )
+                capture.inputs["financial_advice_purpose"] = {
+                    "purpose": "ADVICE_ONLY_NO_AUTHORIZATION",
+                    "original_permission_denials": [
+                        issue.model_dump(mode="json") for issue in denied
+                    ],
+                }
         except PolicyLifecycleError as error:
             return facts.model_copy(update={"hard_block_reasons": [error.code]})
         facts = facts.model_copy(
@@ -444,7 +464,9 @@ def assess_intent(
     with session.no_autoflush:
         _intent_policies(session, user_id, intent)
         basis = _basis(session, user_id, now)
-        return _response(_facts(session, user_id, intent, now, basis))
+        facts = _facts(session, user_id, intent, now, basis)
+        _capture_assessment(session, facts)
+        return _response(facts)
 
 
 def assess_action(
@@ -529,6 +551,11 @@ def assess_transfer_preferences(
     ):
         connection.exec_driver_sql("SET TRANSACTION READ ONLY")
         with Session(bind=connection, autoflush=False) as reading:
+            from app.services.decision_recording import CAPTURE_KEY, current_capture
+
+            capture = current_capture(session)
+            if capture is not None:
+                reading.info[CAPTURE_KEY] = capture
             return _transfer_worlds(
                 reading, user_id, source_account_id, destination_account_id, amount_options, now
             )
@@ -554,13 +581,19 @@ def _transfer_worlds(
         ]
         _intent_policies(session, user_id, intents[0])
         basis = _basis(session, user_id, now)
-        worlds = [
-            AutonomyWorld(
-                candidate_key=str(intent.amount_cents),
-                facts=_facts(session, user_id, intent, now, basis),
-            )
-            for intent in intents
-        ]
+        from app.services.decision_recording import current_capture
+
+        capture = current_capture(session)
+        worlds = []
+        for intent in intents:
+            facts = _facts(session, user_id, intent, now, basis)
+            worlds.append(AutonomyWorld(candidate_key=str(intent.amount_cents), facts=facts))
+            _capture_assessment(session, facts)
+            if capture is not None:
+                capture.inputs.setdefault("world_contexts", {})[str(intent.amount_cents)] = {
+                    "execution_context": capture.inputs.get("execution_context"),
+                    "facts": facts.model_dump(mode="json"),
+                }
         variable = FiniteUserVariable(
             variable_id="transfer_amount",
             kind="USER_PREFERENCE",
@@ -569,4 +602,30 @@ def _transfer_worlds(
             source_context_hash=basis.digest,
             worlds=worlds,
         )
+        if capture is not None:
+            from app.domain.decision_trace_types import TraceCandidate
+
+            capture.inputs["uncertainty"] = variable.model_dump(mode="json")
+            for world in worlds:
+                result = classify_autonomy(world.facts)
+                capture.candidates.append(
+                    TraceCandidate(
+                        candidate_key=world.candidate_key,
+                        kind="USER_AMOUNT_PREFERENCE",
+                        status=result.level,
+                        inputs=world.facts.model_dump(mode="json"),
+                        result=result.model_dump(mode="json"),
+                        reasons=result.reasons,
+                    )
+                )
         return _response(worlds[0].facts, uncertainty=variable)
+
+
+def _capture_assessment(session: Session, facts: AutonomyFacts) -> None:
+    from app.services.decision_recording import capture_evidence, capture_versions, current_capture
+
+    capture = current_capture(session)
+    if capture is not None:
+        capture.inputs["autonomy_facts"] = facts.model_dump(mode="json")
+        capture_versions(session, facts.user_id, facts.authority.policy_version_ids)
+        capture_evidence(session, facts.user_id, facts.source_evidence_ids)

@@ -1,0 +1,12 @@
+E501 Line too long (106 > 100)
+  --> apps\api\app\tests\test_decision_trace_reset.py:55:101
+   |
+53 |         session.add(User(id=owner, external_ref=str(owner), display_name="Other synthetic tenant"))
+54 |         session.flush()
+55 |         account = Account(user_id=owner, external_ref="other-goal", name="Synthetic", account_type="GOAL")
+   |                                                                                                     ^^^^^^
+56 |         session.add(account)
+57 |         session.add(
+   |
+
+Found 2 errors (1 fixed, 1 remaining).

@@ -1,0 +1,3 @@
+apps\api\app\tests\test_decision_trace_audit.py:166: error: Module "app.services.execution" does not explicitly export attribute "process_operation"  [attr-defined]
+apps\api\app\tests\test_decision_trace_audit.py:319: error: Module "app.services.execution" does not explicitly export attribute "process_operation"  [attr-defined]
+Found 2 errors in 1 file (checked 1 source file)

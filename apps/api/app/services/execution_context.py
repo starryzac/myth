@@ -218,7 +218,7 @@ def load_execution_context(
                 )
             else:
                 cash[identity] = cash.get(identity, 0) + amount
-        return ExecutionContext(
+        context = ExecutionContext(
             user_id=user_id,
             snapshot=base.snapshot,
             versions=versions,
@@ -243,6 +243,10 @@ def load_execution_context(
                 for i in base.sources.issues
             ],
         )
+        from app.services.decision_recording import capture_execution_context
+
+        capture_execution_context(session, base, effect, context)
+        return context
 
 
 def _version(row: PolicyVersion) -> BoundaryPolicyVersion:

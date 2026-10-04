@@ -1,0 +1,10 @@
+apps\api\app\services\decision_trace.py:119: error: Argument "evidence_level" to "TraceEvidence" has incompatible type "str"; expected "Literal['BANK_CONFIRMED', 'BANK_OBSERVED', 'USER_DECLARED', 'MODEL_INFERRED', 'USER_CONFIRMED_POLICY', 'USER_CONFIRMED_ACTION']"  [arg-type]
+apps\api\app\services\decision_trace.py:126: error: Argument "status_at_decision" to "TraceEvidence" has incompatible type "str"; expected "Literal['VALID', 'CONFLICTED', 'UNKNOWN', 'SUPERSEDED']"  [arg-type]
+apps\api\app\services\decision_trace.py:234: error: Argument "status" to "TraceReferenceStatus" has incompatible type "str"; expected "Literal['UNCHANGED', 'STATUS_CHANGED', 'MISSING']"  [arg-type]
+apps\api\app\services\decision_trace.py:240: error: Incompatible types in assignment (expression has type "PolicyVersion | None", variable has type "EvidenceItem | None")  [assignment]
+apps\api\app\services\decision_trace.py:254: error: Argument 1 to "policy_copy" has incompatible type "EvidenceItem"; expected "PolicyVersion"  [arg-type]
+apps\api\app\services\decision_trace.py:265: error: Argument "status" to "TraceReferenceStatus" has incompatible type "str"; expected "Literal['UNCHANGED', 'STATUS_CHANGED', 'MISSING']"  [arg-type]
+apps\api\app\tests\test_decision_trace_storage.py:348: error: Incompatible types in assignment (expression has type "list[TraceEvidence]", variable has type "Callable[[Session, UUID, Iterable[UUID]], object]")  [assignment]
+apps\api\app\tests\test_decision_trace_storage.py:349: error: Value of type "Callable[[Session, UUID, Iterable[UUID]], object]" is not indexable  [index]
+apps\api\app\tests\test_decision_trace_storage.py:350: error: Value of type "Callable[[Session, UUID, Iterable[UUID]], object]" is not indexable  [index]
+Found 9 errors in 2 files (checked 3 source files)

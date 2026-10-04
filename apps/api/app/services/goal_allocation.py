@@ -285,6 +285,30 @@ def preview_goal_allocation(
                 "issues": [item.model_dump(mode="json") for item in issues],
             }
         )
+        from app.domain.decision_trace_types import TraceCandidate
+        from app.services.decision_recording import capture_boundary, current_capture
+
+        capture = current_capture(session)
+        if capture is not None:
+            capture_boundary(session, "goal_boundary", context)
+            capture.algorithms["goal_allocation"] = allocation.algorithm_version
+            capture.inputs["goal_planning"] = {
+                "goal_id": str(goal_id),
+                "policy_version_id": str(goal.policy_version_id),
+                "lots": [lot.model_dump(mode="json") for lot in lots],
+                "source_issues": [issue.model_dump(mode="json") for issue in source_issues],
+                "result": allocation.model_dump(mode="json"),
+            }
+            capture.candidates.append(
+                TraceCandidate(
+                    candidate_key="goal:" + str(goal_id),
+                    kind="GOAL_ALLOCATION",
+                    status=allocation.status,
+                    inputs=capture.inputs["goal_planning"],
+                    result=allocation.model_dump(mode="json"),
+                    reasons=allocation.reasons,
+                )
+            )
         return GoalAllocationResponse(
             user_id=user_id,
             goal_id=goal_id,

@@ -305,6 +305,7 @@ Q_finance[s,p]
 | SEM-09 | 模拟收益在排名与硬现金保障之间的隔离。 | 未来未到账收入不可扩大当前边界；收益展示不能变成安全事实。 | FROZEN MVP-202：ADR 0005 展示收益/未来收入不进财务 DTO/hash |
 | SEM-10 | 五类动作的确认、同源收入消耗、独立结算和重复请求。 | 换键不能重复付款；UNKNOWN不释放；明确费用不成为自动授权；未来未提交退出不能充当承诺到账。 | FROZEN / VERIFIED MVP-301：[ADR0009](../adr/0009-atomic-simulated-action-execution.md)，固定经济载荷、收入origin/location、三阶段提交与只读回执核验 |
 | SEM-11 | 四级判定、已确认ASK的人工来源、有限用户候选及已知超权限建议。 | 分类不授银行权限；根本缺证不得变成可确认问题；候选必须同一可信数据库快照；只读财务建议不绕过执行器。 | FROZEN / VERIFIED MVP-302：[ADR0010](../adr/0010-evidence-bound-autonomy-levels.md)，完整check及169源码集合摘要核验见MVP-302 |
+| SEM-12 | 同次输入与来源副本、历史候选/约束、独立执行阶段和原合同结算。 | 历史解释不得使用最新事实补造；ASK确认后仍保留人工来源；查询不结算或重授权；内容hash不等于审计链。 | FROZEN / VERIFIED MVP-303：[ADR0011](../adr/0011-immutable-decision-traces.md)，完整check1229后端/4前端/1Edge、185源码集合/hash核验见MVP-303 |
 
 ## 9. 后续使用约束
 

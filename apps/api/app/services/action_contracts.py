@@ -90,6 +90,7 @@ class ActionResponse(IntentModel):
     simulation: Literal[True] = True
     user_id: UUID
     action_id: UUID
+    decision_run_id: UUID
     status: str
     autonomy_level: str
     effect: ExecutionEffect

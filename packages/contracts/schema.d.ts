@@ -379,6 +379,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/actions/{action_id}/decision": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Decision */
+        get: operations["get_action_decision"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/actions/assess": {
         parameters: {
             query?: never;
@@ -490,6 +507,74 @@ export interface paths {
         };
         /** Receipt */
         get: operations["get_action_receipt"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/decisions/assess": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Save */
+        post: operations["save_decision_assessment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/decisions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Listing */
+        get: operations["list_decisions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/decisions/{run_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read */
+        get: operations["get_decision"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/decisions/{run_id}/explanation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Explanation */
+        get: operations["explain_decision"];
         put?: never;
         post?: never;
         delete?: never;
@@ -638,6 +723,11 @@ export interface components {
              * Format: uuid
              */
             action_id: string;
+            /**
+             * Decision Run Id
+             * Format: uuid
+             */
+            decision_run_id: string;
             /** Status */
             status: string;
             /** Autonomy Level */
@@ -1318,6 +1408,171 @@ export interface components {
             covered: boolean;
             /** Amount Cents */
             amount_cents: number | null;
+        };
+        /** DecisionTrace */
+        DecisionTrace: {
+            /**
+             * Schema Version
+             * @default decision-trace-v1
+             * @constant
+             */
+            schema_version: "decision-trace-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Phase
+             * @enum {string}
+             */
+            phase: "PREPARE" | "CONFIRM" | "RESERVE" | "BANK_ACCEPT" | "RECOVERY_PLAN" | "CONTRACT_SETTLEMENT" | "EVALUATION";
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Action Id */
+            action_id?: string | null;
+            /** Parent Run Id */
+            parent_run_id?: string | null;
+            /** Algorithm Versions */
+            algorithm_versions: {
+                [key: string]: string;
+            };
+            /** Inputs */
+            inputs: {
+                [key: string]: unknown;
+            };
+            /** Sources */
+            sources?: components["schemas"]["TraceEvidence"][];
+            /** Policies */
+            policies?: components["schemas"]["TracePolicy"][];
+            /** Constraints */
+            constraints?: components["schemas"]["TraceConstraint"][];
+            /** Candidates */
+            candidates?: components["schemas"]["TraceCandidate"][];
+            /** Outcome */
+            outcome: {
+                [key: string]: unknown;
+            };
+            /** Input Hash */
+            input_hash: string;
+            /** Trace Hash */
+            trace_hash: string;
+        };
+        /** DecisionTraceList */
+        DecisionTraceList: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Items */
+            items: components["schemas"]["DecisionTraceSummary"][];
+            /** Next Cursor */
+            next_cursor?: string | null;
+        };
+        /** DecisionTraceResponse */
+        DecisionTraceResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Read At
+             * Format: date-time
+             */
+            read_at: string;
+            /**
+             * Completeness
+             * @enum {string}
+             */
+            completeness: "COMPLETE" | "LEGACY_PARTIAL" | "UNSUPPORTED_VERSION";
+            trace?: components["schemas"]["DecisionTrace"] | null;
+            explanation?: components["schemas"]["TraceExplanation"] | null;
+            /** Current References */
+            current_references: components["schemas"]["TraceReferenceStatus"][];
+            /** Actions */
+            actions: components["schemas"]["TraceActionLink"][];
+            /** Children */
+            children: string[];
+            /** Legacy Snapshot */
+            legacy_snapshot?: {
+                [key: string]: unknown;
+            } | null;
+            /** Legacy Result */
+            legacy_result?: {
+                [key: string]: unknown;
+            } | null;
+            /**
+             * Audit Chain Status
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            audit_chain_status: "NOT_IMPLEMENTED";
+        };
+        /** DecisionTraceSummary */
+        DecisionTraceSummary: {
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Trigger Type */
+            trigger_type: string;
+            /** Status */
+            status: string;
+            /**
+             * Completeness
+             * @enum {string}
+             */
+            completeness: "COMPLETE" | "LEGACY_PARTIAL" | "UNSUPPORTED_VERSION";
+            /** Phase */
+            phase?: string | null;
+            /** Parent Run Id */
+            parent_run_id?: string | null;
+            /** Action Id */
+            action_id?: string | null;
         };
         /**
          * DiscoveryRequest
@@ -2605,6 +2860,15 @@ export interface components {
             /** Amount Cents */
             amount_cents: number;
         };
+        /** SaveAssessmentRequest */
+        SaveAssessmentRequest: {
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Intent */
+            intent: components["schemas"]["TransferIntent"] | components["schemas"]["PaymentIntent"] | components["schemas"]["GoalIntent"] | components["schemas"]["PurchaseIntent"] | components["schemas"]["RedeemIntent"];
+            /** Amount Options Cents */
+            amount_options_cents?: number[] | null;
+        };
         /** SettlementFact */
         SettlementFact: {
             /** Evidence Ids */
@@ -2642,6 +2906,242 @@ export interface components {
              * Format: uuid
              */
             expected_version_id: string;
+        };
+        /** TraceActionLink */
+        TraceActionLink: {
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /**
+             * Decision Run Id
+             * Format: uuid
+             */
+            decision_run_id: string;
+            /** Status */
+            status: string;
+            /** Request Hash */
+            request_hash: string;
+            /** Bank Operation Id */
+            bank_operation_id?: string | null;
+            /** Bank Status */
+            bank_status?: string | null;
+            /** Receipt Id */
+            receipt_id?: string | null;
+            /** Receipt Status */
+            receipt_status?: string | null;
+        };
+        /** TraceCandidate */
+        TraceCandidate: {
+            /** Candidate Key */
+            candidate_key: string;
+            /** Kind */
+            kind: string;
+            /** Status */
+            status: string;
+            /** Inputs */
+            inputs?: {
+                [key: string]: unknown;
+            };
+            /** Result */
+            result?: {
+                [key: string]: unknown;
+            };
+            /** Reasons */
+            reasons?: string[];
+        };
+        /** TraceConstraint */
+        TraceConstraint: {
+            /** Constraint Key */
+            constraint_key: string;
+            /** Policy Version Id */
+            policy_version_id?: string | null;
+            /** Is Hard */
+            is_hard: boolean;
+            /** Satisfied */
+            satisfied?: boolean | null;
+            /** Required Cents */
+            required_cents?: number | null;
+            /** Available Cents */
+            available_cents?: number | null;
+            /** Due Date */
+            due_date?: string | null;
+            /** Calculation */
+            calculation?: {
+                [key: string]: unknown;
+            };
+            /** Reason Code */
+            reason_code: string;
+        };
+        /** TraceEvidence */
+        TraceEvidence: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Evidence Level
+             * @enum {string}
+             */
+            evidence_level: "BANK_CONFIRMED" | "BANK_OBSERVED" | "USER_DECLARED" | "MODEL_INFERRED" | "USER_CONFIRMED_POLICY" | "USER_CONFIRMED_ACTION";
+            /** Source Type */
+            source_type: string;
+            /** Source Ref */
+            source_ref: string;
+            /** Content */
+            content: {
+                [key: string]: unknown;
+            };
+            /** Content Hash */
+            content_hash: string;
+            /** Captured Content Hash */
+            captured_content_hash: string;
+            /**
+             * Content Integrity
+             * @enum {string}
+             */
+            content_integrity: "VERIFIED" | "INVALID";
+            /**
+             * Status At Decision
+             * @enum {string}
+             */
+            status_at_decision: "VALID" | "CONFLICTED" | "UNKNOWN" | "SUPERSEDED";
+            /**
+             * Observed At
+             * Format: date-time
+             */
+            observed_at: string;
+            /**
+             * Valid From
+             * Format: date-time
+             */
+            valid_from: string;
+            /** Valid To */
+            valid_to?: string | null;
+            /** Supersedes Evidence Id */
+            supersedes_evidence_id?: string | null;
+        };
+        /** TraceExplanation */
+        TraceExplanation: {
+            /**
+             * Schema Version
+             * @default decision-explanation-v1
+             * @constant
+             */
+            schema_version: "decision-explanation-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Level */
+            level?: string | null;
+            /** Financial Evaluation */
+            financial_evaluation?: string | null;
+            /** Confirmation Required */
+            confirmation_required?: boolean | null;
+            /** Confirmation Satisfied */
+            confirmation_satisfied?: boolean | null;
+            /** Summary */
+            summary: string[];
+            /** Reasons */
+            reasons: components["schemas"]["TraceReason"][];
+            /**
+             * Audit Chain
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            audit_chain: "NOT_IMPLEMENTED";
+        };
+        /** TracePolicy */
+        TracePolicy: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /** Version Number */
+            version_number: number;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+            /** Configuration Hash */
+            configuration_hash: string;
+            /** Captured Configuration Hash */
+            captured_configuration_hash: string;
+            /**
+             * Configuration Integrity
+             * @enum {string}
+             */
+            configuration_integrity: "VERIFIED" | "INVALID";
+            /** Status At Decision */
+            status_at_decision: string;
+            /** Confirmed At */
+            confirmed_at?: string | null;
+            /** Valid From */
+            valid_from?: string | null;
+            /** Valid To */
+            valid_to?: string | null;
+        };
+        /** TraceReason */
+        TraceReason: {
+            /** Code */
+            code: string;
+            /** Text */
+            text: string;
+            /** References */
+            references: string[];
+        };
+        /** TraceReferenceStatus */
+        TraceReferenceStatus: {
+            /**
+             * Entity Type
+             * @enum {string}
+             */
+            entity_type: "EVIDENCE" | "POLICY";
+            /**
+             * Entity Id
+             * Format: uuid
+             */
+            entity_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "UNCHANGED" | "STATUS_CHANGED" | "MISSING";
+            /** Original Status */
+            original_status: string;
+            /** Current Status */
+            current_status: string | null;
         };
         /** TransactionPage */
         TransactionPage: {
@@ -4054,6 +4554,64 @@ export interface operations {
             };
         };
     };
+    get_action_decision: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DecisionTraceResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
     assess_action_intent: {
         parameters: {
             query?: never;
@@ -4432,6 +4990,241 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ActionReceiptResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    save_decision_assessment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SaveAssessmentRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DecisionTraceResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    list_decisions: {
+        parameters: {
+            query?: {
+                limit?: number;
+                cursor?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DecisionTraceList"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    get_decision: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DecisionTraceResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    explain_decision: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TraceExplanation"];
                 };
             };
             /** @description Not Found */

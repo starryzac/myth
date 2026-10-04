@@ -1,0 +1,152 @@
+FFFFF.F..                                                                [100%]
+================================== FAILURES ===================================
+_ test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases[TRANSFER_INTERNAL] _
+apps\api\app\services\execution_projection.py:111: in _identity
+    raise ValueError("Application and independent bank identities disagree")
+E   ValueError: Application and independent bank identities disagree
+
+The above exception was the direct cause of the following exception:
+apps\api\app\services\decision_trace.py:514: in _action_links
+    select(ActionReceipt).where(
+            ^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution_projection.py:814: in verify_execution_receipt
+    action, effect = _identity(session, operation, now, lock_user=False)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution_projection.py:113: in _identity
+    raise _error(str(error)) from error
+E   app.services.policy_lifecycle.PolicyLifecycleError: Application and independent bank identities disagree
+
+The above exception was the direct cause of the following exception:
+apps\api\app\tests\test_decision_recording_integration.py:124: in test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases
+    children = [get_decision_trace(session, DEMO_USER_ID, i, SEED_AS_OF) for i in historical.children]
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\decision_trace.py:567: in get_decision_trace
+    ) -> DecisionTraceResponse:
+                        ^^^^^^^^
+apps\api\app\services\decision_trace.py:528: in _action_links
+    raise _integrity("��ִȱ�ٶ������в���")
+E   app.services.policy_lifecycle.PolicyLifecycleError: ��ʷ��ִ��ԭʼ���о�����ʵ��һ��
+_ test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases[PAY_RECURRING] _
+apps\api\app\services\execution_projection.py:111: in _identity
+    raise ValueError("Application and independent bank identities disagree")
+E   ValueError: Application and independent bank identities disagree
+
+The above exception was the direct cause of the following exception:
+apps\api\app\services\decision_trace.py:514: in _action_links
+    select(ActionReceipt).where(
+            ^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution_projection.py:814: in verify_execution_receipt
+    action, effect = _identity(session, operation, now, lock_user=False)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution_projection.py:113: in _identity
+    raise _error(str(error)) from error
+E   app.services.policy_lifecycle.PolicyLifecycleError: Application and independent bank identities disagree
+
+The above exception was the direct cause of the following exception:
+apps\api\app\tests\test_decision_recording_integration.py:124: in test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases
+    children = [get_decision_trace(session, DEMO_USER_ID, i, SEED_AS_OF) for i in historical.children]
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\decision_trace.py:567: in get_decision_trace
+    ) -> DecisionTraceResponse:
+                        ^^^^^^^^
+apps\api\app\services\decision_trace.py:528: in _action_links
+    raise _integrity("��ִȱ�ٶ������в���")
+E   app.services.policy_lifecycle.PolicyLifecycleError: ��ʷ��ִ��ԭʼ���о�����ʵ��һ��
+_ test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases[ALLOCATE_GOAL] _
+apps\api\app\services\execution_projection.py:111: in _identity
+    raise ValueError("Application and independent bank identities disagree")
+E   ValueError: Application and independent bank identities disagree
+
+The above exception was the direct cause of the following exception:
+apps\api\app\services\decision_trace.py:514: in _action_links
+    select(ActionReceipt).where(
+            ^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution_projection.py:814: in verify_execution_receipt
+    action, effect = _identity(session, operation, now, lock_user=False)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution_projection.py:113: in _identity
+    raise _error(str(error)) from error
+E   app.services.policy_lifecycle.PolicyLifecycleError: Application and independent bank identities disagree
+
+The above exception was the direct cause of the following exception:
+apps\api\app\tests\test_decision_recording_integration.py:124: in test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases
+    children = [get_decision_trace(session, DEMO_USER_ID, i, SEED_AS_OF) for i in historical.children]
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\decision_trace.py:567: in get_decision_trace
+    ) -> DecisionTraceResponse:
+                        ^^^^^^^^
+apps\api\app\services\decision_trace.py:528: in _action_links
+    raise _integrity("��ִȱ�ٶ������в���")
+E   app.services.policy_lifecycle.PolicyLifecycleError: ��ʷ��ִ��ԭʼ���о�����ʵ��һ��
+_ test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases[PURCHASE_ASSET] _
+apps\api\app\services\execution_projection.py:111: in _identity
+    raise ValueError("Application and independent bank identities disagree")
+E   ValueError: Application and independent bank identities disagree
+
+The above exception was the direct cause of the following exception:
+apps\api\app\services\decision_trace.py:514: in _action_links
+    select(ActionReceipt).where(
+            ^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution_projection.py:814: in verify_execution_receipt
+    action, effect = _identity(session, operation, now, lock_user=False)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution_projection.py:113: in _identity
+    raise _error(str(error)) from error
+E   app.services.policy_lifecycle.PolicyLifecycleError: Application and independent bank identities disagree
+
+The above exception was the direct cause of the following exception:
+apps\api\app\tests\test_decision_recording_integration.py:124: in test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases
+    children = [get_decision_trace(session, DEMO_USER_ID, i, SEED_AS_OF) for i in historical.children]
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\decision_trace.py:567: in get_decision_trace
+    ) -> DecisionTraceResponse:
+                        ^^^^^^^^
+apps\api\app\services\decision_trace.py:528: in _action_links
+    raise _integrity("��ִȱ�ٶ������в���")
+E   app.services.policy_lifecycle.PolicyLifecycleError: ��ʷ��ִ��ԭʼ���о�����ʵ��һ��
+_ test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases[REDEEM_ASSET] _
+apps\api\app\services\execution_projection.py:111: in _identity
+    raise ValueError("Application and independent bank identities disagree")
+E   ValueError: Application and independent bank identities disagree
+
+The above exception was the direct cause of the following exception:
+apps\api\app\services\decision_trace.py:514: in _action_links
+    select(ActionReceipt).where(
+            ^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution_projection.py:814: in verify_execution_receipt
+    action, effect = _identity(session, operation, now, lock_user=False)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution_projection.py:113: in _identity
+    raise _error(str(error)) from error
+E   app.services.policy_lifecycle.PolicyLifecycleError: Application and independent bank identities disagree
+
+The above exception was the direct cause of the following exception:
+apps\api\app\tests\test_decision_recording_integration.py:124: in test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases
+    children = [get_decision_trace(session, DEMO_USER_ID, i, SEED_AS_OF) for i in historical.children]
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\decision_trace.py:567: in get_decision_trace
+    ) -> DecisionTraceResponse:
+                        ^^^^^^^^
+apps\api\app\services\decision_trace.py:528: in _action_links
+    raise _integrity("��ִȱ�ٶ������в���")
+E   app.services.policy_lifecycle.PolicyLifecycleError: ��ʷ��ִ��ԭʼ���о�����ʵ��һ��
+_ test_finite_amount_assessment_saves_each_world_context_without_single_execution_payload _
+apps\api\app\tests\test_decision_recording_integration.py:172: in test_finite_amount_assessment_saves_each_world_context_without_single_execution_payload
+    saved = save_assessment(
+apps\api\app\services\decision_assessment.py:107: in save_assessment
+    trace = build_trace(
+apps\api\app\domain\decision_trace.py:122: in build_trace
+    content = _TraceContent.model_validate(fields)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 1 validation error for _TraceContent
+E   inputs
+E     Value error, Trace monetary values must be integer cents [type=value_error, input_value={'intent': {'kind': 'tran...19840c0eeef6740c6a'}}]}}, input_type=dict]
+E       For further information visit https://errors.pydantic.dev/2.13/v/value_error
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_decision_recording_integration.py::test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases[TRANSFER_INTERNAL]
+FAILED apps/api/app/tests/test_decision_recording_integration.py::test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases[PAY_RECURRING]
+FAILED apps/api/app/tests/test_decision_recording_integration.py::test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases[ALLOCATE_GOAL]
+FAILED apps/api/app/tests/test_decision_recording_integration.py::test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases[PURCHASE_ASSET]
+FAILED apps/api/app/tests/test_decision_recording_integration.py::test_all_five_receipt_chains_preserve_frozen_real_preparation_and_fresh_phases[REDEEM_ASSET]
+FAILED apps/api/app/tests/test_decision_recording_integration.py::test_finite_amount_assessment_saves_each_world_context_without_single_execution_payload
+6 failed, 3 passed in 60.06s (0:01:00)

@@ -1,0 +1,62 @@
+FFFFFF                                                                   [100%]
+================================== FAILURES ===================================
+_ test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies[True-sources] _
+apps\api\app\tests\test_decision_trace_domain.py:441: in test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies
+    data[part] = [model.model_validate(copy)]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 1 validation error for TraceEvidence
+E   content
+E     Value error, Trace monetary values must be integer cents [type=value_error, input_value={'amount_cents': True, 'u...0000-0000-000000000063'}, input_type=dict]
+E       For further information visit https://errors.pydantic.dev/2.13/v/value_error
+_ test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies[True-policies] _
+apps\api\app\tests\test_decision_trace_domain.py:441: in test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies
+    data[part] = [model.model_validate(copy)]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 1 validation error for TracePolicy
+E   configuration
+E     Value error, Trace monetary values must be integer cents [type=value_error, input_value={'amount_cents': True, 'u...0000-0000-000000000063'}, input_type=dict]
+E       For further information visit https://errors.pydantic.dev/2.13/v/value_error
+_ test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies[1.5-sources] _
+apps\api\app\tests\test_decision_trace_domain.py:441: in test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies
+    data[part] = [model.model_validate(copy)]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 1 validation error for TraceEvidence
+E   content
+E     Value error, Trace monetary values must be integer cents [type=value_error, input_value={'amount_cents': 1.5, 'us...0000-0000-000000000063'}, input_type=dict]
+E       For further information visit https://errors.pydantic.dev/2.13/v/value_error
+_ test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies[1.5-policies] _
+apps\api\app\tests\test_decision_trace_domain.py:441: in test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies
+    data[part] = [model.model_validate(copy)]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 1 validation error for TracePolicy
+E   configuration
+E     Value error, Trace monetary values must be integer cents [type=value_error, input_value={'amount_cents': 1.5, 'us...0000-0000-000000000063'}, input_type=dict]
+E       For further information visit https://errors.pydantic.dev/2.13/v/value_error
+_ test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies[100-sources] _
+apps\api\app\tests\test_decision_trace_domain.py:446: in test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies
+    trace = build_trace(**data)
+            ^^^^^^^^^^^^^^^^^^^
+apps\api\app\domain\decision_trace.py:122: in build_trace
+    content = _TraceContent.model_validate(fields)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 1 validation error for _TraceContent
+E     Value error, Trace nested facts belong to another user [type=value_error, input_value={'run_id': UUID('00000000...EVIDENCE_INCOMPLETE']}}}, input_type=dict]
+E       For further information visit https://errors.pydantic.dev/2.13/v/value_error
+_ test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies[100-policies] _
+apps\api\app\tests\test_decision_trace_domain.py:446: in test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies
+    trace = build_trace(**data)
+            ^^^^^^^^^^^^^^^^^^^
+apps\api\app\domain\decision_trace.py:122: in build_trace
+    content = _TraceContent.model_validate(fields)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 1 validation error for _TraceContent
+E     Value error, Trace nested facts belong to another user [type=value_error, input_value={'run_id': UUID('00000000...EVIDENCE_INCOMPLETE']}}}, input_type=dict]
+E       For further information visit https://errors.pydantic.dev/2.13/v/value_error
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_decision_trace_domain.py::test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies[True-sources]
+FAILED apps/api/app/tests/test_decision_trace_domain.py::test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies[True-policies]
+FAILED apps/api/app/tests/test_decision_trace_domain.py::test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies[1.5-sources]
+FAILED apps/api/app/tests/test_decision_trace_domain.py::test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies[1.5-policies]
+FAILED apps/api/app/tests/test_decision_trace_domain.py::test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies[100-sources]
+FAILED apps/api/app/tests/test_decision_trace_domain.py::test_raw_invalid_money_and_owner_claims_can_be_frozen_as_original_blocked_copies[100-policies]
+6 failed, 40 deselected in 0.88s

@@ -1,0 +1,8 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0
+rootdir: F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collected 20 items / 14 deselected / 6 selected
+
+apps\api\app\tests\test_decision_trace_reset.py EE                       [ 33%]

@@ -1698,6 +1698,79 @@
         }
       }
     },
+    "/api/v1/actions/{action_id}/decision": {
+      "get": {
+        "tags": [
+          "模拟资金动作"
+        ],
+        "summary": "Decision",
+        "operationId": "get_action_decision",
+        "parameters": [
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Action Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionTraceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
     "/api/v1/actions/assess": {
       "post": {
         "tags": [
@@ -2225,6 +2298,314 @@
         }
       }
     },
+    "/api/v1/decisions/assess": {
+      "post": {
+        "tags": [
+          "历史决策轨迹"
+        ],
+        "summary": "Save",
+        "operationId": "save_decision_assessment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveAssessmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionTraceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/decisions": {
+      "get": {
+        "tags": [
+          "历史决策轨迹"
+        ],
+        "summary": "Listing",
+        "operationId": "list_decisions",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionTraceList"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/api/v1/decisions/{run_id}": {
+      "get": {
+        "tags": [
+          "历史决策轨迹"
+        ],
+        "summary": "Read",
+        "operationId": "get_decision",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionTraceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/api/v1/decisions/{run_id}/explanation": {
+      "get": {
+        "tags": [
+          "历史决策轨迹"
+        ],
+        "summary": "Explanation",
+        "operationId": "explain_decision",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraceExplanation"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        }
+      }
+    },
     "/api/v1/health": {
       "get": {
         "summary": "Health",
@@ -2509,6 +2890,11 @@
             "format": "uuid",
             "title": "Action Id"
           },
+          "decision_run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Decision Run Id"
+          },
           "status": {
             "type": "string",
             "title": "Status"
@@ -2564,6 +2950,7 @@
         "required": [
           "user_id",
           "action_id",
+          "decision_run_id",
           "status",
           "autonomy_level",
           "effect",
@@ -4274,6 +4661,393 @@
           "amount_cents"
         ],
         "title": "DailyReserveAmount"
+      },
+      "DecisionTrace": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "decision-trace-v1",
+            "title": "Schema Version",
+            "default": "decision-trace-v1"
+          },
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "phase": {
+            "type": "string",
+            "enum": [
+              "PREPARE",
+              "CONFIRM",
+              "RESERVE",
+              "BANK_ACCEPT",
+              "RECOVERY_PLAN",
+              "CONTRACT_SETTLEMENT",
+              "EVALUATION"
+            ],
+            "title": "Phase"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "action_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Id"
+          },
+          "parent_run_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Run Id"
+          },
+          "algorithm_versions": {
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 160,
+              "minLength": 1
+            },
+            "propertyNames": {
+              "maxLength": 160,
+              "minLength": 1
+            },
+            "type": "object",
+            "title": "Algorithm Versions"
+          },
+          "inputs": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Inputs"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/TraceEvidence"
+            },
+            "type": "array",
+            "maxItems": 10000,
+            "title": "Sources"
+          },
+          "policies": {
+            "items": {
+              "$ref": "#/components/schemas/TracePolicy"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "title": "Policies"
+          },
+          "constraints": {
+            "items": {
+              "$ref": "#/components/schemas/TraceConstraint"
+            },
+            "type": "array",
+            "maxItems": 10000,
+            "title": "Constraints"
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/TraceCandidate"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "title": "Candidates"
+          },
+          "outcome": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Outcome"
+          },
+          "input_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Input Hash"
+          },
+          "trace_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Trace Hash"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id",
+          "user_id",
+          "phase",
+          "as_of",
+          "algorithm_versions",
+          "inputs",
+          "outcome",
+          "input_hash",
+          "trace_hash"
+        ],
+        "title": "DecisionTrace"
+      },
+      "DecisionTraceList": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DecisionTraceSummary"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "items"
+        ],
+        "title": "DecisionTraceList"
+      },
+      "DecisionTraceResponse": {
+        "properties": {
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "read_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Read At"
+          },
+          "completeness": {
+            "type": "string",
+            "enum": [
+              "COMPLETE",
+              "LEGACY_PARTIAL",
+              "UNSUPPORTED_VERSION"
+            ],
+            "title": "Completeness"
+          },
+          "trace": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DecisionTrace"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "explanation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TraceExplanation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "current_references": {
+            "items": {
+              "$ref": "#/components/schemas/TraceReferenceStatus"
+            },
+            "type": "array",
+            "title": "Current References"
+          },
+          "actions": {
+            "items": {
+              "$ref": "#/components/schemas/TraceActionLink"
+            },
+            "type": "array",
+            "title": "Actions"
+          },
+          "children": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Children"
+          },
+          "legacy_snapshot": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legacy Snapshot"
+          },
+          "legacy_result": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legacy Result"
+          },
+          "audit_chain_status": {
+            "type": "string",
+            "const": "NOT_IMPLEMENTED",
+            "title": "Audit Chain Status",
+            "default": "NOT_IMPLEMENTED"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "run_id",
+          "as_of",
+          "read_at",
+          "completeness",
+          "current_references",
+          "actions",
+          "children"
+        ],
+        "title": "DecisionTraceResponse"
+      },
+      "DecisionTraceSummary": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "trigger_type": {
+            "type": "string",
+            "title": "Trigger Type"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "completeness": {
+            "type": "string",
+            "enum": [
+              "COMPLETE",
+              "LEGACY_PARTIAL",
+              "UNSUPPORTED_VERSION"
+            ],
+            "title": "Completeness"
+          },
+          "phase": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phase"
+          },
+          "parent_run_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Run Id"
+          },
+          "action_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id",
+          "as_of",
+          "trigger_type",
+          "status",
+          "completeness"
+        ],
+        "title": "DecisionTraceSummary"
       },
       "DiscoveryRequest": {
         "properties": {},
@@ -7360,6 +8134,71 @@
         ],
         "title": "ReserveWindow"
       },
+      "SaveAssessmentRequest": {
+        "properties": {
+          "idempotency_key": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Idempotency Key"
+          },
+          "intent": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TransferIntent"
+              },
+              {
+                "$ref": "#/components/schemas/PaymentIntent"
+              },
+              {
+                "$ref": "#/components/schemas/GoalIntent"
+              },
+              {
+                "$ref": "#/components/schemas/PurchaseIntent"
+              },
+              {
+                "$ref": "#/components/schemas/RedeemIntent"
+              }
+            ],
+            "title": "Intent",
+            "discriminator": {
+              "propertyName": "kind",
+              "mapping": {
+                "allocate_goal": "#/components/schemas/GoalIntent",
+                "pay_recurring": "#/components/schemas/PaymentIntent",
+                "purchase_asset": "#/components/schemas/PurchaseIntent",
+                "redeem_asset": "#/components/schemas/RedeemIntent",
+                "transfer_internal": "#/components/schemas/TransferIntent"
+              }
+            }
+          },
+          "amount_options_cents": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer",
+                  "maximum": 9.223372036854776e+18,
+                  "minimum": 0.0
+                },
+                "type": "array",
+                "maxItems": 8,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount Options Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "idempotency_key",
+          "intent"
+        ],
+        "title": "SaveAssessmentRequest"
+      },
       "SettlementFact": {
         "properties": {
           "evidence_ids": {
@@ -7459,6 +8298,641 @@
           "expected_version_id"
         ],
         "title": "StateChangeRequest"
+      },
+      "TraceActionLink": {
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Action Id"
+          },
+          "decision_run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Decision Run Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "request_hash": {
+            "type": "string",
+            "title": "Request Hash"
+          },
+          "bank_operation_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bank Operation Id"
+          },
+          "bank_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bank Status"
+          },
+          "receipt_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Receipt Id"
+          },
+          "receipt_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Receipt Status"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action_id",
+          "decision_run_id",
+          "status",
+          "request_hash"
+        ],
+        "title": "TraceActionLink"
+      },
+      "TraceCandidate": {
+        "properties": {
+          "candidate_key": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Candidate Key"
+          },
+          "kind": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Kind"
+          },
+          "status": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Status"
+          },
+          "inputs": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Inputs"
+          },
+          "result": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Result"
+          },
+          "reasons": {
+            "items": {
+              "type": "string",
+              "maxLength": 160,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "title": "Reasons"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "candidate_key",
+          "kind",
+          "status"
+        ],
+        "title": "TraceCandidate"
+      },
+      "TraceConstraint": {
+        "properties": {
+          "constraint_key": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Constraint Key"
+          },
+          "policy_version_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy Version Id"
+          },
+          "is_hard": {
+            "type": "boolean",
+            "title": "Is Hard"
+          },
+          "satisfied": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Satisfied"
+          },
+          "required_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Required Cents"
+          },
+          "available_cents": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": -9.223372036854776e+18
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Available Cents"
+          },
+          "due_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Due Date"
+          },
+          "calculation": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Calculation"
+          },
+          "reason_code": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Reason Code"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "constraint_key",
+          "is_hard",
+          "reason_code"
+        ],
+        "title": "TraceConstraint"
+      },
+      "TraceEvidence": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "evidence_level": {
+            "type": "string",
+            "enum": [
+              "BANK_CONFIRMED",
+              "BANK_OBSERVED",
+              "USER_DECLARED",
+              "MODEL_INFERRED",
+              "USER_CONFIRMED_POLICY",
+              "USER_CONFIRMED_ACTION"
+            ],
+            "title": "Evidence Level"
+          },
+          "source_type": {
+            "type": "string",
+            "maxLength": 48,
+            "minLength": 1,
+            "title": "Source Type"
+          },
+          "source_ref": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Source Ref"
+          },
+          "content": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Content"
+          },
+          "content_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Content Hash"
+          },
+          "captured_content_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Captured Content Hash"
+          },
+          "content_integrity": {
+            "type": "string",
+            "enum": [
+              "VERIFIED",
+              "INVALID"
+            ],
+            "title": "Content Integrity"
+          },
+          "status_at_decision": {
+            "type": "string",
+            "enum": [
+              "VALID",
+              "CONFLICTED",
+              "UNKNOWN",
+              "SUPERSEDED"
+            ],
+            "title": "Status At Decision"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "valid_from": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Valid From"
+          },
+          "valid_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid To"
+          },
+          "supersedes_evidence_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supersedes Evidence Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "user_id",
+          "evidence_level",
+          "source_type",
+          "source_ref",
+          "content",
+          "content_hash",
+          "captured_content_hash",
+          "content_integrity",
+          "status_at_decision",
+          "observed_at",
+          "valid_from"
+        ],
+        "title": "TraceEvidence"
+      },
+      "TraceExplanation": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "decision-explanation-v1",
+            "title": "Schema Version",
+            "default": "decision-explanation-v1"
+          },
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "level": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Level"
+          },
+          "financial_evaluation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Financial Evaluation"
+          },
+          "confirmation_required": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmation Required"
+          },
+          "confirmation_satisfied": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmation Satisfied"
+          },
+          "summary": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Summary"
+          },
+          "reasons": {
+            "items": {
+              "$ref": "#/components/schemas/TraceReason"
+            },
+            "type": "array",
+            "title": "Reasons"
+          },
+          "audit_chain": {
+            "type": "string",
+            "const": "NOT_IMPLEMENTED",
+            "title": "Audit Chain",
+            "default": "NOT_IMPLEMENTED"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id",
+          "user_id",
+          "summary",
+          "reasons"
+        ],
+        "title": "TraceExplanation"
+      },
+      "TracePolicy": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "policy_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Policy Id"
+          },
+          "version_number": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Version Number"
+          },
+          "configuration": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Configuration"
+          },
+          "configuration_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Configuration Hash"
+          },
+          "captured_configuration_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Captured Configuration Hash"
+          },
+          "configuration_integrity": {
+            "type": "string",
+            "enum": [
+              "VERIFIED",
+              "INVALID"
+            ],
+            "title": "Configuration Integrity"
+          },
+          "status_at_decision": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Status At Decision"
+          },
+          "confirmed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmed At"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid To"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "user_id",
+          "policy_id",
+          "version_number",
+          "configuration",
+          "configuration_hash",
+          "captured_configuration_hash",
+          "configuration_integrity",
+          "status_at_decision"
+        ],
+        "title": "TracePolicy"
+      },
+      "TraceReason": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Code"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Text"
+          },
+          "references": {
+            "items": {
+              "type": "string",
+              "maxLength": 160,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "References"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "text",
+          "references"
+        ],
+        "title": "TraceReason"
+      },
+      "TraceReferenceStatus": {
+        "properties": {
+          "entity_type": {
+            "type": "string",
+            "enum": [
+              "EVIDENCE",
+              "POLICY"
+            ],
+            "title": "Entity Type"
+          },
+          "entity_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Entity Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "UNCHANGED",
+              "STATUS_CHANGED",
+              "MISSING"
+            ],
+            "title": "Status"
+          },
+          "original_status": {
+            "type": "string",
+            "title": "Original Status"
+          },
+          "current_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Status"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "entity_type",
+          "entity_id",
+          "status",
+          "original_status",
+          "current_status"
+        ],
+        "title": "TraceReferenceStatus"
       },
       "TransactionPage": {
         "properties": {

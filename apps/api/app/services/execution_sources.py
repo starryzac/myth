@@ -438,14 +438,28 @@ def verify_execution_sources(
                 raise _source_error("收款账单已变化，必须重新准备")
         else:
             _counterparty_binding(session, user_id, effect.payee_id, effect.payee_evidence_id, now)
+    from app.services.decision_recording import record_execution_trace, start_capture
+
+    start_capture(session)
     context = load_execution_context(
         session, user_id, effect, now, own_action_id=effect.operation_id
     )
-    validation = revalidate_execution(
-        effect, context, confirmation=read_execution_confirmation(session, effect, now)
-    )
+    confirmation = read_execution_confirmation(session, effect, now)
+    validation = revalidate_execution(effect, context, confirmation=confirmation)
     if validation.status != "READY":
         raise _source_error("执行前财务重验未通过：" + ",".join(validation.reasons))
+    action = session.get(ActionPlan, effect.operation_id)
+    assert action is not None
+    record_execution_trace(
+        session,
+        effect,
+        validation,
+        now,
+        "BANK_ACCEPT",
+        parent_run_id=action.decision_run_id,
+        autonomy_level=action.autonomy_level,
+        confirmation=confirmation,
+    )
 
 
 def read_execution_confirmation(

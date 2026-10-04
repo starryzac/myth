@@ -1,0 +1,56 @@
+run_id=20261004T043018Z-f50874da
++ uv run --frozen python scripts/generate_openapi.py
+Traceback (most recent call last):
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\generate_openapi.py", line 24, in <module>
+    temporary_json.write_text(schema, encoding="utf-8")
+  File "C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\STARRY~1\\AppData\\Local\\Temp\\bounded-contracts-mqc0ss8j\\openapi.json'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 366, in walk
+PermissionError: [WinError 5] 拒绝访问。: 'C:\\Users\\STARRY~1\\AppData\\Local\\Temp\\bounded-contracts-mqc0ss8j'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\generate_openapi.py", line 21, in <module>
+    with tempfile.TemporaryDirectory(prefix="bounded-contracts-") as temporary:
+  File "C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\tempfile.py", line 946, in __exit__
+    self.cleanup()
+  File "C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\tempfile.py", line 950, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\tempfile.py", line 930, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\shutil.py", line 623, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 369, in walk
+  File "C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\shutil.py", line 621, in onerror
+    onexc(os.scandir, err.filename, err)
+  File "C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\tempfile.py", line 902, in onexc
+    _resetperms(path)
+  File "C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] 拒绝访问。: 'C:\\Users\\STARRY~1\\AppData\\Local\\Temp\\bounded-contracts-mqc0ss8j'
+Traceback (most recent call last):
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tasks.py", line 224, in <module>
+    main(sys.argv[1])
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tasks.py", line 182, in main
+    uv("python", "scripts/generate_openapi.py")
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tasks.py", line 98, in uv
+    run("uv", "run", "--frozen", *args)
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tasks.py", line 94, in run
+    raise subprocess.CalledProcessError(code, args)
+subprocess.CalledProcessError: Command '('uv', 'run', '--frozen', 'python', 'scripts/generate_openapi.py')' returned non-zero exit status 1.

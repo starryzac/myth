@@ -85,6 +85,28 @@ def preview_recovery(session: Session, user_id: UUID, now: datetime) -> Recovery
                 for item in issues
             ],
         )
+        from app.services.decision_recording import (
+            capture_boundary,
+            capture_versions,
+            current_capture,
+        )
+
+        capture = current_capture(session)
+        if capture is not None:
+            capture_boundary(session, "recovery_boundary", context)
+            capture.inputs["recovery_planning"] = {
+                "positions": [item.model_dump(mode="json") for item in positions],
+                "authorities": [item.model_dump(mode="json") for item in authorities],
+            }
+            capture_versions(
+                session,
+                user_id,
+                [
+                    item.original_authorization.version_id
+                    for item in positions
+                    if item.original_authorization is not None
+                ],
+            )
         return RecoveryPreviewResponse(
             user_id=user_id,
             as_of=context.snapshot.as_of,
@@ -122,6 +144,13 @@ def run_recovery(
             )
         )
         if run is None:
+            from app.services.decision_recording import (
+                capture_boundary,
+                record_recovery_plan,
+                start_capture,
+            )
+
+            capture = start_capture(session)
             preview = preview_recovery(session, user_id, now)
             context = load_boundary_context(session, user_id, now)
             recovery_positions, _ = recovery_inputs(session, context)
@@ -139,6 +168,8 @@ def run_recovery(
                 for item in context.sources.issues
             ):
                 mature = []
+            capture_boundary(session, "maturity_boundary", context)
+            capture.inputs["maturity_positions"] = [item.model_dump(mode="json") for item in mature]
             initial = {
                 "idempotency_key": idempotency_key,
                 "preview": preview.model_dump(mode="json"),
@@ -269,6 +300,8 @@ def run_recovery(
                     "action_id": str(identity),
                     "state": "REDEMPTION_REQUESTED",
                 }
+            session.flush()
+            record_recovery_plan(session, run, preview.plan, mature, now)
             if declarations:
                 refresh_exposure(session, user_id, now, run.id, declarations)
             else:

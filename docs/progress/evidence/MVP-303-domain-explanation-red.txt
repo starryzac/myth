@@ -1,0 +1,15 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+___________ test_unknown_fields_phase_and_naive_clock_are_rejected ____________
+apps\api\app\tests\test_decision_trace_domain.py:204: in test_unknown_fields_phase_and_naive_clock_are_rejected
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE ValueError
+_ test_explanation_preserves_constraint_numbers_candidate_yields_and_original_versions _
+apps\api\app\tests\test_decision_trace_domain.py:395: in test_explanation_preserves_constraint_numbers_candidate_yields_and_original_versions
+    assert any(str(VERSION) in line and "�� 1 ��" in line for line in explained.summary)
+E   assert False
+E    +  where False = any(<generator object test_explanation_preserves_constraint_numbers_candidate_yields_and_original_versions.<locals>.<genexpr> at 0x0000026237073C60>)
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_decision_trace_domain.py::test_unknown_fields_phase_and_naive_clock_are_rejected
+FAILED apps/api/app/tests/test_decision_trace_domain.py::test_explanation_preserves_constraint_numbers_candidate_yields_and_original_versions
+2 failed, 36 deselected in 0.78s

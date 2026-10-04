@@ -1,0 +1,4 @@
+MVP-303 storage request/reset attempt: ENVIRONMENT_INTERRUPTED.
+The pytest group in exec session 14597 collected six selected tests but did not complete a case while PostgreSQL 127.0.0.1:54329 and Docker Desktop runtime were unavailable.
+Root explicitly authorized interrupting only this attempt. Sent Ctrl+C to session 14597; it exited 1. The original collected-test log is preserved at MVP-303-storage-request-reset-red.txt.
+This is not a behavioral RED or a passed test. No implementation repair was claimed from this interrupted environment attempt. Rerun the specific behavior tests only after root confirms PostgreSQL ready.

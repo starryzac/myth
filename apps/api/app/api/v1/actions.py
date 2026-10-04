@@ -14,6 +14,7 @@ from app.services.action_contracts import (
     PrepareActionRequest,
 )
 from app.services.autonomy import AutonomyResponse, assess_action, assess_intent
+from app.services.decision_trace import DecisionTraceResponse, get_action_trace
 from app.services.execution import confirm_action, execute_action, get_action, prepare_action
 from app.services.policy_lifecycle import PolicyLifecycleError
 from fastapi import APIRouter, Depends, Query
@@ -36,6 +37,21 @@ class ExecuteActionRequest(IntentModel):
 
 class AssessActionRequest(IntentModel):
     intent: ActionIntent
+
+
+@router.get(
+    "/{action_id}/decision",
+    response_model=DecisionTraceResponse,
+    operation_id="get_action_decision",
+)
+def decision(
+    action_id: UUID,
+    query: Annotated[ActionQuery, Query()],
+    session: SessionDependency,
+    user: DemoUserDependency,
+    now: ClockDependency,
+) -> DecisionTraceResponse:
+    return get_action_trace(session, user.id, action_id, now)
 
 
 @router.post("/assess", response_model=AutonomyResponse, operation_id="assess_action_intent")

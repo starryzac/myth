@@ -1,0 +1,91 @@
+F
+================================== FAILURES ===================================
+______ test_receipt_links_all_fresh_phases_and_keeps_original_ask_source ______
+
+goal_client = (<starlette.testclient.TestClient object at 0x000001B3B345DBB0>, Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_a7d966d19af74902a7a8d0abd785d6b4))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B3B345FB00>
+
+    def test_receipt_links_all_fresh_phases_and_keeps_original_ask_source(
+        goal_client: tuple[TestClient, Engine], monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        client, engine = goal_client
+        action = prepared_transfer(client, engine)
+        run_id = original_run(engine, action)
+        confirmation = client.post(
+            f"/api/v1/actions/{action['action_id']}/confirm",
+            json={"effect_hash": action["effect_hash"], "accepted": True},
+        )
+        assert confirmation.status_code == 200, confirmation.text
+        bank = execution.process_operation
+        fresh_id, original_id = uuid4(), None
+    
+        def fresh_balance(
+            engine: Engine, user: UUID, action_id: UUID, now: datetime
+        ) -> BankOperationResult:
+            nonlocal original_id
+            # A committed replacement bank observation arrives after reserve phase.
+            # It carries identical economics; independent bank ledger money is untouched.
+            with Session(engine) as session, session.begin():
+                proof = session.scalars(
+                    select(EvidenceItem).where(
+                        EvidenceItem.user_id == user,
+                        EvidenceItem.source_type == "SIMULATED_BANK_BALANCE",
+                        EvidenceItem.content["account_id"].as_string()
+                        == action["effect"]["cash_uses"][0]["account_id"],
+                        EvidenceItem.status == "VALID",
+                    )
+                ).one()
+                original_id = proof.id
+                proof.status = "SUPERSEDED"
+                session.add(
+                    EvidenceItem(
+                        id=fresh_id,
+                        user_id=user,
+                        created_at=now,
+                        evidence_level=proof.evidence_level,
+                        source_type=proof.source_type,
+                        source_ref="trace-audit-fresh-bank-observation",
+                        content={**proof.content},
+                        content_hash=proof.content_hash,
+                        status="VALID",
+                        valid_from=now,
+                        observed_at=now,
+                        supersedes_id=proof.id,
+                    )
+                )
+            return bank(engine, user, action_id, now)
+    
+        monkeypatch.setattr(execution, "process_operation", fresh_balance)
+        executed = client.post(f"/api/v1/actions/{action['action_id']}/execute", json={})
+>       assert executed.status_code == 200, executed.text
+E       AssertionError: {"error":{"code":"INVALID_EXECUTION_SOURCE","message":"执行前财务重验未通过：INCOMPLETE_EXECUTION_FACTS","request_id":"e5b9ad80-0b00-447d-9512-51b701a2dc74"}}
+E       assert 409 == 200
+E        +  where 409 = <Response [409 Conflict]>.status_code
+
+apps\api\app\tests\test_decision_trace_audit.py:206: AssertionError
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "fb958528-a069-476e-8636-472014826893", "method": "POST", "status": 200, "duration_ms": 1937.0}
+{"event": "http_request", "request_id": "93610a5d-7817-4beb-9a18-de5dd2649612", "method": "POST", "status": 200, "duration_ms": 1875.0}
+{"event": "http_request", "request_id": "e5b9ad80-0b00-447d-9512-51b701a2dc74", "method": "POST", "status": 409, "duration_ms": 2547.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:61 {"event": "http_request", "request_id": "fb958528-a069-476e-8636-472014826893", "method": "POST", "status": 200, "duration_ms": 1937.0}
+INFO     bounded_funds.http:main.py:61 {"event": "http_request", "request_id": "93610a5d-7817-4beb-9a18-de5dd2649612", "method": "POST", "status": 200, "duration_ms": 1875.0}
+INFO     bounded_funds.http:main.py:61 {"event": "http_request", "request_id": "e5b9ad80-0b00-447d-9512-51b701a2dc74", "method": "POST", "status": 409, "duration_ms": 2547.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_decision_trace_audit.py::test_receipt_links_all_fresh_phases_and_keeps_original_ask_source
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 6 deselected, 3 warnings in 12.24s

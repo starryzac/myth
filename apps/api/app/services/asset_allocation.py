@@ -74,6 +74,7 @@ def preview_asset_allocation(
         )
         if version is None:
             raise PolicyLifecycleError("INVALID_ASSET_AUTHORIZATION", "资产授权缺少版本")
+        planning_inputs = {}
         try:
             config = validate_configuration(version.configuration)
             if config["type"] != "asset_authorization":
@@ -167,6 +168,11 @@ def preview_asset_allocation(
                     valid_until=version.valid_until,
                     evidence_ids=[UUID(identifier) for identifier in version.evidence_ids],
                 )
+                planning_inputs = {
+                    "authorization": authorization.model_dump(mode="json"),
+                    "products": [product.model_dump(mode="json") for product in products],
+                    "exposure": exposure.model_dump(mode="json"),
+                }
                 allocation = select_asset(
                     context.snapshot,
                     context.versions,
@@ -199,6 +205,36 @@ def preview_asset_allocation(
                 "issues": [item.model_dump(mode="json") for item in issues],
             }
         )
+        from app.domain.decision_trace_types import TraceCandidate
+        from app.services.decision_recording import (
+            capture_boundary,
+            capture_versions,
+            current_capture,
+        )
+
+        capture = current_capture(session)
+        if capture is not None:
+            capture_boundary(session, "asset_boundary", context)
+            capture_versions(session, user_id, [version.id])
+            capture.algorithms["asset_allocation"] = allocation.algorithm_version
+            capture.inputs["asset_planning"] = {
+                **planning_inputs,
+                "configuration": config,
+                "authorized": authorized,
+                "result": allocation.model_dump(mode="json"),
+            }
+            for index, candidate in enumerate(allocation.candidates):
+                data = candidate.model_dump(mode="json")
+                capture.candidates.append(
+                    TraceCandidate(
+                        candidate_key=f"asset:{index}",
+                        kind="ASSET_ALLOCATION",
+                        status=data.get("status", "EVALUATED"),
+                        inputs={"product_id": data.get("product_id")},
+                        result=data,
+                        reasons=data.get("reasons", []),
+                    )
+                )
         return AssetAllocationResponse(
             user_id=user_id,
             policy_id=policy_id,

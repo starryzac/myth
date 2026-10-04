@@ -1,0 +1,214 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0
+rootdir: F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collected 20 items / 15 deselected / 5 selected
+
+apps\api\app\tests\test_decision_trace_reset.py FF                       [ 40%]
+apps\api\app\tests\test_decision_trace_storage.py FFF                    [100%]
+
+================================== FAILURES ===================================
+_ test_reset_after_actual_three_phase_execution_is_repeatable_and_preserves_other_tenant _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_000b0452efa54f52b1977cdfc27506c7)
+
+    def test_reset_after_actual_three_phase_execution_is_repeatable_and_preserves_other_tenant(
+        demo_engine: Engine,
+    ) -> None:
+        initial = seed_demo(demo_engine)
+        root_id, action_id, child_id = other_tenant_links(demo_engine)
+        baseline = database_snapshot(demo_engine)
+>       completed_transfer(demo_engine)
+
+apps\api\app\tests\test_decision_trace_reset.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_000b0452efa54f52b1977cdfc27506c7)
+
+    def completed_transfer(engine: Engine) -> UUID:
+        source, target = transfer_accounts(engine)
+        prepared = prepare_action(
+            engine,
+            DEMO_USER_ID,
+            PrepareActionRequest(
+                idempotency_key="trace-reset-transfer",
+                intent=TransferIntent(
+                    kind="transfer_internal",
+                    source_account_id=source,
+                    destination_account_id=target,
+                    amount_cents=10000,
+                ),
+            ),
+            SEED_AS_OF,
+        )
+        confirm_action(
+            engine,
+            DEMO_USER_ID,
+            prepared.action_id,
+>           ConfirmActionRequest(effect_hash=prepared.effect_hash),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            SEED_AS_OF,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ConfirmActionRequest
+E       accepted
+E         Field required [type=missing, input_value={'effect_hash': 'e5276f7e...a032ac437cfee70215b67e'}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+apps\api\app\tests\test_decision_trace_reset.py:42: ValidationError
+_______ test_failed_reset_restores_original_links_and_economic_history ________
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_c9516c142fa6498e9add73242d1c737d)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001AAA827A6F0>
+
+    def test_failed_reset_restores_original_links_and_economic_history(
+        demo_engine: Engine,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        seed_demo(demo_engine)
+>       completed_transfer(demo_engine)
+
+apps\api\app\tests\test_decision_trace_reset.py:139: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_c9516c142fa6498e9add73242d1c737d)
+
+    def completed_transfer(engine: Engine) -> UUID:
+        source, target = transfer_accounts(engine)
+        prepared = prepare_action(
+            engine,
+            DEMO_USER_ID,
+            PrepareActionRequest(
+                idempotency_key="trace-reset-transfer",
+                intent=TransferIntent(
+                    kind="transfer_internal",
+                    source_account_id=source,
+                    destination_account_id=target,
+                    amount_cents=10000,
+                ),
+            ),
+            SEED_AS_OF,
+        )
+        confirm_action(
+            engine,
+            DEMO_USER_ID,
+            prepared.action_id,
+>           ConfirmActionRequest(effect_hash=prepared.effect_hash),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            SEED_AS_OF,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ConfirmActionRequest
+E       accepted
+E         Field required [type=missing, input_value={'effect_hash': '99c1c44a...bade49530e024a8ebd2b06'}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+apps\api\app\tests\test_decision_trace_reset.py:42: ValidationError
+_ test_rehashing_current_execution_cannot_rewrite_the_original_frozen_effect __
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_051ecbbf25e54c70a75ca4d94bf78522)
+
+    def test_rehashing_current_execution_cannot_rewrite_the_original_frozen_effect(
+        boundary_engine: Engine,
+    ) -> None:
+        source, target = transfer_accounts(boundary_engine)
+        prepared = prepare_action(
+            boundary_engine,
+            DEMO_USER_ID,
+            PrepareActionRequest(
+                idempotency_key="trace-original-effect",
+                intent=TransferIntent(
+                    kind="transfer_internal",
+                    source_account_id=source,
+                    destination_account_id=target,
+                    amount_cents=10000,
+                ),
+            ),
+            SEED_AS_OF,
+        )
+        with Session(boundary_engine) as session, session.begin():
+            action = session.get(ActionPlan, prepared.action_id)
+            assert action is not None
+            changed = prepared.effect.model_dump()
+            changed["amount_cents"] += 1
+            changed["cash_uses"][0]["amount_cents"] += 1
+            effect = ExecutionEffect.model_validate(changed)
+            command = BankCommand(effect=effect, effect_hash=execution_effect_hash(effect))
+            action.request = {**action.request, "execution": command.model_dump(mode="json")}
+            action.request_hash = configuration_hash(action.request)
+            action.amount_cents += 1
+>       with Session(boundary_engine) as session, pytest.raises(PolicyLifecycleError) as error:
+E       Failed: DID NOT RAISE PolicyLifecycleError
+
+apps\api\app\tests\test_decision_trace_storage.py:458: Failed
+_________ test_current_request_cannot_rewrite_frozen_recovery_request _________
+
+trace_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_4286753d9a3549e0af62e8a5088400fe)
+
+    def test_current_request_cannot_rewrite_frozen_recovery_request(trace_engine: Engine) -> None:
+        with Session(trace_engine) as session, session.begin():
+            trace = storage_trace(session)
+            run = DecisionRun(
+                id=trace.run_id,
+                user_id=OWNER,
+                idempotency_key="original-recovery-request",
+                trigger_type="TEST",
+                algorithm_version="fixture",
+                as_of=NOW,
+                input_snapshot={},
+                snapshot_hash=configuration_hash({}),
+            )
+            session.add(run)
+            account = Account(user_id=OWNER, external_ref="frozen-request", name="Synthetic")
+            session.add(account)
+            session.flush()
+            request = {"bank_request": {"amount_cents": 100}}
+            action = ActionPlan(
+                user_id=OWNER,
+                decision_run_id=run.id,
+                source_account_id=account.id,
+                action_type="ASSET_REDEEM",
+                amount_cents=100,
+                idempotency_key="frozen-request",
+                request=request,
+                request_hash=configuration_hash(request),
+            )
+            session.add(action)
+            session.flush()
+            action_id = action.id
+            recorded = build_trace(
+                **{
+                    **trace.model_dump(exclude={"input_hash", "trace_hash"}),
+                    "inputs": {"action_requests": {str(action_id): request}},
+                }
+            )
+            record_trace(session, recorded, existing_run=run)
+        with Session(trace_engine) as session, session.begin():
+            action = session.get(ActionPlan, action_id)
+            assert action is not None
+            action.request = {"bank_request": {"amount_cents": 999}}
+            action.request_hash = configuration_hash(action.request)
+>       with Session(trace_engine) as session, pytest.raises(PolicyLifecycleError) as error:
+E       Failed: DID NOT RAISE PolicyLifecycleError
+
+apps\api\app\tests\test_decision_trace_storage.py:506: Failed
+____ test_read_clock_cannot_describe_a_future_decision_as_already_occurred ____
+
+trace_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_0288565d3386489c97b758d8e59380a3)
+
+    def test_read_clock_cannot_describe_a_future_decision_as_already_occurred(
+        trace_engine: Engine,
+    ) -> None:
+        with Session(trace_engine) as session, session.begin():
+            trace = storage_trace(session)
+            record_trace(session, trace)
+>       with Session(trace_engine) as session, pytest.raises(PolicyLifecycleError) as error:
+E       Failed: DID NOT RAISE PolicyLifecycleError
+
+apps\api\app\tests\test_decision_trace_storage.py:517: Failed
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_decision_trace_reset.py::test_reset_after_actual_three_phase_execution_is_repeatable_and_preserves_other_tenant
+FAILED apps/api/app/tests/test_decision_trace_reset.py::test_failed_reset_restores_original_links_and_economic_history
+FAILED apps/api/app/tests/test_decision_trace_storage.py::test_rehashing_current_execution_cannot_rewrite_the_original_frozen_effect
+FAILED apps/api/app/tests/test_decision_trace_storage.py::test_current_request_cannot_rewrite_frozen_recovery_request
+FAILED apps/api/app/tests/test_decision_trace_storage.py::test_read_clock_cannot_describe_a_future_decision_as_already_occurred
+====================== 5 failed, 15 deselected in 26.38s ======================

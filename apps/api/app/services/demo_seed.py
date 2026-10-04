@@ -379,6 +379,11 @@ def _clear_demo(session: Session) -> None:
     session.execute(
         update(EvidenceItem).where(EvidenceItem.user_id == DEMO_USER_ID).values(supersedes_id=None)
     )
+    session.execute(
+        update(DecisionRun)
+        .where(DecisionRun.user_id == DEMO_USER_ID)
+        .values(parent_run_id=None, subject_action_plan_id=None)
+    )
     for model in [
         SimulatedBankPosting,
         BankOperation,

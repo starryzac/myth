@@ -520,6 +520,42 @@ def process_redemption(engine: Engine, user_id: UUID, action_id: UUID, now: date
                 or heads[f"POSITION:{position.id}"].balance_after_cents != command.principal_cents
             ):
                 raise _error("The independent bank cannot account for the requested principal")
+            from app.services.decision_recording import record_recovery_bank_acceptance
+
+            record_recovery_bank_acceptance(
+                session,
+                action,
+                now,
+                {
+                    "position": {
+                        "id": str(position.id),
+                        "account_id": str(position.account_id),
+                        "product_id": str(position.product_id),
+                        "goal_id": str(position.goal_id) if position.goal_id else None,
+                        "policy_version_id": str(position.policy_version_id)
+                        if position.policy_version_id
+                        else None,
+                        "principal_cents": position.principal_cents,
+                        "status": position.status,
+                        "purchased_at": position.purchased_at.isoformat(),
+                        "maturity_at": position.maturity_at.isoformat()
+                        if position.maturity_at
+                        else None,
+                    },
+                    "destination": {"id": str(destination.id), "type": destination.account_type},
+                    "bank_heads": [
+                        {
+                            "id": str(head.id),
+                            "key": head.ledger_key,
+                            "sequence_number": head.sequence_number,
+                            "balance_after_cents": head.balance_after_cents,
+                        }
+                        for head in heads.values()
+                    ],
+                    "contract_verified": contract,
+                },
+                contract=contract,
+            )
             request = SimulatedBankRedemption(
                 id=uuid5(action.id, "simulated-bank-redemption"),
                 user_id=user_id,

@@ -1,0 +1,51 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collected 3 items
+
+apps\api\app\tests\test_decision_trace_api.py F
+
+================================== FAILURES ===================================
+_____ test_action_trace_and_explanation_keep_original_input_and_readonly ______
+
+goal_client = (<starlette.testclient.TestClient object at 0x000002B98B6B1CD0>, Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_d8ad056d6ed849c1a3ca245362246e38))
+
+    def test_action_trace_and_explanation_keep_original_input_and_readonly(
+        goal_client: tuple[TestClient, Engine],
+    ) -> None:
+        client, engine = goal_client
+        action = prepared(client, engine)
+        before = all_tables(engine)
+        response = client.get(f"/api/v1/actions/{action['action_id']}/decision")
+>       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"NOT_FOUND","message":"资源不存在","request_id":"8031f6b8-3cc8-4f0a-b0e1-177090d7a73e"}}
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+apps\api\app\tests\test_decision_trace_api.py:31: AssertionError
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "309b54bf-9f78-4809-aab4-6dbd6564598f", "method": "POST", "status": 200, "duration_ms": 594.0}
+{"event": "http_request", "request_id": "8031f6b8-3cc8-4f0a-b0e1-177090d7a73e", "method": "GET", "status": 404, "duration_ms": 0.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:60 {"event": "http_request", "request_id": "309b54bf-9f78-4809-aab4-6dbd6564598f", "method": "POST", "status": 200, "duration_ms": 594.0}
+INFO     bounded_funds.http:main.py:60 {"event": "http_request", "request_id": "8031f6b8-3cc8-4f0a-b0e1-177090d7a73e", "method": "GET", "status": 404, "duration_ms": 0.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_decision_trace_api.py::test_action_trace_and_explanation_keep_original_input_and_readonly
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+======================== 1 failed, 3 warnings in 6.54s ========================

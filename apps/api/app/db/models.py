@@ -343,6 +343,8 @@ class PolicyProposal(OwnedMixin, Base):
 
 class DecisionRun(OwnedMixin, Base):
     __tablename__ = "decision_runs"
+    parent_run_id: Mapped[UUID | None]
+    subject_action_plan_id: Mapped[UUID | None]
     idempotency_key: Mapped[str] = mapped_column(String(160))
     trigger_type: Mapped[str] = mapped_column(String(48))
     algorithm_version: Mapped[str] = mapped_column(String(64))
@@ -361,10 +363,20 @@ class DecisionRun(OwnedMixin, Base):
     status: Mapped[str] = mapped_column(String(24), server_default="PENDING")
     completed_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
     __table_args__ = owned_args(
+        owned_reference("parent_run_id", "decision_runs"),
+        ForeignKeyConstraint(
+            ["subject_action_plan_id", "user_id"],
+            ["action_plans.id", "action_plans.user_id"],
+            ondelete="RESTRICT",
+            use_alter=True,
+            name="fk_decision_runs_subject_action_plan_id_action_plans",
+        ),
         UniqueConstraint("user_id", "idempotency_key", name="uq_decision_runs_user_idempotency"),
         CheckConstraint("snapshot_hash ~ '^[0-9a-f]{64}$'", name="snapshot_hash"),
         CheckConstraint("status IN ('PENDING', 'SUCCEEDED', 'FAILED', 'BLOCKED')", name="status"),
         Index("ix_decision_runs_user_as_of", "user_id", "as_of"),
+        Index("ix_decision_runs_user_subject", "user_id", "subject_action_plan_id", "as_of", "id"),
+        Index("ix_decision_runs_user_parent", "user_id", "parent_run_id", "as_of", "id"),
     )
 
 

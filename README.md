@@ -2,7 +2,7 @@
 
 面向青年的可审计分级自主资金 Agent。全部账户、产品与动作均为合成模拟。
 
-当前 M0 工程基础、M1 数据与策略和 M2 资金算法已通过对应任务验收，M3 中的 MVP-301 动作执行及 MVP-302 [四级自主决策](docs/architecture/autonomy-api.md)已通过完整验收（15/92项）；当前进入MVP-303决策轨迹，初版整体尚未完成。任务状态与验证证据见 [开发状态](docs/progress/STATUS.md)，完整范围见 [92 项需求追踪](docs/spec/requirements-traceability.md)。两份计划原文保存在本目录。
+当前 M0 工程基础、M1 数据与策略和 M2 资金算法已通过对应任务验收，M3 中的动作执行、[四级自主决策](docs/architecture/autonomy-api.md)及[决策轨迹](docs/architecture/decision-trace-api.md)已通过完整验收（16/92项）。下一项为MVP-304审计哈希链，初版整体尚未完成。任务状态与验证证据见 [开发状态](docs/progress/STATUS.md)，完整范围见 [92 项需求追踪](docs/spec/requirements-traceability.md)。两份计划原文保存在本目录。
 
 当前源码迁移新增统一银行操作及资源预留，包含 20 张表；MVP-301 已通过完整验收。`make seed` 导入 60 天演示事实、129 条模拟流水、3 张账单及 T0/T1/30 天定存产品，v6 种子建立 7 条独立银行开户记录，初始无操作、预留或收入资格声明。正式演示库的已验证版本见 [开发状态](docs/progress/STATUS.md)。四个只读查询接口见 [账户事实 API](docs/architecture/account-facts-api.md)。
 

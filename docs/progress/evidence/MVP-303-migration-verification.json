@@ -1,0 +1,36 @@
+{
+  "verified_at": "2026-10-04T05:14:27.064963+00:00",
+  "before_revision": "0004_execution_bank",
+  "after_revision": "0005_decision_trace",
+  "table_count": 20,
+  "all_original_table_data_equal": true,
+  "all_row_counts_equal": true,
+  "data_sha256": "8147f3fef8b1aedd5c3decc73802f162eef157a2d0031a8ad2915b540ef9b941",
+  "snapshot_files": {
+    "MVP-303-db-before.json": "327d7b5a35fc70f000c2224562ca35e2a15431a2d4e6ccf304f92b56c5978fb7",
+    "MVP-303-db-after.json": "05b8de4bc03c8edca4b81591e46546c3453c4fbc245b81d137ceadb0a2eb10a0"
+  },
+  "table_counts": {
+    "asset_products": 6,
+    "users": 1,
+    "accounts": 5,
+    "decision_runs": 0,
+    "evidence_items": 254,
+    "policies": 0,
+    "credit_card_bills": 3,
+    "policy_proposals": 0,
+    "policy_versions": 0,
+    "transactions": 129,
+    "decision_constraints": 0,
+    "goals": 0,
+    "asset_positions": 3,
+    "action_plans": 0,
+    "action_receipts": 0,
+    "action_resource_reservations": 0,
+    "simulated_bank_redemptions": 0,
+    "audit_events": 0,
+    "bank_operations": 0,
+    "simulated_bank_postings": 7
+  },
+  "formal_seed_reset": false
+}

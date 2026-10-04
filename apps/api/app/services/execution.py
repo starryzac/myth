@@ -58,6 +58,9 @@ def prepare_action(
                 )
             return get_action(session, user_id, existing.id, now)
         action_id = uuid4()
+        from app.services.decision_recording import record_execution_trace, start_capture
+
+        start_capture(session)
         effect = _build_effect(session, user_id, action_id, request, now)
         context = load_execution_context(session, user_id, effect, now)
         validation = revalidate_execution(effect, context)
@@ -122,6 +125,17 @@ def prepare_action(
         )
         session.add(action)
         session.flush()
+        record_execution_trace(
+            session,
+            effect,
+            validation,
+            now,
+            "PREPARE",
+            parent_run_id=None,
+            autonomy_level=action.autonomy_level,
+            existing_run=run,
+            intent=intent,
+        )
         _epochs(session, user_id, now, action.id)
         if effect.income_uses:
             from app.services.income_ledger import read_income_state
@@ -188,6 +202,7 @@ def get_action(session: Session, user_id: UUID, action_id: UUID, now: datetime) 
     return ActionResponse(
         user_id=user_id,
         action_id=action.id,
+        decision_run_id=action.decision_run_id,
         status=action.status,
         autonomy_level=action.autonomy_level,
         effect=command.effect,
@@ -257,14 +272,26 @@ def confirm_action(
             )
         )
         session.flush()
+        from app.services.decision_recording import record_execution_trace, start_capture
+
+        start_capture(session)
         context = load_execution_context(session, user_id, effect, now)
-        result = revalidate_execution(
-            effect, context, confirmation=read_execution_confirmation(session, effect, now)
-        )
+        confirmation = read_execution_confirmation(session, effect, now)
+        result = revalidate_execution(effect, context, confirmation=confirmation)
         if result.status != "READY":
             raise PolicyLifecycleError(
                 "EXECUTION_NOT_READY", "确认时重验未通过：" + ",".join(result.reasons), 409
             )
+        record_execution_trace(
+            session,
+            effect,
+            result,
+            now,
+            "CONFIRM",
+            parent_run_id=action.decision_run_id,
+            autonomy_level=action.autonomy_level,
+            confirmation=confirmation,
+        )
         action.status, action.authorized_at = "AUTHORIZED", now
         _epochs(session, user_id, now, action.id)
         refresh_execution_exposure(session, user_id, now, action.id)
@@ -298,6 +325,9 @@ def execute_action(engine: Engine, user_id: UUID, action_id: UUID, now: datetime
                 )
                 is not None
             )
+            from app.services.decision_recording import record_execution_trace, start_capture
+
+            start_capture(session)
             context = load_execution_context(
                 session,
                 user_id,
@@ -305,15 +335,26 @@ def execute_action(engine: Engine, user_id: UUID, action_id: UUID, now: datetime
                 now,
                 own_action_id=action.id if has_claims else None,
             )
+            confirmation = read_execution_confirmation(session, current.effect, now)
             validation = revalidate_execution(
                 current.effect,
                 context,
-                confirmation=read_execution_confirmation(session, current.effect, now),
+                confirmation=confirmation,
             )
             if validation.status != "READY":
                 raise PolicyLifecycleError(
                     "EXECUTION_NOT_READY", "执行重验未通过：" + ",".join(validation.reasons), 409
                 )
+            record_execution_trace(
+                session,
+                current.effect,
+                validation,
+                now,
+                "RESERVE",
+                parent_run_id=action.decision_run_id,
+                autonomy_level=action.autonomy_level,
+                confirmation=confirmation,
+            )
             reserve_resources(
                 session, user_id, action.id, _claims(session, current.effect, context), now
             )

@@ -1,0 +1,27 @@
+$ playwright test
+[2m[WebServer] [22mINFO:     Started server process [107116]
+[2m[WebServer] [22mINFO:     Waiting for application startup.
+[2m[WebServer] [22mINFO:     Application startup complete.
+[2m[WebServer] [22mINFO:     Uvicorn running on http://127.0.0.1:18000 (Press CTRL+C to quit)
+[2m[WebServer] [22m{"event": "http_request", "request_id": "1e61f69d-2210-43df-8637-a436aef81321", "method": "GET", "status": 200, "duration_ms": 62.0}
+[2m[WebServer] [22m(node:102540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m[2m$ vite --host 127.0.0.1 --port 5173 "--port" "15173"[22m
+[2m[WebServer] [22m(node:106540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:106848) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:106848) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m{"event": "http_request", "request_id": "379eb313-8bc1-4495-b333-f64cfe7e8956", "method": "GET", "status": 200, "duration_ms": 0.0}
+  ok 1 [edge] › tests\e2e\health.spec.ts:2:1 › Web 经代理连接真实模拟 API 并展示连接状态 (554ms)
+
+  1 passed (11.8s)
+
+To open last HTML report run:
+[36m[39m
+[36m  pnpm exec playwright show-report[39m
+[36m[39m
