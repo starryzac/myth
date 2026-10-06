@@ -21,13 +21,18 @@ from app.domain.asset_allocation_types import (
     FixedPrincipalTerms,
     PlannedPrincipalTerms,
 )
+from app.domain.execution import execution_effect_hash
 from app.domain.execution_types import BankCommand, ConfirmationGrant, ExecutionEffect
+from app.domain.full_dynamic_goal_execution import FullDynamicGoalProof
 from app.domain.history_coverage import bank_fact_snapshot
 from app.domain.policy_configuration import configuration_hash
 from app.domain.recovery_types import RecoveryQuote
 from app.services.policy_lifecycle import PolicyLifecycleError
 from sqlalchemy import select
+from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
+
+FULL_JOINT_GOAL_GUARDS_VERSION = "registered-joint-goal-execution-v2"
 
 
 def _source_error(message: str) -> PolicyLifecycleError:
@@ -420,7 +425,7 @@ def verify_execution_sources(
     user_id: UUID,
     effect: ExecutionEffect,
     now: datetime,
-) -> None:
+) -> FullDynamicGoalProof | None:
     """Does not submit bank effects or trust an application validation label."""
     from app.domain.execution import revalidate_execution
     from app.services.execution_context import load_execution_context
@@ -445,11 +450,107 @@ def verify_execution_sources(
         session, user_id, effect, now, own_action_id=effect.operation_id
     )
     confirmation = read_execution_confirmation(session, effect, now)
-    validation = revalidate_execution(effect, context, confirmation=confirmation)
-    if validation.status != "READY":
-        raise _source_error("执行前财务重验未通过：" + ",".join(validation.reasons))
+    from app.services.full_dynamic_goal_execution import (
+        has_full_dynamic_goal_binding,
+        recheck_full_dynamic_goal_proof,
+    )
+
     action = session.get(ActionPlan, effect.operation_id)
     assert action is not None
+    dynamic_proof = None
+    from app.services.full_recovery_execution import (
+        has_full_recovery_binding,
+        recheck_full_recovery_proof,
+    )
+
+    recovery_bound = effect.action_type == "REDEEM_ASSET" and has_full_recovery_binding(
+        session, action
+    )
+    from app.services.full_experiment_asset_execution import (
+        has_full_experiment_asset_binding,
+        recheck_full_experiment_asset_proof,
+    )
+
+    experiment_asset_bound = effect.action_type == "PURCHASE_ASSET" and (
+        has_full_experiment_asset_binding(session, action)
+    )
+    if experiment_asset_bound:
+        from app.services.execution_context import require_full_experiment_asset_context
+
+        binding = session.get_bind()
+        if not isinstance(binding, Engine):
+            raise _source_error("机制银行重验需要原事务的实际Engine")
+        recheck_full_experiment_asset_proof(
+            binding,
+            session,
+            action,
+            BankCommand(effect=effect, effect_hash=execution_effect_hash(effect)),
+            now,
+            own_action_id=action.id,
+        )
+        context = require_full_experiment_asset_context(session, context)
+    if recovery_bound:
+        from app.services.execution_context import require_full_recovery_confirmation_context
+
+        binding = session.get_bind()
+        if not isinstance(binding, Engine):
+            raise _source_error("完整恢复银行重验需要原事务的实际Engine")
+        recheck_full_recovery_proof(
+            binding,
+            session,
+            action,
+            BankCommand(effect=effect, effect_hash=execution_effect_hash(effect)),
+            now,
+            own_action_id=action.id,
+            require_user_consent=True,
+        )
+        context = require_full_recovery_confirmation_context(session, context)
+    from app.services.full_joint_goal_execution_guards import (
+        has_full_joint_goal_binding,
+        recheck_full_joint_goal_proof,
+    )
+
+    joint_bound = has_full_joint_goal_binding(session, action)
+    if joint_bound:
+        from app.services.execution_joint_goal_bridge import require_joint_goal_context
+
+        binding = session.get_bind()
+        if not isinstance(binding, Engine):
+            raise _source_error("联合目标银行重验需要原事务的实际Engine")
+        dynamic_proof = recheck_full_joint_goal_proof(
+            binding,
+            session,
+            action,
+            BankCommand(effect=effect, effect_hash=execution_effect_hash(effect)),
+            now,
+            own_action_id=action.id,
+        )
+        context = require_joint_goal_context(session, effect, context, dynamic_proof)
+    elif effect.action_type == "ALLOCATE_GOAL" and has_full_dynamic_goal_binding(session, action):
+        binding = session.get_bind()
+        if not isinstance(binding, Engine):
+            raise _source_error("动态目标银行重验需要原事务的实际Engine")
+        dynamic_proof = recheck_full_dynamic_goal_proof(
+            binding,
+            session,
+            action,
+            BankCommand(effect=effect, effect_hash=execution_effect_hash(effect)),
+            now,
+            own_action_id=action.id,
+        )
+    if dynamic_proof is not None and not joint_bound:
+        from app.services.execution_context import require_full_dynamic_goal_proof_context
+
+        context = require_full_dynamic_goal_proof_context(session, effect, context, dynamic_proof)
+    validation = (
+        revalidate_execution(effect, context, confirmation=confirmation)
+        if dynamic_proof is None
+        else revalidate_execution(
+            effect, context, confirmation=confirmation, full_dynamic_goal_proof=dynamic_proof
+        )
+    )
+    if validation.status != "READY":
+        raise _source_error("执行前财务重验未通过：" + ",".join(validation.reasons))
     record_execution_trace(
         session,
         effect,
@@ -459,7 +560,11 @@ def verify_execution_sources(
         parent_run_id=action.decision_run_id,
         autonomy_level=action.autonomy_level,
         confirmation=confirmation,
+        action_request=action.request
+        if dynamic_proof is not None or recovery_bound or experiment_asset_bound
+        else None,
     )
+    return dynamic_proof
 
 
 def read_execution_confirmation(

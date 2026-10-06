@@ -1,0 +1,29 @@
+{
+  "run_id": "20261005T012613Z-2ad6f61b",
+  "task": "W1",
+  "label": "api-static-red-ready",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "mypy"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T01:26:13.570872+00:00",
+  "finished_at": "2026-10-05T01:26:15.101747+00:00",
+  "wall_seconds": 1.530875,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "7ef92b4413754c4e44a2198ddc154b1bdddbcc134ec7d035b051ea4ee6d1e5ba",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

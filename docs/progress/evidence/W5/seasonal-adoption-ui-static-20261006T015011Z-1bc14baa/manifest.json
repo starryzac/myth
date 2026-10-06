@@ -1,0 +1,46 @@
+{
+  "run_id": "20261006T015011Z-1bc14baa",
+  "task": "W5",
+  "label": "seasonal-adoption-ui-static",
+  "status": "PASSED",
+  "scope": [
+    "apps/web/src/api/seasonal-reserve-adoptions.ts",
+    "apps/web/src/api/seasonal-reserve-adoptions.test.ts",
+    "apps/web/src/features/seasonal-adoption-operation.ts",
+    "apps/web/src/features/seasonal-adoption-operation.test.ts",
+    "apps/web/src/components/SeasonalReserveAdoptionPanel.tsx",
+    "apps/web/src/components/SeasonalReserveAdoptionPanel.test.tsx",
+    "apps/web/src/tests/seasonal-adoption-fixture.ts",
+    "apps/web/src/tests/seasonal-adoption-fixture.json"
+  ],
+  "command": [
+    "C:/Users/starryzac/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node.exe",
+    "C:/Users/starryzac/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/pnpm/bin/pnpm.mjs",
+    "--dir",
+    "apps/web",
+    "exec",
+    "eslint",
+    "src/api/seasonal-reserve-adoptions.ts",
+    "src/api/seasonal-reserve-adoptions.test.ts",
+    "src/features/seasonal-adoption-operation.ts",
+    "src/features/seasonal-adoption-operation.test.ts",
+    "src/components/SeasonalReserveAdoptionPanel.tsx",
+    "src/components/SeasonalReserveAdoptionPanel.test.tsx",
+    "src/tests/seasonal-adoption-fixture.ts"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T01:50:12.774099+00:00",
+  "finished_at": "2026-10-06T01:50:16.520215+00:00",
+  "wall_seconds": 3.746116,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

@@ -1,0 +1,2822 @@
+{
+  "actual_frozen_metric_results": {
+    "A1": null,
+    "A2": null,
+    "A3": null,
+    "A4": null,
+    "A5": null,
+    "A6": null,
+    "E1": null,
+    "E2": null,
+    "E3": null,
+    "E4": null,
+    "E5": null,
+    "E6": null,
+    "E7": null,
+    "E8": null,
+    "F1": null,
+    "F2": null,
+    "F3": null,
+    "F4": null,
+    "F5": null,
+    "S1": null,
+    "S2": null,
+    "S3": null,
+    "S4": null,
+    "S5": null,
+    "S6": null,
+    "S7": null,
+    "S8": null,
+    "S9": null
+  },
+  "actual_native_full_service_calls": 0,
+  "actual_original_family_count": 50,
+  "actual_original_variant_count": 100,
+  "actual_runs": [],
+  "all_native_adapters_registered": false,
+  "author_contract": {
+    "bytes": 3388046,
+    "path": "AUTHORING_CONTRACT.json",
+    "sha256": "45b0d06be37987e995d2653a3a8e69095a6132c1495ba0b21d69a394881c2bc9"
+  },
+  "author_revision": "EXPLICIT_PRIMARY_50_ORIGINAL_MATURE_RETURN_AND_TIMEOUT_SOURCE_V4",
+  "author_static_seed_cash_cents": 3302400,
+  "bank_source_initialized": false,
+  "cases": [
+    {
+      "author_semantic_topology_sha256": "d673d414ac39d5f41473f11ad99833afb47b318e5e5a31ad7434775bbbc6e233",
+      "category": "NORMAL",
+      "family_id": "N01",
+      "input": {
+        "bytes": 11746,
+        "path": "DEVELOPMENT/N01/v01/INPUT.json",
+        "sha256": "d478d61fb3376ddeae6450844a67c6e99812a775f75e06827a05857a4edc8c39"
+      },
+      "mechanism_topology_sha256": "3c5c316fa2c277dda14ea688bc140ac5f88b41d288d6e5390a5ecb6e0b9ff653",
+      "name": "单次新收入后一般T0组合",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 6909,
+        "path": "DEVELOPMENT/N01/v01/SCHEDULE.json",
+        "sha256": "a7901317deff68870b1918ac9863ec74a6943605d4f8f24b6c7b56e5ac37821b"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 19,
+      "truth": {
+        "bytes": 11310,
+        "path": "DEVELOPMENT/N01/v01/TRUTH.json",
+        "sha256": "38e42e404240107eaf2331f69dab97b3519e41c1edf6dccb7617cc656ebcf79c"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "d673d414ac39d5f41473f11ad99833afb47b318e5e5a31ad7434775bbbc6e233",
+      "category": "NORMAL",
+      "family_id": "N01",
+      "input": {
+        "bytes": 11746,
+        "path": "DEVELOPMENT/N01/v02/INPUT.json",
+        "sha256": "002133d111735eba6a10524cc0d48d8db10f8b71547aec1103a3f053b527f0e3"
+      },
+      "mechanism_topology_sha256": "3c5c316fa2c277dda14ea688bc140ac5f88b41d288d6e5390a5ecb6e0b9ff653",
+      "name": "单次新收入后一般T0组合",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 6909,
+        "path": "DEVELOPMENT/N01/v02/SCHEDULE.json",
+        "sha256": "c179ffce2750f56ca806d2a4f65640c5b4b0b9ed1d9ad1381d3d1c50a5f6908a"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 19,
+      "truth": {
+        "bytes": 11310,
+        "path": "DEVELOPMENT/N01/v02/TRUTH.json",
+        "sha256": "38e42e404240107eaf2331f69dab97b3519e41c1edf6dccb7617cc656ebcf79c"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "78edceaac6b36880f54b0188b861e77553073d05e0baf0ba0705fbacb18b58b9",
+      "category": "NORMAL",
+      "family_id": "N03",
+      "input": {
+        "bytes": 23418,
+        "path": "DEVELOPMENT/N03/v01/INPUT.json",
+        "sha256": "eaa1ce2a6b5b6414c702c36c102c34ba0d64b13a3534345c1ae7f6c7afc44f0c"
+      },
+      "mechanism_topology_sha256": "90e6df2413a231ddd52b366e10eab969a837f4819b4aaa164f46bf14d12578dc",
+      "name": "月度付款先于闲置配置",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 13300,
+        "path": "DEVELOPMENT/N03/v01/SCHEDULE.json",
+        "sha256": "e6dba497d75ca0713616d96e5bb0fbebaee1929238952d9def77d8bd6f3c3ca5"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 40,
+      "truth": {
+        "bytes": 15661,
+        "path": "DEVELOPMENT/N03/v01/TRUTH.json",
+        "sha256": "3590535d40f4b38eb123efbc88a0b9997f9adaae30c80aaa6997ebf286fbbf7b"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "78edceaac6b36880f54b0188b861e77553073d05e0baf0ba0705fbacb18b58b9",
+      "category": "NORMAL",
+      "family_id": "N03",
+      "input": {
+        "bytes": 23418,
+        "path": "DEVELOPMENT/N03/v02/INPUT.json",
+        "sha256": "29133661d5660830728e9abff3bfc461cb6cb1805016f5d9c403ff84c0d79fa5"
+      },
+      "mechanism_topology_sha256": "90e6df2413a231ddd52b366e10eab969a837f4819b4aaa164f46bf14d12578dc",
+      "name": "月度付款先于闲置配置",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 13300,
+        "path": "DEVELOPMENT/N03/v02/SCHEDULE.json",
+        "sha256": "7ef7bcb6afe7dd252a63112be41f1990d439b5a3682386f6cb703b5da345ab2c"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 40,
+      "truth": {
+        "bytes": 15661,
+        "path": "DEVELOPMENT/N03/v02/TRUTH.json",
+        "sha256": "50af1ba5c0ca22668c55a1fd4158efe632e473f3f124879412c6fa87a97821f2"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "f79cc86b1f5490d0dbc3c26e0584e80a80142f2107a900601912aeb678913078",
+      "category": "NORMAL",
+      "family_id": "N04",
+      "input": {
+        "bytes": 12371,
+        "path": "DEVELOPMENT/N04/v01/INPUT.json",
+        "sha256": "7dfb145089d8e89c96ae90bd129131033b1492ed9e5f5be99b238af343a23409"
+      },
+      "mechanism_topology_sha256": "ea21257faa7fda9748e76d25ead35b2f2403e929d0c94d77a8668c15a6c06268",
+      "name": "T0/T1可用日组合",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7182,
+        "path": "DEVELOPMENT/N04/v01/SCHEDULE.json",
+        "sha256": "073ccee145d6eef4a1868d0abcb4965fb07339c293f4bfa1881ea421d13e85f2"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 20,
+      "truth": {
+        "bytes": 11402,
+        "path": "DEVELOPMENT/N04/v01/TRUTH.json",
+        "sha256": "a1eb1ad0c667a61125e77f8a52d370fa71964bb29662c69d70bdf2defed8c6f2"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "f79cc86b1f5490d0dbc3c26e0584e80a80142f2107a900601912aeb678913078",
+      "category": "NORMAL",
+      "family_id": "N04",
+      "input": {
+        "bytes": 12371,
+        "path": "DEVELOPMENT/N04/v02/INPUT.json",
+        "sha256": "f1d75e66686e52e8300dbb43abc2b5417d5b88da8e816519794075f3bb43bb85"
+      },
+      "mechanism_topology_sha256": "ea21257faa7fda9748e76d25ead35b2f2403e929d0c94d77a8668c15a6c06268",
+      "name": "T0/T1可用日组合",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7182,
+        "path": "DEVELOPMENT/N04/v02/SCHEDULE.json",
+        "sha256": "80dbe8d78b4fe363b3db3a44ce437f52a4317209b4719cd5a8a08af02548d4ce"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 20,
+      "truth": {
+        "bytes": 11402,
+        "path": "DEVELOPMENT/N04/v02/TRUTH.json",
+        "sha256": "a1eb1ad0c667a61125e77f8a52d370fa71964bb29662c69d70bdf2defed8c6f2"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "b196154455cefb64e73e710a1d1f060f10fbb47bf3d81b6762f65e72ce031956",
+      "category": "NORMAL",
+      "family_id": "N05",
+      "input": {
+        "bytes": 18146,
+        "path": "DEVELOPMENT/N05/v01/INPUT.json",
+        "sha256": "6cfecb96131eae933df97382c0e0e689de33af223454f6ca99ca264ac18c246b"
+      },
+      "mechanism_topology_sha256": "360588e59e8c289f5391686c4ca7c8577676340e8554738337a5e8610afd878a",
+      "name": "目标月贡献与一般剩余分池",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9444,
+        "path": "DEVELOPMENT/N05/v01/SCHEDULE.json",
+        "sha256": "1ea44ac4de3f07fbfa5ff2f38172f17cd4994a03bb5c69321e27925e6bc8016c"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 27,
+      "truth": {
+        "bytes": 14750,
+        "path": "DEVELOPMENT/N05/v01/TRUTH.json",
+        "sha256": "807161a1fa4b68d6efd736d00abece5b1ab1332795836cca5e48f95c878af13c"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "b196154455cefb64e73e710a1d1f060f10fbb47bf3d81b6762f65e72ce031956",
+      "category": "NORMAL",
+      "family_id": "N05",
+      "input": {
+        "bytes": 18146,
+        "path": "DEVELOPMENT/N05/v02/INPUT.json",
+        "sha256": "244115917202f6035172fb9c9a72ad1230d8b5abc9db0d566ad125ed18e12ee6"
+      },
+      "mechanism_topology_sha256": "360588e59e8c289f5391686c4ca7c8577676340e8554738337a5e8610afd878a",
+      "name": "目标月贡献与一般剩余分池",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9444,
+        "path": "DEVELOPMENT/N05/v02/SCHEDULE.json",
+        "sha256": "2c3eba374ca82d999f99e69cc02add22a1944133412162032b8099987148cad9"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 27,
+      "truth": {
+        "bytes": 14750,
+        "path": "DEVELOPMENT/N05/v02/TRUTH.json",
+        "sha256": "a86c8773d6d35cccb5c49d72fcc31248cf8bf3c596578623c8954eb010b5fc89"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "b4ff61c1370bce8cd562ee5c64518750276207894bcbbcd36a2ddb55d4ffa655",
+      "category": "NORMAL",
+      "family_id": "N06",
+      "input": {
+        "bytes": 13352,
+        "path": "DEVELOPMENT/N06/v01/INPUT.json",
+        "sha256": "da8af2c53c8e36edfe1915792bd5c25808f96f4ecd82cce718a54b92daeb7ebc"
+      },
+      "mechanism_topology_sha256": "300fc2f2c1de6e0e477fd7ab812d9a2fad495b03925cde039917fc49191bfc8d",
+      "name": "固定本金到期后的原件重规划",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8019,
+        "path": "DEVELOPMENT/N06/v01/SCHEDULE.json",
+        "sha256": "48a9fd15f78d4e46e2b50c87f97ddb672a840421e3ceecabd14b4f5a0e697459"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 23,
+      "truth": {
+        "bytes": 11537,
+        "path": "DEVELOPMENT/N06/v01/TRUTH.json",
+        "sha256": "ed5a25c4976d34c5849a7b30e73a72185aaf2c2d540db5f92b8b4471064e9735"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "b4ff61c1370bce8cd562ee5c64518750276207894bcbbcd36a2ddb55d4ffa655",
+      "category": "NORMAL",
+      "family_id": "N06",
+      "input": {
+        "bytes": 13352,
+        "path": "DEVELOPMENT/N06/v02/INPUT.json",
+        "sha256": "224cea30450bddb9f58bd5d6cfe67107bf88d3128281bfdd0d6bddf77e2350a7"
+      },
+      "mechanism_topology_sha256": "300fc2f2c1de6e0e477fd7ab812d9a2fad495b03925cde039917fc49191bfc8d",
+      "name": "固定本金到期后的原件重规划",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8019,
+        "path": "DEVELOPMENT/N06/v02/SCHEDULE.json",
+        "sha256": "92b6cb872349cb1cc7da8c7af366b20edab2fb9214d9ce7f3907cc9f22abd62e"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 23,
+      "truth": {
+        "bytes": 11537,
+        "path": "DEVELOPMENT/N06/v02/TRUTH.json",
+        "sha256": "ed5a25c4976d34c5849a7b30e73a72185aaf2c2d540db5f92b8b4471064e9735"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "0dc41e18b4d179c92bf8cb04f8c593768159baabef5951a2eb80d708d56e5e60",
+      "category": "OBLIGATION_CONFLICT",
+      "family_id": "O01",
+      "input": {
+        "bytes": 13904,
+        "path": "DEVELOPMENT/O01/v01/INPUT.json",
+        "sha256": "8bf3e8d21d991a0e238c87e92033c1ff4ce329550fd76d3d10f5cca3e30ca278"
+      },
+      "mechanism_topology_sha256": "55f349f9861a7dbbef1ffed43cf0be3fdfbac9ac756b4f2e81f3a25cd2c245bd",
+      "name": "日期义务与T1今天不可用",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7935,
+        "path": "DEVELOPMENT/O01/v01/SCHEDULE.json",
+        "sha256": "e3671b09c674b2af82fbb703b859e06784b413eef2c77701a12ea96444b5e80e"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 23,
+      "truth": {
+        "bytes": 13162,
+        "path": "DEVELOPMENT/O01/v01/TRUTH.json",
+        "sha256": "8fabf61b304e37b1ac4d14f7eb80266a3e798e41fb53d5b81654422085caa269"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "0dc41e18b4d179c92bf8cb04f8c593768159baabef5951a2eb80d708d56e5e60",
+      "category": "OBLIGATION_CONFLICT",
+      "family_id": "O01",
+      "input": {
+        "bytes": 13904,
+        "path": "DEVELOPMENT/O01/v02/INPUT.json",
+        "sha256": "4da6da8d013344ab4f8dd85891431f334f626ee31e89fc7f81f184019600bcdb"
+      },
+      "mechanism_topology_sha256": "55f349f9861a7dbbef1ffed43cf0be3fdfbac9ac756b4f2e81f3a25cd2c245bd",
+      "name": "日期义务与T1今天不可用",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7935,
+        "path": "DEVELOPMENT/O01/v02/SCHEDULE.json",
+        "sha256": "2eb90b472493c127fcbe7a08b562915f65bb37f50515f5816e68ad7edadb9757"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 23,
+      "truth": {
+        "bytes": 13162,
+        "path": "DEVELOPMENT/O01/v02/TRUTH.json",
+        "sha256": "9bf7dea6b86c5ae86a0b999ca075017f9bca589f13bb3b6cde08079024303caf"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "805e0f400b0585cd31182bebadfb923592e00c4af8fc98e892c26a58a82f9621",
+      "category": "OBLIGATION_CONFLICT",
+      "family_id": "O02",
+      "input": {
+        "bytes": 7141,
+        "path": "DEVELOPMENT/O02/v01/INPUT.json",
+        "sha256": "e42e2e761d0e944eff7d8c9c020ca4296d6ba08f3b224817947ca27452e05716"
+      },
+      "mechanism_topology_sha256": "07ec6d1f6ffeb0d9f2f02f6f9fea56cd66c1d35e6c5587778c7e46f0393b7dfc",
+      "name": "日期区间待付上限冲突",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 5470,
+        "path": "DEVELOPMENT/O02/v01/SCHEDULE.json",
+        "sha256": "a827995ae2feae217880c54aadfc479511e5fbaf711e722f3fb1bd3a559b1ca2"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 15,
+      "truth": {
+        "bytes": 9142,
+        "path": "DEVELOPMENT/O02/v01/TRUTH.json",
+        "sha256": "f0080a39ded13b0bdb396cf72405dc5a438e64c80de72b9c4a7cf00473d43959"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "805e0f400b0585cd31182bebadfb923592e00c4af8fc98e892c26a58a82f9621",
+      "category": "OBLIGATION_CONFLICT",
+      "family_id": "O02",
+      "input": {
+        "bytes": 7141,
+        "path": "DEVELOPMENT/O02/v02/INPUT.json",
+        "sha256": "90bc6bb36a69bbe48b9d0efd5e3172a16ace681559094380f564df52945f404f"
+      },
+      "mechanism_topology_sha256": "07ec6d1f6ffeb0d9f2f02f6f9fea56cd66c1d35e6c5587778c7e46f0393b7dfc",
+      "name": "日期区间待付上限冲突",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 5470,
+        "path": "DEVELOPMENT/O02/v02/SCHEDULE.json",
+        "sha256": "6aaa0db7e269603733c35f39f99f67e1ed5ed13a1865e03df2a0ecd784c7a882"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 15,
+      "truth": {
+        "bytes": 9142,
+        "path": "DEVELOPMENT/O02/v02/TRUTH.json",
+        "sha256": "e10947e6fa2677528ce5157d1250219bde4bc611d8b649bfea6ee0c64fb5302d"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "019b9b49c7521b88f125260d9997d32575ebe58a48130fb5677db15b21510ee3",
+      "category": "OBLIGATION_CONFLICT",
+      "family_id": "O03",
+      "input": {
+        "bytes": 17107,
+        "path": "DEVELOPMENT/O03/v01/INPUT.json",
+        "sha256": "794bab6d4ce59f1230083a86aa3f57b4034e3dafbf12e7667ad41cb37ad1fd46"
+      },
+      "mechanism_topology_sha256": "b4a7112a16ea6e7a023a04142752d65faa99710a73a3aecb6e949f8a809c3b85",
+      "name": "聚合有钱但来源账户不足",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 11117,
+        "path": "DEVELOPMENT/O03/v01/SCHEDULE.json",
+        "sha256": "74e90970ef92b20ac43eb7781534f91ee3052f461194d968344d3672a3f0d4b5"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 34,
+      "truth": {
+        "bytes": 11677,
+        "path": "DEVELOPMENT/O03/v01/TRUTH.json",
+        "sha256": "8e343addf7848510ce143996ee72c087ba82585ce3fbd23b052c101d7a25bc90"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "019b9b49c7521b88f125260d9997d32575ebe58a48130fb5677db15b21510ee3",
+      "category": "OBLIGATION_CONFLICT",
+      "family_id": "O03",
+      "input": {
+        "bytes": 17107,
+        "path": "DEVELOPMENT/O03/v02/INPUT.json",
+        "sha256": "d18d97082ff2076bbf952f8ecf5370cfe21cdb1206f972175a26945b5837b0b0"
+      },
+      "mechanism_topology_sha256": "b4a7112a16ea6e7a023a04142752d65faa99710a73a3aecb6e949f8a809c3b85",
+      "name": "聚合有钱但来源账户不足",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 11117,
+        "path": "DEVELOPMENT/O03/v02/SCHEDULE.json",
+        "sha256": "5e314d346243ef93ec8703b3de7d908699498baa8c2e570b996ced6486392f65"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 34,
+      "truth": {
+        "bytes": 11677,
+        "path": "DEVELOPMENT/O03/v02/TRUTH.json",
+        "sha256": "abc7a1038aad6a7e3eef3305ff6793dbef63b473fb821411009e0ecf3e8f9e0a"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "c4ce2250fa5b74938e2c72ba603d4fbc5915216a846cc57ae777f1017cee86e4",
+      "category": "OBLIGATION_CONFLICT",
+      "family_id": "O04",
+      "input": {
+        "bytes": 19605,
+        "path": "DEVELOPMENT/O04/v01/INPUT.json",
+        "sha256": "4b8f18529a993a0f164bdcdf9c655cdf35a784299ae23644bbb2f8cb0c8944cc"
+      },
+      "mechanism_topology_sha256": "a2baa427e887903f66a68bbf56fbe8e725d02a02469a732a3b2da564b9e92b95",
+      "name": "跨二月月末固定付款",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 12829,
+        "path": "DEVELOPMENT/O04/v01/SCHEDULE.json",
+        "sha256": "17a6de97245d2801cc034a01294cb44d10493e4c54a779f4559d1e3c560ef6b0"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 39,
+      "truth": {
+        "bytes": 12811,
+        "path": "DEVELOPMENT/O04/v01/TRUTH.json",
+        "sha256": "e0f3596faec5ff444fd51ab97f7015c3e61f7479607e7d8e4ea34e3989d98e41"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "c4ce2250fa5b74938e2c72ba603d4fbc5915216a846cc57ae777f1017cee86e4",
+      "category": "OBLIGATION_CONFLICT",
+      "family_id": "O04",
+      "input": {
+        "bytes": 19605,
+        "path": "DEVELOPMENT/O04/v02/INPUT.json",
+        "sha256": "4d892e4e84cd8b478c0eeff1e427509368d57922d06e81c11b12917c1dd307fc"
+      },
+      "mechanism_topology_sha256": "a2baa427e887903f66a68bbf56fbe8e725d02a02469a732a3b2da564b9e92b95",
+      "name": "跨二月月末固定付款",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 12829,
+        "path": "DEVELOPMENT/O04/v02/SCHEDULE.json",
+        "sha256": "e4c0df7359774abf29060c27f5481d9b1ad20b25d65d0206e3921464b0ff91f8"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 39,
+      "truth": {
+        "bytes": 12811,
+        "path": "DEVELOPMENT/O04/v02/TRUTH.json",
+        "sha256": "44a491ab9a4f13885b5812f7f4a8bb755ad66a88934c27631a99dd94d45b2c94"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "5d2a45ac0e0c3a8c3c877a334dd319088f3664ee778c439181056fa1e0ecb63a",
+      "category": "MULTI_GOAL_CONFLICT",
+      "family_id": "G01",
+      "input": {
+        "bytes": 17217,
+        "path": "DEVELOPMENT/G01/v01/INPUT.json",
+        "sha256": "f78fec9a008cede835e0a8cbe9cca026eadcd32576ee09c10c2b3d328a5cda91"
+      },
+      "mechanism_topology_sha256": "5ec4515956061c19908fd9b24ae4c3edf56182eb467705a02e5365d5ccaa5ea7",
+      "name": "两个目标最低保障与硬义务",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8838,
+        "path": "DEVELOPMENT/G01/v01/SCHEDULE.json",
+        "sha256": "4d0e709dd58c8aa94ec54667b8d7f2f2f307e3b0285691f14a9ad08d57567d43"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 25,
+      "truth": {
+        "bytes": 14890,
+        "path": "DEVELOPMENT/G01/v01/TRUTH.json",
+        "sha256": "f979eee76b33e58fb30ecbb00ad468f534bd29e43888c51094aeb7ae6d0caa5a"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "5d2a45ac0e0c3a8c3c877a334dd319088f3664ee778c439181056fa1e0ecb63a",
+      "category": "MULTI_GOAL_CONFLICT",
+      "family_id": "G01",
+      "input": {
+        "bytes": 17217,
+        "path": "DEVELOPMENT/G01/v02/INPUT.json",
+        "sha256": "dfdeb61430e9bd08e0f1dc3c36bbe7df61efe2d80a2d30d0da2c164c89a5c77c"
+      },
+      "mechanism_topology_sha256": "5ec4515956061c19908fd9b24ae4c3edf56182eb467705a02e5365d5ccaa5ea7",
+      "name": "两个目标最低保障与硬义务",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8838,
+        "path": "DEVELOPMENT/G01/v02/SCHEDULE.json",
+        "sha256": "6cc912f920d3cf0e80ffe10ea8da61b7c160bb07c07bab1d79a41c07c49d1f04"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 25,
+      "truth": {
+        "bytes": 14890,
+        "path": "DEVELOPMENT/G01/v02/TRUTH.json",
+        "sha256": "cd2b78c5355a2ba2d4a829acd8e1734720291cc87ff830720d99eaeb6aac5f19"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "0ef5916585cc581dc7d7973147fedd4e930d86725138fd9c57e7e892771332c0",
+      "category": "MULTI_GOAL_CONFLICT",
+      "family_id": "G02",
+      "input": {
+        "bytes": 15410,
+        "path": "DEVELOPMENT/G02/v01/INPUT.json",
+        "sha256": "446341813c36bcb58331c8fcb5f695d4190ae916897279481eb4c9d7c3a90c26"
+      },
+      "mechanism_topology_sha256": "5a6a60fa0a9425cd818eca4237b4664341aef7ab833fce4844b2d0e5179d8e3f",
+      "name": "同重要度不同deadline词典序",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8092,
+        "path": "DEVELOPMENT/G02/v01/SCHEDULE.json",
+        "sha256": "d35c9f56d050d535ebb2927acd09878fd3982156f059a313e130f3fba66749f1"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 23,
+      "truth": {
+        "bytes": 13012,
+        "path": "DEVELOPMENT/G02/v01/TRUTH.json",
+        "sha256": "135e3e7259e1dd0e4bba112b029b79144352bd49ba75f149fe7e50e9d8eaaa01"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "0ef5916585cc581dc7d7973147fedd4e930d86725138fd9c57e7e892771332c0",
+      "category": "MULTI_GOAL_CONFLICT",
+      "family_id": "G02",
+      "input": {
+        "bytes": 15410,
+        "path": "DEVELOPMENT/G02/v02/INPUT.json",
+        "sha256": "369e61672a7695e28979aa9887a5e0ffd3c65d5c0b6d79d08b38e1df59a58dc0"
+      },
+      "mechanism_topology_sha256": "5a6a60fa0a9425cd818eca4237b4664341aef7ab833fce4844b2d0e5179d8e3f",
+      "name": "同重要度不同deadline词典序",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8092,
+        "path": "DEVELOPMENT/G02/v02/SCHEDULE.json",
+        "sha256": "3a066d7c5d7dbad1f4a4b4fe15dcc61493dba35d09f0d463f7cf111977f44e9f"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 23,
+      "truth": {
+        "bytes": 13012,
+        "path": "DEVELOPMENT/G02/v02/TRUTH.json",
+        "sha256": "4f2e360cb00ba2a6e94ae328cb5dbb141951f30574f703d4fd107588b6e7bd12"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "9440c7ef4ba1618ced8fe03c0b5547d40babf9fb89972ea1eacb23b4dbf0361f",
+      "category": "MULTI_GOAL_CONFLICT",
+      "family_id": "G03",
+      "input": {
+        "bytes": 17671,
+        "path": "DEVELOPMENT/G03/v01/INPUT.json",
+        "sha256": "7a30ded1e7f88f087f8f51c05d05f0f33f4346c5ff5a3733a9501dd2bd7af29f"
+      },
+      "mechanism_topology_sha256": "8f0ca7f938f7e650e0c0ce955c5c50970b26d8aa3a5899eeec86d6070c4d6ac9",
+      "name": "已归属A不能为B自动回拨",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9192,
+        "path": "DEVELOPMENT/G03/v01/SCHEDULE.json",
+        "sha256": "46412ed311824fa2f53d5667caad71e711230e1531449ae0cdc7c3c15dc03f53"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 27,
+      "truth": {
+        "bytes": 13610,
+        "path": "DEVELOPMENT/G03/v01/TRUTH.json",
+        "sha256": "9f53038a38702bf5c2401ed255b8012398215fbdd60ddd23a09193e745c4a62a"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "9440c7ef4ba1618ced8fe03c0b5547d40babf9fb89972ea1eacb23b4dbf0361f",
+      "category": "MULTI_GOAL_CONFLICT",
+      "family_id": "G03",
+      "input": {
+        "bytes": 17671,
+        "path": "DEVELOPMENT/G03/v02/INPUT.json",
+        "sha256": "e70c74df500990fceca9c043f230755e706ccb2ee78fba1450dfeb26a46d366b"
+      },
+      "mechanism_topology_sha256": "8f0ca7f938f7e650e0c0ce955c5c50970b26d8aa3a5899eeec86d6070c4d6ac9",
+      "name": "已归属A不能为B自动回拨",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9192,
+        "path": "DEVELOPMENT/G03/v02/SCHEDULE.json",
+        "sha256": "e0d1013479112b499af96b2fedfeaef670d28f993d9a5a94f872558c8e3913da"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 27,
+      "truth": {
+        "bytes": 13610,
+        "path": "DEVELOPMENT/G03/v02/TRUTH.json",
+        "sha256": "5cebd936acfe168e8286cba20727f45ea5fa8e13c3eb0b519ab9bd0df356043e"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "6087367859f529fdddb17a8ed5f4b3eff82e333660a0fa70d27eabd2e8566b9f",
+      "category": "MULTI_GOAL_CONFLICT",
+      "family_id": "G04",
+      "input": {
+        "bytes": 18989,
+        "path": "DEVELOPMENT/G04/v01/INPUT.json",
+        "sha256": "4efbe8cdbc54750de7804d2446d448d3feea7f04893522313ce0cfaba2db7542"
+      },
+      "mechanism_topology_sha256": "65740adec406c3bc935f6731fdd031c30fe67de801dda43037fe8e7a6b46b3c9",
+      "name": "同目标资产放置不转产权",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9711,
+        "path": "DEVELOPMENT/G04/v01/SCHEDULE.json",
+        "sha256": "089ad4df8cb6ef513d676b1d36f226ade8df26b1f10cc02204d633430d0f5297"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 28,
+      "truth": {
+        "bytes": 15295,
+        "path": "DEVELOPMENT/G04/v01/TRUTH.json",
+        "sha256": "1a3942e1f22f5e15fce715d078eeba5a7601bc7ea690896b23af8f961f8d51f3"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "6087367859f529fdddb17a8ed5f4b3eff82e333660a0fa70d27eabd2e8566b9f",
+      "category": "MULTI_GOAL_CONFLICT",
+      "family_id": "G04",
+      "input": {
+        "bytes": 18989,
+        "path": "DEVELOPMENT/G04/v02/INPUT.json",
+        "sha256": "cbf277abe5ad116082ef2a2a37d443a7a6f8e804152b280ec6e8074fe8409c79"
+      },
+      "mechanism_topology_sha256": "65740adec406c3bc935f6731fdd031c30fe67de801dda43037fe8e7a6b46b3c9",
+      "name": "同目标资产放置不转产权",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9711,
+        "path": "DEVELOPMENT/G04/v02/SCHEDULE.json",
+        "sha256": "f0801722b27712636d126c1832263daeb8c4be3f0c538a3083af6b2ea5043bd1"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 28,
+      "truth": {
+        "bytes": 15295,
+        "path": "DEVELOPMENT/G04/v02/TRUTH.json",
+        "sha256": "f4f4643fe4c71650a6e6b0a08e0c2f60b9986498c4b9f141396f084fd3c2b768"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "979f14b398f527110ffcdd2f7fafa50dd4f5835499843298f5c6baf9549445c2",
+      "category": "SEASONAL_RESERVE",
+      "family_id": "S01",
+      "input": {
+        "bytes": 14386,
+        "path": "DEVELOPMENT/S01/v01/INPUT.json",
+        "sha256": "78976739ffc58c7a7f30ef2e22ef55a3ce632230098a56ef322730b267b833ee"
+      },
+      "mechanism_topology_sha256": "9fd43449a30386cde782679bcb3e68c72e7f082a4207a4f3d26310d3b24befe3",
+      "name": "未采纳建议不改变资金许可",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8410,
+        "path": "DEVELOPMENT/S01/v01/SCHEDULE.json",
+        "sha256": "a22737f217a22e12adbdcfea6e17557640dc5efb6d38174d6077879b24278746"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 23,
+      "truth": {
+        "bytes": 12420,
+        "path": "DEVELOPMENT/S01/v01/TRUTH.json",
+        "sha256": "49476394f9f7895aae1bce1b618efb918af92e1f7554581e694a67e76cde48da"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "979f14b398f527110ffcdd2f7fafa50dd4f5835499843298f5c6baf9549445c2",
+      "category": "SEASONAL_RESERVE",
+      "family_id": "S01",
+      "input": {
+        "bytes": 14386,
+        "path": "DEVELOPMENT/S01/v02/INPUT.json",
+        "sha256": "2f906bf1d3ebc9f6228a17e360955b84b9f10086e6e8bdaee085a04aef10d666"
+      },
+      "mechanism_topology_sha256": "9fd43449a30386cde782679bcb3e68c72e7f082a4207a4f3d26310d3b24befe3",
+      "name": "未采纳建议不改变资金许可",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8410,
+        "path": "DEVELOPMENT/S01/v02/SCHEDULE.json",
+        "sha256": "780f82440d8f22a5a9a63ec7266d0eb38566b044bc6ab82860d51e75824d2b4b"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 23,
+      "truth": {
+        "bytes": 12420,
+        "path": "DEVELOPMENT/S01/v02/TRUTH.json",
+        "sha256": "49476394f9f7895aae1bce1b618efb918af92e1f7554581e694a67e76cde48da"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "7e1f41a0c450376b3e4dfdd05b6e8b57a26ba67527568e19f49a7ca5db64b8ff",
+      "category": "SEASONAL_RESERVE",
+      "family_id": "S02",
+      "input": {
+        "bytes": 15468,
+        "path": "DEVELOPMENT/S02/v01/INPUT.json",
+        "sha256": "0066e9ae16114d31ddd37eb91eee02bdf9ac5028c5b9f30aca0334d4474d8d5c"
+      },
+      "mechanism_topology_sha256": "774a79e344038aead092a1a5a8d957f03e7767d650f4ad3b7db70d6545057320",
+      "name": "明确采纳原建议后保护",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8683,
+        "path": "DEVELOPMENT/S02/v01/SCHEDULE.json",
+        "sha256": "3464f45a595d6df18d363296fabc33fce5255ee2ff8dc172fa1d6bc973be15e2"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 24,
+      "truth": {
+        "bytes": 12460,
+        "path": "DEVELOPMENT/S02/v01/TRUTH.json",
+        "sha256": "379c4996650bf5147c2afc77ba071269ef64583b97644bd12f80a8f82be63558"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "7e1f41a0c450376b3e4dfdd05b6e8b57a26ba67527568e19f49a7ca5db64b8ff",
+      "category": "SEASONAL_RESERVE",
+      "family_id": "S02",
+      "input": {
+        "bytes": 15468,
+        "path": "DEVELOPMENT/S02/v02/INPUT.json",
+        "sha256": "b1c0b1e1b5283e1eb258a48037f9fa402c80341900f510dc54f274df6f05e617"
+      },
+      "mechanism_topology_sha256": "774a79e344038aead092a1a5a8d957f03e7767d650f4ad3b7db70d6545057320",
+      "name": "明确采纳原建议后保护",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8683,
+        "path": "DEVELOPMENT/S02/v02/SCHEDULE.json",
+        "sha256": "2c7090a0461270babcb191f6dc11f5fef2545eb582dd4890317ac64af360fab3"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 24,
+      "truth": {
+        "bytes": 12460,
+        "path": "DEVELOPMENT/S02/v02/TRUTH.json",
+        "sha256": "379c4996650bf5147c2afc77ba071269ef64583b97644bd12f80a8f82be63558"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "63b26961ea9880045017426829effc5b60f21acc02c2f039e475a4434e00a2b2",
+      "category": "SEASONAL_RESERVE",
+      "family_id": "S03",
+      "input": {
+        "bytes": 16017,
+        "path": "DEVELOPMENT/S03/v01/INPUT.json",
+        "sha256": "8abf778e687b8dca77c52d4bddaff0d7bf30de2cf3603d7fa8566913ac269575"
+      },
+      "mechanism_topology_sha256": "f669b0142b2b0d594c15c1cbd23a4a333949e17624d70e3fc331f22f7048be3e",
+      "name": "原采纳窗口结束不得推定结清",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9243,
+        "path": "DEVELOPMENT/S03/v01/SCHEDULE.json",
+        "sha256": "01f099d4f370579ae21e78575e96fb948aef7e83172baa659512ed3b61150b82"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 26,
+      "truth": {
+        "bytes": 12442,
+        "path": "DEVELOPMENT/S03/v01/TRUTH.json",
+        "sha256": "a136e806a504a0344adcc85890d74621d99b858f422e0057230e49ceb9754f1f"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "63b26961ea9880045017426829effc5b60f21acc02c2f039e475a4434e00a2b2",
+      "category": "SEASONAL_RESERVE",
+      "family_id": "S03",
+      "input": {
+        "bytes": 16017,
+        "path": "DEVELOPMENT/S03/v02/INPUT.json",
+        "sha256": "c83da9bed389054a486e679bcc2cbe632aeaf7aeb82a66b00c1eb0415842a8a2"
+      },
+      "mechanism_topology_sha256": "f669b0142b2b0d594c15c1cbd23a4a333949e17624d70e3fc331f22f7048be3e",
+      "name": "原采纳窗口结束不得推定结清",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9243,
+        "path": "DEVELOPMENT/S03/v02/SCHEDULE.json",
+        "sha256": "f7a7bc31dd3df37e9d7f446371ccdd8913358f185fa4bd75a56bcb9984300fb0"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 26,
+      "truth": {
+        "bytes": 12442,
+        "path": "DEVELOPMENT/S03/v02/TRUTH.json",
+        "sha256": "a136e806a504a0344adcc85890d74621d99b858f422e0057230e49ceb9754f1f"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "dadd4aee3254fa7bb9bbba3191ff94080b3af207ef1ea68d5ad890a4feeed3fb",
+      "category": "RENT_CHANGE",
+      "family_id": "R01",
+      "input": {
+        "bytes": 19051,
+        "path": "DEVELOPMENT/R01/v01/INPUT.json",
+        "sha256": "f4b0ce1129935f20453815bd675e5e972ac4b27890902231eb009fd6b388eda9"
+      },
+      "mechanism_topology_sha256": "423e3a3e091e63348517b03b680e32dccbaad08ff7c0ea8ce8d054be3429d328",
+      "name": "原MVP房租变更失效旧动作",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 11521,
+        "path": "DEVELOPMENT/R01/v01/SCHEDULE.json",
+        "sha256": "da3007a9086f2d966747b56422bf49172a451153c2da26ddd001d3f3cf00408e"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 35,
+      "truth": {
+        "bytes": 13356,
+        "path": "DEVELOPMENT/R01/v01/TRUTH.json",
+        "sha256": "c5d169409488651ffc45b1ad4dd27892022053cd001f119ebb4ce391e18ddb90"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "dadd4aee3254fa7bb9bbba3191ff94080b3af207ef1ea68d5ad890a4feeed3fb",
+      "category": "RENT_CHANGE",
+      "family_id": "R01",
+      "input": {
+        "bytes": 19051,
+        "path": "DEVELOPMENT/R01/v02/INPUT.json",
+        "sha256": "4583f5db39d93a3e764c7d9618d742ad0f3750abd9c76351b5180368d3be7260"
+      },
+      "mechanism_topology_sha256": "423e3a3e091e63348517b03b680e32dccbaad08ff7c0ea8ce8d054be3429d328",
+      "name": "原MVP房租变更失效旧动作",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 11521,
+        "path": "DEVELOPMENT/R01/v02/SCHEDULE.json",
+        "sha256": "3ceb184bb469d3a937ab0baeda28a7f26a76a85361c6153913b2d6b807bd3213"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 35,
+      "truth": {
+        "bytes": 13356,
+        "path": "DEVELOPMENT/R01/v02/TRUTH.json",
+        "sha256": "c5fc389083c4706c3249b3790c731b8415df3b50bfde10a759c06d14b3fcd9a3"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "de307dfd0361d32807267714478c86e58a89266598b1c1644b3d9591027bf088",
+      "category": "RENT_CHANGE",
+      "family_id": "R02",
+      "input": {
+        "bytes": 19987,
+        "path": "DEVELOPMENT/R02/v01/INPUT.json",
+        "sha256": "75dacb3862b7b3ae23f7944b4ac2630779350fce5e28acc5d8c0484745f038d8"
+      },
+      "mechanism_topology_sha256": "c4147170074acccb5697316270e62718d3cb397524e7a9c9a5345e5d4d051a0b",
+      "name": "Full固定关系变金额重查",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 11784,
+        "path": "DEVELOPMENT/R02/v01/SCHEDULE.json",
+        "sha256": "37833aa902c466bfdacf5303f40f7319b8e26133cef5c3873e8ed9bc0d3254a2"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 36,
+      "truth": {
+        "bytes": 13054,
+        "path": "DEVELOPMENT/R02/v01/TRUTH.json",
+        "sha256": "7222a55556ca0e10704a3f7d97b2f170198ce5096991dc4faa68ac156ce2fecb"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "de307dfd0361d32807267714478c86e58a89266598b1c1644b3d9591027bf088",
+      "category": "RENT_CHANGE",
+      "family_id": "R02",
+      "input": {
+        "bytes": 19987,
+        "path": "DEVELOPMENT/R02/v02/INPUT.json",
+        "sha256": "611ecac8ae88dbffa311fc90f700ef0b7d029356afde629eaf0e7214a89c7170"
+      },
+      "mechanism_topology_sha256": "c4147170074acccb5697316270e62718d3cb397524e7a9c9a5345e5d4d051a0b",
+      "name": "Full固定关系变金额重查",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 11784,
+        "path": "DEVELOPMENT/R02/v02/SCHEDULE.json",
+        "sha256": "b9aed3e34298b784c47c4cd5e4b6549116feef08ca25c1b5abc0314a57c56d55"
+      },
+      "split": "DEVELOPMENT",
+      "steps": 36,
+      "truth": {
+        "bytes": 13054,
+        "path": "DEVELOPMENT/R02/v02/TRUTH.json",
+        "sha256": "8247adca433a72385778c78f4469b11391468bc301d86cc4bca746423b6930f1"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "8bbce689c11b971a7a4ab95fcab2181a2db08269099ac2a98544961269a5ab2e",
+      "category": "RENT_CHANGE",
+      "family_id": "R03",
+      "input": {
+        "bytes": 18363,
+        "path": "VALIDATION/R03/v01/INPUT.json",
+        "sha256": "1e070a6b8ddb6c3bbf804d2a3c584b51a37289bd80b1d15cc900e9ce7b03c462"
+      },
+      "mechanism_topology_sha256": "4191845d8f61a873d135a3cbef801695be76910848f1a2641f4ab4544e360d17",
+      "name": "暂停Full固定关系后原件仍可读",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 11511,
+        "path": "VALIDATION/R03/v01/SCHEDULE.json",
+        "sha256": "128c2aa3f9d183212de29a37d027ff8bfa6d7b11fedeadab1298062c57a0ef37"
+      },
+      "split": "VALIDATION",
+      "steps": 35,
+      "truth": {
+        "bytes": 11845,
+        "path": "VALIDATION/R03/v01/TRUTH.json",
+        "sha256": "79c5d187a6caca8c8be7c8e06abd678c6fb333fab07053d9ae93ee97559a16d0"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "8bbce689c11b971a7a4ab95fcab2181a2db08269099ac2a98544961269a5ab2e",
+      "category": "RENT_CHANGE",
+      "family_id": "R03",
+      "input": {
+        "bytes": 18363,
+        "path": "VALIDATION/R03/v02/INPUT.json",
+        "sha256": "6b3d1a74dd7eeac18cf51c87cbef2c378aa685b3d4669a958a6149c37f5fdbc3"
+      },
+      "mechanism_topology_sha256": "4191845d8f61a873d135a3cbef801695be76910848f1a2641f4ab4544e360d17",
+      "name": "暂停Full固定关系后原件仍可读",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 11511,
+        "path": "VALIDATION/R03/v02/SCHEDULE.json",
+        "sha256": "b8fa5e8ff41c7f0f9ea5cc7585139e2d76456f2cc9f246a8a774f64f858e611e"
+      },
+      "split": "VALIDATION",
+      "steps": 35,
+      "truth": {
+        "bytes": 11845,
+        "path": "VALIDATION/R03/v02/TRUTH.json",
+        "sha256": "241eaec86e1a32a604cea6363d9b787c5daec382f8e83c741b68b6d30330d7b9"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "5f86addf2dd5aa5a5692a35eba545ef6baed5bf9e28acc23ddca503f3c5643d9",
+      "category": "GOAL_DEFERRAL",
+      "family_id": "D01",
+      "input": {
+        "bytes": 15430,
+        "path": "VALIDATION/D01/v01/INPUT.json",
+        "sha256": "ab6db408e90db79077737fe862c82569a66a74585cbb9a74e802927cdc836db2"
+      },
+      "mechanism_topology_sha256": "c258c60b9b6b17649db28eed1f14fd901d06c200cee945576c3feaaad69e2da8",
+      "name": "不允许部分目标不足",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8090,
+        "path": "VALIDATION/D01/v01/SCHEDULE.json",
+        "sha256": "8a1cd5b15fb677323860a9f2a23010f52b29e2ca8ae7ab57fc7d87f7d7777811"
+      },
+      "split": "VALIDATION",
+      "steps": 23,
+      "truth": {
+        "bytes": 13052,
+        "path": "VALIDATION/D01/v01/TRUTH.json",
+        "sha256": "c0e4b9e3de2c05e4caa2c05a383855059eb9b38949bcec5d9e3f5b63ce7aaf86"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "5f86addf2dd5aa5a5692a35eba545ef6baed5bf9e28acc23ddca503f3c5643d9",
+      "category": "GOAL_DEFERRAL",
+      "family_id": "D01",
+      "input": {
+        "bytes": 15430,
+        "path": "VALIDATION/D01/v02/INPUT.json",
+        "sha256": "2b2c1c596378cf19f6124eff02021297139d4c092be8154461c9c131e46eb04a"
+      },
+      "mechanism_topology_sha256": "c258c60b9b6b17649db28eed1f14fd901d06c200cee945576c3feaaad69e2da8",
+      "name": "不允许部分目标不足",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8090,
+        "path": "VALIDATION/D01/v02/SCHEDULE.json",
+        "sha256": "73384370eb6c91fc797c728adc4ac1f927c8cef5ecaac548ec0eb472047331d1"
+      },
+      "split": "VALIDATION",
+      "steps": 23,
+      "truth": {
+        "bytes": 13052,
+        "path": "VALIDATION/D01/v02/TRUTH.json",
+        "sha256": "d4cfe8b19a50a59653fd98e4ff1b992859783f079c90708ee4433acf587243a1"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "9a01dfaa1d7a720ede01fa89e04fe2ed7c2a59a0b31fed245cd0ff0699fb3123",
+      "category": "GOAL_DEFERRAL",
+      "family_id": "D02",
+      "input": {
+        "bytes": 16762,
+        "path": "VALIDATION/D02/v01/INPUT.json",
+        "sha256": "020d66dc1094b3c17d8bb41fb74324e7153e38800ce19f3138b2f17c3cc61988"
+      },
+      "mechanism_topology_sha256": "b76273056ea6e83b7c6d784ee6e9a324a2f0d0d26d60abe2446871e2dd27b9e3",
+      "name": "允许延期成本与截止比较",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8369,
+        "path": "VALIDATION/D02/v01/SCHEDULE.json",
+        "sha256": "f6c7d1296c7b1cb3590c5cd3aa365aa1b2a8acdfc50b2eae19ff4994b1a88b18"
+      },
+      "split": "VALIDATION",
+      "steps": 24,
+      "truth": {
+        "bytes": 13037,
+        "path": "VALIDATION/D02/v01/TRUTH.json",
+        "sha256": "65a9c08f011d3b04eb9a6b97d7ec21e0a6e04c6d0bd61065acea4256864821a3"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "9a01dfaa1d7a720ede01fa89e04fe2ed7c2a59a0b31fed245cd0ff0699fb3123",
+      "category": "GOAL_DEFERRAL",
+      "family_id": "D02",
+      "input": {
+        "bytes": 16762,
+        "path": "VALIDATION/D02/v02/INPUT.json",
+        "sha256": "3202c8a6690c470cce648d2ac7b60a56686b270bed70eefa52e6d3e528ae1888"
+      },
+      "mechanism_topology_sha256": "b76273056ea6e83b7c6d784ee6e9a324a2f0d0d26d60abe2446871e2dd27b9e3",
+      "name": "允许延期成本与截止比较",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8369,
+        "path": "VALIDATION/D02/v02/SCHEDULE.json",
+        "sha256": "9e8494c1b68ff89c83c141203418df8cf94b85d2c0194c8eefab4152e03d3baf"
+      },
+      "split": "VALIDATION",
+      "steps": 24,
+      "truth": {
+        "bytes": 13037,
+        "path": "VALIDATION/D02/v02/TRUTH.json",
+        "sha256": "b0bab4d1e94787e775bdd7d872911f026f701ed8c0ff07aa4a60f4b22073bd3e"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "0e32e7f290fab59fef0fe1ca644fbdccea0a2c3dec6fe6772d65de40d1b278f2",
+      "category": "GOAL_DEFERRAL",
+      "family_id": "D03",
+      "input": {
+        "bytes": 18784,
+        "path": "VALIDATION/D03/v01/INPUT.json",
+        "sha256": "e5619a9e87c5cf0d91ff75c554efb2dd30e83f34f5fbc6bbf10c79a3e6857783"
+      },
+      "mechanism_topology_sha256": "f60513d4732a4ae681adbf824676873367c9a4eb001746d9a0384f2631d85445",
+      "name": "用户提出月上限修复需再确认",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9533,
+        "path": "VALIDATION/D03/v01/SCHEDULE.json",
+        "sha256": "965f202ba0e0f426402a7da494a94fd7984d385cf8f57aa375654ac0e7c1bcd3"
+      },
+      "split": "VALIDATION",
+      "steps": 27,
+      "truth": {
+        "bytes": 14565,
+        "path": "VALIDATION/D03/v01/TRUTH.json",
+        "sha256": "5f8b125588dac9a162b7bcf4719e26a7b56e8b2be2ba5fb28156d1ff55f3ac0f"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "0e32e7f290fab59fef0fe1ca644fbdccea0a2c3dec6fe6772d65de40d1b278f2",
+      "category": "GOAL_DEFERRAL",
+      "family_id": "D03",
+      "input": {
+        "bytes": 18784,
+        "path": "VALIDATION/D03/v02/INPUT.json",
+        "sha256": "ca50e836d2f346142e0831418c02627ce274e6608ff7b49d884cb208de91c723"
+      },
+      "mechanism_topology_sha256": "f60513d4732a4ae681adbf824676873367c9a4eb001746d9a0384f2631d85445",
+      "name": "用户提出月上限修复需再确认",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9533,
+        "path": "VALIDATION/D03/v02/SCHEDULE.json",
+        "sha256": "26b3e270605f6c2941300eb8951921154ecc99ca6f42f90a2d993a19622621f9"
+      },
+      "split": "VALIDATION",
+      "steps": 27,
+      "truth": {
+        "bytes": 14565,
+        "path": "VALIDATION/D03/v02/TRUTH.json",
+        "sha256": "cafddd774e3f9b0bfc58bf3b4b1b5c6fd73617565a4a1e2db6c8abea2e55f210"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "32c523568864693a15041eca106992d65ef4b079151c74af639a3c8cd68ce85f",
+      "category": "CONSUMPTION",
+      "family_id": "C01",
+      "input": {
+        "bytes": 18458,
+        "path": "VALIDATION/C01/v01/INPUT.json",
+        "sha256": "d0e182dbcbe4f759a1ff83888b1006f1d5e524a3d063cd823bc8fa98d3a9654f"
+      },
+      "mechanism_topology_sha256": "36e73a605567fda39660dab5008f02a57046757f9851eca3687dcf64ba820986",
+      "name": "消费后T0恢复原键",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9745,
+        "path": "VALIDATION/C01/v01/SCHEDULE.json",
+        "sha256": "dd8784e267b84c75c6ae1aa98df36a3cd1b0898a8908164cf5a3c6f499a80288"
+      },
+      "split": "VALIDATION",
+      "steps": 28,
+      "truth": {
+        "bytes": 17697,
+        "path": "VALIDATION/C01/v01/TRUTH.json",
+        "sha256": "4de236c66ef0285f47fc542958ebdf687929d9ebf3d1edb572735337a26e7e0e"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "32c523568864693a15041eca106992d65ef4b079151c74af639a3c8cd68ce85f",
+      "category": "CONSUMPTION",
+      "family_id": "C01",
+      "input": {
+        "bytes": 18458,
+        "path": "VALIDATION/C01/v02/INPUT.json",
+        "sha256": "b7f576e8b7e2cf22580c78f76c4dfdd1df1516d299e4e54e7a9d8867dc65bcfe"
+      },
+      "mechanism_topology_sha256": "36e73a605567fda39660dab5008f02a57046757f9851eca3687dcf64ba820986",
+      "name": "消费后T0恢复原键",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9745,
+        "path": "VALIDATION/C01/v02/SCHEDULE.json",
+        "sha256": "f4f0433d366da94b442195a90b19119aadfcf551d8fca2213265e825767360b9"
+      },
+      "split": "VALIDATION",
+      "steps": 28,
+      "truth": {
+        "bytes": 17697,
+        "path": "VALIDATION/C01/v02/TRUTH.json",
+        "sha256": "4de236c66ef0285f47fc542958ebdf687929d9ebf3d1edb572735337a26e7e0e"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "9bba91ebbc454a171729db12437334e85d266ad51d305f6246b1a67a09914e78",
+      "category": "CONSUMPTION",
+      "family_id": "C02",
+      "input": {
+        "bytes": 12857,
+        "path": "VALIDATION/C02/v01/INPUT.json",
+        "sha256": "c4aa6a05b2379c6ca215aa02c54f712e742fb60b8de9b56f5d66bd5334999757"
+      },
+      "mechanism_topology_sha256": "bdae0d826281dbda6e27f4d4f1f18b29546063e685f59d2cf650e1f21f240029",
+      "name": "消费不能消费目标产权",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7540,
+        "path": "VALIDATION/C02/v01/SCHEDULE.json",
+        "sha256": "b70013487619b1ec7cff145534db58114cb6b27277b54708997461e33bdcc300"
+      },
+      "split": "VALIDATION",
+      "steps": 22,
+      "truth": {
+        "bytes": 10935,
+        "path": "VALIDATION/C02/v01/TRUTH.json",
+        "sha256": "93a1445e53d8f3edcc03e0c827a1e9bc25aaa5287a1d410625c85fe096a7793b"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "9bba91ebbc454a171729db12437334e85d266ad51d305f6246b1a67a09914e78",
+      "category": "CONSUMPTION",
+      "family_id": "C02",
+      "input": {
+        "bytes": 12857,
+        "path": "VALIDATION/C02/v02/INPUT.json",
+        "sha256": "10f89a37c4214a5224d9e620aec8f2a8a8b473a2ec32ad81c6691721074e5fd0"
+      },
+      "mechanism_topology_sha256": "bdae0d826281dbda6e27f4d4f1f18b29546063e685f59d2cf650e1f21f240029",
+      "name": "消费不能消费目标产权",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7540,
+        "path": "VALIDATION/C02/v02/SCHEDULE.json",
+        "sha256": "b331d7536bfec567ef1ba3647bc332ef0a2643be22a2a768e3c3d4353932d9b8"
+      },
+      "split": "VALIDATION",
+      "steps": 22,
+      "truth": {
+        "bytes": 10935,
+        "path": "VALIDATION/C02/v02/TRUTH.json",
+        "sha256": "d26856cfe7df62c5f918796b54b23a19b5e0ead3327c7d8f1fb42e4ad165ba97"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "7cb18bc5082be93cf4af15b79b8ed5001dd04ba36c483894327d5a3b169b37b5",
+      "category": "CONSUMPTION",
+      "family_id": "C03",
+      "input": {
+        "bytes": 18640,
+        "path": "VALIDATION/C03/v01/INPUT.json",
+        "sha256": "f8a81689b55ba05fef3c8e0e00730d498d638bec22c735f627bf11e336cdccbe"
+      },
+      "mechanism_topology_sha256": "e53d755aa05dcd57a8e68bcb99094ffb19ba591f137f2568d66a2d390336b7ef",
+      "name": "T1在途期间第二消费",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9727,
+        "path": "VALIDATION/C03/v01/SCHEDULE.json",
+        "sha256": "168aa72b07da0cd05e11c6cdef64d6a2864dae38cbc5f4e913565148b7984f99"
+      },
+      "split": "VALIDATION",
+      "steps": 28,
+      "truth": {
+        "bytes": 16953,
+        "path": "VALIDATION/C03/v01/TRUTH.json",
+        "sha256": "25766fb935c9e92ab9520ee1d6ff0a174ae1671ee89fb4326c9cf743ce564390"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "7cb18bc5082be93cf4af15b79b8ed5001dd04ba36c483894327d5a3b169b37b5",
+      "category": "CONSUMPTION",
+      "family_id": "C03",
+      "input": {
+        "bytes": 18640,
+        "path": "VALIDATION/C03/v02/INPUT.json",
+        "sha256": "3e9303176a4dea2d5d87bb72a4504aa4e10c8e0b8020c8c70f33fad97186e853"
+      },
+      "mechanism_topology_sha256": "e53d755aa05dcd57a8e68bcb99094ffb19ba591f137f2568d66a2d390336b7ef",
+      "name": "T1在途期间第二消费",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9727,
+        "path": "VALIDATION/C03/v02/SCHEDULE.json",
+        "sha256": "5ad8d6001531e7a3a126238e4277773f5a774718b6fb389e4e146d74aecb6d3d"
+      },
+      "split": "VALIDATION",
+      "steps": 28,
+      "truth": {
+        "bytes": 16953,
+        "path": "VALIDATION/C03/v02/TRUTH.json",
+        "sha256": "25766fb935c9e92ab9520ee1d6ff0a174ae1671ee89fb4326c9cf743ce564390"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "4071bd0e3e820ff6bc68200f8b00c9af76aec69aecca8cf3d69cd63851122243",
+      "category": "CONSUMPTION",
+      "family_id": "C04",
+      "input": {
+        "bytes": 12489,
+        "path": "VALIDATION/C04/v01/INPUT.json",
+        "sha256": "79a52391a463b1fc2000ae455a3fa48ebe408f244f982ff4811a0b50335ff9e6"
+      },
+      "mechanism_topology_sha256": "8bdebbfd8314d6879c31ad93c27899e4d553d92ece92a5f6d70ac1163f6f9384",
+      "name": "收入部分消费后目标只用剩余源分",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7279,
+        "path": "VALIDATION/C04/v01/SCHEDULE.json",
+        "sha256": "76e11e4692217f19e3cf27fd0d0af83772f3ae3a14e38a1a7c11fe94638bf885"
+      },
+      "split": "VALIDATION",
+      "steps": 21,
+      "truth": {
+        "bytes": 10770,
+        "path": "VALIDATION/C04/v01/TRUTH.json",
+        "sha256": "0643df69c35160c2c0c9e4e624aa01024ad2a3be3ed29368f527422098d218f5"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "4071bd0e3e820ff6bc68200f8b00c9af76aec69aecca8cf3d69cd63851122243",
+      "category": "CONSUMPTION",
+      "family_id": "C04",
+      "input": {
+        "bytes": 12489,
+        "path": "VALIDATION/C04/v02/INPUT.json",
+        "sha256": "66112a903e388ad87ba5e5325614e7f82179f4f07f58a6f4d0f8c1944245bab5"
+      },
+      "mechanism_topology_sha256": "8bdebbfd8314d6879c31ad93c27899e4d553d92ece92a5f6d70ac1163f6f9384",
+      "name": "收入部分消费后目标只用剩余源分",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7279,
+        "path": "VALIDATION/C04/v02/SCHEDULE.json",
+        "sha256": "540de22f1bdcb737425c1ac023c23ccbd8ac55b3d3aa80942b32bfe35412ac58"
+      },
+      "split": "VALIDATION",
+      "steps": 21,
+      "truth": {
+        "bytes": 10770,
+        "path": "VALIDATION/C04/v02/TRUTH.json",
+        "sha256": "893c6c9a3c477068998d0359df5f0cd90486efc0bc1d23fb5fafad4f2c23af22"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "75e0a389bcf5a36afd1f3084132a74eda90b031b12a0e42ba16c5743c87b1b27",
+      "category": "T1_RECOVERY",
+      "family_id": "T01",
+      "input": {
+        "bytes": 19158,
+        "path": "VALIDATION/T01/v01/INPUT.json",
+        "sha256": "7f86a7c9f61bf92b4a7e7f48165bde5d792213239c6bbc768af99f704f88981e"
+      },
+      "mechanism_topology_sha256": "04525392559f7e19e1b4a00f11658f4583219de731f81f4c2e9132a50f0f3ecc",
+      "name": "当天缺口不可把T1当现金",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9931,
+        "path": "VALIDATION/T01/v01/SCHEDULE.json",
+        "sha256": "0f5ec12026e7a6d30fd942fd7a8816475841ee74531314c7e847f3afbe5c7da4"
+      },
+      "split": "VALIDATION",
+      "steps": 28,
+      "truth": {
+        "bytes": 18472,
+        "path": "VALIDATION/T01/v01/TRUTH.json",
+        "sha256": "500c1ec44279f180b90846871118b919f90afcc25bee23bb2da9c72c268cea1b"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "75e0a389bcf5a36afd1f3084132a74eda90b031b12a0e42ba16c5743c87b1b27",
+      "category": "T1_RECOVERY",
+      "family_id": "T01",
+      "input": {
+        "bytes": 19158,
+        "path": "VALIDATION/T01/v02/INPUT.json",
+        "sha256": "99f8ae750d943efc6191b91b76bbfcbd87c07661a7fe2a4cf9ab6e95dcb24c26"
+      },
+      "mechanism_topology_sha256": "04525392559f7e19e1b4a00f11658f4583219de731f81f4c2e9132a50f0f3ecc",
+      "name": "当天缺口不可把T1当现金",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9931,
+        "path": "VALIDATION/T01/v02/SCHEDULE.json",
+        "sha256": "e1b5a9de7644f936066156cf0fde6d4fbfcf75906d900f3af4c7d2ab47c9eb8f"
+      },
+      "split": "VALIDATION",
+      "steps": 28,
+      "truth": {
+        "bytes": 18472,
+        "path": "VALIDATION/T01/v02/TRUTH.json",
+        "sha256": "96c28ecc807d604ed89e6dd2bbc06d5ab73e1939635a102ab15d8bd6ede32e75"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "eb2aa39f04ceaab4b8c0e0e0abf2bb2870a6425b67863311c3d3139fdbdab739",
+      "category": "T1_RECOVERY",
+      "family_id": "T02",
+      "input": {
+        "bytes": 17922,
+        "path": "VALIDATION/T02/v01/INPUT.json",
+        "sha256": "2afa74675e90f6887fe146170074d9c3ce0737dff6922fab063035b9e401392b"
+      },
+      "mechanism_topology_sha256": "a6ed0d720cdedf62d0c79933a60f2a7a02cc63f06683e912fec23a6b6d00a5b1",
+      "name": "T1原键跨日查询",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9749,
+        "path": "VALIDATION/T02/v01/SCHEDULE.json",
+        "sha256": "6e6970c9dcbf33009b641dcb69862eba86fa1f234f0fd764b89a6c04116b932e"
+      },
+      "split": "VALIDATION",
+      "steps": 28,
+      "truth": {
+        "bytes": 16634,
+        "path": "VALIDATION/T02/v01/TRUTH.json",
+        "sha256": "f3275b354e73001e75c40df5dabcb30dfbe20dadbdf7718a61312edd2096e973"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "eb2aa39f04ceaab4b8c0e0e0abf2bb2870a6425b67863311c3d3139fdbdab739",
+      "category": "T1_RECOVERY",
+      "family_id": "T02",
+      "input": {
+        "bytes": 17922,
+        "path": "VALIDATION/T02/v02/INPUT.json",
+        "sha256": "f8a498ee04b99472b0052c615bf808ef191066361858faf1208fd75be0a9ea25"
+      },
+      "mechanism_topology_sha256": "a6ed0d720cdedf62d0c79933a60f2a7a02cc63f06683e912fec23a6b6d00a5b1",
+      "name": "T1原键跨日查询",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9749,
+        "path": "VALIDATION/T02/v02/SCHEDULE.json",
+        "sha256": "180efc7600216d3c6638943c2f75cfb058ab33eacf370cc027bbdd1bc4a4411f"
+      },
+      "split": "VALIDATION",
+      "steps": 28,
+      "truth": {
+        "bytes": 16634,
+        "path": "VALIDATION/T02/v02/TRUTH.json",
+        "sha256": "f3275b354e73001e75c40df5dabcb30dfbe20dadbdf7718a61312edd2096e973"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "ed330393a27e2fa51e3a142577deb80befaaa82b749f4ffb7b21a5fb01352edd",
+      "category": "T1_RECOVERY",
+      "family_id": "T03",
+      "input": {
+        "bytes": 18376,
+        "path": "VALIDATION/T03/v01/INPUT.json",
+        "sha256": "209155fb7f45d1b1763a1039036df16afe14247786fe519dfa51238b542d6711"
+      },
+      "mechanism_topology_sha256": "00a6d0e3f99c4b9d1cc85ae1f36a77f8b88eda146222c6bf4a8f4957b7524bb2",
+      "name": "T1受理后撤权保原协调",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9721,
+        "path": "VALIDATION/T03/v01/SCHEDULE.json",
+        "sha256": "81a61cee7e4642b4ac8f7fce66121bc0308bbcb39b06a3982c5bee711ff68ebc"
+      },
+      "split": "VALIDATION",
+      "steps": 28,
+      "truth": {
+        "bytes": 16926,
+        "path": "VALIDATION/T03/v01/TRUTH.json",
+        "sha256": "cdd0e7c9bc59b8120f3ff4180b4d0220d5b33a6f8bb1c1026adc852ba73cb3aa"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "ed330393a27e2fa51e3a142577deb80befaaa82b749f4ffb7b21a5fb01352edd",
+      "category": "T1_RECOVERY",
+      "family_id": "T03",
+      "input": {
+        "bytes": 18376,
+        "path": "VALIDATION/T03/v02/INPUT.json",
+        "sha256": "d6751818094d4e97b7cf1960feec5eddbb33ff1d10e56585ed8754dd0b223c3d"
+      },
+      "mechanism_topology_sha256": "00a6d0e3f99c4b9d1cc85ae1f36a77f8b88eda146222c6bf4a8f4957b7524bb2",
+      "name": "T1受理后撤权保原协调",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9721,
+        "path": "VALIDATION/T03/v02/SCHEDULE.json",
+        "sha256": "79f0f2b38aef3a2fc9c8bdec14c15bfeaca122e00165c6a8408b51ba83e5f751"
+      },
+      "split": "VALIDATION",
+      "steps": 28,
+      "truth": {
+        "bytes": 16926,
+        "path": "VALIDATION/T03/v02/TRUTH.json",
+        "sha256": "cdd0e7c9bc59b8120f3ff4180b4d0220d5b33a6f8bb1c1026adc852ba73cb3aa"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "9e6cf0264a58dcdfedd800aedba8f4a2f76c6da8ad37ccd47bd227a01f162344",
+      "category": "FIXED_LOCK",
+      "family_id": "L01",
+      "input": {
+        "bytes": 9306,
+        "path": "VALIDATION/L01/v01/INPUT.json",
+        "sha256": "d4b6b6d6797a76f3c80cee4df0f4a5d7276baa0d8777b8b4d233ec0e8011f569"
+      },
+      "mechanism_topology_sha256": "f182375f24c6734445f2a1a52ea45d7ef60f21cf7c6d058e7aef85d5d26fa878",
+      "name": "7天要用钱不能锁30天",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 6456,
+        "path": "VALIDATION/L01/v01/SCHEDULE.json",
+        "sha256": "d8f27c8ef9d3f1c6768c3472dfb04ab84a09437991ef48386d2b50cf40a2bb1f"
+      },
+      "split": "VALIDATION",
+      "steps": 18,
+      "truth": {
+        "bytes": 9654,
+        "path": "VALIDATION/L01/v01/TRUTH.json",
+        "sha256": "7d5e0838bbe328e3dd446e2c0b951c7cdd81e8f3926131e9c155c9bc880d29a2"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "9e6cf0264a58dcdfedd800aedba8f4a2f76c6da8ad37ccd47bd227a01f162344",
+      "category": "FIXED_LOCK",
+      "family_id": "L01",
+      "input": {
+        "bytes": 9306,
+        "path": "VALIDATION/L01/v02/INPUT.json",
+        "sha256": "e6df06bd7f2be85775f09ee9c54ff966aedd2818f24dd21a546a17ce37e4e84b"
+      },
+      "mechanism_topology_sha256": "f182375f24c6734445f2a1a52ea45d7ef60f21cf7c6d058e7aef85d5d26fa878",
+      "name": "7天要用钱不能锁30天",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 6456,
+        "path": "VALIDATION/L01/v02/SCHEDULE.json",
+        "sha256": "7fce20a499ff79aa7600d38f08b2ad52535c87d6d5133852d7ac3a698b22b114"
+      },
+      "split": "VALIDATION",
+      "steps": 18,
+      "truth": {
+        "bytes": 9654,
+        "path": "VALIDATION/L01/v02/TRUTH.json",
+        "sha256": "7d5e0838bbe328e3dd446e2c0b951c7cdd81e8f3926131e9c155c9bc880d29a2"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "8e8374ad3d99a423e35dd377b096755fdd128a93634fc7b223392e9ccfbcb5a3",
+      "category": "FIXED_LOCK",
+      "family_id": "L02",
+      "input": {
+        "bytes": 11093,
+        "path": "VALIDATION/L02/v01/INPUT.json",
+        "sha256": "37e09cd35819298e3bd88a090afcf84ea7bd613fb2ae21acdaa70aa4b8e31817"
+      },
+      "mechanism_topology_sha256": "5023750a780694cf840c321ef6dad6d1b9047bbe995a290ee29cc107af7b3375",
+      "name": "定存到期日仍核精确时点",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7204,
+        "path": "VALIDATION/L02/v01/SCHEDULE.json",
+        "sha256": "b9a19f565af5cff25dbb9c907847849aadd3be5d457715afaf75e9ff4749b698"
+      },
+      "split": "VALIDATION",
+      "steps": 20,
+      "truth": {
+        "bytes": 11504,
+        "path": "VALIDATION/L02/v01/TRUTH.json",
+        "sha256": "7bc9a30ce292ac66ba8eb918800ade4dee5a9f6531dce9a497bcc3e81a04146c"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "8e8374ad3d99a423e35dd377b096755fdd128a93634fc7b223392e9ccfbcb5a3",
+      "category": "FIXED_LOCK",
+      "family_id": "L02",
+      "input": {
+        "bytes": 11093,
+        "path": "VALIDATION/L02/v02/INPUT.json",
+        "sha256": "409e38729591fe5ce0164199814e6eba9c8945b28e4e53d9bf12e230fbae918e"
+      },
+      "mechanism_topology_sha256": "5023750a780694cf840c321ef6dad6d1b9047bbe995a290ee29cc107af7b3375",
+      "name": "定存到期日仍核精确时点",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7204,
+        "path": "VALIDATION/L02/v02/SCHEDULE.json",
+        "sha256": "f1aaf99de7d6b528603ee5e5a79165879779c66a1a8ea6d940b2b48841fd3241"
+      },
+      "split": "VALIDATION",
+      "steps": 20,
+      "truth": {
+        "bytes": 11504,
+        "path": "VALIDATION/L02/v02/TRUTH.json",
+        "sha256": "27c5a0e67b34872288f2a693d5df6ccb312c30d65fd99c0e8adf9bfeb64041a6"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "749bc7330ed65c649e18775854446b7d648ea8e8b5018dbc873da985b098af66",
+      "category": "FIXED_LOCK",
+      "family_id": "L03",
+      "input": {
+        "bytes": 19228,
+        "path": "VALIDATION/L03/v01/INPUT.json",
+        "sha256": "73b6d2e089af7be2b2c9ff20b8f9723f6d8499828d741f8dace515670a965fc2"
+      },
+      "mechanism_topology_sha256": "c4bf284bea1ffc7eced36ef4f18b8376f64ec8823bac77d83324dd5f1ed0aa90",
+      "name": "定存梯度绑定当前目标",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9707,
+        "path": "VALIDATION/L03/v01/SCHEDULE.json",
+        "sha256": "9faadfc6cd3ebcfe7cc06b25e13785e10e22432c7fa66f56db4f680ceb05265b"
+      },
+      "split": "VALIDATION",
+      "steps": 28,
+      "truth": {
+        "bytes": 15319,
+        "path": "VALIDATION/L03/v01/TRUTH.json",
+        "sha256": "1999bfcc70124bc2731984530938f9040c4c19e76f6d1004b28b902c35cc500d"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "749bc7330ed65c649e18775854446b7d648ea8e8b5018dbc873da985b098af66",
+      "category": "FIXED_LOCK",
+      "family_id": "L03",
+      "input": {
+        "bytes": 19228,
+        "path": "VALIDATION/L03/v02/INPUT.json",
+        "sha256": "c22dc95c9f57caf81f3b2257041e4516f539ddde3ee70ebfc810db55c215b7e3"
+      },
+      "mechanism_topology_sha256": "c4bf284bea1ffc7eced36ef4f18b8376f64ec8823bac77d83324dd5f1ed0aa90",
+      "name": "定存梯度绑定当前目标",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9707,
+        "path": "VALIDATION/L03/v02/SCHEDULE.json",
+        "sha256": "f1c1caf944df9618276bffc47c9c274de0d3927985af5555f4ab9c8253e9fa70"
+      },
+      "split": "VALIDATION",
+      "steps": 28,
+      "truth": {
+        "bytes": 15319,
+        "path": "VALIDATION/L03/v02/TRUTH.json",
+        "sha256": "614c66f3c53e29eaebfe4bd1c7ee57061195e5ad41bed6c940f7900ae1be7de7"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "341bf15213f633cbe67eb6b6eafea3b531e7cbdb2d069e2e9fce94d9234aa57b",
+      "category": "EARLY_WITHDRAWAL_LOSS",
+      "family_id": "E01",
+      "input": {
+        "bytes": 13922,
+        "path": "VALIDATION/E01/v01/INPUT.json",
+        "sha256": "cc8cd7dc34cee51335ff5ad37bc5c2477dc37e988bdf3c18a07fcd899b027347"
+      },
+      "mechanism_topology_sha256": "9bd45e635018f036d63e2f3f15e71eb03caf1944bc921b30b0c686b093d52b94",
+      "name": "损失早退无单次确认",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7987,
+        "path": "VALIDATION/E01/v01/SCHEDULE.json",
+        "sha256": "44f50d7d23ef1702612a62e35a6bcddead990cb68cf12d2c15b03b3d578a821e"
+      },
+      "split": "VALIDATION",
+      "steps": 23,
+      "truth": {
+        "bytes": 11946,
+        "path": "VALIDATION/E01/v01/TRUTH.json",
+        "sha256": "b71df3df75fa32e69ed3d9c13ae37b37b42572b7c14ceb2e861dc246388129c3"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "341bf15213f633cbe67eb6b6eafea3b531e7cbdb2d069e2e9fce94d9234aa57b",
+      "category": "EARLY_WITHDRAWAL_LOSS",
+      "family_id": "E01",
+      "input": {
+        "bytes": 13922,
+        "path": "VALIDATION/E01/v02/INPUT.json",
+        "sha256": "458dee53b295fa34ba73d4cd3edab9e4e033d2376c57258524ef6c184afcf9f8"
+      },
+      "mechanism_topology_sha256": "9bd45e635018f036d63e2f3f15e71eb03caf1944bc921b30b0c686b093d52b94",
+      "name": "损失早退无单次确认",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7987,
+        "path": "VALIDATION/E01/v02/SCHEDULE.json",
+        "sha256": "1565a413f3cad7559f846a85cb04278e3423f852d4221c8a74684e51c9b6c95d"
+      },
+      "split": "VALIDATION",
+      "steps": 23,
+      "truth": {
+        "bytes": 11946,
+        "path": "VALIDATION/E01/v02/TRUTH.json",
+        "sha256": "b71df3df75fa32e69ed3d9c13ae37b37b42572b7c14ceb2e861dc246388129c3"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "f1f6bc9b6ba50c702c5d06fcad8b173dac822b37814b86d1894e9075c0c5c6d4",
+      "category": "EARLY_WITHDRAWAL_LOSS",
+      "family_id": "E02",
+      "input": {
+        "bytes": 14997,
+        "path": "VALIDATION/E02/v01/INPUT.json",
+        "sha256": "42c101f2541a55b3d95a34dbd6d73b04edfe845814f91593f1506d056f982920"
+      },
+      "mechanism_topology_sha256": "213b422eb57a0bf689ec9c9328302c93c5cea0171a7c3791be2fc50481ae74f2",
+      "name": "确认后报价窗口过期",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8822,
+        "path": "VALIDATION/E02/v01/SCHEDULE.json",
+        "sha256": "604ac97f2d7945ba97ece5dda4a7264630eaad96e619c5b221695995e3793f82"
+      },
+      "split": "VALIDATION",
+      "steps": 26,
+      "truth": {
+        "bytes": 11960,
+        "path": "VALIDATION/E02/v01/TRUTH.json",
+        "sha256": "93398f1806550647e74f3f70c351ceb04b91504aa32d83d6ad8a8549dbc47287"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "f1f6bc9b6ba50c702c5d06fcad8b173dac822b37814b86d1894e9075c0c5c6d4",
+      "category": "EARLY_WITHDRAWAL_LOSS",
+      "family_id": "E02",
+      "input": {
+        "bytes": 14997,
+        "path": "VALIDATION/E02/v02/INPUT.json",
+        "sha256": "fcd9237b0fcd85ae2a89b546287646eaef2f6b4917b4763087316b0485a9991a"
+      },
+      "mechanism_topology_sha256": "213b422eb57a0bf689ec9c9328302c93c5cea0171a7c3791be2fc50481ae74f2",
+      "name": "确认后报价窗口过期",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 8822,
+        "path": "VALIDATION/E02/v02/SCHEDULE.json",
+        "sha256": "965b618d3b27c55ebbf27226742d84fe763990a583d4bee7f0612559cf60ea71"
+      },
+      "split": "VALIDATION",
+      "steps": 26,
+      "truth": {
+        "bytes": 11960,
+        "path": "VALIDATION/E02/v02/TRUTH.json",
+        "sha256": "93398f1806550647e74f3f70c351ceb04b91504aa32d83d6ad8a8549dbc47287"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "c73c8e368439287500c4af40eec8d69c81bdc1e04c2e3752e66cf030244cf35f",
+      "category": "EARLY_WITHDRAWAL_LOSS",
+      "family_id": "E03",
+      "input": {
+        "bytes": 15543,
+        "path": "VALIDATION/E03/v01/INPUT.json",
+        "sha256": "2ebc581bf13a8917591cdd68c5cd42093f67fd716fde5c58a5b3839ca23e515d"
+      },
+      "mechanism_topology_sha256": "0c7afde2d488d889d127449ece779684a96bab55cfafb4f987fe093b15d0feb0",
+      "name": "新quote不继承旧effect同意",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9075,
+        "path": "VALIDATION/E03/v01/SCHEDULE.json",
+        "sha256": "e6262c7e6869d79b530e4697fac79c8ef70d034030e1844edd680b062540fefa"
+      },
+      "split": "VALIDATION",
+      "steps": 27,
+      "truth": {
+        "bytes": 12515,
+        "path": "VALIDATION/E03/v01/TRUTH.json",
+        "sha256": "ef09173a2408cad7524ef5a2af84433ed78c25109aeaf7566400fb9289766d5f"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "c73c8e368439287500c4af40eec8d69c81bdc1e04c2e3752e66cf030244cf35f",
+      "category": "EARLY_WITHDRAWAL_LOSS",
+      "family_id": "E03",
+      "input": {
+        "bytes": 15543,
+        "path": "VALIDATION/E03/v02/INPUT.json",
+        "sha256": "87a574c7ef61d3b875ca62b003cd5f6c919ea6fb6054ec67db27c291fa10b573"
+      },
+      "mechanism_topology_sha256": "0c7afde2d488d889d127449ece779684a96bab55cfafb4f987fe093b15d0feb0",
+      "name": "新quote不继承旧effect同意",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9075,
+        "path": "VALIDATION/E03/v02/SCHEDULE.json",
+        "sha256": "0ff59983e9182233393b5dcb97937ec20076c11d575e5b7acf4b2eaaa814c694"
+      },
+      "split": "VALIDATION",
+      "steps": 27,
+      "truth": {
+        "bytes": 12515,
+        "path": "VALIDATION/E03/v02/TRUTH.json",
+        "sha256": "ef09173a2408cad7524ef5a2af84433ed78c25109aeaf7566400fb9289766d5f"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "9e859321906feef240260c69daf1903520b8de68fb6840e10bfa37c07c6dbc08",
+      "category": "NEW_PAYEE",
+      "family_id": "P01",
+      "input": {
+        "bytes": 5930,
+        "path": "VALIDATION/P01/v01/INPUT.json",
+        "sha256": "af4fdeda13bebe0eeca052151e98a354d06b9d66b2a639d8731c2459ca21c031"
+      },
+      "mechanism_topology_sha256": "38b4a7e95d14abdc550c500d513d04e94e3af8b852622fa09109e00a5ed4605a",
+      "name": "未知收款来源不得靠用户名称造事实",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 4715,
+        "path": "VALIDATION/P01/v01/SCHEDULE.json",
+        "sha256": "fc08e4ae5827d7d2bf5acaa1496a51dd34647db9129530e84bc9a4bdbda74e70"
+      },
+      "split": "VALIDATION",
+      "steps": 12,
+      "truth": {
+        "bytes": 9208,
+        "path": "VALIDATION/P01/v01/TRUTH.json",
+        "sha256": "a4248b8892bbb6de44d28b4adb99242781c15fb807894035267955a3ea1f4723"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "9e859321906feef240260c69daf1903520b8de68fb6840e10bfa37c07c6dbc08",
+      "category": "NEW_PAYEE",
+      "family_id": "P01",
+      "input": {
+        "bytes": 5930,
+        "path": "VALIDATION/P01/v02/INPUT.json",
+        "sha256": "87b56070e60aacd1b63f637b9aeb249973ff9eeb7cc40b872ab5c00883e95de0"
+      },
+      "mechanism_topology_sha256": "38b4a7e95d14abdc550c500d513d04e94e3af8b852622fa09109e00a5ed4605a",
+      "name": "未知收款来源不得靠用户名称造事实",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 4715,
+        "path": "VALIDATION/P01/v02/SCHEDULE.json",
+        "sha256": "a1095ccb63b0a7c1426d8b73cd2163b3c76a4be59537eec59ae4e9342e2b7c92"
+      },
+      "split": "VALIDATION",
+      "steps": 12,
+      "truth": {
+        "bytes": 9208,
+        "path": "VALIDATION/P01/v02/TRUTH.json",
+        "sha256": "cbb7d02fa1ab9fb2a017512978736dd876644e3ad58ff75838eaa4091ae45c39"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "9d57aee3735d51c7af206448659fcb21b56af1cf7f409b573a7aa2c39497902e",
+      "category": "NEW_PAYEE",
+      "family_id": "P02",
+      "input": {
+        "bytes": 17779,
+        "path": "VALIDATION/P02/v01/INPUT.json",
+        "sha256": "268bc883b830607cfd5568d2e2ba4f1b44eb78dd0b418ebf3eccd7e0da933c5f"
+      },
+      "mechanism_topology_sha256": "b33c856e5b85c6d27e9efeaaf8f91088480e69b79423bc0d1a0a0afdb8c22c4f",
+      "name": "USER签名发起关系后逐次ASK",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 11266,
+        "path": "VALIDATION/P02/v01/SCHEDULE.json",
+        "sha256": "ab2b3d7f23ea752b90122b15a67a86a35f20b368e1722ebf6bfb1337314b4a4e"
+      },
+      "split": "VALIDATION",
+      "steps": 34,
+      "truth": {
+        "bytes": 11843,
+        "path": "VALIDATION/P02/v01/TRUTH.json",
+        "sha256": "98169a2cfa2ea6c641dc81c8ec9d79ed8b2648b1d73ee9087e7f5f84810542c3"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "9d57aee3735d51c7af206448659fcb21b56af1cf7f409b573a7aa2c39497902e",
+      "category": "NEW_PAYEE",
+      "family_id": "P02",
+      "input": {
+        "bytes": 17779,
+        "path": "VALIDATION/P02/v02/INPUT.json",
+        "sha256": "224fa844fc22290111ef60de9d82676b9e3997f7979c6e74f149526f3d9bbbbd"
+      },
+      "mechanism_topology_sha256": "b33c856e5b85c6d27e9efeaaf8f91088480e69b79423bc0d1a0a0afdb8c22c4f",
+      "name": "USER签名发起关系后逐次ASK",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 11266,
+        "path": "VALIDATION/P02/v02/SCHEDULE.json",
+        "sha256": "e0014001607e02ba5465ba52ae041ff84a7abc5d3e700dbaf90c59c510bd679c"
+      },
+      "split": "VALIDATION",
+      "steps": 34,
+      "truth": {
+        "bytes": 11843,
+        "path": "VALIDATION/P02/v02/TRUTH.json",
+        "sha256": "86d5692cb61425db5f8b2e5db238876996749a837e88b257765c2da2aa328736"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "9e651c6e4afbc16effdfc66c5ba780bdefa90073b513be5ec02e93626f46ad7b",
+      "category": "NEW_PAYEE",
+      "family_id": "P03",
+      "input": {
+        "bytes": 19763,
+        "path": "VALIDATION/P03/v01/INPUT.json",
+        "sha256": "ab35ded5cb6d0b75fb405c6cee1dd6a0e423322cd2d076a90f5f1e964aa619e2"
+      },
+      "mechanism_topology_sha256": "5fe5f56a322ffdb49291010286833c822f7fd2cac0e42a9d1be741cf300da384",
+      "name": "首付款后下一月继续同原收款身份",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 12562,
+        "path": "VALIDATION/P03/v01/SCHEDULE.json",
+        "sha256": "e0dd90fb1c28b077cc80aa3eb6c1e66e6cc1f30c5981ad3e39e46f3c5f69ff99"
+      },
+      "split": "VALIDATION",
+      "steps": 38,
+      "truth": {
+        "bytes": 12834,
+        "path": "VALIDATION/P03/v01/TRUTH.json",
+        "sha256": "79e71d41927c2f78ebb6f888f7798eba2e1aece35c3b863092a742e8af8f5c01"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "9e651c6e4afbc16effdfc66c5ba780bdefa90073b513be5ec02e93626f46ad7b",
+      "category": "NEW_PAYEE",
+      "family_id": "P03",
+      "input": {
+        "bytes": 19763,
+        "path": "VALIDATION/P03/v02/INPUT.json",
+        "sha256": "d76ac16602a12b85e25f956c3c5d3e3c32112b69e0f079ae37e2130fbcce9b91"
+      },
+      "mechanism_topology_sha256": "5fe5f56a322ffdb49291010286833c822f7fd2cac0e42a9d1be741cf300da384",
+      "name": "首付款后下一月继续同原收款身份",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 12562,
+        "path": "VALIDATION/P03/v02/SCHEDULE.json",
+        "sha256": "f3197fabd224ebd0d4826cea67f80c04a9e6d1efef3ee0083492072dda95f747"
+      },
+      "split": "VALIDATION",
+      "steps": 38,
+      "truth": {
+        "bytes": 12834,
+        "path": "VALIDATION/P03/v02/TRUTH.json",
+        "sha256": "e1d62687781204054b36d52786b12ac780a3bb1fd0ca08342f40de14b52656cd"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "b4e1b9d08859308b7c4a0c8888c3c07ff65466f080c422bf33e0d6f6ac837685",
+      "category": "AMBIGUITY",
+      "family_id": "A01",
+      "input": {
+        "bytes": 7394,
+        "path": "VALIDATION/A01/v01/INPUT.json",
+        "sha256": "3a5cfe905668037b122b446826e748dec465e5528e2f1ec3ae82e9aa4c2bac6f"
+      },
+      "mechanism_topology_sha256": "8322b9588a9636529bac6d68cc95bb16d4dabf7dcaf052ef63946c08ba9f5e8b",
+      "name": "转账目的地歧义先拒后澄清",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 5678,
+        "path": "VALIDATION/A01/v01/SCHEDULE.json",
+        "sha256": "16075c8b553fa64ef920803b6b0ebf1cc0dc9b0724c45555110b332a3b6c081d"
+      },
+      "split": "VALIDATION",
+      "steps": 16,
+      "truth": {
+        "bytes": 9213,
+        "path": "VALIDATION/A01/v01/TRUTH.json",
+        "sha256": "276e5cf5433036e1b6fe0b42497a87d33a629e64742f3b9dd748ae5ba8555c8a"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "b4e1b9d08859308b7c4a0c8888c3c07ff65466f080c422bf33e0d6f6ac837685",
+      "category": "AMBIGUITY",
+      "family_id": "A01",
+      "input": {
+        "bytes": 7394,
+        "path": "VALIDATION/A01/v02/INPUT.json",
+        "sha256": "ba3f58704101f7aea4b2e9c65f8745dd2adb87b53b1338f67e2a3d1f06072029"
+      },
+      "mechanism_topology_sha256": "8322b9588a9636529bac6d68cc95bb16d4dabf7dcaf052ef63946c08ba9f5e8b",
+      "name": "转账目的地歧义先拒后澄清",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 5678,
+        "path": "VALIDATION/A01/v02/SCHEDULE.json",
+        "sha256": "c839055a68d06105c2da7e800a96bc5ea429863973e03c23109822aa92d3ff7d"
+      },
+      "split": "VALIDATION",
+      "steps": 16,
+      "truth": {
+        "bytes": 9213,
+        "path": "VALIDATION/A01/v02/TRUTH.json",
+        "sha256": "b18650cda0ad07fee2a31e94025904122fc18c466cb2c29f0b95c05d411bc05e"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "686ea1da24b95ac773af08c2800679f5de399446211594353cfcfd8e2a4ec1c2",
+      "category": "AMBIGUITY",
+      "family_id": "A02",
+      "input": {
+        "bytes": 9912,
+        "path": "VALIDATION/A02/v01/INPUT.json",
+        "sha256": "f3f2495dc6a756ff05a1fc009d8717304103580bd9d1585a84f58c4a9e7c6360"
+      },
+      "mechanism_topology_sha256": "1a0efe96b654eb0bd58b59ffc3230b902ad0519f381bf849d370e978b426c228",
+      "name": "金额世界问答后fresh动作",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 6242,
+        "path": "VALIDATION/A02/v01/SCHEDULE.json",
+        "sha256": "4027e32e409c6614a38c598641625f2f9afddc5d2b20196bb689bb593e1c4c5b"
+      },
+      "split": "VALIDATION",
+      "steps": 18,
+      "truth": {
+        "bytes": 9092,
+        "path": "VALIDATION/A02/v01/TRUTH.json",
+        "sha256": "884fbc34bee08bdff7c65b9e8d8b9903ccc83edabc5b6d34b157a069df68b4a2"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "686ea1da24b95ac773af08c2800679f5de399446211594353cfcfd8e2a4ec1c2",
+      "category": "AMBIGUITY",
+      "family_id": "A02",
+      "input": {
+        "bytes": 9912,
+        "path": "VALIDATION/A02/v02/INPUT.json",
+        "sha256": "a92d8af8b5c858229286038cf41094159aca5e74ca5951132169c650126ec012"
+      },
+      "mechanism_topology_sha256": "1a0efe96b654eb0bd58b59ffc3230b902ad0519f381bf849d370e978b426c228",
+      "name": "金额世界问答后fresh动作",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 6242,
+        "path": "VALIDATION/A02/v02/SCHEDULE.json",
+        "sha256": "7905b925f4e55d2e929d7a2232eec5f789392561643f8e789502c8515386aa18"
+      },
+      "split": "VALIDATION",
+      "steps": 18,
+      "truth": {
+        "bytes": 9092,
+        "path": "VALIDATION/A02/v02/TRUTH.json",
+        "sha256": "678350d1f8cad79eff3f77ae3c4cccf748b0ce99489e89c2cfd6d42495f84ba7"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "733d9ea5c794c5b8d9c02b0e2899ee16ddcc2e57d8e2eccfe903cc7ef6f64cd5",
+      "category": "AMBIGUITY",
+      "family_id": "A03",
+      "input": {
+        "bytes": 9496,
+        "path": "VALIDATION/A03/v01/INPUT.json",
+        "sha256": "89f4877361f6aa9ad27facd7d16b02a78ee7f6795a3afc7f1211dc8314f3a59d"
+      },
+      "mechanism_topology_sha256": "fed136a357ec061a1f70d91152e2cc1484d1580f15c9f5cf59b323f42102edc9",
+      "name": "账户候选有受保护或零余额世界",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 5702,
+        "path": "VALIDATION/A03/v01/SCHEDULE.json",
+        "sha256": "9108654bf02b84a1733b6f6332d1b792c0833f43a7018a82757c954c2fac48c6"
+      },
+      "split": "VALIDATION",
+      "steps": 16,
+      "truth": {
+        "bytes": 8279,
+        "path": "VALIDATION/A03/v01/TRUTH.json",
+        "sha256": "99b775ba6cefa7b1da89d0bbb36ce2e6ed5618e45ee68c72e16986e46dfd58c6"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "733d9ea5c794c5b8d9c02b0e2899ee16ddcc2e57d8e2eccfe903cc7ef6f64cd5",
+      "category": "AMBIGUITY",
+      "family_id": "A03",
+      "input": {
+        "bytes": 9496,
+        "path": "VALIDATION/A03/v02/INPUT.json",
+        "sha256": "e12b3b4a34f2de4c412aa4144c498d6f5490712b1fa9f1f610debae96d43f570"
+      },
+      "mechanism_topology_sha256": "fed136a357ec061a1f70d91152e2cc1484d1580f15c9f5cf59b323f42102edc9",
+      "name": "账户候选有受保护或零余额世界",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 5702,
+        "path": "VALIDATION/A03/v02/SCHEDULE.json",
+        "sha256": "744ceaebbb1a48d7590ee0617bfd87c1d8f08187bdf4d57ba188d7d722f53469"
+      },
+      "split": "VALIDATION",
+      "steps": 16,
+      "truth": {
+        "bytes": 8279,
+        "path": "VALIDATION/A03/v02/TRUTH.json",
+        "sha256": "6ba724f164fb2b00759e7c732b28042de185fecf396accc2f463308304068337"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "0d842d6c3ed7a08b24836b6ac4444315a8805d711c5bc025fa84709044ef2aae",
+      "category": "VERSION_RACE",
+      "family_id": "V01",
+      "input": {
+        "bytes": 14019,
+        "path": "VALIDATION/V01/v01/INPUT.json",
+        "sha256": "cc9ab67bbc766e6f8de1e13b19970a064bb3c4a03a92311e4e063e2a886704dd"
+      },
+      "mechanism_topology_sha256": "146185cc5d9079943b970b2fd787b7a33968dc95365509dfde52ecc4a607a49b",
+      "name": "Full资产版本准备后变更",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7437,
+        "path": "VALIDATION/V01/v01/SCHEDULE.json",
+        "sha256": "5440609448f48524572b9bd952c1f09529cfd4e77e2921e14cbba8cb40ccb089"
+      },
+      "split": "VALIDATION",
+      "steps": 21,
+      "truth": {
+        "bytes": 12527,
+        "path": "VALIDATION/V01/v01/TRUTH.json",
+        "sha256": "13a9736ebf6d6e2c356d1c7d512f197f54dab192e1f4ec4449167ee983a75439"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "0d842d6c3ed7a08b24836b6ac4444315a8805d711c5bc025fa84709044ef2aae",
+      "category": "VERSION_RACE",
+      "family_id": "V01",
+      "input": {
+        "bytes": 14019,
+        "path": "VALIDATION/V01/v02/INPUT.json",
+        "sha256": "8661d016f4dd054f6d3a13e8aac61262ff1d63270ce89785c029984ddcd3168d"
+      },
+      "mechanism_topology_sha256": "146185cc5d9079943b970b2fd787b7a33968dc95365509dfde52ecc4a607a49b",
+      "name": "Full资产版本准备后变更",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7437,
+        "path": "VALIDATION/V01/v02/SCHEDULE.json",
+        "sha256": "43e7bfa4f296b2844276024185e520967164c436f582853bd05dfa9c1c031c92"
+      },
+      "split": "VALIDATION",
+      "steps": 21,
+      "truth": {
+        "bytes": 12527,
+        "path": "VALIDATION/V01/v02/TRUTH.json",
+        "sha256": "13a9736ebf6d6e2c356d1c7d512f197f54dab192e1f4ec4449167ee983a75439"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "b7e9d3ef0d244292308d7eac9f0547f969ef65f10bd1c0cf78b1718e69938981",
+      "category": "VERSION_RACE",
+      "family_id": "V02",
+      "input": {
+        "bytes": 18381,
+        "path": "VALIDATION/V02/v01/INPUT.json",
+        "sha256": "8912efd271791867dfe3746e5a0d32b6920df2ad6a966a1534f733ce69b8563c"
+      },
+      "mechanism_topology_sha256": "bc410334cce6901d4fbed933972489362d258d94e814608b45331f590b702422",
+      "name": "恢复准备后撤销不得新受理",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9731,
+        "path": "VALIDATION/V02/v01/SCHEDULE.json",
+        "sha256": "1297ff5a1fcb3881004b0e5e1afaab87e1a3acb24e8a6b3165a3981409f9d401"
+      },
+      "split": "VALIDATION",
+      "steps": 28,
+      "truth": {
+        "bytes": 16952,
+        "path": "VALIDATION/V02/v01/TRUTH.json",
+        "sha256": "207b351b358cfea6a28f20c1d82cd228ec64033df10a91d576d158e21e8229ba"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "b7e9d3ef0d244292308d7eac9f0547f969ef65f10bd1c0cf78b1718e69938981",
+      "category": "VERSION_RACE",
+      "family_id": "V02",
+      "input": {
+        "bytes": 18381,
+        "path": "VALIDATION/V02/v02/INPUT.json",
+        "sha256": "a094672ca8d47e5f1f63f8e25613f749dfea5ba3c6d3c232bacc819f8866ca52"
+      },
+      "mechanism_topology_sha256": "bc410334cce6901d4fbed933972489362d258d94e814608b45331f590b702422",
+      "name": "恢复准备后撤销不得新受理",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 9731,
+        "path": "VALIDATION/V02/v02/SCHEDULE.json",
+        "sha256": "266aee5d53e55d0dedffa86012eefd2768caba96112b3d6a7c58449d45802d4a"
+      },
+      "split": "VALIDATION",
+      "steps": 28,
+      "truth": {
+        "bytes": 16952,
+        "path": "VALIDATION/V02/v02/TRUTH.json",
+        "sha256": "207b351b358cfea6a28f20c1d82cd228ec64033df10a91d576d158e21e8229ba"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "26f5cdb8f4a60d0b131f82c927b0b54fdd2b40f26838ca398a85ba80c53e66cd",
+      "category": "VERSION_RACE",
+      "family_id": "V03",
+      "input": {
+        "bytes": 10043,
+        "path": "VALIDATION/V03/v01/INPUT.json",
+        "sha256": "045e38897cef8d9ed09bf3833777624ce3772585a2c9b986d1973dde089ecbf7"
+      },
+      "mechanism_topology_sha256": "83f62920c98d67d82b1745413351ee55f293b5d5feaba86d6598e5daa51a6423",
+      "name": "新入账问答刷新后旧答案拒绝",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 5962,
+        "path": "VALIDATION/V03/v01/SCHEDULE.json",
+        "sha256": "a3315d658fc63195d8df8bbb0ca29cb7dbd2c801175f5a56506c9d0916b2a3c0"
+      },
+      "split": "VALIDATION",
+      "steps": 17,
+      "truth": {
+        "bytes": 8287,
+        "path": "VALIDATION/V03/v01/TRUTH.json",
+        "sha256": "79eb2da6483316a5b66874ba02d9f95020f2d17577f683caa2286f781a88689f"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "26f5cdb8f4a60d0b131f82c927b0b54fdd2b40f26838ca398a85ba80c53e66cd",
+      "category": "VERSION_RACE",
+      "family_id": "V03",
+      "input": {
+        "bytes": 10043,
+        "path": "VALIDATION/V03/v02/INPUT.json",
+        "sha256": "510aa2f93144cc44491979273ed91343a52ad2a8784f9103efeab6b4d4d1e762"
+      },
+      "mechanism_topology_sha256": "83f62920c98d67d82b1745413351ee55f293b5d5feaba86d6598e5daa51a6423",
+      "name": "新入账问答刷新后旧答案拒绝",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 5962,
+        "path": "VALIDATION/V03/v02/SCHEDULE.json",
+        "sha256": "cd3d85d700d25cbfcc5c46626071c5c6d3373ccf58a1f97514c191dbcbc572bf"
+      },
+      "split": "VALIDATION",
+      "steps": 17,
+      "truth": {
+        "bytes": 8287,
+        "path": "VALIDATION/V03/v02/TRUTH.json",
+        "sha256": "ac67ba86c1ab089c83b2972790cb1d785f48ebb58feaab1ef3e57b94bdecc5df"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "27bc7b5914b505436e3ac9d60909ca57b67f3324c54df6337819d1902dbf14bb",
+      "category": "DUPLICATE_ACTION",
+      "family_id": "Q01",
+      "input": {
+        "bytes": 13185,
+        "path": "VALIDATION/Q01/v01/INPUT.json",
+        "sha256": "71d2a47e3c2611a31d2c8437eefb1f976be8b775621f7f0966100404ed9e63e5"
+      },
+      "mechanism_topology_sha256": "f454ab0e0cc9f433a8a594ebc3fb3364cdff737f1ae6ec6954078f76273dc7dc",
+      "name": "同组合批次两次执行",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7491,
+        "path": "VALIDATION/Q01/v01/SCHEDULE.json",
+        "sha256": "eac2acccf13f97d398d5f1163ff9f15eb3401bb155fb25bacbab8d82976565f9"
+      },
+      "split": "VALIDATION",
+      "steps": 21,
+      "truth": {
+        "bytes": 12454,
+        "path": "VALIDATION/Q01/v01/TRUTH.json",
+        "sha256": "a5b8d095af074e264a7a36bb1e15a14f86281ee7022330e9dba90a7df9e3b140"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "27bc7b5914b505436e3ac9d60909ca57b67f3324c54df6337819d1902dbf14bb",
+      "category": "DUPLICATE_ACTION",
+      "family_id": "Q01",
+      "input": {
+        "bytes": 13185,
+        "path": "VALIDATION/Q01/v02/INPUT.json",
+        "sha256": "a7f1e10777d71b638d63ecd4f3ded5ad0a2d39d44f54b91c5dadd43d551946f0"
+      },
+      "mechanism_topology_sha256": "f454ab0e0cc9f433a8a594ebc3fb3364cdff737f1ae6ec6954078f76273dc7dc",
+      "name": "同组合批次两次执行",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7491,
+        "path": "VALIDATION/Q01/v02/SCHEDULE.json",
+        "sha256": "75c5975ce873a2745024769d0ffd2d414b004ff149906881cad3d90d401fd0f8"
+      },
+      "split": "VALIDATION",
+      "steps": 21,
+      "truth": {
+        "bytes": 12454,
+        "path": "VALIDATION/Q01/v02/TRUTH.json",
+        "sha256": "a5b8d095af074e264a7a36bb1e15a14f86281ee7022330e9dba90a7df9e3b140"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "9ede67a37ac57bff2a36892d9c9cb2ef7898ab8eed2ad28fcbba2646b9607123",
+      "category": "DUPLICATE_ACTION",
+      "family_id": "Q02",
+      "input": {
+        "bytes": 18567,
+        "path": "VALIDATION/Q02/v01/INPUT.json",
+        "sha256": "96a32b35ea412a0c3646a9e7cf032017855580dbff1383726a3f5c99b7fb6ed7"
+      },
+      "mechanism_topology_sha256": "f7b220d558c0bae02ea1cc58589c4d34375c92ef9b2040b25b880e213efa284e",
+      "name": "同付款原键prepare与execute重放",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 11529,
+        "path": "VALIDATION/Q02/v01/SCHEDULE.json",
+        "sha256": "bd2a1b0041b4df11e087159d799038f37d3936c7dced9b76e5b9d689fab2a698"
+      },
+      "split": "VALIDATION",
+      "steps": 35,
+      "truth": {
+        "bytes": 12609,
+        "path": "VALIDATION/Q02/v01/TRUTH.json",
+        "sha256": "ea45c8556d7c098516fdad9f28c844e3c821268e815356635f386688baf2e076"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "9ede67a37ac57bff2a36892d9c9cb2ef7898ab8eed2ad28fcbba2646b9607123",
+      "category": "DUPLICATE_ACTION",
+      "family_id": "Q02",
+      "input": {
+        "bytes": 18567,
+        "path": "VALIDATION/Q02/v02/INPUT.json",
+        "sha256": "8ecd9dde2ee43d9941a8675defe58856efabd65507d3115896a3a2a1a3c4e9c2"
+      },
+      "mechanism_topology_sha256": "f7b220d558c0bae02ea1cc58589c4d34375c92ef9b2040b25b880e213efa284e",
+      "name": "同付款原键prepare与execute重放",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 11529,
+        "path": "VALIDATION/Q02/v02/SCHEDULE.json",
+        "sha256": "7947ef2133aee206661c1d73bb6ebf73b5a0ea931a9a6a0f2319995e436ecdee"
+      },
+      "split": "VALIDATION",
+      "steps": 35,
+      "truth": {
+        "bytes": 12609,
+        "path": "VALIDATION/Q02/v02/TRUTH.json",
+        "sha256": "6e809a8b8653e39d3176f17e4a297ed25de424079ff757ae5cb6beea0371640d"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "b3bd3e1497c2b50fcecdf855d39d9f303858441ad74ff2c449aba6b4466a3273",
+      "category": "UNKNOWN_EXECUTION",
+      "family_id": "U01",
+      "input": {
+        "bytes": 13199,
+        "path": "VALIDATION/U01/v01/INPUT.json",
+        "sha256": "f11bc378aca936fa03ea043683be7e94ccb5a83937809b91e6e7ad67ed04578c"
+      },
+      "mechanism_topology_sha256": "e4d8f915f54c5b2d81b6d59e0704e5786adf47b49c972e1e9777b44a43a1d0d9",
+      "name": "银行回执丢失保持组合身份",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7615,
+        "path": "VALIDATION/U01/v01/SCHEDULE.json",
+        "sha256": "71bf1622e9699de0434463914afbc86fc57888df9de8d6be10df4cfa776281fe"
+      },
+      "split": "VALIDATION",
+      "steps": 21,
+      "truth": {
+        "bytes": 13554,
+        "path": "VALIDATION/U01/v01/TRUTH.json",
+        "sha256": "e71647934c616e053b2a0bab4a0ae7a81cf7a060228abd26bb1d32afa2577d01"
+      },
+      "unsupported_full_fault_pairs": [
+        {
+          "fault": "DROP_BANK_RESPONSE",
+          "kind": "FULL_ASSET_EXECUTE",
+          "step_id": "purchase-execute"
+        }
+      ],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "b3bd3e1497c2b50fcecdf855d39d9f303858441ad74ff2c449aba6b4466a3273",
+      "category": "UNKNOWN_EXECUTION",
+      "family_id": "U01",
+      "input": {
+        "bytes": 13199,
+        "path": "VALIDATION/U01/v02/INPUT.json",
+        "sha256": "b2f548fc8135b216a8cf2be908df624fabe51358f8cabcc93a26544571a6a03a"
+      },
+      "mechanism_topology_sha256": "e4d8f915f54c5b2d81b6d59e0704e5786adf47b49c972e1e9777b44a43a1d0d9",
+      "name": "银行回执丢失保持组合身份",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7615,
+        "path": "VALIDATION/U01/v02/SCHEDULE.json",
+        "sha256": "24094aa6ac2eeaf9763b66b0f6b28bf9bf282cfd599932d567492596da2e5776"
+      },
+      "split": "VALIDATION",
+      "steps": 21,
+      "truth": {
+        "bytes": 13554,
+        "path": "VALIDATION/U01/v02/TRUTH.json",
+        "sha256": "e71647934c616e053b2a0bab4a0ae7a81cf7a060228abd26bb1d32afa2577d01"
+      },
+      "unsupported_full_fault_pairs": [
+        {
+          "fault": "DROP_BANK_RESPONSE",
+          "kind": "FULL_ASSET_EXECUTE",
+          "step_id": "purchase-execute"
+        }
+      ],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "b56b416a50c82d7542a37036729497505e1158be1b37ff48ceb07cecf2293644",
+      "category": "UNKNOWN_EXECUTION",
+      "family_id": "U02",
+      "input": {
+        "bytes": 12734,
+        "path": "VALIDATION/U02/v01/INPUT.json",
+        "sha256": "2986968236971136d7c6de03a5f89b8b748fc86715cb90d50ea6ec2a08d8bf32"
+      },
+      "mechanism_topology_sha256": "b5faaea572848473ce7579b5fd7051ab1e29adebc3b393105513fdc2eb500edc",
+      "name": "外部入账投影失败保两原经济腿",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7212,
+        "path": "VALIDATION/U02/v01/SCHEDULE.json",
+        "sha256": "54364d2a80107def559bda14438d9af1b03b6768fedd32beffe5e0b1f41d096e"
+      },
+      "split": "VALIDATION",
+      "steps": 20,
+      "truth": {
+        "bytes": 12328,
+        "path": "VALIDATION/U02/v01/TRUTH.json",
+        "sha256": "772c9363f69b4fad54207848aef958fab7c6f1039ec53fa29774f63893ba6317"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "b56b416a50c82d7542a37036729497505e1158be1b37ff48ceb07cecf2293644",
+      "category": "UNKNOWN_EXECUTION",
+      "family_id": "U02",
+      "input": {
+        "bytes": 12734,
+        "path": "VALIDATION/U02/v02/INPUT.json",
+        "sha256": "62e07b8660a5be50fa1619a5e05165fae6f8ac0312b4d01ff29e81a673d31494"
+      },
+      "mechanism_topology_sha256": "b5faaea572848473ce7579b5fd7051ab1e29adebc3b393105513fdc2eb500edc",
+      "name": "外部入账投影失败保两原经济腿",
+      "native_full_dispatch_missing": [],
+      "schedule": {
+        "bytes": 7212,
+        "path": "VALIDATION/U02/v02/SCHEDULE.json",
+        "sha256": "beab8a1de48cc23bb59673effce6f3ddf8b1a2413532b6353101a0a2d3aaf9b2"
+      },
+      "split": "VALIDATION",
+      "steps": 20,
+      "truth": {
+        "bytes": 12328,
+        "path": "VALIDATION/U02/v02/TRUTH.json",
+        "sha256": "1046468f1497fb811bd8fdb9c54854028c114b9f4f5fbd3d53685524ea977e4a"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "38031621e77010c2ae349f0c92d8584545bc42f0b1009849a0393cc2d7b94a5d",
+      "category": "AUDIT_TAMPER",
+      "family_id": "X01",
+      "input": {
+        "bytes": 12722,
+        "path": "VALIDATION/X01/v01/INPUT.json",
+        "sha256": "915eacab216ac778ab104c9531dac42919c8a71c04f9a4d9ab64cd0142793af7"
+      },
+      "mechanism_topology_sha256": "a7bcd542f3c16f7930a43e5b3262cc72ba451e6f8eee801d024cea8aad73b543",
+      "name": "原trace副本改金额须拒绝",
+      "native_full_dispatch_missing": [
+        "VERIFY_TAMPERED_ORIGINAL_COPY"
+      ],
+      "schedule": {
+        "bytes": 7625,
+        "path": "VALIDATION/X01/v01/SCHEDULE.json",
+        "sha256": "7c3b5dc474182866a57a120489da4f0a6cf2f38e11ecea3f09457ce0f14180bd"
+      },
+      "split": "VALIDATION",
+      "steps": 21,
+      "truth": {
+        "bytes": 11330,
+        "path": "VALIDATION/X01/v01/TRUTH.json",
+        "sha256": "a7ee6189db231a3a242391dd2e80ec70d3163cf355997f03ca45740fe97ac7ac"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "38031621e77010c2ae349f0c92d8584545bc42f0b1009849a0393cc2d7b94a5d",
+      "category": "AUDIT_TAMPER",
+      "family_id": "X01",
+      "input": {
+        "bytes": 12722,
+        "path": "VALIDATION/X01/v02/INPUT.json",
+        "sha256": "c186fa798b1db4ac604c237d470c786eee0edbdd38910c4491f285fd0f099c62"
+      },
+      "mechanism_topology_sha256": "a7bcd542f3c16f7930a43e5b3262cc72ba451e6f8eee801d024cea8aad73b543",
+      "name": "原trace副本改金额须拒绝",
+      "native_full_dispatch_missing": [
+        "VERIFY_TAMPERED_ORIGINAL_COPY"
+      ],
+      "schedule": {
+        "bytes": 7625,
+        "path": "VALIDATION/X01/v02/SCHEDULE.json",
+        "sha256": "10a12fe6a4597814a74ecc3325db28ed2410d6ab02a60f8f76dcac5a4d7e2980"
+      },
+      "split": "VALIDATION",
+      "steps": 21,
+      "truth": {
+        "bytes": 11330,
+        "path": "VALIDATION/X01/v02/TRUTH.json",
+        "sha256": "a7ee6189db231a3a242391dd2e80ec70d3163cf355997f03ca45740fe97ac7ac"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    },
+    {
+      "author_semantic_topology_sha256": "eeee2439f973e01f9acc5d13c47df14ffb2495f9d2bd949eeaf8674539f64ecf",
+      "category": "AUDIT_TAMPER",
+      "family_id": "X02",
+      "input": {
+        "bytes": 12723,
+        "path": "VALIDATION/X02/v01/INPUT.json",
+        "sha256": "7e3deb156ac16c269e50f63f3c7e9d7e527e0db906aa78a8e2b3190c94e665c8"
+      },
+      "mechanism_topology_sha256": "168514d53e634a6a6252e3b8125e31bf209e7b718f845c3e31842d635ccb23e2",
+      "name": "原回执副本删腿即使重hash也不完整",
+      "native_full_dispatch_missing": [
+        "VERIFY_TAMPERED_ORIGINAL_COPY"
+      ],
+      "schedule": {
+        "bytes": 7625,
+        "path": "VALIDATION/X02/v01/SCHEDULE.json",
+        "sha256": "3008a5bc3b57ad9d7281807f05a753165ed443b24473a0898e876212b9a532ad"
+      },
+      "split": "VALIDATION",
+      "steps": 21,
+      "truth": {
+        "bytes": 11324,
+        "path": "VALIDATION/X02/v01/TRUTH.json",
+        "sha256": "e2f4156ece6bc42d045cc3c1fd689998e1dd29e315c509af74ee792f2733f718"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v01"
+    },
+    {
+      "author_semantic_topology_sha256": "eeee2439f973e01f9acc5d13c47df14ffb2495f9d2bd949eeaf8674539f64ecf",
+      "category": "AUDIT_TAMPER",
+      "family_id": "X02",
+      "input": {
+        "bytes": 12723,
+        "path": "VALIDATION/X02/v02/INPUT.json",
+        "sha256": "8732389b8b85024dc491e172463db139c9a61320cc2b112ee691df77ac6c848c"
+      },
+      "mechanism_topology_sha256": "168514d53e634a6a6252e3b8125e31bf209e7b718f845c3e31842d635ccb23e2",
+      "name": "原回执副本删腿即使重hash也不完整",
+      "native_full_dispatch_missing": [
+        "VERIFY_TAMPERED_ORIGINAL_COPY"
+      ],
+      "schedule": {
+        "bytes": 7625,
+        "path": "VALIDATION/X02/v02/SCHEDULE.json",
+        "sha256": "ca775ba8c513a0be99545a87adc59f660b329d9e7ed149523f9b9b87ca6de58c"
+      },
+      "split": "VALIDATION",
+      "steps": 21,
+      "truth": {
+        "bytes": 11324,
+        "path": "VALIDATION/X02/v02/TRUTH.json",
+        "sha256": "e2f4156ece6bc42d045cc3c1fd689998e1dd29e315c509af74ee792f2733f718"
+      },
+      "unsupported_full_fault_pairs": [],
+      "variant_id": "v02"
+    }
+  ],
+  "categories": [
+    "AMBIGUITY",
+    "AUDIT_TAMPER",
+    "CONSUMPTION",
+    "DUPLICATE_ACTION",
+    "EARLY_WITHDRAWAL_LOSS",
+    "FIXED_LOCK",
+    "GOAL_DEFERRAL",
+    "MULTI_GOAL_CONFLICT",
+    "NEW_PAYEE",
+    "NORMAL",
+    "OBLIGATION_CONFLICT",
+    "RENT_CHANGE",
+    "SEASONAL_RESERVE",
+    "T1_RECOVERY",
+    "UNKNOWN_EXECUTION",
+    "VERSION_RACE"
+  ],
+  "distinct_label_number_insensitive_topology_count": 50,
+  "full_7_arm_service_connected": false,
+  "independent_truth_review_status": "NOT_REVIEWED",
+  "protocol": "full-author-data-manifest-v1",
+  "recovery_debit_design": "4100059/4100073 chosen before execution to leave roughly 200000 cash after max300000 placement; real boundary and bank outcome remain unknown",
+  "seed_cash_source": "Exact signed sum of demo_seed._ledger original fixed entries (pure, not PG)",
+  "seed_design": {
+    "bytes": 1217,
+    "path": "SEED_DESIGN.json",
+    "sha256": "deabc80980842dc9ac090660c1faaaaaec4aa1451b9937d1bf63e9608bb785f5"
+  },
+  "source": {
+    "bytes": 9578,
+    "path": "SOURCE.json",
+    "sha256": "a3f78e43f4437441058d3ee97f8fb85fdb2f6b313f83430085c894bdb52bab10"
+  },
+  "source_bytes_stable_during_authoring": true,
+  "source_changes": [],
+  "splits": {
+    "DEVELOPMENT": 18,
+    "FROZEN": 0,
+    "VALIDATION": 32
+  },
+  "status": "AUTHORING_NOT_FROZEN_NOT_RUN",
+  "superseded_author_drafts": [
+    "full-family-authoring-v1-20261006",
+    "full-family-authoring-v2-20261006",
+    "full-family-authoring-v3-20261006"
+  ],
+  "supplementary_family_removed_from_primary": "N02_NUMERIC_REPEATED_PURCHASE_SEQUENCE",
+  "truth_dimensions_per_variant": 8,
+  "truth_original_files": 100,
+  "truth_spec": {
+    "bytes": 1104,
+    "path": "TRUTH_SPEC.json",
+    "sha256": "08ab225831a1f98c1d02ada844030c40ebd97e4b1f7b86456c6166fa44045df1"
+  }
+}

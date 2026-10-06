@@ -1,0 +1,65 @@
+...........F....F...............                                         [100%]
+================================== FAILURES ===================================
+_________ test_unproven_price_never_supplies_recovery_money[expired] __________
+
+fault = 'expired'
+
+    @pytest.mark.parametrize("fault", ["expired", "early_hash", "early_loss", "early_rule", "no_quote"])
+    def test_unproven_price_never_supplies_recovery_money(fault: str) -> None:
+        held, row = fixed_holding()
+        quote = row.original.quote
+        assert quote is not None
+        if fault == "expired":
+            quote = quote.model_copy(update={"expires_at": NOW})
+        elif fault == "early_hash":
+            quote = quote.model_copy(update={"terms_digest": "b" * 64})
+        elif fault == "early_loss":
+            quote = quote.model_copy(
+                update={"loss_cents": quote.loss_cents + 1, "net_cents": quote.net_cents - 1}
+            )
+        elif fault == "early_rule":
+            row = row.model_copy(update={"early_withdrawal_rule": {"allowed": True}})
+        else:
+            quote = None
+        row = row.model_copy(update={"original": row.original.model_copy(update={"quote": quote})})
+        if fault == "early_hash":
+            with pytest.raises(ValueError):
+                plan_full_recovery(inputs([(held, row)]))
+        else:
+>           result = plan_full_recovery(inputs([(held, row)]))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_recovery_planning.py:268: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+data = FullRecoveryPlanningInput(user_id=UUID('00000000-0000-0000-0000-000000000001'), policy_id=UUID('00000000-0000-0000-000...ue=None)], goal_deadline_at=None, goal_reference_verified=False, planning_deadline_at=None, observed_state_triggers=[])
+
+    def plan_full_recovery(data: FullRecoveryPlanningInput) -> FullRecoveryPlanningResult:
+>       data = FullRecoveryPlanningInput.model_validate(data.model_dump())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullRecoveryPlanningInput
+E       holdings.0.original.quote
+E         Value error, Recovery quote times must be ordered [type=value_error, input_value={'evidence_ids': [UUID('0...=datetime.timezone.utc)}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/value_error
+
+apps\api\app\domain\full_recovery_planning.py:430: ValidationError
+_____ test_full_single_action_cap_and_registered_trigger_are_hard_limits ______
+
+    def test_full_single_action_cap_and_registered_trigger_are_hard_limits() -> None:
+        capped = plan_full_recovery(inputs(config_changes={"single_action_cap_cents": 49999}))
+        assert (
+            capped.lossless_steps == []
+            and "FULL_SINGLE_ACTION_CAP_EXCEEDED" in capped.candidates[0].reasons
+        )
+        not_triggered = plan_full_recovery(inputs(config_changes={"triggers": ["BOUNDARY_SHRINK"]}))
+>       assert not_triggered.status == "NOT_TRIGGERED" and not_triggered.lossless_steps
+E       AssertionError: assert ('NOT_TRIGGERED' == 'NOT_TRIGGERED'
+E         
+E           NOT_TRIGGERED and [])
+E        +  where [] = FullRecoveryPlanningResult(algorithm_version='full-whole-position-recovery-v1', user_id=UUID('00000000-0000-0000-0000-...sons=['NO_REGISTERED_TRIGGER_OBSERVED'], input_hash='38b8d2e47a1b90a8ad428d19b7351c571616a60359261d395029ccddde508755').lossless_steps
+
+apps\api\app\tests\test_full_recovery_planning.py:282: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_recovery_planning.py::test_unproven_price_never_supplies_recovery_money[expired]
+FAILED apps/api/app/tests/test_full_recovery_planning.py::test_full_single_action_cap_and_registered_trigger_are_hard_limits
+2 failed, 30 passed in 2.52s

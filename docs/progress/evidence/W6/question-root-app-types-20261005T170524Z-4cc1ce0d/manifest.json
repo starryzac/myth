@@ -1,0 +1,41 @@
+{
+  "run_id": "20261005T170524Z-4cc1ce0d",
+  "task": "W6",
+  "label": "question-root-app-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/App.tsx",
+    "apps/web/src/App.test.tsx",
+    "apps/web/src/pages/OneQuestionPage",
+    "apps/web/src/features/one-question-operation",
+    "apps/web/src/api/question-workflow",
+    "apps/web/src/tests/question-fixture"
+  ],
+  "command": [
+    "cmd.exe",
+    "/d",
+    "/s",
+    "/c",
+    "pnpm",
+    "--dir",
+    "apps/web",
+    "exec",
+    "tsc",
+    "--noEmit"
+  ],
+  "exit_code": 2,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T17:05:25.148289+00:00",
+  "finished_at": "2026-10-05T17:05:35.091564+00:00",
+  "wall_seconds": 9.943275,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "2f120e70e4588c3f32dbbb1fcc6e69f8e2811c4ba295c0f4ef1d96317e64cc5e",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

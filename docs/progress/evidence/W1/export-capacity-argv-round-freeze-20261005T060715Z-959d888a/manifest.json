@@ -1,0 +1,52 @@
+{
+  "financial_pg_docker_browser_full": "NOT_RUN",
+  "product_acceptance": "NOT_RUN",
+  "candidate_original": "docs/progress/evidence/W1/export-snapshot-pytest-round-first-20261005T060002Z-d2503a56",
+  "old_observer_status": "FAILED",
+  "raw_analysis_sha256": "b176f7f11470e0400f4d9e7d8ecbd50cc38309d930b701b703f0f13f1f5fc33d",
+  "source_files": {
+    "docs/spec/evidence-export-contract.md": "3c5e1d438fee614d3bb109826df88e87337fd5ea7fb82557cb09f50ad0ee30ef",
+    "scripts/export_evidence.py": "068dd30c5a1bb80773b44cf502598d2a7c4b98bf37a9744504ed3d14bc129b20",
+    "scripts/tests/test_export_evidence.py": "efb6ab272801a4bdc688901f4546b5b5308bd1c4a82d89d5a56e56639b4e625c"
+  },
+  "protocol": "bounded-funds-explicit-tool-freeze-v1",
+  "captured_at": "2026-10-05T06:07:15.3755972Z",
+  "purpose": "TOOL_TEST_ONLY",
+  "old_source": ".runtime/W1-export-snapshot-bound-before-20261005T053741Z-3ee138fb",
+  "task_closed": false,
+  "raw_analysis_original": ".runtime/tool_tests/export_evidence/f64c1e63c7a5439c87194533487c444e/tool-fixture/.runtime/retained-failed-snapshot-budget-analysis.json",
+  "validated": [
+    {
+      "path": "docs/progress/evidence/W1/export-snapshot-pytest-round-pure-final-20261005T060509Z-cd2f8307",
+      "all_source_stable": true,
+      "log_sha256": "f8787e8174d582769517bb811d57cc32725b5a0284e0eaedc8b80391265667ff",
+      "scoped_source_stable": true,
+      "manifest_sha256": "c54e40ed2cc3f7aacc01e060c7b2d37ddbef42054a8174e710d473c1b06e0f5d",
+      "exit_code": 0
+    },
+    {
+      "path": "docs/progress/evidence/W1/export-snapshot-pytest-round-types-final-20261005T060510Z-6ed43b04",
+      "all_source_stable": true,
+      "log_sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2",
+      "scoped_source_stable": true,
+      "manifest_sha256": "830e6b9fa55873128b0ec22eb081c23f9bfda7b33548b36849a24141319d365e",
+      "exit_code": 0
+    },
+    {
+      "path": "docs/progress/evidence/W1/export-snapshot-pytest-round-static-final-20261005T060511Z-a181dfcc",
+      "all_source_stable": true,
+      "log_sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+      "scoped_source_stable": true,
+      "manifest_sha256": "88d1a577dddf1b2570ce1b796b04f48db7752beb3628ab05a6dfdbee972ccec9",
+      "exit_code": 0
+    },
+    {
+      "path": "docs/progress/evidence/W1/export-snapshot-pytest-round-format-final-20261005T060512Z-09193dd2",
+      "all_source_stable": true,
+      "log_sha256": "97d85b4b6c185a05396e2d09a3c304ff0f7cc77f8b7b7bb7989ec6cd875b3898",
+      "scoped_source_stable": true,
+      "manifest_sha256": "7fae88efd94d48142837ee8690863b8ad5ef6e1fca87326a6607be2c9546229c",
+      "exit_code": 0
+    }
+  ]
+}

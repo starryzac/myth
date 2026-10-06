@@ -1,0 +1,16 @@
+phase=migration status=PASSED seconds=1.269
+phase=native_seed_once status=PASSED seconds=2.322
+phase=native_baseline_snapshot status=PASSED seconds=0.323
+phase=api_ready status=PASSED seconds=2.409
+phase=web_ready status=PASSED seconds=0.043
+phase=snapshot:independent-case-start-before status=PASSED seconds=0.119
+phase=snapshot:independent-case-start-after status=PASSED seconds=0.217
+phase=snapshot:salary-real-legs status=PASSED seconds=2.371
+phase=snapshot:replay-before status=PASSED seconds=2.850
+phase=snapshot:salary-replay-zero-write status=PASSED seconds=3.255
+phase=snapshot:independent-case-start-before status=PASSED seconds=3.617
+phase=snapshot:independent-case-start-after status=PASSED seconds=2.732
+phase=snapshot:goal-before status=PASSED seconds=2.430
+phase=snapshot:goal-confirmed-zero-owned status=PASSED seconds=4.303
+phase=snapshot:new-goal-later-fixed-income status=PASSED seconds=4.093
+W1 FAILED evidence=output\playwright\w1-20261005T041822Z-51787c00

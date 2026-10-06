@@ -1,0 +1,38 @@
+{
+  "run_id": "20261005T040402Z-17e10208",
+  "task": "W1",
+  "label": "audit-all-owned-browser-epochs",
+  "status": "PASSED",
+  "scope": [
+    "apps/api",
+    "apps/web",
+    "scripts/w1_audit_observe.py",
+    "scripts/w1_browser_acceptance.py",
+    "scripts/scenario_runner_rpc.py",
+    "scripts/browser_checkpoint_oracles.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "scripts/w1_audit_observe.py",
+    "--run",
+    "--browser-manifest",
+    "output/playwright/w1-20261005T035730Z-53e0cf0b/manifest.json",
+    "--output",
+    "docs/progress/evidence/W1/audit-all-owned-20261005T0404Z"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T04:04:02.561572+00:00",
+  "finished_at": "2026-10-05T04:05:02.914902+00:00",
+  "wall_seconds": 60.35333,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "e8dffc3185f78978a78ff7c86194da0c9a4faf2b0677fdb2cfd49f072040f15a",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

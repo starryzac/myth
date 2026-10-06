@@ -1,0 +1,33 @@
+{
+  "run_id": "20261006T033551Z-c600f969",
+  "task": "W7",
+  "label": "recovery-composed-and-next-current-web-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src",
+    "packages/contracts/schema.d.ts"
+  ],
+  "command": [
+    "pnpm.cmd",
+    "--filter",
+    "@bounded-funds/web",
+    "exec",
+    "tsc",
+    "--noEmit"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T03:35:53.430085+00:00",
+  "finished_at": "2026-10-06T03:36:19.558589+00:00",
+  "wall_seconds": 26.128504,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "2d42850131b4835c888b6cd4e8e1d5d79f372ba0f4a1deb0a5dceeccb3396ac2",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

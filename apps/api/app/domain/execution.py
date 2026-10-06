@@ -16,6 +16,10 @@ from app.domain.execution_types import (
     ExecutionValidation,
     OccurrenceReference,
 )
+from app.domain.full_dynamic_goal_execution import (
+    FullDynamicGoalProof,
+    validate_full_dynamic_goal_proof,
+)
 from app.domain.goal_allocation import plan_goal_allocation
 from app.domain.income_ledger import location_id
 from app.domain.policy_configuration import configuration_hash, validate_configuration
@@ -48,6 +52,7 @@ def revalidate_execution(
     context: ExecutionContext,
     *,
     confirmation: ConfirmationGrant | None = None,
+    full_dynamic_goal_proof: FullDynamicGoalProof | None = None,
 ) -> ExecutionValidation:
     """Use context.snapshot.as_of as the supplied execution clock, never system time."""
     effect = ExecutionEffect.model_validate(effect.model_dump(warnings=False))
@@ -183,7 +188,7 @@ def revalidate_execution(
         if effect.action_type == "PAY_RECURRING":
             projected = _payment(effect, context, projected)
         elif effect.action_type == "ALLOCATE_GOAL":
-            projected = _goal(effect, context, projected)
+            projected = _goal(effect, context, projected, full_dynamic_goal_proof)
         elif effect.action_type == "PURCHASE_ASSET":
             projected, projected_positions = _purchase(effect, context, projected)
         elif effect.action_type == "REDEEM_ASSET":
@@ -434,7 +439,10 @@ def _payment(
 
 
 def _goal(
-    effect: ExecutionEffect, context: ExecutionContext, projected: BoundarySnapshot
+    effect: ExecutionEffect,
+    context: ExecutionContext,
+    projected: BoundarySnapshot,
+    dynamic_proof: FullDynamicGoalProof | None = None,
 ) -> BoundarySnapshot:
     if effect.goal_id is None or effect.policy_version_id is None:
         raise Rejected("GOAL_IDENTITY_REQUIRED")
@@ -448,10 +456,15 @@ def _goal(
         context.lots,
         source_issues=context.source_issues,
     )
+    cap = result.suggested_cents
+    if dynamic_proof is not None:
+        if not validate_full_dynamic_goal_proof(effect, context, dynamic_proof):
+            raise Rejected("CURRENT_DYNAMIC_GOAL_PROOF_INVALID")
+        cap = dynamic_proof.dynamic_cap_cents
     if (
         result.status != "READY"
-        or result.suggested_cents is None
-        or not (result.remaining_min_cents or 0) <= effect.amount_cents <= result.suggested_cents
+        or cap is None
+        or not (result.remaining_min_cents or 0) <= effect.amount_cents <= cap
     ):
         raise Rejected("CURRENT_GOAL_PLAN_DISALLOWS_AMOUNT")
     goal = next(g for g in projected.goals if g.goal_id == effect.goal_id)

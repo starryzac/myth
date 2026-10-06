@@ -1,0 +1,62 @@
+{
+  "run_id": "20261005T160818Z-f528f633",
+  "task": "W5",
+  "label": "actual-public-finite-patterns-and-persistent-questions-real-pg",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/domain/finite_uncertainty.py",
+    "apps/api/app/services/finite_uncertainty.py",
+    "apps/api/app/api/v1/finite_uncertainty.py",
+    "apps/api/app/tests/test_finite_uncertainty_integration.py",
+    "apps/api/app/domain/pattern_suggestions.py",
+    "apps/api/app/services/policy_suggestions.py",
+    "apps/api/app/api/v1/policy_suggestions.py",
+    "apps/api/app/tests/test_policy_suggestions_integration.py",
+    "apps/api/app/domain/question_workflow.py",
+    "apps/api/app/services/question_workflow.py",
+    "apps/api/app/api/v1/question_workflow.py",
+    "apps/api/app/tests/test_question_workflow_api.py",
+    "apps/api/app/main.py",
+    "apps/api/app/api/dependencies.py",
+    "apps/api/app/domain/audit_chain.py",
+    "apps/api/app/services/decision_trace.py",
+    "apps/api/app/db"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "python",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_finite_uncertainty_integration.py::test_actual_multivariable_worlds_reuse_original_engine_without_consent_or_writes",
+    "apps/api/app/tests/test_policy_suggestions_integration.py::test_actual_patterns_public_calendar_and_source_refusal_never_write_or_grant",
+    "apps/api/app/tests/test_question_workflow_api.py::test_actual_question_session_restarts_rebases_and_replays_without_financial_writes",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T16:08:19.740432+00:00",
+  "finished_at": "2026-10-05T16:18:57.950517+00:00",
+  "wall_seconds": 638.210085,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/api/app/api/v1/full_joint_goal_planning.py",
+    "apps/api/app/domain/full_joint_goal_planning.py",
+    "apps/api/app/services/full_joint_goal_planning.py",
+    "apps/api/app/services/multi_goal_planning.py",
+    "apps/web/src/api/dynamic-goal-reserve.test.ts",
+    "apps/web/src/components/DynamicGoalReservePanel.test.tsx",
+    "apps/web/src/tests/dynamic-goal-fixture.ts"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "ee0d2d6a4d73d0ca8395c9ad08df02192c498491ab128011cf429d008d220ce9",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

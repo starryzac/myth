@@ -1,0 +1,44 @@
+{
+  "run_id": "20261005T170300Z-2bffc2c3",
+  "task": "W6",
+  "label": "question-root-nav-and-cross-family-gates",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/App.tsx",
+    "apps/web/src/App.test.tsx",
+    "apps/web/src/pages/OneQuestionPage",
+    "apps/web/src/features/one-question-operation",
+    "apps/web/src/api/question-workflow",
+    "apps/web/src/tests/question-fixture"
+  ],
+  "command": [
+    "cmd.exe",
+    "/d",
+    "/s",
+    "/c",
+    "pnpm",
+    "--dir",
+    "apps/web",
+    "exec",
+    "vitest",
+    "run",
+    "src/App.test.tsx",
+    "src/pages/OnboardingPage.test.tsx",
+    "src/pages/DemoConsolePage.test.tsx"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T17:03:01.748552+00:00",
+  "finished_at": "2026-10-05T17:03:11.898376+00:00",
+  "wall_seconds": 10.149824,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "a83e577da6d660649033730c483862bcc43c56ff4c9c72f22d3707c786cb2378",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

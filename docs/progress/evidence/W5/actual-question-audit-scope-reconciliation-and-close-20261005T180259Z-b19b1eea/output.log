@@ -1,0 +1,80 @@
+F
+================================== FAILURES ===================================
+____ test_actual_audit_scope_reuses_only_identical_clean_original_snapshot ____
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_51ed32565a444c08896c768d763616d9)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E264F66270>
+
+    def test_actual_audit_scope_reuses_only_identical_clean_original_snapshot(
+        demo_engine: Engine, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        seed_demo(demo_engine)
+        before = physical_snapshot(demo_engine)
+        original = audit._verify_audit_chain
+        calls: list[tuple[UUID, UUID | None, str]] = []
+    
+        def counted(
+            session: Session,
+            user: UUID,
+            epoch_id: UUID | None = None,
+            checkpoint: AuditCheckpoint | None = None,
+            mode: Literal["PREFIX", "EXACT"] = "PREFIX",
+        ) -> AuditVerification:
+            calls.append((user, epoch_id, mode))
+            return original(session, user, epoch_id, checkpoint, mode)
+    
+        monkeypatch.setattr(audit, "_verify_audit_chain", counted)
+        with Session(demo_engine) as session:
+            session.connection(execution_options={"isolation_level": "REPEATABLE READ"})
+            session.execute(text("SET TRANSACTION READ ONLY"))
+            evidence = session.scalar(
+                select(EvidenceItem)
+                .where(EvidenceItem.user_id == DEMO_USER_ID)
+                .order_by(EvidenceItem.id)
+            )
+            head = audit.get_audit_head(session, DEMO_USER_ID)
+            assert evidence is not None and head is not None
+            with audit.audit_read_scope(session):
+                first = audit.verify_audit_chain(session, DEMO_USER_ID, head.epoch_id)
+                assert first.status == "VALID" and len(calls) == 1
+                first.errors.append(AuditDiagnostic(code="UNIT_MUTATED_RETURN", message="test only"))
+                again = audit.verify_audit_chain(session, DEMO_USER_ID, head.epoch_id)
+                assert again.status == "VALID" and again.errors == [] and len(calls) == 1
+                checkpoint = domain.build_checkpoint(head, captured_at=SEED_AS_OF)
+                exact = audit.verify_audit_chain(
+                    session, DEMO_USER_ID, head.epoch_id, checkpoint, "EXACT"
+                )
+                assert exact.status == "VALID" and len(calls) == 2
+                assert audit.verify_audit_chain(
+                    session, DEMO_USER_ID, head.epoch_id, checkpoint, "EXACT"
+                ).status == "VALID"
+                assert len(calls) == 2
+                changed = checkpoint.model_copy(update={"checkpoint_hash": "f" * 64})
+                assert audit.verify_audit_chain(
+                    session, DEMO_USER_ID, head.epoch_id, changed, "EXACT"
+                ).status != "VALID"
+                assert len(calls) == 3
+                assert audit.verify_audit_chain(session, DEMO_USER_ID, head.epoch_id).status == "VALID"
+                assert len(calls) == 4
+                # Nested JSON does not mark ordinary JSONB dirty. Its original digest
+                # must invalidate the proof and the complete verifier must reject it.
+                evidence.content["request_local_test_mutation"] = True
+                assert not session.dirty
+>               assert audit.verify_audit_chain(session, DEMO_USER_ID, head.epoch_id).status != "VALID"
+E               AssertionError: assert 'VALID' != 'VALID'
+E                +  where 'VALID' = AuditVerification(schema_version='audit-verification-v1', simulation=True, user_id=UUID('271a9827-f82a-5be6-9e0a-50f72...1a66267ddc947a91db0e579bbeecf10fd03f0214', verified_through_sequence=1, errors=[], warnings=[], errors_truncated=False).status
+E                +    where AuditVerification(schema_version='audit-verification-v1', simulation=True, user_id=UUID('271a9827-f82a-5be6-9e0a-50f72...1a66267ddc947a91db0e579bbeecf10fd03f0214', verified_through_sequence=1, errors=[], warnings=[], errors_truncated=False) = <function verify_audit_chain at 0x000001E2613C49A0>(<sqlalchemy.orm.session.Session object at 0x000001E265832600>, UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), UUID('af13eee6-8eac-4189-8c03-0ab192730e8b'))
+E                +      where <function verify_audit_chain at 0x000001E2613C49A0> = audit.verify_audit_chain
+E                +      and   UUID('af13eee6-8eac-4189-8c03-0ab192730e8b') = AuditHead(schema_version='audit-head-v1', canonical_version='audit-canonical-json-v1', simulation=True, user_id=UUID('...sh='9b1b374f96eff9dbe7e33e8c1a66267ddc947a91db0e579bbeecf10fd03f0214', previous_epoch_id=None, previous_seal_hash=None).epoch_id
+
+apps\api\app\tests\test_audit_request_read_scope.py:76: AssertionError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_audit_request_read_scope.py::test_actual_audit_scope_reuses_only_identical_clean_original_snapshot
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 warning in 10.09s

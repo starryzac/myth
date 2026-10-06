@@ -1,0 +1,4 @@
+apps\api\app\domain\full_action_set_boundary_full.py:158: error: Incompatible types in assignment (expression has type "str", variable has type "UUID")  [assignment]
+apps\api\app\domain\full_action_set_boundary_full.py:165: error: Argument 1 to "configuration_hash" has incompatible type "Any | None"; expected "dict[str, Any]"  [arg-type]
+apps\api\app\domain\full_action_set_boundary_full.py:167: error: Unsupported operand types for + ("str" and "UUID")  [operator]
+Found 3 errors in 1 file (checked 4 source files)

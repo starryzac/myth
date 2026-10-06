@@ -1,0 +1,44 @@
+{
+  "run_id": "20261005T040627Z-c30ae142",
+  "task": "W1",
+  "label": "deployment-images-build",
+  "status": "PASSED",
+  "scope": [
+    "apps/api",
+    "apps/web",
+    "packages/contracts",
+    "deploy",
+    ".dockerignore",
+    "uv.lock",
+    "pnpm-lock.yaml"
+  ],
+  "command": [
+    "docker",
+    "compose",
+    "--env-file",
+    ".runtime/w1-deployment/deploy-20261005T040542Z-f2d58cc1/demo.env",
+    "-f",
+    "deploy/compose.demo.yaml",
+    "--progress",
+    "plain",
+    "build"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T04:06:28.294828+00:00",
+  "finished_at": "2026-10-05T04:07:04.454863+00:00",
+  "wall_seconds": 36.160035,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "scripts/export_evidence.py",
+    "scripts/tests/test_export_evidence.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "e4bdea99ccc5f7c684bfa88de1859f69ba31310b1c41b9ab47c6a1cf90168e9a",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

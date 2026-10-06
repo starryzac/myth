@@ -1,0 +1,34 @@
+{
+  "run_id": "20261005T191802Z-540b5eb6",
+  "task": "W6",
+  "label": "goal-reallocation-ui-generated-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/api/goal-reallocation.ts",
+    "apps/web/src/api/goal-reallocation.test.ts",
+    "apps/web/src/components/GoalReallocationPanel.tsx",
+    "apps/web/src/components/GoalReallocationPanel.test.tsx",
+    "apps/web/src/tests/goal-reallocation-fixture.ts"
+  ],
+  "command": [
+    "pnpm.cmd",
+    "--filter",
+    "@bounded-funds/web",
+    "typecheck"
+  ],
+  "exit_code": 2,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T19:18:03.901375+00:00",
+  "finished_at": "2026-10-05T19:18:19.240171+00:00",
+  "wall_seconds": 15.338796,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "e6930171faaa70301f15685366aefbe630d0eb60a94b1bba44976390eb726b28",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

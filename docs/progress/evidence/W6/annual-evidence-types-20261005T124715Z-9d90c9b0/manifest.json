@@ -1,0 +1,36 @@
+{
+  "run_id": "20261005T124715Z-9d90c9b0",
+  "task": "W6",
+  "label": "annual-evidence-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/pages/AnnualPlanningPage",
+    "apps/web/src/pages/EvidencePage",
+    "apps/web/src/api/planning",
+    "apps/web/src/api/evidence",
+    "apps/web/src/tests/annual-fixture",
+    "apps/web/src/tests/evidence-fixture",
+    "apps/web/src/styles.css"
+  ],
+  "command": [
+    "pnpm.cmd",
+    "--filter",
+    "@bounded-funds/web",
+    "typecheck"
+  ],
+  "exit_code": 2,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T12:47:16.640520+00:00",
+  "finished_at": "2026-10-05T12:47:31.424801+00:00",
+  "wall_seconds": 14.784281,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "06298241dd8550ac71740d58b3f4d1c7f8da2666f9dd838b86b97bd809b61ac4",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

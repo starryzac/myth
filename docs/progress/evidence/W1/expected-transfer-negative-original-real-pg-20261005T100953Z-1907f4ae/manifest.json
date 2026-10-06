@@ -1,0 +1,39 @@
+{
+  "run_id": "20261005T100953Z-1907f4ae",
+  "task": "W1",
+  "label": "expected-transfer-negative-original-real-pg",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/tests/test_scenario_expected_transfer_rejection.py",
+    "apps/api/app/services/scenario",
+    "scripts/mvp_native_schema.py",
+    "apps/api/app/services/demo_seed.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "python",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_scenario_expected_transfer_rejection.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T10:09:54.039478+00:00",
+  "finished_at": "2026-10-05T10:10:00.973872+00:00",
+  "wall_seconds": 6.934394,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "8046c512b096015e90a33f1ef77b547fd2b5eeb1a150f332e799974e10235ce2",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

@@ -1,0 +1,19 @@
+F401 [*] `app.domain.full_policy_reviewed_change.impact_value` imported but unused
+  --> apps\api\app\tests\test_full_policy_reviewed_change.py:20:5
+   |
+18 |     SourceBasis,
+19 |     coverage,
+20 |     impact_value,
+   |     ^^^^^^^^^^^^
+21 |     legacy_request,
+22 |     outer_request,
+   |
+help: Remove unused import: `app.domain.full_policy_reviewed_change.impact_value`
+   |
+19 |     coverage,
+   -     impact_value,
+20 |     legacy_request,
+   |
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.

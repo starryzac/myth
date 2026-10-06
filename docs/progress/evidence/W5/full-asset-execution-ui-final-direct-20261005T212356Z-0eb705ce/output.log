@@ -1,0 +1,23 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/full-asset-execution.test.ts (32 tests) 2363ms
+   ✓ TOOL_ONLY 原多批组合/完整1098点/候选和confirm原证据可读，不推断当前权限  400ms
+ ✓ src/features/full-asset-execution-operation.test.ts (19 tests) 4865ms
+   ✓ 全部原body/key/hash先保存；POST成功/4xx/失联都不清门，仅独立原GET可清  605ms
+   ✓ CONFIRM确切原receipt比对后才能清，busy时不能清  421ms
+   ✓ EXECUTE固定原批UNKNOWN保门/阻后批；只GET指定原批SETTLED receipt可清而不执行后批  584ms
+   ✓ 刷新只恢复冻结原请求，无HTTP/自动POST；恶意JSON或hash保原件并锁新写  327ms
+ ✓ src/components/FullAssetExecutionPanel.test.tsx (6 tests) 5869ms
+   ✓ 挂载无HTTP；手动加载真实权限，原整组金额/两批/1098点，preview后不自动prepare  1115ms
+   ✓ 用户依次prepare→原GET→整组checkbox确认→原GET→固定单批；POST从不自行解门/推进  2000ms
+   ✓ 固定原批丢响应后先GET，用户checkbox手动仅重放同body；前批UNKNOWN不启动后批  931ms
+   ✓ 页面刷新不POST，他族blocked仍可核本族原键，NOT_FOUND非终局不换键或允许写  320ms
+   ✓ UNKNOWN/null无可保存组合；4xx仍持久原完整请求，不自动重复  915ms
+   ✓ GET仅解除原已SETTLED批，后批要新的明确点击；历史同receipt不提供持续权限  586ms
+
+ Test Files  3 passed (3)
+      Tests  57 passed (57)
+   Start at  05:23:58
+   Duration  9.14s (transform 1.22s, setup 1.62s, collect 3.05s, tests 13.10s, environment 3.31s, prepare 976ms)
+

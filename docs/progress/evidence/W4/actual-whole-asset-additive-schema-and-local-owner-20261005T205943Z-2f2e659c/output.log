@@ -1,0 +1,85 @@
+.F
+================================== FAILURES ===================================
+__ test_actual_local_signed_cookie_reads_real_owner_without_database_writes ___
+
+migrated_database = (Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_2542c5072e584e58bbd006a52c10d106), <alembic.config.Config object at 0x000001F5A2F44080>)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F5A36FEE70>
+
+    def test_actual_local_signed_cookie_reads_real_owner_without_database_writes(
+        migrated_database: tuple[Engine, Config], monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        engine, _ = migrated_database
+        seed_demo(engine)
+        monkeypatch.setenv("BF_LOCAL_USER_SECRET", "SYNTHETIC_REAL_PG_USER_606_CREDENTIAL")
+        monkeypatch.setenv("BF_LOCAL_SIGNING_KEY", "62" * 32)
+        app = create_app()
+        app.dependency_overrides[get_engine] = lambda: engine
+        app.dependency_overrides[get_now] = lambda: SEED_AS_OF
+        before = physical_snapshot(engine)
+        with TestClient(app) as client:
+            assert client.get("/api/v1/local-actor/session").status_code == 401
+            rejected = client.post(
+                "/api/v1/local-actor/login",
+                json={
+                    "username": "bounded-user",
+                    "secret": "SYNTHETIC_REAL_PG_USER_606_CREDENTIAL",
+                    "role": "SYSTEM",
+                },
+            )
+            assert rejected.status_code == 422
+            response = client.post(
+                "/api/v1/local-actor/login",
+                json={"username": "bounded-user", "secret": "SYNTHETIC_REAL_PG_USER_606_CREDENTIAL"},
+            )
+            assert response.status_code == 200, response.text
+            body: dict[str, Any] = response.json()
+            assert body["principal"]["user_id"] == str(DEMO_USER_ID)
+            assert body["principal"]["role"] == "USER"
+            assert body["principal"]["human_identity_verified"] is False
+            assert body["bank_authority"] is body["confirms_financial_action"] is False
+            assert "HttpOnly" in response.headers["set-cookie"]
+            assert client.get("/api/v1/local-actor/session").json() == body
+            token = client.cookies.get(COOKIE_NAME)
+            assert token is not None
+            client.cookies.clear()
+            client.cookies.set(COOKIE_NAME, "forged." + token.split(".")[-1], path="/api/v1")
+            assert client.get("/api/v1/local-actor/session").status_code == 401
+            client.cookies.clear()
+            client.cookies.set(COOKIE_NAME, token, path="/api/v1")
+            assert client.get("/api/v1/local-actor/session").status_code == 200
+            assert client.post("/api/v1/local-actor/logout", json={}).status_code == 200
+>           assert client.get("/api/v1/local-actor/session").status_code == 401
+E           AssertionError: assert 200 == 401
+E            +  where 200 = <Response [200 OK]>.status_code
+E            +    where <Response [200 OK]> = get('/api/v1/local-actor/session')
+E            +      where get = <starlette.testclient.TestClient object at 0x000001F5A39DE3F0>.get
+
+apps\api\app\tests\test_local_actor_sessions_integration.py:62: AssertionError
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "c4fdbf23-d2c4-470c-a954-6bee242509a7", "method": "GET", "status": 401, "duration_ms": 343.0}
+{"event": "http_request", "request_id": "41522039-e49d-4630-bd90-400a3e37152a", "method": "POST", "status": 422, "duration_ms": 47.0}
+{"event": "http_request", "request_id": "20bb55e8-d824-4ecf-b1b3-96e021760852", "method": "POST", "status": 200, "duration_ms": 16.0}
+{"event": "http_request", "request_id": "538af5ef-b779-4534-bb26-25d919708834", "method": "GET", "status": 200, "duration_ms": 16.0}
+{"event": "http_request", "request_id": "81d6210e-c630-4de9-9412-9e27eb464543", "method": "GET", "status": 401, "duration_ms": 15.0}
+{"event": "http_request", "request_id": "f61f77e8-0058-452d-bbf7-b6cdcfb13e35", "method": "GET", "status": 200, "duration_ms": 16.0}
+{"event": "http_request", "request_id": "b8c02a98-1c2b-4d46-93d8-ec64fb98aedf", "method": "POST", "status": 200, "duration_ms": 0.0}
+{"event": "http_request", "request_id": "9531d938-ee32-4fef-86fe-71db0da46461", "method": "GET", "status": 200, "duration_ms": 15.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "c4fdbf23-d2c4-470c-a954-6bee242509a7", "method": "GET", "status": 401, "duration_ms": 343.0}
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "41522039-e49d-4630-bd90-400a3e37152a", "method": "POST", "status": 422, "duration_ms": 47.0}
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "20bb55e8-d824-4ecf-b1b3-96e021760852", "method": "POST", "status": 200, "duration_ms": 16.0}
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "538af5ef-b779-4534-bb26-25d919708834", "method": "GET", "status": 200, "duration_ms": 16.0}
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "81d6210e-c630-4de9-9412-9e27eb464543", "method": "GET", "status": 401, "duration_ms": 15.0}
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "f61f77e8-0058-452d-bbf7-b6cdcfb13e35", "method": "GET", "status": 200, "duration_ms": 16.0}
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "b8c02a98-1c2b-4d46-93d8-ec64fb98aedf", "method": "POST", "status": 200, "duration_ms": 0.0}
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "9531d938-ee32-4fef-86fe-71db0da46461", "method": "GET", "status": 200, "duration_ms": 15.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_local_actor_sessions_integration.py::test_actual_local_signed_cookie_reads_real_owner_without_database_writes
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 passed, 1 warning in 23.95s

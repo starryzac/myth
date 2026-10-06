@@ -45,6 +45,22 @@ EXPECTED_TABLES = {
     "action_resource_reservations",
     "audit_epochs",
     "audit_subject_snapshots",
+    "external_bank_facts",
+    "command_outbox",
+    "command_inbox",
+    "command_delivery_attempts",
+    "full_policies",
+    "full_policy_versions",
+    "full_policy_commands",
+    "product_catalog_versions",
+    "intervention_outbox",
+    "intervention_inbox",
+    "full_asset_execution_portfolios",
+    "full_asset_execution_batches",
+    "full_asset_execution_consents",
+    "full_joint_goal_execution_plans",
+    "full_joint_goal_execution_children",
+    "full_joint_goal_execution_consents",
 }
 
 
@@ -142,6 +158,7 @@ def migrated_database() -> Iterator[tuple[Engine, Config]]:
 
 @pytest.mark.integration
 def test_fresh_upgrade_downgrade_upgrade_matches_all_twenty_two_models() -> None:
+    """Retain the original test ID, now check all 35 current models explicitly."""
     with temporary_database() as url:
         config = migration_config(url)
         engine = create_database_engine(url)

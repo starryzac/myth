@@ -1,0 +1,205 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/api/registered-action-set.test.ts (27 tests | 3 failed) 161ms
+   ✓ retains original complete family denominators and hashes 21ms
+   ✓ retains original release_missing family denominators and hashes 13ms
+   × retains original joint family denominators and hashes 15ms
+     → 动作集合响应缺少一致的原件分母，请刷新后核对
+   × retains original joint_missing family denominators and hashes 3ms
+     → 动作集合响应缺少一致的原件分母，请刷新后核对
+   ✓ retains original release family denominators and hashes 11ms
+   ✓ rejects owner even after supplied result hashes are rewritten 5ms
+   ✓ rejects epoch even after supplied result hashes are rewritten 3ms
+   ✓ rejects clock even after supplied result hashes are rewritten 3ms
+   ✓ rejects authority even after supplied result hashes are rewritten 2ms
+   ✓ rejects notify even after supplied result hashes are rewritten 2ms
+   ✓ rejects hide-release-reason even after supplied result hashes are rewritten 6ms
+   ✓ rejects hide-joint-denominator even after supplied result hashes are rewritten 3ms
+   ✓ rejects duplicate-goal even after supplied result hashes are rewritten 4ms
+   ✓ rejects bad-goal-key even after supplied result hashes are rewritten 2ms
+   ✓ rejects bad-shadow even after supplied result hashes are rewritten 3ms
+   ✓ rejects hide-old even after supplied result hashes are rewritten 5ms
+   × rejects money even after supplied result hashes are rewritten 4ms
+     → 摘要只接受精确整数、完整Unicode和原JSON字段
+   ✓ rejects false-complete even after supplied result hashes are rewritten 2ms
+   ✓ rejects inflight even after supplied result hashes are rewritten 3ms
+   ✓ rejects joint-execution even after supplied result hashes are rewritten 3ms
+   ✓ rejects hash even after supplied result hashes are rewritten 2ms
+   ✓ rejects altered Release key while retaining its other unknown branches 5ms
+   ✓ rejects altered Release role while retaining its other unknown branches 4ms
+   ✓ rejects altered Release source-denominator while retaining its other unknown branches 5ms
+   ✓ rejects altered Release auto while retaining its other unknown branches 5ms
+   ✓ rejects altered Release duplicate while retaining its other unknown branches 5ms
+   ✓ rejects different raw response and supplied object, and only requests the fixed GET endpoint 19ms
+ ❯ src/components/RegisteredActionSetPanel.test.tsx (3 tests | 1 failed) 1397ms
+   × manual GET exposes all family denominators, missing sources and preserved v4/raw hashes without writes 1202ms
+     → Unable to find an element with the text: 当前动作集合未知：未覆盖分母完整保留. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"当前完整登记动作集合"[39m
+      [33mclass[39m=[32m"card"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m当前完整登记动作集合[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m手动核对付款、整仓恢复、现金归属释放和目标联动的当前来源。未覆盖分支与未决原动作保留；完整核对只描述登记范围。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m刷新当前登记动作集合[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m动作集合响应缺少一致的原件分母，请刷新后核对[0m
+        [0m；此次没有一致原件，不采用先前完整结论。[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"当前完整登记动作集合"[39m
+      [33mclass[39m=[32m"card"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m当前完整登记动作集合[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m手动核对付款、整仓恢复、现金归属释放和目标联动的当前来源。未覆盖分支与未决原动作保留；完整核对只描述登记范围。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m刷新当前登记动作集合[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m动作集合响应缺少一致的原件分母，请刷新后核对[0m
+        [0m；此次没有一致原件，不采用先前完整结论。[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   ✓ failed refresh removes prior complete conclusion and does not reuse it as current authority 115ms
+   ✓ previous query cache is hidden until an explicit current GET completes 78ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/api/registered-action-set.test.ts > retains original joint family denominators and hashes
+ FAIL  src/api/registered-action-set.test.ts > retains original joint_missing family denominators and hashes
+Error: 动作集合响应缺少一致的原件分母，请刷新后核对
+ ❯ fail src/api/actual-action-set.ts:15:20
+     13| const keys = (value: unknown): value is string[] => strings(value) && …
+     14| const count = (value: unknown) => Number.isSafeInteger(value) && (valu…
+     15| const fail = () => new ApiError('动作集合响应缺少一致的原件分母，请刷新后核对', 200, 'INVALI…
+       |                    ^
+     16| 
+     17| export function parseActualActionSet(value: unknown, originalText: str…
+ ❯ parseActualActionSet src/api/actual-action-set.ts:57:66
+ ❯ parseComposedActionSet src/api/composed-action-set.ts:25:20
+ ❯ parseRecoveryComposedActionSet src/api/recovery-composed-action-set.ts:25:26
+ ❯ parseRegisteredActionSet src/api/registered-action-set.ts:33:26
+ ❯ src/api/registered-action-set.test.ts:13:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/api/registered-action-set.test.ts > rejects money even after supplied result hashes are rewritten
+Error: 摘要只接受精确整数、完整Unicode和原JSON字段
+ ❯ releaseCanonicalJson src/api/goal-release-authorizations.ts:37:9
+     35|   if (typeof value === 'string') { check(!/[\uD800-\uDBFF](?![\uDC00-\…
+     36|   if (value === null || typeof value === 'boolean' || Number.isSafeInt…
+     37|   throw new Error('摘要只接受精确整数、完整Unicode和原JSON字段');
+       |         ^
+     38| }
+     39| async function digestBytes(algorithm: 'SHA-256' | 'SHA-1', bytes: Uint…
+ ❯ src/api/goal-release-authorizations.ts:34:98
+ ❯ releaseCanonicalJson src/api/goal-release-authorizations.ts:34:59
+ ❯ releaseCanonicalJson src/api/goal-release-authorizations.ts:33:46
+ ❯ src/api/goal-release-authorizations.ts:34:98
+ ❯ releaseCanonicalJson src/api/goal-release-authorizations.ts:34:59
+ ❯ releaseHash src/api/goal-release-authorizations.ts:43:135
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/components/RegisteredActionSetPanel.test.tsx > manual GET exposes all family denominators, missing sources and preserved v4/raw hashes without writes
+TestingLibraryElementError: Unable to find an element with the text: 当前动作集合未知：未覆盖分母完整保留. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"当前完整登记动作集合"[39m
+      [33mclass[39m=[32m"card"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m当前完整登记动作集合[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m手动核对付款、整仓恢复、现金归属释放和目标联动的当前来源。未覆盖分支与未决原动作保留；完整核对只描述登记范围。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m刷新当前登记动作集合[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m动作集合响应缺少一致的原件分母，请刷新后核对[0m
+        [0m；此次没有一致原件，不采用先前完整结论。[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"当前完整登记动作集合"[39m
+      [33mclass[39m=[32m"card"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m当前完整登记动作集合[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m手动核对付款、整仓恢复、现金归属释放和目标联动的当前来源。未覆盖分支与未决原动作保留；完整核对只描述登记范围。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m刷新当前登记动作集合[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m动作集合响应缺少一致的原件分母，请刷新后核对[0m
+        [0m；此次没有一致原件，不采用先前完整结论。[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/RegisteredActionSetPanel.test.tsx:16:16
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 26 passed (30)
+   Start at  13:10:39
+   Duration  4.58s (transform 592ms, setup 1.13s, collect 1.45s, tests 1.56s, environment 2.25s, prepare 602ms)
+

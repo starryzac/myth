@@ -1,0 +1,2 @@
+apps\api\app\domain\full_seasonal_ended_adoption.py:54: error: Incompatible types in assignment (expression has type "str", variable has type "Literal['seasonal-ended-adoption-proof-v1']")  [assignment]
+Found 1 error in 1 file (checked 4 source files)

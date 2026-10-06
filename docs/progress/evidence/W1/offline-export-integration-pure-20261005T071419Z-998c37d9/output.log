@@ -1,0 +1,12 @@
+..........................................s............................. [ 33%]
+........................................................................ [ 67%]
+....................................................................     [100%]
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+SKIPPED [1] scripts\tests\test_export_evidence.py:331: Native symlink creation unavailable: [WinError 1314] 客户端没有所需的特权。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.runtime\\tool_tests\\export_evidence\\82e9710284cf4a75aedd11ac3b44562d\\outside.json' -> 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.runtime\\tool_tests\\export_evidence\\82e9710284cf4a75aedd11ac3b44562d\\tool-fixture\\.runtime\\inputs\\link.json'
+211 passed, 1 skipped, 1 warning in 10.66s

@@ -1,0 +1,44 @@
+{
+  "run_id": "20261006T042250Z-82810966",
+  "task": "W3",
+  "label": "joint-producers-final-owner-original-metadata-and-whole-math",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/full_action_set_joint_producers.py",
+    "apps/api/app/services/full_action_set_joint_producers.py",
+    "apps/api/app/tests/test_full_action_set_joint_producers.py",
+    "apps/api/app/tests/test_full_action_set_joint_producers_integration.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "apps/api/app/tests/test_full_action_set_joint_producers.py",
+    "-q",
+    "-m",
+    "not integration",
+    "--tb=short"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T04:22:52.280031+00:00",
+  "finished_at": "2026-10-06T04:26:11.413952+00:00",
+  "wall_seconds": 199.133921,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/api/app/api/dependencies.py",
+    "apps/api/app/main.py",
+    "apps/api/app/tests/test_full_action_set_boundary_registered_api.py",
+    "apps/api/app/tests/test_full_experiment_asset_execution.py",
+    "apps/web/src/api/full-maturity-execution.ts"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "9ade51c39391fe87b68864bcc6ee14fff647bc14f44b0c3fb10bbc10f72f4834",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

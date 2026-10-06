@@ -1,0 +1,35 @@
+{
+  "run_id": "20261006T004717Z-f83cd3f2",
+  "task": "W6",
+  "label": "actual-global-v2-readonly-product-panel-direct",
+  "status": "PASSED",
+  "scope": [
+    "apps/web/src/api/actual-action-set",
+    "apps/web/src/components/ActualActionSetPanel"
+  ],
+  "command": [
+    "pnpm.cmd",
+    "--filter",
+    "@bounded-funds/web",
+    "exec",
+    "vitest",
+    "run",
+    "src/api/actual-action-set.test.ts",
+    "src/components/ActualActionSetPanel.test.tsx"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T00:47:18.310654+00:00",
+  "finished_at": "2026-10-06T00:47:22.804696+00:00",
+  "wall_seconds": 4.494042,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "ea22f6c0e74e09628fcb7dc49072b6a0c23583604ffaf5b963122aee897b2af9",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

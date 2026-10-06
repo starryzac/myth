@@ -1,0 +1,5 @@
+apps\api\app\domain\full_policy_change_impact.py:345: error: Argument 1 to "int" has incompatible type "int | None"; expected "str | Buffer | SupportsInt | SupportsIndex | SupportsTrunc"  [arg-type]
+apps\api\app\services\full_policy_change_impact.py:17: error: Module "app.services.full_policy_lifecycle" does not explicitly export attribute "_now"  [attr-defined]
+apps\api\app\tests\test_full_policy_change_impact.py:25: error: Argument 1 to "source" has incompatible type "str"; expected "Literal['DatedExpensePolicy', 'PeriodicTransferPolicy', 'SeasonalReservePolicy']"  [arg-type]
+apps\api\app\tests\test_full_policy_change_impact.py:31: error: Argument 1 to "canonical_candidate" has incompatible type "str"; expected "Literal['RecurringObligationPolicy', 'LivingReservePolicy', 'EmergencyBufferPolicy', 'DatedExpensePolicy', 'LongTermGoalPolicy', 'PeriodicTransferPolicy', 'AssetAuthorizationPolicy', 'RecoveryPolicy', 'GoalAllocationPolicy', 'CrossGoalReallocationPolicy', 'SeasonalReservePolicy', 'InterventionPolicy']"  [arg-type]
+Found 4 errors in 3 files (checked 3 source files)

@@ -1,0 +1,81 @@
+.F..                                                                     [100%]
+================================== FAILURES ===================================
+_ test_exact_transfer_confirmation_does_not_make_auto_or_reauthorize_unknown __
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_0b16d3a60cb3433f8755b466e88efe05)
+
+    def test_exact_transfer_confirmation_does_not_make_auto_or_reauthorize_unknown(
+        boundary_engine: Engine,
+    ) -> None:
+        source, target = transfer_accounts(boundary_engine)
+        intent = TransferIntent(
+            kind="transfer_internal",
+            source_account_id=source,
+            destination_account_id=target,
+            amount_cents=10000,
+        )
+        before = snapshot(boundary_engine)
+        with readonly(boundary_engine) as session:
+            result = assess_envelope_intent(session, DEMO_USER_ID, intent, SEED_AS_OF)
+            assert memberships(result.assessment)["FinanciallySafeSet"] == "IN"
+            assert memberships(result.assessment)["UserAuthorizedSet"] == "OUT"
+            assert not result.assessment.automatic_execution_allowed
+        assert snapshot(boundary_engine) == before
+        prepared = prepare_action(
+            boundary_engine,
+            DEMO_USER_ID,
+            PrepareActionRequest(idempotency_key="envelope-transfer", intent=intent),
+            SEED_AS_OF,
+        )
+        confirm_action(
+            boundary_engine,
+            DEMO_USER_ID,
+            prepared.action_id,
+            ConfirmActionRequest(effect_hash=prepared.effect_hash, accepted=True),
+            SEED_AS_OF,
+        )
+        before = snapshot(boundary_engine)
+        with readonly(boundary_engine) as session:
+            confirmed = assess_envelope_action(session, DEMO_USER_ID, prepared.action_id, SEED_AS_OF)
+            assert confirmed.assessment.intersection == "IN"
+            assert confirmed.assessment.execution_eligible
+            assert not confirmed.assessment.automatic_execution_allowed
+            assert confirmed.effect == prepared.effect
+            with pytest.raises(PolicyLifecycleError) as foreign:
+                assess_envelope_action(session, uuid4(), prepared.action_id, SEED_AS_OF)
+            assert foreign.value.status_code == 404
+        assert snapshot(boundary_engine) == before
+        with _fault("DROP_BANK_RESPONSE", "EXECUTE_ACTION", boundary_engine, DEMO_USER_ID):
+>           unknown_action = execute_action(
+                boundary_engine, DEMO_USER_ID, prepared.action_id, SEED_AS_OF
+            )
+
+apps\api\app\tests\test_autonomy_envelope_integration.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\execution.py:440: in execute_action
+    return _execute_action(engine, user_id, action_id, now)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution.py:568: in _execute_action
+    process_operation(engine, user_id, action_id, now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_0b16d3a60cb3433f8755b466e88efe05), UUID('271a9827-f82...0'), UUID('309f07fd-512b-4b96-be5e-ed5598e21ef7'), datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc))
+kwargs = {}
+
+    def lost(*args: Any, **kwargs: Any) -> Any:
+        result = original(*args, **kwargs)  # Real independent bank commit happens first.
+        if (
+            _FAULT_CONTEXT.get() is not marker
+            or len(args) < 2
+            or args[0] is not engine
+            or args[1] != user_id
+        ):
+            return result
+        # Transport loss is uncertainty after the independent commit, never bank refusal.
+>       raise TimeoutError("SIMULATED_BANK_RESPONSE_LOST")
+E       TimeoutError: SIMULATED_BANK_RESPONSE_LOST
+
+apps\api\app\services\scenario_runner.py:127: TimeoutError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_autonomy_envelope_integration.py::test_exact_transfer_confirmation_does_not_make_auto_or_reauthorize_unknown
+1 failed, 3 passed in 54.49s

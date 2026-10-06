@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/components/FullPoliciesPanel.payment-host.test.tsx (2 tests) 544ms
+   ✓ 当前周期策略详情加载实际用户周期与原MVP权限，其他族门限制金融提交  380ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  05:46:57
+   Duration  4.65s (transform 1.28s, setup 437ms, collect 1.99s, tests 544ms, environment 931ms, prepare 290ms)
+

@@ -1,0 +1,39 @@
+{
+  "run_id": "20261005T025130Z-9e34f62f",
+  "task": "W1",
+  "label": "fixed-prerequisite-failed-targets",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_demo_console.py::test_fixed_preset_records_real_liquidity_expense_and_requires_exact_loss_consent",
+    "apps/api/app/tests/test_simulated_redemption_quote.py::test_real_fixed_price_requires_exact_consent_and_conserves_original_bank_legs_once",
+    "apps/api/app/tests/test_scenario_runner.py::test_bank_response_loss_is_unknown_after_real_commit_then_replays_same_action",
+    "apps/api/app/tests/test_scenario_runner.py::test_legacy_receipt_rpc_is_readonly_and_opaque_purchase_cannot_prove_all_actions_safe",
+    "-v",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T02:51:31.383997+00:00",
+  "finished_at": "2026-10-05T02:57:10.612133+00:00",
+  "wall_seconds": 339.228136,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "scripts/mvp_observations.py",
+    "scripts/tests/test_mvp_observations.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "6261a5361e8b2f332af2ea171671a3fceddbb33c318be5c3f7c749fae5a9f7a4",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

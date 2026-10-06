@@ -1,0 +1,43 @@
+{
+  "run_id": "20261005T063549Z-ce6726d4",
+  "task": "W1",
+  "label": "current-check-wired-final-format",
+  "status": "PASSED",
+  "scope": [
+    "scripts/w1_current_check_context.py",
+    "scripts/w1_browser_acceptance.py",
+    "scripts/w1_audit_observe.py",
+    "scripts/tasks.py",
+    "scripts/tests/test_w1_current_check_context.py",
+    "apps/api/app/tests/test_task_orchestration.py",
+    "apps/api/app/tests/test_demo_recovery_history.py"
+  ],
+  "command": [
+    ".venv\\Scripts\\ruff.exe",
+    "format",
+    "--check",
+    "scripts/w1_current_check_context.py",
+    "scripts/w1_browser_acceptance.py",
+    "scripts/w1_audit_observe.py",
+    "scripts/tasks.py",
+    "scripts/tests/test_w1_current_check_context.py",
+    "apps/api/app/tests/test_task_orchestration.py",
+    "apps/api/app/tests/test_demo_recovery_history.py",
+    "apps/api/app/services/demo_console.py"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T06:35:49.621540+00:00",
+  "finished_at": "2026-10-05T06:35:49.690703+00:00",
+  "wall_seconds": 0.069163,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "3fa62c94b1301255f0c64c429c668a4fabc4cb9d3848edb2790b607266d16092",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

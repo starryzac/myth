@@ -27,6 +27,7 @@ if TYPE_CHECKING:
 
 MAX_EVENT_BYTES = 1024 * 1024
 MAX_SUBJECT_BYTES = 16 * 1024 * 1024
+MAX_ARCHIVE_MANIFEST_BYTES = 16 * 1024 * 1024
 EXTERNAL_EVENT_TYPES = frozenset({"EXTERNAL_BANK_FACT_SETTLED", "EXTERNAL_BANK_FACT_PROJECTED"})
 EXTERNAL_ANCHOR_ALGORITHM = "bank-external-canonical-sha256-v1"
 EXTERNAL_ANCHOR_KINDS = frozenset(
@@ -45,6 +46,12 @@ class AuditContractError(ValueError):
 
 def canonical_bytes(value: dict[str, Any], *, raw: bool = False) -> bytes:
     """Versioned UTF-8 bytes; raw originals preserve finite JSON numeric types."""
+    return _canonical_bytes(
+        value, raw=raw, byte_limit=MAX_SUBJECT_BYTES if raw else MAX_EVENT_BYTES
+    )
+
+
+def _canonical_bytes(value: dict[str, Any], *, raw: bool, byte_limit: int) -> bytes:
     if type(value) is not dict:
         raise AuditContractError("Audit canonical value must be an object")
     nodes = 0
@@ -96,9 +103,62 @@ def canonical_bytes(value: dict[str, Any], *, raw: bool = False) -> bytes:
         ).encode("utf-8")
     except (TypeError, ValueError, UnicodeError, RecursionError) as error:
         raise AuditContractError("Audit value cannot be canonically encoded") from error
-    if len(encoded) > (MAX_SUBJECT_BYTES if raw else MAX_EVENT_BYTES):
+    if len(encoded) > byte_limit:
         raise AuditContractError("Audit JSON exceeds byte limit")
     return encoded
+
+
+def archive_manifest_bytes(value: dict[str, Any]) -> bytes:
+    """Complete SQL archive index, with its own bounded size and identical v1 bytes.
+
+    This index spans many original subjects; it is not an event or a subject.
+    All event bounds and the existing canonical namespace/algorithm are retained.
+    """
+    from app.domain.audit_chain_types import SUBJECT_KINDS
+
+    if type(value) is not dict or set(value) != {"entries", "counts"}:
+        raise AuditContractError("Audit archive manifest has an unsupported shape")
+    entries, counts = value["entries"], value["counts"]
+    if type(entries) is not list or type(counts) is not dict:
+        raise AuditContractError("Audit archive manifest needs complete entries and counts")
+    if len(entries) > 50000:
+        raise AuditContractError("Audit archive manifest exceeds entry limit")
+    actual: dict[str, int] = {}
+    previous: tuple[str, str, str] | None = None
+    for entry in entries:
+        if type(entry) is not dict or set(entry) != {"kind", "id", "snapshot_hash"}:
+            raise AuditContractError("Audit archive entry has an unsupported shape")
+        kind, identity, digest = entry["kind"], entry["id"], entry["snapshot_hash"]
+        if type(kind) is not str or kind not in SUBJECT_KINDS:
+            raise AuditContractError("Audit archive subject kind is unsupported")
+        if type(identity) is not str:
+            raise AuditContractError("Audit archive identity must be canonical UUID text")
+        try:
+            if str(UUID(identity)) != identity:
+                raise ValueError("Noncanonical identity")
+        except (ValueError, AttributeError) as error:
+            raise AuditContractError(
+                "Audit archive identity must be canonical UUID text"
+            ) from error
+        if type(digest) is not str or re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+            raise AuditContractError("Audit archive snapshot hash must be original SHA256 text")
+        key = (kind, identity, digest)
+        if previous is not None and key <= previous:
+            raise AuditContractError("Audit archive entries must be uniquely ordered")
+        previous = key
+        actual[kind] = actual.get(kind, 0) + 1
+    if (
+        any(
+            type(kind) is not str
+            or kind not in SUBJECT_KINDS
+            or type(count) is not int
+            or not 1 <= count <= 50000
+            for kind, count in counts.items()
+        )
+        or counts != actual
+    ):
+        raise AuditContractError("Audit archive counts differ from complete original entries")
+    return _canonical_bytes(value, raw=False, byte_limit=MAX_ARCHIVE_MANIFEST_BYTES)
 
 
 def canonical_text(value: dict[str, Any], *, raw: bool = False) -> str:
@@ -508,6 +568,7 @@ def _event_content(event: "AuditEvent") -> None:
             "POLICY_VERSION_CONFIRMED": ("POLICY_VERSION", "POLICY"),
             "POLICY_STATE_CHANGED": ("POLICY", "POLICY"),
             "GOAL_INITIALIZED": ("GOAL", "GOAL"),
+            "TRANSACTION_CATEGORY_CONFIRMED": ("TRANSACTION", "TRANSACTION"),
         }
         if (event.aggregate_type, payload.correlation_kind) != shapes[event.event_type]:
             raise AuditContractError(
@@ -538,12 +599,13 @@ def _event_content(event: "AuditEvent") -> None:
             raise AuditContractError("Audit aggregate differs from its typed business identity")
         if event.event_type != "ACTION_PROJECTED" and event.action_receipt_id is not None:
             raise AuditContractError("Only actual projection may declare its application receipt")
-        if payload.correlation_kind in {"POLICY", "GOAL"} and any(
+        if payload.correlation_kind in {"POLICY", "GOAL", "TRANSACTION"} and any(
             (event.decision_run_id, event.action_plan_id, event.action_receipt_id)
         ):
             raise AuditContractError("Policy/goal metadata cannot invent action relationships")
         if (
-            event.event_type in {"POLICY_STATE_CHANGED", "GOAL_INITIALIZED"}
+            event.event_type
+            in {"POLICY_STATE_CHANGED", "GOAL_INITIALIZED", "TRANSACTION_CATEGORY_CONFIRMED"}
             and event.aggregate_id != event.correlation_id
         ):
             raise AuditContractError(
@@ -556,6 +618,7 @@ def _event_content(event: "AuditEvent") -> None:
             "BANK_SETTLED": {"EXECUTION_REQUEST", "BANK_POSTING_SET"},
             "ACTION_PROJECTED": {"ACTION_RECEIPT", "BANK_POSTING_SET"},
             "POLICY_VERSION_CONFIRMED": {"POLICY_CONFIGURATION"},
+            "TRANSACTION_CATEGORY_CONFIRMED": {"EVIDENCE_CONTENT"},
         }
         if not required.get(event.event_type, set()).issubset({a.kind for a in payload.anchors}):
             raise AuditContractError(
@@ -895,7 +958,9 @@ def archive_manifest(subjects: Iterable["AuditSubject"]) -> dict[str, Any]:
 
 
 def archive_manifest_digest(subjects: Iterable["AuditSubject"]) -> str:
-    return _digest("audit-archive-v1", archive_manifest(subjects))
+    return hashlib.sha256(
+        b"bounded-funds/audit-archive-v1\0" + archive_manifest_bytes(archive_manifest(subjects))
+    ).hexdigest()
 
 
 def posting_set_digest(postings: Iterable[dict[str, Any]]) -> str:
@@ -1052,6 +1117,13 @@ def _financial_identity(
             "PRINCIPAL_DEBIT": ("POSITION:" + command["position_id"], "ECONOMIC", -principal),
         }
         return command, specs
+    if operation["operation_type"] == "RELEASE_GOAL":
+        from app.domain.full_goal_release_audit import frozen_goal_release_identity
+
+        try:
+            return frozen_goal_release_identity(operation, action, observed_at)
+        except (KeyError, TypeError, ValueError) as error:
+            raise AuditContractError("Frozen dedicated release identity differs") from error
     command_model = BankCommand.model_validate_json(
         json.dumps(operation["request"], allow_nan=False)
     )
@@ -1205,6 +1277,15 @@ def verify_frozen_settlement(
         if row["id"] != str(identity):
             raise AuditContractError("Frozen posting does not bind its original bank operation")
         actual[leg] = (row["ledger_key"], row["ledger_dimension"], row["delta_cents"])
+        if operation["operation_type"] == "RELEASE_GOAL":
+            from app.domain.full_goal_release_audit import verify_frozen_goal_release_posting
+
+            try:
+                verify_frozen_goal_release_posting(command, row)
+            except (KeyError, TypeError, ValueError) as error:
+                raise AuditContractError(
+                    "Frozen dedicated release leg changed its origin"
+                ) from error
         if type(command) is dict and (
             row.get("redemption_id") != operation["id"]
             or row["entry_kind"] != leg
@@ -1284,6 +1365,18 @@ def verify_frozen_projection(
     ):
         raise AuditContractError("Frozen receipt observation and settlement clocks disagree")
     originals = {(s.kind, str(s.id)): s.data for s in subjects}
+    if operation["operation_type"] == "RELEASE_GOAL":
+        from app.domain.full_goal_release_execution import GoalReleaseEffect
+        from app.domain.full_goal_release_projection_audit import (
+            verify_frozen_goal_release_projection,
+        )
+
+        if not isinstance(command, GoalReleaseEffect):
+            raise AuditContractError("Frozen release projection needs its exact new effect")
+        try:
+            verify_frozen_goal_release_projection(command, operation, receipt, rows, originals)
+        except (ValueError, KeyError, TypeError) as error:
+            raise AuditContractError("Frozen release internal transfer originals differ") from error
     transaction_ids = list(response.get("transaction_ids", []))
     if response.get("transaction_id") is not None:
         transaction_ids.append(response["transaction_id"])
@@ -1525,6 +1618,24 @@ def _trace_algorithms_supported(versions: dict[str, str]) -> bool:
         "decision-trace-v1",
         "execution-bank-v1",
         "legacy-redemption-v1",
+        "boundary-action-observation-v1",
+        "full-one-question-v1",
+        "full-one-question-close-v1",
+        "full-intervention-v1",
+        "full-finite-planning-minimax-v1",
+        "full-goal-release-authorization-v1",
+        "full-goal-emergency-release-v1",
+        "full-payment-relation-v1",
+        "full-dynamic-goal-execution-v1",
+        "full-policy-action-set-boundary-v1",
+        "full-policy-action-set-boundary-full-v1",
+        "full-policy-action-set-boundary-actual-v2",
+        "full-policy-action-set-boundary-recovery-composed-v4",
+        "full-seasonal-adoption-v1",
+        "full-recovery-execution-v1",
+        "full-maturity-user-execution-v1",
+        "full-experiment-asset-execution-v1",
+        "registered-joint-goal-execution-v2",
     }
     return all(value in supported for value in versions.values())
 
@@ -1682,6 +1793,46 @@ def _references(
         _external_references(event, index)
         return
     event = cast("AuditEnvelope", event)
+    if event.event_type == "TRANSACTION_CATEGORY_CONFIRMED":
+        from app.domain.transaction_category import verify_category_transition
+
+        def category_original(kind: str, identity: UUID, role: str) -> dict[str, Any]:
+            matching = [r for r in refs if r.kind == kind and r.id == identity and r.role == role]
+            if len(matching) != 1:
+                raise AuditContractError("Category event lacks unique original transition sources")
+            original = index.get((kind, identity, matching[0].snapshot_hash))
+            if original is None:
+                raise AuditContractError("Category event lacks its frozen original")
+            return original.data
+
+        try:
+            category_before = category_original("TRANSACTION", event.aggregate_id, "BEFORE")
+            category_after = category_original("TRANSACTION", event.aggregate_id, "AFTER")
+            declaration_id = UUID(event.payload.context.details["category_evidence_id"])
+            bank_id = UUID(category_before["evidence_id"])
+            declaration = category_original("EVIDENCE", declaration_id, "AFTER")
+            bank = category_original("EVIDENCE", bank_id, "BASIS")
+            if (
+                len(refs) != 4
+                or event.payload.context.reason_code != "USER_CLASSIFICATION_CONFIRMED"
+                or event.payload.context.cause_ref != str(declaration_id)
+                or event.payload.context.details.get("command_hash")
+                != declaration["content"].get("command_hash")
+            ):
+                raise ValueError("Category event differs from original explicit command")
+            verify_category_transition(
+                user_id=event.user_id,
+                epoch_id=event.epoch_id,
+                transaction_id=event.aggregate_id,
+                before=category_before,
+                after=category_after,
+                bank=bank,
+                declaration=declaration,
+            )
+        except (KeyError, TypeError, ValueError) as exc:
+            raise AuditContractError(
+                "Category confirmation originals do not prove the registered transition"
+            ) from exc
     for change in event.payload.changes:
         before = (
             index.get((change.kind, change.id, change.before_snapshot_hash))
@@ -1792,6 +1943,69 @@ def _references(
                 raise AuditUnsupportedVersion("Original decision trace schema is unsupported")
             trace = DecisionTrace.model_validate_json(json.dumps(raw_trace, allow_nan=False))
             verify_trace(trace)
+            if "full_joint_goal_execution" in trace.algorithm_versions:
+                from app.domain.full_joint_goal_execution_trace import (
+                    verify_frozen_full_joint_goal_trace,
+                )
+
+                verify_frozen_full_joint_goal_trace(trace)
+            if "full_experiment_asset_execution" in trace.algorithm_versions:
+                from app.domain.full_experiment_asset_execution_trace import (
+                    verify_frozen_full_experiment_asset_trace,
+                )
+
+                verify_frozen_full_experiment_asset_trace(trace)
+            if (
+                trace.algorithm_versions.get("full_maturity_execution")
+                == "full-maturity-user-execution-v1"
+            ):
+                from app.domain.full_maturity_execution import verify_frozen_maturity_trace
+
+                verify_frozen_maturity_trace(trace)
+            if "seasonal_adoption" in trace.algorithm_versions:
+                from app.domain.full_seasonal_adoption import verify_frozen_seasonal_adoption_trace
+
+                verify_frozen_seasonal_adoption_trace(trace)
+            if "full_recovery_execution" in trace.algorithm_versions:
+                from app.domain.full_recovery_execution_trace import (
+                    verify_frozen_full_recovery_trace,
+                )
+
+                verify_frozen_full_recovery_trace(trace)
+            if (
+                trace.algorithm_versions.get("global_action_set")
+                == "full-policy-action-set-boundary-v1"
+            ):
+                from app.services.full_action_set_boundary import verify_frozen_action_set_trace
+
+                verify_frozen_action_set_trace(trace)
+            elif (
+                trace.algorithm_versions.get("global_action_set")
+                == "full-policy-action-set-boundary-full-v1"
+            ):
+                from app.services.full_action_set_boundary_full import (
+                    verify_frozen_full_action_set_trace,
+                )
+
+                verify_frozen_full_action_set_trace(trace)
+            elif (
+                trace.algorithm_versions.get("global_action_set")
+                == "full-policy-action-set-boundary-actual-v2"
+            ):
+                from app.services.full_action_set_boundary_actual import (
+                    verify_frozen_actual_action_set_trace,
+                )
+
+                verify_frozen_actual_action_set_trace(trace)
+            elif (
+                trace.algorithm_versions.get("global_action_set")
+                == "full-policy-action-set-boundary-recovery-composed-v4"
+            ):
+                from app.services.full_action_set_recovery_observations import (
+                    verify_frozen_recovery_composed_observation,
+                )
+
+                verify_frozen_recovery_composed_observation(trace)
             if (
                 trace.run_id != original.id
                 or trace.user_id != event.user_id

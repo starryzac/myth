@@ -1,0 +1,12 @@
+E501 Line too long (104 > 100)
+   --> apps\api\app\services\scenario_service_steps.py:194:101
+    |
+192 |                 "isolation_level": "REPEATABLE READ",
+193 |                 "read_only": True,
+194 |                 "scope": "Original business/audit rows; no reconstructed or expected financial results",
+    |                                                                                                     ^^^^
+195 |             }
+196 |     if kind == "RUN_RECOVERY":
+    |
+
+Found 1 error.

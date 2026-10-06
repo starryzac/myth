@@ -1,0 +1,39 @@
+{
+  "run_id": "20261005T072223Z-c03d9014",
+  "task": "W1",
+  "label": "scenario-service-steps-installed-real-pg",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/services/scenario_",
+    "apps/api/app/tests/test_scenario_service_steps.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "python",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_scenario_service_steps.py",
+    "-m",
+    "integration",
+    "-q",
+    "--basetemp",
+    ".runtime/pytest-scenario-service-steps-20261005T0724Z"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T07:22:24.242175+00:00",
+  "finished_at": "2026-10-05T07:23:04.199593+00:00",
+  "wall_seconds": 39.957418,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "3bac5409fae4c84ea6429d565394f2b1958f5fd8dec9a74202b525b61740b54c",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

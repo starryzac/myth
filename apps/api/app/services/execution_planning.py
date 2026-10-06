@@ -1,7 +1,8 @@
 """Resolve small intents into exact simulated effects using current server facts."""
 
+import json
 from datetime import datetime, timedelta
-from typing import TypedDict
+from typing import Any, TypedDict
 from uuid import UUID, uuid5
 
 from app.db.models import Account, AssetPosition, AssetProduct, Goal, PolicyVersion
@@ -124,8 +125,16 @@ def _cash_funding(session: Session, user_id: UUID, amount: int, now: datetime) -
 
 
 def plan_execution_effect(
-    session: Session, user_id: UUID, action_id: UUID, intent: ActionIntent, now: datetime
+    session: Session,
+    user_id: UUID,
+    action_id: UUID,
+    intent: ActionIntent,
+    now: datetime,
+    *,
+    _experiment_candidate: dict[str, Any] | None = None,
 ) -> ExecutionEffect:
+    if _experiment_candidate is not None and intent.kind != "purchase_asset":
+        raise PolicyLifecycleError("EXPERIMENT_NOT_IMPLEMENTED", "候选替换仅支持一般资金申购", 409)
     common: EffectIdentity = dict(
         operation_id=action_id,
         user_id=user_id,
@@ -190,6 +199,55 @@ def plan_execution_effect(
             CashUse(account_id=u.account_id, amount_cents=u.amount_cents)
             for u in asset.source_cash_uses
         ]
+        amount = asset.suggested_cents
+        if _experiment_candidate is not None:
+            if asset.goal_id is not None:
+                raise PolicyLifecycleError(
+                    "EXPERIMENT_NOT_IMPLEMENTED", "目标收入份额替换尚未实现", 409
+                )
+            if (
+                set(_experiment_candidate) != {"amount_cents", "cash_uses"}
+                or type(_experiment_candidate["amount_cents"]) is not int
+                or not 0 < _experiment_candidate["amount_cents"] <= 9_223_372_036_854_775_807
+                or not isinstance(_experiment_candidate["cash_uses"], list)
+                or not 0 < len(_experiment_candidate["cash_uses"]) <= 100
+            ):
+                raise PolicyLifecycleError(
+                    "EXPERIMENT_CANDIDATE_INVALID", "候选必须是严格金额及现金来源", 409
+                )
+            raw_uses = _experiment_candidate["cash_uses"]
+            if any(
+                not isinstance(use, dict)
+                or set(use) != {"account_id", "amount_cents"}
+                or type(use["amount_cents"]) is not int
+                for use in raw_uses
+            ):
+                raise PolicyLifecycleError("EXPERIMENT_CANDIDATE_INVALID", "现金来源类型不符", 409)
+            try:
+                cash = [CashUse.model_validate_json(json.dumps(use)) for use in raw_uses]
+            except ValueError as error:
+                raise PolicyLifecycleError(
+                    "EXPERIMENT_CANDIDATE_INVALID", "现金来源无效", 409
+                ) from error
+            if (
+                len({use.account_id for use in cash}) != len(cash)
+                or sum(use.amount_cents for use in cash) != _experiment_candidate["amount_cents"]
+            ):
+                raise PolicyLifecycleError(
+                    "EXPERIMENT_CANDIDATE_INVALID", "现金来源必须唯一且守恒", 409
+                )
+            for cash_use in cash:
+                account = session.get(Account, cash_use.account_id)
+                if (
+                    account is None
+                    or account.user_id != user_id
+                    or account.account_type != "CASH"
+                    or account.currency != "CNY"
+                ):
+                    raise PolicyLifecycleError(
+                        "EXPERIMENT_CANDIDATE_INVALID", "现金来源归属或类型不符", 409
+                    )
+            amount = _experiment_candidate["amount_cents"]
         position_account = session.scalar(
             select(Account)
             .where(
@@ -212,7 +270,7 @@ def plan_execution_effect(
             **common,
             business_key="purchase:" + str(action_id),
             action_type="PURCHASE_ASSET",
-            amount_cents=asset.suggested_cents,
+            amount_cents=amount,
             cash_uses=cash,
             income_uses=[] if asset.goal_id else funding_income(session, user_id, cash, now),
             goal_id=asset.goal_id,

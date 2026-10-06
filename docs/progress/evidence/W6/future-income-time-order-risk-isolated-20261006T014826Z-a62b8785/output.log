@@ -1,0 +1,10 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/future-income-planning.test.ts (22 tests | 21 skipped) 13ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 21 skipped (22)
+   Start at  09:48:28
+   Duration  2.69s (transform 301ms, setup 427ms, collect 709ms, tests 13ms, environment 790ms, prepare 296ms)
+

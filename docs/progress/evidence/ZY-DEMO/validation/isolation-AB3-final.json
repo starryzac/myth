@@ -1,0 +1,241 @@
+{
+  "protocol": "zhiyu-readonly-final-round-v1",
+  "label": "AB3",
+  "round": "20261006T071848Z-b43172f572614275968085edd60b57ed",
+  "observed_at": "2026-10-06T07:31:04.626529+00:00",
+  "scope": "Exact registered AB3 database only; financial before/after refusal comparison and read-only original audit verification",
+  "before_reference": ".runtime\\zhiyu-validation\\AB3-before-B.json",
+  "before_sha256": "d2a94dc70bc3fdf567ba80f845328942d8c2f4a2a319d2ac9377b5f68ec0fa7e",
+  "ui_originals": [
+    ".runtime/zhiyu-validation/edge-AB3-execute.log",
+    ".runtime/zhiyu-validation/edge-AB3-refuse.log"
+  ],
+  "refusal_original": {
+    "label": "AB3",
+    "visible_ms": 51715,
+    "http": 409,
+    "error": {
+      "code": "EXECUTION_NOT_READY",
+      "message": "目标储备尚不可执行：EXACT_GOAL_POLICY_VERSION_REQUIRED",
+      "request_id": "0b5644d7-f0f8-4c84-8a5f-7da27c3f5a58"
+    }
+  },
+  "actual": {
+    "database_name": "bf_test_b43172f572614275968085edd60b57ed",
+    "owner": "zhiyu_demo_b43172f572614275968085edd60b57ed",
+    "read_only": "on",
+    "isolation": "repeatable read"
+  },
+  "owner_role": {
+    "rolname": "zhiyu_demo_b43172f572614275968085edd60b57ed",
+    "rolcanlogin": true,
+    "rolsuper": false,
+    "rolcreatedb": false,
+    "rolcreaterole": false,
+    "rolinherit": false,
+    "rolreplication": false,
+    "rolbypassrls": false
+  },
+  "database_owner": "zhiyu_demo_b43172f572614275968085edd60b57ed",
+  "action": {
+    "id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+    "status": "SUCCEEDED",
+    "amount_cents": 100000,
+    "request_hash": "db1750c3fcf65896d46ee956df7cc782a608648c71883b5ef557e91cbe8e60bf",
+    "effect_hash": "9c2d95b11e089f5b7fbdb9b98d0fe298b694d943f676cda88c63a452b9f1d2af"
+  },
+  "action_count": 1,
+  "operation_postings": [
+    {
+      "id": "0083fa54-558b-5aae-8af2-f4688e941288",
+      "operation_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+      "ledger_dimension": "GOAL_OWNERSHIP",
+      "entry_kind": "CREDIT",
+      "leg_ref": "goal_cash",
+      "delta_cents": 100000
+    },
+    {
+      "id": "20ccc320-d452-5e09-af4f-0811b281991f",
+      "operation_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+      "ledger_dimension": "ECONOMIC",
+      "entry_kind": "CREDIT",
+      "leg_ref": "cash:4eb14153-fdd3-5778-bd0c-7b8b82d16411",
+      "delta_cents": 100000
+    },
+    {
+      "id": "35b1d053-54e9-506a-acb9-c8771fbb4288",
+      "operation_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+      "ledger_dimension": "INCOME_LOCATION",
+      "entry_kind": "CREDIT",
+      "leg_ref": "income_in:c651471d-2c5b-59ad-802d-e82bc9f986cf",
+      "delta_cents": 100000
+    },
+    {
+      "id": "b2ff9360-b45d-5e9c-b0ec-b3b980587cca",
+      "operation_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+      "ledger_dimension": "ECONOMIC",
+      "entry_kind": "DEBIT",
+      "leg_ref": "cash:61d172d3-9b8a-5f75-b00e-5d99b5e08dd1",
+      "delta_cents": -100000
+    },
+    {
+      "id": "e58d60b6-0672-5426-b711-751637337e39",
+      "operation_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+      "ledger_dimension": "INCOME_LOCATION",
+      "entry_kind": "DEBIT",
+      "leg_ref": "income_out:c651471d-2c5b-59ad-802d-e82bc9f986cf",
+      "delta_cents": -100000
+    }
+  ],
+  "economic_posting_conservation": [
+    {
+      "operation_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+      "legs": 2,
+      "delta_sum_cents": "0"
+    }
+  ],
+  "posting_balance_violations": 0,
+  "current_hash_integrity": {
+    "action": true,
+    "bank_operations": true,
+    "external_facts_originals_validated": true
+  },
+  "original_subject_snapshot_summaries": [
+    {
+      "id": "851d3456-dd6b-45fc-bfea-dcca6302ae9e",
+      "kind": "BANK_EXTERNAL_FACT",
+      "entity_id": "eac00dd8-00ad-5120-aa5b-484123ac1ba9",
+      "snapshot_hash": "ec3d3f83797e5d93e49c7a00973f58c6793ab6a5e70816bb6168e2a5de4dac68",
+      "captured_at": "2026-10-06 07:20:25.672545+00:00",
+      "hash_valid": true,
+      "income_request_hash_matches": true
+    },
+    {
+      "id": "8f2fa948-2e7f-4c3b-9b6d-30b97bd40eac",
+      "kind": "BANK_EXTERNAL_FACT",
+      "entity_id": "eac00dd8-00ad-5120-aa5b-484123ac1ba9",
+      "snapshot_hash": "5c47d5bd975e4fd7b9a464c3a354703e7fdc71c0223990a1f7f5c7666ecde482",
+      "captured_at": "2026-10-06 07:20:26.580366+00:00",
+      "hash_valid": true,
+      "income_request_hash_matches": true
+    },
+    {
+      "id": "f0d74040-32b9-4d43-a16d-d472fd4dc4dc",
+      "kind": "ACTION_PLAN",
+      "entity_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+      "snapshot_hash": "7c7adcd24c2fec2764ccc0e7d3163315c3c6e60975a7a497388c1f655f0c7618",
+      "captured_at": "2026-10-06 07:20:37.549579+00:00",
+      "hash_valid": true,
+      "effect_hash_matches_original": true
+    },
+    {
+      "id": "e93ad8c3-cf04-4d7a-9178-b3b6509ba2ff",
+      "kind": "ACTION_PLAN",
+      "entity_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+      "snapshot_hash": "6587ac6f7c75206e1d2e98789a2dbee1edf183c3f87055aa980994979298a35c",
+      "captured_at": "2026-10-06 07:20:38.456593+00:00",
+      "hash_valid": true,
+      "effect_hash_matches_original": true
+    },
+    {
+      "id": "14415ef3-b4c5-4bd6-95a4-159ab67323af",
+      "kind": "ACTION_PLAN",
+      "entity_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+      "snapshot_hash": "129248bc96cceaade4540605f2aecd0d062a3afbe59bc093bc9e8684da61e895",
+      "captured_at": "2026-10-06 07:24:14.531051+00:00",
+      "hash_valid": true,
+      "effect_hash_matches_original": true
+    },
+    {
+      "id": "189a4b54-0a92-4edb-9e21-1fa4e5c17bc7",
+      "kind": "BANK_OPERATION",
+      "entity_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+      "snapshot_hash": "29a57bd29cb2ed0bf655abcdf12d406b194cbcef06573bf55b50defcc341f1f7",
+      "captured_at": "2026-10-06 07:24:22.211169+00:00",
+      "hash_valid": true
+    },
+    {
+      "id": "0d852bac-2525-42d2-82f5-949e689dec26",
+      "kind": "BANK_OPERATION",
+      "entity_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+      "snapshot_hash": "fae4d1fc40d05c717bf4ecf804b83a7d004efd69aaeefc2f70c5dc38e023dd1f",
+      "captured_at": "2026-10-06 07:24:23.821660+00:00",
+      "hash_valid": true
+    },
+    {
+      "id": "0f2be7b0-1cb1-4363-9b37-27ab447fed8f",
+      "kind": "ACTION_PLAN",
+      "entity_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+      "snapshot_hash": "f527c956f1f35452c0404a00076045e2120f7afda3633948d36357fa23690eb2",
+      "captured_at": "2026-10-06 07:24:25.026153+00:00",
+      "hash_valid": true,
+      "effect_hash_matches_original": true
+    }
+  ],
+  "audit_event_count": 15,
+  "audit_subject_snapshot_count": 85,
+  "audit": {
+    "schema_version": "audit-verification-v1",
+    "simulation": true,
+    "user_id": "271a9827-f82a-5be6-9e0a-50f721029fb0",
+    "epoch_id": "084e1103-d5f4-4f35-9d8c-f32ab9e7391f",
+    "status": "VALID",
+    "chain_status": "VALID",
+    "reference_status": "VALID",
+    "checkpoint_status": "NOT_REQUESTED",
+    "actual_count": 15,
+    "expected_count": 15,
+    "actual_tail_id": "bcc4fb1d-1433-48be-b5d3-fb8add453fbc",
+    "actual_tail_hash": "865e764f9c94e065a158f103a74169811b843c10edd87590ebd232762209c02f",
+    "expected_tail_id": "bcc4fb1d-1433-48be-b5d3-fb8add453fbc",
+    "expected_tail_hash": "865e764f9c94e065a158f103a74169811b843c10edd87590ebd232762209c02f",
+    "verified_through_sequence": 15,
+    "errors": [],
+    "warnings": [],
+    "errors_truncated": false
+  },
+  "audit_read_seconds": 6.842813,
+  "after_reference": ".runtime\\zhiyu-validation\\AB3-after-B.json",
+  "after_sha256": "853330ba6cc71fc712a044329623755383d31ee4e340574f3e48995ba18d1b7b",
+  "financial_before_sha256": "5a2c1598c50dea7db5da7bd9aae173b643b2616c2dc39475f1507bed39573e9e",
+  "financial_after_sha256": "5a2c1598c50dea7db5da7bd9aae173b643b2616c2dc39475f1507bed39573e9e",
+  "rows_by_table": {
+    "accounts": 5,
+    "transactions": 132,
+    "goals": 1,
+    "action_resource_reservations": 3,
+    "bank_operations": 1,
+    "simulated_bank_postings": 31,
+    "action_receipts": 1,
+    "external_bank_facts": 1
+  },
+  "financial_tables_unchanged": {
+    "accounts": true,
+    "transactions": true,
+    "goals": true,
+    "action_resource_reservations": true,
+    "bank_operations": true,
+    "simulated_bank_postings": true,
+    "action_receipts": true,
+    "external_bank_facts": true
+  },
+  "checks": {
+    "exact_database_user_owner": true,
+    "readonly_repeatable": true,
+    "least_privilege": true,
+    "all_eight_financial_tables_unchanged": true,
+    "one_original_action_succeeded": true,
+    "one_original_bank_operation_settled": true,
+    "one_original_receipt": true,
+    "one_goal_100000": true,
+    "one_income_200000": true,
+    "five_postings_match_original_receipt": true,
+    "economic_legs_conserve": true,
+    "posting_balances_valid": true,
+    "current_hash_integrity": true,
+    "original_snapshot_integrity": true,
+    "audit_chain_valid": true,
+    "actual_revoke_refusal_409": true
+  },
+  "result": "PASS"
+}

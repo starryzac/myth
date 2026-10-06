@@ -1,0 +1,79 @@
+F
+================================== FAILURES ===================================
+_ test_native_goal_income_prepared_action_dashboard_is_complete_and_read_only _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_fde6338b6fab4b8aa90b802e0651a0a4)
+
+    def test_native_goal_income_prepared_action_dashboard_is_complete_and_read_only(
+        demo_engine: Engine,
+    ) -> None:
+        seed_demo(demo_engine)
+        with Session(demo_engine) as session, session.begin():
+            policy, version = confirmed_policy(
+                session,
+                {
+                    "type": "goal_saving",
+                    "name": "Native new car goal",
+                    "target_cents": 3_000_000,
+                    "deadline": "2027-10-01",
+                    "monthly_contribution": {
+                        "min_cents": 180_001,
+                        "target_cents": 200_000,
+                        "max_cents": 250_000,
+                    },
+                },
+                NOW,
+            )
+            account = session.scalars(
+                select(Account).where(Account.user_id == DEMO_USER_ID, Account.account_type == "GOAL")
+            ).one()
+            goal = create_goal_projection(session, DEMO_USER_ID, policy, version, account.id, NOW)
+            goal_id = goal.goal.id
+            epoch = current_audit_epoch(session, DEMO_USER_ID)
+            assert epoch is not None
+            epoch_id = epoch.id
+        runner = ScenarioRunner(demo_engine, DEMO_USER_ID)
+        income = runner.rpc(
+            ScenarioRPC(
+                scenario_id="native-goal-dashboard",
+                purpose="DEVELOPMENT",
+                operation="ingest_goal_income",
+                expected_epoch_id=epoch_id,
+                goal_id=goal_id,
+            ),
+            NOW + timedelta(seconds=1),
+        )
+        assert income["result"]["bank_status"] == "SETTLED"
+        assert income["result"]["projection_status"] == "PROJECTED"
+        with Session(demo_engine) as session, session.begin():
+>           prepared = prepare_action(
+                session,
+                DEMO_USER_ID,
+                PrepareActionRequest(
+                    idempotency_key=str(uuid4()), intent=GoalIntent(kind="allocate_goal", goal_id=goal_id)
+                ),
+                NOW + timedelta(seconds=2),
+            )
+
+apps\api\app\tests\test_dashboard_goal_income.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\execution.py:48: in prepare_action
+    _lock_user(session, user_id)
+apps\api\app\services\execution.py:659: in _lock_user
+    transaction_gate(session, user_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x0000019FEAF4D310>
+user_id = UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')
+
+    def transaction_gate(session: Session, user_id: UUID) -> None:
+        bind = session.get_bind()
+>       engine = bind if isinstance(bind, Engine) else bind.engine
+                                                       ^^^^^^^^^^^
+E       AttributeError: 'Session' object has no attribute 'engine'
+
+apps\api\app\db\audit_guard.py:36: AttributeError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_dashboard_goal_income.py::test_native_goal_income_prepared_action_dashboard_is_complete_and_read_only
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 8.32s

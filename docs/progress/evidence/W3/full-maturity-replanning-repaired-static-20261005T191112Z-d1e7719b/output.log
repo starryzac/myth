@@ -1,0 +1,40 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> apps\api\app\tests\test_full_maturity_replanning_integration.py:3:1
+   |
+ 1 |   """Owned native-PG candidate only. Root runs it; collection is not financial evidence."""
+ 2 |
+ 3 | / from datetime import timedelta
+ 4 | | from uuid import UUID
+ 5 | |
+ 6 | | import pytest
+ 7 | | from app.domain.full_maturity_replanning import MaturityReplanningRequest
+ 8 | | from app.domain.policy_configuration import configuration_hash
+ 9 | | from app.services.action_contracts import PrepareActionRequest, PurchaseIntent
+10 | | from app.services.audit_chain import current_audit_epoch
+11 | | from app.services.demo_seed import DEMO_USER_ID
+12 | | from app.services.execution import execute_action, prepare_action
+13 | | from app.services.full_maturity_replanning import preview_maturity_replanning
+14 | | from app.services.policy_lifecycle import confirm_proposal, revoke_policy
+15 | | from app.services.product_catalog import register_current_catalog
+16 | | from app.services.recovery import run_recovery
+17 | | from app.services.user_policy_declaration import UserDeclarationRequest, declare_user_policy
+18 | | from app.tests.test_goal_api import NOW, all_tables
+19 | | from app.tests.test_goal_api import goal_client as goal_client
+20 | | from fastapi.testclient import TestClient
+21 | | from sqlalchemy.orm import Session
+22 | | from sqlalchemy.engine import Engine
+   | |____________________________________^
+23 |
+24 |   pytestmark = pytest.mark.integration
+   |
+help: Organize imports
+   |
+20 | from fastapi.testclient import TestClient
+21 + from sqlalchemy.engine import Engine
+22 | from sqlalchemy.orm import Session
+   - from sqlalchemy.engine import Engine
+23 |
+   |
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.

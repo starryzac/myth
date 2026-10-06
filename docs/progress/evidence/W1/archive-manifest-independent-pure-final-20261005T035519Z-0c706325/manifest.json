@@ -1,0 +1,36 @@
+{
+  "run_id": "20261005T035519Z-0c706325",
+  "task": "W1",
+  "label": "archive-manifest-independent-pure-final",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/",
+    "apps/api/app/tests/test_audit_archive_manifest.py",
+    "scripts/browser_checkpoint_oracles.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_audit_archive_manifest.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T03:55:19.626052+00:00",
+  "finished_at": "2026-10-05T03:55:55.973376+00:00",
+  "wall_seconds": 36.347324,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/web/tests/e2e/w1-demo.spec.ts",
+    "scripts/w1_browser_acceptance.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "c74293a88d0b170c68ef81a9a723ad9103882f60f0b4e43e2d222433cb74f31c",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

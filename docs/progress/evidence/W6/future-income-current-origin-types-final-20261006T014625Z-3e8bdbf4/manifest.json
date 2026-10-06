@@ -1,0 +1,37 @@
+{
+  "run_id": "20261006T014625Z-3e8bdbf4",
+  "task": "W6",
+  "label": "future-income-current-origin-types-final",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/api/future-income-planning",
+    "apps/web/src/features/future-income-operation",
+    "apps/web/src/components/FutureIncomePlanningPanel",
+    "apps/web/src/tests/future-income-planning-fixture"
+  ],
+  "command": [
+    "C:/Users/starryzac/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node.exe",
+    "apps/web/node_modules/typescript/bin/tsc",
+    "--project",
+    "apps/web/tsconfig.json",
+    "--noEmit"
+  ],
+  "exit_code": 2,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T01:46:26.829313+00:00",
+  "finished_at": "2026-10-06T01:46:55.760154+00:00",
+  "wall_seconds": 28.930841,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/api/app/tests/test_full_goal_adjustments_integration.py",
+    "apps/web/src/components/SeasonalReserveAdoptionPanel.tsx"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "9080866dc5f07fdfe375bc323d120041be610d9a28a7de4b44226c8cf7d8ee30",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

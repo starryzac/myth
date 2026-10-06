@@ -1,0 +1,30 @@
+...............................................................F
+================================== FAILURES ===================================
+_ test_complete_strict_future_chain_selects_new_algorithm_without_changing_original_cash_view _
+
+    def test_complete_strict_future_chain_selects_new_algorithm_without_changing_original_cash_view() -> (
+        None
+    ):
+        proof = originals()
+        row = current_source(proof)
+        baseline = project_full_protection(inputs(row))
+        row = row.model_copy(
+            update={
+                "reference_snapshots": [
+                    {"kind": REFERENCE_KIND, "proof": proof.model_dump(mode="json")}
+                ]
+            }
+        )
+        request = inputs(row)
+        raw = request.model_dump(mode="json")
+        result = project_full_protection(request)
+        curve = result.full_annual_projection
+        assert baseline.status == "UNKNOWN" and baseline.full_annual_projection is None
+>       assert curve is not None and result.status == "READY"
+E       assert (None is not None)
+
+apps\api\app\tests\test_full_future_dated_projection_bridge.py:40: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_future_dated_projection_bridge.py::test_complete_strict_future_chain_selects_new_algorithm_without_changing_original_cash_view
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 63 passed in 5.90s

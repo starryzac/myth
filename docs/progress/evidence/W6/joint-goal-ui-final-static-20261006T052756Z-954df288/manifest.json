@@ -1,0 +1,42 @@
+{
+  "run_id": "20261006T052756Z-954df288",
+  "task": "W6",
+  "label": "joint-goal-ui-final-static",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/api/full-joint-goal-execution",
+    "apps/web/src/features/full-joint-goal-operation",
+    "apps/web/src/components/FullJointGoalExecutionPanel",
+    "apps/web/src/tests/full-joint-goal-execution-fixture"
+  ],
+  "command": [
+    "node",
+    "apps/web/node_modules/eslint/bin/eslint.js",
+    "-c",
+    "apps/web/eslint.config.js",
+    "apps/web/src/api/full-joint-goal-execution.ts",
+    "apps/web/src/features/full-joint-goal-operation.ts",
+    "apps/web/src/components/FullJointGoalExecutionPanel.tsx",
+    "apps/web/src/api/full-joint-goal-execution.test.ts",
+    "apps/web/src/features/full-joint-goal-operation.test.ts",
+    "apps/web/src/components/FullJointGoalExecutionPanel.test.tsx",
+    "apps/web/src/tests/full-joint-goal-execution-fixture.ts",
+    "--max-warnings",
+    "0"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T05:27:58.592439+00:00",
+  "finished_at": "2026-10-06T05:28:01.913279+00:00",
+  "wall_seconds": 3.32084,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "0fd9cbaf54f530bc5b2f4a767a24cc4ea6a1acdc5a5b26f45ddc1ced746b8995",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

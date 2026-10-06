@@ -1,0 +1,28 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_actual_full_physical_capture_preserves_stored_text_nulls_and_all24_rows _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_ead311cedd1249889908135d089adb8a)
+
+    @pytest.mark.integration
+    def test_actual_full_physical_capture_preserves_stored_text_nulls_and_all24_rows(
+        demo_engine: Engine,
+    ) -> None:
+        seed_demo(demo_engine, _experiment_seed_extension="MVP503_SECOND_CASH_INITIAL_FACT_V1")
+        with Session(demo_engine) as session:
+            epoch = current_audit_epoch(session, DEMO_USER_ID)
+            assert epoch is not None and epoch.status == "OPEN"
+            epoch_id = str(epoch.id)
+            events = {str(row.id): row.canonical_text for row in session.scalars(select(AuditEvent))}
+            subjects = {
+                str(row.id): row.canonical_text for row in session.scalars(select(AuditSubjectSnapshot))
+            }
+        before = original_rows(demo_engine)
+>       assert len(before) == 24 and events and subjects
+E       assert (24 == 24 and {'051f16cc-5dc8-4b88-aac8-785327cfff9d': '{"action_plan_id":null,"action_receipt_id":null,"aggregate_id":"ffbea40c-39d...ema_version":"audit-event-v1","sequence_number":1,"simulation":true,"user_id":"271a9827-f82a-5be6-9e0a-50f721029fb0"}'} and {})
+E        +  where 24 = len({'asset_products': [{'product_code': 'BF_DEMO_T1', 'version_number': 2, 'name': '模拟现金管理 T+1', 'asset_class': 'CASH_MGM...r': 1, 'schema_version': 'audit-head-v1', 'canonical_version': 'audit-canonical-json-v1', 'status': 'OPEN', ...}], ...})
+
+apps\api\app\tests\test_mvp_readonly_collector_integration.py:49: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_mvp_readonly_collector_integration.py::test_actual_full_physical_capture_preserves_stored_text_nulls_and_all24_rows
+1 failed in 7.10s

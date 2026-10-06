@@ -1,0 +1,539 @@
+FFFF........................F.                                           [100%]
+================================== FAILURES ===================================
+_ test_no_op_and_explicit_replay_are_original_engine_and_do_not_mutate_originals _
+
+    def test_no_op_and_explicit_replay_are_original_engine_and_do_not_mutate_originals() -> None:
+        original = basis()
+        before = copy.deepcopy(original.model_dump(mode="json"))
+        body = request()
+>       result = compare_scenario(original, body)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_scenario_simulation.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\domain\scenario_simulation.py:217: in compare_scenario
+    baseline = compute_boundary(snapshot, basis.versions, basis.positions, basis.products)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\domain\boundary.py:773: in compute_boundary
+    return _compute_boundary_core(snapshot, active_policy_versions, positions, products).boundary
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+snapshot = BoundarySnapshot(as_of=datetime.datetime(2026, 10, 5, 0, 0, tzinfo=datetime.timezone.utc), timezone='UTC', horizon_day...goals=[], goal_month_contributions=[], living_reserves=[], unassigned_goal_cash=[], source_issues=[], source_digest='')
+active_policy_versions = [BoundaryPolicyVersion(evidence_ids=[UUID('00000000-0000-0000-0000-000000000018')], policy_id=UUID('00000000-0000-0000...tetime.timezone.utc), valid_from=datetime.datetime(2026, 10, 5, 0, 0, tzinfo=datetime.timezone.utc), valid_until=None)]
+positions = [BoundaryPosition(evidence_ids=[], position_id=UUID('00000000-0000-0000-0000-000000000019'), goal_id=None, principal_cents=100, status='HELD', principal_available_at=None, availability_evidence_ids=[])]
+products = [BoundaryProduct(product_id=UUID('00000000-0000-0000-0000-000000000006'), version_number=1, asset_class='FIXED_DEPOSIT...al_return_bps=10000, rollover=False), terms_digest='cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc')]
+_change = None
+
+    def _compute_boundary_core(
+        snapshot: BoundarySnapshot,
+        active_policy_versions: Sequence[BoundaryPolicyVersion],
+        positions: Sequence[BoundaryPosition],
+        products: Sequence[BoundaryProduct],
+        *,
+        _change: tuple[
+            BoundaryPolicyVersion, PolicyChangeAssumption, LivingReserveChangeEstimate | None
+        ]
+        | None = None,
+    ) -> _BoundaryCore:
+        """Compute financial v1 once and retain its original obligation metadata."""
+        snapshot = BoundarySnapshot.model_validate(snapshot.model_dump())
+        if len(active_policy_versions) > 100 or len(positions) > 10000 or len(products) > 100:
+            raise ValueError("Boundary capacity is 100 policies, 10000 positions and 100 products")
+        active_policy_versions = sorted(
+            (BoundaryPolicyVersion.model_validate(p.model_dump()) for p in active_policy_versions),
+            key=lambda p: p.policy_id,
+        )
+        positions = sorted(
+            (BoundaryPosition.model_validate(p.model_dump()) for p in positions),
+            key=lambda p: p.position_id,
+        )
+        products = sorted(
+            (BoundaryProduct.model_validate(p.model_dump()) for p in products),
+            key=lambda p: p.product_id,
+        )
+        for values, name in (
+            ([a.account_id for a in snapshot.cash_accounts], "account"),
+            ([p.policy_id for p in active_policy_versions], "policy"),
+            ([p.version_id for p in active_policy_versions], "version"),
+            ([b.bill_id for b in snapshot.bills], "bill"),
+            ([(s.policy_id, s.period) for s in snapshot.occurrence_settlements], "settlement"),
+            ([g.goal_id for g in snapshot.goals], "goal"),
+            ([g.policy_id for g in snapshot.goals], "goal policy"),
+            ([(g.goal_id, g.period) for g in snapshot.goal_month_contributions], "goal contribution"),
+            ([p.product_id for p in products], "product"),
+            ([p.position_id for p in positions], "position"),
+            ([item.policy_version_id for item in snapshot.living_reserves], "living estimate"),
+            ([g.account_id for g in snapshot.unassigned_goal_cash], "unassigned goal account"),
+        ):
+            _unique(values, name)
+        financial_hash = configuration_hash(
+            {
+                "algorithm": ALGORITHM_VERSION,
+                "snapshot": _financial(snapshot.model_dump(mode="json")),
+                "policies": _financial(
+                    [item.model_dump(mode="json") for item in active_policy_versions]
+                ),
+                "positions": _financial([item.model_dump(mode="json") for item in positions]),
+                "products": _financial([item.model_dump(mode="json") for item in products]),
+            }
+        )
+        zone = UTC if snapshot.timezone == "UTC" else timezone(timedelta(hours=8))
+        try:
+            first = snapshot.as_of.astimezone(zone).date()
+            last = first + timedelta(days=snapshot.horizon_days + 1) - timedelta(days=1)
+        except (ValueError, OverflowError) as error:
+            raise ValueError("Boundary date interval is outside supported calendar dates") from error
+        cash = sum(
+            item.balance_cents for item in snapshot.cash_accounts if item.account_type != "CREDIT_CARD"
+        )
+        configs = {
+            item.policy_id: validate_configuration(item.configuration)
+            for item in active_policy_versions
+        }
+        for policy in active_policy_versions:
+            if configuration_hash(configs[policy.policy_id]) != policy.content_hash:
+                raise ValueError("Policy configuration hash does not match")
+            if policy.valid_until is not None and policy.valid_until < policy.valid_from:
+                raise ValueError("Policy validity window is reversed")
+        for bill in snapshot.bills:
+            if bill.paid_cents > bill.total_cents or bill.due_date < bill.statement_date:
+                raise ValueError("Bill dates or paid amount are inconsistent")
+            if (bill.status == "PAID") != (bill.paid_cents == bill.total_cents):
+                raise ValueError("Bill status and paid amount are inconsistent")
+            if (bill.status == "UNPAID" and bill.paid_cents != 0) or (
+                bill.status == "PARTIALLY_PAID" and not 0 < bill.paid_cents < bill.total_cents
+            ):
+                raise ValueError("Bill partial-payment status is inconsistent")
+        if any(item.settled_at > snapshot.as_of for item in snapshot.occurrence_settlements):
+            raise ValueError("Future settlements are not completed facts")
+        if any(item.period > first.strftime("%Y-%m") for item in snapshot.goal_month_contributions):
+            raise ValueError("Future goal contributions are not completed facts")
+        accounts = {a.account_id: a for a in snapshot.cash_accounts}
+        for bill in snapshot.bills:
+            if (
+                bill.account_id not in accounts
+                or accounts[bill.account_id].account_type != "CREDIT_CARD"
+            ):
+>               raise ValueError("Bill must reference an included credit card account")
+E               ValueError: Bill must reference an included credit card account
+
+apps\api\app\domain\boundary.py:275: ValueError
+___ test_cash_reserve_product_parameters_recompute_real_three_phase_engine ____
+
+    def test_cash_reserve_product_parameters_recompute_real_three_phase_engine() -> None:
+        original = basis()
+        before = copy.deepcopy(original.model_dump(mode="json"))
+>       result = compare_scenario(
+            original,
+            request(
+                cash_change={"account_id": CASH, "delta_cents": 100},
+                emergency_change={
+                    "policy_id": POLICY,
+                    "expected_version_id": VERSION,
+                    "amount_cents": 300,
+                },
+                product_change={
+                    "product_id": PRODUCT,
+                    "expected_version_number": 1,
+                    "term_days": 2,
+                    "settlement_delay_days": 0,
+                },
+            ),
+        )
+
+apps\api\app\tests\test_scenario_simulation.py:130: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\domain\scenario_simulation.py:217: in compare_scenario
+    baseline = compute_boundary(snapshot, basis.versions, basis.positions, basis.products)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\domain\boundary.py:773: in compute_boundary
+    return _compute_boundary_core(snapshot, active_policy_versions, positions, products).boundary
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+snapshot = BoundarySnapshot(as_of=datetime.datetime(2026, 10, 5, 0, 0, tzinfo=datetime.timezone.utc), timezone='UTC', horizon_day...goals=[], goal_month_contributions=[], living_reserves=[], unassigned_goal_cash=[], source_issues=[], source_digest='')
+active_policy_versions = [BoundaryPolicyVersion(evidence_ids=[UUID('00000000-0000-0000-0000-000000000018')], policy_id=UUID('00000000-0000-0000...tetime.timezone.utc), valid_from=datetime.datetime(2026, 10, 5, 0, 0, tzinfo=datetime.timezone.utc), valid_until=None)]
+positions = [BoundaryPosition(evidence_ids=[], position_id=UUID('00000000-0000-0000-0000-000000000019'), goal_id=None, principal_cents=100, status='HELD', principal_available_at=None, availability_evidence_ids=[])]
+products = [BoundaryProduct(product_id=UUID('00000000-0000-0000-0000-000000000006'), version_number=1, asset_class='FIXED_DEPOSIT...al_return_bps=10000, rollover=False), terms_digest='cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc')]
+_change = None
+
+    def _compute_boundary_core(
+        snapshot: BoundarySnapshot,
+        active_policy_versions: Sequence[BoundaryPolicyVersion],
+        positions: Sequence[BoundaryPosition],
+        products: Sequence[BoundaryProduct],
+        *,
+        _change: tuple[
+            BoundaryPolicyVersion, PolicyChangeAssumption, LivingReserveChangeEstimate | None
+        ]
+        | None = None,
+    ) -> _BoundaryCore:
+        """Compute financial v1 once and retain its original obligation metadata."""
+        snapshot = BoundarySnapshot.model_validate(snapshot.model_dump())
+        if len(active_policy_versions) > 100 or len(positions) > 10000 or len(products) > 100:
+            raise ValueError("Boundary capacity is 100 policies, 10000 positions and 100 products")
+        active_policy_versions = sorted(
+            (BoundaryPolicyVersion.model_validate(p.model_dump()) for p in active_policy_versions),
+            key=lambda p: p.policy_id,
+        )
+        positions = sorted(
+            (BoundaryPosition.model_validate(p.model_dump()) for p in positions),
+            key=lambda p: p.position_id,
+        )
+        products = sorted(
+            (BoundaryProduct.model_validate(p.model_dump()) for p in products),
+            key=lambda p: p.product_id,
+        )
+        for values, name in (
+            ([a.account_id for a in snapshot.cash_accounts], "account"),
+            ([p.policy_id for p in active_policy_versions], "policy"),
+            ([p.version_id for p in active_policy_versions], "version"),
+            ([b.bill_id for b in snapshot.bills], "bill"),
+            ([(s.policy_id, s.period) for s in snapshot.occurrence_settlements], "settlement"),
+            ([g.goal_id for g in snapshot.goals], "goal"),
+            ([g.policy_id for g in snapshot.goals], "goal policy"),
+            ([(g.goal_id, g.period) for g in snapshot.goal_month_contributions], "goal contribution"),
+            ([p.product_id for p in products], "product"),
+            ([p.position_id for p in positions], "position"),
+            ([item.policy_version_id for item in snapshot.living_reserves], "living estimate"),
+            ([g.account_id for g in snapshot.unassigned_goal_cash], "unassigned goal account"),
+        ):
+            _unique(values, name)
+        financial_hash = configuration_hash(
+            {
+                "algorithm": ALGORITHM_VERSION,
+                "snapshot": _financial(snapshot.model_dump(mode="json")),
+                "policies": _financial(
+                    [item.model_dump(mode="json") for item in active_policy_versions]
+                ),
+                "positions": _financial([item.model_dump(mode="json") for item in positions]),
+                "products": _financial([item.model_dump(mode="json") for item in products]),
+            }
+        )
+        zone = UTC if snapshot.timezone == "UTC" else timezone(timedelta(hours=8))
+        try:
+            first = snapshot.as_of.astimezone(zone).date()
+            last = first + timedelta(days=snapshot.horizon_days + 1) - timedelta(days=1)
+        except (ValueError, OverflowError) as error:
+            raise ValueError("Boundary date interval is outside supported calendar dates") from error
+        cash = sum(
+            item.balance_cents for item in snapshot.cash_accounts if item.account_type != "CREDIT_CARD"
+        )
+        configs = {
+            item.policy_id: validate_configuration(item.configuration)
+            for item in active_policy_versions
+        }
+        for policy in active_policy_versions:
+            if configuration_hash(configs[policy.policy_id]) != policy.content_hash:
+                raise ValueError("Policy configuration hash does not match")
+            if policy.valid_until is not None and policy.valid_until < policy.valid_from:
+                raise ValueError("Policy validity window is reversed")
+        for bill in snapshot.bills:
+            if bill.paid_cents > bill.total_cents or bill.due_date < bill.statement_date:
+                raise ValueError("Bill dates or paid amount are inconsistent")
+            if (bill.status == "PAID") != (bill.paid_cents == bill.total_cents):
+                raise ValueError("Bill status and paid amount are inconsistent")
+            if (bill.status == "UNPAID" and bill.paid_cents != 0) or (
+                bill.status == "PARTIALLY_PAID" and not 0 < bill.paid_cents < bill.total_cents
+            ):
+                raise ValueError("Bill partial-payment status is inconsistent")
+        if any(item.settled_at > snapshot.as_of for item in snapshot.occurrence_settlements):
+            raise ValueError("Future settlements are not completed facts")
+        if any(item.period > first.strftime("%Y-%m") for item in snapshot.goal_month_contributions):
+            raise ValueError("Future goal contributions are not completed facts")
+        accounts = {a.account_id: a for a in snapshot.cash_accounts}
+        for bill in snapshot.bills:
+            if (
+                bill.account_id not in accounts
+                or accounts[bill.account_id].account_type != "CREDIT_CARD"
+            ):
+>               raise ValueError("Bill must reference an included credit card account")
+E               ValueError: Bill must reference an included credit card account
+
+apps\api\app\domain\boundary.py:275: ValueError
+_______ test_365_is_366_dates_three_phases_and_never_adds_future_income _______
+
+    def test_365_is_366_dates_three_phases_and_never_adds_future_income() -> None:
+>       result = compare_scenario(basis(), request(horizon_days=365))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_scenario_simulation.py:163: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\domain\scenario_simulation.py:217: in compare_scenario
+    baseline = compute_boundary(snapshot, basis.versions, basis.positions, basis.products)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\domain\boundary.py:773: in compute_boundary
+    return _compute_boundary_core(snapshot, active_policy_versions, positions, products).boundary
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+snapshot = BoundarySnapshot(as_of=datetime.datetime(2026, 10, 5, 0, 0, tzinfo=datetime.timezone.utc), timezone='UTC', horizon_day...goals=[], goal_month_contributions=[], living_reserves=[], unassigned_goal_cash=[], source_issues=[], source_digest='')
+active_policy_versions = [BoundaryPolicyVersion(evidence_ids=[UUID('00000000-0000-0000-0000-000000000018')], policy_id=UUID('00000000-0000-0000...tetime.timezone.utc), valid_from=datetime.datetime(2026, 10, 5, 0, 0, tzinfo=datetime.timezone.utc), valid_until=None)]
+positions = [BoundaryPosition(evidence_ids=[], position_id=UUID('00000000-0000-0000-0000-000000000019'), goal_id=None, principal_cents=100, status='HELD', principal_available_at=None, availability_evidence_ids=[])]
+products = [BoundaryProduct(product_id=UUID('00000000-0000-0000-0000-000000000006'), version_number=1, asset_class='FIXED_DEPOSIT...al_return_bps=10000, rollover=False), terms_digest='cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc')]
+_change = None
+
+    def _compute_boundary_core(
+        snapshot: BoundarySnapshot,
+        active_policy_versions: Sequence[BoundaryPolicyVersion],
+        positions: Sequence[BoundaryPosition],
+        products: Sequence[BoundaryProduct],
+        *,
+        _change: tuple[
+            BoundaryPolicyVersion, PolicyChangeAssumption, LivingReserveChangeEstimate | None
+        ]
+        | None = None,
+    ) -> _BoundaryCore:
+        """Compute financial v1 once and retain its original obligation metadata."""
+        snapshot = BoundarySnapshot.model_validate(snapshot.model_dump())
+        if len(active_policy_versions) > 100 or len(positions) > 10000 or len(products) > 100:
+            raise ValueError("Boundary capacity is 100 policies, 10000 positions and 100 products")
+        active_policy_versions = sorted(
+            (BoundaryPolicyVersion.model_validate(p.model_dump()) for p in active_policy_versions),
+            key=lambda p: p.policy_id,
+        )
+        positions = sorted(
+            (BoundaryPosition.model_validate(p.model_dump()) for p in positions),
+            key=lambda p: p.position_id,
+        )
+        products = sorted(
+            (BoundaryProduct.model_validate(p.model_dump()) for p in products),
+            key=lambda p: p.product_id,
+        )
+        for values, name in (
+            ([a.account_id for a in snapshot.cash_accounts], "account"),
+            ([p.policy_id for p in active_policy_versions], "policy"),
+            ([p.version_id for p in active_policy_versions], "version"),
+            ([b.bill_id for b in snapshot.bills], "bill"),
+            ([(s.policy_id, s.period) for s in snapshot.occurrence_settlements], "settlement"),
+            ([g.goal_id for g in snapshot.goals], "goal"),
+            ([g.policy_id for g in snapshot.goals], "goal policy"),
+            ([(g.goal_id, g.period) for g in snapshot.goal_month_contributions], "goal contribution"),
+            ([p.product_id for p in products], "product"),
+            ([p.position_id for p in positions], "position"),
+            ([item.policy_version_id for item in snapshot.living_reserves], "living estimate"),
+            ([g.account_id for g in snapshot.unassigned_goal_cash], "unassigned goal account"),
+        ):
+            _unique(values, name)
+        financial_hash = configuration_hash(
+            {
+                "algorithm": ALGORITHM_VERSION,
+                "snapshot": _financial(snapshot.model_dump(mode="json")),
+                "policies": _financial(
+                    [item.model_dump(mode="json") for item in active_policy_versions]
+                ),
+                "positions": _financial([item.model_dump(mode="json") for item in positions]),
+                "products": _financial([item.model_dump(mode="json") for item in products]),
+            }
+        )
+        zone = UTC if snapshot.timezone == "UTC" else timezone(timedelta(hours=8))
+        try:
+            first = snapshot.as_of.astimezone(zone).date()
+            last = first + timedelta(days=snapshot.horizon_days + 1) - timedelta(days=1)
+        except (ValueError, OverflowError) as error:
+            raise ValueError("Boundary date interval is outside supported calendar dates") from error
+        cash = sum(
+            item.balance_cents for item in snapshot.cash_accounts if item.account_type != "CREDIT_CARD"
+        )
+        configs = {
+            item.policy_id: validate_configuration(item.configuration)
+            for item in active_policy_versions
+        }
+        for policy in active_policy_versions:
+            if configuration_hash(configs[policy.policy_id]) != policy.content_hash:
+                raise ValueError("Policy configuration hash does not match")
+            if policy.valid_until is not None and policy.valid_until < policy.valid_from:
+                raise ValueError("Policy validity window is reversed")
+        for bill in snapshot.bills:
+            if bill.paid_cents > bill.total_cents or bill.due_date < bill.statement_date:
+                raise ValueError("Bill dates or paid amount are inconsistent")
+            if (bill.status == "PAID") != (bill.paid_cents == bill.total_cents):
+                raise ValueError("Bill status and paid amount are inconsistent")
+            if (bill.status == "UNPAID" and bill.paid_cents != 0) or (
+                bill.status == "PARTIALLY_PAID" and not 0 < bill.paid_cents < bill.total_cents
+            ):
+                raise ValueError("Bill partial-payment status is inconsistent")
+        if any(item.settled_at > snapshot.as_of for item in snapshot.occurrence_settlements):
+            raise ValueError("Future settlements are not completed facts")
+        if any(item.period > first.strftime("%Y-%m") for item in snapshot.goal_month_contributions):
+            raise ValueError("Future goal contributions are not completed facts")
+        accounts = {a.account_id: a for a in snapshot.cash_accounts}
+        for bill in snapshot.bills:
+            if (
+                bill.account_id not in accounts
+                or accounts[bill.account_id].account_type != "CREDIT_CARD"
+            ):
+>               raise ValueError("Bill must reference an included credit card account")
+E               ValueError: Bill must reference an included credit card account
+
+apps\api\app\domain\boundary.py:275: ValueError
+______ test_unknown_source_remains_null_after_optimistic_cash_assumption ______
+
+    def test_unknown_source_remains_null_after_optimistic_cash_assumption() -> None:
+        current = basis()
+        current.snapshot.source_issues.append(
+            SourceIssue(code="MISSING", entity_type="source", entity_id="original")
+        )
+>       result = compare_scenario(
+            current, request(cash_change={"account_id": CASH, "delta_cents": 5000})
+        )
+
+apps\api\app\tests\test_scenario_simulation.py:174: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\domain\scenario_simulation.py:217: in compare_scenario
+    baseline = compute_boundary(snapshot, basis.versions, basis.positions, basis.products)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\domain\boundary.py:773: in compute_boundary
+    return _compute_boundary_core(snapshot, active_policy_versions, positions, products).boundary
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+snapshot = BoundarySnapshot(as_of=datetime.datetime(2026, 10, 5, 0, 0, tzinfo=datetime.timezone.utc), timezone='UTC', horizon_day...oal_cash=[], source_issues=[SourceIssue(code='MISSING', entity_type='source', entity_id='original')], source_digest='')
+active_policy_versions = [BoundaryPolicyVersion(evidence_ids=[UUID('00000000-0000-0000-0000-000000000018')], policy_id=UUID('00000000-0000-0000...tetime.timezone.utc), valid_from=datetime.datetime(2026, 10, 5, 0, 0, tzinfo=datetime.timezone.utc), valid_until=None)]
+positions = [BoundaryPosition(evidence_ids=[], position_id=UUID('00000000-0000-0000-0000-000000000019'), goal_id=None, principal_cents=100, status='HELD', principal_available_at=None, availability_evidence_ids=[])]
+products = [BoundaryProduct(product_id=UUID('00000000-0000-0000-0000-000000000006'), version_number=1, asset_class='FIXED_DEPOSIT...al_return_bps=10000, rollover=False), terms_digest='cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc')]
+_change = None
+
+    def _compute_boundary_core(
+        snapshot: BoundarySnapshot,
+        active_policy_versions: Sequence[BoundaryPolicyVersion],
+        positions: Sequence[BoundaryPosition],
+        products: Sequence[BoundaryProduct],
+        *,
+        _change: tuple[
+            BoundaryPolicyVersion, PolicyChangeAssumption, LivingReserveChangeEstimate | None
+        ]
+        | None = None,
+    ) -> _BoundaryCore:
+        """Compute financial v1 once and retain its original obligation metadata."""
+        snapshot = BoundarySnapshot.model_validate(snapshot.model_dump())
+        if len(active_policy_versions) > 100 or len(positions) > 10000 or len(products) > 100:
+            raise ValueError("Boundary capacity is 100 policies, 10000 positions and 100 products")
+        active_policy_versions = sorted(
+            (BoundaryPolicyVersion.model_validate(p.model_dump()) for p in active_policy_versions),
+            key=lambda p: p.policy_id,
+        )
+        positions = sorted(
+            (BoundaryPosition.model_validate(p.model_dump()) for p in positions),
+            key=lambda p: p.position_id,
+        )
+        products = sorted(
+            (BoundaryProduct.model_validate(p.model_dump()) for p in products),
+            key=lambda p: p.product_id,
+        )
+        for values, name in (
+            ([a.account_id for a in snapshot.cash_accounts], "account"),
+            ([p.policy_id for p in active_policy_versions], "policy"),
+            ([p.version_id for p in active_policy_versions], "version"),
+            ([b.bill_id for b in snapshot.bills], "bill"),
+            ([(s.policy_id, s.period) for s in snapshot.occurrence_settlements], "settlement"),
+            ([g.goal_id for g in snapshot.goals], "goal"),
+            ([g.policy_id for g in snapshot.goals], "goal policy"),
+            ([(g.goal_id, g.period) for g in snapshot.goal_month_contributions], "goal contribution"),
+            ([p.product_id for p in products], "product"),
+            ([p.position_id for p in positions], "position"),
+            ([item.policy_version_id for item in snapshot.living_reserves], "living estimate"),
+            ([g.account_id for g in snapshot.unassigned_goal_cash], "unassigned goal account"),
+        ):
+            _unique(values, name)
+        financial_hash = configuration_hash(
+            {
+                "algorithm": ALGORITHM_VERSION,
+                "snapshot": _financial(snapshot.model_dump(mode="json")),
+                "policies": _financial(
+                    [item.model_dump(mode="json") for item in active_policy_versions]
+                ),
+                "positions": _financial([item.model_dump(mode="json") for item in positions]),
+                "products": _financial([item.model_dump(mode="json") for item in products]),
+            }
+        )
+        zone = UTC if snapshot.timezone == "UTC" else timezone(timedelta(hours=8))
+        try:
+            first = snapshot.as_of.astimezone(zone).date()
+            last = first + timedelta(days=snapshot.horizon_days + 1) - timedelta(days=1)
+        except (ValueError, OverflowError) as error:
+            raise ValueError("Boundary date interval is outside supported calendar dates") from error
+        cash = sum(
+            item.balance_cents for item in snapshot.cash_accounts if item.account_type != "CREDIT_CARD"
+        )
+        configs = {
+            item.policy_id: validate_configuration(item.configuration)
+            for item in active_policy_versions
+        }
+        for policy in active_policy_versions:
+            if configuration_hash(configs[policy.policy_id]) != policy.content_hash:
+                raise ValueError("Policy configuration hash does not match")
+            if policy.valid_until is not None and policy.valid_until < policy.valid_from:
+                raise ValueError("Policy validity window is reversed")
+        for bill in snapshot.bills:
+            if bill.paid_cents > bill.total_cents or bill.due_date < bill.statement_date:
+                raise ValueError("Bill dates or paid amount are inconsistent")
+            if (bill.status == "PAID") != (bill.paid_cents == bill.total_cents):
+                raise ValueError("Bill status and paid amount are inconsistent")
+            if (bill.status == "UNPAID" and bill.paid_cents != 0) or (
+                bill.status == "PARTIALLY_PAID" and not 0 < bill.paid_cents < bill.total_cents
+            ):
+                raise ValueError("Bill partial-payment status is inconsistent")
+        if any(item.settled_at > snapshot.as_of for item in snapshot.occurrence_settlements):
+            raise ValueError("Future settlements are not completed facts")
+        if any(item.period > first.strftime("%Y-%m") for item in snapshot.goal_month_contributions):
+            raise ValueError("Future goal contributions are not completed facts")
+        accounts = {a.account_id: a for a in snapshot.cash_accounts}
+        for bill in snapshot.bills:
+            if (
+                bill.account_id not in accounts
+                or accounts[bill.account_id].account_type != "CREDIT_CARD"
+            ):
+>               raise ValueError("Bill must reference an included credit card account")
+E               ValueError: Bill must reference an included credit card account
+
+apps\api\app\domain\boundary.py:275: ValueError
+_ test_fingerprint_clock_exclusion_does_not_exclude_original_fact_or_epoch_changes _
+
+    def test_fingerprint_clock_exclusion_does_not_exclude_original_fact_or_epoch_changes() -> None:
+        current = basis()
+        ctx = BoundaryContext(
+            current.snapshot,
+            current.versions,
+            current.positions,
+            current.products,
+            Sources(USER, NOW, []),
+        )
+        audit = DashboardAuditCard(
+            epoch_id=EPOCH, status="VALID", complete=True, anchored_run_statuses={}
+        )
+        old = source_fingerprint(ctx, audit)
+>       ctx.snapshot = ctx.snapshot.model_copy(
+        ^^^^^^^^^^^^
+            update={"as_of": NOW + timedelta(seconds=1), "source_digest": "f" * 64}
+        )
+
+apps\api\app\tests\test_scenario_simulation.py:323: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = BoundaryContext(snapshot=BoundarySnapshot(as_of=datetime.datetime(2026, 10, 5, 0, 0, tzinfo=datetime.timezone.utc), ti...ccccccccccccccccccccccccccccccccccccccccccccc')], sources=<app.services.boundary.Sources object at 0x000001387F1C3FB0>)
+name = 'snapshot'
+value = BoundarySnapshot(as_of=datetime.datetime(2026, 10, 5, 0, 0, 1, tzinfo=datetime.timezone.utc), timezone='UTC', horizon_...igned_goal_cash=[], source_issues=[], source_digest='ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
+
+>   ???
+E   dataclasses.FrozenInstanceError: cannot assign to field 'snapshot'
+
+<string>:4: FrozenInstanceError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_scenario_simulation.py::test_no_op_and_explicit_replay_are_original_engine_and_do_not_mutate_originals
+FAILED apps/api/app/tests/test_scenario_simulation.py::test_cash_reserve_product_parameters_recompute_real_three_phase_engine
+FAILED apps/api/app/tests/test_scenario_simulation.py::test_365_is_366_dates_three_phases_and_never_adds_future_income
+FAILED apps/api/app/tests/test_scenario_simulation.py::test_unknown_source_remains_null_after_optimistic_cash_assumption
+FAILED apps/api/app/tests/test_scenario_simulation.py::test_fingerprint_clock_exclusion_does_not_exclude_original_fact_or_epoch_changes
+5 failed, 25 passed, 2 warnings in 2.42s

@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/full-policy-dependencies.test.ts (17 tests) 30ms
+ ✓ src/components/FullPolicyDependencyPanel.test.tsx (3 tests) 306ms
+
+ Test Files  2 passed (2)
+      Tests  20 passed (20)
+   Start at  13:43:43
+   Duration  3.32s (transform 560ms, setup 1.12s, collect 1.26s, tests 336ms, environment 2.05s, prepare 676ms)
+

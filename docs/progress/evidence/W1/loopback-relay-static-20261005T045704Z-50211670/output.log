@@ -1,0 +1,20 @@
+I001 [*] Import block is un-sorted or un-formatted
+ --> scripts\tests\test_demo_loopback_relay.py:3:1
+  |
+1 |   """Transport framing risks; no HTTP service, Docker, finance, or success mock."""
+2 |
+3 | / import ast
+4 | |
+5 | | import pytest
+6 | |
+7 | | from demo_loopback_relay import MAX_BODY, relay_program, request_frame
+  | |______________________________________________________________________^
+help: Organize imports
+  |
+5 | import pytest
+  -
+6 | from demo_loopback_relay import MAX_BODY, relay_program, request_frame
+  |
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.

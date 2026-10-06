@@ -1,0 +1,2 @@
+apps\api\app\tests\test_full_native_cases.py:135: error: Module "app.services.full_native_cases" does not explicitly export attribute "ScenarioRunner"  [attr-defined]
+Found 1 error in 1 file (checked 4 source files)

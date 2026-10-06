@@ -1,0 +1,6 @@
+$ tsc --noEmit
+src/components/policy-map-model.ts(36,31): error TS18047: 'version' is possibly 'null'.
+src/components/policy-map-model.ts(36,104): error TS18047: 'version' is possibly 'null'.
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @bounded-funds/web@0.1.0 typecheck: `tsc --noEmit`
+Exit status 2

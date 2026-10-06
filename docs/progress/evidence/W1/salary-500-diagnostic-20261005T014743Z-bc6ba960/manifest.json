@@ -1,0 +1,36 @@
+{
+  "run_id": "20261005T014743Z-bc6ba960",
+  "task": "W1",
+  "label": "salary-500-diagnostic",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_demo_console.py::test_salary_after_actual_monthly_target_has_no_fake_goal_action_or_permanent_pending",
+    "apps/api/app/tests/test_demo_console.py::test_console_rejects_another_policy_action_using_its_reserved_stage_key",
+    "--no-cov",
+    "-p",
+    "no:cacheprovider",
+    "-vv",
+    "--tb=short"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T01:47:43.734120+00:00",
+  "finished_at": "2026-10-05T01:48:05.503703+00:00",
+  "wall_seconds": 21.769583,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "b29dd7f9229f5410c57821663bb1d25ebf50b8cc9da771a211dade4969674beb",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

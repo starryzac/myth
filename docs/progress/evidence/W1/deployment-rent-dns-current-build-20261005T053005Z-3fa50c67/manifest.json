@@ -1,0 +1,41 @@
+{
+  "run_id": "20261005T053005Z-3fa50c67",
+  "task": "W1",
+  "label": "deployment-rent-dns-current-build",
+  "status": "PASSED",
+  "scope": [
+    "apps/api",
+    "apps/web",
+    "packages/contracts",
+    "deploy",
+    "scripts/w1_demo_deployment.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "scripts/w1_demo_deployment.py",
+    "--run",
+    "--registration",
+    ".runtime/w1-deployment/deploy-20261005T052942Z-852b7cff/manifest.json",
+    "--action",
+    "build"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T05:30:06.052709+00:00",
+  "finished_at": "2026-10-05T05:32:23.121968+00:00",
+  "wall_seconds": 137.069259,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "scripts/mvp_arm_executor.py",
+    "scripts/w1_final_acceptance.py",
+    "scripts/w1_offline_boundary.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "c33e08d96c984f4a1226f153cf54d29c95b6541d6e8eabddd9cb8c3390164e23",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

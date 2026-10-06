@@ -1,0 +1,34 @@
+{
+  "run_id": "20261006T052737Z-652efafc",
+  "task": "W3",
+  "label": "joint-current-income-corrected-types",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/services/full_joint_goal_income_reservation.py",
+    "apps/api/app/tests/test_full_joint_goal_income_reservation.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "mypy",
+    "--explicit-package-bases",
+    "apps/api/app/services/full_joint_goal_income_reservation.py",
+    "apps/api/app/tests/test_full_joint_goal_income_reservation.py"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T05:27:42.477882+00:00",
+  "finished_at": "2026-10-06T05:27:50.142675+00:00",
+  "wall_seconds": 7.664793,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

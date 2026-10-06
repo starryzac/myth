@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Scripts\\python.exe",
+    "scripts/select_verification.py",
+    "apps/api/app/services/audit_chain.py",
+    "apps/api/app/services/historical_read.py",
+    "apps/api/app/services/decision_trace.py",
+    "apps/api/app/services/simulated_bank.py",
+    "apps/api/app/services/execution_projection.py",
+    "apps/api/app/services/recovery_receipt_integrity.py",
+    "scripts/tasks.py",
+    "scripts/generate_openapi.py",
+    "scripts/benchmark_reads.py",
+    "docs/spec/full-delta-map.yaml",
+    "--output",
+    "docs\\progress\\evidence\\W0\\verification-selector-repaired\\selected.json"
+  ],
+  "exit_code": 0,
+  "sha256": "e9a017fa6af041e64ce1240b63acffdc6c1b9ee8ee034e1a8b769098b38f51ea",
+  "source_sha256": {
+    "scripts/select_verification.py": "d65dfd57b3f4ea4405caa8aed454ca22778498d4ec571a52d5eea121f439b809",
+    "docs/spec/verification-map.yaml": "6ea7af5f833d641edcdf5e78f1ecb39995e11b6eee5b070e9bb483275caa561f",
+    "apps/api/app/tests/test_verification_selection.py": "a4363093b10a8eb659e47faedd4064f7ae9274f0ad6a2e9b8c9c6ebf34315c0c"
+  }
+}

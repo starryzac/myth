@@ -5,6 +5,7 @@ import binascii
 import json
 import re
 from collections.abc import Iterable
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any, Literal
 from uuid import UUID, uuid5
@@ -31,7 +32,13 @@ from app.domain.decision_trace_types import (
 )
 from app.domain.execution import ACTION_PLAN_TYPES, execution_effect_hash
 from app.domain.execution_types import BankCommand, ExecutionEffect
+from app.domain.full_goal_release_execution import (
+    GoalReleaseBankCommand,
+    GoalReleaseEffect,
+    goal_release_effect_hash,
+)
 from app.domain.policy_configuration import configuration_hash
+from app.services.historical_read import stable_read_snapshot
 from app.services.policy_lifecycle import PolicyLifecycleError
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import and_, or_, select
@@ -235,7 +242,100 @@ def _same_content(first: TraceEvidence | TracePolicy, second: TraceEvidence | Tr
     )
 
 
+@dataclass
+class _ReferenceReads:
+    """Private detached originals for one audit invocation in a stable read snapshot."""
+
+    evidence: dict[UUID, TraceEvidence | None] = field(default_factory=dict)
+    policies: dict[UUID, TracePolicy | None] = field(default_factory=dict)
+
+    def load(self, session: Session, trace: DecisionTrace) -> None:
+        missing = {source.id for source in trace.sources} - self.evidence.keys()
+        if missing:
+            rows = session.scalars(
+                select(EvidenceItem).where(
+                    EvidenceItem.user_id == trace.user_id, EvidenceItem.id.in_(missing)
+                )
+            )
+            self.evidence.update(dict.fromkeys(missing))
+            try:
+                for row in rows:
+                    self.evidence[row.id] = evidence_copy(row)
+            except (ValueError, TypeError) as error:
+                raise _integrity("当前原始证据无法核验") from error
+        missing = {version.id for version in trace.policies} - self.policies.keys()
+        if missing:
+            versions = list(
+                session.scalars(
+                    select(PolicyVersion).where(
+                        PolicyVersion.user_id == trace.user_id, PolicyVersion.id.in_(missing)
+                    )
+                )
+            )
+            policies = {
+                row.id: row.status
+                for row in session.scalars(
+                    select(Policy).where(
+                        Policy.user_id == trace.user_id,
+                        Policy.id.in_({version.policy_id for version in versions}),
+                    )
+                )
+            }
+            self.policies.update(dict.fromkeys(missing))
+            try:
+                for version in versions:
+                    if version.policy_id in policies:
+                        self.policies[version.id] = policy_copy(
+                            version, status_at_decision=policies[version.policy_id]
+                        )
+            except (ValueError, TypeError) as error:
+                raise _integrity("当前原始策略无法核验") from error
+
+
 def _current_references(
+    session: Session,
+    trace: DecisionTrace,
+    *,
+    allow_missing: bool,
+    _reads: _ReferenceReads | None = None,
+) -> list[TraceReferenceStatus]:
+    if _reads is not None:
+        _reads.load(session, trace)
+        references: list[TraceReferenceStatus] = []
+        status: Literal["UNCHANGED", "STATUS_CHANGED", "MISSING"]
+        originals: list[TraceEvidence | TracePolicy] = [*trace.sources, *trace.policies]
+        for original in originals:
+            source = isinstance(original, TraceEvidence)
+            copied = (
+                _reads.evidence.get(original.id) if source else _reads.policies.get(original.id)
+            )
+            if copied is None:
+                if not allow_missing:
+                    raise _not_found()
+                current, status = None, "MISSING"
+            else:
+                if not _same_content(original, copied):
+                    raise _integrity(
+                        "当前原始证据已不同于当时冻结的来源"
+                        if source
+                        else "当前原始策略已不同于当时冻结的版本"
+                    )
+                current = copied.status_at_decision
+                status = "UNCHANGED" if current == original.status_at_decision else "STATUS_CHANGED"
+            references.append(
+                TraceReferenceStatus(
+                    entity_type="EVIDENCE" if source else "POLICY",
+                    entity_id=original.id,
+                    status=status,
+                    original_status=original.status_at_decision,
+                    current_status=current,
+                )
+            )
+        return references
+    return _uncached_current_references(session, trace, allow_missing=allow_missing)
+
+
+def _uncached_current_references(
     session: Session, trace: DecisionTrace, *, allow_missing: bool
 ) -> list[TraceReferenceStatus]:
     references: list[TraceReferenceStatus] = []
@@ -307,11 +407,22 @@ def _relations(
 ) -> None:
     ancestors = {run_id}
     cursor = parent
+    # Preserve unflushed identity-map negatives for writable callers. In a clean
+    # immutable read snapshot, parent traversal needs no historical input JSON.
+    projected = stable_read_snapshot(session) if parent is not None else False
     while cursor is not None:
         if cursor in ancestors or len(ancestors) > 32:
             raise _integrity("决策父链存在循环或超出范围")
-        row = session.scalar(
-            select(DecisionRun).where(DecisionRun.id == cursor, DecisionRun.user_id == user_id)
+        row = (
+            session.execute(
+                select(DecisionRun.id, DecisionRun.parent_run_id).where(
+                    DecisionRun.id == cursor, DecisionRun.user_id == user_id
+                )
+            ).one_or_none()
+            if projected
+            else session.scalar(
+                select(DecisionRun).where(DecisionRun.id == cursor, DecisionRun.user_id == user_id)
+            )
         )
         if row is None:
             raise _not_found()
@@ -349,7 +460,8 @@ def _verify_constraints(session: Session, trace: DecisionTrace) -> None:
         )
     ).all()
     try:
-        actual = {_constraint_copy(row).constraint_key: _constraint_copy(row) for row in rows}
+        copied = [_constraint_copy(row) for row in rows]
+        actual = {item.constraint_key: item for item in copied}
     except (ValueError, TypeError) as error:
         raise _integrity("约束投影字段无效") from error
     expected = {constraint.constraint_key: constraint for constraint in trace.constraints}
@@ -485,6 +597,24 @@ def _supported(trace: DecisionTrace) -> bool:
         "decision-trace-v1",
         "execution-bank-v1",
         "legacy-redemption-v1",
+        "boundary-action-observation-v1",
+        "full-one-question-v1",
+        "full-one-question-close-v1",
+        "full-intervention-v1",
+        "full-finite-planning-minimax-v1",
+        "full-goal-release-authorization-v1",
+        "full-goal-emergency-release-v1",
+        "full-payment-relation-v1",
+        "full-dynamic-goal-execution-v1",
+        "full-policy-action-set-boundary-v1",
+        "full-policy-action-set-boundary-full-v1",
+        "full-policy-action-set-boundary-actual-v2",
+        "full-policy-action-set-boundary-recovery-composed-v4",
+        "full-seasonal-adoption-v1",
+        "full-recovery-execution-v1",
+        "full-maturity-user-execution-v1",
+        "full-experiment-asset-execution-v1",
+        "registered-joint-goal-execution-v2",
     }
     return all(version in supported for version in trace.algorithm_versions.values())
 
@@ -505,6 +635,86 @@ def _stored_trace(session: Session, row: DecisionRun) -> tuple[Completeness, Dec
     try:
         trace = DecisionTrace.model_validate_json(json.dumps(raw))
         verify_trace(trace)
+        if "full_joint_goal_execution" in trace.algorithm_versions:
+            from app.domain.full_joint_goal_execution_trace import (
+                verify_frozen_full_joint_goal_trace,
+            )
+
+            verify_frozen_full_joint_goal_trace(trace)
+        if "full_experiment_asset_execution" in trace.algorithm_versions:
+            from app.domain.full_experiment_asset_execution_trace import (
+                verify_frozen_full_experiment_asset_trace,
+            )
+
+            verify_frozen_full_experiment_asset_trace(trace)
+        if (
+            trace.algorithm_versions.get("full_maturity_execution")
+            == "full-maturity-user-execution-v1"
+        ):
+            from app.domain.full_maturity_execution import verify_frozen_maturity_trace
+
+            verify_frozen_maturity_trace(trace)
+        if "seasonal_adoption" in trace.algorithm_versions:
+            from app.domain.full_seasonal_adoption import verify_frozen_seasonal_adoption_trace
+
+            verify_frozen_seasonal_adoption_trace(trace)
+        if "full_recovery_execution" in trace.algorithm_versions:
+            from app.domain.full_recovery_execution_trace import verify_frozen_full_recovery_trace
+
+            verify_frozen_full_recovery_trace(trace)
+        if (
+            trace.algorithm_versions.get("global_action_set")
+            == "full-policy-action-set-boundary-v1"
+        ):
+            from app.services.full_action_set_boundary import verify_frozen_action_set_trace
+
+            verify_frozen_action_set_trace(trace)
+        elif (
+            trace.algorithm_versions.get("global_action_set")
+            == "full-policy-action-set-boundary-full-v1"
+        ):
+            from app.services.full_action_set_boundary_full import (
+                verify_frozen_full_action_set_trace,
+            )
+
+            verify_frozen_full_action_set_trace(trace)
+        elif (
+            trace.algorithm_versions.get("global_action_set")
+            == "full-policy-action-set-boundary-actual-v2"
+        ):
+            from app.services.full_action_set_boundary_actual import (
+                verify_frozen_actual_action_set_trace,
+            )
+
+            verify_frozen_actual_action_set_trace(trace)
+        elif (
+            trace.algorithm_versions.get("global_action_set")
+            == "full-policy-action-set-boundary-recovery-composed-v4"
+        ):
+            from app.services.full_action_set_recovery_observations import (
+                verify_frozen_recovery_composed_observation,
+            )
+
+            verify_frozen_recovery_composed_observation(trace)
+        if "full_dynamic_goal_execution" in trace.algorithm_versions:
+            from app.domain.execution import revalidate_execution
+            from app.domain.execution_types import ConfirmationGrant, ExecutionContext
+            from app.domain.full_dynamic_goal_execution import read_frozen_full_dynamic_goal_proof
+
+            raw_confirmation = trace.inputs.get("confirmation")
+            confirmation = (
+                ConfirmationGrant.model_validate_json(json.dumps(raw_confirmation))
+                if raw_confirmation is not None
+                else None
+            )
+            validation = revalidate_execution(
+                ExecutionEffect.model_validate_json(json.dumps(trace.inputs["effect"])),
+                ExecutionContext.model_validate_json(json.dumps(trace.inputs["execution_context"])),
+                confirmation=confirmation,
+                full_dynamic_goal_proof=read_frozen_full_dynamic_goal_proof(trace),
+            )
+            if validation.model_dump(mode="json") != trace.outcome["validation"]:
+                raise ValueError("Frozen dynamic execution validation cannot be reproduced")
     except (ValueError, TypeError) as error:
         raise _integrity("冻结轨迹合同或内容摘要无效") from error
     if (
@@ -529,7 +739,30 @@ def _stored_trace(session: Session, row: DecisionRun) -> tuple[Completeness, Dec
     return ("COMPLETE" if _supported(trace) else "UNSUPPORTED_VERSION"), trace
 
 
-def _verify_action_origin(trace: DecisionTrace | None, action: ActionPlan) -> BankCommand | None:
+def _verify_action_origin(
+    trace: DecisionTrace | None, action: ActionPlan
+) -> BankCommand | GoalReleaseBankCommand | None:
+    if action.action_type == "RELEASE_GOAL" or "goal_release_execution" in action.request:
+        from app.services.full_goal_release_reader import read_goal_release_command
+
+        release_command = read_goal_release_command(action)
+        if trace is not None:
+            try:
+                release_effect = GoalReleaseEffect.model_validate_json(
+                    json.dumps(trace.inputs["goal_release_effect"])
+                )
+                original_request = trace.inputs["action_request"]
+                if (
+                    not isinstance(original_request, dict)
+                    or configuration_hash(original_request) != action.request_hash
+                    or release_command.effect_hash != goal_release_effect_hash(release_effect)
+                    or release_command.effect.model_dump(mode="json")
+                    != release_effect.model_dump(mode="json")
+                ):
+                    raise ValueError("Frozen dedicated release origin differs")
+            except (KeyError, TypeError, ValueError) as error:
+                raise _integrity("回拨原动作、原来源或录制经济后果不同") from error
+        return release_command
     command = None
     if "execution" in action.request:
         try:
@@ -644,7 +877,11 @@ def _action_links(
             if operation is None:
                 raise _integrity("回执缺少独立银行操作")
             try:
-                if operation.legacy_redemption_id is None:
+                if operation.operation_type == "RELEASE_GOAL":
+                    from app.services.full_goal_release_reader import verify_goal_release_receipt
+
+                    verify_goal_release_receipt(session, operation, receipt, now)
+                elif operation.legacy_redemption_id is None:
                     from app.services.execution_projection import verify_execution_receipt
 
                     verify_execution_receipt(session, operation, receipt, now)

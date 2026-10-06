@@ -1,0 +1,18 @@
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 165 modules transformed.
+
+(!) outDir F:\学校活动\工行杯\钱途有界\bounded-funds\.runtime\FULL-708-mobile-css-build-20261006T0016Z\assets is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+rendering chunks...
+computing gzip size...
+../../.runtime/FULL-708-mobile-css-build-20261006T0016Z/assets/index.html                     0.48 kB │ gzip:   0.34 kB
+../../.runtime/FULL-708-mobile-css-build-20261006T0016Z/assets/assets/index-CKVhNayw.css     36.12 kB │ gzip:   8.17 kB
+../../.runtime/FULL-708-mobile-css-build-20261006T0016Z/assets/assets/index-W19d5cJh.js   1,025.74 kB │ gzip: 291.80 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 7.33s

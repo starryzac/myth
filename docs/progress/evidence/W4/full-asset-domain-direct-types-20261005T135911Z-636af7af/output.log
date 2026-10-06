@@ -1,0 +1,9 @@
+apps\api\app\domain\full_asset_allocation.py:472: error: Generator has incompatible item type "int | Any"; expected "bool"  [misc]
+apps\api\app\domain\full_asset_allocation.py:472: error: Item "None" of "PlannedExit | None" has no attribute "liquidity_days"  [union-attr]
+apps\api\app\domain\full_asset_allocation.py:506: error: Item "None" of "PlannedExit | None" has no attribute "liquidity_days"  [union-attr]
+apps\api\app\domain\full_asset_allocation.py:552: error: Generator has incompatible item type "int | Any"; expected "bool"  [misc]
+apps\api\app\domain\full_asset_allocation.py:554: error: Item "None" of "PlannedExit | None" has no attribute "liquidity_days"  [union-attr]
+apps\api\app\domain\full_asset_allocation.py:561: error: Item "None" of "PlannedExit | None" has no attribute "liquidity_days"  [union-attr]
+apps\api\app\domain\full_asset_allocation.py:596: error: Incompatible types in assignment (expression has type "FullAssetCandidate", variable has type "list[int]")  [assignment]
+apps\api\app\domain\full_asset_allocation.py:597: error: "list[int]" has no attribute "exit_plan"  [attr-defined]
+Found 8 errors in 1 file (checked 2 source files)

@@ -1,0 +1,557 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/api/goal-adjustments.test.ts (21 tests | 2 failed) 24ms
+   × explicit synthetic goal-adjustment contract > keeps original JSON and exact owner/versions while exposing no financial permission 7ms
+     → 资金响应含无法精确显示的金额
+   ✓ explicit synthetic goal-adjustment contract > rejects read corruption owner 1ms
+   ✓ explicit synthetic goal-adjustment contract > rejects read corruption version 1ms
+   ✓ explicit synthetic goal-adjustment contract > rejects read corruption denominator 0ms
+   ✓ explicit synthetic goal-adjustment contract > rejects read corruption model 0ms
+   ✓ explicit synthetic goal-adjustment contract > rejects read corruption guarantee 0ms
+   ✓ explicit synthetic goal-adjustment contract > rejects read corruption unsafe-money 0ms
+   ✓ explicit synthetic goal-adjustment contract > rejects read corruption authority 0ms
+   ✓ explicit synthetic goal-adjustment contract > rejects conditional candidate corruption grant 1ms
+   ✓ explicit synthetic goal-adjustment contract > rejects conditional candidate corruption selection 1ms
+   ✓ explicit synthetic goal-adjustment contract > rejects conditional candidate corruption baseline-hash 1ms
+   ✓ explicit synthetic goal-adjustment contract > rejects conditional candidate corruption proposal-count 1ms
+   ✓ explicit synthetic goal-adjustment contract > rejects conditional candidate corruption unknown-minimality 0ms
+   ✓ explicit synthetic goal-adjustment contract > rejects conditional candidate corruption unaffected 0ms
+   ✓ explicit synthetic goal-adjustment contract > rejects conditional candidate corruption bank-cap 1ms
+   ✓ explicit synthetic goal-adjustment contract > rejects conditional candidate corruption deferral 0ms
+   ✓ explicit synthetic goal-adjustment contract > rejects conditional candidate corruption other-goal 0ms
+   ✓ explicit synthetic goal-adjustment contract > rejects conditional candidate corruption full-hash 0ms
+   ✓ explicit synthetic goal-adjustment contract > rejects conditional candidate corruption confirm-body 0ms
+   ✓ explicit synthetic goal-adjustment contract > only accepts selected finite range fields and strict integer soft minima 1ms
+   × explicit synthetic goal-adjustment contract > calls the exact read and read-only preview endpoints with no auto confirmation 5ms
+     → 资金响应含无法精确显示的金额
+ ❯ src/components/GoalAdjustmentsPanel.test.tsx (5 tests | 4 failed) 4189ms
+   × requires manual read/selection/preview/adoption and never confirms 1114ms
+     → Unable to find role="combobox" and name "调整目标"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   × edits remove old candidate and block stale adoption 1027ms
+     → Unable to find role="combobox" and name "调整目标"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   × global block prevents preview/adoption but permits GET 1017ms
+     → Unable to find role="combobox" and name "调整目标"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   ✓ missing actual owner or goals produces no request 8ms
+   × HTTP unknown errors do not produce a fake proposal or confirmation 1023ms
+     → Unable to find role="combobox" and name "调整目标"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/api/goal-adjustments.test.ts > explicit synthetic goal-adjustment contract > keeps original JSON and exact owner/versions while exposing no financial permission
+Error: 资金响应含无法精确显示的金额
+ ❯ assertMoneyFields src/features/money.ts:21:13
+     19|   for (const [key, child] of Object.entries(value)) {
+     20|     if (key.endsWith('_cents') && child !== null && !Number.isSafeInte…
+     21|       throw new Error('资金响应含无法精确显示的金额');
+       |             ^
+     22|     }
+     23|     if (key.includes('_cents_by_') && typeof child === 'object' && chi…
+ ❯ assertMoneyFields src/features/money.ts:15:32
+ ❯ assertMoneyFields src/features/money.ts:30:5
+ ❯ assertMoneyFields src/features/money.ts:30:5
+ ❯ assertMoneyFields src/features/money.ts:30:5
+ ❯ assertMoneyFields src/features/money.ts:30:5
+ ❯ parseGoalAdjustmentRead src/api/goal-adjustments.ts:52:3
+ ❯ src/api/goal-adjustments.test.ts:7:181
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/api/goal-adjustments.test.ts > explicit synthetic goal-adjustment contract > calls the exact read and read-only preview endpoints with no auto confirmation
+Error: 资金响应含无法精确显示的金额
+ ❯ assertMoneyFields src/features/money.ts:21:13
+     19|   for (const [key, child] of Object.entries(value)) {
+     20|     if (key.endsWith('_cents') && child !== null && !Number.isSafeInte…
+     21|       throw new Error('资金响应含无法精确显示的金额');
+       |             ^
+     22|     }
+     23|     if (key.includes('_cents_by_') && typeof child === 'object' && chi…
+ ❯ assertMoneyFields src/features/money.ts:15:32
+ ❯ assertMoneyFields src/features/money.ts:30:5
+ ❯ assertMoneyFields src/features/money.ts:30:5
+ ❯ assertMoneyFields src/features/money.ts:30:5
+ ❯ assertMoneyFields src/features/money.ts:30:5
+ ❯ parseGoalAdjustmentRead src/api/goal-adjustments.ts:52:3
+ ❯ src/api/goal-adjustments.ts:123:214
+ ❯ performRequest src/api/http.ts:36:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/components/GoalAdjustmentsPanel.test.tsx > requires manual read/selection/preview/adoption and never confirms
+TestingLibraryElementError: Unable to find role="combobox" and name "调整目标"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ open src/components/GoalAdjustmentsPanel.test.tsx:7:566
+
+ ❯ src/components/GoalAdjustmentsPanel.test.tsx:9:131
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/components/GoalAdjustmentsPanel.test.tsx > edits remove old candidate and block stale adoption
+TestingLibraryElementError: Unable to find role="combobox" and name "调整目标"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ open src/components/GoalAdjustmentsPanel.test.tsx:7:566
+
+ ❯ src/components/GoalAdjustmentsPanel.test.tsx:10:79
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/components/GoalAdjustmentsPanel.test.tsx > global block prevents preview/adoption but permits GET
+TestingLibraryElementError: Unable to find role="combobox" and name "调整目标"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ open src/components/GoalAdjustmentsPanel.test.tsx:7:566
+
+ ❯ src/components/GoalAdjustmentsPanel.test.tsx:11:96
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/components/GoalAdjustmentsPanel.test.tsx > HTTP unknown errors do not produce a fake proposal or confirmation
+TestingLibraryElementError: Unable to find role="combobox" and name "调整目标"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"明确月最低额或期限调整"[39m
+      [33mclass[39m=[32m"readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m明确选择目标调整范围[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m月最低贡献是当前期偏好，不能靠降低它修复硬冲突。期限候选只计算当前期条件可行性，最低保证、归属、收入和全部保护保持；不承诺未来达标，不授资金权限。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读读取当前调整依据[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ open src/components/GoalAdjustmentsPanel.test.tsx:7:566
+
+ ❯ src/components/GoalAdjustmentsPanel.test.tsx:13:108
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  6 failed | 20 passed (26)
+   Start at  09:48:23
+   Duration  6.59s (transform 216ms, setup 1.09s, collect 379ms, tests 4.21s, environment 1.85s, prepare 571ms)
+

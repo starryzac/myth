@@ -1,0 +1,2173 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/full-products.test.ts (42 tests) 510ms
+ ❯ src/pages/FullProductsPage.test.tsx (5 tests | 3 failed) 1162ms
+   × 真实目录原字段/历史筛选、未知持仓日期与未实现续期可见；初始无资金或规划写入 244ms
+     → Found multiple elements with the text: /SYNTHETIC_SOURCE_DRIFT_RETAINED/
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<p[39m
+  [33mclass[39m=[32m"notice"[39m
+[36m>[39m
+  [0mSYNTHETIC_SOURCE_DRIFT_RETAINED[0m
+[36m</p>[39m
+
+Ignored nodes: comments, script, style
+[36m<pre[39m
+  [33mclass[39m=[32m"readonly-raw"[39m
+[36m>[39m
+  [0m{"simulation":true,"grants_authority":false,"state":"UNKNOWN","complete_within_registered_capacity":false,"unregistered_product_ids":[],"issues":["SYNTHETIC_SOURCE_DRIFT_RETAINED"],"versions":[{"id":"81000000-0000-4000-8000-000000000002","product_id":"81000000-0000-4000-8000-000000000001","product_code":"SYNTHETIC_FIXED_30D","version_number":1,"original_product":{"id":"81000000-0000-4000-8000-000000000001","name":"HTTP夹具三十天原产品","product_code":"SYNTHETIC_FIXED_30D","version_number":1,"asset_class":"FIXED_DEPOSIT","risk_level":0,"principal_fluctuation":false,"minimum_purchase_cents":10001,"lock_days":30,"redemption_delay_days":0,"annual_yield_bps":137,"early_withdrawal_loss_bps":25,"auto_purchase_allowed":false,"auto_redeem_allowed":false,"created_at":"2026-10-05T12:00:00Z","effective_from":"2026-10-05T12:00:00Z","effective_until":null,"maturity_rule":{"term_days":30},"early_withdrawal_rule":{}},"product_hash":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","terms_digest":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","observed_at":"2026-10-05T12:00:00Z","effective_from":"2026-10-05T12:00:00Z","effective_until":null,"immutable_original_verified":true,"current_source_matched":false,"bank_authority":false,"legacy_decisions_bound_to_this_catalogue":false}]}[0m
+[36m</pre>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"page-intro"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0m原版本 · 日期 · 条件现金[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0m产品与期限[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m刷新只读产品来源[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m均为模拟产品。只读规划不是真实资金执行，不自动投配、赎回、续期或授予银行权限；未来收入计入0，未来借记与FULL新保护未证明时不得推断安全。[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"不可变产品目录"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m不可变产品原件[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m目录 [0m
+          [0mUNKNOWN[0m
+          [0m · 服务端登记范围[0m
+          [0m未完整[0m
+          [0m · 未登记 [0m
+          [0m0[0m
+          [0m项[0m
+        [36m</p>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"notice"[39m
+        [36m>[39m
+          [0mSYNTHETIC_SOURCE_DRIFT_RETAINED[0m
+        [36m</p>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m版本来源筛选[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"ALL"[39m
+            [36m>[39m
+              [0m全部登记历史原件[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"MATCHED"[39m
+            [36m>[39m
+              [0m当前来源整行匹配[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"DRIFTED"[39m
+            [36m>[39m
+              [0m当前来源已漂移[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m产品原版本[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m选择实际原版本[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"81000000-0000-4000-8000-000000000002"[39m
+            [36m>[39m
+              [0mSYNTHETIC_FIXED_30D[0m
+              [0m v[0m
+              [0m1[0m
+              [0m · [0m
+              [0m历史保留 / 当前源漂移[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<article>[39m
+          [36m<h4>[39m
+            [0mHTTP夹具三十天原产品[0m
+            [0m v[0m
+            [0m1[0m
+          [36m</h4>[39m
+          [36m<p>[39m
+            [0m原catalogue [0m
+            [36m<code>[39m
+              [0m81000000-0000-4000-8000-000000000002[0m
+            [36m</code>[39m
+            [0m · 原product [0m
+            [36m<code>[39m
+              [0m81000000-0000-4000-8000-000000000001[0m
+            [36m</code>[39m
+            [0m · observed_at [0m
+            [0m2026-10-05T12:00:00Z[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m生效窗口 [0m
+            [0m2026-10-05T12:00:00Z[0m
+            [0m → [0m
+            [0m无已登记截止[0m
+            [0m；来源匹配不等于当前允许购买。[0m
+          [36m</p>[39m
+          [36m<dl[39m
+            [33mclass[39m=[32m"annual-amounts"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m类别 / 风险 / 本金波动[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mFIXED_DEPOSIT[0m
+                [0m / [0m
+                [0m0[0m
+                [0m / [0m
+                [0m无[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m原起投[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m¥100.01[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m原锁定 / 赎回延迟[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m30[0m
+                [0m天 / [0m
+                [0m0[0m
+                [0m天[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m原模拟年收益基点[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m137[0m
+                [0m bps；不是实际收益[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+          [36m</dl>[39m
+          [36m<p>[39m
+            [0m期限 [0m
+            [0m30天（原条款字段）[0m
+            [0m；原rollover=[0m
+            [0mUNKNOWN[0m
+            [0m，auto_rollover=[0m
+            [0mUNKNOWN[0m
+            [0m。[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m到期后重新读取当时真实策略/资金/产品再判断；续期执行接口未实现。本页不自动滚存。[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m服务端 immutable_original_verified=true；旧决策绑定此目录=false，不声称旧run已使用本版本重放。原product hash [0m
+            [36m<code>[39m
+              [0mbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb[0m
+            [36m</code>[39m
+            [0m；terms digest [0m
+            [36m<code>[39m
+              [0mcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc[0m
+            [36m</code>[39m
+            [0m。[0m
+          [36m</p>[39m
+          [36m<details>[39m
+            [36m<summary>[39m
+              [0m完整保留原产品JSON[0m
+            [36m</summary>[39m
+            [36m<pre[39m
+              [33mclass[39m=[32m"readonly-raw"[39m
+            [36m>[39m
+              [0m{
+  "id": "81000000-0000-4000-8000-000000000001",
+  "name": "HTTP夹具三十天原产品",
+  "product_code": "SYNTHETIC_FIXED_30D",
+  "version_number": 1,
+  "asset_class": "FIXED_DEPOSIT",
+  "risk_level": 0,
+  "principal_fluctuation": false,
+  "minimum_purchase_cents": 10001,
+  "lock_days": 30,
+  "redemption_delay_days": 0,
+  "annual_yield_bps": 137,
+  "early_withdrawal_loss_bps": 25,
+  "auto_purchase_allowed": false,
+  "auto_redeem_allowed": false,
+  "created_at": "2026-10-05T12:00:00Z",
+  "effective_from": "2026-10-05T12:00:00Z",
+  "effective_until": null,
+  "maturity_rule": {
+    "term_days": 30
+  },
+  "early_withdrawal_rule": {}
+}[0m
+            [36m</pre>[39m
+          [36m</details>[39m
+        [36m</article>[39m
+        [36m<details>[39m
+          [36m<summary>[39m
+            [0m整个目录原响应[0m
+          [36m</summary>[39m
+          [36m<pre[39m
+            [33mclass[39m=[32m"readonly-raw"[39m
+          [36m>[39m
+            [0m{"simulation":true,"grants_authority":false,"state":"UNKNOWN","complete_within_registered_capacity":false,"unregistered_product_ids":[],"issues":["SYNTHETIC_SOURCE_DRIFT_RETAINED"],"versions":[{"id":"81000000-0000-4000-8000-000000000002","product_id":"81000000-0000-4000-8000-000000000001","product_code":"SYNTHETIC_FIXED_30D","version_number":1,"original_product":{"id":"81000000-0000-4000-8000-000000000001","name":"HTTP夹具三十天原产品","product_code":"SYNTHETIC_FIXED_30D","version_number":1,"asset_class":"FIXED_DEPOSIT","risk_level":0,"principal_fluctuation":false,"minimum_purchase_cents":10001,"lock_days":30,"redemption_delay_days":0,"annual_yield_bps":137,"early_withdrawal_loss_bps":25,"auto_purchase_allowed":false,"auto_redeem_allowed":false,"created_at":"2026-10-05T12:00:00Z","effective_from":"2026-10-05T12:00:00Z","effective_until":null,"maturity_rule":{"term_days":30},"early_withdrawal_rule":{}},"product_hash":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","terms_digest":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","observed_at":"2026-10-05T12:00:00Z","effective_from":"2026-10-05T12:00:00Z","effective_until":null,"immutable_original_verified":true,"current_source_matched":false,"bank_authority":false,"legacy_decisions_bound_to_this_catalogue":false}]}[0m
+          [36m</pre>[39m
+        [36m</details>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"原持仓可用日分桶"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m原持仓可用日分桶[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m只按原available_at字段分组，maturity_at单独显示。HELD / MATURED等原状态和日期不等于银行实际回款证明；本金不加入今天现金。[0m
+        [36m</p>[39m
+        [36m<article>[39m
+          [36m<h4>[39m
+            [0mUNKNOWN · 原本金可用日期缺失[0m
+          [36m</h4>[39m
+          [36m<p>[39m
+            [0m原持仓 [0m
+            [36m<code>[39m
+              [0m81000000-0000-4000-8000-000000000004[0m
+            [36m</code>[39m
+            [0m · [0m
+            [0mHELD[0m
+            [0m · 本金 [0m
+            [0m¥670.03[0m
+            [0m · 原成熟时刻 [0m
+            [0m2026-11-04T12:00:00Z[0m
+            [0m · 目标 [0m
+            [36m<code>[39m
+              [0m未关联目标[0m
+            [36m</code>[39m
+            [0m · 购买授权版本 [0m
+            [36m<code>[39m
+              [0m71000000-0000-4000-8000-000000000002[0m
+            [36m</code>[39m
+          [36m</p>[39m
+        [36m</article>[39m
+        [36m<details>[39m
+          [36m<summary>[39m
+            [0m原持仓响应[0m
+          [36m</summary>[39m
+          [36m<pre[39m
+            [33mclass[39m=[32m"readonly-raw"[39m
+          [36m>[39m
+            [0m{"simulation":true,"items":[{"id":"81000000-0000-4000-8000-000000000004","account_id":"81000000-0000-4000-8000-000000000003","product_id":"81000000-0000-4000-8000-000000000001","goal_id":null,"policy_version_id":"71000000-0000-4000-8000-000000000002","principal_cents":67003,"accrued_yield_cents":0,"purchased_at":"2026-10-05T12:00:00Z","maturity_at":"2026-11-04T12:00:00Z","available_at":null,"status":"HELD"}]}[0m
+          [36m</pre>[39m
+        [36m</details>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"期限与组合只读规划"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m期限相容性与今日组合[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m需要既有完整AssetAuthorizationPolicy规划确认；这里只收紧比较期限、用款日期、组合复杂度和换手，不能创建授权。[0m
+          [36m<a[39m
+            [33mhref[39m=[32m"#policies"[39m
+          [36m>[39m
+            [0m查看实际策略[0m
+          [36m</a>[39m
+        [36m</p>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m实际完整资产声明[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m选择原声明[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"71000000-0000-4000-8000-000000000001"[39m
+            [36m>[39m
+              [0mHTTP夹具资产声明[0m
+              [0m · [0m
+              [0mACTIVE[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m规划模式[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"PORTFOLIO"[39m
+            [36m>[39m
+              [0m今日多资产组合[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"FIXED_LADDER"[39m
+            [36m>[39m
+              [0m原目标定存梯度[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m收益比较天数（1–365）[0m
+          [36m<input[39m
+            [33minputmode[39m=[32m"numeric"[39m
+            [33mvalue[39m=[32m"90"[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m最大今日批次数（1–4）[0m
+          [36m<input[39m
+            [33minputmode[39m=[32m"numeric"[39m
+            [33mvalue[39m=[32m"3"[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m更严格换手上限（元，可留空）[0m
+          [36m<input[39m
+            [33minputmode[39m=[32m"decimal"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m更早用款日期（日初保守到账，可留空）[0m
+          [36m<input[39m
+            [33mtype[39m=[32m"date"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m读取原策略条件组合[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"提前支取只读规划"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m提前支取损失与回款期限[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m读取既有报价，不发行新报价。损失金额/时限未知保留null；有损候选不能填入无损现金方案，ASK_ONCE只表示仍须独立选择/确认，执行未接。[0m
+        [36m</p>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m实际完整恢复声明[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m选择原Recovery声明[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"81000000-0000-4000-8000-000000000006"[39m
+            [36m>[39m
+              [0mHTTP夹具恢复声明[0m
+              [0m · [0m
+              [0mACTIVE[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m更早回款截止（带时区ISO，可留空）[0m
+          [36m<input[39m
+            [33mplaceholder[39m=[32m"2026-10-07T09:00:00+08:00"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m读取原报价条件影响[0m
+        [36m</button>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   × 用户只读比较期限/今日条件组合；1098点是366日期三阶段，缺7/90类与原分桶可见 378ms
+     → Found multiple elements with the text: /SINGLE_MATURITY_AVAILABLE/
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<p>[39m
+  [0m用款日期 [0m
+  [0m2027-01-03[0m
+  [0m · 梯度 [0m
+  [0mSINGLE_MATURITY_AVAILABLE[0m
+  [0m · 搜索节点 [0m
+  [0m7[0m
+[36m</p>[39m
+
+Ignored nodes: comments, script, style
+[36m<pre[39m
+  [33mclass[39m=[32m"readonly-raw"[39m
+[36m>[39m
+  [0m{"simulation":true,"planning_only":true,"bank_authority":false,"execution_support":"NOT_IMPLEMENTED","protection_scope":"ORIGINAL_VERIFIED_365_DAY_CURVE","schema_version":"verified-full-asset-planning-v1","user_id":"71000000-0000-4000-8000-000000000005","policy_id":"71000000-0000-4000-8000-000000000001","as_of":"2026-10-05T12:00:00Z","state":"COMPUTED","planning_constraints":{"comparison_days":90,"max_components":3,"max_turnover_cents":null,"funds_use_date":null,"mode":"FIXED_LADDER"},"catalogue":{"status":"VERIFIED","products":[{"product_id":"81000000-0000-4000-8000-000000000001","product_code":"SYNTHETIC_FIXED_30D","version_number":1,"asset_class":"FIXED_DEPOSIT","risk_level":0,"principal_fluctuation":false,"minimum_purchase_cents":10001,"lock_days":30,"redemption_delay_days":0,"annual_yield_bps":137,"early_withdrawal_loss_bps":25,"auto_purchase_allowed":false,"auto_redeem_allowed":false,"created_at":"2026-10-05T12:00:00Z","effective_from":"2026-10-05T12:00:00Z","effective_until":null,"maturity_rule":{"term_days":30},"terms_digest":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}],"bindings":[{"product_id":"81000000-0000-4000-8000-000000000001","catalogue_version_id":"81000000-0000-4000-8000-000000000002","product_record_hash":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","terms_digest":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}],"issues":[]},"unavailable_asset_classes":["FIXED_7D","FIXED_90D"],"source_evidence_ids":[],"source_issues":[],"input_hash":"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd","limitations":["SYNTHETIC_HTTP_NOT_FINANCIAL_PROOF","未来收入0，FULL新保护尚未接入"],"allocation":{"algorithm_version":"finite-integer-original-product-portfolio-v1","policy_id":"71000000-0000-4000-8000-000000000001","policy_version_id":"71000000-0000-4000-8000-000000000002","scope":"general_idle_funds","goal_id":null,"planning_only":true,"bank_authority":false,"execution_support":"NOT_IMPLEMENTED","future_income_included_cents":0,"status":"OPTIMAL","input_hash":"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd","baseline_boundary":{"algorithm_version":"HTTP_UNIT_FIXTURE_NOT_FINANCIAL_PROOF","status":"READY","financial_only":true,"safe_idle_cents":79001,"minimum_margin_cents":79001,"deficit_cents":0,"protected_cents_by_reason":{"synthetic_reserve":20000},"max_allocatable_by_product":{},"blocking_constraints":[],"calculation_trace":[{"day":0,"phase":"BEFORE_PAYMENT","date":"2026-10-05","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":0,"phase":"AFTER_PAYMENT","date":"2026-10-05","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":0,"phase":"AFTER_PRINCIPAL","date":"2026-10-05","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":1,"phase":"BEFORE_PAYMENT","date":"2026-10-06","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":1,"phase":"AFTER_PAYMENT","date":"2026-10-06","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":1,"phase":"AFTER_PRINCIPAL","date":"2026-10-06","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":2,"phase":"BEFORE_PAYMENT","date":"2026-10-07","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":2,"phase":"AFTER_PAYMENT","date":"2026-10-07","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":2,"phase":"AFTER_PRINCIPAL","date":"2026-10-07","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":3,"phase":"BEFORE_PAYMENT","date":"2026-10-08","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":3,"phase":"AFTER_PAYMENT","date":"2026-10-08","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":3,"phase":"AFTER_PRINCIPAL","date":"2026-10-08","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":4,"phase":"BEFORE_PAYMENT","date":"2026-10-09","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":4,"phase":"AFTER_PAYMENT","date":"2026-10-09","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":4,"phase":"AFTER_PRINCIPAL","date":"2026-10-09","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":5,"phase":"BEFORE_PAYMENT","date":"2026-10-10","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":5,"phase":"AFTER_PAYMENT","date":"2026-10-10","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":5,"phase":"AFTER_PRINCIPAL","date":"2026-10-10","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":6,"phase":"BEFORE_PAYMENT","date":"2026-10-11","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":6,"phase":"AFTER_PAYMENT","date":"2026-10-11","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":6,"phase":"AFTER_PRINCIPAL","date":"2026-10-11","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":7,"phase":"BEFORE_PAYMENT","date":"2026-10-...
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<section[39m
+  [33maria-label[39m=[32m"资产规划结果"[39m
+[36m>[39m
+  [36m<h3>[39m
+    [0m条件规划：OPTIMAL[0m
+  [36m</h3>[39m
+  [36m<p>[39m
+    [0m比较期 [0m
+    [0m90[0m
+    [0m天，最多 [0m
+    [0m3[0m
+    [0m个今日批次；保护仍为原365日曲线。90日是默认收益比较期，不是扩大授权。[0m
+  [36m</p>[39m
+  [36m<p>[39m
+    [0m实际未提供类别：[0m
+    [0mFIXED_7D、FIXED_90D[0m
+  [36m</p>[39m
+  [36m<p>[39m
+    [0m原声明版本 [0m
+    [36m<code>[39m
+      [0m71000000-0000-4000-8000-000000000002[0m
+    [36m</code>[39m
+    [0m · [0m
+    [0mgeneral_idle_funds[0m
+    [0m / 目标 [0m
+    [36m<code>[39m
+      [0m一般闲置资金[0m
+    [36m</code>[39m
+  [36m</p>[39m
+  [36m<dl[39m
+    [33mclass[39m=[32m"annual-amounts"[39m
+  [36m>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m今日条件申购[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [0m¥670.03[0m
+      [36m</dd>[39m
+    [36m</div>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m保留原scope现金[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [0m¥119.98[0m
+      [36m</dd>[39m
+    [36m</div>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m条件模拟净收益[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [0m¥0.75[0m
+      [36m</dd>[39m
+    [36m</div>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m当前今日批次数[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [0m1[0m
+      [36m</dd>[39m
+    [36m</div>[39m
+  [36m</dl>[39m
+  [36m<p>[39m
+    [0m用款日期 [0m
+    [0m2027-01-03[0m
+    [0m · 梯度 [0m
+    [0mSINGLE_MATURITY_AVAILABLE[0m
+    [0m · 搜索节点 [0m
+    [0m7[0m
+  [36m</p>[39m
+  [36m<article[39m
+    [33maria-label[39m=[32m"申购前原365日保护"[39m
+  [36m>[39m
+    [36m<h4>[39m
+      [0m申购前原365日保护[0m
+    [36m</h4>[39m
+    [36m<p>[39m
+      [0mREADY[0m
+      [0m · [0m
+      [0m1098[0m
+      [0m个原阶段点（365未来日期 + 初始日，各3阶段；不是1098天）[0m
+    [36m</p>[39m
+    [36m<dl[39m
+      [33mclass[39m=[32m"annual-amounts"[39m
+    [36m>[39m
+      [36m<div>[39m
+        [36m<dt>[39m
+          [0m安全闲置[0m
+        [36m</dt>[39m
+        [36m<dd>[39m
+          [0m¥790.01[0m
+        [36m</dd>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<dt>[39m
+          [0m最小余量[0m
+        [36m</dt>[39m
+        [36m<dd>[39m
+          [0m¥790.01[0m
+        [36m</dd>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<dt>[39m
+          [0m缺口[0m
+        [36m</dt>[39m
+        [36m<dd>[39m
+          [0m¥0.00[0m
+        [36m</dd>[39m
+      [36m</div>[39m
+    [36m</dl>[39m
+    [36m<details>[39m
+      [36m<summary>[39m
+        [0m原曲线JSON[0m
+      [36m</summary>[39m
+      [36m<pre[39m
+        [33mclass[39m=[32m"readonly-raw"[39m
+      [36m>[39m
+        [0m{
+  "algorithm_version": "HTTP_UNIT_FIXTURE_NOT_FINANCIAL_PROOF",
+  "status": "READY",
+  "financial_only": true,
+  "safe_idle_cents": 79001,
+  "minimum_margin_cents": 79001,
+  "deficit_cents": 0,
+  "protected_cents_by_reason": {
+    "synthetic_reserve": 20000
+  },
+  "max_allocatable_by_product": {},
+  "blocking_constraints": [],
+  "calculation_trace": [
+    {
+      "day": 0,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-05",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 0,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-05",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 0,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-05",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 1,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-06",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 1,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-06",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 1,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-06",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 2,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-07",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 2,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-07",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 2,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-07",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 3,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-08",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 3,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-08",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 3,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-08",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 4,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-09",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_po...
+   × 原报价整数损失和有效期、ASK_ONCE与无损未知分开显示；不生成新报价或确认 208ms
+     → Found multiple elements with the text: /BANK_CONFIRMED/
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<p>[39m
+  [0m报价来源 [0m
+  [0mBANK_CONFIRMED[0m
+  [0m · 原quote [0m
+  [36m<code>[39m
+    [0m81000000-0000-4000-8000-000000000005[0m
+  [36m</code>[39m
+  [0m · 有效至 [0m
+  [0m2026-10-05T12:15:00Z[0m
+  [0m · 最早条件回款 [0m
+  [0m2026-10-05T12:00:00Z[0m
+  [0m · 是否及时 [0m
+  [0m服务端条件计划按时[0m
+[36m</p>[39m
+
+Ignored nodes: comments, script, style
+[36m<pre[39m
+  [33mclass[39m=[32m"readonly-raw"[39m
+[36m>[39m
+  [0m{"simulation":true,"planning_only":true,"bank_authority":false,"execution_support":"NOT_IMPLEMENTED","protection_scope":"ORIGINAL_VERIFIED_365_DAY_CURVE","schema_version":"verified-full-recovery-planning-v1","user_id":"71000000-0000-4000-8000-000000000005","policy_id":"81000000-0000-4000-8000-000000000006","as_of":"2026-10-05T12:00:00Z","state":"COMPUTED","catalogue":{"simulation":true,"grants_authority":false,"state":"REGISTERED","complete_within_registered_capacity":true,"unregistered_product_ids":[],"issues":[],"versions":[{"id":"81000000-0000-4000-8000-000000000002","product_id":"81000000-0000-4000-8000-000000000001","product_code":"SYNTHETIC_FIXED_30D","version_number":1,"original_product":{"id":"81000000-0000-4000-8000-000000000001","name":"HTTP夹具三十天原产品","product_code":"SYNTHETIC_FIXED_30D","version_number":1,"asset_class":"FIXED_DEPOSIT","risk_level":0,"principal_fluctuation":false,"minimum_purchase_cents":10001,"lock_days":30,"redemption_delay_days":0,"annual_yield_bps":137,"early_withdrawal_loss_bps":25,"auto_purchase_allowed":false,"auto_redeem_allowed":false,"created_at":"2026-10-05T12:00:00Z","effective_from":"2026-10-05T12:00:00Z","effective_until":null,"maturity_rule":{"term_days":30},"early_withdrawal_rule":{}},"product_hash":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","terms_digest":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","observed_at":"2026-10-05T12:00:00Z","effective_from":"2026-10-05T12:00:00Z","effective_until":null,"immutable_original_verified":true,"current_source_matched":true,"bank_authority":false,"legacy_decisions_bound_to_this_catalogue":false}]},"catalogue_bindings":[{"product_id":"81000000-0000-4000-8000-000000000001","catalogue_version_id":"81000000-0000-4000-8000-000000000002","product_record_hash":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","terms_digest":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}],"source_evidence_ids":[],"source_issues":[],"input_hash":"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd","limitations":["SYNTHETIC_HTTP_NOT_FINANCIAL_PROOF","原报价不是银行当前授权"],"plan":{"algorithm_version":"full-whole-position-recovery-v1","user_id":"71000000-0000-4000-8000-000000000005","policy_id":"81000000-0000-4000-8000-000000000006","policy_version_id":"81000000-0000-4000-8000-000000000007","linked_asset_policy_id":"71000000-0000-4000-8000-000000000001","linked_asset_policy_version_id":"71000000-0000-4000-8000-000000000002","linked_asset_configuration_hash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","as_of":"2026-10-05T12:00:00Z","planning_only":true,"bank_authority":false,"execution_support":"NOT_IMPLEMENTED","status":"LIQUIDITY_RISK","scope":"general_idle_funds","goal_id":null,"actual_boundary":{"algorithm_version":"HTTP_UNIT_FIXTURE_NOT_FINANCIAL_PROOF","status":"READY","financial_only":true,"safe_idle_cents":79001,"minimum_margin_cents":79001,"deficit_cents":0,"protected_cents_by_reason":{"synthetic_reserve":20000},"max_allocatable_by_product":{},"blocking_constraints":[],"calculation_trace":[{"day":0,"phase":"BEFORE_PAYMENT","date":"2026-10-05","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":0,"phase":"AFTER_PAYMENT","date":"2026-10-05","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":0,"phase":"AFTER_PRINCIPAL","date":"2026-10-05","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":1,"phase":"BEFORE_PAYMENT","date":"2026-10-06","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":1,"phase":"AFTER_PAYMENT","date":"2026-10-06","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":1,"phase":"AFTER_PRINCIPAL","date":"2026-10-06","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":2,"phase":"BEFORE_PAYMENT","date":"2026-10-07","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":2,"phase":"AFTER_PAYMENT","date":"2026-10-07","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":2,"phase":"AFTER_PRINCIPAL","date":"2026-10-07","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":3,"phase":"BEFORE_PAYMENT","date":"2026-10-08","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":3,"phase":"AFTER_PAYMENT","date":"2026-10-08","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":3,"phase":"AFTER_PRINCIPAL","date":"2026-10-08","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":4,"phase":"BEFORE_PAYMENT","date":"2026-10-09","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":4,"phase":"AFTER_PAYMENT","date":"2026-10-09","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":4,"phase":"AFTER_PRINCIPAL","date":"2026-10-09","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":5,"phase":"BEFORE_PAYMENT","date":"2026-10-10","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":5,"phase":"AFTER_PAYMENT","date":"2026-10-10","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":5,"phase":"AFTER_PRINCIPAL","date":"2026-10-10","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":6,"phase":"BEFO...
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<section[39m
+  [33maria-label[39m=[32m"原报价提前支取影响"[39m
+[36m>[39m
+  [36m<h3>[39m
+    [0m只读恢复规划：LIQUIDITY_RISK[0m
+  [36m</h3>[39m
+  [36m<p>[39m
+    [0m原Recovery版本 [0m
+    [36m<code>[39m
+      [0m81000000-0000-4000-8000-000000000007[0m
+    [36m</code>[39m
+    [0m · 当前引用资产版本 [0m
+    [36m<code>[39m
+      [0m71000000-0000-4000-8000-000000000002[0m
+    [36m</code>[39m
+    [0m · 截止时刻 [0m
+    [0m2026-10-07T09:00:00+08:00[0m
+  [36m</p>[39m
+  [36m<p>[39m
+    [0m原scope现金 [0m
+    [0m¥119.98[0m
+    [0m；需恢复 [0m
+    [0m¥100.01[0m
+    [0m；无损条件按时回款 [0m
+    [0m¥0.00[0m
+  [36m</p>[39m
+  [36m<article[39m
+    [33maria-label[39m=[32m"当前实际财务边界"[39m
+  [36m>[39m
+    [36m<h4>[39m
+      [0m当前实际财务边界[0m
+    [36m</h4>[39m
+    [36m<p>[39m
+      [0mREADY[0m
+      [0m · [0m
+      [0m1098[0m
+      [0m个原阶段点（365未来日期 + 初始日，各3阶段；不是1098天）[0m
+    [36m</p>[39m
+    [36m<dl[39m
+      [33mclass[39m=[32m"annual-amounts"[39m
+    [36m>[39m
+      [36m<div>[39m
+        [36m<dt>[39m
+          [0m安全闲置[0m
+        [36m</dt>[39m
+        [36m<dd>[39m
+          [0m¥790.01[0m
+        [36m</dd>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<dt>[39m
+          [0m最小余量[0m
+        [36m</dt>[39m
+        [36m<dd>[39m
+          [0m¥790.01[0m
+        [36m</dd>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<dt>[39m
+          [0m缺口[0m
+        [36m</dt>[39m
+        [36m<dd>[39m
+          [0m¥0.00[0m
+        [36m</dd>[39m
+      [36m</div>[39m
+    [36m</dl>[39m
+    [36m<details>[39m
+      [36m<summary>[39m
+        [0m原曲线JSON[0m
+      [36m</summary>[39m
+      [36m<pre[39m
+        [33mclass[39m=[32m"readonly-raw"[39m
+      [36m>[39m
+        [0m{
+  "algorithm_version": "HTTP_UNIT_FIXTURE_NOT_FINANCIAL_PROOF",
+  "status": "READY",
+  "financial_only": true,
+  "safe_idle_cents": 79001,
+  "minimum_margin_cents": 79001,
+  "deficit_cents": 0,
+  "protected_cents_by_reason": {
+    "synthetic_reserve": 20000
+  },
+  "max_allocatable_by_product": {},
+  "blocking_constraints": [],
+  "calculation_trace": [
+    {
+      "day": 0,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-05",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 0,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-05",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 0,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-05",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 1,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-06",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 1,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-06",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 1,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-06",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 2,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-07",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 2,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-07",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 2,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-07",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 3,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-08",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 3,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-08",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 3,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-08",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 4,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-09",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 4,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-09",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 4,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-09",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 5,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-10",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 5,
+      "phase": "AFTER_...
+   ✓ 来源UNKNOWN保持null及具体issue，没有正值计划或伪0 143ms
+   ✓ 损坏原资金守恒响应显示错误，不发布规划；更早截止无时区不发请求 188ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/pages/FullProductsPage.test.tsx > 真实目录原字段/历史筛选、未知持仓日期与未实现续期可见；初始无资金或规划写入
+TestingLibraryElementError: Found multiple elements with the text: /SYNTHETIC_SOURCE_DRIFT_RETAINED/
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<p[39m
+  [33mclass[39m=[32m"notice"[39m
+[36m>[39m
+  [0mSYNTHETIC_SOURCE_DRIFT_RETAINED[0m
+[36m</p>[39m
+
+Ignored nodes: comments, script, style
+[36m<pre[39m
+  [33mclass[39m=[32m"readonly-raw"[39m
+[36m>[39m
+  [0m{"simulation":true,"grants_authority":false,"state":"UNKNOWN","complete_within_registered_capacity":false,"unregistered_product_ids":[],"issues":["SYNTHETIC_SOURCE_DRIFT_RETAINED"],"versions":[{"id":"81000000-0000-4000-8000-000000000002","product_id":"81000000-0000-4000-8000-000000000001","product_code":"SYNTHETIC_FIXED_30D","version_number":1,"original_product":{"id":"81000000-0000-4000-8000-000000000001","name":"HTTP夹具三十天原产品","product_code":"SYNTHETIC_FIXED_30D","version_number":1,"asset_class":"FIXED_DEPOSIT","risk_level":0,"principal_fluctuation":false,"minimum_purchase_cents":10001,"lock_days":30,"redemption_delay_days":0,"annual_yield_bps":137,"early_withdrawal_loss_bps":25,"auto_purchase_allowed":false,"auto_redeem_allowed":false,"created_at":"2026-10-05T12:00:00Z","effective_from":"2026-10-05T12:00:00Z","effective_until":null,"maturity_rule":{"term_days":30},"early_withdrawal_rule":{}},"product_hash":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","terms_digest":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","observed_at":"2026-10-05T12:00:00Z","effective_from":"2026-10-05T12:00:00Z","effective_until":null,"immutable_original_verified":true,"current_source_matched":false,"bank_authority":false,"legacy_decisions_bound_to_this_catalogue":false}]}[0m
+[36m</pre>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"page-intro"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0m原版本 · 日期 · 条件现金[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0m产品与期限[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m刷新只读产品来源[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m均为模拟产品。只读规划不是真实资金执行，不自动投配、赎回、续期或授予银行权限；未来收入计入0，未来借记与FULL新保护未证明时不得推断安全。[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"不可变产品目录"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m不可变产品原件[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m目录 [0m
+          [0mUNKNOWN[0m
+          [0m · 服务端登记范围[0m
+          [0m未完整[0m
+          [0m · 未登记 [0m
+          [0m0[0m
+          [0m项[0m
+        [36m</p>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"notice"[39m
+        [36m>[39m
+          [0mSYNTHETIC_SOURCE_DRIFT_RETAINED[0m
+        [36m</p>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m版本来源筛选[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"ALL"[39m
+            [36m>[39m
+              [0m全部登记历史原件[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"MATCHED"[39m
+            [36m>[39m
+              [0m当前来源整行匹配[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"DRIFTED"[39m
+            [36m>[39m
+              [0m当前来源已漂移[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m产品原版本[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m选择实际原版本[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"81000000-0000-4000-8000-000000000002"[39m
+            [36m>[39m
+              [0mSYNTHETIC_FIXED_30D[0m
+              [0m v[0m
+              [0m1[0m
+              [0m · [0m
+              [0m历史保留 / 当前源漂移[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<article>[39m
+          [36m<h4>[39m
+            [0mHTTP夹具三十天原产品[0m
+            [0m v[0m
+            [0m1[0m
+          [36m</h4>[39m
+          [36m<p>[39m
+            [0m原catalogue [0m
+            [36m<code>[39m
+              [0m81000000-0000-4000-8000-000000000002[0m
+            [36m</code>[39m
+            [0m · 原product [0m
+            [36m<code>[39m
+              [0m81000000-0000-4000-8000-000000000001[0m
+            [36m</code>[39m
+            [0m · observed_at [0m
+            [0m2026-10-05T12:00:00Z[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m生效窗口 [0m
+            [0m2026-10-05T12:00:00Z[0m
+            [0m → [0m
+            [0m无已登记截止[0m
+            [0m；来源匹配不等于当前允许购买。[0m
+          [36m</p>[39m
+          [36m<dl[39m
+            [33mclass[39m=[32m"annual-amounts"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m类别 / 风险 / 本金波动[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mFIXED_DEPOSIT[0m
+                [0m / [0m
+                [0m0[0m
+                [0m / [0m
+                [0m无[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m原起投[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m¥100.01[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m原锁定 / 赎回延迟[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m30[0m
+                [0m天 / [0m
+                [0m0[0m
+                [0m天[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m原模拟年收益基点[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m137[0m
+                [0m bps；不是实际收益[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+          [36m</dl>[39m
+          [36m<p>[39m
+            [0m期限 [0m
+            [0m30天（原条款字段）[0m
+            [0m；原rollover=[0m
+            [0mUNKNOWN[0m
+            [0m，auto_rollover=[0m
+            [0mUNKNOWN[0m
+            [0m。[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m到期后重新读取当时真实策略/资金/产品再判断；续期执行接口未实现。本页不自动滚存。[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m服务端 immutable_original_verified=true；旧决策绑定此目录=false，不声称旧run已使用本版本重放。原product hash [0m
+            [36m<code>[39m
+              [0mbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb[0m
+            [36m</code>[39m
+            [0m；terms digest [0m
+            [36m<code>[39m
+              [0mcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc[0m
+            [36m</code>[39m
+            [0m。[0m
+          [36m</p>[39m
+          [36m<details>[39m
+            [36m<summary>[39m
+              [0m完整保留原产品JSON[0m
+            [36m</summary>[39m
+            [36m<pre[39m
+              [33mclass[39m=[32m"readonly-raw"[39m
+            [36m>[39m
+              [0m{
+  "id": "81000000-0000-4000-8000-000000000001",
+  "name": "HTTP夹具三十天原产品",
+  "product_code": "SYNTHETIC_FIXED_30D",
+  "version_number": 1,
+  "asset_class": "FIXED_DEPOSIT",
+  "risk_level": 0,
+  "principal_fluctuation": false,
+  "minimum_purchase_cents": 10001,
+  "lock_days": 30,
+  "redemption_delay_days": 0,
+  "annual_yield_bps": 137,
+  "early_withdrawal_loss_bps": 25,
+  "auto_purchase_allowed": false,
+  "auto_redeem_allowed": false,
+  "created_at": "2026-10-05T12:00:00Z",
+  "effective_from": "2026-10-05T12:00:00Z",
+  "effective_until": null,
+  "maturity_rule": {
+    "term_days": 30
+  },
+  "early_withdrawal_rule": {}
+}[0m
+            [36m</pre>[39m
+          [36m</details>[39m
+        [36m</article>[39m
+        [36m<details>[39m
+          [36m<summary>[39m
+            [0m整个目录原响应[0m
+          [36m</summary>[39m
+          [36m<pre[39m
+            [33mclass[39m=[32m"readonly-raw"[39m
+          [36m>[39m
+            [0m{"simulation":true,"grants_authority":false,"state":"UNKNOWN","complete_within_registered_capacity":false,"unregistered_product_ids":[],"issues":["SYNTHETIC_SOURCE_DRIFT_RETAINED"],"versions":[{"id":"81000000-0000-4000-8000-000000000002","product_id":"81000000-0000-4000-8000-000000000001","product_code":"SYNTHETIC_FIXED_30D","version_number":1,"original_product":{"id":"81000000-0000-4000-8000-000000000001","name":"HTTP夹具三十天原产品","product_code":"SYNTHETIC_FIXED_30D","version_number":1,"asset_class":"FIXED_DEPOSIT","risk_level":0,"principal_fluctuation":false,"minimum_purchase_cents":10001,"lock_days":30,"redemption_delay_days":0,"annual_yield_bps":137,"early_withdrawal_loss_bps":25,"auto_purchase_allowed":false,"auto_redeem_allowed":false,"created_at":"2026-10-05T12:00:00Z","effective_from":"2026-10-05T12:00:00Z","effective_until":null,"maturity_rule":{"term_days":30},"early_withdrawal_rule":{}},"product_hash":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","terms_digest":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","observed_at":"2026-10-05T12:00:00Z","effective_from":"2026-10-05T12:00:00Z","effective_until":null,"immutable_original_verified":true,"current_source_matched":false,"bank_authority":false,"legacy_decisions_bound_to_this_catalogue":false}]}[0m
+          [36m</pre>[39m
+        [36m</details>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"原持仓可用日分桶"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m原持仓可用日分桶[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m只按原available_at字段分组，maturity_at单独显示。HELD / MATURED等原状态和日期不等于银行实际回款证明；本金不加入今天现金。[0m
+        [36m</p>[39m
+        [36m<article>[39m
+          [36m<h4>[39m
+            [0mUNKNOWN · 原本金可用日期缺失[0m
+          [36m</h4>[39m
+          [36m<p>[39m
+            [0m原持仓 [0m
+            [36m<code>[39m
+              [0m81000000-0000-4000-8000-000000000004[0m
+            [36m</code>[39m
+            [0m · [0m
+            [0mHELD[0m
+            [0m · 本金 [0m
+            [0m¥670.03[0m
+            [0m · 原成熟时刻 [0m
+            [0m2026-11-04T12:00:00Z[0m
+            [0m · 目标 [0m
+            [36m<code>[39m
+              [0m未关联目标[0m
+            [36m</code>[39m
+            [0m · 购买授权版本 [0m
+            [36m<code>[39m
+              [0m71000000-0000-4000-8000-000000000002[0m
+            [36m</code>[39m
+          [36m</p>[39m
+        [36m</article>[39m
+        [36m<details>[39m
+          [36m<summary>[39m
+            [0m原持仓响应[0m
+          [36m</summary>[39m
+          [36m<pre[39m
+            [33mclass[39m=[32m"readonly-raw"[39m
+          [36m>[39m
+            [0m{"simulation":true,"items":[{"id":"81000000-0000-4000-8000-000000000004","account_id":"81000000-0000-4000-8000-000000000003","product_id":"81000000-0000-4000-8000-000000000001","goal_id":null,"policy_version_id":"71000000-0000-4000-8000-000000000002","principal_cents":67003,"accrued_yield_cents":0,"purchased_at":"2026-10-05T12:00:00Z","maturity_at":"2026-11-04T12:00:00Z","available_at":null,"status":"HELD"}]}[0m
+          [36m</pre>[39m
+        [36m</details>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"期限与组合只读规划"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m期限相容性与今日组合[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m需要既有完整AssetAuthorizationPolicy规划确认；这里只收紧比较期限、用款日期、组合复杂度和换手，不能创建授权。[0m
+          [36m<a[39m
+            [33mhref[39m=[32m"#policies"[39m
+          [36m>[39m
+            [0m查看实际策略[0m
+          [36m</a>[39m
+        [36m</p>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m实际完整资产声明[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m选择原声明[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"71000000-0000-4000-8000-000000000001"[39m
+            [36m>[39m
+              [0mHTTP夹具资产声明[0m
+              [0m · [0m
+              [0mACTIVE[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m规划模式[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"PORTFOLIO"[39m
+            [36m>[39m
+              [0m今日多资产组合[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"FIXED_LADDER"[39m
+            [36m>[39m
+              [0m原目标定存梯度[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m收益比较天数（1–365）[0m
+          [36m<input[39m
+            [33minputmode[39m=[32m"numeric"[39m
+            [33mvalue[39m=[32m"90"[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m最大今日批次数（1–4）[0m
+          [36m<input[39m
+            [33minputmode[39m=[32m"numeric"[39m
+            [33mvalue[39m=[32m"3"[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m更严格换手上限（元，可留空）[0m
+          [36m<input[39m
+            [33minputmode[39m=[32m"decimal"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m更早用款日期（日初保守到账，可留空）[0m
+          [36m<input[39m
+            [33mtype[39m=[32m"date"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m读取原策略条件组合[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"提前支取只读规划"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m提前支取损失与回款期限[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m读取既有报价，不发行新报价。损失金额/时限未知保留null；有损候选不能填入无损现金方案，ASK_ONCE只表示仍须独立选择/确认，执行未接。[0m
+        [36m</p>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m实际完整恢复声明[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m选择原Recovery声明[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"81000000-0000-4000-8000-000000000006"[39m
+            [36m>[39m
+              [0mHTTP夹具恢复声明[0m
+              [0m · [0m
+              [0mACTIVE[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m更早回款截止（带时区ISO，可留空）[0m
+          [36m<input[39m
+            [33mplaceholder[39m=[32m"2026-10-07T09:00:00+08:00"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m读取原报价条件影响[0m
+        [36m</button>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:20:35
+ ❯ getMultipleElementsFoundError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:23:10
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:55:13
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/pages/FullProductsPage.test.tsx:15:17
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/pages/FullProductsPage.test.tsx > 用户只读比较期限/今日条件组合；1098点是366日期三阶段，缺7/90类与原分桶可见
+TestingLibraryElementError: Found multiple elements with the text: /SINGLE_MATURITY_AVAILABLE/
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<p>[39m
+  [0m用款日期 [0m
+  [0m2027-01-03[0m
+  [0m · 梯度 [0m
+  [0mSINGLE_MATURITY_AVAILABLE[0m
+  [0m · 搜索节点 [0m
+  [0m7[0m
+[36m</p>[39m
+
+Ignored nodes: comments, script, style
+[36m<pre[39m
+  [33mclass[39m=[32m"readonly-raw"[39m
+[36m>[39m
+  [0m{"simulation":true,"planning_only":true,"bank_authority":false,"execution_support":"NOT_IMPLEMENTED","protection_scope":"ORIGINAL_VERIFIED_365_DAY_CURVE","schema_version":"verified-full-asset-planning-v1","user_id":"71000000-0000-4000-8000-000000000005","policy_id":"71000000-0000-4000-8000-000000000001","as_of":"2026-10-05T12:00:00Z","state":"COMPUTED","planning_constraints":{"comparison_days":90,"max_components":3,"max_turnover_cents":null,"funds_use_date":null,"mode":"FIXED_LADDER"},"catalogue":{"status":"VERIFIED","products":[{"product_id":"81000000-0000-4000-8000-000000000001","product_code":"SYNTHETIC_FIXED_30D","version_number":1,"asset_class":"FIXED_DEPOSIT","risk_level":0,"principal_fluctuation":false,"minimum_purchase_cents":10001,"lock_days":30,"redemption_delay_days":0,"annual_yield_bps":137,"early_withdrawal_loss_bps":25,"auto_purchase_allowed":false,"auto_redeem_allowed":false,"created_at":"2026-10-05T12:00:00Z","effective_from":"2026-10-05T12:00:00Z","effective_until":null,"maturity_rule":{"term_days":30},"terms_digest":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}],"bindings":[{"product_id":"81000000-0000-4000-8000-000000000001","catalogue_version_id":"81000000-0000-4000-8000-000000000002","product_record_hash":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","terms_digest":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}],"issues":[]},"unavailable_asset_classes":["FIXED_7D","FIXED_90D"],"source_evidence_ids":[],"source_issues":[],"input_hash":"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd","limitations":["SYNTHETIC_HTTP_NOT_FINANCIAL_PROOF","未来收入0，FULL新保护尚未接入"],"allocation":{"algorithm_version":"finite-integer-original-product-portfolio-v1","policy_id":"71000000-0000-4000-8000-000000000001","policy_version_id":"71000000-0000-4000-8000-000000000002","scope":"general_idle_funds","goal_id":null,"planning_only":true,"bank_authority":false,"execution_support":"NOT_IMPLEMENTED","future_income_included_cents":0,"status":"OPTIMAL","input_hash":"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd","baseline_boundary":{"algorithm_version":"HTTP_UNIT_FIXTURE_NOT_FINANCIAL_PROOF","status":"READY","financial_only":true,"safe_idle_cents":79001,"minimum_margin_cents":79001,"deficit_cents":0,"protected_cents_by_reason":{"synthetic_reserve":20000},"max_allocatable_by_product":{},"blocking_constraints":[],"calculation_trace":[{"day":0,"phase":"BEFORE_PAYMENT","date":"2026-10-05","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":0,"phase":"AFTER_PAYMENT","date":"2026-10-05","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":0,"phase":"AFTER_PRINCIPAL","date":"2026-10-05","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":1,"phase":"BEFORE_PAYMENT","date":"2026-10-06","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":1,"phase":"AFTER_PAYMENT","date":"2026-10-06","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":1,"phase":"AFTER_PRINCIPAL","date":"2026-10-06","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":2,"phase":"BEFORE_PAYMENT","date":"2026-10-07","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":2,"phase":"AFTER_PAYMENT","date":"2026-10-07","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":2,"phase":"AFTER_PRINCIPAL","date":"2026-10-07","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":3,"phase":"BEFORE_PAYMENT","date":"2026-10-08","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":3,"phase":"AFTER_PAYMENT","date":"2026-10-08","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":3,"phase":"AFTER_PRINCIPAL","date":"2026-10-08","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":4,"phase":"BEFORE_PAYMENT","date":"2026-10-09","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":4,"phase":"AFTER_PAYMENT","date":"2026-10-09","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":4,"phase":"AFTER_PRINCIPAL","date":"2026-10-09","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":5,"phase":"BEFORE_PAYMENT","date":"2026-10-10","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":5,"phase":"AFTER_PAYMENT","date":"2026-10-10","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":5,"phase":"AFTER_PRINCIPAL","date":"2026-10-10","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":6,"phase":"BEFORE_PAYMENT","date":"2026-10-11","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":6,"phase":"AFTER_PAYMENT","date":"2026-10-11","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":6,"phase":"AFTER_PRINCIPAL","date":"2026-10-11","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":7,"phase":"BEFORE_PAYMENT","date":"2026-10-...
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<section[39m
+  [33maria-label[39m=[32m"资产规划结果"[39m
+[36m>[39m
+  [36m<h3>[39m
+    [0m条件规划：OPTIMAL[0m
+  [36m</h3>[39m
+  [36m<p>[39m
+    [0m比较期 [0m
+    [0m90[0m
+    [0m天，最多 [0m
+    [0m3[0m
+    [0m个今日批次；保护仍为原365日曲线。90日是默认收益比较期，不是扩大授权。[0m
+  [36m</p>[39m
+  [36m<p>[39m
+    [0m实际未提供类别：[0m
+    [0mFIXED_7D、FIXED_90D[0m
+  [36m</p>[39m
+  [36m<p>[39m
+    [0m原声明版本 [0m
+    [36m<code>[39m
+      [0m71000000-0000-4000-8000-000000000002[0m
+    [36m</code>[39m
+    [0m · [0m
+    [0mgeneral_idle_funds[0m
+    [0m / 目标 [0m
+    [36m<code>[39m
+      [0m一般闲置资金[0m
+    [36m</code>[39m
+  [36m</p>[39m
+  [36m<dl[39m
+    [33mclass[39m=[32m"annual-amounts"[39m
+  [36m>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m今日条件申购[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [0m¥670.03[0m
+      [36m</dd>[39m
+    [36m</div>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m保留原scope现金[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [0m¥119.98[0m
+      [36m</dd>[39m
+    [36m</div>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m条件模拟净收益[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [0m¥0.75[0m
+      [36m</dd>[39m
+    [36m</div>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m当前今日批次数[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [0m1[0m
+      [36m</dd>[39m
+    [36m</div>[39m
+  [36m</dl>[39m
+  [36m<p>[39m
+    [0m用款日期 [0m
+    [0m2027-01-03[0m
+    [0m · 梯度 [0m
+    [0mSINGLE_MATURITY_AVAILABLE[0m
+    [0m · 搜索节点 [0m
+    [0m7[0m
+  [36m</p>[39m
+  [36m<article[39m
+    [33maria-label[39m=[32m"申购前原365日保护"[39m
+  [36m>[39m
+    [36m<h4>[39m
+      [0m申购前原365日保护[0m
+    [36m</h4>[39m
+    [36m<p>[39m
+      [0mREADY[0m
+      [0m · [0m
+      [0m1098[0m
+      [0m个原阶段点（365未来日期 + 初始日，各3阶段；不是1098天）[0m
+    [36m</p>[39m
+    [36m<dl[39m
+      [33mclass[39m=[32m"annual-amounts"[39m
+    [36m>[39m
+      [36m<div>[39m
+        [36m<dt>[39m
+          [0m安全闲置[0m
+        [36m</dt>[39m
+        [36m<dd>[39m
+          [0m¥790.01[0m
+        [36m</dd>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<dt>[39m
+          [0m最小余量[0m
+        [36m</dt>[39m
+        [36m<dd>[39m
+          [0m¥790.01[0m
+        [36m</dd>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<dt>[39m
+          [0m缺口[0m
+        [36m</dt>[39m
+        [36m<dd>[39m
+          [0m¥0.00[0m
+        [36m</dd>[39m
+      [36m</div>[39m
+    [36m</dl>[39m
+    [36m<details>[39m
+      [36m<summary>[39m
+        [0m原曲线JSON[0m
+      [36m</summary>[39m
+      [36m<pre[39m
+        [33mclass[39m=[32m"readonly-raw"[39m
+      [36m>[39m
+        [0m{
+  "algorithm_version": "HTTP_UNIT_FIXTURE_NOT_FINANCIAL_PROOF",
+  "status": "READY",
+  "financial_only": true,
+  "safe_idle_cents": 79001,
+  "minimum_margin_cents": 79001,
+  "deficit_cents": 0,
+  "protected_cents_by_reason": {
+    "synthetic_reserve": 20000
+  },
+  "max_allocatable_by_product": {},
+  "blocking_constraints": [],
+  "calculation_trace": [
+    {
+      "day": 0,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-05",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 0,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-05",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 0,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-05",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 1,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-06",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 1,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-06",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 1,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-06",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 2,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-07",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 2,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-07",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 2,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-07",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 3,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-08",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 3,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-08",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 3,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-08",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 4,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-09",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_po...
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:20:35
+ ❯ getMultipleElementsFoundError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:23:10
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:55:13
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/pages/FullProductsPage.test.tsx:25:225
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/pages/FullProductsPage.test.tsx > 原报价整数损失和有效期、ASK_ONCE与无损未知分开显示；不生成新报价或确认
+TestingLibraryElementError: Found multiple elements with the text: /BANK_CONFIRMED/
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<p>[39m
+  [0m报价来源 [0m
+  [0mBANK_CONFIRMED[0m
+  [0m · 原quote [0m
+  [36m<code>[39m
+    [0m81000000-0000-4000-8000-000000000005[0m
+  [36m</code>[39m
+  [0m · 有效至 [0m
+  [0m2026-10-05T12:15:00Z[0m
+  [0m · 最早条件回款 [0m
+  [0m2026-10-05T12:00:00Z[0m
+  [0m · 是否及时 [0m
+  [0m服务端条件计划按时[0m
+[36m</p>[39m
+
+Ignored nodes: comments, script, style
+[36m<pre[39m
+  [33mclass[39m=[32m"readonly-raw"[39m
+[36m>[39m
+  [0m{"simulation":true,"planning_only":true,"bank_authority":false,"execution_support":"NOT_IMPLEMENTED","protection_scope":"ORIGINAL_VERIFIED_365_DAY_CURVE","schema_version":"verified-full-recovery-planning-v1","user_id":"71000000-0000-4000-8000-000000000005","policy_id":"81000000-0000-4000-8000-000000000006","as_of":"2026-10-05T12:00:00Z","state":"COMPUTED","catalogue":{"simulation":true,"grants_authority":false,"state":"REGISTERED","complete_within_registered_capacity":true,"unregistered_product_ids":[],"issues":[],"versions":[{"id":"81000000-0000-4000-8000-000000000002","product_id":"81000000-0000-4000-8000-000000000001","product_code":"SYNTHETIC_FIXED_30D","version_number":1,"original_product":{"id":"81000000-0000-4000-8000-000000000001","name":"HTTP夹具三十天原产品","product_code":"SYNTHETIC_FIXED_30D","version_number":1,"asset_class":"FIXED_DEPOSIT","risk_level":0,"principal_fluctuation":false,"minimum_purchase_cents":10001,"lock_days":30,"redemption_delay_days":0,"annual_yield_bps":137,"early_withdrawal_loss_bps":25,"auto_purchase_allowed":false,"auto_redeem_allowed":false,"created_at":"2026-10-05T12:00:00Z","effective_from":"2026-10-05T12:00:00Z","effective_until":null,"maturity_rule":{"term_days":30},"early_withdrawal_rule":{}},"product_hash":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","terms_digest":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","observed_at":"2026-10-05T12:00:00Z","effective_from":"2026-10-05T12:00:00Z","effective_until":null,"immutable_original_verified":true,"current_source_matched":true,"bank_authority":false,"legacy_decisions_bound_to_this_catalogue":false}]},"catalogue_bindings":[{"product_id":"81000000-0000-4000-8000-000000000001","catalogue_version_id":"81000000-0000-4000-8000-000000000002","product_record_hash":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","terms_digest":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}],"source_evidence_ids":[],"source_issues":[],"input_hash":"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd","limitations":["SYNTHETIC_HTTP_NOT_FINANCIAL_PROOF","原报价不是银行当前授权"],"plan":{"algorithm_version":"full-whole-position-recovery-v1","user_id":"71000000-0000-4000-8000-000000000005","policy_id":"81000000-0000-4000-8000-000000000006","policy_version_id":"81000000-0000-4000-8000-000000000007","linked_asset_policy_id":"71000000-0000-4000-8000-000000000001","linked_asset_policy_version_id":"71000000-0000-4000-8000-000000000002","linked_asset_configuration_hash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","as_of":"2026-10-05T12:00:00Z","planning_only":true,"bank_authority":false,"execution_support":"NOT_IMPLEMENTED","status":"LIQUIDITY_RISK","scope":"general_idle_funds","goal_id":null,"actual_boundary":{"algorithm_version":"HTTP_UNIT_FIXTURE_NOT_FINANCIAL_PROOF","status":"READY","financial_only":true,"safe_idle_cents":79001,"minimum_margin_cents":79001,"deficit_cents":0,"protected_cents_by_reason":{"synthetic_reserve":20000},"max_allocatable_by_product":{},"blocking_constraints":[],"calculation_trace":[{"day":0,"phase":"BEFORE_PAYMENT","date":"2026-10-05","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":0,"phase":"AFTER_PAYMENT","date":"2026-10-05","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":0,"phase":"AFTER_PRINCIPAL","date":"2026-10-05","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":1,"phase":"BEFORE_PAYMENT","date":"2026-10-06","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":1,"phase":"AFTER_PAYMENT","date":"2026-10-06","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":1,"phase":"AFTER_PRINCIPAL","date":"2026-10-06","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":2,"phase":"BEFORE_PAYMENT","date":"2026-10-07","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":2,"phase":"AFTER_PAYMENT","date":"2026-10-07","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":2,"phase":"AFTER_PRINCIPAL","date":"2026-10-07","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":3,"phase":"BEFORE_PAYMENT","date":"2026-10-08","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":3,"phase":"AFTER_PAYMENT","date":"2026-10-08","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":3,"phase":"AFTER_PRINCIPAL","date":"2026-10-08","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":4,"phase":"BEFORE_PAYMENT","date":"2026-10-09","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":4,"phase":"AFTER_PAYMENT","date":"2026-10-09","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":4,"phase":"AFTER_PRINCIPAL","date":"2026-10-09","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":5,"phase":"BEFORE_PAYMENT","date":"2026-10-10","cash_cents":100001,"margin_cents":80001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":5,"phase":"AFTER_PAYMENT","date":"2026-10-10","cash_cents":99001,"margin_cents":79001,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":5,"phase":"AFTER_PRINCIPAL","date":"2026-10-10","cash_cents":99501,"margin_cents":79501,"protected_cents_by_reason":{"synthetic_reserve":20000},"obligation_occurrence_ids":[],"principal_position_ids":[]},{"day":6,"phase":"BEFO...
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<section[39m
+  [33maria-label[39m=[32m"原报价提前支取影响"[39m
+[36m>[39m
+  [36m<h3>[39m
+    [0m只读恢复规划：LIQUIDITY_RISK[0m
+  [36m</h3>[39m
+  [36m<p>[39m
+    [0m原Recovery版本 [0m
+    [36m<code>[39m
+      [0m81000000-0000-4000-8000-000000000007[0m
+    [36m</code>[39m
+    [0m · 当前引用资产版本 [0m
+    [36m<code>[39m
+      [0m71000000-0000-4000-8000-000000000002[0m
+    [36m</code>[39m
+    [0m · 截止时刻 [0m
+    [0m2026-10-07T09:00:00+08:00[0m
+  [36m</p>[39m
+  [36m<p>[39m
+    [0m原scope现金 [0m
+    [0m¥119.98[0m
+    [0m；需恢复 [0m
+    [0m¥100.01[0m
+    [0m；无损条件按时回款 [0m
+    [0m¥0.00[0m
+  [36m</p>[39m
+  [36m<article[39m
+    [33maria-label[39m=[32m"当前实际财务边界"[39m
+  [36m>[39m
+    [36m<h4>[39m
+      [0m当前实际财务边界[0m
+    [36m</h4>[39m
+    [36m<p>[39m
+      [0mREADY[0m
+      [0m · [0m
+      [0m1098[0m
+      [0m个原阶段点（365未来日期 + 初始日，各3阶段；不是1098天）[0m
+    [36m</p>[39m
+    [36m<dl[39m
+      [33mclass[39m=[32m"annual-amounts"[39m
+    [36m>[39m
+      [36m<div>[39m
+        [36m<dt>[39m
+          [0m安全闲置[0m
+        [36m</dt>[39m
+        [36m<dd>[39m
+          [0m¥790.01[0m
+        [36m</dd>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<dt>[39m
+          [0m最小余量[0m
+        [36m</dt>[39m
+        [36m<dd>[39m
+          [0m¥790.01[0m
+        [36m</dd>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<dt>[39m
+          [0m缺口[0m
+        [36m</dt>[39m
+        [36m<dd>[39m
+          [0m¥0.00[0m
+        [36m</dd>[39m
+      [36m</div>[39m
+    [36m</dl>[39m
+    [36m<details>[39m
+      [36m<summary>[39m
+        [0m原曲线JSON[0m
+      [36m</summary>[39m
+      [36m<pre[39m
+        [33mclass[39m=[32m"readonly-raw"[39m
+      [36m>[39m
+        [0m{
+  "algorithm_version": "HTTP_UNIT_FIXTURE_NOT_FINANCIAL_PROOF",
+  "status": "READY",
+  "financial_only": true,
+  "safe_idle_cents": 79001,
+  "minimum_margin_cents": 79001,
+  "deficit_cents": 0,
+  "protected_cents_by_reason": {
+    "synthetic_reserve": 20000
+  },
+  "max_allocatable_by_product": {},
+  "blocking_constraints": [],
+  "calculation_trace": [
+    {
+      "day": 0,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-05",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 0,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-05",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 0,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-05",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 1,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-06",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 1,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-06",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 1,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-06",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 2,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-07",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 2,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-07",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 2,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-07",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 3,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-08",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 3,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-08",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 3,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-08",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 4,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-09",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 4,
+      "phase": "AFTER_PAYMENT",
+      "date": "2026-10-09",
+      "cash_cents": 99001,
+      "margin_cents": 79001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 4,
+      "phase": "AFTER_PRINCIPAL",
+      "date": "2026-10-09",
+      "cash_cents": 99501,
+      "margin_cents": 79501,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 5,
+      "phase": "BEFORE_PAYMENT",
+      "date": "2026-10-10",
+      "cash_cents": 100001,
+      "margin_cents": 80001,
+      "protected_cents_by_reason": {
+        "synthetic_reserve": 20000
+      },
+      "obligation_occurrence_ids": [],
+      "principal_position_ids": []
+    },
+    {
+      "day": 5,
+      "phase": "AFTER_...
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:20:35
+ ❯ getMultipleElementsFoundError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:23:10
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:55:13
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/pages/FullProductsPage.test.tsx:30:271
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  3 failed | 44 passed (47)
+   Start at  01:22:48
+   Duration  4.19s (transform 481ms, setup 1.14s, collect 965ms, tests 1.67s, environment 2.26s, prepare 669ms)
+
+undefined
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: vitest run src/api/full-products.test.ts src/pages/FullProductsPage.test.tsx

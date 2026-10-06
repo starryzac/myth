@@ -1,0 +1,94 @@
+......................FF..........................................       [100%]
+================================== FAILURES ===================================
+______ test_stale_original_and_current_model_block_new_preview[version] _______
+
+violation = 'version'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E829C4C140>
+
+    @pytest.mark.parametrize("violation", ["epoch", "review", "version", "model_hash"])
+    def test_stale_original_and_current_model_block_new_preview(
+        violation: str, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        session, planning, model, calls = current(monkeypatch)
+        body = command(service.read_full_goal_conflicts(session, USER, NOW), planning)
+        if violation == "epoch":
+            body = body.model_copy(update={"expected_epoch_id": UUID(int=999)})
+        elif violation == "review":
+            body = body.model_copy(update={"reviewed_state_hash": "0" * 64})
+        elif violation == "version":
+            body = body.model_copy(
+                update={
+                    "adjustments": [
+                        body.adjustments[0].model_copy(update={"expected_version_id": UUID(int=999)})
+                    ]
+                }
+            )
+        else:
+            monkeypatch.setattr(
+                service,
+                "read_full_goal_model",
+                lambda *args: model.model_copy(update={"full_configuration_hash": "0" * 64}),
+            )
+        with pytest.raises(PolicyLifecycleError) as error:
+            service.preview_full_goal_repairs(session, USER, body, NOW)
+>       assert error.value.status_code == 409 and calls == []
+E       AssertionError: assert (422 == 409)
+E        +  where 422 = PolicyLifecycleError('修复预览原目标版本已变化').status_code
+E        +    where PolicyLifecycleError('修复预览原目标版本已变化') = <ExceptionInfo PolicyLifecycleError('修复预览原目标版本已变化') tblen=2>.value
+
+apps\api\app\tests\test_full_goal_conflicts_service.py:279: AssertionError
+_____ test_stale_original_and_current_model_block_new_preview[model_hash] _____
+
+violation = 'model_hash'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E82A22EAE0>
+
+    @pytest.mark.parametrize("violation", ["epoch", "review", "version", "model_hash"])
+    def test_stale_original_and_current_model_block_new_preview(
+        violation: str, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        session, planning, model, calls = current(monkeypatch)
+        body = command(service.read_full_goal_conflicts(session, USER, NOW), planning)
+        if violation == "epoch":
+            body = body.model_copy(update={"expected_epoch_id": UUID(int=999)})
+        elif violation == "review":
+            body = body.model_copy(update={"reviewed_state_hash": "0" * 64})
+        elif violation == "version":
+            body = body.model_copy(
+                update={
+                    "adjustments": [
+                        body.adjustments[0].model_copy(update={"expected_version_id": UUID(int=999)})
+                    ]
+                }
+            )
+        else:
+            monkeypatch.setattr(
+                service,
+                "read_full_goal_model",
+                lambda *args: model.model_copy(update={"full_configuration_hash": "0" * 64}),
+            )
+        with pytest.raises(PolicyLifecycleError) as error:
+            service.preview_full_goal_repairs(session, USER, body, NOW)
+>       assert error.value.status_code == 409 and calls == []
+E       AssertionError: assert (422 == 409)
+E        +  where 422 = PolicyLifecycleError('当前完整目标模型不再验真').status_code
+E        +    where PolicyLifecycleError('当前完整目标模型不再验真') = <ExceptionInfo PolicyLifecycleError('当前完整目标模型不再验真') tblen=2>.value
+
+apps\api\app\tests\test_full_goal_conflicts_service.py:279: AssertionError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_goal_conflicts_service.py::test_stale_original_and_current_model_block_new_preview[version]
+FAILED apps/api/app/tests/test_full_goal_conflicts_service.py::test_stale_original_and_current_model_block_new_preview[model_hash]
+2 failed, 64 passed, 3 warnings in 28.75s

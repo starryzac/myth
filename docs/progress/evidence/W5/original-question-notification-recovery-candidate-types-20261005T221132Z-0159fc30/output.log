@@ -1,0 +1,4 @@
+apps\api\app\tests\test_question_notification_recovery_integration.py:106: error: Unexpected keyword argument "expected_run_id" for "QuestionCloseRequest"  [call-arg]
+apps\api\app\tests\test_question_notification_recovery_integration.py:106: note: "QuestionCloseRequest" defined in "app.services.question_workflow"
+apps\api\app\tests\test_question_notification_recovery_integration.py:106: error: Unexpected keyword argument "reason" for "QuestionCloseRequest"  [call-arg]
+Found 2 errors in 1 file (checked 5 source files)

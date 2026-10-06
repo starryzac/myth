@@ -1,0 +1,45 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/api/full-maturity-execution.test.ts (20 tests | 1 failed) 136ms
+   ✓ strict five identities reject injected money/time/actor/amount and blank key 6ms
+   ✓ whole original MATURE preview is noauthority; remaining negative checkpoints do not become recovery success 10ms
+   ✓ original PREPARED current/contract/consent/receipt fields checked independently 7ms
+   ✓ original CONFIRMED current/contract/consent/receipt fields checked independently 9ms
+   ✓ original UNKNOWN current/contract/consent/receipt fields checked independently 13ms
+   ✓ original SETTLED current/contract/consent/receipt fields checked independently 20ms
+   ✓ forged owner is refused even with rehashed original envelope 3ms
+   ✓ forged epoch is refused even with rehashed original envelope 2ms
+   ✓ forged action is refused even with rehashed original envelope 2ms
+   ✓ forged command is refused even with rehashed original envelope 4ms
+   ✓ forged bank_key is refused even with rehashed original envelope 3ms
+   ✓ forged request is refused even with rehashed original envelope 9ms
+   ✓ forged AUTO is refused even with rehashed original envelope 3ms
+   ✓ forged receipt is refused even with rehashed original envelope 3ms
+   ✓ forged role is refused even with rehashed original envelope 2ms
+   ✓ forged expiry is refused even with rehashed original envelope 3ms
+   ✓ forged extra is refused even with rehashed original envelope 2ms
+   ✓ same epoch/action/full command survives terminal sealed read, not authority 3ms
+   ✓ lookup NOT_FOUND is not final, POST/stored parse never gets fresh GET marker 12ms
+   × saved exact body/hash/path rejects wrong consent and execute identity 16ms
+     → Cannot assign to read only property 'accepted' of object '#<Object>'
+ ✓ src/features/full-maturity-execution-operation.test.ts (6 tests) 1114ms
+   ✓ storage failure prevents POST/new key; reload verifies full original request, no authority  319ms
+ ✓ src/components/FullMaturityExecutionPanel.test.tsx (3 tests) 1266ms
+   ✓ actual positions only identify candidate; explicit preview/prepare/GET/ASK/execute never auto advance  891ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/api/full-maturity-execution.test.ts > saved exact body/hash/path rejects wrong consent and execute identity
+TypeError: Cannot assign to read only property 'accepted' of object '#<Object>'
+ ❯ src/api/full-maturity-execution.test.ts:27:304
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 28 passed (29)
+   Start at  12:30:51
+   Duration  4.54s (transform 926ms, setup 1.48s, collect 2.56s, tests 2.52s, environment 3.35s, prepare 1.06s)
+

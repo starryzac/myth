@@ -1,0 +1,40 @@
+{
+  "run_id": "20261005T185028Z-d4da87f7",
+  "task": "W3",
+  "label": "full-goal-conflict-and-selected-repair-pure",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/domain/full_goal_conflicts.py",
+    "apps/api/app/services/full_goal_conflicts.py",
+    "apps/api/app/api/v1/full_goal_conflicts.py",
+    "apps/api/app/tests/test_full_goal_conflicts.py",
+    "apps/api/app/tests/test_full_goal_conflicts_service.py",
+    "apps/api/app/tests/test_full_goal_conflicts_api.py",
+    "apps/api/app/tests/test_full_goal_conflicts_real_api.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_full_goal_conflicts.py",
+    "apps/api/app/tests/test_full_goal_conflicts_service.py",
+    "apps/api/app/tests/test_full_goal_conflicts_api.py",
+    "apps/api/app/tests/test_multi_goal_allocation.py",
+    "-q"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T18:50:29.878364+00:00",
+  "finished_at": "2026-10-05T18:51:00.150763+00:00",
+  "wall_seconds": 30.272399,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "b42a01d73391a92aedcc98c4ae6d69fe36bb857fd83bdea19b57e12222947d7e",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

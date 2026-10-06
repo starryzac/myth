@@ -1,0 +1,10 @@
+{
+  "round": "20261006T070638Z-50f238f24965450784decab6432547ed",
+  "database": "bf_test_50f238f24965450784decab6432547ed",
+  "status": "PREPARED",
+  "ports": {
+    "api": 19004,
+    "web": 19177
+  },
+  "start": "python scripts/zhiyu_demo.py start --round 20261006T070638Z-50f238f24965450784decab6432547ed"
+}

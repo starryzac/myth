@@ -1,0 +1,41 @@
+{
+  "run_id": "20261006T001324Z-c117870d",
+  "task": "W6",
+  "label": "recovery-current-host-final-static",
+  "status": "PASSED",
+  "scope": [
+    "apps/web/src/App.tsx",
+    "apps/web/src/App.recovery-host.test.tsx",
+    "apps/web/src/components/FullPoliciesPanel.tsx",
+    "apps/web/src/components/FullRecoveryExecutionHost"
+  ],
+  "command": [
+    "pnpm.cmd",
+    "--filter",
+    "@bounded-funds/web",
+    "exec",
+    "eslint",
+    "src/App.tsx",
+    "src/App.recovery-host.test.tsx",
+    "src/components/FullPoliciesPanel.tsx",
+    "src/components/FullRecoveryExecutionHost.tsx",
+    "src/components/FullRecoveryExecutionHost.test.tsx",
+    "--max-warnings",
+    "0"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T00:13:26.298215+00:00",
+  "finished_at": "2026-10-06T00:13:32.889813+00:00",
+  "wall_seconds": 6.591598,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

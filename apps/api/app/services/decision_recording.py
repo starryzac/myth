@@ -1,5 +1,6 @@
 """Capture actual deterministic inputs inside their existing transaction boundaries."""
 
+import json
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
@@ -178,6 +179,7 @@ def record_execution_trace(
     existing_run: DecisionRun | None = None,
     intent: dict[str, Any] | None = None,
     confirmation: ConfirmationGrant | None = None,
+    action_request: dict[str, Any] | None = None,
 ) -> DecisionRun:
     capture = current_capture(session)
     if capture is None or "execution_context" not in capture.inputs:
@@ -196,6 +198,29 @@ def record_execution_trace(
         if existing_run is not None
         else uuid5(effect.operation_id, f"decision-trace:{phase}:{now.isoformat()}:{event_digest}")
     )
+    frozen_inputs = {
+        "effect": effect.model_dump(mode="json"),
+        "execution_context": capture.inputs["execution_context"],
+        "planning": capture.inputs,
+        "intent": intent,
+        "confirmation": confirmation.model_dump(mode="json") if confirmation else None,
+    }
+    new_execution_protocols = {
+        "full_dynamic_goal_execution",
+        "full_recovery_execution",
+        "full_experiment_asset_execution",
+        "full_joint_goal_execution",
+    } & capture.algorithms.keys()
+    if new_execution_protocols:
+        if (
+            len(new_execution_protocols) != 1
+            or action_request is None
+            or not new_execution_protocols.issubset(action_request)
+        ):
+            raise ValueError("New execution requires the complete exact original action request")
+        frozen_inputs["action_request"] = action_request
+    elif action_request is not None:
+        raise ValueError("Original execution recording does not accept new-protocol inputs")
     trace = build_trace(
         run_id=run_id,
         user_id=effect.user_id,
@@ -208,13 +233,7 @@ def record_execution_trace(
             "execution": "economic-effect-revalidation-v1",
             "boundary": validation.baseline_boundary.algorithm_version,
         },
-        inputs={
-            "effect": effect.model_dump(mode="json"),
-            "execution_context": capture.inputs["execution_context"],
-            "planning": capture.inputs,
-            "intent": intent,
-            "confirmation": confirmation.model_dump(mode="json") if confirmation else None,
-        },
+        inputs=frozen_inputs,
         sources=list(capture.sources.values()),
         policies=list(capture.policies.values()),
         constraints=validation_constraints(validation),
@@ -225,6 +244,16 @@ def record_execution_trace(
             "decision_status": "COMPUTED",
         },
     )
+    if "full_experiment_asset_execution" in new_execution_protocols:
+        from app.domain.full_experiment_asset_execution_trace import (
+            verify_frozen_full_experiment_asset_trace,
+        )
+
+        verify_frozen_full_experiment_asset_trace(trace)
+    if "full_joint_goal_execution" in new_execution_protocols:
+        from app.domain.full_joint_goal_execution_trace import verify_frozen_full_joint_goal_trace
+
+        verify_frozen_full_joint_goal_trace(trace)
     return record_trace(session, trace, existing_run=existing_run)
 
 
@@ -322,6 +351,42 @@ def record_recovery_bank_acceptance(
     *,
     contract: bool,
 ) -> None:
+    # This is only the evidence handoff from the fresh guard in this exact bank
+    # transaction. It cannot authorize a request or skip that guard.
+    maturity = "full_maturity_execution" in action.request or action.idempotency_key.startswith(
+        "maturity:user:"
+    )
+    maturity_inputs = None
+    if maturity:
+        from app.domain.full_maturity_execution import (
+            VALIDATION_INFO_KEY,
+            FullMaturityInput,
+        )
+        from app.services.policy_lifecycle import PolicyLifecycleError
+
+        original_validation = session.info.pop(VALIDATION_INFO_KEY, None)
+        if (
+            not contract
+            or action.autonomy_level != "ASK_ONCE"
+            or not isinstance(original_validation, dict)
+            or original_validation.get("action_id") != str(action.id)
+        ):
+            raise PolicyLifecycleError(
+                "BANK_RECONCILIATION_REQUIRED",
+                "Missing this transaction's full USER maturity proof",
+                409,
+            )
+        try:
+            maturity_inputs = FullMaturityInput.model_validate_json(
+                json.dumps(original_validation["inputs"])
+            )
+            if maturity_inputs.user_id != action.user_id or maturity_inputs.as_of != now:
+                raise ValueError("Fresh recorded maturity owner/time differs")
+        except (ValueError, TypeError, KeyError) as cause:
+            raise PolicyLifecycleError(
+                "BANK_RECONCILIATION_REQUIRED", "Invalid full USER maturity proof handoff", 409
+            ) from cause
+        validation_inputs = {**validation_inputs, "full_maturity_validation": original_validation}
     capture = start_capture(session)
     identifiers = [action.policy_version_id] if action.policy_version_id else []
     command = action.request["bank_request"]
@@ -333,31 +398,65 @@ def record_recovery_bank_acceptance(
 
     context = load_boundary_context(session, action.user_id, now)
     capture_boundary(session, "bank_projection_context", context)
-    trace = build_trace(
-        run_id=uuid5(action.id, "legacy-bank-accept-decision"),
-        user_id=action.user_id,
-        action_id=action.id,
-        parent_run_id=action.decision_run_id,
-        phase="BANK_ACCEPT",
-        as_of=now,
-        algorithm_versions={"recovery": "whole-position-recovery-v1"},
-        inputs={
-            "bank_request": command,
-            "action_request": action.request,
-            "validation_inputs": validation_inputs,
-            **capture.inputs,
-        },
-        sources=list(capture.sources.values()),
-        policies=list(capture.policies.values()),
-        constraints=[],
-        candidates=[],
-        outcome={
-            "autonomy_level": action.autonomy_level,
-            "decision_status": "COMPUTED",
-            "settlement_kind": "ORIGINAL_CONTRACT" if contract else "AUTHORIZED_REDEMPTION",
-            "new_authority": False,
-            "bank_validation_status": "READY",
-            "financial_evaluation": "NOT_EVALUATED",
-        },
-    )
+    if maturity_inputs is not None:
+        originals = [
+            *maturity_inputs.source_originals,
+            validation_inputs["full_maturity_validation"]["consent_source"],
+        ]
+        try:
+            for raw in originals:
+                source = TraceEvidence.model_validate_json(json.dumps(raw))
+                if source.id in capture.sources and capture.sources[source.id] != source:
+                    raise ValueError("Fresh maturity and original bank source copies differ")
+                capture.sources[source.id] = source
+        except (ValueError, TypeError, KeyError) as cause:
+            raise PolicyLifecycleError(
+                "BANK_RECONCILIATION_REQUIRED", "Invalid full USER maturity source copies", 409
+            ) from cause
+    algorithms = {"recovery": "whole-position-recovery-v1"}
+    if maturity:
+        algorithms["full_maturity_execution"] = "full-maturity-user-execution-v1"
+    try:
+        trace = build_trace(
+            run_id=uuid5(action.id, "legacy-bank-accept-decision"),
+            user_id=action.user_id,
+            action_id=action.id,
+            parent_run_id=action.decision_run_id,
+            phase="BANK_ACCEPT",
+            as_of=now,
+            algorithm_versions=algorithms,
+            inputs={
+                "bank_request": command,
+                "action_request": action.request,
+                "validation_inputs": validation_inputs,
+                **capture.inputs,
+            },
+            sources=list(capture.sources.values()),
+            policies=list(capture.policies.values()),
+            constraints=[],
+            candidates=[],
+            outcome={
+                "autonomy_level": action.autonomy_level,
+                "decision_status": "COMPUTED",
+                "settlement_kind": "ORIGINAL_CONTRACT" if contract else "AUTHORIZED_REDEMPTION",
+                "new_authority": False,
+                "bank_validation_status": "READY",
+                "financial_evaluation": "NOT_EVALUATED",
+            },
+        )
+    except (ValueError, TypeError, KeyError) as cause:
+        if maturity:
+            raise PolicyLifecycleError(
+                "BANK_RECONCILIATION_REQUIRED", "Full USER maturity trace is invalid", 409
+            ) from cause
+        raise
+    if maturity:
+        from app.domain.full_maturity_execution import verify_frozen_maturity_trace
+
+        try:
+            verify_frozen_maturity_trace(trace)
+        except (ValueError, TypeError, KeyError) as cause:
+            raise PolicyLifecycleError(
+                "BANK_RECONCILIATION_REQUIRED", "Full USER maturity bank proof cannot replay", 409
+            ) from cause
     record_trace(session, trace)

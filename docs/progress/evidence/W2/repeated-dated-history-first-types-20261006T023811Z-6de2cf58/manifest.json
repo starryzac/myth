@@ -1,0 +1,32 @@
+{
+  "run_id": "20261006T023811Z-6de2cf58",
+  "task": "W2",
+  "label": "repeated-dated-history-first-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/domain/full_policy_change_history.py",
+    "apps/api/app/tests/test_full_policy_change_history.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "mypy",
+    "apps/api/app/domain/full_policy_change_history.py",
+    "apps/api/app/tests/test_full_policy_change_history.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T02:38:13.249070+00:00",
+  "finished_at": "2026-10-06T02:38:14.877094+00:00",
+  "wall_seconds": 1.628024,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "08e7e090e8d74cec30e732a8a119c8e7ef60b0beafeff25d70c9046303f95f8a",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

@@ -1,0 +1,87 @@
+[
+    {
+        "Id": "sha256:8e39d848cacf1e1e2b22798a25044a6508e4da0f96127fdaab1a6e640c8320bb",
+        "RepoTags": [
+            "bounded-funds-api:demo-7970d1487f8f4fa29ad09e0ad4a37149"
+        ],
+        "RepoDigests": [
+            "bounded-funds-api@sha256:8e39d848cacf1e1e2b22798a25044a6508e4da0f96127fdaab1a6e640c8320bb"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-10-05T04:23:00.246290634Z",
+        "Config": {
+            "User": "10001:10001",
+            "ExposedPorts": {
+                "8000/tcp": {}
+            },
+            "Env": [
+                "PATH=/opt/bf-venv/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.12.15",
+                "PYTHON_SHA256=c2c4321961fab0fb999d66e0cecf521c2ab3994c7992873ea99e306c1094fd5a",
+                "PYTHONPATH=/workspace/apps/api",
+                "PYTHONUNBUFFERED=1",
+                "PYTHONUTF8=1",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "TZ=UTC"
+            ],
+            "Cmd": [
+                "python",
+                "-m",
+                "uvicorn",
+                "app.main:app",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "8000"
+            ],
+            "WorkingDir": "/workspace",
+            "Labels": {
+                "com.docker.compose.project": "bf-demo-7970d1487f8f4fa29ad09e0ad4a37149",
+                "com.docker.compose.service": "api",
+                "com.docker.compose.version": "5.3.0",
+                "io.bounded-funds.purpose": "ISOLATED_SIMULATED_DEMO",
+                "io.bounded-funds.source-digest": "409984d976ec0a1bf0e8698a72dd3337775f40d3d88173cb44eea75f705bb0f5",
+                "io.bounded-funds.uv-lock-sha256": "b3b1dae5cf20edd6ef96609427aeaf8f7d0108ba3c075158a00d102383e36e4c",
+                "org.opencontainers.image.revision": "4ccf84e973978482a1098d18c69fbfc9f011fac6"
+            },
+            "ArgsEscaped": true
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 60384797,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:34467cc93912af891dfee8a3902adf9b4f355a9bca4eaa46f658d1181a21de0d",
+                "sha256:d476c6746ca1e1594f36c28af7f3ebee76d63c6a6adaabcc2824c388930bf846",
+                "sha256:bb21db850823bcb6669b652ce8bff42787673cc8136550cc2d783af0415dc486",
+                "sha256:f4572018cf8016fadccf2df095d62525be857901cf1d837892078204a8f6cf43",
+                "sha256:b3c8f3dcabcf561552844b6d322171f1ec9283736cc639df6ae3220c065462a0",
+                "sha256:74a90032a3c02a741672223891824fa257a75e86f2f7150361eee188e04adcb6",
+                "sha256:49cb80bac008205f6c7dfad43f9aa9e17cc0db6ab4d49b49def8473822fded10",
+                "sha256:8ec4a32c51d4faa2a0e2ee43246e5b44df85cbabb495280ad576e7496bcc79f9",
+                "sha256:846186d44e7cd59e855c786df4d2acd142fbba60d1cd215d78c5d94bf8f8f934",
+                "sha256:db662a9e8690079dce34eb8e3e2623df47a04328183e41763620a27a3a85a698",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-05T04:23:00.352666455Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:8e39d848cacf1e1e2b22798a25044a6508e4da0f96127fdaab1a6e640c8320bb",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "mvricoe472hlrkabc9vpld1c5",
+                    "CreatedAt": "2026-10-05T04:23:00.371261093Z"
+                }
+            ]
+        }
+    }
+]

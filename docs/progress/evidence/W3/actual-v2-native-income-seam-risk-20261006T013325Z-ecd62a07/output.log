@@ -1,0 +1,28 @@
+F
+================================== FAILURES ===================================
+_ test_actual_v2_accepts_same_instant_native_original_and_keeps_full_v1_refusal _
+
+    def test_actual_v2_accepts_same_instant_native_original_and_keeps_full_v1_refusal() -> None:
+        value = with_native_spelling()
+        original = value.model_dump_json()
+        legacy, shadow = dynamic_candidate(value.base, value.dynamic_goals[0])
+        assert legacy.state == "UNKNOWN" and shadow is None
+        assert legacy.reasons == ["DYNAMIC_ORIGINAL_MODEL_OR_INCOME_COPY_DIFFERS"]
+        actual = derive_actual_action_set(value)
+        assert actual.global_action_set_complete, actual.reasons
+        assert actual.candidates[0].state == "INCLUDED"
+>       assert actual.candidates[0].amount_cents == 20000
+E       AssertionError: assert 150000 == 20000
+E        +  where 150000 = CandidateView(candidate_key='goal:00000000-0000-0000-0000-000000000002', state='INCLUDED', action_type='ALLOCATE_GOAL'...gnature='b91097f958f17a005766377d5bcb4a4a37089a6540fa811f452b96edf69adde6', reasons=['CURRENT_AUTHORIZED_SAFE_EFFECT']).amount_cents
+
+apps\api\app\tests\test_actual_action_set_native_income_seam.py:78: AssertionError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_actual_action_set_native_income_seam.py::test_actual_v2_accepts_same_instant_native_original_and_keeps_full_v1_refusal
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 warning in 5.96s

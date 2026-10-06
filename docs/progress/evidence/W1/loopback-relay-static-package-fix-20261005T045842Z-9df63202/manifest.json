@@ -1,0 +1,31 @@
+{
+  "run_id": "20261005T045842Z-9df63202",
+  "task": "W1",
+  "label": "loopback-relay-static-package-fix",
+  "status": "FAILED",
+  "scope": [
+    "scripts/demo_loopback_relay.py",
+    "scripts/tests/test_demo_loopback_relay.py"
+  ],
+  "command": [
+    ".venv/Scripts/ruff.exe",
+    "check",
+    "scripts/demo_loopback_relay.py",
+    "scripts/tests/test_demo_loopback_relay.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T04:58:42.892871+00:00",
+  "finished_at": "2026-10-05T04:58:42.956521+00:00",
+  "wall_seconds": 0.06365,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "b5935e93b4e82b365c73bfb4a046e951a589f4533c8d21be252c7a30ee73574b",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

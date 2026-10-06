@@ -1,0 +1,2 @@
+apps\api\app\domain\full_policy_compiler.py:424: error: Incompatible types in assignment (expression has type "None", variable has type "Literal['RecurringObligationPolicy', 'LivingReservePolicy', 'EmergencyBufferPolicy', 'DatedExpensePolicy', 'LongTermGoalPolicy', 'PeriodicTransferPolicy', 'AssetAuthorizationPolicy', 'RecoveryPolicy', 'GoalAllocationPolicy', 'CrossGoalReallocationPolicy', 'SeasonalReservePolicy', 'InterventionPolicy']")  [assignment]
+Found 1 error in 1 file (checked 5 source files)

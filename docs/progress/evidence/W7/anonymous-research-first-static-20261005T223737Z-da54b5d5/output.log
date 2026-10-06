@@ -1,0 +1,23 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> scripts\tests\test_research_records.py:3:1
+   |
+ 1 |   """TOOL_ONLY anonymous fixtures. No humans, bank calls or research observations."""
+ 2 |
+ 3 | / import json
+ 4 | | from datetime import UTC, datetime, timedelta
+ 5 | | from pathlib import Path
+ 6 | | from typing import Any
+ 7 | | from uuid import uuid4
+ 8 | |
+ 9 | | import pytest
+10 | | from scripts import research_records as tool
+   | |____________________________________________^
+help: Organize imports
+   |
+9  | import pytest
+10 +
+11 | from scripts import research_records as tool
+   |
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.

@@ -1,0 +1,99 @@
+F
+================================== FAILURES ===================================
+_ test_original_rent_template_prepares_known_payee_then_change_invalidates_same_action _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_ec0b799518f1444bbef56e783bd0ab13)
+
+    def test_original_rent_template_prepares_known_payee_then_change_invalidates_same_action(
+        demo_engine: Engine,
+    ) -> None:
+        seed_demo(demo_engine)
+        epoch_id = _epoch_id(demo_engine)
+        clock = [NOW]
+        with _client(demo_engine, clock) as client:
+            _confirm_template(client, clock, epoch_id, "RENT")
+            state = client.get("/api/v1/demo/state").json()
+            rent = next(row for row in state["templates"] if row["kind"] == "RENT")
+            assert rent["status"] == "CONFIRMED"
+            policy_id = UUID(rent["confirmed_policy_id"])
+            with Session(demo_engine) as session:
+                original_events = {
+                    row.id: row.canonical_text for row in session.scalars(select(AuditEvent))
+                }
+>           actual = ScenarioRunner(demo_engine, DEMO_USER_ID).rpc(
+                ScenarioRPC(
+                    scenario_id="rent-template-real-bank-identity",
+                    purpose="DEVELOPMENT",
+                    operation="prepare_rent_old_action",
+                    expected_epoch_id=epoch_id,
+                    policy_id=policy_id,
+                ),
+                clock[0],
+            )
+
+apps\api\app\tests\test_demo_rent_identity.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\scenario_runner.py:701: in rpc
+    return self._rpc(body, now)
+           ^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\scenario_runner.py:808: in _rpc
+    prepared = prepare_action(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_ec0b799518f1444bbef56e783bd0ab13)
+user_id = UUID('271a9827-f82a-5be6-9e0a-50f721029fb0')
+request = PrepareActionRequest(idempotency_key='scenario-rent-old:cb373342-4cd3-4397-a359-d865ff49a78d', intent=PaymentIntent(kind='pay_recurring', policy_id=UUID('a093611e-e363-4b22-bfda-0de7034dff4d'), period='2026-10', bill_id=None))
+now = datetime.datetime(2026, 10, 4, 1, 0, 2, tzinfo=datetime.timezone.utc)
+
+    def prepare_action(
+        engine: Engine, user_id: UUID, request: PrepareActionRequest, now: datetime
+    ) -> ActionResponse:
+        request = PrepareActionRequest.model_validate_json(request.model_dump_json())
+        now = _clock(now)
+        key = "action:" + configuration_hash({"key": request.idempotency_key})
+        intent = request.intent.model_dump(mode="json")
+        with Session(engine) as session, session.begin():
+            _lock_user(session, user_id)
+            existing = session.scalar(
+                select(ActionPlan).where(
+                    ActionPlan.user_id == user_id, ActionPlan.idempotency_key == key
+                )
+            )
+            if existing is not None:
+                if existing.request.get("intent") != intent:
+                    raise PolicyLifecycleError(
+                        "IDEMPOTENCY_CONFLICT", "同一幂等键不能改变原始意图", 409
+                    )
+                return get_action(session, user_id, existing.id, now)
+            action_id = uuid4()
+            from app.services.decision_recording import record_execution_trace, start_capture
+    
+            start_capture(session)
+            effect = _build_effect(session, user_id, action_id, request, now)
+            context = load_execution_context(session, user_id, effect, now)
+            validation = revalidate_execution(effect, context)
+            if validation.status not in {"READY", "CONFIRMATION_REQUIRED"}:
+>               raise PolicyLifecycleError(
+                    "EXECUTION_NOT_READY", "动作不能安全准备：" + ",".join(validation.reasons), 409
+                )
+E               app.services.policy_lifecycle.PolicyLifecycleError: 动作不能安全准备：OCCURRENCE_NOT_DUE
+
+apps\api\app\services\execution.py:68: PolicyLifecycleError
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "58ad7409-0807-4617-8bff-6e75a00f0f5b", "method": "POST", "status": 200, "duration_ms": 297.0}
+{"event": "http_request", "request_id": "0eca2c6f-56b3-4103-a6c0-0885d02adbda", "method": "POST", "status": 200, "duration_ms": 140.0}
+{"event": "http_request", "request_id": "b347a4e6-23e7-49b3-a477-d991f94090c1", "method": "GET", "status": 200, "duration_ms": 47.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "58ad7409-0807-4617-8bff-6e75a00f0f5b", "method": "POST", "status": 200, "duration_ms": 297.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "0eca2c6f-56b3-4103-a6c0-0885d02adbda", "method": "POST", "status": 200, "duration_ms": 140.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "b347a4e6-23e7-49b3-a477-d991f94090c1", "method": "GET", "status": 200, "duration_ms": 47.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_demo_rent_identity.py::test_original_rent_template_prepares_known_payee_then_change_invalidates_same_action
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 warning in 7.53s

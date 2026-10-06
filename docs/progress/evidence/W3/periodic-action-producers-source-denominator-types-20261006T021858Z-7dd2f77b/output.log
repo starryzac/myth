@@ -1,0 +1,3 @@
+apps\api\app\domain\full_action_set_payment_producers.py:478: error: Incompatible types in assignment (expression has type "list[datetime]", variable has type "set[UUID | None]")  [assignment]
+apps\api\app\domain\full_action_set_payment_producers.py:489: error: Value of type variable "SupportsRichComparisonT" of "max" cannot be "UUID | None"  [type-var]
+Found 2 errors in 1 file (checked 5 source files)

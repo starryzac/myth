@@ -1,0 +1,34 @@
+{
+  "run_id": "20261005T121131Z-71f24f62",
+  "task": "W6",
+  "label": "full703-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/pages/PolicyCenterPage",
+    "apps/web/src/components/PolicyMap",
+    "apps/web/src/components/policy-map-model",
+    "apps/web/src/api/policies",
+    "apps/web/src/styles.css"
+  ],
+  "command": [
+    "pnpm.cmd",
+    "--filter",
+    "@bounded-funds/web",
+    "typecheck"
+  ],
+  "exit_code": 2,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T12:11:31.898876+00:00",
+  "finished_at": "2026-10-05T12:11:44.731758+00:00",
+  "wall_seconds": 12.832882,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "af862adb0f45d5f22cbd1263344b09c082815bf5d48e1b4051b40cca820db76f",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

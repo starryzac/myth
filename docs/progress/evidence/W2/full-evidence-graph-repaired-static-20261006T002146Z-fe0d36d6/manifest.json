@@ -1,0 +1,41 @@
+{
+  "run_id": "20261006T002146Z-fe0d36d6",
+  "task": "W2",
+  "label": "full-evidence-graph-repaired-static",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/domain/full_evidence_graph.py",
+    "apps/api/app/services/full_evidence_graph.py",
+    "apps/api/app/api/v1/full_evidence_graph.py",
+    "apps/api/app/tests/test_full_evidence_graph.py",
+    "apps/api/app/tests/test_full_evidence_graph_api.py",
+    "apps/api/app/tests/test_full_evidence_graph_integration.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "ruff",
+    "check",
+    "apps/api/app/domain/full_evidence_graph.py",
+    "apps/api/app/services/full_evidence_graph.py",
+    "apps/api/app/api/v1/full_evidence_graph.py",
+    "apps/api/app/tests/test_full_evidence_graph.py",
+    "apps/api/app/tests/test_full_evidence_graph_api.py",
+    "apps/api/app/tests/test_full_evidence_graph_integration.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T00:21:48.424142+00:00",
+  "finished_at": "2026-10-06T00:21:48.706672+00:00",
+  "wall_seconds": 0.28253,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "121f6be07f0c33a2dd4f0bd6d861c4fe6e981c7d956504f57f1980cf189345fd",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

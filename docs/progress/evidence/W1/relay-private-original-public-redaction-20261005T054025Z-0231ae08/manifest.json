@@ -1,0 +1,34 @@
+{
+  "run_id": "20261005T054025Z-0231ae08",
+  "task": "W1",
+  "label": "relay-private-original-public-redaction",
+  "status": "PASSED",
+  "scope": [
+    "scripts/demo_loopback_relay.py",
+    "scripts/tests/test_demo_loopback_relay.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "scripts/tests/test_demo_loopback_relay.py",
+    "--basetemp",
+    ".runtime/pytest-relay-private-capture-20261005T0540Z",
+    "-q"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T05:40:26.383357+00:00",
+  "finished_at": "2026-10-05T05:40:28.129506+00:00",
+  "wall_seconds": 1.746149,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "e9fbef922e349f5100742274e1ee154ddd019eb35d71d3590c05e967d285f649",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

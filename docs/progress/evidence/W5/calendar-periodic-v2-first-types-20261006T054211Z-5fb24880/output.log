@@ -1,0 +1,5 @@
+apps\api\app\domain\calendar_periodic_suggestions.py:108: error: Incompatible types in assignment (expression has type "date | None", variable has type "date")  [assignment]
+apps\api\app\domain\calendar_periodic_suggestions.py:117: error: Incompatible types in assignment (expression has type "date | None", variable has type "date")  [assignment]
+apps\api\app\services\calendar_periodic_suggestions.py:41: error: Incompatible types in assignment (expression has type "str", variable has type "Literal['full-calendar-periodic-discovery-v2']")  [assignment]
+apps\api\app\tests\test_calendar_periodic_suggestions.py:100: error: Non-overlapping identity check (left operand type: "dict[str, Any] | None", right operand type: "str | None")  [comparison-overlap]
+Found 4 errors in 3 files (checked 4 source files)

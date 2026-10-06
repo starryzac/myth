@@ -1,0 +1,11 @@
+......................F.................                                 [100%]
+================================== FAILURES ===================================
+____________________ test_unknown_state_history_is_missing ____________________
+scripts\tests\test_mvp_financial_metrics.py:628: in test_unknown_state_history_is_missing
+    with pytest.raises(Missing, match="state at consuming"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'state at consuming'
+E     Actual message: 'Original policy state history at consuming time is missing'
+=========================== short test summary info ===========================
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_unknown_state_history_is_missing
+1 failed, 39 passed in 15.42s

@@ -1,0 +1,35 @@
+{
+  "run_id": "20261005T025720Z-f84fa482",
+  "task": "W1",
+  "label": "coverage-scope-floor-static",
+  "status": "FAILED",
+  "scope": [
+    "scripts/verify_mvp_coverage.py",
+    "scripts/mvp_hypothesis_counter.py",
+    "scripts/tests/test_mvp_coverage_scope.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "ruff",
+    "check",
+    "scripts/verify_mvp_coverage.py",
+    "scripts/mvp_hypothesis_counter.py",
+    "scripts/tests/test_mvp_coverage_scope.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T02:57:20.769900+00:00",
+  "finished_at": "2026-10-05T02:57:21.005840+00:00",
+  "wall_seconds": 0.23594,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "1b0b134a29209df29f96e629ee530a811aa66cdfc5d31f87a3601a5fa02690cc",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

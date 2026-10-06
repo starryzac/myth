@@ -1,0 +1,44 @@
+{
+  "run_id": "20261006T045054Z-a4737080",
+  "task": "W3",
+  "label": "joint-execution-v2-fixed-clone-positive",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/domain/full_joint_goal_execution.py",
+    "apps/api/app/services/full_joint_goal_execution.py",
+    "apps/api/app/services/full_joint_goal_execution_store.py",
+    "apps/api/app/services/full_joint_goal_execution_guards.py",
+    "apps/api/app/services/full_joint_goal_execution_dispatch.py",
+    "apps/api/app/api/v1/full_joint_goal_execution.py",
+    "apps/api/app/tests/test_full_joint_goal_execution.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "apps/api/app/tests/test_full_joint_goal_execution.py",
+    "-q",
+    "-k",
+    "synthetic_whole_cap or fixed_execute",
+    "--tb=short"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T04:50:56.434530+00:00",
+  "finished_at": "2026-10-06T04:51:23.458214+00:00",
+  "wall_seconds": 27.023684,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/api/app/services/full_native_mechanism_steps.py",
+    "apps/api/app/tests/test_full_native_mechanism_steps.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "9bf796174103358d9ad45d2b3783cd90596b68daf65e8226c6a8c62b0b8a8c26",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

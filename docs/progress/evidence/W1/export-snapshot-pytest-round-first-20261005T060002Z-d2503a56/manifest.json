@@ -1,0 +1,36 @@
+{
+  "run_id": "20261005T060002Z-d2503a56",
+  "task": "W1",
+  "label": "export-snapshot-pytest-round-first",
+  "status": "PASSED",
+  "scope": [
+    "scripts/export_evidence.py",
+    "scripts/tests/test_export_evidence.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "scripts/tests/test_export_evidence.py",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "no:tmpdir"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T06:00:02.563188+00:00",
+  "finished_at": "2026-10-05T06:00:13.601302+00:00",
+  "wall_seconds": 11.038114,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "89ee91af05a1d7d428b516b337e2ea44ad2a372ca8e84c06e083aa4a878d05b4",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

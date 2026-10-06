@@ -1,0 +1,2 @@
+apps\api\app\tests\test_demo_recovery_history.py:83: error: Item "None" of "AuditEvent | None" has no attribute "canonical_text"  [union-attr]
+Found 1 error in 1 file (checked 2 source files)

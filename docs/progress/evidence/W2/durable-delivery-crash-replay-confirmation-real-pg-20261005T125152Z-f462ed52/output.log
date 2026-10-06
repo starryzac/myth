@@ -1,0 +1,416 @@
+FFFFFFFFFF                                                               [100%]
+================================== FAILURES ===================================
+___ test_outbox_and_prepared_action_rollback_together_before_prepare_commit ___
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_4614d1fb767f4b99af9c8bfb7fdad682)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002A2D4663DD0>
+
+    def test_outbox_and_prepared_action_rollback_together_before_prepare_commit(
+        boundary_engine: Engine, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        source, target = transfer_accounts(boundary_engine)
+        before = snapshot(boundary_engine)
+        original = delivery.enqueue_action_in_transaction
+    
+        def failure(session: Session, action: ActionPlan, now: datetime) -> CommandOutbox:
+            original(session, action, now)
+            raise RuntimeError("injected-after-outbox-before-prepare-commit")
+    
+        with monkeypatch.context() as patch:
+            patch.setattr(delivery, "enqueue_action_in_transaction", failure)
+            with pytest.raises(RuntimeError, match="injected-after-outbox"):
+>               execution.prepare_action(
+                    boundary_engine,
+                    DEMO_USER_ID,
+                    PrepareActionRequest(
+                        idempotency_key="atomic-delivery-rollback",
+                        intent=TransferIntent(
+                            kind="transfer_internal",
+                            source_account_id=source,
+                            destination_account_id=target,
+                            amount_cents=10000,
+                        ),
+                    ),
+                    SEED_AS_OF,
+                )
+
+apps\api\app\tests\test_command_delivery_integration.py:110: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\execution.py:249: in prepare_action
+    enqueue_action_in_transaction(session, action, now)
+apps\api\app\tests\test_command_delivery_integration.py:104: in failure
+    original(session, action, now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000002A2D570BD10>
+action = <app.db.models.ActionPlan object at 0x000002A2D0E4B7D0>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def enqueue_action_in_transaction(
+        session: Session, action: ActionPlan, now: datetime
+    ) -> CommandOutbox:
+        """Producer seam: caller owns the original user lock and preparation transaction."""
+        now = _clock(now)
+        if not session.in_transaction() or action.created_at > now:
+            raise _error("INVALID_DELIVERY_TRANSACTION", "消息必须与原动作同事务保存")
+        epoch = current_audit_epoch(session, action.user_id)
+        if epoch is None or epoch.created_at > now:
+>           raise _error("INVALID_DELIVERY_EPOCH", "消息缺少原动作当前审计周期")
+E           app.services.policy_lifecycle.PolicyLifecycleError: 消息缺少原动作当前审计周期
+
+apps\api\app\services\command_delivery.py:193: PolicyLifecycleError
+_ test_ask_waits_for_current_original_confirmation_and_duplicate_delivery_is_single_effect _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_461cc8ebdc9f45efafdc142d392a1b0e)
+
+    def test_ask_waits_for_current_original_confirmation_and_duplicate_delivery_is_single_effect(
+        boundary_engine: Engine,
+    ) -> None:
+>       outbox_id, action_id, source, target = prepare(boundary_engine, confirmed=False)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_command_delivery_integration.py:130: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_command_delivery_integration.py:55: in prepare
+    action = execution.prepare_action(engine, DEMO_USER_ID, request, SEED_AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution.py:249: in prepare_action
+    enqueue_action_in_transaction(session, action, now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000002A2D59DAA50>
+action = <app.db.models.ActionPlan object at 0x000002A2D65D3500>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def enqueue_action_in_transaction(
+        session: Session, action: ActionPlan, now: datetime
+    ) -> CommandOutbox:
+        """Producer seam: caller owns the original user lock and preparation transaction."""
+        now = _clock(now)
+        if not session.in_transaction() or action.created_at > now:
+            raise _error("INVALID_DELIVERY_TRANSACTION", "消息必须与原动作同事务保存")
+        epoch = current_audit_epoch(session, action.user_id)
+        if epoch is None or epoch.created_at > now:
+>           raise _error("INVALID_DELIVERY_EPOCH", "消息缺少原动作当前审计周期")
+E           app.services.policy_lifecycle.PolicyLifecycleError: 消息缺少原动作当前审计周期
+
+apps\api\app\services\command_delivery.py:193: PolicyLifecycleError
+_ test_new_consumer_connection_resumes_durable_attempt_after_crash_without_new_bank_key[after_receive] _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_2bf954c4bcd94b0785a245b3cca3610e)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002A2D5BF9CA0>
+boundary = 'after_receive'
+
+    @pytest.mark.parametrize("boundary", ["after_receive", "before_ack"])
+    def test_new_consumer_connection_resumes_durable_attempt_after_crash_without_new_bank_key(
+        boundary_engine: Engine, monkeypatch: pytest.MonkeyPatch, boundary: str
+    ) -> None:
+>       outbox_id, action_id, _, _ = prepare(boundary_engine)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_command_delivery_integration.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_command_delivery_integration.py:55: in prepare
+    action = execution.prepare_action(engine, DEMO_USER_ID, request, SEED_AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution.py:249: in prepare_action
+    enqueue_action_in_transaction(session, action, now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000002A2D5BFBB90>
+action = <app.db.models.ActionPlan object at 0x000002A2D5B1DEE0>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def enqueue_action_in_transaction(
+        session: Session, action: ActionPlan, now: datetime
+    ) -> CommandOutbox:
+        """Producer seam: caller owns the original user lock and preparation transaction."""
+        now = _clock(now)
+        if not session.in_transaction() or action.created_at > now:
+            raise _error("INVALID_DELIVERY_TRANSACTION", "消息必须与原动作同事务保存")
+        epoch = current_audit_epoch(session, action.user_id)
+        if epoch is None or epoch.created_at > now:
+>           raise _error("INVALID_DELIVERY_EPOCH", "消息缺少原动作当前审计周期")
+E           app.services.policy_lifecycle.PolicyLifecycleError: 消息缺少原动作当前审计周期
+
+apps\api\app\services\command_delivery.py:193: PolicyLifecycleError
+_ test_new_consumer_connection_resumes_durable_attempt_after_crash_without_new_bank_key[before_ack] _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_3d146c1760c9451d9c74d65d0f8b4528)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002A2D5E5B560>
+boundary = 'before_ack'
+
+    @pytest.mark.parametrize("boundary", ["after_receive", "before_ack"])
+    def test_new_consumer_connection_resumes_durable_attempt_after_crash_without_new_bank_key(
+        boundary_engine: Engine, monkeypatch: pytest.MonkeyPatch, boundary: str
+    ) -> None:
+>       outbox_id, action_id, _, _ = prepare(boundary_engine)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_command_delivery_integration.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_command_delivery_integration.py:55: in prepare
+    action = execution.prepare_action(engine, DEMO_USER_ID, request, SEED_AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution.py:249: in prepare_action
+    enqueue_action_in_transaction(session, action, now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000002A2D450D1F0>
+action = <app.db.models.ActionPlan object at 0x000002A2D45EE180>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def enqueue_action_in_transaction(
+        session: Session, action: ActionPlan, now: datetime
+    ) -> CommandOutbox:
+        """Producer seam: caller owns the original user lock and preparation transaction."""
+        now = _clock(now)
+        if not session.in_transaction() or action.created_at > now:
+            raise _error("INVALID_DELIVERY_TRANSACTION", "消息必须与原动作同事务保存")
+        epoch = current_audit_epoch(session, action.user_id)
+        if epoch is None or epoch.created_at > now:
+>           raise _error("INVALID_DELIVERY_EPOCH", "消息缺少原动作当前审计周期")
+E           app.services.policy_lifecycle.PolicyLifecycleError: 消息缺少原动作当前审计周期
+
+apps\api\app\services\command_delivery.py:193: PolicyLifecycleError
+_ test_unknown_with_committed_bank_resumes_original_operation_and_retains_failed_attempt[lost_bank_response] _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_ba5dab026c824362923a2b2c58262fae)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002A2D43400E0>
+failure = 'lost_bank_response'
+
+    @pytest.mark.parametrize("failure", ["lost_bank_response", "projection_failed"])
+    def test_unknown_with_committed_bank_resumes_original_operation_and_retains_failed_attempt(
+        boundary_engine: Engine, monkeypatch: pytest.MonkeyPatch, failure: str
+    ) -> None:
+>       outbox_id, action_id, _, _ = prepare(boundary_engine)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_command_delivery_integration.py:208: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_command_delivery_integration.py:55: in prepare
+    action = execution.prepare_action(engine, DEMO_USER_ID, request, SEED_AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution.py:249: in prepare_action
+    enqueue_action_in_transaction(session, action, now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000002A2D44D3260>
+action = <app.db.models.ActionPlan object at 0x000002A2D57FE720>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def enqueue_action_in_transaction(
+        session: Session, action: ActionPlan, now: datetime
+    ) -> CommandOutbox:
+        """Producer seam: caller owns the original user lock and preparation transaction."""
+        now = _clock(now)
+        if not session.in_transaction() or action.created_at > now:
+            raise _error("INVALID_DELIVERY_TRANSACTION", "消息必须与原动作同事务保存")
+        epoch = current_audit_epoch(session, action.user_id)
+        if epoch is None or epoch.created_at > now:
+>           raise _error("INVALID_DELIVERY_EPOCH", "消息缺少原动作当前审计周期")
+E           app.services.policy_lifecycle.PolicyLifecycleError: 消息缺少原动作当前审计周期
+
+apps\api\app\services\command_delivery.py:193: PolicyLifecycleError
+_ test_unknown_with_committed_bank_resumes_original_operation_and_retains_failed_attempt[projection_failed] _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_135c242bf19b445da6ea4676b81764fa)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002A2D570DDC0>
+failure = 'projection_failed'
+
+    @pytest.mark.parametrize("failure", ["lost_bank_response", "projection_failed"])
+    def test_unknown_with_committed_bank_resumes_original_operation_and_retains_failed_attempt(
+        boundary_engine: Engine, monkeypatch: pytest.MonkeyPatch, failure: str
+    ) -> None:
+>       outbox_id, action_id, _, _ = prepare(boundary_engine)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_command_delivery_integration.py:208: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_command_delivery_integration.py:55: in prepare
+    action = execution.prepare_action(engine, DEMO_USER_ID, request, SEED_AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution.py:249: in prepare_action
+    enqueue_action_in_transaction(session, action, now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000002A2D5CC7350>
+action = <app.db.models.ActionPlan object at 0x000002A2D5B498E0>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def enqueue_action_in_transaction(
+        session: Session, action: ActionPlan, now: datetime
+    ) -> CommandOutbox:
+        """Producer seam: caller owns the original user lock and preparation transaction."""
+        now = _clock(now)
+        if not session.in_transaction() or action.created_at > now:
+            raise _error("INVALID_DELIVERY_TRANSACTION", "消息必须与原动作同事务保存")
+        epoch = current_audit_epoch(session, action.user_id)
+        if epoch is None or epoch.created_at > now:
+>           raise _error("INVALID_DELIVERY_EPOCH", "消息缺少原动作当前审计周期")
+E           app.services.policy_lifecycle.PolicyLifecycleError: 消息缺少原动作当前审计周期
+
+apps\api\app\services\command_delivery.py:193: PolicyLifecycleError
+____ test_unknown_without_bank_does_not_blindly_submit_money_on_redelivery ____
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_492976e37f5f414590887935785f660c)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002A2D58B3D40>
+
+    def test_unknown_without_bank_does_not_blindly_submit_money_on_redelivery(
+        boundary_engine: Engine, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+>       outbox_id, action_id, _, _ = prepare(boundary_engine)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_command_delivery_integration.py:247: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_command_delivery_integration.py:55: in prepare
+    action = execution.prepare_action(engine, DEMO_USER_ID, request, SEED_AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution.py:249: in prepare_action
+    enqueue_action_in_transaction(session, action, now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000002A2D5E288F0>
+action = <app.db.models.ActionPlan object at 0x000002A2D5BA50A0>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def enqueue_action_in_transaction(
+        session: Session, action: ActionPlan, now: datetime
+    ) -> CommandOutbox:
+        """Producer seam: caller owns the original user lock and preparation transaction."""
+        now = _clock(now)
+        if not session.in_transaction() or action.created_at > now:
+            raise _error("INVALID_DELIVERY_TRANSACTION", "消息必须与原动作同事务保存")
+        epoch = current_audit_epoch(session, action.user_id)
+        if epoch is None or epoch.created_at > now:
+>           raise _error("INVALID_DELIVERY_EPOCH", "消息缺少原动作当前审计周期")
+E           app.services.policy_lifecycle.PolicyLifecycleError: 消息缺少原动作当前审计周期
+
+apps\api\app\services\command_delivery.py:193: PolicyLifecycleError
+_____ test_busy_and_other_owner_have_no_attempt_or_financial_side_effect ______
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_fabab3ef90d246e8ae8a6d9982687158)
+
+    def test_busy_and_other_owner_have_no_attempt_or_financial_side_effect(
+        boundary_engine: Engine,
+    ) -> None:
+>       outbox_id, _, _, _ = prepare(boundary_engine)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_command_delivery_integration.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_command_delivery_integration.py:55: in prepare
+    action = execution.prepare_action(engine, DEMO_USER_ID, request, SEED_AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution.py:249: in prepare_action
+    enqueue_action_in_transaction(session, action, now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000002A2D46139B0>
+action = <app.db.models.ActionPlan object at 0x000002A2D466D820>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def enqueue_action_in_transaction(
+        session: Session, action: ActionPlan, now: datetime
+    ) -> CommandOutbox:
+        """Producer seam: caller owns the original user lock and preparation transaction."""
+        now = _clock(now)
+        if not session.in_transaction() or action.created_at > now:
+            raise _error("INVALID_DELIVERY_TRANSACTION", "消息必须与原动作同事务保存")
+        epoch = current_audit_epoch(session, action.user_id)
+        if epoch is None or epoch.created_at > now:
+>           raise _error("INVALID_DELIVERY_EPOCH", "消息缺少原动作当前审计周期")
+E           app.services.policy_lifecycle.PolicyLifecycleError: 消息缺少原动作当前审计周期
+
+apps\api\app\services\command_delivery.py:193: PolicyLifecycleError
+_ test_reset_retains_durable_original_message_and_archived_epoch_cannot_recreate_action _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_f07606fe93554b569e779a71f7527857)
+
+    def test_reset_retains_durable_original_message_and_archived_epoch_cannot_recreate_action(
+        boundary_engine: Engine,
+    ) -> None:
+>       outbox_id, action_id, _, _ = prepare(boundary_engine, confirmed=False)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_command_delivery_integration.py:289: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_command_delivery_integration.py:55: in prepare
+    action = execution.prepare_action(engine, DEMO_USER_ID, request, SEED_AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution.py:249: in prepare_action
+    enqueue_action_in_transaction(session, action, now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000002A2D4697380>
+action = <app.db.models.ActionPlan object at 0x000002A2D63B9BE0>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def enqueue_action_in_transaction(
+        session: Session, action: ActionPlan, now: datetime
+    ) -> CommandOutbox:
+        """Producer seam: caller owns the original user lock and preparation transaction."""
+        now = _clock(now)
+        if not session.in_transaction() or action.created_at > now:
+            raise _error("INVALID_DELIVERY_TRANSACTION", "消息必须与原动作同事务保存")
+        epoch = current_audit_epoch(session, action.user_id)
+        if epoch is None or epoch.created_at > now:
+>           raise _error("INVALID_DELIVERY_EPOCH", "消息缺少原动作当前审计周期")
+E           app.services.policy_lifecycle.PolicyLifecycleError: 消息缺少原动作当前审计周期
+
+apps\api\app\services\command_delivery.py:193: PolicyLifecycleError
+____ test_auto_worker_uses_current_original_policy_and_real_bank_pipeline _____
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_4431cf9c3c434c7b99b03bf1f87a145a)
+
+    def test_auto_worker_uses_current_original_policy_and_real_bank_pipeline(
+        boundary_engine: Engine,
+    ) -> None:
+        with Session(boundary_engine) as session, session.begin():
+            policy_id, _ = confirmed_policy(session, authorization())
+>       action = execution.prepare_action(
+            boundary_engine,
+            DEMO_USER_ID,
+            PrepareActionRequest(
+                idempotency_key="delivery-auto-purchase",
+                intent=PurchaseIntent(kind="purchase_asset", policy_id=policy_id),
+            ),
+            SEED_AS_OF,
+        )
+
+apps\api\app\tests\test_command_delivery_integration.py:321: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\execution.py:249: in prepare_action
+    enqueue_action_in_transaction(session, action, now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000002A2D5E3A600>
+action = <app.db.models.ActionPlan object at 0x000002A2D4661DC0>
+now = datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc)
+
+    def enqueue_action_in_transaction(
+        session: Session, action: ActionPlan, now: datetime
+    ) -> CommandOutbox:
+        """Producer seam: caller owns the original user lock and preparation transaction."""
+        now = _clock(now)
+        if not session.in_transaction() or action.created_at > now:
+            raise _error("INVALID_DELIVERY_TRANSACTION", "消息必须与原动作同事务保存")
+        epoch = current_audit_epoch(session, action.user_id)
+        if epoch is None or epoch.created_at > now:
+>           raise _error("INVALID_DELIVERY_EPOCH", "消息缺少原动作当前审计周期")
+E           app.services.policy_lifecycle.PolicyLifecycleError: 消息缺少原动作当前审计周期
+
+apps\api\app\services\command_delivery.py:193: PolicyLifecycleError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_command_delivery_integration.py::test_outbox_and_prepared_action_rollback_together_before_prepare_commit
+FAILED apps/api/app/tests/test_command_delivery_integration.py::test_ask_waits_for_current_original_confirmation_and_duplicate_delivery_is_single_effect
+FAILED apps/api/app/tests/test_command_delivery_integration.py::test_new_consumer_connection_resumes_durable_attempt_after_crash_without_new_bank_key[after_receive]
+FAILED apps/api/app/tests/test_command_delivery_integration.py::test_new_consumer_connection_resumes_durable_attempt_after_crash_without_new_bank_key[before_ack]
+FAILED apps/api/app/tests/test_command_delivery_integration.py::test_unknown_with_committed_bank_resumes_original_operation_and_retains_failed_attempt[lost_bank_response]
+FAILED apps/api/app/tests/test_command_delivery_integration.py::test_unknown_with_committed_bank_resumes_original_operation_and_retains_failed_attempt[projection_failed]
+FAILED apps/api/app/tests/test_command_delivery_integration.py::test_unknown_without_bank_does_not_blindly_submit_money_on_redelivery
+FAILED apps/api/app/tests/test_command_delivery_integration.py::test_busy_and_other_owner_have_no_attempt_or_financial_side_effect
+FAILED apps/api/app/tests/test_command_delivery_integration.py::test_reset_retains_durable_original_message_and_archived_epoch_cannot_recreate_action
+FAILED apps/api/app/tests/test_command_delivery_integration.py::test_auto_worker_uses_current_original_policy_and_real_bank_pipeline
+10 failed in 69.52s (0:01:09)

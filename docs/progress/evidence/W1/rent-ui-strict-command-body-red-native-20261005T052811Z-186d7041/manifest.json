@@ -1,0 +1,38 @@
+{
+  "run_id": "20261005T052811Z-186d7041",
+  "task": "W1",
+  "label": "rent-ui-strict-command-body-red-native",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/pages/DemoConsolePage.tsx",
+    "apps/web/src/pages/DemoConsolePage.test.tsx",
+    "apps/web/src/api/policies.ts"
+  ],
+  "command": [
+    "node",
+    "apps/web/node_modules/vitest/vitest.mjs",
+    "run",
+    "--root",
+    "apps/web",
+    "--config",
+    "vitest.config.ts",
+    "src/pages/DemoConsolePage.test.tsx",
+    "-t",
+    "房租完整配置"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T05:28:12.271284+00:00",
+  "finished_at": "2026-10-05T05:28:16.145974+00:00",
+  "wall_seconds": 3.87469,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "cfc87bc07f615c656113213db3c3462a97ed7d4e3182e3da321aec83fcf3ab74",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

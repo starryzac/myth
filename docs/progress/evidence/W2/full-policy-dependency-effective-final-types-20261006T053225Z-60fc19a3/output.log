@@ -1,0 +1,2 @@
+apps\api\app\tests\test_full_policy_dependencies_service.py:164: error: Value of type "Collection[str]" is not indexable  [index]
+Found 1 error in 1 file (checked 7 source files)

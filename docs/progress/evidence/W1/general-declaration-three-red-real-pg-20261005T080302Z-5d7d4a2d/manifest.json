@@ -1,0 +1,43 @@
+{
+  "run_id": "20261005T080302Z-5d7d4a2d",
+  "task": "W1",
+  "label": "general-declaration-three-red-real-pg",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/services/scenario_policy_declaration.py",
+    "apps/api/app/services/scenario_service_steps.py",
+    "apps/api/app/services/scenario_types.py",
+    "apps/api/app/services/scenario_runner.py",
+    "apps/api/app/services/policy_lifecycle.py",
+    "apps/api/app/tests/test_scenario_policy_declaration.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "python",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_scenario_policy_declaration.py",
+    "-k",
+    "original_store_refuses or scenario_declaration",
+    "-p",
+    "no:cacheprovider",
+    "-q"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T08:03:02.711045+00:00",
+  "finished_at": "2026-10-05T08:03:13.869666+00:00",
+  "wall_seconds": 11.158621,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "bf2e01b526fc26b595e72430784e5d09a58c2d6125764958e4065567ce6bb9e8",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

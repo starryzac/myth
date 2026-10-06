@@ -1,0 +1,18 @@
+{
+  "operations": {
+    "VERIFY_TAMPERED_ORIGINAL_COPY": {
+      "actual_function": "verify_epoch",
+      "cases": [
+        "X01/v01",
+        "X01/v02",
+        "X02/v01",
+        "X02/v02"
+      ],
+      "native_dispatch_status": "NOT_IMPLEMENTED",
+      "request_model": null,
+      "source": "apps/api/app/domain/audit_chain.py",
+      "source_sha256": "1e774f8910a3b5862f950c02d15aab8e2ea9f77dd3fc903d13045b4bdbd7c875"
+    }
+  },
+  "protocol": "full-authored-native-dispatch-gap-v1"
+}

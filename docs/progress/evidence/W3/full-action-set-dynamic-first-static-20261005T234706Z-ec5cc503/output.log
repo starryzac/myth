@@ -1,0 +1,71 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> apps\api\app\tests\test_full_action_set_boundary_full.py:3:1
+   |
+ 1 |   """Synthetic producer/source risks only; no financial experiment or bank run."""
+ 2 |
+ 3 | / import copy
+ 4 | | import json
+ 5 | | from datetime import timedelta
+ 6 | | from typing import Any
+ 7 | | from unittest.mock import MagicMock
+ 8 | | from uuid import UUID, uuid5
+ 9 | |
+10 | | import pytest
+11 | | from app.domain.autonomy_types import AuthorityAssessment, AutonomyFacts
+12 | | from app.domain.decision_trace import build_trace
+13 | | from app.domain.decision_trace_types import DecisionTrace, TraceEvidence, TracePolicy
+14 | | from app.domain.execution import revalidate_execution
+15 | | from app.domain.full_action_set_boundary import (
+16 | |     REQUIRED_INVENTORY,
+17 | |     ActionSetInput,
+18 | |     CandidateInput,
+19 | |     GlobalBoundaryObserveRequest,
+20 | |     derive_action_set,
+21 | |     required_producer_keys,
+22 | |     unsupported_producers,
+23 | | )
+24 | | from app.domain.full_action_set_boundary_full import (
+25 | |     ALGORITHM,
+26 | |     NAMESPACE,
+27 | |     DynamicGoalProducerInput,
+28 | |     FullActionSetInput,
+29 | |     FullGlobalBoundaryObservation,
+30 | |     compare_full_action_sets,
+31 | |     derive_full_action_set,
+32 | | )
+33 | | from app.domain.full_dynamic_goal_execution import build_full_dynamic_goal_effect
+34 | | from app.domain.multi_goal_allocation import SourceReference
+35 | | from app.domain.policy_configuration import configuration_hash
+36 | | from app.services import full_action_set_boundary_full as service
+37 | | from app.services.decision_recording import DecisionCapture
+38 | | from app.services.full_action_set_boundary import ActionSetCapture
+39 | | from app.tests.test_full_dynamic_goal_execution import (
+40 | |     BANK,
+41 | |     CASH,
+42 | |     EPOCH,
+43 | |     GOAL,
+44 | |     INCOME,
+45 | |     MODEL,
+46 | |     MONTH,
+47 | |     NOW,
+48 | |     OWN,
+49 | |     POLICY,
+50 | |     USER,
+51 | |     VERSION,
+52 | |     fixture as dynamic_fixture,
+53 | | )
+54 | | from sqlalchemy.orm import Session
+   | |__________________________________^
+55 |
+56 |   CONFIRM = UUID(int=140)
+   |
+help: Organize imports
+   |
+51 |     VERSION,
+52 + )
+53 + from app.tests.test_full_dynamic_goal_execution import (
+54 |     fixture as dynamic_fixture,
+   |
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.

@@ -1,0 +1,35 @@
+{
+  "run_id": "20261006T015033Z-6d201a88",
+  "task": "W3",
+  "label": "selected-min-deadline-exact-witness-web-direct",
+  "status": "PASSED",
+  "scope": [
+    "apps/web/src/api/goal-adjustments",
+    "apps/web/src/components/GoalAdjustmentsPanel",
+    "apps/web/src/tests/goal-adjustment"
+  ],
+  "command": [
+    "node",
+    "apps/web/node_modules/vitest/vitest.mjs",
+    "--root",
+    "apps/web",
+    "run",
+    "src/api/goal-adjustments.test.ts",
+    "src/components/GoalAdjustmentsPanel.test.tsx"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T01:50:35.193639+00:00",
+  "finished_at": "2026-10-06T01:50:39.424978+00:00",
+  "wall_seconds": 4.231339,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "ffad183a1a787f60fb0ee291c22d173ee1b3ee09c7d2fa86985acbc005e8326b",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

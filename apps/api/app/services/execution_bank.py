@@ -22,6 +22,7 @@ from app.db.models import (
 )
 from app.domain.execution import execution_effect_hash
 from app.domain.execution_types import BankCommand, ExecutionEffect
+from app.domain.full_dynamic_goal_execution import FullDynamicGoalProof
 from app.domain.history_coverage import bank_fact_snapshot
 from app.domain.income_ledger import IncomeLedger, location_id
 from app.domain.policy_configuration import configuration_hash
@@ -32,9 +33,34 @@ from app.services.simulated_bank import (
     validate_bank_projection,
 )
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
+
+FULL_ASSET_BATCH_GUARDS_VERSION = "full-asset-batch-guards-v1"
+FULL_RECOVERY_GUARDS_VERSION = "full-recovery-execution-guards-v1"
+FULL_EXPERIMENT_ASSET_GUARDS_VERSION = "full-experiment-asset-guards-v1"
+FULL_JOINT_GOAL_GUARDS_VERSION = "registered-joint-goal-execution-v2"
+
+
+def has_full_asset_batch_binding(session: Session, action: ActionPlan) -> bool:
+    """An immutable child row cannot be downgraded by stripping its mutable marker/key."""
+    if "full_asset_execution" in action.request or action.idempotency_key.startswith("full-asset:"):
+        return True
+    if action.action_type not in {"PURCHASE_ASSET", "ASSET_PURCHASE"}:
+        return False
+    if session.scalar(text("SELECT to_regclass('public.full_asset_execution_batches')")) is None:
+        return False
+    from app.db.full_models import FullAssetExecutionBatch
+
+    return (
+        session.scalar(
+            select(FullAssetExecutionBatch.id)
+            .where(FullAssetExecutionBatch.action_plan_id == action.id)
+            .limit(1)
+        )
+        is not None
+    )
 
 
 class BankOperationResult(BaseModel):
@@ -52,7 +78,12 @@ def process_operation(
     if now.tzinfo is None or now.utcoffset() is None:
         raise _error("An aware trusted bank clock is required")
     now = now.astimezone(UTC)
-    with Session(engine) as session, session.begin():
+    from app.services.execution_observations import observed_begin
+
+    with (
+        Session(engine) as session,
+        observed_begin(session, engine, user_id, action_id, now, "INDEPENDENT_BANK"),
+    ):
         from app.db.audit_guard import transaction_gate
 
         transaction_gate(session, user_id)
@@ -85,7 +116,80 @@ def process_operation(
                 raise _error("An idempotency key cannot change its original economics")
         else:
             require_settlement_order(session, user_id, now)
-            _validate_new(session, action, effect, command.effect_hash, now)
+            dynamic_proof = _validate_new(session, action, effect, command.effect_hash, now)
+            if effect.action_type == "PAY_RECURRING":
+                from app.services.full_payment_permissions import enforce_full_payment_bank_scope
+
+                enforce_full_payment_bank_scope(engine, user_id, effect, now)
+            if has_full_asset_batch_binding(session, action):
+                from app.services.full_asset_execution_dispatch import (
+                    enforce_full_asset_batch_acceptance,
+                )
+
+                enforce_full_asset_batch_acceptance(engine, session, action, command, now)
+            from app.services.full_execution_protection import (
+                enforce_full_execution_protection,
+                has_full_protection_policies,
+            )
+
+            if has_full_protection_policies(session, user_id):
+                from app.domain.execution import revalidate_execution
+                from app.services.execution_context import load_execution_context
+                from app.services.execution_sources import read_execution_confirmation
+
+                context = load_execution_context(
+                    session, user_id, effect, now, own_action_id=action.id
+                )
+                from app.services.full_experiment_asset_execution import (
+                    has_full_experiment_asset_binding,
+                )
+
+                if effect.action_type == "PURCHASE_ASSET" and has_full_experiment_asset_binding(
+                    session, action
+                ):
+                    from app.services.execution_context import require_full_experiment_asset_context
+
+                    context = require_full_experiment_asset_context(session, context)
+                from app.services.full_recovery_execution import has_full_recovery_binding
+
+                if effect.action_type == "REDEEM_ASSET" and has_full_recovery_binding(
+                    session, action
+                ):
+                    from app.services.execution_context import (
+                        require_full_recovery_confirmation_context,
+                    )
+
+                    context = require_full_recovery_confirmation_context(session, context)
+                from app.services.full_joint_goal_execution_guards import (
+                    has_full_joint_goal_binding,
+                )
+
+                if dynamic_proof is not None and has_full_joint_goal_binding(session, action):
+                    from app.services.execution_joint_goal_bridge import require_joint_goal_context
+
+                    context = require_joint_goal_context(session, effect, context, dynamic_proof)
+                elif dynamic_proof is not None:
+                    from app.services.execution_context import (
+                        require_full_dynamic_goal_proof_context,
+                    )
+
+                    context = require_full_dynamic_goal_proof_context(
+                        session, effect, context, dynamic_proof
+                    )
+                confirmation = read_execution_confirmation(session, effect, now)
+                validation = (
+                    revalidate_execution(effect, context, confirmation=confirmation)
+                    if dynamic_proof is None
+                    else revalidate_execution(
+                        effect,
+                        context,
+                        confirmation=confirmation,
+                        full_dynamic_goal_proof=dynamic_proof,
+                    )
+                )
+                if validation.status != "READY":
+                    raise _error("Original execution facts changed before independent acceptance")
+                enforce_full_execution_protection(engine, user_id, effect, context, validation, now)
             collision = session.scalar(
                 select(BankOperation).where(
                     BankOperation.user_id == user_id,
@@ -183,7 +287,7 @@ def _confirmation(session: Session, action: ActionPlan, digest: str, now: dateti
 
 def _validate_new(
     session: Session, action: ActionPlan, effect: ExecutionEffect, digest: str, now: datetime
-) -> None:
+) -> FullDynamicGoalProof | None:
     from app.services.execution_sources import verify_execution_sources
 
     names = {
@@ -320,7 +424,7 @@ def _validate_new(
             head = heads.get(prefix + key)
             if head is None or head.occurred_at > now or head.balance_after_cents < amount:
                 raise _error("The independent bank no longer has the reserved economic resource")
-    verify_execution_sources(session, action.user_id, effect, now)
+    return verify_execution_sources(session, action.user_id, effect, now)
 
 
 def _opening(

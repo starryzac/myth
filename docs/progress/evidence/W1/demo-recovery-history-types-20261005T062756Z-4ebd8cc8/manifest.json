@@ -1,0 +1,37 @@
+{
+  "run_id": "20261005T062756Z-4ebd8cc8",
+  "task": "W1",
+  "label": "demo-recovery-history-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/services/demo_console.py",
+    "apps/api/app/tests/test_demo_recovery_history.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "mypy",
+    "apps/api/app/services/demo_console.py",
+    "apps/api/app/tests/test_demo_recovery_history.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T06:27:56.581309+00:00",
+  "finished_at": "2026-10-05T06:28:05.571808+00:00",
+  "wall_seconds": 8.990499,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "scripts/demo_container_snapshot_512.py",
+    "scripts/demo_container_transport512.py",
+    "scripts/tests/test_demo_container_transport512.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "822f91aba23f2006feb8f9cf8bc21c63c250ea2774e1c700ac1616324d4c7180",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

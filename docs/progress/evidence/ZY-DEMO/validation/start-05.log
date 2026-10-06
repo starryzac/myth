@@ -1,0 +1,59 @@
+{
+  "round": "20261006T070638Z-50f238f24965450784decab6432547ed",
+  "simulation": true,
+  "database": "bf_test_50f238f24965450784decab6432547ed",
+  "registration_status": "RUNNING",
+  "database_check": {
+    "reachable": true,
+    "name_matches": true,
+    "owner_matches": true
+  },
+  "api": {
+    "reachable": true,
+    "round_matches": true,
+    "epoch_id": "91ad4e20-0f3f-4db3-b9b8-4ff7538173d4"
+  },
+  "web": {
+    "reachable": true,
+    "round_matches": true,
+    "epoch_id": "91ad4e20-0f3f-4db3-b9b8-4ff7538173d4"
+  },
+  "url": "http://127.0.0.1:19177/zhiyu.html",
+  "recorded_processes": [
+    {
+      "label": "api",
+      "pid": 255296,
+      "arguments": [
+        "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.venv\\Scripts\\python.exe",
+        "-m",
+        "uvicorn",
+        "--no-access-log",
+        "app.zhiyu_main:create_zhiyu_app",
+        "--factory",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "19004"
+      ],
+      "started_at": "2026-10-06T07:06:42.912642+00:00",
+      "log": "api-5f45f2ae.log"
+    },
+    {
+      "label": "web",
+      "pid": 256884,
+      "arguments": [
+        "C:\\Program Files\\nodejs\\node.EXE",
+        "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\web\\node_modules\\vite\\bin\\vite.js",
+        "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\web",
+        "--config",
+        "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\web\\vite.zhiyu.config.ts",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "19177"
+      ],
+      "started_at": "2026-10-06T07:06:42.934562+00:00",
+      "log": "web-5f45f2ae.log"
+    }
+  ]
+}

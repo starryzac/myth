@@ -578,6 +578,7 @@ def general_cent_cases(draw: st.DrawFn) -> tuple[LiteralLedger, LiteralProduct, 
 
 
 @PROPERTY_SETTINGS
+@pytest.mark.property
 @given(general_cent_cases())
 def test_general_maximum_matches_exhaustive_integer_cash_ledger(
     case: tuple[LiteralLedger, LiteralProduct, int, int, int],
@@ -641,6 +642,7 @@ def test_general_maximum_matches_exhaustive_integer_cash_ledger(
 
 
 @PROPERTY_SETTINGS
+@pytest.mark.property
 @given(
     goal_cash=st.integers(1, 40),
     floor=st.integers(0, 20),
@@ -712,6 +714,7 @@ def test_zero_general_idle_does_not_block_owned_goal_principal_placement(
 
 
 @PROPERTY_SETTINGS
+@pytest.mark.property
 @given(principal=st.integers(1_000, 10_000), window=st.integers(5, 90), expiry=st.integers(1, 96))
 def test_one_explicit_exit_per_product_drives_both_safe_dates_and_act365_ranking(
     principal: int,
@@ -778,6 +781,7 @@ def test_one_explicit_exit_per_product_drives_both_safe_dates_and_act365_ranking
 
 
 @PROPERTY_SETTINGS
+@pytest.mark.property
 @given(
     first=st.integers(1000, 30_000),
     second=st.integers(1000, 30_000),
@@ -843,6 +847,7 @@ def test_account_goal_policy_and_product_permutations_preserve_complete_selectio
 
 
 @PROPERTY_SETTINGS
+@pytest.mark.property
 @given(
     source=st.integers(10, 70),
     floor=st.integers(0, 8),

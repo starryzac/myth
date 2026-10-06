@@ -1,0 +1,40 @@
+{
+  "run_id": "20261006T031056Z-aa258563",
+  "task": "W7",
+  "label": "full-native-mixed-original-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/domain/full_native_operations.py",
+    "apps/api/app/services/full_native_cases.py",
+    "apps/api/app/tests/test_full_native_operation_extensions.py",
+    "apps/api/app/tests/test_full_native_cases.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "mypy",
+    "--strict",
+    "apps/api/app/domain/full_native_operations.py",
+    "apps/api/app/services/full_native_cases.py",
+    "apps/api/app/tests/test_full_native_operation_extensions.py",
+    "apps/api/app/tests/test_full_native_cases.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T03:10:58.508445+00:00",
+  "finished_at": "2026-10-06T03:11:21.737326+00:00",
+  "wall_seconds": 23.228881,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/web/src/components/FullPoliciesPanel.tsx",
+    "apps/web/src/components/FullPolicyFinancialImpactHost.tsx"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "1e386f48f8751924a9514ec984c4aff440d65531b032c07a12e0cb5e83843203",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

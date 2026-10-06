@@ -1,0 +1,2 @@
+apps/web/src/components/LocalActorSessionPanel.test.tsx(130,23): error TS2532: Object is possibly 'undefined'.
+apps/web/src/components/LocalActorSessionPanel.test.tsx(131,12): error TS2532: Object is possibly 'undefined'.

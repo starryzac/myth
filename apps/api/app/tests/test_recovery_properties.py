@@ -5,6 +5,7 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 from uuid import UUID
 
+import pytest
 from app.domain.asset_allocation_types import AssetProductTerms
 from app.domain.boundary_types import (
     BoundaryPolicyVersion,
@@ -406,6 +407,7 @@ def small_recovery_cases(draw: st.DrawFn) -> tuple[LiteralRecovery, tuple[Litera
 
 
 @PROPERTY_SETTINGS
+@pytest.mark.property
 @given(small_recovery_cases())
 def test_whole_position_sequence_matches_independent_pointwise_improvement_oracle(
     case: tuple[LiteralRecovery, tuple[LiteralPosition, ...]],
@@ -440,6 +442,7 @@ def test_whole_position_sequence_matches_independent_pointwise_improvement_oracl
 
 
 @PROPERTY_SETTINGS
+@pytest.mark.property
 @given(cash=st.integers(0, 100), deficit=st.integers(1, 80), principal=st.integers(1, 120))
 def test_delayed_recovery_keeps_global_minimum_but_can_improve_future_deficit(
     cash: int,
@@ -473,6 +476,7 @@ def test_delayed_recovery_keeps_global_minimum_but_can_improve_future_deficit(
 
 
 @PROPERTY_SETTINGS
+@pytest.mark.property
 @given(
     cash=st.integers(0, 100),
     deficit=st.integers(1, 60),
@@ -529,6 +533,7 @@ def test_early_return_replaces_original_event_and_ordering_cannot_change_hash(
 
 
 @PROPERTY_SETTINGS
+@pytest.mark.property
 @given(
     source_cash=st.integers(0, 100),
     goal_cash=st.integers(0, 100),

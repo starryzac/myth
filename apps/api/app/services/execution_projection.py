@@ -35,7 +35,6 @@ from app.services.execution_reservations import resolve_resources
 from app.services.income_ledger import commit_income_for_action, read_income_state
 from app.services.policy_lifecycle import PolicyLifecycleError
 from app.services.recovery_projection import current_proof, replace_proof
-from app.services.simulated_bank import ledger_heads
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -117,7 +116,9 @@ def _identity(
 def _legs(
     session: Session, operation: BankOperation, effect: ExecutionEffect, now: datetime
 ) -> list[SimulatedBankPosting]:
-    ledger_heads(session, operation.user_id)
+    from app.services.historical_read import verify_historical_ledger
+
+    verify_historical_ledger(session, operation.user_id)
     rows = list(
         session.scalars(
             select(SimulatedBankPosting).where(SimulatedBankPosting.operation_id == operation.id)
@@ -575,7 +576,12 @@ def _purchase(
         raise _error("The bank purchase lost its original bound exit plan")
     if available is not None and (
         exit_plan.kind != "FIXED_MATURITY"
-        or available > exit_plan.principal_available_at
+        or not isinstance(terms, FixedPrincipalTerms)
+        or exit_plan.earning_days != terms.term_days
+        or exit_plan.liquidity_days != terms.term_days + terms.settlement_delay_days
+        or exit_plan.principal_available_at
+        != effect.valid_from + timedelta(days=terms.term_days + terms.settlement_delay_days)
+        or operation.settled_at < effect.valid_from
         or effect.latest_arrival_at is None
         or available > effect.latest_arrival_at
     ):
@@ -811,6 +817,11 @@ def verify_execution_receipt(
     session: Session, operation: BankOperation, receipt: ActionReceipt, now: datetime
 ) -> None:
     """Read-only historical verification; never reauthorizes or repairs an economic effect."""
+    if operation.operation_type == "RELEASE_GOAL":
+        from app.services.full_goal_release_reader import verify_goal_release_receipt
+
+        verify_goal_release_receipt(session, operation, receipt, now)
+        return
     action, effect = _identity(session, operation, now, lock_user=False)
     rows = _legs(session, operation, effect, now)
     posting_ids = receipt.response.get("posting_ids")
@@ -844,8 +855,19 @@ def project_execution(
     session: Session, operation: BankOperation, now: datetime
 ) -> ActionReceipt | None:
     """One savepoint keeps a rejected projection atomic even if its caller handles the error."""
+    from app.services.execution_observations import observe_checkpoint
+
     with session.begin_nested():
-        return _project_execution(session, operation, now)
+        receipt = _project_execution(session, operation, now)
+        observe_checkpoint(
+            session,
+            operation.user_id,
+            operation.action_plan_id,
+            "APPLICATION_PROJECTION",
+            "APPLICATION_SAVEPOINT_APPLIED",
+            now,
+        )
+        return receipt
 
 
 def _project_execution(

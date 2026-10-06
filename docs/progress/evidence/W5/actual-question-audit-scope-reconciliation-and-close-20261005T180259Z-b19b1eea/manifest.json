@@ -1,0 +1,52 @@
+{
+  "run_id": "20261005T180259Z-b19b1eea",
+  "task": "W5",
+  "label": "actual-question-audit-scope-reconciliation-and-close",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/db/",
+    "apps/api/alembic/",
+    "apps/api/app/main.py",
+    "apps/api/app/api/dependencies.py",
+    "apps/api/app/domain/audit_chain.py",
+    "apps/api/app/services/audit_chain.py",
+    "apps/api/app/services/decision_trace.py",
+    "apps/api/app/services/historical_read.py",
+    "apps/api/app/services/execution",
+    "apps/api/app/services/question_workflow.py",
+    "apps/api/app/domain/question_workflow.py",
+    "apps/api/app/services/finite_uncertainty.py",
+    "apps/api/app/services/full_reconciliation.py",
+    "apps/api/app/domain/full_reconciliation.py",
+    "apps/api/app/api/v1/full_reconciliation.py",
+    "apps/api/app/tests/test_audit_request_read_scope.py",
+    "apps/api/app/tests/test_full_reconciliation_integration.py",
+    "apps/api/app/tests/test_question_workflow_api.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "-q",
+    "apps/api/app/tests/test_audit_request_read_scope.py",
+    "apps/api/app/tests/test_full_reconciliation_integration.py",
+    "apps/api/app/tests/test_question_workflow_api.py",
+    "-x"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T18:03:00.164092+00:00",
+  "finished_at": "2026-10-05T18:03:12.653950+00:00",
+  "wall_seconds": 12.489858,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "058ae338e149e2a2fe305768cbf61cc1284d88bb09474b3f9d4c29143dad7626",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

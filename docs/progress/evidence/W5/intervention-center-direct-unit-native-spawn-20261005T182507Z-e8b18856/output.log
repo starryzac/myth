@@ -1,0 +1,47 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/api/interventions.test.ts (21 tests | 1 failed) 82ms
+   ✓ 实际原件合同保持非权限；当前、失效、完整库存与固定收件原件分别核验 24ms
+   ✓ 收件或消息 grant 不一致不能认作当前原件 1ms
+   ✓ 收件或消息 owner 不一致不能认作当前原件 1ms
+   ✓ 收件或消息 epoch 不一致不能认作当前原件 1ms
+   ✓ 收件或消息 consumer 不一致不能认作当前原件 1ms
+   ✓ 收件或消息 hash 不一致不能认作当前原件 1ms
+   ✓ 收件或消息 human 不一致不能认作当前原件 1ms
+   ✓ 收件或消息 time 不一致不能认作当前原件 1ms
+   ✓ 收件或消息 absent 不一致不能认作当前原件 1ms
+   ✓ 收件或消息 question 不一致不能认作当前原件 1ms
+   ✓ 收件或消息 stale-pending 不一致不能认作当前原件 0ms
+   ✓ 恶意原请求 extra 在HTTP前拒绝 1ms
+   ✓ 恶意原请求 clock 在HTTP前拒绝 0ms
+   ✓ 恶意原请求 accepted 在HTTP前拒绝 1ms
+   ✓ 恶意原请求 revision 在HTTP前拒绝 0ms
+   ✓ 恶意原请求 money 在HTTP前拒绝 0ms
+   ✓ 恶意原请求 key 在HTTP前拒绝 0ms
+   × 原键返回完整原命令；不同body/hash或未找到带伪回执均拒绝 9ms
+     → expected [Function] to throw an error
+   ✓ 消息payload更改必须重新算原hash，source CURRENT不能掩盖篡改 5ms
+   ✓ 所有恢复为真实GET原id/key无query；观察身份来自当前问答和完整原DecisionTrace 28ms
+   ✓ 原DecisionTrace不完整或来源修订不同不提交观察；没有金融成功回填 4ms
+ ✓ src/features/intervention-operation.test.ts (6 tests) 695ms
+ ✓ src/pages/InterventionCenterPage.test.tsx (6 tests) 2127ms
+   ✓ 刷新只GET完整实际库存；读取通知不自动领取、不回答，源不足保STALE  507ms
+   ✓ 明确领取成功仍pending，单独GET固定Inbox原件后才可明确收阅；ACK原key恢复  433ms
+   ✓ DELIVER丢回复重开不POST，不重弹；其它族blocked仍允许自己只读核对  391ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/api/interventions.test.ts > 原键返回完整原命令；不同body/hash或未找到带伪回执均拒绝
+AssertionError: expected [Function] to throw an error
+ ❯ src/api/interventions.test.ts:33:157
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 32 passed (33)
+   Start at  02:25:09
+   Duration  5.23s (transform 731ms, setup 1.60s, collect 2.11s, tests 2.90s, environment 3.26s, prepare 972ms)
+

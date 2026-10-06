@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "required_mvp_figures": 8,
+  "status": "INCOMPLETE",
+  "native_screenshot_count_in_final_materials": 0,
+  "renderer_does_not_prove_capture": true,
+  "figures": [
+    {
+      "id": "F1",
+      "title": "资金分层漏斗",
+      "actual_required_input": "同run实际账本、Goal归属、保护与自主容量",
+      "status": "MISSING_NATIVE_INPUT",
+      "final_native_artifact": null,
+      "allowed_as_schematic_only": false,
+      "source_refs": [
+        "S03",
+        "S41",
+        "S01"
+      ],
+      "owner": "/root/full_map",
+      "checked_at": "2026-10-06T00:44:27.700037+00:00"
+    },
+    {
+      "id": "F2",
+      "title": "系统架构图",
+      "actual_required_input": "当前源组件职责与来源分层",
+      "status": "TEXTUAL_SOURCE_SCHEMATIC_ONLY",
+      "final_native_artifact": null,
+      "allowed_as_schematic_only": true,
+      "source_refs": [
+        "S03",
+        "S41",
+        "S01"
+      ],
+      "owner": "/root/full_map",
+      "checked_at": "2026-10-06T00:44:27.700037+00:00"
+    },
+    {
+      "id": "F3",
+      "title": "策略版本状态机",
+      "actual_required_input": "原生命周期和明确确认合同",
+      "status": "TEXTUAL_SOURCE_SCHEMATIC_ONLY",
+      "final_native_artifact": null,
+      "allowed_as_schematic_only": true,
+      "source_refs": [
+        "S03",
+        "S41",
+        "S01"
+      ],
+      "owner": "/root/full_map",
+      "checked_at": "2026-10-06T00:44:27.700037+00:00"
+    },
+    {
+      "id": "F4",
+      "title": "现金流约束时轴",
+      "actual_required_input": "同run1098阶段点与实际保护输入",
+      "status": "MISSING_NATIVE_INPUT",
+      "final_native_artifact": null,
+      "allowed_as_schematic_only": false,
+      "source_refs": [
+        "S03",
+        "S41",
+        "S01"
+      ],
+      "owner": "/root/full_map",
+      "checked_at": "2026-10-06T00:44:27.700037+00:00"
+    },
+    {
+      "id": "F5",
+      "title": "资产可行候选图",
+      "actual_required_input": "同run目录/权限/锁定/到账拒因",
+      "status": "MISSING_NATIVE_INPUT",
+      "final_native_artifact": null,
+      "allowed_as_schematic_only": false,
+      "source_refs": [
+        "S03",
+        "S41",
+        "S01"
+      ],
+      "owner": "/root/full_map",
+      "checked_at": "2026-10-06T00:44:27.700037+00:00"
+    },
+    {
+      "id": "F6",
+      "title": "恢复与介入流程",
+      "actual_required_input": "同run消费/无损/损失报价/确认/到账",
+      "status": "MISSING_NATIVE_CAPTURE",
+      "final_native_artifact": null,
+      "allowed_as_schematic_only": false,
+      "source_refs": [
+        "S03",
+        "S41",
+        "S01"
+      ],
+      "owner": "/root/full_map",
+      "checked_at": "2026-10-06T00:44:27.700037+00:00"
+    },
+    {
+      "id": "F7",
+      "title": "决策溯源图",
+      "actual_required_input": "同run原事实/版本/候选/约束/回执/审计",
+      "status": "MISSING_NATIVE_CAPTURE",
+      "final_native_artifact": null,
+      "allowed_as_schematic_only": false,
+      "source_refs": [
+        "S03",
+        "S41",
+        "S01"
+      ],
+      "owner": "/root/full_map",
+      "checked_at": "2026-10-06T00:44:27.700037+00:00"
+    },
+    {
+      "id": "F8",
+      "title": "实验对照图",
+      "actual_required_input": "冻结输入、真实baseline/消融、独立指标原数据",
+      "status": "NOT_RUN",
+      "final_native_artifact": null,
+      "allowed_as_schematic_only": false,
+      "source_refs": [
+        "S03",
+        "S41",
+        "S01"
+      ],
+      "owner": "/root/full_map",
+      "checked_at": "2026-10-06T00:44:27.700037+00:00"
+    }
+  ]
+}

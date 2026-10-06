@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/recovery-composed-observations.test.ts (19 tests) 53ms
+ ✓ src/components/RecoveryComposedObservationPanel.test.tsx (4 tests) 994ms
+   ✓ explicit record gets owner/current scope, stores full request before POST and checks exact GET  501ms
+
+ Test Files  2 passed (2)
+      Tests  23 passed (23)
+   Start at  12:14:25
+   Duration  3.90s (transform 610ms, setup 1.06s, collect 1.19s, tests 1.05s, environment 2.01s, prepare 639ms)
+

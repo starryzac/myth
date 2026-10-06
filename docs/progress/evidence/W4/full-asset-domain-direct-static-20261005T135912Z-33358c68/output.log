@@ -1,0 +1,39 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> apps\api\app\tests\test_full_asset_allocation.py:3:1
+   |
+ 1 |   """Direct finite portfolio risks; these literal inputs are not product experiments."""
+ 2 |
+ 3 | / from datetime import timedelta
+ 4 | | from itertools import product as cartesian_product
+ 5 | | from typing import Any
+ 6 | | from uuid import UUID
+ 7 | |
+ 8 | | import pytest
+ 9 | | from app.domain.asset_allocation_types import AssetProductTerms
+10 | | from app.domain.boundary_types import GoalOwnership, SourceIssue
+11 | | from app.domain.full_asset_allocation import (
+12 | |     FullAssetPlanOptions,
+13 | |     FullAssetPlanningInput,
+14 | |     plan_full_assets,
+15 | | )
+16 | | from app.domain.full_policy_configuration import AssetAuthorizationPolicy
+17 | | from app.domain.policy_configuration import configuration_hash
+18 | | from app.tests.test_asset_allocation import (
+19 | |     NOW,
+20 | |     exposure,
+21 | |     financial_products,
+22 | |     product,
+23 | |     snapshot,
+24 | | )
+   | |_^
+help: Organize imports
+   |
+11 | from app.domain.full_asset_allocation import (
+12 +     FullAssetPlanningInput,
+13 |     FullAssetPlanOptions,
+   -     FullAssetPlanningInput,
+14 |     plan_full_assets,
+   |
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.

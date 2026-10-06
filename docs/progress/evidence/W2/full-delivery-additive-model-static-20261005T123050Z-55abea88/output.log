@@ -1,0 +1,161 @@
+I001 [*] Import block is un-sorted or un-formatted
+ --> apps\api\alembic\versions\0008_command_delivery.py:3:1
+  |
+1 |   """Durable action delivery; additive metadata, no legacy financial rewrite."""
+2 |
+3 | / from collections.abc import Sequence
+4 | | from alembic import op
+  | |______________________^
+5 |
+6 |   revision: str = "0008_command_delivery"
+  |
+help: Organize imports
+  |
+3 | from collections.abc import Sequence
+4 +
+5 | from alembic import op
+  |
+
+E501 Line too long (2002 > 100)
+  --> apps\api\alembic\versions\0008_command_delivery.py:14:101
+   |
+12 | …
+13 | …
+14 | … NULL, \n\tprotocol_version VARCHAR(40) DEFAULT 'a…ERENCES users (id) ON DELETE RESTRICT\n)\n\n"
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^…^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+15 | …
+   |
+
+E501 Line too long (1730 > 100)
+  --> apps\api\alembic\versions\0008_command_delivery.py:24:101
+   |
+23 | …
+24 | …) NOT NULL, \n\tpayload_hash VARCHAR(64) NOT NULL,…ERENCES users (id) ON DELETE RESTRICT\n)\n\n"
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^…^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+25 | …
+   |
+
+E501 Line too long (1643 > 100)
+  --> apps\api\alembic\versions\0008_command_delivery.py:30:101
+   |
+29 | …
+30 | …ID NOT NULL, \n\tattempt_number INTEGER NOT NULL, …ERENCES users (id) ON DELETE RESTRICT\n)\n\n"
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^…^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+31 | …
+   |
+
+E501 Line too long (647 > 100)
+  --> apps\api\alembic\versions\0008_command_delivery.py:38:101
+   |
+37 | …
+38 | …\nBEGIN\n IF (NEW.id, NEW.user_id, NEW.created_at,… immutable';\n END IF;\n RETURN NEW;\nEND $$"
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^…^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+39 | …
+   |
+
+E501 Line too long (142 > 100)
+  --> apps\api\alembic\versions\0008_command_delivery.py:42:101
+   |
+41 | …
+42 | …UPDATE ON command_outbox FOR EACH ROW EXECUTE FUNCTION guard_command_outbox_identity()"
+   |                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+43 | …
+   |
+
+E501 Line too long (238 > 100)
+  --> apps\api\alembic\versions\0008_command_delivery.py:48:101
+   |
+46 | …
+47 | …
+48 | …inbox) OR EXISTS (SELECT 1 FROM command_delivery_attempts) THEN RAISE EXCEPTION 'Refusing to discard durable delivery history'; END IF; END $$"
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+49 | …
+50 | …
+   |
+
+F401 [*] `sqlalchemy.text` imported but unused
+ --> apps\api\app\db\full_models.py:7:89
+  |
+5 | from uuid import UUID
+6 |
+7 | from sqlalchemy import CheckConstraint, Index, Integer, String, Text, UniqueConstraint, text
+  |                                                                                         ^^^^
+8 | from sqlalchemy.dialects.postgresql import JSONB
+9 | from sqlalchemy.orm import Mapped, mapped_column
+  |
+help: Remove unused import: `sqlalchemy.text`
+  |
+6 |
+  - from sqlalchemy import CheckConstraint, Index, Integer, String, Text, UniqueConstraint, text
+7 + from sqlalchemy import CheckConstraint, Index, Integer, String, Text, UniqueConstraint
+8 | from sqlalchemy.dialects.postgresql import JSONB
+  |
+
+E501 Line too long (117 > 100)
+  --> apps\api\app\db\full_models.py:41:101
+   |
+39 |         ),
+40 |         CheckConstraint(
+41 |             "request_hash ~ '^[0-9a-f]{64}$' AND effect_hash ~ '^[0-9a-f]{64}$' AND payload_hash ~ '^[0-9a-f]{64}$'",
+   |                                                                                                     ^^^^^^^^^^^^^^^^^
+42 |             name="hashes",
+43 |         ),
+   |
+
+E501 Line too long (159 > 100)
+  --> apps\api\app\db\full_models.py:53:101
+   |
+51 | …PPED')", name="state"),
+52 | …
+53 | … OR published_at >= created_at) AND (acknowledged_at IS NULL OR acknowledged_at >= created_at)",
+   |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+54 | …
+55 | …
+   |
+
+E501 Line too long (111 > 100)
+  --> apps\api\app\db\full_models.py:79:101
+   |
+77 |         UniqueConstraint("outbox_id", "consumer_ref", name="uq_command_inbox_message_consumer"),
+78 |         CheckConstraint(
+79 |             "length(consumer_ref) BETWEEN 1 AND 80 AND payload_hash ~ '^[0-9a-f]{64}$' AND attempt_count >= 0",
+   |                                                                                                     ^^^^^^^^^^^
+80 |             name="identity",
+81 |         ),
+   |
+
+E501 Line too long (137 > 100)
+  --> apps\api\app\db\full_models.py:83:101
+   |
+81 | …
+82 | …
+83 | …ITING_CONFIRMATION', 'UNRESOLVED', 'SERVICE_RECEIPT_VERIFIED', 'STOPPED', 'FAILED')",
+   |                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+84 | …
+85 | …
+   |
+
+E501 Line too long (180 > 100)
+  --> apps\api\app\db\full_models.py:88:101
+   |
+86 | …", name="result"),
+87 | …
+88 | …started_at IS NULL OR started_at >= received_at) AND (finished_at IS NULL OR finished_at >= received_at)",
+   |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+89 | …
+90 | …
+   |
+
+E501 Line too long (137 > 100)
+   --> apps\api\app\db\full_models.py:111:101
+    |
+109 | …umber"),
+110 | …
+111 | …TING_CONFIRMATION', 'UNRESOLVED', 'SERVICE_RECEIPT_VERIFIED', 'STOPPED', 'FAILED')",
+    |                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+112 | …
+113 | …
+    |
+
+Found 14 errors.
+[*] 2 fixable with the `--fix` option.

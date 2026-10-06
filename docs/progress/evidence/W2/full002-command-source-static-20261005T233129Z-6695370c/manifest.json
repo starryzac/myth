@@ -1,0 +1,43 @@
+{
+  "run_id": "20261005T233129Z-6695370c",
+  "task": "W2",
+  "label": "full002-command-source-static",
+  "status": "FAILED",
+  "scope": [
+    "scripts/security_check.py",
+    "scripts/evidence_check.py",
+    "scripts/build_proposal.py",
+    "scripts/tests/test_full_quality_commands.py",
+    "scripts/tasks.py",
+    "Makefile"
+  ],
+  "command": [
+    "uv",
+    "--cache-dir",
+    ".uv-cache",
+    "run",
+    "--offline",
+    "ruff",
+    "check",
+    "scripts/security_check.py",
+    "scripts/evidence_check.py",
+    "scripts/build_proposal.py",
+    "scripts/tests/test_full_quality_commands.py",
+    "scripts/tasks.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T23:31:30.959057+00:00",
+  "finished_at": "2026-10-05T23:31:31.108586+00:00",
+  "wall_seconds": 0.149529,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "9a85667e3bcd5a2ad13d1ab3ae81df905904b8ee0f321c375c07086c118d5540",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

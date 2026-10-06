@@ -1,0 +1,2 @@
+apps\api\app\tests\test_full_goal_adjustments.py:499: error: Module "app.services.full_goal_adjustments" does not explicitly export attribute "preview_full_goal_model"  [attr-defined]
+Found 1 error in 1 file (checked 5 source files)

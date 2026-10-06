@@ -1,0 +1,30 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/pages/GoalsPage.test.tsx (10 tests) 1986ms
+   ✓ 完整Goal原pending仅阻挡金融分配，完整模型自身原键GET仍可恢复且不POST  388ms
+   ✓ UNKNOWN保留原身份，重建页面必须GET原件后只恢复同action，不生成新prepare键  345ms
+ ✓ src/pages/DemoConsolePage.test.tsx (12 tests) 4012ms
+   ✓ 模板候选生成不自动授权，用户复核完整字段后只确认原proposal和hash  364ms
+   ✓ 断网保留事件原epoch，禁止新事件，允许GET和显式重试同一请求  338ms
+   ✓ 有损动作具体确认后UNKNOWN保留原id/hash；再次恢复只执行原动作且不新prepare  757ms
+   ✓ 定存购入和有损早支取两段ASK各自复核，第一段确认不能自动授权第二段  778ms
+   ✓ 房租完整配置与真实边界预览复核后PATCH保持原键，断网重试同一payload  611ms
+ ✓ src/App.test.tsx (19 tests) 3262ms
+   ✓ 引导原候选刷新恢复后阻挡其他资金写入，自身只读核对入口保持可达  739ms
+   ✓ 完整目标原确认跨页阻挡新策略、引导声明和演示重置，导航仍可读  304ms
+   ✓ 九个页面导航实际切换，引导、年度、证据与投递可达并保留原演示入口  536ms
+ ✓ src/pages/OnboardingPage.test.tsx (13 tests) 5221ms
+   ✓ 真实8步cursor和50/61交易分页；浏览末步不写、不声称完成或授权  1333ms
+   ✓ 应急显式compile后GET原编译才存ref；goal仍需既有确认与账户登记，不自动授予  405ms
+   ✓ 修改义务提交新完整候选，原source/hash不变，原键GET核对后仍独立confirm  370ms
+   ✓ 声明未知NOT_FOUND保门，显式同原key/body重放后匹配lookup解除，绝无换键自动POST  464ms
+   ✓ 声明原键返回另一原body保持pending；所有新输入/请求都blocked  408ms
+   ✓ 资产cap待补不写；明确完整容忍/恢复条件后只新候选、无银行或ScenarioRPC  351ms
+   ✓ READY生活估算只读后需第二次主动声明，不以估算成功直接确认  313ms
+
+ Test Files  4 passed (4)
+      Tests  54 passed (54)
+   Start at  23:53:44
+   Duration  8.71s (transform 2.50s, setup 3.17s, collect 4.89s, tests 14.48s, environment 5.89s, prepare 1.53s)
+

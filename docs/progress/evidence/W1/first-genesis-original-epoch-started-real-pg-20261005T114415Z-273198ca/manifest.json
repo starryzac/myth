@@ -1,0 +1,40 @@
+{
+  "run_id": "20261005T114415Z-273198ca",
+  "task": "W1",
+  "label": "first-genesis-original-epoch-started-real-pg",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/tests/test_mvp_initial_facts.py",
+    "apps/api/app/services/demo_seed.py",
+    "scripts/mvp_readonly_collector.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "python",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_mvp_initial_facts.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T11:44:16.582909+00:00",
+  "finished_at": "2026-10-05T11:44:24.364778+00:00",
+  "wall_seconds": 7.781869,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "scripts/mvp_financial_metrics.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "e0e6d0d8bfedb962d446f4efe99c355845925a6bfaa5496afecc1d87c4483354",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

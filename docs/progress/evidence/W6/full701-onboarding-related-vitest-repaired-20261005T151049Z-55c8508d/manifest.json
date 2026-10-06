@@ -1,0 +1,42 @@
+{
+  "run_id": "20261005T151049Z-55c8508d",
+  "task": "W6",
+  "label": "full701-onboarding-related-vitest-repaired",
+  "status": "PASSED",
+  "scope": [
+    "apps/web/src/pages/OnboardingPage.tsx",
+    "apps/web/src/pages/OnboardingPage.test.tsx",
+    "apps/web/src/features/onboarding-draft.ts",
+    "apps/web/src/features/onboarding-draft.test.ts",
+    "apps/web/src/api/onboarding.ts",
+    "apps/web/src/api/onboarding.test.ts",
+    "apps/web/src/tests/onboarding-fixture.ts",
+    "apps/web/src/styles.css"
+  ],
+  "command": [
+    "pnpm.cmd",
+    "--filter",
+    "@bounded-funds/web",
+    "exec",
+    "vitest",
+    "run",
+    "src/api/onboarding.test.ts",
+    "src/features/onboarding-draft.test.ts",
+    "src/pages/OnboardingPage.test.tsx"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T15:10:50.439942+00:00",
+  "finished_at": "2026-10-05T15:10:56.973861+00:00",
+  "wall_seconds": 6.533919,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "b5737f6362936094e83a6dc505c5dfc3b8e7e3ee14e2a2c16c9c7e84a0c3c74e",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

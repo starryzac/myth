@@ -1,0 +1,36 @@
+{
+  "run_id": "20261006T042337Z-f9aa7602",
+  "task": "W7",
+  "label": "current-mechanism-selected-effect-types-fixture-annotation-repaired",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/full_experiment_asset_execution.py",
+    "apps/api/app/services/full_experiment_asset_execution.py",
+    "apps/api/app/tests/test_full_experiment_asset_execution.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "mypy",
+    "--strict",
+    "--follow-imports=silent",
+    "apps/api/app/domain/full_experiment_asset_execution.py",
+    "apps/api/app/services/full_experiment_asset_execution.py",
+    "apps/api/app/tests/test_full_experiment_asset_execution.py"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T04:23:39.140223+00:00",
+  "finished_at": "2026-10-06T04:23:48.606227+00:00",
+  "wall_seconds": 9.466004,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "281a094c39385b4d7b53e5db635f52158036861433c2a4975b9039e77a627a24",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

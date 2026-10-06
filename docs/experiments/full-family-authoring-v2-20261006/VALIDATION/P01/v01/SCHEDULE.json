@@ -1,0 +1,150 @@
+{
+  "actual_arm_runs": [],
+  "actual_outputs": null,
+  "all_step_ids": [
+    "initial-snapshot",
+    "epoch-read",
+    "local-user-login",
+    "cash",
+    "goal-account",
+    "living-declare",
+    "living-confirm",
+    "emergency-declare",
+    "emergency-confirm",
+    "unknown-payee-validate",
+    "unknown-payee-full",
+    "final"
+  ],
+  "case_id": "P01-v01",
+  "case_uncovered": [],
+  "formal_frozen_status": "NOT_FROZEN",
+  "independent_truth_review_status": "NOT_REVIEWED",
+  "metric_results": {
+    "A1": null,
+    "A2": null,
+    "A3": null,
+    "A4": null,
+    "A5": null,
+    "A6": null,
+    "E1": null,
+    "E2": null,
+    "E3": null,
+    "E4": null,
+    "E5": null,
+    "E6": null,
+    "E7": null,
+    "E8": null,
+    "F1": null,
+    "F2": null,
+    "F3": null,
+    "F4": null,
+    "F5": null,
+    "S1": null,
+    "S2": null,
+    "S3": null,
+    "S4": null,
+    "S5": null,
+    "S6": null,
+    "S7": null,
+    "S8": null,
+    "S9": null
+  },
+  "missing_native_full_kinds": [],
+  "operation_conditions": [
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "epoch-read"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "local-user-login"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "cash"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "goal-account"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "living-declare"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "living-confirm"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "emergency-declare"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "emergency-confirm"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "unknown-payee-validate"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "unknown-payee-full"
+    }
+  ],
+  "original_actor_events": [
+    {
+      "human": false,
+      "phase": "INITIAL_AUTHORIZATION",
+      "review": "EXACT_SERVER_PROPOSAL_HASH",
+      "step_id": "living-confirm"
+    },
+    {
+      "human": false,
+      "phase": "INITIAL_AUTHORIZATION",
+      "review": "EXACT_SERVER_PROPOSAL_HASH",
+      "step_id": "emergency-confirm"
+    },
+    {
+      "human": false,
+      "phase": "INITIAL_AUTHORIZATION",
+      "planning_confirmation_not_bank_grant": true,
+      "review": "EXACT_SERVER_FULL_CONFIGURATION",
+      "step_id": "unknown-payee-full"
+    }
+  ],
+  "protocol": "full-authored-opportunity-schedule-v1",
+  "status": "AUTHORING_NOT_FROZEN_NOT_RUN",
+  "unsupported_full_fault_pairs": [],
+  "whole_input_ref": {
+    "bytes": 5930,
+    "path": "VALIDATION/P01/v01/INPUT.json",
+    "sha256": "af4fdeda13bebe0eeca052151e98a354d06b9d66b2a639d8731c2459ca21c031"
+  },
+  "whole_truth_ref": {
+    "bytes": 9208,
+    "path": "VALIDATION/P01/v01/TRUTH.json",
+    "sha256": "a4248b8892bbb6de44d28b4adb99242781c15fb807894035267955a3ea1f4723"
+  },
+  "write_dispatch": "Root native allowlist resolves exact prior originals and validates actual DTO, user/epoch/source anew each call"
+}

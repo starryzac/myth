@@ -1,0 +1,39 @@
+{
+  "run_id": "20261006T024108Z-9f2a2115",
+  "task": "W3",
+  "label": "composed-current-actual-get-and-hidden-stale-ui-risk",
+  "status": "PASSED",
+  "scope": [
+    "apps/web/src/api/composed-action-set.ts",
+    "apps/web/src/api/composed-action-set.test.ts",
+    "apps/web/src/components/ComposedActionSetPanel.tsx",
+    "apps/web/src/components/ComposedActionSetPanel.test.tsx",
+    "apps/web/src/tests/composed-action-set-fixture.json",
+    "apps/web/src/tests/composed-action-set-fixture.ts"
+  ],
+  "command": [
+    "pnpm.cmd",
+    "--dir",
+    "apps/web",
+    "exec",
+    "vitest",
+    "run",
+    "src/components/ComposedActionSetPanel.test.tsx",
+    "src/api/composed-action-set.test.ts"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T02:41:09.555713+00:00",
+  "finished_at": "2026-10-06T02:41:14.965904+00:00",
+  "wall_seconds": 5.410191,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "8807a1046ca27360bfb70c4642eb98fc68e125936527f5eac5710a5c112a6d04",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

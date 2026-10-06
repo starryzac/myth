@@ -1,0 +1,12 @@
+E501 Line too long (101 > 100)
+  --> apps\api\app\tests\test_boundary_action_events.py:79:101
+   |
+77 |                     "earning_days": effect.purchase_exit.earning_days - 1,
+78 |                     "liquidity_days": effect.purchase_exit.liquidity_days + 1,
+79 |                     "principal_available_at": effect.purchase_exit.principal_available_at.astimezone(
+   |                                                                                                     ^
+80 |                         alternate_zone
+81 |                     ),
+   |
+
+Found 1 error.

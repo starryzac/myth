@@ -1,0 +1,33 @@
+{
+  "run_id": "20261005T135911Z-636af7af",
+  "task": "W4",
+  "label": "full-asset-domain-direct-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/domain/full_asset_allocation.py",
+    "apps/api/app/tests/test_full_asset_allocation.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "mypy",
+    "--strict",
+    "apps/api/app/domain/full_asset_allocation.py",
+    "apps/api/app/tests/test_full_asset_allocation.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T13:59:12.654986+00:00",
+  "finished_at": "2026-10-05T13:59:13.721432+00:00",
+  "wall_seconds": 1.066446,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "5a4919128027c4f092692383b15012f51cbf2888807826fed22540a220048175",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

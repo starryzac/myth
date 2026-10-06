@@ -1,0 +1,2 @@
+apps\api\app\tests\test_full_dynamic_goal_context_evidence_seam.py:93: error: Item "None" of "AssetExposure | None" has no attribute "model_copy"  [union-attr]
+Found 1 error in 1 file (checked 6 source files)

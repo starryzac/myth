@@ -1,0 +1,23 @@
+.............................F                                           [100%]
+================================== FAILURES ===================================
+_ test_expired_real_timezone_window_rejects_before_write_but_future_start_is_not_authority _
+
+    def test_expired_real_timezone_window_rejects_before_write_but_future_start_is_not_authority() -> (
+        None
+    ):
+        user = User(id=USER, timezone="Asia/Shanghai", is_simulated=True)
+        _, base = canonical_goal_bridge(
+            configuration() | {"deadline": "2026-10-04", "valid_until": "2026-10-04"}
+        )
+        with pytest.raises(PolicyLifecycleError) as failure:
+            _confirmation_window(user, base, NOW)
+>       assert failure.value.code == "EXPIRED_FULL_GOAL_WINDOW" and failure.value.status_code == 422
+E       AssertionError: assert ('INVALID_WINDOW' == 'EXPIRED_FULL_GOAL_WINDOW'
+E         
+E         - EXPIRED_FULL_GOAL_WINDOW
+E         + INVALID_WINDOW)
+
+apps\api\app\tests\test_full_goals.py:315: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_goals.py::test_expired_real_timezone_window_rejects_before_write_but_future_start_is_not_authority
+1 failed, 29 passed in 2.19s

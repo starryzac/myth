@@ -1,0 +1,20 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/components/SeasonalReserveAdoptionPanel.test.tsx (7 tests) 5136ms
+   ✓ 默认无自动POST，原建议金额只读、来源完整、未登录USER不能确认  1789ms
+   ✓ 签名USER手动复核后精确CONFIRM，POST200保原门，独立GET才能解除  615ms
+   ✓ 丢响应/NOT_FOUND保原身份，外部门及策略列表缺失也可薄GET恢复  717ms
+   ✓ 当前版本改变不能采纳旧候选，刷新当前READ_ONLY清复核不继承确认  700ms
+   ✓ 同version策略已暂停或引用UNKNOWN也不能继续旧复核，原只读GET仍可达  583ms
+   ✓ UNKNOWN来源保持null不能确认、AGENT会话不能假称USER  430ms
+   ✓ 其他族门禁POST和预览，自身持久原键GET仍可用，不依赖当前USER  301ms
+ ✓ src/App.seasonal-adoption-host.test.tsx (2 tests) 5341ms
+   ✓ 列表503和无USER仍顶层同键GET，原NOT_FOUND保门，季节pending阻年度/演示写  4395ms
+   ✓ 仅所选Seasonal读取实际owner/OPENepoch；未知周期不造scope，未来声明门仍阻采纳  943ms
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  10:05:44
+   Duration  9.40s (transform 4.35s, setup 1.12s, collect 2.22s, tests 10.48s, environment 2.10s, prepare 636ms)
+

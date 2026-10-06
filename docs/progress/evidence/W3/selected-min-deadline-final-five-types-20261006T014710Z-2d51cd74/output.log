@@ -1,0 +1,2 @@
+apps\api\app\tests\test_full_goal_adjustments_integration.py:94: error: Need type annotation for "extra"  [var-annotated]
+Found 1 error in 1 file (checked 5 source files)

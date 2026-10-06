@@ -1,0 +1,4 @@
+src/api/goal-reallocation.ts(80,112): error TS2532: Object is possibly 'undefined'.
+undefined
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 2: tsc --noEmit --target ES2022 --lib "ES2022,DOM,DOM.Iterable" --module ESNext --moduleResolution Bundler --allowImportingTsExtensions --resolveJsonModule --esModuleInterop --isolatedModules --verbatimModuleSyntax --strict --noUncheckedIndexedAccess --noUnusedLocals --noUnusedParameters --noFallthroughCasesInSwitch --skipLibCheck --jsx react-jsx --types "vite/client,node,@testing-library/jest-dom" src/api/goal-release-authorizations.ts src/api/goal-release-authorizations.test.ts src/features/goal-release-authorization-operation.ts src/features/goal-release-authorization-operation.test.ts src/components/GoalReleaseAuthorizationPanel.tsx src/components/GoalReleaseAuthorizationPanel.test.tsx src/tests/goal-release-authorization-fixture.ts

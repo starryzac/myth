@@ -1,0 +1,1774 @@
+....................................................EEEEEEEEEEEE........ [ 93%]
+....F                                                                    [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_probe_recomputed_from_complete_native_stdout_not_status _
+
+native = {'owner': {'tool_input_context': 'TOOL_ONLY', 'owner_uuid': '11111111111111111111111111111111', 'run_id': 'TOOL_ONLY_o...aa', 'io.bounded-funds.pnpm-lock-sha256': 'abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83'}}}]}, ...}
+
+    @pytest.fixture
+    def probe_fixture(native: dict[str, Any]) -> dict[str, Any]:
+        owned, _, after, _, networks_after = accounting(native)
+        directory = (
+            tool.ROOT / ".runtime/w1-offline-boundary-private" / ("TOOL_ONLY_browser_" + uuid4().hex)
+        )
+        directory.mkdir(parents=True)
+        manifest: dict[str, Any] = {
+            "tool_input_context": "TOOL_ONLY",
+            "protocol": "bounded-funds-offline-reobserve-v1",
+            "action": "probe",
+            "method": "W1_DOCKER_NETWORK_STATUS_ENDPOINT_ACCOUNTING_V1",
+            "status": "EGRESS_BOUNDARY_OBSERVED",
+            "exit_code": 0,
+            "offline_accepted": False,
+            "disconnect_executed_by_this_run": False,
+            "source_before": native["current"],
+            "source_after": native["current"],
+            "source_head": native["head"],
+            "source_head_after": native["head"],
+            "owner_uuid": owned.owner_uuid,
+            "owner_run_id": owned.owner_run_id,
+            "source_digest": owned.source_digest,
+            "artifacts": [],
+            "commands": [],
+        }
+    
+        def save(label: str, value: bytes) -> None:
+            path = directory / (label + ".original")
+            path.write_bytes(value)
+            manifest["artifacts"].append(
+                {
+                    "label": label,
+                    "private_original_path": path.relative_to(tool.ROOT).as_posix(),
+                    "private_original_sha256": tool.sha(value),
+                    "private_original_bytes": len(value),
+                }
+            )
+    
+        for label, name, field in (
+            ("producer", "scripts/w1_offline_reobserve.py", "producer"),
+            ("bridge", "scripts/demo_offline_endpoint_accounting.py", "bridge"),
+            ("source-helper", "scripts/w1_demo_deployment.py", "source_helper"),
+        ):
+            value = (tool.ROOT / name).read_bytes()
+            for phase in ("before", "after"):
+                save(label + "-" + phase, value)
+            manifest[field + "_sha256"] = manifest[field + "_after_sha256"] = tool.sha(value)
+        for phase in ("before", "after"):
+            save(phase + "-containers-stdout", after)
+            save(phase + "-networks-stdout", networks_after)
+    
+        def command(
+            label: str,
+            argv: tuple[str, ...],
+            code: int,
+            stdout: bytes,
+            stderr: bytes,
+            stdin: bytes = b"",
+        ) -> None:
+            for suffix, value in (("stdout", stdout), ("stderr", stderr)):
+                save(label + "-" + suffix, value)
+            if stdin:
+                save(label + "-stdin", stdin)
+            manifest["commands"].append(
+                {
+                    "label": label,
+                    "argv": list(argv),
+                    "exit_code": code,
+                    "stdout_sha256": tool.sha(stdout),
+                    "stderr_sha256": tool.sha(stderr),
+                    "stdin_sha256": tool.sha(stdin),
+                    "started_at": "2026-10-05T01:00:00+00:00",
+                    "finished_at": "2026-10-05T01:00:01+00:00",
+                }
+            )
+    
+        api = {
+            "protocol": "bounded-funds-api-egress-probe-v1",
+            "route_files": {
+                "/proc/net/route": "Iface Destination Gateway Flags\neth0 000018AC 00000000 0001\n",
+                "/proc/net/ipv6_route": "",
+                "/etc/resolv.conf": "nameserver127.0.0.11",
+            },
+            "targets": [
+                {
+                    "host": host,
+                    "port": port,
+                    "timeout_seconds": 3,
+                    "result": "ERROR",
+                    "errno": 101,
+                    "message": "Network is unreachable",
+                }
+                for host, port in boundary.IP_TARGETS
+            ],
+            "dns": {
+                "argv": ["/opt/bf-venv/bin/python", "-c", boundary.DNS_CODE],
+                "exit_code": 0,
+                "timeout_seconds": 4,
+                "stdout_base64": base64.b64encode(
+                    raw(
+                        {
+                            "name": boundary.DNS_NAME,
+                            "result": "GAIERROR",
+                            "errno": -2,
+                            "message": "Name is not known",
+                        }
+                    )
+                ).decode(),
+                "stderr_base64": "",
+            },
+        }
+        command(
+            "api-probe",
+            ("docker", "exec", "-i", owned.api_container_id, "/opt/bf-venv/bin/python", "-"),
+            0,
+            raw(api),
+            b"",
+            boundary.API_PROBE,
+        )
+>       observations = {"api": boundary.classify_api_probe(raw(api), 0)}
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_w1_offline_browser.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\w1_offline_boundary.py:177: in classify_api_probe
+    no_default = routes_without_default(routes["/proc/net/route"], routes["/proc/net/ipv6_route"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\w1_offline_boundary.py:150: in routes_without_default
+    require(len(fields) >= 8, "Actual IPv4 route row incomplete")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'Actual IPv4 route row incomplete'
+
+    def require(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ValueError(message)
+E           ValueError: Actual IPv4 route row incomplete
+
+scripts\demo_container_transport.py:26: ValueError
+_ ERROR at setup of test_probe_flags_cannot_replace_original_endpoint_proofs[status] _
+
+native = {'owner': {'tool_input_context': 'TOOL_ONLY', 'owner_uuid': '11111111111111111111111111111111', 'run_id': 'TOOL_ONLY_o...aa', 'io.bounded-funds.pnpm-lock-sha256': 'abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83'}}}]}, ...}
+
+    @pytest.fixture
+    def probe_fixture(native: dict[str, Any]) -> dict[str, Any]:
+        owned, _, after, _, networks_after = accounting(native)
+        directory = (
+            tool.ROOT / ".runtime/w1-offline-boundary-private" / ("TOOL_ONLY_browser_" + uuid4().hex)
+        )
+        directory.mkdir(parents=True)
+        manifest: dict[str, Any] = {
+            "tool_input_context": "TOOL_ONLY",
+            "protocol": "bounded-funds-offline-reobserve-v1",
+            "action": "probe",
+            "method": "W1_DOCKER_NETWORK_STATUS_ENDPOINT_ACCOUNTING_V1",
+            "status": "EGRESS_BOUNDARY_OBSERVED",
+            "exit_code": 0,
+            "offline_accepted": False,
+            "disconnect_executed_by_this_run": False,
+            "source_before": native["current"],
+            "source_after": native["current"],
+            "source_head": native["head"],
+            "source_head_after": native["head"],
+            "owner_uuid": owned.owner_uuid,
+            "owner_run_id": owned.owner_run_id,
+            "source_digest": owned.source_digest,
+            "artifacts": [],
+            "commands": [],
+        }
+    
+        def save(label: str, value: bytes) -> None:
+            path = directory / (label + ".original")
+            path.write_bytes(value)
+            manifest["artifacts"].append(
+                {
+                    "label": label,
+                    "private_original_path": path.relative_to(tool.ROOT).as_posix(),
+                    "private_original_sha256": tool.sha(value),
+                    "private_original_bytes": len(value),
+                }
+            )
+    
+        for label, name, field in (
+            ("producer", "scripts/w1_offline_reobserve.py", "producer"),
+            ("bridge", "scripts/demo_offline_endpoint_accounting.py", "bridge"),
+            ("source-helper", "scripts/w1_demo_deployment.py", "source_helper"),
+        ):
+            value = (tool.ROOT / name).read_bytes()
+            for phase in ("before", "after"):
+                save(label + "-" + phase, value)
+            manifest[field + "_sha256"] = manifest[field + "_after_sha256"] = tool.sha(value)
+        for phase in ("before", "after"):
+            save(phase + "-containers-stdout", after)
+            save(phase + "-networks-stdout", networks_after)
+    
+        def command(
+            label: str,
+            argv: tuple[str, ...],
+            code: int,
+            stdout: bytes,
+            stderr: bytes,
+            stdin: bytes = b"",
+        ) -> None:
+            for suffix, value in (("stdout", stdout), ("stderr", stderr)):
+                save(label + "-" + suffix, value)
+            if stdin:
+                save(label + "-stdin", stdin)
+            manifest["commands"].append(
+                {
+                    "label": label,
+                    "argv": list(argv),
+                    "exit_code": code,
+                    "stdout_sha256": tool.sha(stdout),
+                    "stderr_sha256": tool.sha(stderr),
+                    "stdin_sha256": tool.sha(stdin),
+                    "started_at": "2026-10-05T01:00:00+00:00",
+                    "finished_at": "2026-10-05T01:00:01+00:00",
+                }
+            )
+    
+        api = {
+            "protocol": "bounded-funds-api-egress-probe-v1",
+            "route_files": {
+                "/proc/net/route": "Iface Destination Gateway Flags\neth0 000018AC 00000000 0001\n",
+                "/proc/net/ipv6_route": "",
+                "/etc/resolv.conf": "nameserver127.0.0.11",
+            },
+            "targets": [
+                {
+                    "host": host,
+                    "port": port,
+                    "timeout_seconds": 3,
+                    "result": "ERROR",
+                    "errno": 101,
+                    "message": "Network is unreachable",
+                }
+                for host, port in boundary.IP_TARGETS
+            ],
+            "dns": {
+                "argv": ["/opt/bf-venv/bin/python", "-c", boundary.DNS_CODE],
+                "exit_code": 0,
+                "timeout_seconds": 4,
+                "stdout_base64": base64.b64encode(
+                    raw(
+                        {
+                            "name": boundary.DNS_NAME,
+                            "result": "GAIERROR",
+                            "errno": -2,
+                            "message": "Name is not known",
+                        }
+                    )
+                ).decode(),
+                "stderr_base64": "",
+            },
+        }
+        command(
+            "api-probe",
+            ("docker", "exec", "-i", owned.api_container_id, "/opt/bf-venv/bin/python", "-"),
+            0,
+            raw(api),
+            b"",
+            boundary.API_PROBE,
+        )
+>       observations = {"api": boundary.classify_api_probe(raw(api), 0)}
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_w1_offline_browser.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\w1_offline_boundary.py:177: in classify_api_probe
+    no_default = routes_without_default(routes["/proc/net/route"], routes["/proc/net/ipv6_route"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\w1_offline_boundary.py:150: in routes_without_default
+    require(len(fields) >= 8, "Actual IPv4 route row incomplete")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'Actual IPv4 route row incomplete'
+
+    def require(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ValueError(message)
+E           ValueError: Actual IPv4 route row incomplete
+
+scripts\demo_container_transport.py:26: ValueError
+_ ERROR at setup of test_probe_flags_cannot_replace_original_endpoint_proofs[owner] _
+
+native = {'owner': {'tool_input_context': 'TOOL_ONLY', 'owner_uuid': '11111111111111111111111111111111', 'run_id': 'TOOL_ONLY_o...aa', 'io.bounded-funds.pnpm-lock-sha256': 'abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83'}}}]}, ...}
+
+    @pytest.fixture
+    def probe_fixture(native: dict[str, Any]) -> dict[str, Any]:
+        owned, _, after, _, networks_after = accounting(native)
+        directory = (
+            tool.ROOT / ".runtime/w1-offline-boundary-private" / ("TOOL_ONLY_browser_" + uuid4().hex)
+        )
+        directory.mkdir(parents=True)
+        manifest: dict[str, Any] = {
+            "tool_input_context": "TOOL_ONLY",
+            "protocol": "bounded-funds-offline-reobserve-v1",
+            "action": "probe",
+            "method": "W1_DOCKER_NETWORK_STATUS_ENDPOINT_ACCOUNTING_V1",
+            "status": "EGRESS_BOUNDARY_OBSERVED",
+            "exit_code": 0,
+            "offline_accepted": False,
+            "disconnect_executed_by_this_run": False,
+            "source_before": native["current"],
+            "source_after": native["current"],
+            "source_head": native["head"],
+            "source_head_after": native["head"],
+            "owner_uuid": owned.owner_uuid,
+            "owner_run_id": owned.owner_run_id,
+            "source_digest": owned.source_digest,
+            "artifacts": [],
+            "commands": [],
+        }
+    
+        def save(label: str, value: bytes) -> None:
+            path = directory / (label + ".original")
+            path.write_bytes(value)
+            manifest["artifacts"].append(
+                {
+                    "label": label,
+                    "private_original_path": path.relative_to(tool.ROOT).as_posix(),
+                    "private_original_sha256": tool.sha(value),
+                    "private_original_bytes": len(value),
+                }
+            )
+    
+        for label, name, field in (
+            ("producer", "scripts/w1_offline_reobserve.py", "producer"),
+            ("bridge", "scripts/demo_offline_endpoint_accounting.py", "bridge"),
+            ("source-helper", "scripts/w1_demo_deployment.py", "source_helper"),
+        ):
+            value = (tool.ROOT / name).read_bytes()
+            for phase in ("before", "after"):
+                save(label + "-" + phase, value)
+            manifest[field + "_sha256"] = manifest[field + "_after_sha256"] = tool.sha(value)
+        for phase in ("before", "after"):
+            save(phase + "-containers-stdout", after)
+            save(phase + "-networks-stdout", networks_after)
+    
+        def command(
+            label: str,
+            argv: tuple[str, ...],
+            code: int,
+            stdout: bytes,
+            stderr: bytes,
+            stdin: bytes = b"",
+        ) -> None:
+            for suffix, value in (("stdout", stdout), ("stderr", stderr)):
+                save(label + "-" + suffix, value)
+            if stdin:
+                save(label + "-stdin", stdin)
+            manifest["commands"].append(
+                {
+                    "label": label,
+                    "argv": list(argv),
+                    "exit_code": code,
+                    "stdout_sha256": tool.sha(stdout),
+                    "stderr_sha256": tool.sha(stderr),
+                    "stdin_sha256": tool.sha(stdin),
+                    "started_at": "2026-10-05T01:00:00+00:00",
+                    "finished_at": "2026-10-05T01:00:01+00:00",
+                }
+            )
+    
+        api = {
+            "protocol": "bounded-funds-api-egress-probe-v1",
+            "route_files": {
+                "/proc/net/route": "Iface Destination Gateway Flags\neth0 000018AC 00000000 0001\n",
+                "/proc/net/ipv6_route": "",
+                "/etc/resolv.conf": "nameserver127.0.0.11",
+            },
+            "targets": [
+                {
+                    "host": host,
+                    "port": port,
+                    "timeout_seconds": 3,
+                    "result": "ERROR",
+                    "errno": 101,
+                    "message": "Network is unreachable",
+                }
+                for host, port in boundary.IP_TARGETS
+            ],
+            "dns": {
+                "argv": ["/opt/bf-venv/bin/python", "-c", boundary.DNS_CODE],
+                "exit_code": 0,
+                "timeout_seconds": 4,
+                "stdout_base64": base64.b64encode(
+                    raw(
+                        {
+                            "name": boundary.DNS_NAME,
+                            "result": "GAIERROR",
+                            "errno": -2,
+                            "message": "Name is not known",
+                        }
+                    )
+                ).decode(),
+                "stderr_base64": "",
+            },
+        }
+        command(
+            "api-probe",
+            ("docker", "exec", "-i", owned.api_container_id, "/opt/bf-venv/bin/python", "-"),
+            0,
+            raw(api),
+            b"",
+            boundary.API_PROBE,
+        )
+>       observations = {"api": boundary.classify_api_probe(raw(api), 0)}
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_w1_offline_browser.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\w1_offline_boundary.py:177: in classify_api_probe
+    no_default = routes_without_default(routes["/proc/net/route"], routes["/proc/net/ipv6_route"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\w1_offline_boundary.py:150: in routes_without_default
+    require(len(fields) >= 8, "Actual IPv4 route row incomplete")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'Actual IPv4 route row incomplete'
+
+    def require(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ValueError(message)
+E           ValueError: Actual IPv4 route row incomplete
+
+scripts\demo_container_transport.py:26: ValueError
+_ ERROR at setup of test_probe_flags_cannot_replace_original_endpoint_proofs[source] _
+
+native = {'owner': {'tool_input_context': 'TOOL_ONLY', 'owner_uuid': '11111111111111111111111111111111', 'run_id': 'TOOL_ONLY_o...aa', 'io.bounded-funds.pnpm-lock-sha256': 'abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83'}}}]}, ...}
+
+    @pytest.fixture
+    def probe_fixture(native: dict[str, Any]) -> dict[str, Any]:
+        owned, _, after, _, networks_after = accounting(native)
+        directory = (
+            tool.ROOT / ".runtime/w1-offline-boundary-private" / ("TOOL_ONLY_browser_" + uuid4().hex)
+        )
+        directory.mkdir(parents=True)
+        manifest: dict[str, Any] = {
+            "tool_input_context": "TOOL_ONLY",
+            "protocol": "bounded-funds-offline-reobserve-v1",
+            "action": "probe",
+            "method": "W1_DOCKER_NETWORK_STATUS_ENDPOINT_ACCOUNTING_V1",
+            "status": "EGRESS_BOUNDARY_OBSERVED",
+            "exit_code": 0,
+            "offline_accepted": False,
+            "disconnect_executed_by_this_run": False,
+            "source_before": native["current"],
+            "source_after": native["current"],
+            "source_head": native["head"],
+            "source_head_after": native["head"],
+            "owner_uuid": owned.owner_uuid,
+            "owner_run_id": owned.owner_run_id,
+            "source_digest": owned.source_digest,
+            "artifacts": [],
+            "commands": [],
+        }
+    
+        def save(label: str, value: bytes) -> None:
+            path = directory / (label + ".original")
+            path.write_bytes(value)
+            manifest["artifacts"].append(
+                {
+                    "label": label,
+                    "private_original_path": path.relative_to(tool.ROOT).as_posix(),
+                    "private_original_sha256": tool.sha(value),
+                    "private_original_bytes": len(value),
+                }
+            )
+    
+        for label, name, field in (
+            ("producer", "scripts/w1_offline_reobserve.py", "producer"),
+            ("bridge", "scripts/demo_offline_endpoint_accounting.py", "bridge"),
+            ("source-helper", "scripts/w1_demo_deployment.py", "source_helper"),
+        ):
+            value = (tool.ROOT / name).read_bytes()
+            for phase in ("before", "after"):
+                save(label + "-" + phase, value)
+            manifest[field + "_sha256"] = manifest[field + "_after_sha256"] = tool.sha(value)
+        for phase in ("before", "after"):
+            save(phase + "-containers-stdout", after)
+            save(phase + "-networks-stdout", networks_after)
+    
+        def command(
+            label: str,
+            argv: tuple[str, ...],
+            code: int,
+            stdout: bytes,
+            stderr: bytes,
+            stdin: bytes = b"",
+        ) -> None:
+            for suffix, value in (("stdout", stdout), ("stderr", stderr)):
+                save(label + "-" + suffix, value)
+            if stdin:
+                save(label + "-stdin", stdin)
+            manifest["commands"].append(
+                {
+                    "label": label,
+                    "argv": list(argv),
+                    "exit_code": code,
+                    "stdout_sha256": tool.sha(stdout),
+                    "stderr_sha256": tool.sha(stderr),
+                    "stdin_sha256": tool.sha(stdin),
+                    "started_at": "2026-10-05T01:00:00+00:00",
+                    "finished_at": "2026-10-05T01:00:01+00:00",
+                }
+            )
+    
+        api = {
+            "protocol": "bounded-funds-api-egress-probe-v1",
+            "route_files": {
+                "/proc/net/route": "Iface Destination Gateway Flags\neth0 000018AC 00000000 0001\n",
+                "/proc/net/ipv6_route": "",
+                "/etc/resolv.conf": "nameserver127.0.0.11",
+            },
+            "targets": [
+                {
+                    "host": host,
+                    "port": port,
+                    "timeout_seconds": 3,
+                    "result": "ERROR",
+                    "errno": 101,
+                    "message": "Network is unreachable",
+                }
+                for host, port in boundary.IP_TARGETS
+            ],
+            "dns": {
+                "argv": ["/opt/bf-venv/bin/python", "-c", boundary.DNS_CODE],
+                "exit_code": 0,
+                "timeout_seconds": 4,
+                "stdout_base64": base64.b64encode(
+                    raw(
+                        {
+                            "name": boundary.DNS_NAME,
+                            "result": "GAIERROR",
+                            "errno": -2,
+                            "message": "Name is not known",
+                        }
+                    )
+                ).decode(),
+                "stderr_base64": "",
+            },
+        }
+        command(
+            "api-probe",
+            ("docker", "exec", "-i", owned.api_container_id, "/opt/bf-venv/bin/python", "-"),
+            0,
+            raw(api),
+            b"",
+            boundary.API_PROBE,
+        )
+>       observations = {"api": boundary.classify_api_probe(raw(api), 0)}
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_w1_offline_browser.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\w1_offline_boundary.py:177: in classify_api_probe
+    no_default = routes_without_default(routes["/proc/net/route"], routes["/proc/net/ipv6_route"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\w1_offline_boundary.py:150: in routes_without_default
+    require(len(fields) >= 8, "Actual IPv4 route row incomplete")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'Actual IPv4 route row incomplete'
+
+    def require(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ValueError(message)
+E           ValueError: Actual IPv4 route row incomplete
+
+scripts\demo_container_transport.py:26: ValueError
+_ ERROR at setup of test_probe_flags_cannot_replace_original_endpoint_proofs[head] _
+
+native = {'owner': {'tool_input_context': 'TOOL_ONLY', 'owner_uuid': '11111111111111111111111111111111', 'run_id': 'TOOL_ONLY_o...aa', 'io.bounded-funds.pnpm-lock-sha256': 'abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83'}}}]}, ...}
+
+    @pytest.fixture
+    def probe_fixture(native: dict[str, Any]) -> dict[str, Any]:
+        owned, _, after, _, networks_after = accounting(native)
+        directory = (
+            tool.ROOT / ".runtime/w1-offline-boundary-private" / ("TOOL_ONLY_browser_" + uuid4().hex)
+        )
+        directory.mkdir(parents=True)
+        manifest: dict[str, Any] = {
+            "tool_input_context": "TOOL_ONLY",
+            "protocol": "bounded-funds-offline-reobserve-v1",
+            "action": "probe",
+            "method": "W1_DOCKER_NETWORK_STATUS_ENDPOINT_ACCOUNTING_V1",
+            "status": "EGRESS_BOUNDARY_OBSERVED",
+            "exit_code": 0,
+            "offline_accepted": False,
+            "disconnect_executed_by_this_run": False,
+            "source_before": native["current"],
+            "source_after": native["current"],
+            "source_head": native["head"],
+            "source_head_after": native["head"],
+            "owner_uuid": owned.owner_uuid,
+            "owner_run_id": owned.owner_run_id,
+            "source_digest": owned.source_digest,
+            "artifacts": [],
+            "commands": [],
+        }
+    
+        def save(label: str, value: bytes) -> None:
+            path = directory / (label + ".original")
+            path.write_bytes(value)
+            manifest["artifacts"].append(
+                {
+                    "label": label,
+                    "private_original_path": path.relative_to(tool.ROOT).as_posix(),
+                    "private_original_sha256": tool.sha(value),
+                    "private_original_bytes": len(value),
+                }
+            )
+    
+        for label, name, field in (
+            ("producer", "scripts/w1_offline_reobserve.py", "producer"),
+            ("bridge", "scripts/demo_offline_endpoint_accounting.py", "bridge"),
+            ("source-helper", "scripts/w1_demo_deployment.py", "source_helper"),
+        ):
+            value = (tool.ROOT / name).read_bytes()
+            for phase in ("before", "after"):
+                save(label + "-" + phase, value)
+            manifest[field + "_sha256"] = manifest[field + "_after_sha256"] = tool.sha(value)
+        for phase in ("before", "after"):
+            save(phase + "-containers-stdout", after)
+            save(phase + "-networks-stdout", networks_after)
+    
+        def command(
+            label: str,
+            argv: tuple[str, ...],
+            code: int,
+            stdout: bytes,
+            stderr: bytes,
+            stdin: bytes = b"",
+        ) -> None:
+            for suffix, value in (("stdout", stdout), ("stderr", stderr)):
+                save(label + "-" + suffix, value)
+            if stdin:
+                save(label + "-stdin", stdin)
+            manifest["commands"].append(
+                {
+                    "label": label,
+                    "argv": list(argv),
+                    "exit_code": code,
+                    "stdout_sha256": tool.sha(stdout),
+                    "stderr_sha256": tool.sha(stderr),
+                    "stdin_sha256": tool.sha(stdin),
+                    "started_at": "2026-10-05T01:00:00+00:00",
+                    "finished_at": "2026-10-05T01:00:01+00:00",
+                }
+            )
+    
+        api = {
+            "protocol": "bounded-funds-api-egress-probe-v1",
+            "route_files": {
+                "/proc/net/route": "Iface Destination Gateway Flags\neth0 000018AC 00000000 0001\n",
+                "/proc/net/ipv6_route": "",
+                "/etc/resolv.conf": "nameserver127.0.0.11",
+            },
+            "targets": [
+                {
+                    "host": host,
+                    "port": port,
+                    "timeout_seconds": 3,
+                    "result": "ERROR",
+                    "errno": 101,
+                    "message": "Network is unreachable",
+                }
+                for host, port in boundary.IP_TARGETS
+            ],
+            "dns": {
+                "argv": ["/opt/bf-venv/bin/python", "-c", boundary.DNS_CODE],
+                "exit_code": 0,
+                "timeout_seconds": 4,
+                "stdout_base64": base64.b64encode(
+                    raw(
+                        {
+                            "name": boundary.DNS_NAME,
+                            "result": "GAIERROR",
+                            "errno": -2,
+                            "message": "Name is not known",
+                        }
+                    )
+                ).decode(),
+                "stderr_base64": "",
+            },
+        }
+        command(
+            "api-probe",
+            ("docker", "exec", "-i", owned.api_container_id, "/opt/bf-venv/bin/python", "-"),
+            0,
+            raw(api),
+            b"",
+            boundary.API_PROBE,
+        )
+>       observations = {"api": boundary.classify_api_probe(raw(api), 0)}
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_w1_offline_browser.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\w1_offline_boundary.py:177: in classify_api_probe
+    no_default = routes_without_default(routes["/proc/net/route"], routes["/proc/net/ipv6_route"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\w1_offline_boundary.py:150: in routes_without_default
+    require(len(fields) >= 8, "Actual IPv4 route row incomplete")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'Actual IPv4 route row incomplete'
+
+    def require(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ValueError(message)
+E           ValueError: Actual IPv4 route row incomplete
+
+scripts\demo_container_transport.py:26: ValueError
+_ ERROR at setup of test_probe_flags_cannot_replace_original_endpoint_proofs[missing] _
+
+native = {'owner': {'tool_input_context': 'TOOL_ONLY', 'owner_uuid': '11111111111111111111111111111111', 'run_id': 'TOOL_ONLY_o...aa', 'io.bounded-funds.pnpm-lock-sha256': 'abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83'}}}]}, ...}
+
+    @pytest.fixture
+    def probe_fixture(native: dict[str, Any]) -> dict[str, Any]:
+        owned, _, after, _, networks_after = accounting(native)
+        directory = (
+            tool.ROOT / ".runtime/w1-offline-boundary-private" / ("TOOL_ONLY_browser_" + uuid4().hex)
+        )
+        directory.mkdir(parents=True)
+        manifest: dict[str, Any] = {
+            "tool_input_context": "TOOL_ONLY",
+            "protocol": "bounded-funds-offline-reobserve-v1",
+            "action": "probe",
+            "method": "W1_DOCKER_NETWORK_STATUS_ENDPOINT_ACCOUNTING_V1",
+            "status": "EGRESS_BOUNDARY_OBSERVED",
+            "exit_code": 0,
+            "offline_accepted": False,
+            "disconnect_executed_by_this_run": False,
+            "source_before": native["current"],
+            "source_after": native["current"],
+            "source_head": native["head"],
+            "source_head_after": native["head"],
+            "owner_uuid": owned.owner_uuid,
+            "owner_run_id": owned.owner_run_id,
+            "source_digest": owned.source_digest,
+            "artifacts": [],
+            "commands": [],
+        }
+    
+        def save(label: str, value: bytes) -> None:
+            path = directory / (label + ".original")
+            path.write_bytes(value)
+            manifest["artifacts"].append(
+                {
+                    "label": label,
+                    "private_original_path": path.relative_to(tool.ROOT).as_posix(),
+                    "private_original_sha256": tool.sha(value),
+                    "private_original_bytes": len(value),
+                }
+            )
+    
+        for label, name, field in (
+            ("producer", "scripts/w1_offline_reobserve.py", "producer"),
+            ("bridge", "scripts/demo_offline_endpoint_accounting.py", "bridge"),
+            ("source-helper", "scripts/w1_demo_deployment.py", "source_helper"),
+        ):
+            value = (tool.ROOT / name).read_bytes()
+            for phase in ("before", "after"):
+                save(label + "-" + phase, value)
+            manifest[field + "_sha256"] = manifest[field + "_after_sha256"] = tool.sha(value)
+        for phase in ("before", "after"):
+            save(phase + "-containers-stdout", after)
+            save(phase + "-networks-stdout", networks_after)
+    
+        def command(
+            label: str,
+            argv: tuple[str, ...],
+            code: int,
+            stdout: bytes,
+            stderr: bytes,
+            stdin: bytes = b"",
+        ) -> None:
+            for suffix, value in (("stdout", stdout), ("stderr", stderr)):
+                save(label + "-" + suffix, value)
+            if stdin:
+                save(label + "-stdin", stdin)
+            manifest["commands"].append(
+                {
+                    "label": label,
+                    "argv": list(argv),
+                    "exit_code": code,
+                    "stdout_sha256": tool.sha(stdout),
+                    "stderr_sha256": tool.sha(stderr),
+                    "stdin_sha256": tool.sha(stdin),
+                    "started_at": "2026-10-05T01:00:00+00:00",
+                    "finished_at": "2026-10-05T01:00:01+00:00",
+                }
+            )
+    
+        api = {
+            "protocol": "bounded-funds-api-egress-probe-v1",
+            "route_files": {
+                "/proc/net/route": "Iface Destination Gateway Flags\neth0 000018AC 00000000 0001\n",
+                "/proc/net/ipv6_route": "",
+                "/etc/resolv.conf": "nameserver127.0.0.11",
+            },
+            "targets": [
+                {
+                    "host": host,
+                    "port": port,
+                    "timeout_seconds": 3,
+                    "result": "ERROR",
+                    "errno": 101,
+                    "message": "Network is unreachable",
+                }
+                for host, port in boundary.IP_TARGETS
+            ],
+            "dns": {
+                "argv": ["/opt/bf-venv/bin/python", "-c", boundary.DNS_CODE],
+                "exit_code": 0,
+                "timeout_seconds": 4,
+                "stdout_base64": base64.b64encode(
+                    raw(
+                        {
+                            "name": boundary.DNS_NAME,
+                            "result": "GAIERROR",
+                            "errno": -2,
+                            "message": "Name is not known",
+                        }
+                    )
+                ).decode(),
+                "stderr_base64": "",
+            },
+        }
+        command(
+            "api-probe",
+            ("docker", "exec", "-i", owned.api_container_id, "/opt/bf-venv/bin/python", "-"),
+            0,
+            raw(api),
+            b"",
+            boundary.API_PROBE,
+        )
+>       observations = {"api": boundary.classify_api_probe(raw(api), 0)}
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_w1_offline_browser.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\w1_offline_boundary.py:177: in classify_api_probe
+    no_default = routes_without_default(routes["/proc/net/route"], routes["/proc/net/ipv6_route"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\w1_offline_boundary.py:150: in routes_without_default
+    require(len(fields) >= 8, "Actual IPv4 route row incomplete")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'Actual IPv4 route row incomplete'
+
+    def require(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ValueError(message)
+E           ValueError: Actual IPv4 route row incomplete
+
+scripts\demo_container_transport.py:26: ValueError
+_ ERROR at setup of test_probe_flags_cannot_replace_original_endpoint_proofs[bytes] _
+
+native = {'owner': {'tool_input_context': 'TOOL_ONLY', 'owner_uuid': '11111111111111111111111111111111', 'run_id': 'TOOL_ONLY_o...aa', 'io.bounded-funds.pnpm-lock-sha256': 'abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83'}}}]}, ...}
+
+    @pytest.fixture
+    def probe_fixture(native: dict[str, Any]) -> dict[str, Any]:
+        owned, _, after, _, networks_after = accounting(native)
+        directory = (
+            tool.ROOT / ".runtime/w1-offline-boundary-private" / ("TOOL_ONLY_browser_" + uuid4().hex)
+        )
+        directory.mkdir(parents=True)
+        manifest: dict[str, Any] = {
+            "tool_input_context": "TOOL_ONLY",
+            "protocol": "bounded-funds-offline-reobserve-v1",
+            "action": "probe",
+            "method": "W1_DOCKER_NETWORK_STATUS_ENDPOINT_ACCOUNTING_V1",
+            "status": "EGRESS_BOUNDARY_OBSERVED",
+            "exit_code": 0,
+            "offline_accepted": False,
+            "disconnect_executed_by_this_run": False,
+            "source_before": native["current"],
+            "source_after": native["current"],
+            "source_head": native["head"],
+            "source_head_after": native["head"],
+            "owner_uuid": owned.owner_uuid,
+            "owner_run_id": owned.owner_run_id,
+            "source_digest": owned.source_digest,
+            "artifacts": [],
+            "commands": [],
+        }
+    
+        def save(label: str, value: bytes) -> None:
+            path = directory / (label + ".original")
+            path.write_bytes(value)
+            manifest["artifacts"].append(
+                {
+                    "label": label,
+                    "private_original_path": path.relative_to(tool.ROOT).as_posix(),
+                    "private_original_sha256": tool.sha(value),
+                    "private_original_bytes": len(value),
+                }
+            )
+    
+        for label, name, field in (
+            ("producer", "scripts/w1_offline_reobserve.py", "producer"),
+            ("bridge", "scripts/demo_offline_endpoint_accounting.py", "bridge"),
+            ("source-helper", "scripts/w1_demo_deployment.py", "source_helper"),
+        ):
+            value = (tool.ROOT / name).read_bytes()
+            for phase in ("before", "after"):
+                save(label + "-" + phase, value)
+            manifest[field + "_sha256"] = manifest[field + "_after_sha256"] = tool.sha(value)
+        for phase in ("before", "after"):
+            save(phase + "-containers-stdout", after)
+            save(phase + "-networks-stdout", networks_after)
+    
+        def command(
+            label: str,
+            argv: tuple[str, ...],
+            code: int,
+            stdout: bytes,
+            stderr: bytes,
+            stdin: bytes = b"",
+        ) -> None:
+            for suffix, value in (("stdout", stdout), ("stderr", stderr)):
+                save(label + "-" + suffix, value)
+            if stdin:
+                save(label + "-stdin", stdin)
+            manifest["commands"].append(
+                {
+                    "label": label,
+                    "argv": list(argv),
+                    "exit_code": code,
+                    "stdout_sha256": tool.sha(stdout),
+                    "stderr_sha256": tool.sha(stderr),
+                    "stdin_sha256": tool.sha(stdin),
+                    "started_at": "2026-10-05T01:00:00+00:00",
+                    "finished_at": "2026-10-05T01:00:01+00:00",
+                }
+            )
+    
+        api = {
+            "protocol": "bounded-funds-api-egress-probe-v1",
+            "route_files": {
+                "/proc/net/route": "Iface Destination Gateway Flags\neth0 000018AC 00000000 0001\n",
+                "/proc/net/ipv6_route": "",
+                "/etc/resolv.conf": "nameserver127.0.0.11",
+            },
+            "targets": [
+                {
+                    "host": host,
+                    "port": port,
+                    "timeout_seconds": 3,
+                    "result": "ERROR",
+                    "errno": 101,
+                    "message": "Network is unreachable",
+                }
+                for host, port in boundary.IP_TARGETS
+            ],
+            "dns": {
+                "argv": ["/opt/bf-venv/bin/python", "-c", boundary.DNS_CODE],
+                "exit_code": 0,
+                "timeout_seconds": 4,
+                "stdout_base64": base64.b64encode(
+                    raw(
+                        {
+                            "name": boundary.DNS_NAME,
+                            "result": "GAIERROR",
+                            "errno": -2,
+                            "message": "Name is not known",
+                        }
+                    )
+                ).decode(),
+                "stderr_base64": "",
+            },
+        }
+        command(
+            "api-probe",
+            ("docker", "exec", "-i", owned.api_container_id, "/opt/bf-venv/bin/python", "-"),
+            0,
+            raw(api),
+            b"",
+            boundary.API_PROBE,
+        )
+>       observations = {"api": boundary.classify_api_probe(raw(api), 0)}
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_w1_offline_browser.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\w1_offline_boundary.py:177: in classify_api_probe
+    no_default = routes_without_default(routes["/proc/net/route"], routes["/proc/net/ipv6_route"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\w1_offline_boundary.py:150: in routes_without_default
+    require(len(fields) >= 8, "Actual IPv4 route row incomplete")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'Actual IPv4 route row incomplete'
+
+    def require(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ValueError(message)
+E           ValueError: Actual IPv4 route row incomplete
+
+scripts\demo_container_transport.py:26: ValueError
+_ ERROR at setup of test_probe_flags_cannot_replace_original_endpoint_proofs[argv] _
+
+native = {'owner': {'tool_input_context': 'TOOL_ONLY', 'owner_uuid': '11111111111111111111111111111111', 'run_id': 'TOOL_ONLY_o...aa', 'io.bounded-funds.pnpm-lock-sha256': 'abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83'}}}]}, ...}
+
+    @pytest.fixture
+    def probe_fixture(native: dict[str, Any]) -> dict[str, Any]:
+        owned, _, after, _, networks_after = accounting(native)
+        directory = (
+            tool.ROOT / ".runtime/w1-offline-boundary-private" / ("TOOL_ONLY_browser_" + uuid4().hex)
+        )
+        directory.mkdir(parents=True)
+        manifest: dict[str, Any] = {
+            "tool_input_context": "TOOL_ONLY",
+            "protocol": "bounded-funds-offline-reobserve-v1",
+            "action": "probe",
+            "method": "W1_DOCKER_NETWORK_STATUS_ENDPOINT_ACCOUNTING_V1",
+            "status": "EGRESS_BOUNDARY_OBSERVED",
+            "exit_code": 0,
+            "offline_accepted": False,
+            "disconnect_executed_by_this_run": False,
+            "source_before": native["current"],
+            "source_after": native["current"],
+            "source_head": native["head"],
+            "source_head_after": native["head"],
+            "owner_uuid": owned.owner_uuid,
+            "owner_run_id": owned.owner_run_id,
+            "source_digest": owned.source_digest,
+            "artifacts": [],
+            "commands": [],
+        }
+    
+        def save(label: str, value: bytes) -> None:
+            path = directory / (label + ".original")
+            path.write_bytes(value)
+            manifest["artifacts"].append(
+                {
+                    "label": label,
+                    "private_original_path": path.relative_to(tool.ROOT).as_posix(),
+                    "private_original_sha256": tool.sha(value),
+                    "private_original_bytes": len(value),
+                }
+            )
+    
+        for label, name, field in (
+            ("producer", "scripts/w1_offline_reobserve.py", "producer"),
+            ("bridge", "scripts/demo_offline_endpoint_accounting.py", "bridge"),
+            ("source-helper", "scripts/w1_demo_deployment.py", "source_helper"),
+        ):
+            value = (tool.ROOT / name).read_bytes()
+            for phase in ("before", "after"):
+                save(label + "-" + phase, value)
+            manifest[field + "_sha256"] = manifest[field + "_after_sha256"] = tool.sha(value)
+        for phase in ("before", "after"):
+            save(phase + "-containers-stdout", after)
+            save(phase + "-networks-stdout", networks_after)
+    
+        def command(
+            label: str,
+            argv: tuple[str, ...],
+            code: int,
+            stdout: bytes,
+            stderr: bytes,
+            stdin: bytes = b"",
+        ) -> None:
+            for suffix, value in (("stdout", stdout), ("stderr", stderr)):
+                save(label + "-" + suffix, value)
+            if stdin:
+                save(label + "-stdin", stdin)
+            manifest["commands"].append(
+                {
+                    "label": label,
+                    "argv": list(argv),
+                    "exit_code": code,
+                    "stdout_sha256": tool.sha(stdout),
+                    "stderr_sha256": tool.sha(stderr),
+                    "stdin_sha256": tool.sha(stdin),
+                    "started_at": "2026-10-05T01:00:00+00:00",
+                    "finished_at": "2026-10-05T01:00:01+00:00",
+                }
+            )
+    
+        api = {
+            "protocol": "bounded-funds-api-egress-probe-v1",
+            "route_files": {
+                "/proc/net/route": "Iface Destination Gateway Flags\neth0 000018AC 00000000 0001\n",
+                "/proc/net/ipv6_route": "",
+                "/etc/resolv.conf": "nameserver127.0.0.11",
+            },
+            "targets": [
+                {
+                    "host": host,
+                    "port": port,
+                    "timeout_seconds": 3,
+                    "result": "ERROR",
+                    "errno": 101,
+                    "message": "Network is unreachable",
+                }
+                for host, port in boundary.IP_TARGETS
+            ],
+            "dns": {
+                "argv": ["/opt/bf-venv/bin/python", "-c", boundary.DNS_CODE],
+                "exit_code": 0,
+                "timeout_seconds": 4,
+                "stdout_base64": base64.b64encode(
+                    raw(
+                        {
+                            "name": boundary.DNS_NAME,
+                            "result": "GAIERROR",
+                            "errno": -2,
+                            "message": "Name is not known",
+                        }
+                    )
+                ).decode(),
+                "stderr_base64": "",
+            },
+        }
+        command(
+            "api-probe",
+            ("docker", "exec", "-i", owned.api_container_id, "/opt/bf-venv/bin/python", "-"),
+            0,
+            raw(api),
+            b"",
+            boundary.API_PROBE,
+        )
+>       observations = {"api": boundary.classify_api_probe(raw(api), 0)}
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_w1_offline_browser.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\w1_offline_boundary.py:177: in classify_api_probe
+    no_default = routes_without_default(routes["/proc/net/route"], routes["/proc/net/ipv6_route"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\w1_offline_boundary.py:150: in routes_without_default
+    require(len(fields) >= 8, "Actual IPv4 route row incomplete")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'Actual IPv4 route row incomplete'
+
+    def require(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ValueError(message)
+E           ValueError: Actual IPv4 route row incomplete
+
+scripts\demo_container_transport.py:26: ValueError
+_ ERROR at setup of test_probe_flags_cannot_replace_original_endpoint_proofs[exit] _
+
+native = {'owner': {'tool_input_context': 'TOOL_ONLY', 'owner_uuid': '11111111111111111111111111111111', 'run_id': 'TOOL_ONLY_o...aa', 'io.bounded-funds.pnpm-lock-sha256': 'abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83'}}}]}, ...}
+
+    @pytest.fixture
+    def probe_fixture(native: dict[str, Any]) -> dict[str, Any]:
+        owned, _, after, _, networks_after = accounting(native)
+        directory = (
+            tool.ROOT / ".runtime/w1-offline-boundary-private" / ("TOOL_ONLY_browser_" + uuid4().hex)
+        )
+        directory.mkdir(parents=True)
+        manifest: dict[str, Any] = {
+            "tool_input_context": "TOOL_ONLY",
+            "protocol": "bounded-funds-offline-reobserve-v1",
+            "action": "probe",
+            "method": "W1_DOCKER_NETWORK_STATUS_ENDPOINT_ACCOUNTING_V1",
+            "status": "EGRESS_BOUNDARY_OBSERVED",
+            "exit_code": 0,
+            "offline_accepted": False,
+            "disconnect_executed_by_this_run": False,
+            "source_before": native["current"],
+            "source_after": native["current"],
+            "source_head": native["head"],
+            "source_head_after": native["head"],
+            "owner_uuid": owned.owner_uuid,
+            "owner_run_id": owned.owner_run_id,
+            "source_digest": owned.source_digest,
+            "artifacts": [],
+            "commands": [],
+        }
+    
+        def save(label: str, value: bytes) -> None:
+            path = directory / (label + ".original")
+            path.write_bytes(value)
+            manifest["artifacts"].append(
+                {
+                    "label": label,
+                    "private_original_path": path.relative_to(tool.ROOT).as_posix(),
+                    "private_original_sha256": tool.sha(value),
+                    "private_original_bytes": len(value),
+                }
+            )
+    
+        for label, name, field in (
+            ("producer", "scripts/w1_offline_reobserve.py", "producer"),
+            ("bridge", "scripts/demo_offline_endpoint_accounting.py", "bridge"),
+            ("source-helper", "scripts/w1_demo_deployment.py", "source_helper"),
+        ):
+            value = (tool.ROOT / name).read_bytes()
+            for phase in ("before", "after"):
+                save(label + "-" + phase, value)
+            manifest[field + "_sha256"] = manifest[field + "_after_sha256"] = tool.sha(value)
+        for phase in ("before", "after"):
+            save(phase + "-containers-stdout", after)
+            save(phase + "-networks-stdout", networks_after)
+    
+        def command(
+            label: str,
+            argv: tuple[str, ...],
+            code: int,
+            stdout: bytes,
+            stderr: bytes,
+            stdin: bytes = b"",
+        ) -> None:
+            for suffix, value in (("stdout", stdout), ("stderr", stderr)):
+                save(label + "-" + suffix, value)
+            if stdin:
+                save(label + "-stdin", stdin)
+            manifest["commands"].append(
+                {
+                    "label": label,
+                    "argv": list(argv),
+                    "exit_code": code,
+                    "stdout_sha256": tool.sha(stdout),
+                    "stderr_sha256": tool.sha(stderr),
+                    "stdin_sha256": tool.sha(stdin),
+                    "started_at": "2026-10-05T01:00:00+00:00",
+                    "finished_at": "2026-10-05T01:00:01+00:00",
+                }
+            )
+    
+        api = {
+            "protocol": "bounded-funds-api-egress-probe-v1",
+            "route_files": {
+                "/proc/net/route": "Iface Destination Gateway Flags\neth0 000018AC 00000000 0001\n",
+                "/proc/net/ipv6_route": "",
+                "/etc/resolv.conf": "nameserver127.0.0.11",
+            },
+            "targets": [
+                {
+                    "host": host,
+                    "port": port,
+                    "timeout_seconds": 3,
+                    "result": "ERROR",
+                    "errno": 101,
+                    "message": "Network is unreachable",
+                }
+                for host, port in boundary.IP_TARGETS
+            ],
+            "dns": {
+                "argv": ["/opt/bf-venv/bin/python", "-c", boundary.DNS_CODE],
+                "exit_code": 0,
+                "timeout_seconds": 4,
+                "stdout_base64": base64.b64encode(
+                    raw(
+                        {
+                            "name": boundary.DNS_NAME,
+                            "result": "GAIERROR",
+                            "errno": -2,
+                            "message": "Name is not known",
+                        }
+                    )
+                ).decode(),
+                "stderr_base64": "",
+            },
+        }
+        command(
+            "api-probe",
+            ("docker", "exec", "-i", owned.api_container_id, "/opt/bf-venv/bin/python", "-"),
+            0,
+            raw(api),
+            b"",
+            boundary.API_PROBE,
+        )
+>       observations = {"api": boundary.classify_api_probe(raw(api), 0)}
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_w1_offline_browser.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\w1_offline_boundary.py:177: in classify_api_probe
+    no_default = routes_without_default(routes["/proc/net/route"], routes["/proc/net/ipv6_route"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\w1_offline_boundary.py:150: in routes_without_default
+    require(len(fields) >= 8, "Actual IPv4 route row incomplete")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'Actual IPv4 route row incomplete'
+
+    def require(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ValueError(message)
+E           ValueError: Actual IPv4 route row incomplete
+
+scripts\demo_container_transport.py:26: ValueError
+_ ERROR at setup of test_probe_flags_cannot_replace_original_endpoint_proofs[stdin] _
+
+native = {'owner': {'tool_input_context': 'TOOL_ONLY', 'owner_uuid': '11111111111111111111111111111111', 'run_id': 'TOOL_ONLY_o...aa', 'io.bounded-funds.pnpm-lock-sha256': 'abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83'}}}]}, ...}
+
+    @pytest.fixture
+    def probe_fixture(native: dict[str, Any]) -> dict[str, Any]:
+        owned, _, after, _, networks_after = accounting(native)
+        directory = (
+            tool.ROOT / ".runtime/w1-offline-boundary-private" / ("TOOL_ONLY_browser_" + uuid4().hex)
+        )
+        directory.mkdir(parents=True)
+        manifest: dict[str, Any] = {
+            "tool_input_context": "TOOL_ONLY",
+            "protocol": "bounded-funds-offline-reobserve-v1",
+            "action": "probe",
+            "method": "W1_DOCKER_NETWORK_STATUS_ENDPOINT_ACCOUNTING_V1",
+            "status": "EGRESS_BOUNDARY_OBSERVED",
+            "exit_code": 0,
+            "offline_accepted": False,
+            "disconnect_executed_by_this_run": False,
+            "source_before": native["current"],
+            "source_after": native["current"],
+            "source_head": native["head"],
+            "source_head_after": native["head"],
+            "owner_uuid": owned.owner_uuid,
+            "owner_run_id": owned.owner_run_id,
+            "source_digest": owned.source_digest,
+            "artifacts": [],
+            "commands": [],
+        }
+    
+        def save(label: str, value: bytes) -> None:
+            path = directory / (label + ".original")
+            path.write_bytes(value)
+            manifest["artifacts"].append(
+                {
+                    "label": label,
+                    "private_original_path": path.relative_to(tool.ROOT).as_posix(),
+                    "private_original_sha256": tool.sha(value),
+                    "private_original_bytes": len(value),
+                }
+            )
+    
+        for label, name, field in (
+            ("producer", "scripts/w1_offline_reobserve.py", "producer"),
+            ("bridge", "scripts/demo_offline_endpoint_accounting.py", "bridge"),
+            ("source-helper", "scripts/w1_demo_deployment.py", "source_helper"),
+        ):
+            value = (tool.ROOT / name).read_bytes()
+            for phase in ("before", "after"):
+                save(label + "-" + phase, value)
+            manifest[field + "_sha256"] = manifest[field + "_after_sha256"] = tool.sha(value)
+        for phase in ("before", "after"):
+            save(phase + "-containers-stdout", after)
+            save(phase + "-networks-stdout", networks_after)
+    
+        def command(
+            label: str,
+            argv: tuple[str, ...],
+            code: int,
+            stdout: bytes,
+            stderr: bytes,
+            stdin: bytes = b"",
+        ) -> None:
+            for suffix, value in (("stdout", stdout), ("stderr", stderr)):
+                save(label + "-" + suffix, value)
+            if stdin:
+                save(label + "-stdin", stdin)
+            manifest["commands"].append(
+                {
+                    "label": label,
+                    "argv": list(argv),
+                    "exit_code": code,
+                    "stdout_sha256": tool.sha(stdout),
+                    "stderr_sha256": tool.sha(stderr),
+                    "stdin_sha256": tool.sha(stdin),
+                    "started_at": "2026-10-05T01:00:00+00:00",
+                    "finished_at": "2026-10-05T01:00:01+00:00",
+                }
+            )
+    
+        api = {
+            "protocol": "bounded-funds-api-egress-probe-v1",
+            "route_files": {
+                "/proc/net/route": "Iface Destination Gateway Flags\neth0 000018AC 00000000 0001\n",
+                "/proc/net/ipv6_route": "",
+                "/etc/resolv.conf": "nameserver127.0.0.11",
+            },
+            "targets": [
+                {
+                    "host": host,
+                    "port": port,
+                    "timeout_seconds": 3,
+                    "result": "ERROR",
+                    "errno": 101,
+                    "message": "Network is unreachable",
+                }
+                for host, port in boundary.IP_TARGETS
+            ],
+            "dns": {
+                "argv": ["/opt/bf-venv/bin/python", "-c", boundary.DNS_CODE],
+                "exit_code": 0,
+                "timeout_seconds": 4,
+                "stdout_base64": base64.b64encode(
+                    raw(
+                        {
+                            "name": boundary.DNS_NAME,
+                            "result": "GAIERROR",
+                            "errno": -2,
+                            "message": "Name is not known",
+                        }
+                    )
+                ).decode(),
+                "stderr_base64": "",
+            },
+        }
+        command(
+            "api-probe",
+            ("docker", "exec", "-i", owned.api_container_id, "/opt/bf-venv/bin/python", "-"),
+            0,
+            raw(api),
+            b"",
+            boundary.API_PROBE,
+        )
+>       observations = {"api": boundary.classify_api_probe(raw(api), 0)}
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_w1_offline_browser.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\w1_offline_boundary.py:177: in classify_api_probe
+    no_default = routes_without_default(routes["/proc/net/route"], routes["/proc/net/ipv6_route"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\w1_offline_boundary.py:150: in routes_without_default
+    require(len(fields) >= 8, "Actual IPv4 route row incomplete")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'Actual IPv4 route row incomplete'
+
+    def require(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ValueError(message)
+E           ValueError: Actual IPv4 route row incomplete
+
+scripts\demo_container_transport.py:26: ValueError
+_ ERROR at setup of test_probe_flags_cannot_replace_original_endpoint_proofs[declared] _
+
+native = {'owner': {'tool_input_context': 'TOOL_ONLY', 'owner_uuid': '11111111111111111111111111111111', 'run_id': 'TOOL_ONLY_o...aa', 'io.bounded-funds.pnpm-lock-sha256': 'abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83'}}}]}, ...}
+
+    @pytest.fixture
+    def probe_fixture(native: dict[str, Any]) -> dict[str, Any]:
+        owned, _, after, _, networks_after = accounting(native)
+        directory = (
+            tool.ROOT / ".runtime/w1-offline-boundary-private" / ("TOOL_ONLY_browser_" + uuid4().hex)
+        )
+        directory.mkdir(parents=True)
+        manifest: dict[str, Any] = {
+            "tool_input_context": "TOOL_ONLY",
+            "protocol": "bounded-funds-offline-reobserve-v1",
+            "action": "probe",
+            "method": "W1_DOCKER_NETWORK_STATUS_ENDPOINT_ACCOUNTING_V1",
+            "status": "EGRESS_BOUNDARY_OBSERVED",
+            "exit_code": 0,
+            "offline_accepted": False,
+            "disconnect_executed_by_this_run": False,
+            "source_before": native["current"],
+            "source_after": native["current"],
+            "source_head": native["head"],
+            "source_head_after": native["head"],
+            "owner_uuid": owned.owner_uuid,
+            "owner_run_id": owned.owner_run_id,
+            "source_digest": owned.source_digest,
+            "artifacts": [],
+            "commands": [],
+        }
+    
+        def save(label: str, value: bytes) -> None:
+            path = directory / (label + ".original")
+            path.write_bytes(value)
+            manifest["artifacts"].append(
+                {
+                    "label": label,
+                    "private_original_path": path.relative_to(tool.ROOT).as_posix(),
+                    "private_original_sha256": tool.sha(value),
+                    "private_original_bytes": len(value),
+                }
+            )
+    
+        for label, name, field in (
+            ("producer", "scripts/w1_offline_reobserve.py", "producer"),
+            ("bridge", "scripts/demo_offline_endpoint_accounting.py", "bridge"),
+            ("source-helper", "scripts/w1_demo_deployment.py", "source_helper"),
+        ):
+            value = (tool.ROOT / name).read_bytes()
+            for phase in ("before", "after"):
+                save(label + "-" + phase, value)
+            manifest[field + "_sha256"] = manifest[field + "_after_sha256"] = tool.sha(value)
+        for phase in ("before", "after"):
+            save(phase + "-containers-stdout", after)
+            save(phase + "-networks-stdout", networks_after)
+    
+        def command(
+            label: str,
+            argv: tuple[str, ...],
+            code: int,
+            stdout: bytes,
+            stderr: bytes,
+            stdin: bytes = b"",
+        ) -> None:
+            for suffix, value in (("stdout", stdout), ("stderr", stderr)):
+                save(label + "-" + suffix, value)
+            if stdin:
+                save(label + "-stdin", stdin)
+            manifest["commands"].append(
+                {
+                    "label": label,
+                    "argv": list(argv),
+                    "exit_code": code,
+                    "stdout_sha256": tool.sha(stdout),
+                    "stderr_sha256": tool.sha(stderr),
+                    "stdin_sha256": tool.sha(stdin),
+                    "started_at": "2026-10-05T01:00:00+00:00",
+                    "finished_at": "2026-10-05T01:00:01+00:00",
+                }
+            )
+    
+        api = {
+            "protocol": "bounded-funds-api-egress-probe-v1",
+            "route_files": {
+                "/proc/net/route": "Iface Destination Gateway Flags\neth0 000018AC 00000000 0001\n",
+                "/proc/net/ipv6_route": "",
+                "/etc/resolv.conf": "nameserver127.0.0.11",
+            },
+            "targets": [
+                {
+                    "host": host,
+                    "port": port,
+                    "timeout_seconds": 3,
+                    "result": "ERROR",
+                    "errno": 101,
+                    "message": "Network is unreachable",
+                }
+                for host, port in boundary.IP_TARGETS
+            ],
+            "dns": {
+                "argv": ["/opt/bf-venv/bin/python", "-c", boundary.DNS_CODE],
+                "exit_code": 0,
+                "timeout_seconds": 4,
+                "stdout_base64": base64.b64encode(
+                    raw(
+                        {
+                            "name": boundary.DNS_NAME,
+                            "result": "GAIERROR",
+                            "errno": -2,
+                            "message": "Name is not known",
+                        }
+                    )
+                ).decode(),
+                "stderr_base64": "",
+            },
+        }
+        command(
+            "api-probe",
+            ("docker", "exec", "-i", owned.api_container_id, "/opt/bf-venv/bin/python", "-"),
+            0,
+            raw(api),
+            b"",
+            boundary.API_PROBE,
+        )
+>       observations = {"api": boundary.classify_api_probe(raw(api), 0)}
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_w1_offline_browser.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\w1_offline_boundary.py:177: in classify_api_probe
+    no_default = routes_without_default(routes["/proc/net/route"], routes["/proc/net/ipv6_route"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\w1_offline_boundary.py:150: in routes_without_default
+    require(len(fields) >= 8, "Actual IPv4 route row incomplete")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'Actual IPv4 route row incomplete'
+
+    def require(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ValueError(message)
+E           ValueError: Actual IPv4 route row incomplete
+
+scripts\demo_container_transport.py:26: ValueError
+_ ERROR at setup of test_probe_flags_cannot_replace_original_endpoint_proofs[timeout] _
+
+native = {'owner': {'tool_input_context': 'TOOL_ONLY', 'owner_uuid': '11111111111111111111111111111111', 'run_id': 'TOOL_ONLY_o...aa', 'io.bounded-funds.pnpm-lock-sha256': 'abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83'}}}]}, ...}
+
+    @pytest.fixture
+    def probe_fixture(native: dict[str, Any]) -> dict[str, Any]:
+        owned, _, after, _, networks_after = accounting(native)
+        directory = (
+            tool.ROOT / ".runtime/w1-offline-boundary-private" / ("TOOL_ONLY_browser_" + uuid4().hex)
+        )
+        directory.mkdir(parents=True)
+        manifest: dict[str, Any] = {
+            "tool_input_context": "TOOL_ONLY",
+            "protocol": "bounded-funds-offline-reobserve-v1",
+            "action": "probe",
+            "method": "W1_DOCKER_NETWORK_STATUS_ENDPOINT_ACCOUNTING_V1",
+            "status": "EGRESS_BOUNDARY_OBSERVED",
+            "exit_code": 0,
+            "offline_accepted": False,
+            "disconnect_executed_by_this_run": False,
+            "source_before": native["current"],
+            "source_after": native["current"],
+            "source_head": native["head"],
+            "source_head_after": native["head"],
+            "owner_uuid": owned.owner_uuid,
+            "owner_run_id": owned.owner_run_id,
+            "source_digest": owned.source_digest,
+            "artifacts": [],
+            "commands": [],
+        }
+    
+        def save(label: str, value: bytes) -> None:
+            path = directory / (label + ".original")
+            path.write_bytes(value)
+            manifest["artifacts"].append(
+                {
+                    "label": label,
+                    "private_original_path": path.relative_to(tool.ROOT).as_posix(),
+                    "private_original_sha256": tool.sha(value),
+                    "private_original_bytes": len(value),
+                }
+            )
+    
+        for label, name, field in (
+            ("producer", "scripts/w1_offline_reobserve.py", "producer"),
+            ("bridge", "scripts/demo_offline_endpoint_accounting.py", "bridge"),
+            ("source-helper", "scripts/w1_demo_deployment.py", "source_helper"),
+        ):
+            value = (tool.ROOT / name).read_bytes()
+            for phase in ("before", "after"):
+                save(label + "-" + phase, value)
+            manifest[field + "_sha256"] = manifest[field + "_after_sha256"] = tool.sha(value)
+        for phase in ("before", "after"):
+            save(phase + "-containers-stdout", after)
+            save(phase + "-networks-stdout", networks_after)
+    
+        def command(
+            label: str,
+            argv: tuple[str, ...],
+            code: int,
+            stdout: bytes,
+            stderr: bytes,
+            stdin: bytes = b"",
+        ) -> None:
+            for suffix, value in (("stdout", stdout), ("stderr", stderr)):
+                save(label + "-" + suffix, value)
+            if stdin:
+                save(label + "-stdin", stdin)
+            manifest["commands"].append(
+                {
+                    "label": label,
+                    "argv": list(argv),
+                    "exit_code": code,
+                    "stdout_sha256": tool.sha(stdout),
+                    "stderr_sha256": tool.sha(stderr),
+                    "stdin_sha256": tool.sha(stdin),
+                    "started_at": "2026-10-05T01:00:00+00:00",
+                    "finished_at": "2026-10-05T01:00:01+00:00",
+                }
+            )
+    
+        api = {
+            "protocol": "bounded-funds-api-egress-probe-v1",
+            "route_files": {
+                "/proc/net/route": "Iface Destination Gateway Flags\neth0 000018AC 00000000 0001\n",
+                "/proc/net/ipv6_route": "",
+                "/etc/resolv.conf": "nameserver127.0.0.11",
+            },
+            "targets": [
+                {
+                    "host": host,
+                    "port": port,
+                    "timeout_seconds": 3,
+                    "result": "ERROR",
+                    "errno": 101,
+                    "message": "Network is unreachable",
+                }
+                for host, port in boundary.IP_TARGETS
+            ],
+            "dns": {
+                "argv": ["/opt/bf-venv/bin/python", "-c", boundary.DNS_CODE],
+                "exit_code": 0,
+                "timeout_seconds": 4,
+                "stdout_base64": base64.b64encode(
+                    raw(
+                        {
+                            "name": boundary.DNS_NAME,
+                            "result": "GAIERROR",
+                            "errno": -2,
+                            "message": "Name is not known",
+                        }
+                    )
+                ).decode(),
+                "stderr_base64": "",
+            },
+        }
+        command(
+            "api-probe",
+            ("docker", "exec", "-i", owned.api_container_id, "/opt/bf-venv/bin/python", "-"),
+            0,
+            raw(api),
+            b"",
+            boundary.API_PROBE,
+        )
+>       observations = {"api": boundary.classify_api_probe(raw(api), 0)}
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_w1_offline_browser.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\w1_offline_boundary.py:177: in classify_api_probe
+    no_default = routes_without_default(routes["/proc/net/route"], routes["/proc/net/ipv6_route"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\w1_offline_boundary.py:150: in routes_without_default
+    require(len(fields) >= 8, "Actual IPv4 route row incomplete")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'Actual IPv4 route row incomplete'
+
+    def require(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ValueError(message)
+E           ValueError: Actual IPv4 route row incomplete
+
+scripts\demo_container_transport.py:26: ValueError
+================================== FAILURES ===================================
+_______________ test_original_container_constructor_still_valid _______________
+
+native = {'owner': {'tool_input_context': 'TOOL_ONLY', 'owner_uuid': '11111111111111111111111111111111', 'run_id': 'TOOL_ONLY_o...aa', 'io.bounded-funds.pnpm-lock-sha256': 'abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83'}}}]}, ...}
+
+    def test_original_container_constructor_still_valid(native: dict[str, Any]) -> None:
+        value = validate_owned_transport(
+>           native["registration"],
+            ^^^^^^^^^^^^^^^^^^^^^^
+            native["start"],
+            native["inspect"],
+            native["images"],
+            native["current"],
+            native["head"],
+        )
+E       KeyError: 'registration'
+
+scripts\tests\test_w1_offline_browser.py:697: KeyError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+ERROR scripts/tests/test_w1_offline_browser.py::test_probe_recomputed_from_complete_native_stdout_not_status
+ERROR scripts/tests/test_w1_offline_browser.py::test_probe_flags_cannot_replace_original_endpoint_proofs[status]
+ERROR scripts/tests/test_w1_offline_browser.py::test_probe_flags_cannot_replace_original_endpoint_proofs[owner]
+ERROR scripts/tests/test_w1_offline_browser.py::test_probe_flags_cannot_replace_original_endpoint_proofs[source]
+ERROR scripts/tests/test_w1_offline_browser.py::test_probe_flags_cannot_replace_original_endpoint_proofs[head]
+ERROR scripts/tests/test_w1_offline_browser.py::test_probe_flags_cannot_replace_original_endpoint_proofs[missing]
+ERROR scripts/tests/test_w1_offline_browser.py::test_probe_flags_cannot_replace_original_endpoint_proofs[bytes]
+ERROR scripts/tests/test_w1_offline_browser.py::test_probe_flags_cannot_replace_original_endpoint_proofs[argv]
+ERROR scripts/tests/test_w1_offline_browser.py::test_probe_flags_cannot_replace_original_endpoint_proofs[exit]
+ERROR scripts/tests/test_w1_offline_browser.py::test_probe_flags_cannot_replace_original_endpoint_proofs[stdin]
+ERROR scripts/tests/test_w1_offline_browser.py::test_probe_flags_cannot_replace_original_endpoint_proofs[declared]
+ERROR scripts/tests/test_w1_offline_browser.py::test_probe_flags_cannot_replace_original_endpoint_proofs[timeout]
+FAILED scripts/tests/test_w1_offline_browser.py::test_original_container_constructor_still_valid
+1 failed, 64 passed, 2 warnings, 12 errors in 2.31s

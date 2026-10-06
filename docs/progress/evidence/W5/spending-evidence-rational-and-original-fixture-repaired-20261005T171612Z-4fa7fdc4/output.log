@@ -1,0 +1,17 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/spending-evidence.test.ts (20 tests) 17ms
+ ✓ src/features/spending-evidence-operation.test.ts (5 tests) 440ms
+ ✓ src/pages/SpendingEvidencePage.test.tsx (6 tests) 2332ms
+   ✓ 真实周期原样本/窗口READY只读，节日明确ID再读官方窗口与UNKNOWN；无POST  525ms
+   ✓ 不自动勾选；POST成功仍pending，原键NOT_FOUND保原命令而RECORDED独立核对才清  441ms
+   ✓ 响应丢失后刷新只恢复原件；跨族门仍允许自己的只读原键查询  370ms
+   ✓ 不同银行原回执不能清，已确认类别与跨族blocked均不产生写  315ms
+   ✓ 分类错误原件保pending；建议422保request_id并清旧成功视图  419ms
+
+ Test Files  3 passed (3)
+      Tests  31 passed (31)
+   Start at  01:16:13
+   Duration  5.22s (transform 517ms, setup 1.68s, collect 1.25s, tests 2.79s, environment 3.33s, prepare 1.04s)
+

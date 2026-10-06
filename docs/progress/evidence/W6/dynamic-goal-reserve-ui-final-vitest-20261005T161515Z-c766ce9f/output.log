@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/dynamic-goal-reserve.test.ts (13 tests) 22ms
+ ✓ src/components/DynamicGoalReservePanel.test.tsx (8 tests) 482ms
+
+ Test Files  2 passed (2)
+      Tests  21 passed (21)
+   Start at  00:15:18
+   Duration  3.28s (transform 320ms, setup 1.10s, collect 634ms, tests 504ms, environment 2.18s, prepare 700ms)
+

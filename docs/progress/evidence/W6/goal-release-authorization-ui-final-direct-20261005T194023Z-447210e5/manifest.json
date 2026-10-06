@@ -1,0 +1,42 @@
+{
+  "run_id": "20261005T194023Z-447210e5",
+  "task": "W6",
+  "label": "goal-release-authorization-ui-final-direct",
+  "status": "PASSED",
+  "scope": [
+    "apps/web/src/api/goal-release-authorizations.ts",
+    "apps/web/src/api/goal-release-authorizations.test.ts",
+    "apps/web/src/features/goal-release-authorization-operation.ts",
+    "apps/web/src/features/goal-release-authorization-operation.test.ts",
+    "apps/web/src/components/GoalReleaseAuthorizationPanel.tsx",
+    "apps/web/src/components/GoalReleaseAuthorizationPanel.test.tsx",
+    "apps/web/src/tests/goal-release-authorization-fixture.ts",
+    "apps/web/src/api/goal-reallocation.ts"
+  ],
+  "command": [
+    "pnpm.cmd",
+    "--filter",
+    "@bounded-funds/web",
+    "exec",
+    "vitest",
+    "run",
+    "src/api/goal-release-authorizations.test.ts",
+    "src/features/goal-release-authorization-operation.test.ts",
+    "src/components/GoalReleaseAuthorizationPanel.test.tsx"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T19:40:24.393610+00:00",
+  "finished_at": "2026-10-05T19:40:32.502834+00:00",
+  "wall_seconds": 8.109224,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "aee641d99817a7a0c6aadf1342eb5b28a32a0edaa5b909df26b8d81aaee86260",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

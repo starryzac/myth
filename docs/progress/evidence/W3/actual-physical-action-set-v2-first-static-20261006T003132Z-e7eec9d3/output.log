@@ -1,0 +1,401 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> apps\api\app\api\v1\full_action_set_boundary_actual.py:3:1
+   |
+ 1 |   """Identity-only FULL action-set observations; no client financial inputs."""
+ 2 |
+ 3 | / from typing import Annotated
+ 4 | | from uuid import UUID
+ 5 | |
+ 6 | | from app.api.dependencies import ClockDependency, DemoUserDependency, SessionDependency, get_engine
+ 7 | | from app.api.errors import ErrorEnvelope
+ 8 | | from app.api.v1.full_policies import require_no_query
+ 9 | | from app.domain.full_action_set_boundary import GlobalBoundaryObserveRequest
+10 | | from app.domain.full_action_set_boundary_actual import (
+11 | |     ActualActionSetSnapshot,
+12 | |     ActualGlobalBoundaryObservation,
+13 | | )
+14 | | from app.services.full_action_set_boundary_actual import (
+15 | |     observe_actual_global_boundary,
+16 | |     read_current_actual_action_set,
+17 | |     read_actual_global_boundary_observation,
+18 | | )
+19 | | from fastapi import APIRouter, Depends
+20 | | from sqlalchemy.engine import Engine
+   | |____________________________________^
+21 |
+22 |   router = APIRouter(
+   |
+help: Organize imports
+   |
+15 |     observe_actual_global_boundary,
+16 +     read_actual_global_boundary_observation,
+17 |     read_current_actual_action_set,
+   -     read_actual_global_boundary_observation,
+18 | )
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> apps\api\app\services\full_action_set_boundary_actual.py:3:1
+   |
+ 1 |   """Actual physical-source v2 observations, preserving both original v1 protocols."""
+ 2 |
+ 3 | / import json
+ 4 | | from dataclasses import dataclass
+ 5 | | from datetime import datetime
+ 6 | | from typing import Any
+ 7 | | from uuid import UUID, uuid5
+ 8 | | from app.db.base import Base
+ 9 | | from app.db.catalog_models import ProductCatalogVersion
+10 | | from app.db.full_models import FullPolicy
+11 | | from app.db.models import Account, Goal, DecisionRun, Policy, PolicyVersion, User
+12 | | from app.domain.decision_trace import build_trace, verify_trace
+13 | | from app.domain.decision_trace_types import DecisionTrace
+14 | | from app.domain.execution_types import ExecutionContext
+15 | | from app.domain.full_action_set_boundary import (
+16 | |     ActionSetInput,
+17 | |     CandidateInput,
+18 | |     GlobalBoundaryObserveRequest,
+19 | |     unsupported_producers,
+20 | | )
+21 | | from app.domain.full_action_set_boundary_actual import (
+22 | |     ALGORITHM,
+23 | |     NAMESPACE,
+24 | |     MAX_ROWS,
+25 | |     MAX_CANDIDATES,
+26 | |     MAX_CAPTURE_BYTES,
+27 | |     GLOBAL_TABLES,
+28 | |     REQUIRED_TABLES,
+29 | |     ActualActionSetInput,
+30 | |     ActualActionSetSnapshot,
+31 | |     ActualGlobalBoundaryObservation,
+32 | |     ActualTableCoverage,
+33 | |     actual_producer_keys,
+34 | |     actual_inactive_keys,
+35 | |     derive_actual_action_set,
+36 | |     compare_actual_action_sets,
+37 | | )
+38 | | from app.domain.full_action_set_boundary_full import (
+39 | |     DynamicGoalProducerInput,
+40 | |     dynamic_model_inventory,
+41 | | )
+42 | | from app.domain.full_action_set_asset_producers import (
+43 | |     AssetProducerInput,
+44 | |     MAX_PRODUCERS,
+45 | |     expected_asset_producers,
+46 | | )
+47 | | from app.domain.full_dynamic_goal_execution import FullDynamicGoalPrepareRequest
+48 | | from app.domain.full_asset_execution import (
+49 | |     FullAssetPrepareRequest,
+50 | |     FullAssetExecutionBasis,
+51 | |     FullAssetCatalogueReference,
+52 | | )
+53 | | from app.domain.full_policy_configuration import AssetAuthorizationPolicy
+54 | | from app.domain.full_execution_protection import validate_full_execution_protection
+55 | | from app.domain.full_protection_projection import (
+56 | |     FullProtectionProjectionInput,
+57 | |     project_full_protection,
+58 | | )
+59 | | from app.domain.full_registered_account_debits import derive_full_account_debit_bounds
+60 | | from app.domain.policy_configuration import configuration_hash, validate_configuration
+61 | | from app.services.action_contracts import (
+62 | |     ActionIntent,
+63 | |     GoalIntent,
+64 | |     PaymentIntent,
+65 | |     PurchaseIntent,
+66 | |     RedeemIntent,
+67 | | )
+68 | | from app.services.audit_chain import current_audit_epoch
+69 | | from app.services.autonomy import _basis, _capture_assessment, _facts, _authority
+70 | | from app.services.autonomy_envelope import _snapshot
+71 | | from app.services.dashboard_helpers import current_epoch_audit
+72 | | from app.services.decision_recording import (
+73 | |     CAPTURE_KEY,
+74 | |     DecisionCapture,
+75 | |     capture_evidence,
+76 | |     capture_versions,
+77 | |     start_capture,
+78 | | )
+79 | | from app.services.decision_trace import get_decision_trace, record_trace
+80 | | from app.services.full_action_set_boundary import _error, _json, _verify_original_source_copies
+81 | | from app.services.full_action_set_asset_producers import _planning_input
+82 | | from app.services.full_asset_execution import preview_full_asset_execution
+83 | | from app.services.full_policy_lifecycle import read_full_policy
+84 | | from app.services.full_dynamic_goal_execution import read_full_dynamic_goal_inputs
+85 | | from app.services.full_goals import read_full_goal_model
+86 | | from app.services.full_intervention import Source
+87 | | from app.services.full_protection_projection import compute_full_annual_protection
+88 | | from app.services.policy_lifecycle import PolicyLifecycleError, _now, _user, effective_status
+89 | | from sqlalchemy import select, text, func
+90 | | from sqlalchemy.engine import Engine
+91 | | from sqlalchemy.orm import Session
+   | |__________________________________^
+help: Organize imports
+   |
+7  | from uuid import UUID, uuid5
+8  +
+9  | from app.db.base import Base
+10 | from app.db.catalog_models import ProductCatalogVersion
+11 | from app.db.full_models import FullPolicy
+   - from app.db.models import Account, Goal, DecisionRun, Policy, PolicyVersion, User
+12 + from app.db.models import Account, DecisionRun, Goal, Policy, PolicyVersion, User
+13 | from app.domain.decision_trace import build_trace, verify_trace
+14 | from app.domain.decision_trace_types import DecisionTrace
+15 | from app.domain.execution_types import ExecutionContext
+16 + from app.domain.full_action_set_asset_producers import (
+17 +     MAX_PRODUCERS,
+18 +     AssetProducerInput,
+19 +     expected_asset_producers,
+20 + )
+21 | from app.domain.full_action_set_boundary import (
+--------------------------------------------------------------------------------
+28 |     ALGORITHM,
+   -     NAMESPACE,
+   -     MAX_ROWS,
+29 +     GLOBAL_TABLES,
+30 |     MAX_CANDIDATES,
+31 |     MAX_CAPTURE_BYTES,
+   -     GLOBAL_TABLES,
+32 +     MAX_ROWS,
+33 +     NAMESPACE,
+34 |     REQUIRED_TABLES,
+--------------------------------------------------------------------------------
+38 |     ActualTableCoverage,
+39 +     actual_inactive_keys,
+40 |     actual_producer_keys,
+   -     actual_inactive_keys,
+   -     derive_actual_action_set,
+41 |     compare_actual_action_sets,
+42 +     derive_actual_action_set,
+43 | )
+--------------------------------------------------------------------------------
+47 | )
+   - from app.domain.full_action_set_asset_producers import (
+   -     AssetProducerInput,
+   -     MAX_PRODUCERS,
+   -     expected_asset_producers,
+   - )
+   - from app.domain.full_dynamic_goal_execution import FullDynamicGoalPrepareRequest
+48 | from app.domain.full_asset_execution import (
+   -     FullAssetPrepareRequest,
+49 +     FullAssetCatalogueReference,
+50 |     FullAssetExecutionBasis,
+   -     FullAssetCatalogueReference,
+51 +     FullAssetPrepareRequest,
+52 | )
+   - from app.domain.full_policy_configuration import AssetAuthorizationPolicy
+53 + from app.domain.full_dynamic_goal_execution import FullDynamicGoalPrepareRequest
+54 | from app.domain.full_execution_protection import validate_full_execution_protection
+55 + from app.domain.full_policy_configuration import AssetAuthorizationPolicy
+56 | from app.domain.full_protection_projection import (
+--------------------------------------------------------------------------------
+69 | from app.services.audit_chain import current_audit_epoch
+   - from app.services.autonomy import _basis, _capture_assessment, _facts, _authority
+70 + from app.services.autonomy import _authority, _basis, _capture_assessment, _facts
+71 | from app.services.autonomy_envelope import _snapshot
+--------------------------------------------------------------------------------
+80 | from app.services.decision_trace import get_decision_trace, record_trace
+81 + from app.services.full_action_set_asset_producers import _planning_input
+82 | from app.services.full_action_set_boundary import _error, _json, _verify_original_source_copies
+   - from app.services.full_action_set_asset_producers import _planning_input
+83 | from app.services.full_asset_execution import preview_full_asset_execution
+   - from app.services.full_policy_lifecycle import read_full_policy
+84 | from app.services.full_dynamic_goal_execution import read_full_dynamic_goal_inputs
+85 | from app.services.full_goals import read_full_goal_model
+86 | from app.services.full_intervention import Source
+87 + from app.services.full_policy_lifecycle import read_full_policy
+88 | from app.services.full_protection_projection import compute_full_annual_protection
+89 | from app.services.policy_lifecycle import PolicyLifecycleError, _now, _user, effective_status
+   - from sqlalchemy import select, text, func
+90 + from sqlalchemy import func, select, text
+91 | from sqlalchemy.engine import Engine
+   |
+
+F401 [*] `app.db.models.Policy` imported but unused
+  --> apps\api\app\services\full_action_set_boundary_actual.py:11:55
+   |
+ 9 | from app.db.catalog_models import ProductCatalogVersion
+10 | from app.db.full_models import FullPolicy
+11 | from app.db.models import Account, Goal, DecisionRun, Policy, PolicyVersion, User
+   |                                                       ^^^^^^
+12 | from app.domain.decision_trace import build_trace, verify_trace
+13 | from app.domain.decision_trace_types import DecisionTrace
+   |
+help: Remove unused import: `app.db.models.Policy`
+   |
+10 | from app.db.full_models import FullPolicy
+   - from app.db.models import Account, Goal, DecisionRun, Policy, PolicyVersion, User
+11 + from app.db.models import Account, Goal, DecisionRun, PolicyVersion, User
+12 | from app.domain.decision_trace import build_trace, verify_trace
+   |
+
+F401 [*] `app.domain.full_action_set_boundary_actual.actual_producer_keys` imported but unused
+  --> apps\api\app\services\full_action_set_boundary_actual.py:33:5
+   |
+31 |     ActualGlobalBoundaryObservation,
+32 |     ActualTableCoverage,
+33 |     actual_producer_keys,
+   |     ^^^^^^^^^^^^^^^^^^^^
+34 |     actual_inactive_keys,
+35 |     derive_actual_action_set,
+   |
+help: Remove unused import: `app.domain.full_action_set_boundary_actual.actual_producer_keys`
+   |
+32 |     ActualTableCoverage,
+   -     actual_producer_keys,
+33 |     actual_inactive_keys,
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> apps\api\app\tests\test_full_action_set_boundary_actual.py:3:1
+   |
+ 1 |   """Synthetic source/math and direct API gates only; no PG/finance/corpus evidence."""
+ 2 |
+ 3 | / import copy
+ 4 | | import json
+ 5 | | from datetime import timedelta
+ 6 | | from typing import Any
+ 7 | | from unittest.mock import MagicMock
+ 8 | | from uuid import UUID, uuid5
+ 9 | | import pytest
+10 | | from app.api.v1 import full_action_set_boundary_actual as api
+11 | | from app.api.dependencies import get_now, get_session, get_demo_user
+12 | | from app.domain.decision_trace import build_trace
+13 | | from app.domain.decision_trace_types import DecisionTrace, TraceEvidence, TracePolicy
+14 | | from app.domain.full_action_set_boundary import GlobalBoundaryObserveRequest, unsupported_producers
+15 | | from app.domain.full_action_set_boundary_actual import (
+16 | |     ALGORITHM,
+17 | |     NAMESPACE,
+18 | |     MAX_CAPTURE_BYTES,
+19 | |     REQUIRED_TABLES,
+20 | |     ActualActionSetInput,
+21 | |     ActualTableCoverage,
+22 | |     ActualGlobalBoundaryObservation,
+23 | |     actual_producer_keys,
+24 | |     derive_actual_action_set,
+25 | |     compare_actual_action_sets,
+26 | | )
+27 | | from app.domain.policy_configuration import configuration_hash
+28 | | from app.services import full_action_set_boundary_actual as service
+29 | | from app.services.policy_lifecycle import PolicyLifecycleError
+30 | | from app.tests.test_full_action_set_boundary_full import fixture as old_fixture
+31 | | from app.tests.test_full_action_set_boundary_full import USER, EPOCH, NOW, VERSION, POLICY, GOAL
+32 | | from app.tests.test_full_action_set_asset_producers import fixture as asset_fixture
+33 | | from sqlalchemy.orm import Session
+34 | | from fastapi import FastAPI
+35 | | from fastapi.testclient import TestClient
+   | |_________________________________________^
+help: Organize imports
+   |
+8  | from uuid import UUID, uuid5
+9  +
+10 | import pytest
+11 + from app.api.dependencies import get_demo_user, get_now, get_session
+12 | from app.api.v1 import full_action_set_boundary_actual as api
+   - from app.api.dependencies import get_now, get_session, get_demo_user
+13 | from app.domain.decision_trace import build_trace
+--------------------------------------------------------------------------------
+17 |     ALGORITHM,
+18 +     MAX_CAPTURE_BYTES,
+19 |     NAMESPACE,
+   -     MAX_CAPTURE_BYTES,
+20 |     REQUIRED_TABLES,
+21 |     ActualActionSetInput,
+22 +     ActualGlobalBoundaryObservation,
+23 |     ActualTableCoverage,
+   -     ActualGlobalBoundaryObservation,
+24 |     actual_producer_keys,
+   -     derive_actual_action_set,
+25 |     compare_actual_action_sets,
+26 +     derive_actual_action_set,
+27 | )
+28 | from app.domain.policy_configuration import configuration_hash
+29 | from app.services import full_action_set_boundary_actual as service
+30 | from app.services.policy_lifecycle import PolicyLifecycleError
+   - from app.tests.test_full_action_set_boundary_full import fixture as old_fixture
+   - from app.tests.test_full_action_set_boundary_full import USER, EPOCH, NOW, VERSION, POLICY, GOAL
+31 | from app.tests.test_full_action_set_asset_producers import fixture as asset_fixture
+   - from sqlalchemy.orm import Session
+32 + from app.tests.test_full_action_set_boundary_full import EPOCH, GOAL, NOW, POLICY, USER, VERSION
+33 + from app.tests.test_full_action_set_boundary_full import fixture as old_fixture
+34 | from fastapi import FastAPI
+35 | from fastapi.testclient import TestClient
+36 + from sqlalchemy.orm import Session
+37 |
+   |
+
+F401 [*] `app.domain.full_action_set_boundary.unsupported_producers` imported but unused
+  --> apps\api\app\tests\test_full_action_set_boundary_actual.py:14:79
+   |
+12 | from app.domain.decision_trace import build_trace
+13 | from app.domain.decision_trace_types import DecisionTrace, TraceEvidence, TracePolicy
+14 | from app.domain.full_action_set_boundary import GlobalBoundaryObserveRequest, unsupported_producers
+   |                                                                               ^^^^^^^^^^^^^^^^^^^^^
+15 | from app.domain.full_action_set_boundary_actual import (
+16 |     ALGORITHM,
+   |
+help: Remove unused import: `app.domain.full_action_set_boundary.unsupported_producers`
+   |
+13 | from app.domain.decision_trace_types import DecisionTrace, TraceEvidence, TracePolicy
+   - from app.domain.full_action_set_boundary import GlobalBoundaryObserveRequest, unsupported_producers
+14 + from app.domain.full_action_set_boundary import GlobalBoundaryObserveRequest
+15 | from app.domain.full_action_set_boundary_actual import (
+   |
+
+F401 [*] `app.services.policy_lifecycle.PolicyLifecycleError` imported but unused
+  --> apps\api\app\tests\test_full_action_set_boundary_actual.py:29:43
+   |
+27 | from app.domain.policy_configuration import configuration_hash
+28 | from app.services import full_action_set_boundary_actual as service
+29 | from app.services.policy_lifecycle import PolicyLifecycleError
+   |                                           ^^^^^^^^^^^^^^^^^^^^
+30 | from app.tests.test_full_action_set_boundary_full import fixture as old_fixture
+31 | from app.tests.test_full_action_set_boundary_full import USER, EPOCH, NOW, VERSION, POLICY, GOAL
+   |
+help: Remove unused import: `app.services.policy_lifecycle.PolicyLifecycleError`
+   |
+28 | from app.services import full_action_set_boundary_actual as service
+   - from app.services.policy_lifecycle import PolicyLifecycleError
+29 | from app.tests.test_full_action_set_boundary_full import fixture as old_fixture
+   |
+
+F401 [*] `app.tests.test_full_action_set_boundary_full.GOAL` imported but unused
+  --> apps\api\app\tests\test_full_action_set_boundary_actual.py:31:93
+   |
+29 | from app.services.policy_lifecycle import PolicyLifecycleError
+30 | from app.tests.test_full_action_set_boundary_full import fixture as old_fixture
+31 | from app.tests.test_full_action_set_boundary_full import USER, EPOCH, NOW, VERSION, POLICY, GOAL
+   |                                                                                             ^^^^
+32 | from app.tests.test_full_action_set_asset_producers import fixture as asset_fixture
+33 | from sqlalchemy.orm import Session
+   |
+help: Remove unused import: `app.tests.test_full_action_set_boundary_full.GOAL`
+   |
+30 | from app.tests.test_full_action_set_boundary_full import fixture as old_fixture
+   - from app.tests.test_full_action_set_boundary_full import USER, EPOCH, NOW, VERSION, POLICY, GOAL
+31 + from app.tests.test_full_action_set_boundary_full import USER, EPOCH, NOW, VERSION, POLICY
+32 | from app.tests.test_full_action_set_asset_producers import fixture as asset_fixture
+   |
+
+F841 Local variable `producer` is assigned to but never used
+   --> apps\api\app\tests\test_full_action_set_boundary_actual.py:318:5
+    |
+316 |         }
+317 |     )
+318 |     producer = numeric.dynamic_goals[0]
+    |     ^^^^^^^^
+319 |     # Dynamic source binding is recomputed from complete original context; this
+320 |     # added non-economic diagnostic does not create a financial amount change.
+    |
+help: Remove assignment to unused variable `producer`
+
+E501 Line too long (101 > 100)
+  --> apps\api\app\tests\test_full_action_set_boundary_actual_integration.py:31:101
+   |
+31 | def test_actual_physical_v2_complete_dynamic_goal_numeric_silence_crossing_and_zero_financial_writes(
+   |                                                                                                     ^
+32 |     goal_client: tuple[TestClient, Engine],
+33 | ) -> None:
+   |
+
+Found 10 errors.
+[*] 8 fixable with the `--fix` option (1 hidden fix can be enabled with the `--unsafe-fixes` option).

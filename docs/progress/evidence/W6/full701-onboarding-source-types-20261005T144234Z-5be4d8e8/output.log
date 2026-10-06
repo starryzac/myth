@@ -1,0 +1,16 @@
+$ tsc --noEmit
+src/api/onboarding.ts(35,107): error TS18046: 'value.accounts' is of type 'unknown'.
+src/api/onboarding.ts(35,128): error TS7006: Parameter 'account' implicitly has an 'any' type.
+src/features/onboarding-draft.ts(32,162): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/features/onboarding-draft.ts(32,238): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/features/onboarding-draft.ts(33,47): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/features/onboarding-draft.ts(33,100): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/pages/OnboardingPage.tsx(27,8): error TS18048: 'result.compilation.issues' is possibly 'undefined'.
+src/pages/OnboardingPage.tsx(27,172): error TS18048: 'result.compilation.assumptions' is possibly 'undefined'.
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @bounded-funds/web@0.1.0 typecheck: `tsc --noEmit`
+Exit status 2

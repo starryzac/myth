@@ -1,0 +1,2 @@
+apps\api\app\tests\test_global_intervention_migration_contract.py:32: error: "FromClause[ReadOnlyColumnCollection[str, KeyedColumnElement[Any]]]" has no attribute "constraints"  [attr-defined]
+Found 1 error in 1 file (checked 8 source files)

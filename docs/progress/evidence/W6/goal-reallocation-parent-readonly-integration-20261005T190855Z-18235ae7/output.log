@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/pages/GoalsPage.test.tsx (13 tests) 3697ms
+   ✓ 现金回拨预览惰性读取原规则并越过金融写门，只有主动只读预览不授权限  744ms
+   ✓ 完整保护联合规划惰性GET仍可越过写门，刷新重取且不授予执行  822ms
+   ✓ UNKNOWN保留原身份，重建页面必须GET原件后只恢复同action，不生成新prepare键  407ms
+   ✓ 原准备响应丢失只重试同一键，存储失败不得先发出金融请求  384ms
+
+ Test Files  1 passed (1)
+      Tests  13 passed (13)
+   Start at  03:08:58
+   Duration  7.28s (transform 947ms, setup 465ms, collect 1.46s, tests 3.70s, environment 868ms, prepare 293ms)
+

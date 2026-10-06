@@ -1,0 +1,210 @@
+...FFFFFFFFFFFFF.FFFFFFFFFFFF......F...FF                                [100%]
+================================== FAILURES ===================================
+______ test_unsettled_prefix_cannot_be_treated_as_bank_receipt[RESERVED] ______
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:188: in test_unsettled_prefix_cannot_be_treated_as_bank_receipt
+    with pytest.raises(
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_PRIOR_VERIFIED_RECEIPT_INCOME_COMMIT_DIFFERS'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+______ test_unsettled_prefix_cannot_be_treated_as_bank_receipt[RELEASED] ______
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:188: in test_unsettled_prefix_cannot_be_treated_as_bank_receipt
+    with pytest.raises(
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_PRIOR_VERIFIED_RECEIPT_INCOME_COMMIT_DIFFERS'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_____________ test_missing_prefix_commit_is_not_zero_consumption ______________
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:195: in test_missing_prefix_commit_is_not_zero_consumption
+    with pytest.raises(
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_PRIOR_VERIFIED_RECEIPT_INCOME_COMMIT_DIFFERS'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+______________ test_prior_commit_exact_original_amount_required _______________
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:205: in test_prior_commit_exact_original_amount_required
+    with pytest.raises(
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_PRIOR_VERIFIED_RECEIPT_INCOME_COMMIT_DIFFERS'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+___________ test_committed_label_cannot_erase_assigned_denominator ____________
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:214: in test_committed_label_cannot_erase_assigned_denominator
+    with pytest.raises(
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_PRIOR_BANK_RECEIPT_NOT_RETAINED_IN_ASSIGNED_DENOMINATOR'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+______________ test_current_or_later_claim_cannot_be_borrowed[2] ______________
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:230: in test_current_or_later_claim_cannot_be_borrowed
+    with pytest.raises(
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_CURRENT_INCOME_SCOPE_OR_SIBLING_CLAIM_DIFFERS'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+______________ test_current_or_later_claim_cannot_be_borrowed[3] ______________
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:230: in test_current_or_later_claim_cannot_be_borrowed
+    with pytest.raises(
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_CURRENT_INCOME_SCOPE_OR_SIBLING_CLAIM_DIFFERS'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_______ test_other_actual_claim_is_retained_and_cannot_fund_fixed_child _______
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:245: in test_other_actual_claim_is_retained_and_cannot_fund_fixed_child
+    with pytest.raises(
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_CURRENT_FIXED_FRAGMENT_NOT_ORIGINALLY_AND_CURRENTLY_AVAILABLE'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_________ test_current_original_origin_bank_identity_must_not_change __________
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:260: in test_current_original_origin_bank_identity_must_not_change
+    with pytest.raises(
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_CURRENT_INCOME_SCOPE_OR_SIBLING_CLAIM_DIFFERS'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+___________ test_additional_account_does_not_relabel_original_scope ___________
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:269: in test_additional_account_does_not_relabel_original_scope
+    with pytest.raises(
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_CURRENT_INCOME_SCOPE_OR_SIBLING_CLAIM_DIFFERS'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_____ test_self_consistent_assigned_to_available_is_not_a_joint_successor _____
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:294: in test_self_consistent_assigned_to_available_is_not_a_joint_successor
+    with pytest.raises(
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_CURRENT_FIXED_FRAGMENT_NOT_ORIGINALLY_AND_CURRENTLY_AVAILABLE'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+______________ test_fixed_child_denominator_cannot_be_skipped[0] ______________
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:303: in test_fixed_child_denominator_cannot_be_skipped
+    with pytest.raises(
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_COMPLETE_FIXED_CHILD_OR_LEDGER_IDENTITY_DIFFERS'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+______________ test_fixed_child_denominator_cannot_be_skipped[3] ______________
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:303: in test_fixed_child_denominator_cannot_be_skipped
+    with pytest.raises(
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_COMPLETE_FIXED_CHILD_OR_LEDGER_IDENTITY_DIFFERS'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_ test_original_source_metadata_refuses_dirty_or_future_facts[user_id-value0] _
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:337: in test_original_source_metadata_refuses_dirty_or_future_facts
+    with pytest.raises(PolicyLifecycleError, match="JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_ test_original_source_metadata_refuses_dirty_or_future_facts[evidence_level-USER_DECLARED] _
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:337: in test_original_source_metadata_refuses_dirty_or_future_facts
+    with pytest.raises(PolicyLifecycleError, match="JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_ test_original_source_metadata_refuses_dirty_or_future_facts[source_type-UNREGISTERED] _
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:337: in test_original_source_metadata_refuses_dirty_or_future_facts
+    with pytest.raises(PolicyLifecycleError, match="JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_ test_original_source_metadata_refuses_dirty_or_future_facts[status-UNKNOWN] _
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:337: in test_original_source_metadata_refuses_dirty_or_future_facts
+    with pytest.raises(PolicyLifecycleError, match="JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_ test_original_source_metadata_refuses_dirty_or_future_facts[content_hash-ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff] _
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:337: in test_original_source_metadata_refuses_dirty_or_future_facts
+    with pytest.raises(PolicyLifecycleError, match="JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_ test_original_source_metadata_refuses_dirty_or_future_facts[observed_at-value5] _
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:337: in test_original_source_metadata_refuses_dirty_or_future_facts
+    with pytest.raises(PolicyLifecycleError, match="JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_ test_original_source_metadata_refuses_dirty_or_future_facts[valid_from-value6] _
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:337: in test_original_source_metadata_refuses_dirty_or_future_facts
+    with pytest.raises(PolicyLifecycleError, match="JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_ test_original_source_metadata_refuses_dirty_or_future_facts[valid_to-value7] _
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:337: in test_original_source_metadata_refuses_dirty_or_future_facts
+    with pytest.raises(PolicyLifecycleError, match="JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_INCOME_ORIGINAL_LINEAGE_NOT_VERIFIED'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_ test_missing_native_protocol_fields_cannot_use_pydantic_defaults[protocol] __
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:346: in test_missing_native_protocol_fields_cannot_use_pydantic_defaults
+    with pytest.raises(PolicyLifecycleError, match="JOINT_INCOME_ORIGINAL_OWNER_OR_CLOCK_DIFFERS"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_INCOME_ORIGINAL_OWNER_OR_CLOCK_DIFFERS'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_ test_missing_native_protocol_fields_cannot_use_pydantic_defaults[simulation] _
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:346: in test_missing_native_protocol_fields_cannot_use_pydantic_defaults
+    with pytest.raises(PolicyLifecycleError, match="JOINT_INCOME_ORIGINAL_OWNER_OR_CLOCK_DIFFERS"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_INCOME_ORIGINAL_OWNER_OR_CLOCK_DIFFERS'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+_ test_missing_native_protocol_fields_cannot_use_pydantic_defaults[complete] __
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:346: in test_missing_native_protocol_fields_cannot_use_pydantic_defaults
+    with pytest.raises(PolicyLifecycleError, match="JOINT_INCOME_ORIGINAL_OWNER_OR_CLOCK_DIFFERS"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_INCOME_ORIGINAL_OWNER_OR_CLOCK_DIFFERS'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+____________ test_v1_cannot_be_reconstructed_into_native_v2_proof _____________
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:354: in test_v1_cannot_be_reconstructed_into_native_v2_proof
+    with pytest.raises(PolicyLifecycleError, match="JOINT_NATIVE_V2_INCOME_ORIGINAL_REQUIRED"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_NATIVE_V2_INCOME_ORIGINAL_REQUIRED'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+___ test_superseded_current_target_cannot_short_circuit_current_valid_gate ____
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:391: in test_superseded_current_target_cannot_short_circuit_current_valid_gate
+    with pytest.raises(
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_PREPARED_INCOME_LINEAGE_MISSING_OR_OVER_CAPACITY'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+____ test_missing_joint_binding_rejects_before_any_database_read_or_grant _____
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:419: in test_missing_joint_binding_rejects_before_any_database_read_or_grant
+    with pytest.raises(PolicyLifecycleError, match="JOINT_PERSISTED_CHILD_MARKER_REQUIRED"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_PERSISTED_CHILD_MARKER_REQUIRED'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+__________ test_original_request_hash_tamper_is_not_a_new_successor ___________
+apps\api\app\tests\test_full_joint_goal_income_reservation.py:430: in test_original_request_hash_tamper_is_not_a_new_successor
+    with pytest.raises(PolicyLifecycleError, match="JOINT_PERSISTED_CHILD_MARKER_REQUIRED"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'JOINT_PERSISTED_CHILD_MARKER_REQUIRED'
+E     Actual message: '联合原件身份、来源或顺序未核实'
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_unsettled_prefix_cannot_be_treated_as_bank_receipt[RESERVED]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_unsettled_prefix_cannot_be_treated_as_bank_receipt[RELEASED]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_missing_prefix_commit_is_not_zero_consumption
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_prior_commit_exact_original_amount_required
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_committed_label_cannot_erase_assigned_denominator
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_current_or_later_claim_cannot_be_borrowed[2]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_current_or_later_claim_cannot_be_borrowed[3]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_other_actual_claim_is_retained_and_cannot_fund_fixed_child
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_current_original_origin_bank_identity_must_not_change
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_additional_account_does_not_relabel_original_scope
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_self_consistent_assigned_to_available_is_not_a_joint_successor
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_fixed_child_denominator_cannot_be_skipped[0]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_fixed_child_denominator_cannot_be_skipped[3]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_original_source_metadata_refuses_dirty_or_future_facts[user_id-value0]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_original_source_metadata_refuses_dirty_or_future_facts[evidence_level-USER_DECLARED]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_original_source_metadata_refuses_dirty_or_future_facts[source_type-UNREGISTERED]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_original_source_metadata_refuses_dirty_or_future_facts[status-UNKNOWN]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_original_source_metadata_refuses_dirty_or_future_facts[content_hash-ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_original_source_metadata_refuses_dirty_or_future_facts[observed_at-value5]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_original_source_metadata_refuses_dirty_or_future_facts[valid_from-value6]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_original_source_metadata_refuses_dirty_or_future_facts[valid_to-value7]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_missing_native_protocol_fields_cannot_use_pydantic_defaults[protocol]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_missing_native_protocol_fields_cannot_use_pydantic_defaults[simulation]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_missing_native_protocol_fields_cannot_use_pydantic_defaults[complete]
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_v1_cannot_be_reconstructed_into_native_v2_proof
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_superseded_current_target_cannot_short_circuit_current_valid_gate
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_missing_joint_binding_rejects_before_any_database_read_or_grant
+FAILED apps/api/app/tests/test_full_joint_goal_income_reservation.py::test_original_request_hash_tamper_is_not_a_new_successor
+28 failed, 13 passed, 2 warnings in 5.00s

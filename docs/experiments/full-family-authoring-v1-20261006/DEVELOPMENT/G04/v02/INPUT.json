@@ -1,0 +1,693 @@
+{
+  "family_id": "G04",
+  "initial_state": {
+    "expected_epoch_id": null,
+    "mode": "EXISTING",
+    "seed_version": "mvp-301-v6"
+  },
+  "profile": "FULL",
+  "protocol": "full-family-case-input-v1",
+  "purpose": "DEVELOPMENT",
+  "scenario_id": "G04-v02",
+  "steps": [
+    {
+      "at": "2026-10-04T10:00:02+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "SNAPSHOT",
+      "step_id": "initial"
+    },
+    {
+      "at": "2026-10-04T10:00:04+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "LOCAL_USER_LOGIN",
+      "step_id": "local-user-login"
+    },
+    {
+      "at": "2026-10-04T10:00:06+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "external_ref": "mvp-301-v6:account:cash"
+      },
+      "kind": "LOOKUP_ACCOUNT",
+      "step_id": "cash"
+    },
+    {
+      "at": "2026-10-04T10:00:08+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "external_ref": "mvp-301-v6:account:goal"
+      },
+      "kind": "LOOKUP_ACCOUNT",
+      "step_id": "goal-account"
+    },
+    {
+      "at": "2026-10-04T10:00:10+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "configuration": {
+          "extra_buffer_cents": 10000,
+          "horizon_days": 14,
+          "method": {
+            "essential_categories": [
+              "food",
+              "transport",
+              "daily_necessities"
+            ],
+            "exclude_one_off": true,
+            "lookback_days": 60,
+            "name": "rolling_window_quantile",
+            "quantile": 0.9
+          },
+          "name": "作者 living",
+          "type": "living_reserve"
+        },
+        "expected_epoch_id": {
+          "$ref": {
+            "pointer": "/result/tables/audit_epochs/0/id",
+            "step_id": "initial"
+          }
+        },
+        "idempotency_key": "full804-G04-living-declare"
+      },
+      "kind": "DECLARE_POLICY",
+      "step_id": "living-declare"
+    },
+    {
+      "at": "2026-10-04T10:00:12+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "accepted": true,
+        "proposal_id": {
+          "$ref": {
+            "pointer": "/result/proposal_id",
+            "step_id": "living-declare"
+          }
+        },
+        "reviewed_hash": {
+          "$ref": {
+            "pointer": "/result/configuration_hash",
+            "step_id": "living-declare"
+          }
+        }
+      },
+      "kind": "CONFIRM_POLICY",
+      "step_id": "living-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:14+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "configuration": {
+          "amount_cents": 90000,
+          "name": "作者 emergency",
+          "type": "emergency_buffer"
+        },
+        "expected_epoch_id": {
+          "$ref": {
+            "pointer": "/result/tables/audit_epochs/0/id",
+            "step_id": "initial"
+          }
+        },
+        "idempotency_key": "full804-G04-emergency-declare"
+      },
+      "kind": "DECLARE_POLICY",
+      "step_id": "emergency-declare"
+    },
+    {
+      "at": "2026-10-04T10:00:16+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "accepted": true,
+        "proposal_id": {
+          "$ref": {
+            "pointer": "/result/proposal_id",
+            "step_id": "emergency-declare"
+          }
+        },
+        "reviewed_hash": {
+          "$ref": {
+            "pointer": "/result/configuration_hash",
+            "step_id": "emergency-declare"
+          }
+        }
+      },
+      "kind": "CONFIRM_POLICY",
+      "step_id": "emergency-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:18+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "configuration": {
+          "asset_policy_id": null,
+          "cross_goal_reallocation_allowed": false,
+          "deadline": "2027-02-15",
+          "monthly_contribution": {
+            "max_cents": 180000,
+            "min_cents": 60000,
+            "target_cents": 100000
+          },
+          "name": "作者 goal-a",
+          "priority": {
+            "deferrable": false,
+            "importance": 60,
+            "minimum_cents": 0,
+            "reducible": true
+          },
+          "target_cents": 1200137,
+          "type": "goal_saving",
+          "valid_from": "2026-10-04",
+          "valid_until": "2027-10-04"
+        },
+        "expected_epoch_id": {
+          "$ref": {
+            "pointer": "/result/tables/audit_epochs/0/id",
+            "step_id": "initial"
+          }
+        },
+        "idempotency_key": "full804-G04-goal-a-base-declare"
+      },
+      "kind": "DECLARE_POLICY",
+      "step_id": "goal-a-base-declare"
+    },
+    {
+      "at": "2026-10-04T10:00:20+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "accepted": true,
+        "proposal_id": {
+          "$ref": {
+            "pointer": "/result/proposal_id",
+            "step_id": "goal-a-base-declare"
+          }
+        },
+        "reviewed_hash": {
+          "$ref": {
+            "pointer": "/result/configuration_hash",
+            "step_id": "goal-a-base-declare"
+          }
+        }
+      },
+      "kind": "CONFIRM_POLICY",
+      "step_id": "goal-a-base-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:22+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "account_id": {
+          "$ref": {
+            "pointer": "/result/account/id",
+            "step_id": "goal-account"
+          }
+        },
+        "expected_version_id": {
+          "$ref": {
+            "pointer": "/result/current_version_id",
+            "step_id": "goal-a-base-confirm"
+          }
+        },
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "goal-a-base-confirm"
+          }
+        }
+      },
+      "kind": "CREATE_GOAL",
+      "step_id": "goal-a-create"
+    },
+    {
+      "at": "2026-10-04T10:00:24+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "configuration": {
+            "allow_deferral": false,
+            "allow_partial": true,
+            "asset_policy_id": null,
+            "cross_goal_reallocation_allowed": false,
+            "cross_goal_reallocation_policy_id": null,
+            "deadline": "2027-02-15",
+            "deferral_cost_cents_per_day": 0,
+            "importance": 60,
+            "minimum_guarantee_cents": 0,
+            "monthly_contribution": {
+              "max_cents": 180000,
+              "min_cents": 60000,
+              "target_cents": 100000
+            },
+            "name": "作者 goal-a",
+            "target_cents": 1200137,
+            "type": "long_term_goal",
+            "valid_from": "2026-10-04",
+            "valid_until": "2027-10-04"
+          },
+          "expected_version_id": {
+            "$ref": {
+              "pointer": "/result/current_version_id",
+              "step_id": "goal-a-base-confirm"
+            }
+          }
+        },
+        "goal_id": {
+          "$ref": {
+            "pointer": "/result/id",
+            "step_id": "goal-a-create"
+          }
+        }
+      },
+      "kind": "FULL_GOAL_PREVIEW",
+      "step_id": "goal-a-preview"
+    },
+    {
+      "at": "2026-10-04T10:00:26+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "accepted": true,
+          "configuration": {
+            "$ref": {
+              "pointer": "/result/full_configuration",
+              "step_id": "goal-a-preview"
+            }
+          },
+          "expected_epoch_id": {
+            "$ref": {
+              "pointer": "/result/tables/audit_epochs/0/id",
+              "step_id": "initial"
+            }
+          },
+          "expected_version_id": {
+            "$ref": {
+              "pointer": "/result/expected_version_id",
+              "step_id": "goal-a-preview"
+            }
+          },
+          "idempotency_key": "full804-G04-goal-a-model",
+          "reason": "作者预登记双 hash 明确复核",
+          "reviewed_base_hash": {
+            "$ref": {
+              "pointer": "/result/base_configuration_hash",
+              "step_id": "goal-a-preview"
+            }
+          },
+          "reviewed_full_hash": {
+            "$ref": {
+              "pointer": "/result/full_configuration_hash",
+              "step_id": "goal-a-preview"
+            }
+          }
+        },
+        "goal_id": {
+          "$ref": {
+            "pointer": "/result/id",
+            "step_id": "goal-a-create"
+          }
+        }
+      },
+      "kind": "FULL_GOAL_CONFIRM",
+      "step_id": "goal-a-model"
+    },
+    {
+      "at": "2026-10-04T10:00:28+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "account_id": {
+          "$ref": {
+            "pointer": "/result/account/id",
+            "step_id": "cash"
+          }
+        },
+        "amount_cents": 1300148,
+        "counterparty_ref": "payroll",
+        "currency": "CNY",
+        "external_ref": "full804-G04-income",
+        "idempotency_key": "full804-G04-income",
+        "kind": "INCOME",
+        "occurred_at": "2026-10-04T10:00:28+08:00",
+        "protocol_version": "bank-external-fact-v1",
+        "simulation": true,
+        "source_id": "bounded-funds-external-v1",
+        "user_id": {
+          "$ref": {
+            "pointer": "/result/tables/users/0/id",
+            "step_id": "initial"
+          }
+        }
+      },
+      "kind": "EXTERNAL_FACT",
+      "step_id": "income"
+    },
+    {
+      "at": "2026-10-04T10:00:30+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "idempotency_key": "full804-G04-allocation",
+        "intent": {
+          "goal_id": {
+            "$ref": {
+              "pointer": "/result/id",
+              "step_id": "goal-a-create"
+            }
+          },
+          "kind": "allocate_goal"
+        }
+      },
+      "kind": "PREPARE_ACTION",
+      "step_id": "allocation-prepare"
+    },
+    {
+      "at": "2026-10-04T10:00:32+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "accepted": true,
+        "action_id": {
+          "$ref": {
+            "pointer": "/result/action_id",
+            "step_id": "allocation-prepare"
+          }
+        },
+        "effect_hash": {
+          "$ref": {
+            "pointer": "/result/effect_hash",
+            "step_id": "allocation-prepare"
+          }
+        }
+      },
+      "kind": "CONFIRM_ACTION",
+      "step_id": "allocation-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:34+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "action_id": {
+          "$ref": {
+            "pointer": "/result/action_id",
+            "step_id": "allocation-prepare"
+          }
+        }
+      },
+      "kind": "EXECUTE_ACTION",
+      "step_id": "allocation-execute"
+    },
+    {
+      "at": "2026-10-04T10:00:36+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "configuration": {
+          "allow_auto_recovery_without_penalty": true,
+          "allow_early_withdrawal_with_penalty": false,
+          "allowed_asset_classes": [
+            "CASH_MGMT_T0"
+          ],
+          "goal_id": {
+            "$ref": {
+              "pointer": "/result/id",
+              "step_id": "goal-a-create"
+            }
+          },
+          "max_auto_managed_cents": 900000,
+          "max_lock_days": 0,
+          "max_principal_risk_level": 0,
+          "max_redemption_delay_days": 0,
+          "name": "作者 asset-base",
+          "scope": "goal",
+          "single_action_cap_cents": 300000,
+          "type": "asset_authorization"
+        },
+        "expected_epoch_id": {
+          "$ref": {
+            "pointer": "/result/tables/audit_epochs/0/id",
+            "step_id": "initial"
+          }
+        },
+        "idempotency_key": "full804-G04-asset-base-declare"
+      },
+      "kind": "DECLARE_POLICY",
+      "step_id": "asset-base-declare"
+    },
+    {
+      "at": "2026-10-04T10:00:38+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "accepted": true,
+        "proposal_id": {
+          "$ref": {
+            "pointer": "/result/proposal_id",
+            "step_id": "asset-base-declare"
+          }
+        },
+        "reviewed_hash": {
+          "$ref": {
+            "pointer": "/result/configuration_hash",
+            "step_id": "asset-base-declare"
+          }
+        }
+      },
+      "kind": "CONFIRM_POLICY",
+      "step_id": "asset-base-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:40+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "configuration": {
+            "allow_auto_recovery_without_penalty": true,
+            "allow_early_withdrawal_with_penalty": false,
+            "allowed_asset_classes": [
+              "CASH_MGMT_T0"
+            ],
+            "goal_id": {
+              "$ref": {
+                "pointer": "/result/id",
+                "step_id": "goal-a-create"
+              }
+            },
+            "max_auto_managed_cents": 900000,
+            "max_lock_days": 0,
+            "max_principal_risk_level": 0,
+            "max_redemption_delay_days": 0,
+            "name": "作者 asset",
+            "scope": "goal",
+            "single_action_cap_cents": 300000,
+            "type": "asset_authorization",
+            "valid_from": "2026-10-04",
+            "valid_until": "2027-10-04"
+          },
+          "dsl_version": "FULL_V1",
+          "template_name": "AssetAuthorizationPolicy"
+        }
+      },
+      "kind": "FULL_POLICY_VALIDATE",
+      "step_id": "asset-validate"
+    },
+    {
+      "at": "2026-10-04T10:00:42+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "accepted": true,
+          "configuration": {
+            "$ref": {
+              "pointer": "/result/normalized_configuration",
+              "step_id": "asset-validate"
+            }
+          },
+          "idempotency_key": "full804-G04-asset-full",
+          "reason": "预登记合成 USER 明确复核此完整声明",
+          "reviewed_hash": {
+            "$ref": {
+              "pointer": "/result/configuration_hash",
+              "step_id": "asset-validate"
+            }
+          },
+          "template_name": "AssetAuthorizationPolicy"
+        }
+      },
+      "kind": "FULL_POLICY_CONFIRM",
+      "step_id": "asset-full"
+    },
+    {
+      "at": "2026-10-04T10:00:44+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {}
+      },
+      "kind": "CATALOG_REGISTER_CURRENT",
+      "step_id": "asset-catalog"
+    },
+    {
+      "at": "2026-10-04T10:00:46+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "expected_epoch_id": {
+            "$ref": {
+              "pointer": "/result/tables/audit_epochs/0/id",
+              "step_id": "initial"
+            }
+          },
+          "expected_full_policy_version_id": {
+            "$ref": {
+              "pointer": "/result/version_id",
+              "step_id": "asset-full"
+            }
+          },
+          "expected_goal_policy_version_id": {
+            "$ref": {
+              "pointer": "/result/lifecycle/current_version_id",
+              "step_id": "goal-a-model"
+            }
+          },
+          "expected_mvp_policy_version_id": {
+            "$ref": {
+              "pointer": "/result/current_version_id",
+              "step_id": "asset-base-confirm"
+            }
+          },
+          "full_policy_id": {
+            "$ref": {
+              "pointer": "/result/policy_id",
+              "step_id": "asset-full"
+            }
+          },
+          "goal_id": {
+            "$ref": {
+              "pointer": "/result/id",
+              "step_id": "goal-a-create"
+            }
+          },
+          "idempotency_key": "full804-G04-purchase-prepare",
+          "mvp_asset_policy_id": {
+            "$ref": {
+              "pointer": "/result/policy_id",
+              "step_id": "asset-base-confirm"
+            }
+          },
+          "planning_mode": "PORTFOLIO"
+        }
+      },
+      "kind": "FULL_ASSET_PREPARE",
+      "step_id": "purchase-prepare"
+    },
+    {
+      "at": "2026-10-04T10:00:48+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "accepted": true,
+          "expected_epoch_id": {
+            "$ref": {
+              "pointer": "/result/tables/audit_epochs/0/id",
+              "step_id": "initial"
+            }
+          },
+          "idempotency_key": "full804-G04-purchase-confirm",
+          "reviewed_portfolio_hash": {
+            "$ref": {
+              "pointer": "/result/original_portfolio/portfolio_hash",
+              "step_id": "purchase-prepare"
+            }
+          }
+        },
+        "portfolio_id": {
+          "$ref": {
+            "pointer": "/result/original_portfolio/portfolio_id",
+            "step_id": "purchase-prepare"
+          }
+        }
+      },
+      "kind": "FULL_ASSET_CONFIRM",
+      "step_id": "purchase-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:50+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "accepted": true,
+          "expected_action_id": {
+            "$ref": {
+              "pointer": "/result/original_portfolio/batches/0/action_id",
+              "step_id": "purchase-prepare"
+            }
+          },
+          "expected_batch_number": 1,
+          "expected_epoch_id": {
+            "$ref": {
+              "pointer": "/result/tables/audit_epochs/0/id",
+              "step_id": "initial"
+            }
+          },
+          "reviewed_portfolio_hash": {
+            "$ref": {
+              "pointer": "/result/original_portfolio/portfolio_hash",
+              "step_id": "purchase-prepare"
+            }
+          }
+        },
+        "portfolio_id": {
+          "$ref": {
+            "pointer": "/result/original_portfolio/portfolio_id",
+            "step_id": "purchase-prepare"
+          }
+        }
+      },
+      "kind": "FULL_ASSET_EXECUTE",
+      "step_id": "purchase-execute"
+    },
+    {
+      "at": "2026-10-04T10:00:52+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "goal_id": {
+          "$ref": {
+            "pointer": "/result/id",
+            "step_id": "goal-a-create"
+          }
+        }
+      },
+      "kind": "FULL_GOAL_READ",
+      "step_id": "goal-source"
+    },
+    {
+      "at": "2026-10-04T10:00:54+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "SNAPSHOT",
+      "step_id": "final"
+    }
+  ]
+}

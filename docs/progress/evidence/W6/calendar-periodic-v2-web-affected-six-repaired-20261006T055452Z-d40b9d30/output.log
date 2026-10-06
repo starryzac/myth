@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/calendar-periodic-suggestions.test.ts (28 tests | 27 skipped) 14ms
+ ✓ src/components/CalendarPeriodicSuggestionsPanel.test.tsx (5 tests) 615ms
+   ✓ explicitly reads actual candidates/all source denominator without POST/obligation/financial completion  314ms
+
+ Test Files  2 passed (2)
+      Tests  6 passed | 27 skipped (33)
+   Start at  13:54:55
+   Duration  3.89s (transform 528ms, setup 1.27s, collect 1.26s, tests 629ms, environment 2.36s, prepare 709ms)
+

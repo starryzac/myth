@@ -1,0 +1,38 @@
+{
+  "run_id": "20261005T034241Z-c7ab72b1",
+  "task": "W1",
+  "label": "trace-tool-first-positive",
+  "status": "PASSED",
+  "scope": [
+    "scripts/mvp_trace_metrics.py",
+    "scripts/tests/test_mvp_trace_metrics.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "scripts/tests/test_mvp_trace_metrics.py",
+    "-k",
+    "complete_typed",
+    "-p",
+    "no:tmpdir",
+    "-p",
+    "no:cacheprovider",
+    "-q"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T03:42:41.944325+00:00",
+  "finished_at": "2026-10-05T03:42:44.474183+00:00",
+  "wall_seconds": 2.529858,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "a2c92f4fa1a5f1f4855eea1b8d432d01061825f2e1cf26799c1c21f6d637caf9",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

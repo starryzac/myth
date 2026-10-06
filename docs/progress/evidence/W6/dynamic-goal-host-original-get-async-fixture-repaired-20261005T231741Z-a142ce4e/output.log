@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/App.dynamic-goal-host.test.tsx (2 tests) 4456ms
+   ✓ pending原动态准备在当前列表失败时仍独立GET，NOT_FOUND保留完整原件并阻挡reset  3773ms
+   ✓ prepare已独立核对但固定PLANNED尚未终局，跨页门保留且原GET仍可达  681ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  07:17:44
+   Duration  7.25s (transform 2.71s, setup 468ms, collect 663ms, tests 4.46s, environment 881ms, prepare 299ms)
+

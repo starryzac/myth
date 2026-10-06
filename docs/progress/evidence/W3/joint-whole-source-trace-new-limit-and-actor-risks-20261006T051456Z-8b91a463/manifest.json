@@ -1,0 +1,39 @@
+{
+  "run_id": "20261006T051456Z-8b91a463",
+  "task": "W3",
+  "label": "joint-whole-source-trace-new-limit-and-actor-risks",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/decision_trace.py",
+    "apps/api/app/domain/full_joint_goal_execution_trace.py",
+    "apps/api/app/tests/test_full_joint_goal_execution_trace.py"
+  ],
+  "command": [
+    ".venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_full_joint_goal_execution_trace.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T05:14:58.691101+00:00",
+  "finished_at": "2026-10-06T05:16:16.879845+00:00",
+  "wall_seconds": 78.188744,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/web/src/api/full-joint-goal-execution.ts",
+    "apps/web/src/components/FullJointGoalExecutionPanel.tsx",
+    "apps/web/src/features/full-joint-goal-operation.ts"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "9652a2c08d80350525e64af2f4ddec0d0c01fe28e6a852fbd628b2c8cedddede",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

@@ -1,0 +1,10 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/components/LocalActorSessionPanel.test.tsx (17 tests) 559ms
+
+ Test Files  1 passed (1)
+      Tests  17 passed (17)
+   Start at  05:42:31
+   Duration  2.66s (transform 111ms, setup 415ms, collect 131ms, tests 559ms, environment 827ms, prepare 291ms)
+

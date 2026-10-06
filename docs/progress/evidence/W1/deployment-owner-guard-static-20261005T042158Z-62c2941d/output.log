@@ -1,0 +1,23 @@
+E501 Line too long (101 > 100)
+   --> scripts\w1_demo_deployment.py:145:101
+    |
+143 |         "commands": [],
+144 |         "formal_database_touched": False,
+145 |         "volume_policy": "RETAIN: this tool never deletes containers, volumes, databases or history",
+    |                                                                                                     ^
+146 |         "network_boundary": "LOCAL_DEPLOYMENT_ONLY: external network isolation not yet verified",
+147 |         "started_at": datetime.now(UTC).isoformat(),
+    |
+
+E501 Line too long (102 > 100)
+   --> scripts\w1_demo_deployment.py:194:101
+    |
+192 |         if listing:
+193 |             actual = json.loads(command(["docker", "inspect", *listing], f"{label}-inspect"))
+194 |             # Docker inspect's environment contains the private generated password; logs are redacted.
+    |                                                                                                     ^^
+195 |             for item in actual:
+196 |                 labels = item["Config"]["Labels"] or {}
+    |
+
+Found 2 errors.

@@ -1,0 +1,40 @@
+{
+  "run_id": "20261005T084329Z-8842126e",
+  "task": "W1",
+  "label": "phase-v2-installed-mypy",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/db/",
+    "apps/api/app/services/execution",
+    "apps/api/app/services/experiment_arms.py",
+    "apps/api/app/tests/test_execution_phase_rechecks.py",
+    "scripts/mvp_arm_executor.py",
+    "pyproject.toml",
+    "uv.lock"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "mypy",
+    "--strict",
+    "apps/api/app/services/execution_observations.py",
+    "apps/api/app/services/experiment_arms.py",
+    "apps/api/app/tests/test_execution_phase_rechecks.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T08:43:30.890685+00:00",
+  "finished_at": "2026-10-05T08:43:32.306725+00:00",
+  "wall_seconds": 1.41604,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "82f6b018cb9ee734104d7e6544b5898eb142aa16a94d353c0f68dd88d477ccc9",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

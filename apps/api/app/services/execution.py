@@ -1,7 +1,10 @@
 """Three committed phases for deterministic, simulated economic actions."""
 
 import json
+import re
+from collections.abc import Callable
 from datetime import UTC, datetime
+from typing import TYPE_CHECKING, Any
 from uuid import UUID, uuid4, uuid5
 
 from app.db.models import (
@@ -17,6 +20,25 @@ from app.db.models import (
 )
 from app.domain.execution import ACTION_PLAN_TYPES, execution_effect_hash, revalidate_execution
 from app.domain.execution_types import BankCommand, ExecutionEffect, ExecutionValidation
+from app.domain.full_dynamic_goal_execution import (
+    MARKER as DYNAMIC_GOAL_MARKER,
+)
+from app.domain.full_dynamic_goal_execution import (
+    FullDynamicGoalPrepareRequest,
+    FullDynamicGoalProof,
+    dynamic_goal_bank_key,
+)
+from app.domain.full_experiment_asset_execution import (
+    MARKER as EXPERIMENT_ASSET_MARKER,
+)
+from app.domain.full_experiment_asset_execution import (
+    FullExperimentAssetRequest,
+    experiment_asset_bank_key,
+)
+from app.domain.full_recovery_execution import (
+    MARKER as RECOVERY_MARKER,
+)
+from app.domain.full_recovery_execution import FullRecoveryPrepareRequest, recovery_bank_key
 from app.domain.income_ledger import IncomeOperation
 from app.domain.policy_configuration import configuration_hash
 from app.services.action_contracts import (
@@ -25,50 +47,320 @@ from app.services.action_contracts import (
     ConfirmActionRequest,
     PrepareActionRequest,
 )
-from app.services.execution_bank import process_operation
+from app.services.execution_bank import has_full_asset_batch_binding, process_operation
 from app.services.execution_context import load_execution_context
 from app.services.execution_exposure import refresh_execution_exposure
 from app.services.execution_projection import project_execution, verify_execution_receipt
 from app.services.execution_reservations import ResourceClaim, reserve_resources, resolve_resources
 from app.services.policy_lifecycle import PolicyLifecycleError
 from app.services.recovery_projection import _epochs
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
+FULL_ASSET_BATCH_GUARDS_VERSION = "full-asset-batch-guards-v1"
+FULL_RECOVERY_GUARDS_VERSION = "full-recovery-execution-guards-v1"
+FULL_EXPERIMENT_ASSET_GUARDS_VERSION = "full-experiment-asset-guards-v1"
+FULL_JOINT_GOAL_GUARDS_VERSION = "registered-joint-goal-execution-v2"
+JOINT_GOAL_MARKER = "full_joint_goal_execution"
+
+if TYPE_CHECKING:
+    from app.domain.full_joint_goal_execution import FullJointChildPrepareRequest
+
 
 def prepare_action(
-    engine: Engine, user_id: UUID, request: PrepareActionRequest, now: datetime
+    engine: Engine,
+    user_id: UUID,
+    request: PrepareActionRequest,
+    now: datetime,
+    *,
+    _experiment_candidate_selector: Callable[..., dict[str, Any] | None] | None = None,
+    _experiment_context_guard: Callable[[Session, UUID], None] | None = None,
+    _experiment_stage_capture: Callable[[str, UUID, dict[str, Any]], None] | None = None,
+    _full_dynamic_goal_request: FullDynamicGoalPrepareRequest | None = None,
+    _full_recovery_request: FullRecoveryPrepareRequest | None = None,
+    _full_experiment_asset_request: FullExperimentAssetRequest | None = None,
+    _full_joint_goal_request: "FullJointChildPrepareRequest | None" = None,
 ) -> ActionResponse:
     request = PrepareActionRequest.model_validate_json(request.model_dump_json())
     now = _clock(now)
     key = "action:" + configuration_hash({"key": request.idempotency_key})
     intent = request.intent.model_dump(mode="json")
+    if _full_joint_goal_request is not None:
+        from app.domain.full_joint_goal_execution import child_bank_key
+
+        if any(
+            value is not None
+            for value in (
+                _full_dynamic_goal_request,
+                _full_recovery_request,
+                _full_experiment_asset_request,
+                _experiment_candidate_selector,
+                _experiment_context_guard,
+                _experiment_stage_capture,
+            )
+        ):
+            raise PolicyLifecycleError("INVALID_JOINT_GOAL_CONTEXT", "不能混合联合执行协议", 409)
+        from app.services.execution_joint_goal_bridge import validate_joint_child_prepare
+
+        _full_joint_goal_request = validate_joint_child_prepare(request, _full_joint_goal_request)
+        key = child_bank_key(
+            _full_joint_goal_request.plan_id, _full_joint_goal_request.child_number
+        )
+    if _full_experiment_asset_request is not None:
+        if any(
+            value is not None
+            for value in (
+                _full_dynamic_goal_request,
+                _full_recovery_request,
+                _experiment_candidate_selector,
+                _experiment_context_guard,
+                _experiment_stage_capture,
+            )
+        ):
+            raise PolicyLifecycleError("INVALID_FULL_EXPERIMENT_CONTEXT", "不能混合执行协议", 409)
+        _full_experiment_asset_request = FullExperimentAssetRequest.model_validate_json(
+            _full_experiment_asset_request.model_dump_json()
+        )
+        original = _full_experiment_asset_request.original_request
+        if (
+            intent
+            != {
+                "kind": "purchase_asset",
+                "policy_id": str(original.mvp_asset_policy_id),
+            }
+            or request.idempotency_key != original.idempotency_key
+        ):
+            raise PolicyLifecycleError("FULL_EXPERIMENT_INTENT_MISMATCH", "原请求必须精确一致", 409)
+        key = experiment_asset_bank_key(original.idempotency_key)
+    if _full_recovery_request is not None:
+        if _full_dynamic_goal_request is not None:
+            raise PolicyLifecycleError(
+                "INVALID_FULL_RECOVERY_CONTEXT", "不能混合两个完整执行协议", 409
+            )
+        _full_recovery_request = FullRecoveryPrepareRequest.model_validate_json(
+            _full_recovery_request.model_dump_json()
+        )
+        if intent != {
+            "kind": "redeem_asset",
+            "position_id": str(_full_recovery_request.position_id),
+        }:
+            raise PolicyLifecycleError(
+                "FULL_RECOVERY_INTENT_MISMATCH", "原持仓意图必须精确一致", 409
+            )
+        key = recovery_bank_key(_full_recovery_request.idempotency_key)
+    if _full_dynamic_goal_request is not None:
+        _full_dynamic_goal_request = FullDynamicGoalPrepareRequest.model_validate_json(
+            _full_dynamic_goal_request.model_dump_json()
+        )
+        if intent != {"kind": "allocate_goal", "goal_id": str(_full_dynamic_goal_request.goal_id)}:
+            raise PolicyLifecycleError(
+                "DYNAMIC_GOAL_INTENT_MISMATCH", "原目标意图必须精确一致", 409
+            )
+        key = dynamic_goal_bank_key(_full_dynamic_goal_request.idempotency_key)
     with Session(engine) as session, session.begin():
+        if _full_experiment_asset_request is not None and (
+            engine.url.host != "127.0.0.1"
+            or engine.url.port != 54329
+            or engine.url.get_backend_name() != "postgresql"
+            or re.fullmatch(r"bf_test_[0-9a-f]{32}", engine.url.database or "") is None
+            or session.scalar(text("SELECT current_database()")) != engine.url.database
+        ):
+            raise PolicyLifecycleError(
+                "EXPERIMENT_NOT_IMPLEMENTED", "机制执行需要实际隔离模拟数据库", 409
+            )
         _lock_user(session, user_id)
+        experimental = any(
+            value is not None
+            for value in (
+                _experiment_candidate_selector,
+                _experiment_context_guard,
+                _experiment_stage_capture,
+            )
+        )
+        if experimental:
+            if _full_dynamic_goal_request is not None or _full_recovery_request is not None:
+                raise PolicyLifecycleError("INVALID_DYNAMIC_GOAL_CONTEXT", "不能混合实验接缝", 409)
+            # Private Python simulation hook; never accepted by the HTTP request schema.
+            if (
+                engine.url.host != "127.0.0.1"
+                or engine.url.port != 54329
+                or re.fullmatch(r"bf_test_[0-9a-f]{32}", engine.url.database or "") is None
+                or session.scalar(text("SELECT current_database()")) != engine.url.database
+                or not callable(_experiment_context_guard)
+            ):
+                raise PolicyLifecycleError(
+                    "EXPERIMENT_NOT_IMPLEMENTED", "需要原隔离模拟上下文", 409
+                )
+            _experiment_context_guard(session, user_id)
         existing = session.scalar(
             select(ActionPlan).where(
                 ActionPlan.user_id == user_id, ActionPlan.idempotency_key == key
             )
         )
         if existing is not None:
+            if _full_joint_goal_request is not None:
+                from app.services.execution_joint_goal_bridge import replay_joint_child_prepare
+
+                return replay_joint_child_prepare(
+                    session, user_id, existing, _full_joint_goal_request, now
+                )
+            if _full_experiment_asset_request is not None:
+                from app.services.full_experiment_asset_execution import (
+                    verify_full_experiment_asset_prepare_replay,
+                )
+
+                return verify_full_experiment_asset_prepare_replay(
+                    session, user_id, existing, _full_experiment_asset_request, now
+                )
+            if _full_recovery_request is not None:
+                from app.services.full_recovery_execution import verify_full_recovery_prepare_replay
+
+                return verify_full_recovery_prepare_replay(
+                    session, user_id, existing, _full_recovery_request, now
+                )
+            if _full_dynamic_goal_request is not None:
+                from app.services.full_dynamic_goal_execution import (
+                    verify_full_dynamic_goal_prepare_replay,
+                )
+
+                return verify_full_dynamic_goal_prepare_replay(
+                    session, user_id, existing, _full_dynamic_goal_request, now
+                )
             if existing.request.get("intent") != intent:
                 raise PolicyLifecycleError(
                     "IDEMPOTENCY_CONFLICT", "同一幂等键不能改变原始意图", 409
                 )
+            if _experiment_stage_capture is not None:
+                _experiment_stage_capture("user_lock", existing.id, {"idempotent_replay": True})
+                _experiment_stage_capture(
+                    "prepare_transaction",
+                    existing.id,
+                    {
+                        "idempotent_replay": True,
+                        "backend_pid": session.scalar(text("SELECT pg_backend_pid()")),
+                        "transaction_id": session.scalar(text("SELECT txid_current()")),
+                    },
+                )
+            # Do not invoke a candidate or rewrite a persisted economic effect on replay.
             return get_action(session, user_id, existing.id, now)
-        action_id = uuid4()
+        action_id = _full_joint_goal_request.action_id if _full_joint_goal_request else uuid4()
+        if _experiment_stage_capture is not None:
+            _experiment_stage_capture("user_lock", action_id, {"actual_owner_lock": True})
+            _experiment_stage_capture(
+                "prepare_transaction",
+                action_id,
+                {
+                    "backend_pid": session.scalar(text("SELECT pg_backend_pid()")),
+                    "transaction_id": session.scalar(text("SELECT txid_current()")),
+                },
+            )
         from app.services.decision_recording import record_execution_trace, start_capture
 
         start_capture(session)
-        effect = _build_effect(session, user_id, action_id, request, now)
+        dynamic_proof: FullDynamicGoalProof | None = None
+        dynamic_marker: dict[str, Any] | None = None
+        recovery_marker: dict[str, Any] | None = None
+        experiment_asset_marker: dict[str, Any] | None = None
+        joint_marker: dict[str, Any] | None = None
+        candidate = None
+        if _experiment_candidate_selector is not None:
+            # None from a callable means no candidate, not a P-plan fallback.
+            candidate = _experiment_candidate_selector(session, user_id, action_id, intent, now)
+            if candidate is None:
+                raise PolicyLifecycleError("EXPERIMENT_NO_CANDIDATE", "原候选为空，无资金动作", 409)
+        elif _experiment_stage_capture is not None:
+            _experiment_stage_capture(
+                "candidate_before_new_effect", action_id, {"original_planner": True}
+            )
+        if _full_joint_goal_request is not None:
+            from app.services.full_joint_goal_execution_guards import produce_full_joint_goal_effect
+
+            effect, dynamic_proof = produce_full_joint_goal_effect(
+                session, user_id, _full_joint_goal_request, action_id, now
+            )
+            if intent != {"kind": "allocate_goal", "goal_id": str(effect.goal_id)}:
+                raise PolicyLifecycleError("JOINT_GOAL_INTENT_MISMATCH", "原子目标意图不一致", 409)
+            joint_marker = _full_joint_goal_request.model_dump(mode="json")
+        elif _full_experiment_asset_request is not None:
+            from app.services.full_experiment_asset_execution import (
+                produce_full_experiment_asset_effect,
+            )
+
+            effect, _, experiment_asset_marker = produce_full_experiment_asset_effect(
+                engine, session, user_id, action_id, _full_experiment_asset_request, now
+            )
+        elif _full_dynamic_goal_request is not None:
+            from app.services.full_dynamic_goal_execution import produce_full_dynamic_goal_effect
+
+            effect, dynamic_proof, dynamic_marker = produce_full_dynamic_goal_effect(
+                engine, session, user_id, action_id, _full_dynamic_goal_request, now
+            )
+        elif _full_recovery_request is not None:
+            from app.services.full_recovery_execution import produce_full_recovery_effect
+
+            effect, _, recovery_marker = produce_full_recovery_effect(
+                engine, session, user_id, action_id, _full_recovery_request, now
+            )
+        elif candidate is None:
+            # Preserve the original five-position default and fault-injection signature.
+            effect = _build_effect(session, user_id, action_id, request, now)
+        else:
+            effect = _build_effect(
+                session, user_id, action_id, request, now, _experiment_candidate=candidate
+            )
         context = load_execution_context(session, user_id, effect, now)
-        validation = revalidate_execution(effect, context)
+        if experiment_asset_marker is not None:
+            from app.services.execution_context import require_full_experiment_asset_context
+
+            context = require_full_experiment_asset_context(session, context)
+        if recovery_marker is not None:
+            from app.services.execution_context import require_full_recovery_confirmation_context
+
+            context = require_full_recovery_confirmation_context(session, context)
+        if joint_marker is not None and dynamic_proof is not None:
+            from app.services.execution_joint_goal_bridge import require_joint_goal_context
+
+            context = require_joint_goal_context(session, effect, context, dynamic_proof)
+        elif dynamic_proof is not None:
+            from app.services.execution_context import require_full_dynamic_goal_proof_context
+
+            context = require_full_dynamic_goal_proof_context(
+                session, effect, context, dynamic_proof
+            )
+        if _experiment_stage_capture is not None:
+            _experiment_stage_capture(
+                "source_context", action_id, {"original_context": context.model_dump(mode="json")}
+            )
+        validation = (
+            revalidate_execution(effect, context)
+            if dynamic_proof is None
+            else revalidate_execution(effect, context, full_dynamic_goal_proof=dynamic_proof)
+        )
+        from app.services.full_execution_protection import (
+            enforce_full_execution_protection,
+            has_full_protection_policies,
+        )
+
+        if has_full_protection_policies(session, user_id):
+            enforce_full_execution_protection(engine, user_id, effect, context, validation, now)
+        if _experiment_stage_capture is not None:
+            _experiment_stage_capture(
+                "execution_revalidation",
+                action_id,
+                {"original_validation": validation.model_dump(mode="json")},
+            )
         if validation.status not in {"READY", "CONFIRMATION_REQUIRED"}:
             raise PolicyLifecycleError(
                 "EXECUTION_NOT_READY", "动作不能安全准备：" + ",".join(validation.reasons), 409
             )
         digest = execution_effect_hash(effect)
+        if _experiment_stage_capture is not None:
+            _experiment_stage_capture(
+                "economic_hash",
+                action_id,
+                {"original_effect": effect.model_dump(mode="json"), "original_effect_hash": digest},
+            )
         command = BankCommand(effect=effect, effect_hash=digest)
         payload = {
             "intent": intent,
@@ -76,6 +368,14 @@ def prepare_action(
             "confirmation_evidence_id": str(uuid5(action_id, "confirmation:" + digest)),
             "prepared_validation": validation.model_dump(mode="json"),
         }
+        if dynamic_marker is not None:
+            payload[DYNAMIC_GOAL_MARKER] = dynamic_marker
+        if recovery_marker is not None:
+            payload[RECOVERY_MARKER] = recovery_marker
+        if experiment_asset_marker is not None:
+            payload[EXPERIMENT_ASSET_MARKER] = experiment_asset_marker
+        if joint_marker is not None:
+            payload[JOINT_GOAL_MARKER] = joint_marker
         initial = {"intent": intent, "effect_hash": digest}
         run = DecisionRun(
             id=uuid5(action_id, "decision"),
@@ -125,17 +425,31 @@ def prepare_action(
         )
         session.add(action)
         session.flush()
-        record_execution_trace(
-            session,
-            effect,
-            validation,
-            now,
-            "PREPARE",
-            parent_run_id=None,
-            autonomy_level=action.autonomy_level,
-            existing_run=run,
-            intent=intent,
-        )
+        if (
+            dynamic_marker is None
+            and recovery_marker is None
+            and experiment_asset_marker is None
+            and joint_marker is None
+        ):
+            record_execution_trace(
+                session,
+                effect,
+                validation,
+                now,
+                "PREPARE",
+                parent_run_id=None,
+                autonomy_level=action.autonomy_level,
+                existing_run=run,
+                intent=intent,
+            )
+        if _experiment_stage_capture is not None:
+            from app.services.audit_chain import row_copy
+
+            _experiment_stage_capture(
+                "decision_trace",
+                action_id,
+                {"original_run": row_copy(run), "original_action": row_copy(action)},
+            )
         _epochs(session, user_id, now, action.id)
         if effect.income_uses:
             from app.services.income_ledger import read_income_state
@@ -146,20 +460,56 @@ def prepare_action(
                 "income_evidence": {"id": str(income.evidence_id), "hash": income.evidence_hash},
             }
             action.request, action.request_hash = payload, configuration_hash(payload)
+        if (
+            dynamic_marker is not None
+            or recovery_marker is not None
+            or experiment_asset_marker is not None
+            or joint_marker is not None
+        ):
+            record_execution_trace(
+                session,
+                effect,
+                validation,
+                now,
+                "PREPARE",
+                parent_run_id=None,
+                autonomy_level=action.autonomy_level,
+                existing_run=run,
+                intent=intent,
+                action_request=payload,
+            )
         refresh_execution_exposure(session, user_id, now, action.id)
         session.flush()
         from app.services.audit_recording import record_action_created
 
         record_action_created(session, action, now)
+        from app.services.command_delivery import enqueue_action_in_transaction
+
+        enqueue_action_in_transaction(session, action, now)
         return get_action(session, user_id, action.id, now)
 
 
 def _build_effect(
-    session: Session, user_id: UUID, action_id: UUID, request: PrepareActionRequest, now: datetime
+    session: Session,
+    user_id: UUID,
+    action_id: UUID,
+    request: PrepareActionRequest,
+    now: datetime,
+    *,
+    _experiment_candidate: dict[str, Any] | None = None,
 ) -> ExecutionEffect:
     from app.services.execution_planning import plan_execution_effect
 
-    return plan_execution_effect(session, user_id, action_id, request.intent, now)
+    if _experiment_candidate is None:
+        return plan_execution_effect(session, user_id, action_id, request.intent, now)
+    return plan_execution_effect(
+        session,
+        user_id,
+        action_id,
+        request.intent,
+        now,
+        _experiment_candidate=_experiment_candidate,
+    )
 
 
 def get_action(session: Session, user_id: UUID, action_id: UUID, now: datetime) -> ActionResponse:
@@ -285,11 +635,101 @@ def confirm_action(
         start_capture(session)
         context = load_execution_context(session, user_id, effect, now)
         confirmation = read_execution_confirmation(session, effect, now)
-        result = revalidate_execution(effect, context, confirmation=confirmation)
+        from app.services.full_dynamic_goal_execution import (
+            has_full_dynamic_goal_binding,
+            recheck_full_dynamic_goal_proof,
+        )
+
+        dynamic_proof = None
+        from app.services.full_recovery_execution import (
+            has_full_recovery_binding,
+            recheck_full_recovery_proof,
+        )
+
+        recovery_bound = effect.action_type == "REDEEM_ASSET" and has_full_recovery_binding(
+            session, action
+        )
+        from app.services.full_experiment_asset_execution import (
+            has_full_experiment_asset_binding,
+            recheck_full_experiment_asset_proof,
+        )
+
+        experiment_asset_bound = effect.action_type == "PURCHASE_ASSET" and (
+            has_full_experiment_asset_binding(session, action)
+        )
+        if experiment_asset_bound:
+            from app.services.execution_context import require_full_experiment_asset_context
+
+            recheck_full_experiment_asset_proof(
+                engine,
+                session,
+                action,
+                BankCommand(effect=effect, effect_hash=previous.effect_hash),
+                now,
+            )
+            context = require_full_experiment_asset_context(session, context)
+        if recovery_bound:
+            from app.services.execution_context import require_full_recovery_confirmation_context
+
+            recheck_full_recovery_proof(
+                engine,
+                session,
+                action,
+                BankCommand(effect=effect, effect_hash=previous.effect_hash),
+                now,
+            )
+            context = require_full_recovery_confirmation_context(session, context)
+        from app.services.full_joint_goal_execution_guards import (
+            has_full_joint_goal_binding,
+            recheck_full_joint_goal_proof,
+        )
+
+        joint_bound = has_full_joint_goal_binding(session, action)
+        if joint_bound:
+            from app.services.execution_joint_goal_bridge import require_joint_goal_context
+
+            dynamic_proof = recheck_full_joint_goal_proof(
+                engine,
+                session,
+                action,
+                BankCommand(effect=effect, effect_hash=previous.effect_hash),
+                now,
+            )
+            context = require_joint_goal_context(session, effect, context, dynamic_proof)
+        elif effect.action_type == "ALLOCATE_GOAL" and has_full_dynamic_goal_binding(
+            session, action
+        ):
+            dynamic_proof = recheck_full_dynamic_goal_proof(
+                engine,
+                session,
+                action,
+                BankCommand(effect=effect, effect_hash=previous.effect_hash),
+                now,
+            )
+        if dynamic_proof is not None and not joint_bound:
+            from app.services.execution_context import require_full_dynamic_goal_proof_context
+
+            context = require_full_dynamic_goal_proof_context(
+                session, effect, context, dynamic_proof
+            )
+        result = (
+            revalidate_execution(effect, context, confirmation=confirmation)
+            if dynamic_proof is None
+            else revalidate_execution(
+                effect, context, confirmation=confirmation, full_dynamic_goal_proof=dynamic_proof
+            )
+        )
         if result.status != "READY":
             raise PolicyLifecycleError(
                 "EXECUTION_NOT_READY", "确认时重验未通过：" + ",".join(result.reasons), 409
             )
+        from app.services.full_execution_protection import (
+            enforce_full_execution_protection,
+            has_full_protection_policies,
+        )
+
+        if has_full_protection_policies(session, user_id):
+            enforce_full_execution_protection(engine, user_id, effect, context, result, now)
         record_execution_trace(
             session,
             effect,
@@ -299,6 +739,9 @@ def confirm_action(
             parent_run_id=action.decision_run_id,
             autonomy_level=action.autonomy_level,
             confirmation=confirmation,
+            action_request=action.request
+            if dynamic_proof is not None or recovery_bound or experiment_asset_bound
+            else None,
         )
         action.status, action.authorized_at = "AUTHORIZED", now
         _epochs(session, user_id, now, action.id)
@@ -332,12 +775,19 @@ def execute_action(engine: Engine, user_id: UUID, action_id: UUID, now: datetime
 def _execute_action(
     engine: Engine, user_id: UUID, action_id: UUID, now: datetime
 ) -> ActionResponse:
+    from app.services.execution_observations import observe_checkpoint, observed_begin
     from app.services.execution_sources import read_execution_confirmation
     from app.services.income_ledger import reserve_income_for_action
 
     now = _clock(now)
-    with Session(engine) as session, session.begin():
+    with (
+        Session(engine) as session,
+        observed_begin(session, engine, user_id, action_id, now, "APPLICATION_RESERVATION"),
+    ):
         _lock_user(session, user_id)
+        observe_checkpoint(
+            session, user_id, action_id, "APPLICATION_RESERVATION", "USER_LOCK_RETURNED", now
+        )
         current = get_action(session, user_id, action_id, now)
         if current.status in {"SUCCEEDED", "RECONCILED"}:
             return current
@@ -373,14 +823,127 @@ def _execute_action(
                 own_action_id=action.id if has_claims else None,
             )
             confirmation = read_execution_confirmation(session, current.effect, now)
-            validation = revalidate_execution(
-                current.effect,
-                context,
-                confirmation=confirmation,
+            from app.services.full_dynamic_goal_execution import (
+                has_full_dynamic_goal_binding,
+                recheck_full_dynamic_goal_proof,
+            )
+
+            dynamic_proof = None
+            from app.services.full_recovery_execution import (
+                has_full_recovery_binding,
+                recheck_full_recovery_proof,
+            )
+
+            recovery_bound = (
+                current.effect.action_type == "REDEEM_ASSET"
+                and has_full_recovery_binding(session, action)
+            )
+            from app.services.full_experiment_asset_execution import (
+                has_full_experiment_asset_binding,
+                recheck_full_experiment_asset_proof,
+            )
+
+            experiment_asset_bound = current.effect.action_type == "PURCHASE_ASSET" and (
+                has_full_experiment_asset_binding(session, action)
+            )
+            if experiment_asset_bound:
+                from app.services.execution_context import require_full_experiment_asset_context
+
+                recheck_full_experiment_asset_proof(
+                    engine,
+                    session,
+                    action,
+                    BankCommand(effect=current.effect, effect_hash=current.effect_hash),
+                    now,
+                    own_action_id=action.id if has_claims else None,
+                )
+                context = require_full_experiment_asset_context(session, context)
+            if recovery_bound:
+                from app.services.execution_context import (
+                    require_full_recovery_confirmation_context,
+                )
+
+                recheck_full_recovery_proof(
+                    engine,
+                    session,
+                    action,
+                    BankCommand(effect=current.effect, effect_hash=current.effect_hash),
+                    now,
+                    own_action_id=action.id if has_claims else None,
+                    require_user_consent=True,
+                )
+                context = require_full_recovery_confirmation_context(session, context)
+            from app.services.full_joint_goal_execution_guards import (
+                has_full_joint_goal_binding,
+                recheck_full_joint_goal_proof,
+            )
+
+            joint_bound = has_full_joint_goal_binding(session, action)
+            if joint_bound:
+                from app.services.execution_joint_goal_bridge import require_joint_goal_context
+
+                dynamic_proof = recheck_full_joint_goal_proof(
+                    engine,
+                    session,
+                    action,
+                    BankCommand(effect=current.effect, effect_hash=current.effect_hash),
+                    now,
+                    own_action_id=action.id if has_claims else None,
+                )
+                context = require_joint_goal_context(
+                    session, current.effect, context, dynamic_proof
+                )
+            elif current.effect.action_type == "ALLOCATE_GOAL" and has_full_dynamic_goal_binding(
+                session, action
+            ):
+                dynamic_proof = recheck_full_dynamic_goal_proof(
+                    engine,
+                    session,
+                    action,
+                    BankCommand(effect=current.effect, effect_hash=current.effect_hash),
+                    now,
+                    own_action_id=action.id if has_claims else None,
+                )
+            if dynamic_proof is not None and not joint_bound:
+                from app.services.execution_context import require_full_dynamic_goal_proof_context
+
+                context = require_full_dynamic_goal_proof_context(
+                    session, current.effect, context, dynamic_proof
+                )
+            validation = (
+                revalidate_execution(current.effect, context, confirmation=confirmation)
+                if dynamic_proof is None
+                else revalidate_execution(
+                    current.effect,
+                    context,
+                    confirmation=confirmation,
+                    full_dynamic_goal_proof=dynamic_proof,
+                )
             )
             if validation.status != "READY":
                 raise PolicyLifecycleError(
                     "EXECUTION_NOT_READY", "执行重验未通过：" + ",".join(validation.reasons), 409
+                )
+            from app.services.full_execution_protection import (
+                enforce_full_execution_protection,
+                has_full_protection_policies,
+            )
+
+            if has_full_protection_policies(session, user_id):
+                enforce_full_execution_protection(
+                    engine, user_id, current.effect, context, validation, now
+                )
+            if has_full_asset_batch_binding(session, action):
+                from app.services.full_asset_execution_dispatch import (
+                    enforce_full_asset_batch_phase1,
+                )
+
+                enforce_full_asset_batch_phase1(
+                    engine,
+                    session,
+                    action,
+                    BankCommand.model_validate_json(json.dumps(action.request["execution"])),
+                    now,
                 )
             reserve_run = record_execution_trace(
                 session,
@@ -391,6 +954,9 @@ def _execute_action(
                 parent_run_id=action.decision_run_id,
                 autonomy_level=action.autonomy_level,
                 confirmation=confirmation,
+                action_request=action.request
+                if dynamic_proof is not None or recovery_bound or experiment_asset_bound
+                else None,
             )
             reserve_resources(
                 session, user_id, action.id, _claims(session, current.effect, context), now
@@ -413,6 +979,7 @@ def _execute_action(
                     destination_account_id=current.effect.destination_account_id
                     if role == "TRANSFER_INTERNAL"
                     else None,
+                    **({"_joint_current_proof": dynamic_proof} if joint_bound else {}),
                 )
             action.status, action.authorized_at = "SUBMITTED", action.authorized_at or now
             _epochs(session, user_id, now, action.id)
@@ -455,8 +1022,14 @@ def _execute_action(
         _mark_unknown(engine, user_id, action_id, now)
         raise
     try:
-        with Session(engine) as session, session.begin():
+        with (
+            Session(engine) as session,
+            observed_begin(session, engine, user_id, action_id, now, "APPLICATION_PROJECTION"),
+        ):
             _lock_user(session, user_id)
+            observe_checkpoint(
+                session, user_id, action_id, "APPLICATION_PROJECTION", "USER_LOCK_RETURNED", now
+            )
             operation = session.scalar(
                 select(BankOperation).where(
                     BankOperation.user_id == user_id, BankOperation.action_plan_id == action_id

@@ -1,0 +1,36 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/components/FullJointGoalExecutionPanel.test.tsx (6 tests) 7153ms
+   ✓ renders clear authority/whole reservation/atomicity boundary and no automatic network  1691ms
+   ✓ original GET remains usable through other-family block and displays ALL commands/1098 without enabling writes  1363ms
+   ✓ UNKNOWN stops next child, keeps original keys and requires explicit recovery rather than auto execute  1329ms
+   ✓ reload of compact original locator requires manual original GET and never replays POST  394ms
+   ✓ historical parent never enables fresh confirm or child execution  1281ms
+   ✓ standalone thin original recovery exports only GET and no financial write controls  1094ms
+ ✓ src/api/full-joint-goal-execution.test.ts (26 tests) 5730ms
+   ✓ TOOL_ONLY consumes complete native-shaped two-goal plan/1098 protection without financial assertions  634ms
+   ✓ rejects unsafe response missing_child  306ms
+   ✓ rejects unsafe response actor_role  312ms
+   ✓ UNKNOWN and retained history remain explicit and non-authorizing  702ms
+   ✓ key lookup matches exact original body/hash/kind and NOT_FOUND remains non-final  390ms
+   ✓ only actual independent GET creates current-invocation read provenance  711ms
+ ✓ src/features/full-joint-goal-operation.test.ts (12 tests) 15990ms
+   ✓ persists exact complete original before sending, every POST outcome leaves pending  1629ms
+   ✓ stored/body-hash tamper and denied storage lock new writes without deleting originals  388ms
+   ✓ session quota failure does not send or release new writes  363ms
+   ✓ POST-shaped parse or NOT_FOUND cannot clear original  706ms
+   ✓ successful original key GET retains bounded locator with ALL commands; no full source/1098 truncation on server  1092ms
+   ✓ reload restores locator only, performs NO GET/POST, and requires full current invocation GET before confirm  2217ms
+   ✓ unresolved workspace blocks replacement root key or parent but permits exact original preparation completion  1126ms
+   ✓ confirmed/UNKNOWN original workspace never releases the cross-family gate  1778ms
+   ✓ EXECUTE clears only its exact fixed child verified GET, never another settled child or latest  3333ms
+   ✓ mismatched fixed child/action/body after save cannot bypass original request  1345ms
+   ✓ external mutation gate and shared write flight block POST but own independent GET remains available  869ms
+   ✓ prior unverified child blocks a new explicit later-child request before any POST  1142ms
+
+ Test Files  3 passed (3)
+      Tests  44 passed (44)
+   Start at  13:32:23
+   Duration  19.83s (transform 2.13s, setup 1.83s, collect 4.83s, tests 28.87s, environment 3.84s, prepare 1.20s)
+

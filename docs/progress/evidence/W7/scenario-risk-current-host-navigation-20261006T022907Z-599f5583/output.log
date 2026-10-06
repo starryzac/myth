@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/App.test.tsx (23 tests | 22 skipped) 1602ms
+   ✓ 十六个页面导航实际切换，分项风险与场景模拟可达并保留原演示入口  1600ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 22 skipped (23)
+   Start at  10:29:10
+   Duration  9.42s (transform 3.65s, setup 506ms, collect 5.39s, tests 1.60s, environment 1.04s, prepare 336ms)
+

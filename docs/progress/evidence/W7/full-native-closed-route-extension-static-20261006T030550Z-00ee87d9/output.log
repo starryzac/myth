@@ -1,0 +1,25 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> apps\api\app\domain\full_native_operations.py:3:1
+   |
+ 1 |   """Fixed real FULL API operations for isolated development inputs, never arbitrary RPC."""
+ 2 |
+ 3 | / import re
+ 4 | | from dataclasses import dataclass
+ 5 | | from urllib.parse import urlencode
+ 6 | | from typing import Any, Literal
+ 7 | | from uuid import UUID
+ 8 | |
+ 9 | | from app.domain.full_asset_allocation import FullAssetPlanOptions
+10 | | from app.services.scenario_references import canonical
+   | |______________________________________________________^
+help: Organize imports
+  |
+4 | from dataclasses import dataclass
+5 + from typing import Any, Literal
+6 | from urllib.parse import urlencode
+  - from typing import Any, Literal
+7 | from uuid import UUID
+  |
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.

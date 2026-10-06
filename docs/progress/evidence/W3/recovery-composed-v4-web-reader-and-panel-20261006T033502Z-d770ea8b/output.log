@@ -1,0 +1,51 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/api/recovery-composed-action-set.test.ts (15 tests | 1 failed) 59ms
+   ✓ keeps exact complete response, original v3 and all unproved actions 9ms
+   ✓ keeps exact t0_unknown_original response, original v3 and all unproved actions 2ms
+   ✓ keeps exact t1_unknown response, original v3 and all unproved actions 2ms
+   ✓ rejects owner even when result hashes are rewritten 3ms
+   ✓ rejects clock even when result hashes are rewritten 1ms
+   ✓ rejects authority even when result hashes are rewritten 1ms
+   ✓ rejects confirmation even when result hashes are rewritten 1ms
+   ✓ rejects duplicate-position even when result hashes are rewritten 1ms
+   ✓ rejects missing-position even when result hashes are rewritten 3ms
+   ✓ rejects hide-original even when result hashes are rewritten 3ms
+   ✓ rejects false-complete even when result hashes are rewritten 10ms
+   ✓ rejects inherited-auto even when result hashes are rewritten 5ms
+   × rejects money even when result hashes are rewritten 9ms
+     → 摘要只接受精确整数、完整Unicode和原JSON字段
+   ✓ rejects notify even when result hashes are rewritten 3ms
+   ✓ rejects hash even when result hashes are rewritten 5ms
+ ✓ src/components/RecoveryComposedActionSetPanel.test.tsx (2 tests) 338ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/api/recovery-composed-action-set.test.ts > rejects money even when result hashes are rewritten
+Error: 摘要只接受精确整数、完整Unicode和原JSON字段
+ ❯ releaseCanonicalJson src/api/goal-release-authorizations.ts:37:9
+     35|   if (typeof value === 'string') { check(!/[\uD800-\uDBFF](?![\uDC00-\…
+     36|   if (value === null || typeof value === 'boolean' || Number.isSafeInt…
+     37|   throw new Error('摘要只接受精确整数、完整Unicode和原JSON字段');
+       |         ^
+     38| }
+     39| async function digestBytes(algorithm: 'SHA-256' | 'SHA-1', bytes: Uint…
+ ❯ src/api/goal-release-authorizations.ts:34:98
+ ❯ releaseCanonicalJson src/api/goal-release-authorizations.ts:34:59
+ ❯ releaseCanonicalJson src/api/goal-release-authorizations.ts:33:46
+ ❯ src/api/goal-release-authorizations.ts:34:98
+ ❯ releaseCanonicalJson src/api/goal-release-authorizations.ts:34:59
+ ❯ releaseHash src/api/goal-release-authorizations.ts:43:135
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 16 passed (17)
+   Start at  11:35:05
+   Duration  3.41s (transform 582ms, setup 1.07s, collect 1.35s, tests 396ms, environment 2.13s, prepare 651ms)
+
+undefined
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: vitest run src/api/recovery-composed-action-set.test.ts src/components/RecoveryComposedActionSetPanel.test.tsx

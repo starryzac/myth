@@ -14,6 +14,11 @@ from app.domain.decision_trace_types import (
 from app.domain.policy_configuration import configuration_hash
 from pydantic import BaseModel
 
+# This new protocol retains the whole joint plan and its complete planning
+# inputs in one trace. Existing algorithms keep their original 10 MiB cap;
+# the new cap also fits the existing 16 MiB raw audit-subject contract.
+MAX_FULL_JOINT_TRACE_BYTES = 16 * 1024 * 1024
+
 _REASONS = {
     "EXPLICIT_TRANSFER_CONFIRMATION_REQUIRED": "内部转账需要用户对本次经济后果明确确认。",
     "EXPLICIT_PAYMENT_CONFIRMATION_REQUIRED": "本次付款需要用户明确确认。",
@@ -118,7 +123,13 @@ def _validate_content(trace: _TraceContent) -> None:
     # above and trusted inputs/results still have to belong to this user.
     owners(trace.model_dump(mode="json", exclude={"sources", "policies"}))
     payload = trace.model_dump(mode="json")
-    if len(_encoded(payload)) > MAX_TRACE_BYTES:
+    byte_limit = (
+        MAX_FULL_JOINT_TRACE_BYTES
+        if trace.algorithm_versions.get("full_joint_goal_execution")
+        == "registered-joint-goal-execution-v2"
+        else MAX_TRACE_BYTES
+    )
+    if len(_encoded(payload)) > byte_limit:
         raise ValueError("Complete decision trace exceeds the byte limit")
 
 

@@ -1,0 +1,47 @@
+{
+  "run_id": "20261005T155342Z-c619fa1b",
+  "task": "W6",
+  "label": "full-goal-app-own-read-cross-family-gate-module-cmd",
+  "status": "PASSED",
+  "scope": [
+    "apps/web/src/App.tsx",
+    "apps/web/src/App.test.tsx",
+    "apps/web/src/pages/GoalsPage.tsx",
+    "apps/web/src/pages/GoalsPage.test.tsx",
+    "apps/web/src/pages/OnboardingPage.tsx",
+    "apps/web/src/features/full-goal-operation.ts",
+    "apps/web/src/components/FullGoalModelPanel.tsx",
+    "apps/web/src/api/full-goals.ts"
+  ],
+  "command": [
+    "cmd.exe",
+    "/d",
+    "/s",
+    "/c",
+    "pnpm",
+    "--dir",
+    "apps/web",
+    "exec",
+    "vitest",
+    "run",
+    "src/App.test.tsx",
+    "src/pages/GoalsPage.test.tsx",
+    "src/pages/DemoConsolePage.test.tsx",
+    "src/pages/OnboardingPage.test.tsx"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T15:53:43.553966+00:00",
+  "finished_at": "2026-10-05T15:53:54.163916+00:00",
+  "wall_seconds": 10.60995,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "6e93124a079ebd2f8b27767bca43706f900f3ce802c3d58f04ac174effd7ca04",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

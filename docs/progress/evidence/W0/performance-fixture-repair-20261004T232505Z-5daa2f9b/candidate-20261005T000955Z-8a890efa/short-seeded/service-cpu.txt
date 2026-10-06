@@ -1,0 +1,216 @@
+         206823 function calls (195007 primitive calls) in 0.221 seconds
+
+   Ordered by: cumulative time
+   List reduced from 855 to 100 due to restriction <100>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.221    0.221 F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\benchmark_reads.py:637(operation)
+        1    0.000    0.000    0.221    0.221 F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\benchmark_reads.py:410(service_read)
+        1    0.000    0.000    0.217    0.217 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\dashboard.py:359(get_dashboard)
+        1    0.000    0.000    0.149    0.149 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\financial_read.py:20(load_verified_financial_context)
+       83    0.001    0.000    0.116    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\session.py:2201(_execute_internal)
+       80    0.000    0.000    0.109    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\context.py:306(orm_execute_statement)
+       83    0.000    0.000    0.106    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1404(execute)
+       83    0.000    0.000    0.106    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\elements.py:524(_execute_on_connection)
+       83    0.001    0.000    0.106    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1618(_execute_clauseelement)
+       83    0.000    0.000    0.098    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1767(_execute_context)
+       83    0.001    0.000    0.094    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1826(_exec_single_context)
+       92    0.000    0.000    0.087    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\connection.py:479(wait)
+       92    0.001    0.000    0.087    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\waiting.py:329(wait_select)
+       84    0.000    0.000    0.087    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\cursor.py:100(execute)
+       83    0.000    0.000    0.086    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\default.py:1191(do_execute)
+       54    0.000    0.000    0.081    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\session.py:2565(scalars)
+        1    0.000    0.000    0.072    0.072 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\boundary.py:754(load_boundary_context)
+      137    0.071    0.001    0.071    0.001 {built-in method select.select}
+        1    0.000    0.000    0.049    0.049 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\simulated_bank.py:271(validate_recovery_exposure)
+        1    0.001    0.001    0.045    0.045 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\asset_exposure_import.py:70(load_all_asset_exposure)
+        2    0.000    0.000    0.030    0.015 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\asset_exposure.py:61(asset_exposure_snapshot)
+       23    0.000    0.000    0.029    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\session.py:2517(scalar)
+      160    0.002    0.000    0.028    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\loading.py:214(chunks)
+        1    0.000    0.000    0.026    0.026 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\dashboard.py:59(_capacity)
+       20    0.003    0.000    0.025    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\asset_exposure.py:50(_manifest)
+        3    0.000    0.000    0.024    0.008 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\simulated_bank.py:179(validate_bank_projection)
+        1    0.000    0.000    0.024    0.024 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\income_ledger.py:43(read_income_state)
+        1    0.000    0.000    0.023    0.023 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\income_ledger.py:86(_read)
+        1    0.000    0.000    0.016    0.016 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\dashboard_helpers.py:12(current_epoch_audit)
+       80    0.000    0.000    0.015    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\cursor.py:2376(_fetchall_impl)
+       80    0.000    0.000    0.015    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\cursor.py:1309(fetchall)
+      220    0.000    0.000    0.015    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:195(_execute_gen)
+       80    0.004    0.000    0.014    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\cursor.py:274(fetchall)
+        1    0.000    0.000    0.014    0.014 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\audit_chain.py:673(verify_audit_chain)
+      467    0.001    0.000    0.014    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\policy_configuration.py:231(configuration_hash)
+        4    0.001    0.000    0.012    0.003 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\simulated_bank.py:130(ledger_heads)
+      219    0.004    0.000    0.011    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:275(_maybe_prepare_gen)
+  218/217    0.000    0.000    0.011    0.000 {built-in method builtins.next}
+      886    0.001    0.000    0.010    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\types\json.py:256(load)
+     1203    0.002    0.000    0.010    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\loading.py:1075(_instance)
+      891    0.001    0.000    0.009    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py:299(loads)
+     4984    0.002    0.000    0.009    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\asset_exposure.py:32(_get)
+    44839    0.006    0.000    0.009    0.000 {built-in method builtins.isinstance}
+4448/3504    0.004    0.000    0.008    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\asset_exposure.py:36(_json)
+      104    0.000    0.000    0.008    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\attributes.py:456(operate)
+      104    0.000    0.000    0.007    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\properties.py:481(operate)
+      113    0.000    0.000    0.007    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\elements.py:1592(operate)
+   372/93    0.000    0.000    0.007    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\operators.py:741(__eq__)
+      551    0.002    0.000    0.007    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\coercions.py:323(expect)
+        6    0.000    0.000    0.007    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\session.py:2406(execute)
+   279/93    0.000    0.000    0.007    0.000 {built-in method _operator.eq}
+      113    0.000    0.000    0.007    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\type_api.py:261(operate)
+ 9322/467    0.005    0.000    0.007    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\policy_configuration.py:215(_require_json_value)
+       83    0.001    0.000    0.006    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\default.py:2104(_setup_result_proxy)
+      502    0.001    0.000    0.006    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py:183(dumps)
+       94    0.000    0.000    0.006    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\annotation.py:372(__eq__)
+      137    0.000    0.000    0.006    0.000 {method 'send' of 'generator' objects}
+       80    0.000    0.000    0.006    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\context.py:595(orm_setup_cursor_result)
+        1    0.000    0.000    0.006    0.006 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\boundary.py:884(compute_boundary_with_details)
+      891    0.002    0.000    0.006    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py:332(decode)
+       83    0.000    0.000    0.006    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\elements.py:694(_compile_w_cache)
+        1    0.001    0.001    0.005    0.005 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\boundary.py:185(_compute_boundary_core)
+      497    0.000    0.000    0.005    0.000 {built-in method builtins.sorted}
+      502    0.001    0.000    0.005    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py:183(encode)
+       80    0.002    0.000    0.005    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\loading.py:80(instances)
+      104    0.000    0.000    0.005    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\default_comparator.py:50(_boolean_compare)
+7324/7310    0.003    0.000    0.005    0.000 {built-in method builtins.getattr}
+       36    0.000    0.000    0.005    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\asset_exposure.py:184(<genexpr>)
+        3    0.000    0.000    0.005    0.002 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\external_bank_facts.py:222(verify_external_facts)
+       83    0.000    0.000    0.004    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:1461(oneshot)
+      502    0.004    0.000    0.004    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py:205(iterencode)
+        1    0.000    0.000    0.004    0.004 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\api\v1\accounts.py:130(account_summary)
+    17010    0.004    0.000    0.004    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\attributes.py:561(__get__)
+       83    0.001    0.000    0.004    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:114(description)
+       83    0.000    0.000    0.004    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\cache_key.py:263(_generate_cache_key)
+       83    0.003    0.000    0.004    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\cache_key.py:209(_generate_cache_key)
+      339    0.001    0.000    0.004    0.000 {method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects}
+       83    0.001    0.000    0.004    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\default.py:1564(_init_compiled)
+      922    0.002    0.000    0.004    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_column.py:20(__init__)
+       26    0.000    0.000    0.004    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\boundary.py:91(valid)
+      891    0.003    0.000    0.003    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py:343(raw_decode)
+      301    0.000    0.000    0.003    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\pydantic\main.py:253(__init__)
+        1    0.000    0.000    0.003    0.003 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\execution_bank.py:776(validate_income_locations)
+       12    0.000    0.000    0.003    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\boundary.py:109(proof)
+        3    0.000    0.000    0.003    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\audit_chain.py:670(verify_event)
+        1    0.000    0.000    0.002    0.002 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\audit_chain.py:688(parse_event)
+      125    0.001    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\elements.py:2060(__init__)
+       43    0.002    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:583(_send_query_prepared)
+       97    0.000    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\coercions.py:806(_literal_coercion)
+       84    0.000    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:531(_set_results)
+    87/85    0.000    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py:93(_go)
+       99    0.000    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\elements.py:5126(_bind_param)
+       84    0.000    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:461(_convert_query)
+     5057    0.001    0.000    0.002    0.000 <frozen abc>:117(__instancecheck__)
+       21    0.001    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\boundary.py:81(candidates)
+       84    0.001    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:504(_select_current_result)
+     1205    0.001    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\identity.py:219(get)
+     4250    0.001    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\type_api.py:2269(process)
+       15    0.000    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\audit_chain.py:46(canonical_bytes)
+       41    0.002    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:416(_execute_send)
+
+
+         206823 function calls (195007 primitive calls) in 0.221 seconds
+
+   Ordered by: internal time
+   List reduced from 855 to 100 due to restriction <100>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+      137    0.071    0.001    0.071    0.001 {built-in method select.select}
+    44839    0.006    0.000    0.009    0.000 {built-in method builtins.isinstance}
+ 9322/467    0.005    0.000    0.007    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\policy_configuration.py:215(_require_json_value)
+      502    0.004    0.000    0.004    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py:205(iterencode)
+    17010    0.004    0.000    0.004    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\attributes.py:561(__get__)
+4448/3504    0.004    0.000    0.008    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\asset_exposure.py:36(_json)
+       80    0.004    0.000    0.014    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\cursor.py:274(fetchall)
+      219    0.004    0.000    0.011    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:275(_maybe_prepare_gen)
+      891    0.003    0.000    0.003    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py:343(raw_decode)
+       83    0.003    0.000    0.004    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\cache_key.py:209(_generate_cache_key)
+7324/7310    0.003    0.000    0.005    0.000 {built-in method builtins.getattr}
+       20    0.003    0.000    0.025    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\asset_exposure.py:50(_manifest)
+       43    0.002    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:583(_send_query_prepared)
+      551    0.002    0.000    0.007    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\coercions.py:323(expect)
+     1203    0.002    0.000    0.010    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\loading.py:1075(_instance)
+       41    0.002    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:416(_execute_send)
+     4984    0.002    0.000    0.009    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\asset_exposure.py:32(_get)
+      922    0.002    0.000    0.004    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_column.py:20(__init__)
+       80    0.002    0.000    0.005    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\loading.py:80(instances)
+      160    0.002    0.000    0.028    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\loading.py:214(chunks)
+      891    0.002    0.000    0.006    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py:332(decode)
+       57    0.002    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\loading.py:819(_instance_processor)
+      339    0.001    0.000    0.004    0.000 {method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects}
+      647    0.001    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\loading.py:1336(_populate_full)
+       84    0.001    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:504(_select_current_result)
+        1    0.001    0.001    0.005    0.005 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\boundary.py:185(_compute_boundary_core)
+     2547    0.001    0.000    0.001    0.000 {method 'get' of 'dict' objects}
+     1409    0.001    0.000    0.001    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\uuid.py:280(__str__)
+  1019/15    0.001    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\audit_chain.py:52(convert)
+     5057    0.001    0.000    0.002    0.000 <frozen abc>:117(__instancecheck__)
+      891    0.001    0.000    0.009    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py:299(loads)
+     1205    0.001    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\identity.py:219(get)
+      890    0.001    0.000    0.002    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py:244(detect_encoding)
+      769    0.001    0.000    0.001    0.000 {method 'isoformat' of 'datetime.datetime' objects}
+  234/181    0.001    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:1446(__get__)
+     5057    0.001    0.000    0.001    0.000 {built-in method _abc._abc_instancecheck}
+     5208    0.001    0.000    0.002    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\uuid.py:268(__hash__)
+      614    0.001    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\boundary_types.py:16(aware_timestamps)
+       21    0.001    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\boundary.py:81(candidates)
+      467    0.001    0.000    0.014    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\policy_configuration.py:231(configuration_hash)
+       83    0.001    0.000    0.106    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1618(_execute_clauseelement)
+       83    0.001    0.000    0.094    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1826(_exec_single_context)
+     4250    0.001    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\type_api.py:2269(process)
+       83    0.001    0.000    0.116    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\session.py:2201(_execute_internal)
+      886    0.001    0.000    0.010    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\types\json.py:256(load)
+       84    0.001    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_queries.py:94(dump)
+5478/5472    0.001    0.000    0.001    0.000 {built-in method builtins.hash}
+       83    0.001    0.000    0.004    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\default.py:1564(_init_compiled)
+      502    0.001    0.000    0.006    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py:183(dumps)
+      647    0.001    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\instrumentation.py:493(new_instance)
+     4250    0.001    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\db\base.py:23(process_result_value)
+     4223    0.001    0.000    0.001    0.000 {method 'astimezone' of 'datetime.datetime' objects}
+      502    0.001    0.000    0.005    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py:183(encode)
+     1782    0.001    0.000    0.001    0.000 {method 'match' of 're.Pattern' objects}
+       92    0.001    0.000    0.087    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\waiting.py:329(wait_select)
+       83    0.001    0.000    0.004    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:114(description)
+      556    0.001    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\state.py:858(unloaded)
+       80    0.001    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\result.py:262(__init__)
+      108    0.001    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\elements.py:4249(__init__)
+        4    0.001    0.000    0.012    0.003 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\simulated_bank.py:130(ledger_heads)
+     1813    0.001    0.000    0.001    0.000 {method 'decode' of 'bytes' objects}
+      472    0.001    0.000    0.001    0.000 {built-in method _hashlib.openssl_sha256}
+      922    0.001    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_typeinfo.py:265(__getitem__)
+       83    0.001    0.000    0.006    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\default.py:2104(_setup_result_proxy)
+     2670    0.001    0.000    0.001    0.000 {method 'startswith' of 'bytes' objects}
+        1    0.001    0.001    0.045    0.045 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\asset_exposure_import.py:70(load_all_asset_exposure)
+      125    0.001    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\elements.py:2060(__init__)
+      306    0.001    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_adapters_map.py:264(get_loader)
+      647    0.001    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\state.py:206(__init__)
+     2663    0.001    0.000    0.001    0.000 {built-in method builtins.len}
+       83    0.000    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\compiler.py:1953(construct_params)
+      125    0.000    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\elements.py:6025(safe_construct_with_key)
+     2344    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+       80    0.000    0.000    0.000    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\context.py:154(__init__)
+       42    0.000    0.000    0.000    0.000 {method 'to_python' of 'pydantic_core._pydantic_core.SchemaSerializer' objects}
+      102    0.000    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\bank_posting_codec.py:68(bank_posting_snapshot_version)
+      220    0.000    0.000    0.015    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:195(_execute_gen)
+        1    0.000    0.000    0.221    0.221 F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\benchmark_reads.py:410(service_read)
+       83    0.000    0.000    0.098    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1767(_execute_context)
+      922    0.000    0.000    0.000    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:666(_encoding)
+      170    0.000    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\event\attr.py:508(__call__)
+       80    0.000    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\context.py:505(orm_pre_session_exec)
+   372/93    0.000    0.000    0.007    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\operators.py:741(__eq__)
+      142    0.000    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\elements.py:2246(_gen_cache_key)
+       80    0.000    0.000    0.006    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\context.py:595(orm_setup_cursor_result)
+      113    0.000    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\type_api.py:197(_resolve_operator_lookup)
+      786    0.000    0.000    0.001    0.000 {method 'issuperset' of 'frozenset' objects}
+      946    0.000    0.000    0.001    0.000 {built-in method builtins.sum}
+      647    0.000    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\identity.py:262(_fast_discard)
+     1090    0.000    0.000    0.000    0.000 {built-in method __new__ of type object at 0x00007FF9329F58F0}
+      497    0.000    0.000    0.005    0.000 {built-in method builtins.sorted}
+     1112    0.000    0.000    0.000    0.000 {method 'difference' of 'set' objects}
+      104    0.000    0.000    0.005    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\default_comparator.py:50(_boolean_compare)
+      792    0.000    0.000    0.000    0.000 {method 'utcoffset' of 'datetime.datetime' objects}
+      102    0.000    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\domain\bank_posting_codec.py:92(bank_posting_data)
+       84    0.000    0.000    0.001    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:61(__init__)
+       84    0.000    0.000    0.000    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_adapters_map.py:75(__init__)
+      332    0.000    0.000    0.000    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\event\attr.py:522(__iter__)
+      472    0.000    0.000    0.000    0.000 {method 'hexdigest' of '_hashlib.HASH' objects}
+       84    0.000    0.000    0.002    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_queries.py:59(convert)
+
+

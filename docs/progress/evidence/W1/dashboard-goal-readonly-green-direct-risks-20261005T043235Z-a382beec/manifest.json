@@ -1,0 +1,41 @@
+{
+  "run_id": "20261005T043235Z-a382beec",
+  "task": "W1",
+  "label": "dashboard-goal-readonly-green-direct-risks",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/services",
+    "apps/api/app/tests/test_dashboard_goal_income.py",
+    "apps/api/app/tests/test_income_ledger_service.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_dashboard_goal_income.py",
+    "apps/api/app/tests/test_income_ledger_service.py::test_action_revalidation_sees_only_its_own_claim_without_releasing_it",
+    "apps/api/app/tests/test_execution_service.py::test_goal_prepare_execute_consumes_real_income_once_and_preserves_same_account_cash",
+    "apps/api/app/tests/test_dashboard_api.py::test_postgres_rejects_accidental_dashboard_write_and_preserves_every_row",
+    "-q",
+    "-x"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T04:32:35.943932+00:00",
+  "finished_at": "2026-10-05T04:33:05.453979+00:00",
+  "wall_seconds": 29.510047,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "scripts/mvp_financial_oracles.py",
+    "scripts/tests/test_mvp_financial_metrics.py",
+    "scripts/tests/test_mvp_financial_oracles.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "b143efb687d13a1fac5427c7b5e8f19c957b006a7fcc40309c6e8644c0b5f935",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

@@ -1,0 +1,35 @@
+{
+  "run_id": "20261005T205232Z-a926b2c9",
+  "task": "W4",
+  "label": "full-payment-actual-risk-collection-only",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/full_payment_permissions.py",
+    "apps/api/app/services/full_payment_permissions.py",
+    "apps/api/app/api/v1/full_payment_permissions.py",
+    "apps/api/app/tests/test_full_payment_permissions"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_full_payment_permissions_integration.py",
+    "--collect-only",
+    "-q"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T20:52:33.884600+00:00",
+  "finished_at": "2026-10-05T20:52:39.139455+00:00",
+  "wall_seconds": 5.254855,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "d7db9c50b02133a1bd3b5c191ecdd748c5fee0cc20508aa1182a13abedfe81be",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

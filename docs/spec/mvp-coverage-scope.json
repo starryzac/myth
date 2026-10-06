@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "task": "MVP-501",
+  "source": {
+    "path": "钱途有界_初版开发计划_Codex执行版.md",
+    "lines": [801, 808],
+    "requirements_verbatim": [
+      "后端覆盖率不低于 85%；",
+      "核心边界、策略版本和恢复引擎不低于 95%；",
+      "至少 1000 组 Hypothesis 随机场景；"
+    ]
+  },
+  "interpretation": "The original plan does not specify an aggregate or per-module core denominator. This registered gate conservatively requires each named core module to reach 95% statement coverage; averaging cannot hide an uncovered module. All production Python files under apps/api/app remain in the 85% backend denominator. This is a verification interpretation, not a task closure.",
+  "backend_root": "apps/api/app",
+  "excluded_directory_names": ["tests", "__pycache__"],
+  "backend_minimum_percent": 85,
+  "core_minimum_percent": 95,
+  "core_groups": {
+    "boundary": {
+      "reason": "Deterministic boundary calculation, validation DTOs and persisted evidence adapter, including the living reserve facts consumed by the boundary service.",
+      "modules": [
+        "apps/api/app/domain/boundary.py",
+        "apps/api/app/domain/boundary_types.py",
+        "apps/api/app/domain/boundary_details_types.py",
+        "apps/api/app/services/boundary.py",
+        "apps/api/app/domain/living_reserve.py",
+        "apps/api/app/services/living_reserve.py"
+      ]
+    },
+    "policy_version": {
+      "reason": "Exact configuration hashing/validation and immutable policy version, confirmation, authorization and invalidation lifecycle.",
+      "modules": [
+        "apps/api/app/domain/policy_configuration.py",
+        "apps/api/app/services/policy_lifecycle.py"
+      ]
+    },
+    "recovery": {
+      "reason": "Deterministic recovery plan/DTOs and the persisted request, source selection, projection and receipt integrity adapters.",
+      "modules": [
+        "apps/api/app/domain/recovery.py",
+        "apps/api/app/domain/recovery_types.py",
+        "apps/api/app/services/recovery.py",
+        "apps/api/app/services/recovery_sources.py",
+        "apps/api/app/services/recovery_projection.py",
+        "apps/api/app/services/recovery_receipt_integrity.py",
+        "apps/api/app/services/execution_sources.py",
+        "apps/api/app/services/simulated_redemption_quote.py"
+      ]
+    },
+    "direct_risk_adapters": {
+      "reason": "Shared financial facts and independent bank/principal/ledger validation directly consumed by boundary or recovery. Schema/ORM, unrelated product features, HTTP presentation and test helpers retain the backend gate instead of being silently omitted.",
+      "modules": [
+        "apps/api/app/domain/asset_exposure.py",
+        "apps/api/app/services/asset_exposure_import.py",
+        "apps/api/app/domain/income_ledger.py",
+        "apps/api/app/services/income_ledger.py",
+        "apps/api/app/services/financial_read.py",
+        "apps/api/app/services/historical_read.py",
+        "apps/api/app/domain/bank_posting_codec.py",
+        "apps/api/app/services/simulated_bank.py"
+      ]
+    }
+  },
+  "coverage": {
+    "format": 3,
+    "version": "7.16.2",
+    "config_path": "docs/spec/mvp-coverage.ini",
+    "configuration_reason": "coverage.py defaults skip never-imported namespace modules and exclude Protocol declarations. This independent configuration enables include_namespace_packages and clears exclude_lines, retaining unexecuted modules and type declarations in the denominator; pyproject.toml remains unchanged and only tests are omitted.",
+    "measurement": "covered_lines / num_statements using exact integer comparisons; zero-statement non-core package initializers are retained without a per-file threshold",
+    "approved_exclusions": {},
+    "exclusion_policy": "No excluded lines are pre-approved; the registered configuration clears default exclude_lines. Any future intentional exclusion requires an explicit scope/validator amendment before acceptance. Missing production files or extra production files fail. The old MVP-303 artifact excluded three policy_compilation Protocol lines and cannot satisfy this stricter current gate."
+  },
+  "hypothesis": {
+    "version": "6.168.3",
+    "minimum_generated_passing": 1000,
+    "property_files": [
+      "apps/api/app/tests/test_boundary_properties.py",
+      "apps/api/app/tests/test_goal_allocation_properties.py",
+      "apps/api/app/tests/test_asset_allocation_properties.py",
+      "apps/api/app/tests/test_recovery_properties.py"
+    ],
+    "semantics": "Actual passing test-case evaluations reported by the installed Hypothesis pytest plugin in generate phase only. Reuse, shrink, explain, failing and invalid cases are reported separately and never added. Not max_examples, not a sum across separate runs, not proof of globally unique economic scenarios. Every @given function in these registered financial property files must have a successful call and statistics; synthetic verification-tool tests cannot contribute.",
+    "statistics_source": ".venv/Lib/site-packages/_hypothesis_pytestplugin.py and hypothesis/statistics.py describe_statistics; format is version-bound and unsupported versions fail closed",
+    "counter": "scripts/mvp_hypothesis_counter.py observes pytest reports and the plugin-produced item.hypothesis_statistics only; it does not wrap or modify a financial function or Hypothesis generation"
+  },
+  "evidence_boundary": "A verified tool report is only a measured coverage/property gate. It does not replace real PostgreSQL/E2E, the 24 frozen cases, frontend interaction tests, offline chains or complete initial-version acceptance. Tool synthetic fixtures are TOOL_TEST_ONLY."
+}

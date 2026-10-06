@@ -1,0 +1,2 @@
+apps\api\app\tests\test_mvp_readonly_collector_integration.py:40: error: Argument "_experiment_seed_extension" to "seed_demo" has incompatible type "str"; expected "Literal['MVP503_SECOND_CASH_INITIAL_FACT_V1'] | None"  [arg-type]
+Found 1 error in 1 file (checked 1 source file)

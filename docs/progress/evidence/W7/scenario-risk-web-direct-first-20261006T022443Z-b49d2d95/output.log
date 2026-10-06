@@ -1,0 +1,938 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/api/scenario-risk-review.test.ts (31 tests | 1 failed) 2527ms
+   ✓ 实际 DTO 全量原件解析，完整1098点与原HTTP字节保留，无额外GET或权限 208ms
+   ✓ Python原引擎synthetic BILL输出经完整body/hash绑定，原paid保持；无客户端结果 244ms
+   ✓ 伪造零写边界 executes_funds 拒绝 22ms
+   ✓ 伪造零写边界 grants_authority 拒绝 21ms
+   ✓ 伪造零写边界 writes_facts 拒绝 19ms
+   ✓ 伪造零写边界 changes_bank_originals 拒绝 19ms
+   ✓ 伪造零写边界 resets_history 拒绝 20ms
+   ✓ 伪造零写边界 receipt_verified 拒绝 20ms
+   ✓ 伪造零写边界 economic_verified 拒绝 21ms
+   ✓ 未来条件收入不能加入 future_income_in_current_cash_cents 23ms
+   ✓ 未来条件收入不能加入 future_income_in_execution_cents 25ms
+   ✓ 完整曲线拒绝 phase 篡改 32ms
+   ✓ 完整曲线拒绝 missing 篡改 35ms
+   ✓ 完整曲线拒绝 margin 篡改 30ms
+   ✓ 完整曲线拒绝 money 篡改 30ms
+   ✓ 完整曲线拒绝 authority 篡改 28ms
+   ✓ 原结果拒绝 body 不一致 149ms
+   ✓ 原结果拒绝 owner 不一致 142ms
+   ✓ 原结果拒绝 source 不一致 141ms
+   ✓ 原结果拒绝 delta 不一致 188ms
+   ✓ 原结果拒绝 hash 不一致 172ms
+   ✓ 原结果拒绝 paid 不一致 186ms
+   ✓ 原结果拒绝 UNKNOWN_WITH_KNOWN_CURVE 不一致 169ms
+   × 原产品风险/锁期/最低额规划与early_loss假设界分开，实际fee/loss仍null 208ms
+     → 分项假设的原身份、精确金额、完整曲线或零授权边界不一致
+   ✓ 完整策略与目标保UNKNOWN null，未来目标金额不推为0，原版本匹配 273ms
+   ✓ 完整策略quantile原typed float1.0及0.9合法，不把金额浮点合法化 23ms
+   ✓ 账单严格金额拒绝 true，不发请求 1ms
+   ✓ 账单严格金额拒绝 300，不发请求 0ms
+   ✓ 账单严格金额拒绝 -1，不发请求 0ms
+   ✓ 账单严格金额拒绝 10000001，不发请求 0ms
+   ✓ 客户端clock/receipt/result、原实体或引擎已变拒绝POST 73ms
+ ❯ src/pages/ScenarioRiskReviewPage.test.tsx (7 tests | 1 failed) 3739ms
+   ✓ 初始只读GET，四种原分项实际分母、无执行/确认/reset  512ms
+   ✓ 账单原剩余与假设分开，主动POST整数原body；编辑隐结果、清页不reset  495ms
+   × 原产品优化器与未消费字段可读，无报价/银行动作 1342ms
+     → Unable to find role="heading" and name `/分项服务端结果/`
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"page-intro"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0m事实与假设分开 · 原服务端计算[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0m分项反事实评估[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m只读刷新原对象[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m这是零写入假设比较，不是真实资金执行。未来收入对今日现金与执行贡献始终0；不产生确认、BANK 回执或授权。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m分项假设的原身份、精确金额、完整曲线或零授权边界不一致；没有生成客户端结果，正式事实未改。[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"分项原件范围"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m当前原件与实际分母[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m原epoch [0m
+          [36m<code>[39m
+            [0m00000000-0000-0000-0000-000000000002[0m
+          [36m</code>[39m
+          [0m · [0m
+          [0m2026-10-05T00:00:00Z[0m
+          [0m · 目录 [0m
+          [0mVERIFIED[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m原完整保护安全闲置 [0m
+          [0m¥1.00[0m
+          [0m；执行 NOT_IMPLEMENTED，原银行经济结果未独立核验。[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m原账单 [0m
+          [0m1[0m
+          [0m / 原目标 [0m
+          [0m1[0m
+          [0m（可选 [0m
+          [0m1[0m
+          [0m）/ 原完整策略 [0m
+          [0m2[0m
+          [0m / 目录产品 [0m
+          [0m1[0m
+          [0m。[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m原事实新协议摘要 [0m
+          [36m<code>[39m
+            [0maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[0m
+          [36m</code>[39m
+          [0m · 引擎摘要 [0m
+          [36m<code>[39m
+            [0m278ae134c643bc5762472c154941e129d130aafe0ad6f625781e9f085661187a[0m
+          [36m</code>[39m
+          [0m。不是旧factDigest或资金权力。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<form[39m
+        [33maria-label[39m=[32m"单分项假设"[39m
+        [33mclass[39m=[32m"card"[39m
+      [36m>[39m
+        [36m<fieldset>[39m
+          [36m<legend>[39m
+            [0m一次只比较一个分项[0m
+          [36m</legend>[39m
+          [36m<label>[39m
+            [0m假设分项 [0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"BILL"[39m
+              [36m>[39m
+                [0m账单剩余与到期[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"GOAL"[39m
+              [36m>[39m
+                [0m目标月度与期限[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"FULL_POLICY"[39m
+              [36m>[39m
+                [0m完整策略候选[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"PRODUCT"[39m
+              [36m>[39m
+                [0m产品风险与流动性[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m当前实际原对象 [0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m""[39m
+              [36m>[39m
+                [0m请选择原对象[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"00000000-0000-0000-0000-00000000000a"[39m
+              [36m>[39m
+                [0mP10 · 原v2 · CASH_MGMT_T0[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设产品风险（0—5）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设锁期（天，0—365）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设赎回延迟（天，0—365）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设最低购买额（分，0—10000000）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"1"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设提前损失（bps，0—10000）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"3333"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m当前原资产规划策略 [0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m""[39m
+              [36m>[39m
+                [0m请选择原规划版本[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"00000000-0000-0000-0000-000000000002"[39m
+              [36m>[39m
+                [0m00000000-0000-0000-0000-000000000002[0m
+                [0m · [0m
+                [0mACTIVE[0m
+                [0m · [0m
+                [0m00000000-0000-0000-0000-000000000003[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m原目录版本、产品条款与持仓不改。风险/锁期/赎回/最低额由原优化器消费；early_loss只另算假设上界，无实际报价，原模拟收益不是效果实测。[0m
+          [36m</p>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"button-row"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0m服务端分项只读比较[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m仅清本页假设[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m同原请求显式重放[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m无自动POST或重试。原epoch/source/engine变化时...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"page-intro"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0m事实与假设分开 · 原服务端计算[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0m分项反事实评估[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m只读刷新原对象[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m这是零写入假设比较，不是真实资金执行。未来收入对今日现金与执行贡献始终0；不产生确认、BANK 回执或授权。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m分项假设的原身份、精确金额、完整曲线或零授权边界不一致；没有生成客户端结果，正式事实未改。[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"分项原件范围"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m当前原件与实际分母[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m原epoch [0m
+          [36m<code>[39m
+            [0m00000000-0000-0000-0000-000000000002[0m
+          [36m</code>[39m
+          [0m · [0m
+          [0m2026-10-05T00:00:00Z[0m
+          [0m · 目录 [0m
+          [0mVERIFIED[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m原完整保护安全闲置 [0m
+          [0m¥1.00[0m
+          [0m；执行 NOT_IMPLEMENTED，原银行经济结果未独立核验。[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m原账单 [0m
+          [0m1[0m
+          [0m / 原目标 [0m
+          [0m1[0m
+          [0m（可选 [0m
+          [0m1[0m
+          [0m）/ 原完整策略 [0m
+          [0m2[0m
+          [0m / 目录产品 [0m
+          [0m1[0m
+          [0m。[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m原事实新协议摘要 [0m
+          [36m<code>[39m
+            [0maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[0m
+          [36m</code>[39m
+          [0m · 引擎摘要 [0m
+          [36m<code>[39m
+            [0m278ae134c643bc5762472c154941e129d130aafe0ad6f625781e9f085661187a[0m
+          [36m</code>[39m
+          [0m。不是旧factDigest或资金权力。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<form[39m
+        [33maria-label[39m=[32m"单分项假设"[39m
+        [33mclass[39m=[32m"card"[39m
+      [36m>[39m
+        [36m<fieldset>[39m
+          [36m<legend>[39m
+            [0m一次只比较一个分项[0m
+          [36m</legend>[39m
+          [36m<label>[39m
+            [0m假设分项 [0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"BILL"[39m
+              [36m>[39m
+                [0m账单剩余与到期[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"GOAL"[39m
+              [36m>[39m
+                [0m目标月度与期限[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"FULL_POLICY"[39m
+              [36m>[39m
+                [0m完整策略候选[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"PRODUCT"[39m
+              [36m>[39m
+                [0m产品风险与流动性[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m当前实际原对象 [0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m""[39m
+              [36m>[39m
+                [0m请选择原对象[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"00000000-0000-0000-0000-00000000000a"[39m
+              [36m>[39m
+                [0mP10 · 原v2 · CASH_MGMT_T0[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设产品风险（0—5）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设锁期（天，0—365）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设赎回延迟（天，0—365）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设最低购买额（分，0—10000000）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"1"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设提前损失（bps，0—10000）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"3333"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m当前原资产规划策略 [0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m""[39m
+              [36m>[39m
+                [0m请选择原规划版本[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"00000000-0000-0000-0000-000000000002"[39m
+              [36m>[39m
+                [0m00000000-0000-0000-0000-000000000002[0m
+                [0m · [0m
+                [0mACTIVE[0m
+                [0m · [0m
+                [0m00000000-0000-0000-0000-000000000003[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m原目录版本、产品条款与持仓不改。风险/锁期/赎回/最低额由原优化器消费；early_loss只另算假设上界，无实际报价，原模拟收益不是效果实测。[0m
+          [36m</p>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"button-row"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0m服务端分项只读比较[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m仅清本页假设[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m同原请求显式重放[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m无自动POST或重试。原epoch/source/engine变化时...
+   ✓ 完整策略UNKNOWN/null显示实际缺口，不自动确认策略  333ms
+   ✓ 目标输入必须有序、整数；未合法输入不发POST 192ms
+   ✓ 中断无自动重试，只可用户显式同body；源刷新后旧请求不可重绑  615ms
+   ✓ 跨族门只阻POST，自己的原GET仍可刷新 247ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/api/scenario-risk-review.test.ts > 原产品风险/锁期/最低额规划与early_loss假设界分开，实际fee/loss仍null
+Error: 分项假设的原身份、精确金额、完整曲线或零授权边界不一致
+ ❯ check src/api/scenario-risk-review.ts:29:67
+
+ ❯ src/api/scenario-risk-review.ts:88:37
+ ❯ plan src/api/scenario-risk-review.ts:88:20
+ ❯ parseRiskComparison src/api/scenario-risk-review.ts:119:22
+ ❯ src/api/scenario-risk-review.test.ts:15:225
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/pages/ScenarioRiskReviewPage.test.tsx > 原产品优化器与未消费字段可读，无报价/银行动作
+TestingLibraryElementError: Unable to find role="heading" and name `/分项服务端结果/`
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"page-intro"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0m事实与假设分开 · 原服务端计算[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0m分项反事实评估[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m只读刷新原对象[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m这是零写入假设比较，不是真实资金执行。未来收入对今日现金与执行贡献始终0；不产生确认、BANK 回执或授权。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m分项假设的原身份、精确金额、完整曲线或零授权边界不一致；没有生成客户端结果，正式事实未改。[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"分项原件范围"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m当前原件与实际分母[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m原epoch [0m
+          [36m<code>[39m
+            [0m00000000-0000-0000-0000-000000000002[0m
+          [36m</code>[39m
+          [0m · [0m
+          [0m2026-10-05T00:00:00Z[0m
+          [0m · 目录 [0m
+          [0mVERIFIED[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m原完整保护安全闲置 [0m
+          [0m¥1.00[0m
+          [0m；执行 NOT_IMPLEMENTED，原银行经济结果未独立核验。[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m原账单 [0m
+          [0m1[0m
+          [0m / 原目标 [0m
+          [0m1[0m
+          [0m（可选 [0m
+          [0m1[0m
+          [0m）/ 原完整策略 [0m
+          [0m2[0m
+          [0m / 目录产品 [0m
+          [0m1[0m
+          [0m。[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m原事实新协议摘要 [0m
+          [36m<code>[39m
+            [0maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[0m
+          [36m</code>[39m
+          [0m · 引擎摘要 [0m
+          [36m<code>[39m
+            [0m278ae134c643bc5762472c154941e129d130aafe0ad6f625781e9f085661187a[0m
+          [36m</code>[39m
+          [0m。不是旧factDigest或资金权力。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<form[39m
+        [33maria-label[39m=[32m"单分项假设"[39m
+        [33mclass[39m=[32m"card"[39m
+      [36m>[39m
+        [36m<fieldset>[39m
+          [36m<legend>[39m
+            [0m一次只比较一个分项[0m
+          [36m</legend>[39m
+          [36m<label>[39m
+            [0m假设分项 [0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"BILL"[39m
+              [36m>[39m
+                [0m账单剩余与到期[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"GOAL"[39m
+              [36m>[39m
+                [0m目标月度与期限[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"FULL_POLICY"[39m
+              [36m>[39m
+                [0m完整策略候选[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"PRODUCT"[39m
+              [36m>[39m
+                [0m产品风险与流动性[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m当前实际原对象 [0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m""[39m
+              [36m>[39m
+                [0m请选择原对象[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"00000000-0000-0000-0000-00000000000a"[39m
+              [36m>[39m
+                [0mP10 · 原v2 · CASH_MGMT_T0[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设产品风险（0—5）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设锁期（天，0—365）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设赎回延迟（天，0—365）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设最低购买额（分，0—10000000）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"1"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设提前损失（bps，0—10000）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"3333"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m当前原资产规划策略 [0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m""[39m
+              [36m>[39m
+                [0m请选择原规划版本[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"00000000-0000-0000-0000-000000000002"[39m
+              [36m>[39m
+                [0m00000000-0000-0000-0000-000000000002[0m
+                [0m · [0m
+                [0mACTIVE[0m
+                [0m · [0m
+                [0m00000000-0000-0000-0000-000000000003[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m原目录版本、产品条款与持仓不改。风险/锁期/赎回/最低额由原优化器消费；early_loss只另算假设上界，无实际报价，原模拟收益不是效果实测。[0m
+          [36m</p>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"button-row"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0m服务端分项只读比较[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m仅清本页假设[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m同原请求显式重放[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m无自动POST或重试。原epoch/source/engine变化时...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"page-intro"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0m事实与假设分开 · 原服务端计算[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0m分项反事实评估[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m只读刷新原对象[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m这是零写入假设比较，不是真实资金执行。未来收入对今日现金与执行贡献始终0；不产生确认、BANK 回执或授权。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m分项假设的原身份、精确金额、完整曲线或零授权边界不一致；没有生成客户端结果，正式事实未改。[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"分项原件范围"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m当前原件与实际分母[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m原epoch [0m
+          [36m<code>[39m
+            [0m00000000-0000-0000-0000-000000000002[0m
+          [36m</code>[39m
+          [0m · [0m
+          [0m2026-10-05T00:00:00Z[0m
+          [0m · 目录 [0m
+          [0mVERIFIED[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m原完整保护安全闲置 [0m
+          [0m¥1.00[0m
+          [0m；执行 NOT_IMPLEMENTED，原银行经济结果未独立核验。[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m原账单 [0m
+          [0m1[0m
+          [0m / 原目标 [0m
+          [0m1[0m
+          [0m（可选 [0m
+          [0m1[0m
+          [0m）/ 原完整策略 [0m
+          [0m2[0m
+          [0m / 目录产品 [0m
+          [0m1[0m
+          [0m。[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m原事实新协议摘要 [0m
+          [36m<code>[39m
+            [0maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[0m
+          [36m</code>[39m
+          [0m · 引擎摘要 [0m
+          [36m<code>[39m
+            [0m278ae134c643bc5762472c154941e129d130aafe0ad6f625781e9f085661187a[0m
+          [36m</code>[39m
+          [0m。不是旧factDigest或资金权力。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<form[39m
+        [33maria-label[39m=[32m"单分项假设"[39m
+        [33mclass[39m=[32m"card"[39m
+      [36m>[39m
+        [36m<fieldset>[39m
+          [36m<legend>[39m
+            [0m一次只比较一个分项[0m
+          [36m</legend>[39m
+          [36m<label>[39m
+            [0m假设分项 [0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"BILL"[39m
+              [36m>[39m
+                [0m账单剩余与到期[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"GOAL"[39m
+              [36m>[39m
+                [0m目标月度与期限[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"FULL_POLICY"[39m
+              [36m>[39m
+                [0m完整策略候选[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"PRODUCT"[39m
+              [36m>[39m
+                [0m产品风险与流动性[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m当前实际原对象 [0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m""[39m
+              [36m>[39m
+                [0m请选择原对象[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"00000000-0000-0000-0000-00000000000a"[39m
+              [36m>[39m
+                [0mP10 · 原v2 · CASH_MGMT_T0[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设产品风险（0—5）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设锁期（天，0—365）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设赎回延迟（天，0—365）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设最低购买额（分，0—10000000）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"1"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m假设提前损失（bps，0—10000）[0m
+            [0m [0m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mvalue[39m=[32m"3333"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m当前原资产规划策略 [0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m""[39m
+              [36m>[39m
+                [0m请选择原规划版本[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"00000000-0000-0000-0000-000000000002"[39m
+              [36m>[39m
+                [0m00000000-0000-0000-0000-000000000002[0m
+                [0m · [0m
+                [0mACTIVE[0m
+                [0m · [0m
+                [0m00000000-0000-0000-0000-000000000003[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m原目录版本、产品条款与持仓不改。风险/锁期/赎回/最低额由原优化器消费；early_loss只另算假设上界，无实际报价，原模拟收益不是效果实测。[0m
+          [36m</p>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"button-row"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0m服务端分项只读比较[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m仅清本页假设[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m同原请求显式重放[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m无自动POST或重试。原epoch/source/engine变化时...
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/pages/ScenarioRiskReviewPage.test.tsx:13:718
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 36 passed (38)
+   Start at  10:24:46
+   Duration  8.62s (transform 1.04s, setup 1.25s, collect 4.35s, tests 6.27s, environment 2.32s, prepare 710ms)
+

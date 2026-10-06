@@ -1,0 +1,1975 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/api/spending-evidence.test.ts (19 tests | 2 failed) 22ms
+   × 消费原件与建议只读约束严格，未知不补金额，已确认只能只读 7ms
+     → 资金响应含无法精确显示的金额
+   ✓ 真实分类 accepted 错误不能转为可写 1ms
+   ✓ 真实分类 extra 错误不能转为可写 0ms
+   ✓ 真实分类 epoch 错误不能转为可写 0ms
+   ✓ 真实分类 money 错误不能转为可写 0ms
+   ✓ 真实分类 role 错误不能转为可写 0ms
+   ✓ 真实分类 bank 错误不能转为可写 0ms
+   ✓ 真实分类 owner 错误不能转为可写 0ms
+   ✓ 真实分类 first 错误不能转为可写 0ms
+   × 回执 body 漂移拒绝，不能借新latest清原键 2ms
+     → expected [Function] to throw an error
+   ✓ 回执 receipt 漂移拒绝，不能借新latest清原键 0ms
+   ✓ 回执 bank 漂移拒绝，不能借新latest清原键 0ms
+   ✓ 回执 hash 漂移拒绝，不能借新latest清原键 0ms
+   ✓ 回执 grant 漂移拒绝，不能借新latest清原键 0ms
+   ✓ 回执 epoch 漂移拒绝，不能借新latest清原键 0ms
+   ✓ 回执 event 漂移拒绝，不能借新latest清原键 0ms
+   ✓ 回执 notfound 漂移拒绝，不能借新latest清原键 0ms
+   ✓ 建议不可冒充权限、READY覆盖、不同窗口或不精确金额；请求仅用户窗口ID 6ms
+   ✓ 账户筛选只接受实际本人账户且逐行核账户，分页分母不改 1ms
+ ✓ src/features/spending-evidence-operation.test.ts (5 tests) 354ms
+ ❯ src/pages/SpendingEvidencePage.test.tsx (6 tests | 4 failed) 4169ms
+   × 真实周期原样本/窗口READY只读，节日明确ID再读官方窗口与UNKNOWN；无POST 1222ms
+     → Unable to find role="heading" and name "RENT · READY"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"spending-evidence-page"[39m
+    [36m>[39m
+      [36m<header>[39m
+        [36m<h1>[39m
+          [0m支出证据与历史规律[0m
+        [36m</h1>[39m
+        [36m<p>[39m
+          [0m模拟银行原件与用户类别声明分别展示。规律候选只供复核；本页不会确认策略或执行资金动作。[0m
+        [36m</p>[39m
+      [36m</header>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"账户与原银行交易"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m读取原银行消费交易[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m交易账户[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m明确选择账户[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"81000000-0000-4000-8000-000000000002"[39m
+            [36m>[39m
+              [0mHTTP 夹具现金账户[0m
+              [0m · [0m
+              [0mCASH[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"周期规律建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m周期规律 · 只读候选[0m
+        [36m</h2>[39m
+        [36m<p[39m
+          [33mrole[39m=[32m"alert"[39m
+        [36m>[39m
+          [0m资金响应含无法精确显示的金额[0m
+        [36m</p>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m重读周期规律[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"节日储备建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m节日储备 · 只读建议[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m用户指定官方窗口 ID[0m
+          [36m<input[39m
+            [33mmaxlength[39m=[32m"160"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m读取指定节日建议[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m窗口由服务端官方通知登记，未登记或尚未发布的窗口保持 UNKNOWN；本页不推定全年安排。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"spending-evidence-page"[39m
+    [36m>[39m
+      [36m<header>[39m
+        [36m<h1>[39m
+          [0m支出证据与历史规律[0m
+        [36m</h1>[39m
+        [36m<p>[39m
+          [0m模拟银行原件与用户类别声明分别展示。规律候选只供复核；本页不会确认策略或执行资金动作。[0m
+        [36m</p>[39m
+      [36m</header>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"账户与原银行交易"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m读取原银行消费交易[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m交易账户[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m明确选择账户[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"81000000-0000-4000-8000-000000000002"[39m
+            [36m>[39m
+              [0mHTTP 夹具现金账户[0m
+              [0m · [0m
+              [0mCASH[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"周期规律建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m周期规律 · 只读候选[0m
+        [36m</h2>[39m
+        [36m<p[39m
+          [33mrole[39m=[32m"alert"[39m
+        [36m>[39m
+          [0m资金响应含无法精确显示的金额[0m
+        [36m</p>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m重读周期规律[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"节日储备建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m节日储备 · 只读建议[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m用户指定官方窗口 ID[0m
+          [36m<input[39m
+            [33mmaxlength[39m=[32m"160"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m读取指定节日建议[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m窗口由服务端官方通知登记，未登记或尚未发布的窗口保持 UNKNOWN；本页不推定全年安排。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   ✓ 不自动勾选；POST成功仍pending，原键NOT_FOUND保原命令而RECORDED独立核对才清  595ms
+   × 响应丢失后刷新只恢复原件；跨族门仍允许自己的只读原键查询 279ms
+     → Unable to find an accessible element with the role "region" and name "待核对分类原请求"
+
+Here are the accessible roles:
+
+  banner:
+
+  Name "":
+  [36m<header />[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "支出证据与历史规律":
+  [36m<h1 />[39m
+
+  Name "读取原银行消费交易":
+  [36m<h2 />[39m
+
+  Name "周期规律 · 只读候选":
+  [36m<h2 />[39m
+
+  Name "节日储备 · 只读建议":
+  [36m<h2 />[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "账户与原银行交易":
+  [36m<section[39m
+    [33maria-label[39m=[32m"账户与原银行交易"[39m
+  [36m/>[39m
+
+  Name "周期规律建议":
+  [36m<section[39m
+    [33maria-label[39m=[32m"周期规律建议"[39m
+  [36m/>[39m
+
+  Name "节日储备建议":
+  [36m<section[39m
+    [33maria-label[39m=[32m"节日储备建议"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "交易账户":
+  [36m<select />[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "明确选择账户":
+  [36m<option[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "重读周期规律":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "读取指定节日建议":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "用户指定官方窗口 ID":
+  [36m<input[39m
+    [33mmaxlength[39m=[32m"160"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"spending-evidence-page"[39m
+    [36m>[39m
+      [36m<header>[39m
+        [36m<h1>[39m
+          [0m支出证据与历史规律[0m
+        [36m</h1>[39m
+        [36m<p>[39m
+          [0m模拟银行原件与用户类别声明分别展示。规律候选只供复核；本页不会确认策略或执行资金动作。[0m
+        [36m</p>[39m
+      [36m</header>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"账户与原银行交易"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m读取原银行消费交易[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m交易账户[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m明确选择账户[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"周期规律建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m周期规律 · 只读候选[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m重读周期规律[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"节日储备建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m节日储备 · 只读建议[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m用户指定官方窗口 ID[0m
+          [36m<input[39m
+            [33mmaxlength[39m=[32m"160"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m读取指定节日建议[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m窗口由服务端官方通知登记，未登记或尚未发布的窗口保持 UNKNOWN；本页不推定全年安排。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   ✓ 不同银行原回执不能清，已确认类别与跨族blocked均不产生写  421ms
+   × 原交易在发送前变化阻止POST，不拿新review继承原明确确认 268ms
+     → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  原交易或模拟期已变化
+Received:
+  资金响应含无法精确显示的金额
+   × 分类错误原件保pending；建议422保request_id并清旧成功视图 1383ms
+     → Found multiple elements with the role "alert"
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<p[39m
+  [33mrole[39m=[32m"alert"[39m
+[36m>[39m
+  [0m原窗口无效 · 请求编号 TOOL_ONLY_WINDOW_READ[0m
+[36m</p>[39m
+
+Ignored nodes: comments, script, style
+[36m<p[39m
+  [33mrole[39m=[32m"alert"[39m
+[36m>[39m
+  [0m资金响应含无法精确显示的金额[0m
+[36m</p>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"spending-evidence-page"[39m
+    [36m>[39m
+      [36m<header>[39m
+        [36m<h1>[39m
+          [0m支出证据与历史规律[0m
+        [36m</h1>[39m
+        [36m<p>[39m
+          [0m模拟银行原件与用户类别声明分别展示。规律候选只供复核；本页不会确认策略或执行资金动作。[0m
+        [36m</p>[39m
+      [36m</header>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m原窗口无效 · 请求编号 TOOL_ONLY_WINDOW_READ[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"待核对分类原请求"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m待核对分类原请求[0m
+        [36m</h2>[39m
+        [36m<p>[39m
+          [0m交易 [0m
+          [0m81000000-0000-4000-8000-000000000003[0m
+          [0m · 原键 [0m
+          [0mcategory-b8b69403-584a-487a-a4db-8b22c43f74c5[0m
+          [0m · hash [0m
+          [0mcda26226d073ff05852d733d1e40f51f7dd042d77424585b315a8b81d1e3f821[0m
+        [36m</p>[39m
+        [36m<details>[39m
+          [36m<summary>[39m
+            [0m保存的完整原分类命令[0m
+          [36m</summary>[39m
+          [36m<pre[39m
+            [33mclass[39m=[32m"readonly-raw"[39m
+          [36m>[39m
+            [0m{
+  "protocol": "spending-category-browser-command-v1",
+  "user_id": "81000000-0000-4000-8000-000000000001",
+  "transaction_id": "81000000-0000-4000-8000-000000000003",
+  "path": "/transactions/81000000-0000-4000-8000-000000000003/category-confirmation",
+  "body": {
+    "category": "food",
+    "accepted": true,
+    "reason": "我复核此笔模拟银行消费为食品",
+    "reviewed_transaction_hash": "431f745ef8a2f56eb1e9fb35fb27614e5c6c196a6d37f5f92689981a8609b24e",
+    "expected_epoch_id": "81000000-0000-4000-8000-000000000004",
+    "idempotency_key": "category-b8b69403-584a-487a-a4db-8b22c43f74c5"
+  },
+  "body_json": "{\"category\":\"food\",\"accepted\":true,\"reason\":\"我复核此笔模拟银行消费为食品\",\"reviewed_transaction_hash\":\"431f745ef8a2f56eb1e9fb35fb27614e5c6c196a6d37f5f92689981a8609b24e\",\"expected_epoch_id\":\"81000000-0000-4000-8000-000000000004\",\"idempotency_key\":\"category-b8b69403-584a-487a-a4db-8b22c43f74c5\"}",
+  "request_hash": "cda26226d073ff05852d733d1e40f51f7dd042d77424585b315a8b81d1e3f821",
+  "bank_evidence_id": "81000000-0000-4000-8000-000000000005",
+  "bank_evidence_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "before_category": "other"
+}[0m
+          [36m</pre>[39m
+        [36m</details>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m只读核对原分类请求[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0mHTTP 成功、拒绝和响应丢失均保留原请求。原键未找到不表示允许替换。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"账户与原银行交易"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m读取原银行消费交易[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m交易账户[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m明确选择账户[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"81000000-0000-4000-8000-000000000002"[39m
+            [36m>[39m
+              [0mHTTP 夹具现金账户[0m
+              [0m · [0m
+              [0mCASH[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<p>[39m
+          [0m实际交易总数 [0m
+          [0m1[0m
+          [0m · 本页 [0m
+          [0m1[0m
+          [0m · offset [0m
+          [0m0[0m
+        [36m</p>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [36m<time>[39m
+              [0m2026-10-04T08:00:00Z[0m
+            [36m</time>[39m
+            [0m · [0m
+            [0mDEBIT[0m
+            [0m · [0m
+            [0m100.01[0m
+            [0m 元 · 原类别 [0m
+            [0mother[0m
+            [0m · [0m
+            [0m未确认类别[0m
+            [0m [0m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m读取交易 [0m
+              [0m81000000-0000-4000-8000-000000000003[0m
+            [36m</button>[39m
+          [36m</li>[39m
+        [36m</ul>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m上一页交易[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m下一页交易[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m重读所选交易原件[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"原消费交易类别复核"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m首次类别确认复核[0m
+        [36m</h2>[39m
+        [36m<p>[39m
+          [0m银行消费 [0m
+          [0m100.01[0m
+          [0m 元 · 原类别 [0m
+          [0mother[0m
+          [0m · 服务时点 [0m
+          [0m2026-10-05T08:00:00Z[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m原银行 evidence [0m
+          [0m81000000-0000-4000-8000-000000000005[0m
+          [0m · hash [0m
+          [0maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[0m
+        [36m</p>[39m
+        [36m<details>[39m
+          [36m<summary>[39m
+            [0m原银行事实与完整交易复核响应[0m
+          [36m</summary>[39m
+          [36m<pre[39m
+            [33mclass[39m=[32m"readonly-raw"[39m
+          [36m>[39m
+            [0m{"protocol":"transaction-category-review-v1","simulation":true,"user_id":"81000000-0000-4000-8000-000000000001","transaction_id":"81000000-0000-4000-8000-000000000003","epoch_id":"81000000-0000-4000-8000-000000000004","as_of":"2026-10-05T08:00:00Z","transaction":{"id":"81000000-0000-4000-8000-000000000003","account_id":"81000000-0000-4000-8000-000000000002","source_ref":"TOOL_ONLY_CONSUMPTION","evidence_id":"81000000-0000-4000-8000-000000000005","direction":"DEBIT","amount_cents":10001,"balance_after_cents":180001,"category":"other","counterparty_ref":"TOOL_ONLY_BANK_PAYEE","is_one_off":false,"category_confirmed":false,"occurred_at":"2026-10-04T08:00:00Z","observed_at":"2026-10-04T08:00:00Z","user_id":"81000000-0000-4000-8000-000000000001","created_at":"2026-10-04T08:00:00.000000Z"},"bank_fact":{"transaction_id":"81000000-0000-4000-8000-000000000003","user_id":"81000000-0000-4000-8000-000000000001","account_id":"81000000-0000-4000-8000-000000000002","direction":"DEBIT","amount_cents":10001,"balance_after_cents":180001,"occurred_at":"2026-10-04T08:00:00Z","observed_at":"2026-10-04T08:00:00Z","counterparty_ref":"TOOL_ONLY_BANK_PAYEE","source_ref":"TOOL_ONLY_CONSUMPTION","economic_role":"CONSUMPTION","evidence_id":"81000000-0000-4000-8000-000000000005","evidence_level":"BANK_CONFIRMED","evidence_source_type":"SIMULATED_BANK_TRANSACTION","evidence_source_ref":"TOOL_ONLY_BANK_FACT","evidence_hash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","evidence_observed_at":"2026-10-04T08:00:00Z","evidence_valid_from":"2026-10-04T08:00:00Z","evidence_valid_to":null,"evidence_status":"VALID"},"reviewed_transaction_hash":"431f745ef8a2f56eb1e9fb35fb27614e5c6c196a6d37f5f92689981a8609b24e","first_confirmation_supported":true,"grants_authority":false,"bank_facts_changed":false}[0m
+          [36m</pre>[39m
+        [36m</details>[39m
+        [36m<label>[39m
+          [0m用户明确选择类别[0m
+          [36m<select[39m
+            [33mdisabled[39m=[32m""[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m请选择类别[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"food"[39m
+            [36m>[39m
+              [0m食品[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"transport"[39m
+            [36m>[39m
+              [0m交通[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"daily_necessities"[39m
+            [36m>[39m
+              [0m日常必需品[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"rent"[39m
+            [36m>[39m
+              [0m房租[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"utilities"[39m
+            [36m>[39m
+              [0m水电[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"education"[39m
+            [36m>[39m
+              [0m教育[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"healthcare"[39m
+            [36m>[39m
+              [0m医疗[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"other"[39m
+            [36m>[39m
+              [0m其他[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label>[39m
+          [0m分类确认原因[0m
+          [36m<textarea[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mmaxlength[39m=[32m"500"[39m
+          [36m>[39m
+            [0m我复核此笔模拟银行消费为食品[0m
+          [36m</textarea>[39m
+        [36m</label>[39m
+        [36m<label>[39m
+          [36m<input[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtype[39m=[32m"checkbox"[39m
+          [36m/>[39m
+          [0m我已复核原银行消费，并明确确认此类别声明[0m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m提交首次类别确认[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m银行金额、方向、收付对象和经济角色保持原件；类别声明不授予策略或银行权限。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"周期规律建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m周期规律 · 只读候选[0m
+        [36m</h2>[39m
+        [36m<p[39m
+          [33mrole[39m=[32m"alert"[39m
+        [36m>[39m
+          [0m资金响应含无法精确显示的金额[0m
+        [36m</p>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m重读周期规律[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"节日储备建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m节日储备 · 只读建议[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m用户指定官方窗口 ID[0m
+          [36m<input[39m
+            [33mmaxlength[39m=[32m"160"[39m
+            [33mvalue[39m=[32m"CN-2026-NATIONAL_DAY"[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m读取指定节日建议[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m窗口由服务端官方通知登记，未登记或尚未发布的窗口保持 UNKNOWN；本页不推定全年安排。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"spending-evidence-page"[39m
+      [36m>[39m
+        [36m<header>[39m
+          [36m<h1>[39m
+            [0m支出证据与历史规律[0m
+          [36m</h1>[39m
+          [36m<p>[39m
+            [0m模拟银行原件与用户类别声明分别展示。规律候选只供复核；本页不会确认策略或执行资金动作。[0m
+          [36m</p>[39m
+        [36m</header>[39m
+        [36m<p[39m
+          [33mrole[39m=[32m"alert"[39m
+        [36m>[39m
+          [0m原窗口无效 · 请求编号 TOOL_ONLY_WINDOW_READ[0m
+        [36m</p>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"待核对分类原请求"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m待核对分类原请求[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0m交易 [0m
+            [0m81000000-0000-4000-8000-000000000003[0m
+            [0m · 原键 [0m
+            [0mcategory-b8b69403-584a-487a-a4db-8b22c43f74c5[0m
+            [0m · hash [0m
+            [0mcda26226d073ff05852d733d1e40f51f7dd042d77424585b315a8b81d1e3f821[0m
+          [36m</p>[39m
+          [36m<details>[39m
+            [36m<summary>[39m
+              [0m保存的完整原分类命令[0m
+            [36m</summary>[39m
+            [36m<pre[39m
+              [33mclass[39m=[32m"readonly-raw"[39m
+            [36m>[39m
+              [0m{
+  "protocol": "spending-category-browser-command-v1",
+  "user_id": "81000000-0000-4000-8000-000000000001",
+  "transaction_id": "81000000-0000-4000-8000-000000000003",
+  "path": "/transactions/81000000-0000-4000-8000-000000000003/category-confirmation",
+  "body": {
+    "category": "food",
+    "accepted": true,
+    "reason": "我复核此笔模拟银行消费为食品",
+    "reviewed_transaction_hash": "431f745ef8a2f56eb1e9fb35fb27614e5c6c196a6d37f5f92689981a8609b24e",
+    "expected_epoch_id": "81000000-0000-4000-8000-000000000004",
+    "idempotency_key": "category-b8b69403-584a-487a-a4db-8b22c43f74c5"
+  },
+  "body_json": "{\"category\":\"food\",\"accepted\":true,\"reason\":\"我复核此笔模拟银行消费为食品\",\"reviewed_transaction_hash\":\"431f745ef8a2f56eb1e9fb35fb27614e5c6c196a6d37f5f92689981a8609b24e\",\"expected_epoch_id\":\"81000000-0000-4000-8000-000000000004\",\"idempotency_key\":\"category-b8b69403-584a-487a-a4db-8b22c43f74c5\"}",
+  "request_hash": "cda26226d073ff05852d733d1e40f51f7dd042d77424585b315a8b81d1e3f821",
+  "bank_evidence_id": "81000000-0000-4000-8000-000000000005",
+  "bank_evidence_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "before_category": "other"
+}[0m
+            [36m</pre>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m只读核对原分类请求[0m
+          [36m</button>[39m
+          [36m<p>[39m
+            [0mHTTP 成功、拒绝和响应丢失均保留原请求。原键未找到不表示允许替换。[0m
+          [36m</p>[39m
+        [36m</section>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"账户与原银行交易"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m读取原银行消费交易[0m
+          [36m</h2>[39m
+          [36m<label>[39m
+            [0m交易账户[0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m""[39m
+              [36m>[39m
+                [0m明确选择账户[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"81000000-0000-4000-8000-000000000002"[39m
+              [36m>[39m
+                [0mHTTP 夹具现金账户[0m
+                [0m · [0m
+                [0mCASH[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<p>[39m
+            [0m实际交易总数 [0m
+            [0m1[0m
+            [0m · 本页 [0m
+            [0m1[0m
+            [0m · offset [0m
+            [0m0[0m
+          [36m</p>[39m
+          [36m<ul>[39m
+            [36m<li>[39m
+              [36m<time>[39m
+                [0m2026-10-04T08:00:00Z[0m
+              [36m</time>[39m
+              [0m · [0m
+              [0mDEBIT[0m
+              [0m · [0m
+              [0m100.01[0m
+              [0m 元 · 原类别 [0m
+              [0mother[0m
+              [0m · [0m
+              [0m未确认类别[0m
+              [0m [0m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0m读取交易 [0m
+                [0m81000000-0000-4000-8000-000000000003[0m
+              [36m</button>[39m
+            [36m</li>[39m
+          [36m</ul>[39m
+          [36m<button[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m上一页交易[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m下一页交易[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m重读所选交易原件[0m
+          [36m</button>[39m
+        [36m</section>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"原消费交易类别复核"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m首次类别确认复核[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0m银行消费 [0m
+            [0m100.01[0m
+            [0m 元 · 原类别 [0m
+            [0mother[0m
+            [0m · 服务时点 [0m
+            [0m2026-10-05T08:00:00Z[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m原银行 evidence [0m
+            [0m81000000-0000-4000-8000-000000000005[0m
+            [0m · hash [0m
+            [0maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[0m
+          [36m</p>[39m
+          [36m<details>[39m
+            [36m<summary>[39m
+              [0m原银行事实与完整交易复核响应[0m
+            [36m</summary>[39m
+            [36m<pre[39m
+              [33mclass[39m=[32m"readonly-raw"[39m
+            [36m>[39m
+              [0m{"protocol":"transaction-category-review-v1","simulation":true,"user_id":"81000000-0000-4000-8000-000000000001","transaction_id":"81000000-0000-4000-8000-000000000003","epoch_id":"81000000-0000-4000-8000-000000000004","as_of":"2026-10-05T08:00:00Z","transaction":{"id":"81000000-0000-4000-8000-000000000003","account_id":"81000000-0000-4000-8000-000000000002","source_ref":"TOOL_ONLY_CONSUMPTION","evidence_id":"81000000-0000-4000-8000-000000000005","direction":"DEBIT","amount_cents":10001,"balance_after_cents":180001,"category":"other","counterparty_ref":"TOOL_ONLY_BANK_PAYEE","is_one_off":false,"category_confirmed":false,"occurred_at":"2026-10-04T08:00:00Z","observed_at":"2026-10-04T08:00:00Z","user_id":"81000000-0000-4000-8000-000000000001","created_at":"2026-10-04T08:00:00.000000Z"},"bank_fact":{"transaction_id":"81000000-0000-4000-8000-000000000003","user_id":"81000000-0000-4000-8000-000000000001","account_id":"81000000-0000-4000-8000-000000000002","direction":"DEBIT","amount_cents":10001,"balance_after_cents":180001,"occurred_at":"2026-10-04T08:00:00Z","observed_at":"2026-10-04T08:00:00Z","counterparty_ref":"TOOL_ONLY_BANK_PAYEE","source_ref":"TOOL_ONLY_CONSUMPTION","economic_role":"CONSUMPTION","evidence_id":"81000000-0000-4000-8000-000000000005","evidence_level":"BANK_CONFIRMED","evidence_source_type":"SIMULATED_BANK_TRANSACTION","evidence_source_ref":"TOOL_ONLY_BANK_FACT","evidence_hash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","evidence_observed_at":"2026-10-04T08:00:00Z","evidence_valid_from":"2026-10-04T08:00:00Z","evidence_valid_to":null,"evidence_status":"VALID"},"reviewed_transaction_hash":"431f745ef8a2f56eb1e9fb35fb27614e5c6c196a6d37f5f92689981a8609b24e","first_confirmation_supported":true,"grants_authority":false,"bank_facts_changed":false}[0m
+            [36m</pre>[39m
+          [36m</details>[39m
+          [36m<label>[39m
+            [0m用户明确选择类别[0m
+            [36m<select[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m""[39m
+              [36m>[39m
+                [0m请选择类别[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"food"[39m
+              [36m>[39m
+                [0m食品[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"transport"[39m
+              [36m>[39m
+                [0m交通[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"daily_necessities"[39m
+              [36m>[39m
+                [0m日常必需品[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"rent"[39m
+              [36m>[39m
+                [0m房租[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"utilities"[39m
+              [36m>[39m
+                [0m水电[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"education"[39m
+              [36m>[39m
+                [0m教育[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"healthcare"[39m
+              [36m>[39m
+                [0m医疗[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"other"[39m
+              [36m>[39m
+                [0m其他[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m分类确认原因[0m
+            [36m<textarea[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mmaxlength[39m=[32m"500"[39m
+            [36m>[39m
+              [0m我复核此笔模拟银行消费为食品[0m
+            [36m</textarea>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [36m<input[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mtype[39m=[32m"checkbox"[39m
+            [36m/>[39m
+            [0m我已复核原银行消费，并明确确认此类别声明[0m
+          [36m</label>[39m
+          [36m<button[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m提交首次类别确认[0m
+          [36m</button>[39m
+          [36m<p>[39m
+            [0m银行金额、方向、收付对象和经济角色保持原件；类别声明不授予策略或银行权限。[0m
+          [36m</p>[39m
+        [36m</section>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"周期规律建议"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m周期规律 · 只读候选[0m
+          [36m</h2>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"alert"[39m
+          [36m>[39m
+            [0m资金响应含无法精确显示的金额[0m
+          [36m</p>[39m
+          [36m<button[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m重读周期规律[0m
+          [36m</button>[39m
+        [36m</section>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"节日储备建议"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m节日储备 · 只读建议[0m
+          [36m</h2>[39m
+          [36m<label>[39m
+            [0m用户指定官方窗口 ID[0m
+            [36m<input[39m
+              [33mmaxlength[39m=[32m"160"[39m
+              [33mvalue[39m=[32m"CN-2026-NATIONAL_DAY"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<button[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m读取指定节日建议[0m
+          [36m</button>[39m
+          [36m<p>[39m
+            [0m窗口由服务端官方通知登记，未登记或尚未发布的窗口保持 UNKNOWN；本页不推定全年安排。[0m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/api/spending-evidence.test.ts > 消费原件与建议只读约束严格，未知不补金额，已确认只能只读
+Error: 资金响应含无法精确显示的金额
+ ❯ assertMoneyFields src/features/money.ts:21:13
+     19|   for (const [key, child] of Object.entries(value)) {
+     20|     if (key.endsWith('_cents') && child !== null && !Number.isSafeInte…
+     21|       throw new Error('资金响应含无法精确显示的金额');
+       |             ^
+     22|     }
+     23|     if (key.includes('_cents_by_') && typeof child === 'object' && chi…
+ ❯ assertMoneyFields src/features/money.ts:15:32
+ ❯ assertMoneyFields src/features/money.ts:30:5
+ ❯ commonSuggestion src/api/spending-evidence.ts:80:33
+ ❯ parsePeriodic src/api/spending-evidence.ts:90:3
+ ❯ src/api/spending-evidence.test.ts:6:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/api/spending-evidence.test.ts > 回执 body 漂移拒绝，不能借新latest清原键
+AssertionError: expected [Function] to throw an error
+ ❯ src/api/spending-evidence.test.ts:18:52
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/pages/SpendingEvidencePage.test.tsx > 真实周期原样本/窗口READY只读，节日明确ID再读官方窗口与UNKNOWN；无POST
+TestingLibraryElementError: Unable to find role="heading" and name "RENT · READY"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"spending-evidence-page"[39m
+    [36m>[39m
+      [36m<header>[39m
+        [36m<h1>[39m
+          [0m支出证据与历史规律[0m
+        [36m</h1>[39m
+        [36m<p>[39m
+          [0m模拟银行原件与用户类别声明分别展示。规律候选只供复核；本页不会确认策略或执行资金动作。[0m
+        [36m</p>[39m
+      [36m</header>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"账户与原银行交易"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m读取原银行消费交易[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m交易账户[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m明确选择账户[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"81000000-0000-4000-8000-000000000002"[39m
+            [36m>[39m
+              [0mHTTP 夹具现金账户[0m
+              [0m · [0m
+              [0mCASH[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"周期规律建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m周期规律 · 只读候选[0m
+        [36m</h2>[39m
+        [36m<p[39m
+          [33mrole[39m=[32m"alert"[39m
+        [36m>[39m
+          [0m资金响应含无法精确显示的金额[0m
+        [36m</p>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m重读周期规律[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"节日储备建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m节日储备 · 只读建议[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m用户指定官方窗口 ID[0m
+          [36m<input[39m
+            [33mmaxlength[39m=[32m"160"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m读取指定节日建议[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m窗口由服务端官方通知登记，未登记或尚未发布的窗口保持 UNKNOWN；本页不推定全年安排。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"spending-evidence-page"[39m
+    [36m>[39m
+      [36m<header>[39m
+        [36m<h1>[39m
+          [0m支出证据与历史规律[0m
+        [36m</h1>[39m
+        [36m<p>[39m
+          [0m模拟银行原件与用户类别声明分别展示。规律候选只供复核；本页不会确认策略或执行资金动作。[0m
+        [36m</p>[39m
+      [36m</header>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"账户与原银行交易"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m读取原银行消费交易[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m交易账户[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m明确选择账户[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"81000000-0000-4000-8000-000000000002"[39m
+            [36m>[39m
+              [0mHTTP 夹具现金账户[0m
+              [0m · [0m
+              [0mCASH[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"周期规律建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m周期规律 · 只读候选[0m
+        [36m</h2>[39m
+        [36m<p[39m
+          [33mrole[39m=[32m"alert"[39m
+        [36m>[39m
+          [0m资金响应含无法精确显示的金额[0m
+        [36m</p>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m重读周期规律[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"节日储备建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m节日储备 · 只读建议[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m用户指定官方窗口 ID[0m
+          [36m<input[39m
+            [33mmaxlength[39m=[32m"160"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m读取指定节日建议[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m窗口由服务端官方通知登记，未登记或尚未发布的窗口保持 UNKNOWN；本页不推定全年安排。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/pages/SpendingEvidencePage.test.tsx:31:72
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/pages/SpendingEvidencePage.test.tsx > 响应丢失后刷新只恢复原件；跨族门仍允许自己的只读原键查询
+TestingLibraryElementError: Unable to find an accessible element with the role "region" and name "待核对分类原请求"
+
+Here are the accessible roles:
+
+  banner:
+
+  Name "":
+  [36m<header />[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "支出证据与历史规律":
+  [36m<h1 />[39m
+
+  Name "读取原银行消费交易":
+  [36m<h2 />[39m
+
+  Name "周期规律 · 只读候选":
+  [36m<h2 />[39m
+
+  Name "节日储备 · 只读建议":
+  [36m<h2 />[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "账户与原银行交易":
+  [36m<section[39m
+    [33maria-label[39m=[32m"账户与原银行交易"[39m
+  [36m/>[39m
+
+  Name "周期规律建议":
+  [36m<section[39m
+    [33maria-label[39m=[32m"周期规律建议"[39m
+  [36m/>[39m
+
+  Name "节日储备建议":
+  [36m<section[39m
+    [33maria-label[39m=[32m"节日储备建议"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "交易账户":
+  [36m<select />[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "明确选择账户":
+  [36m<option[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "重读周期规律":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "读取指定节日建议":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "用户指定官方窗口 ID":
+  [36m<input[39m
+    [33mmaxlength[39m=[32m"160"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"spending-evidence-page"[39m
+    [36m>[39m
+      [36m<header>[39m
+        [36m<h1>[39m
+          [0m支出证据与历史规律[0m
+        [36m</h1>[39m
+        [36m<p>[39m
+          [0m模拟银行原件与用户类别声明分别展示。规律候选只供复核；本页不会确认策略或执行资金动作。[0m
+        [36m</p>[39m
+      [36m</header>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"账户与原银行交易"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m读取原银行消费交易[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m交易账户[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m明确选择账户[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"周期规律建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m周期规律 · 只读候选[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m重读周期规律[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"节日储备建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m节日储备 · 只读建议[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m用户指定官方窗口 ID[0m
+          [36m<input[39m
+            [33mmaxlength[39m=[32m"160"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m读取指定节日建议[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m窗口由服务端官方通知登记，未登记或尚未发布的窗口保持 UNKNOWN；本页不推定全年安排。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/pages/SpendingEvidencePage.test.tsx:41:17
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/pages/SpendingEvidencePage.test.tsx > 原交易在发送前变化阻止POST，不拿新review继承原明确确认
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  原交易或模拟期已变化
+Received:
+  资金响应含无法精确显示的金额
+ ❯ src/pages/SpendingEvidencePage.test.tsx:47:210
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/pages/SpendingEvidencePage.test.tsx > 分类错误原件保pending；建议422保request_id并清旧成功视图
+TestingLibraryElementError: Found multiple elements with the role "alert"
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<p[39m
+  [33mrole[39m=[32m"alert"[39m
+[36m>[39m
+  [0m原窗口无效 · 请求编号 TOOL_ONLY_WINDOW_READ[0m
+[36m</p>[39m
+
+Ignored nodes: comments, script, style
+[36m<p[39m
+  [33mrole[39m=[32m"alert"[39m
+[36m>[39m
+  [0m资金响应含无法精确显示的金额[0m
+[36m</p>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"spending-evidence-page"[39m
+    [36m>[39m
+      [36m<header>[39m
+        [36m<h1>[39m
+          [0m支出证据与历史规律[0m
+        [36m</h1>[39m
+        [36m<p>[39m
+          [0m模拟银行原件与用户类别声明分别展示。规律候选只供复核；本页不会确认策略或执行资金动作。[0m
+        [36m</p>[39m
+      [36m</header>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m原窗口无效 · 请求编号 TOOL_ONLY_WINDOW_READ[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"待核对分类原请求"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m待核对分类原请求[0m
+        [36m</h2>[39m
+        [36m<p>[39m
+          [0m交易 [0m
+          [0m81000000-0000-4000-8000-000000000003[0m
+          [0m · 原键 [0m
+          [0mcategory-b8b69403-584a-487a-a4db-8b22c43f74c5[0m
+          [0m · hash [0m
+          [0mcda26226d073ff05852d733d1e40f51f7dd042d77424585b315a8b81d1e3f821[0m
+        [36m</p>[39m
+        [36m<details>[39m
+          [36m<summary>[39m
+            [0m保存的完整原分类命令[0m
+          [36m</summary>[39m
+          [36m<pre[39m
+            [33mclass[39m=[32m"readonly-raw"[39m
+          [36m>[39m
+            [0m{
+  "protocol": "spending-category-browser-command-v1",
+  "user_id": "81000000-0000-4000-8000-000000000001",
+  "transaction_id": "81000000-0000-4000-8000-000000000003",
+  "path": "/transactions/81000000-0000-4000-8000-000000000003/category-confirmation",
+  "body": {
+    "category": "food",
+    "accepted": true,
+    "reason": "我复核此笔模拟银行消费为食品",
+    "reviewed_transaction_hash": "431f745ef8a2f56eb1e9fb35fb27614e5c6c196a6d37f5f92689981a8609b24e",
+    "expected_epoch_id": "81000000-0000-4000-8000-000000000004",
+    "idempotency_key": "category-b8b69403-584a-487a-a4db-8b22c43f74c5"
+  },
+  "body_json": "{\"category\":\"food\",\"accepted\":true,\"reason\":\"我复核此笔模拟银行消费为食品\",\"reviewed_transaction_hash\":\"431f745ef8a2f56eb1e9fb35fb27614e5c6c196a6d37f5f92689981a8609b24e\",\"expected_epoch_id\":\"81000000-0000-4000-8000-000000000004\",\"idempotency_key\":\"category-b8b69403-584a-487a-a4db-8b22c43f74c5\"}",
+  "request_hash": "cda26226d073ff05852d733d1e40f51f7dd042d77424585b315a8b81d1e3f821",
+  "bank_evidence_id": "81000000-0000-4000-8000-000000000005",
+  "bank_evidence_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "before_category": "other"
+}[0m
+          [36m</pre>[39m
+        [36m</details>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m只读核对原分类请求[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0mHTTP 成功、拒绝和响应丢失均保留原请求。原键未找到不表示允许替换。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"账户与原银行交易"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m读取原银行消费交易[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m交易账户[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m明确选择账户[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"81000000-0000-4000-8000-000000000002"[39m
+            [36m>[39m
+              [0mHTTP 夹具现金账户[0m
+              [0m · [0m
+              [0mCASH[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<p>[39m
+          [0m实际交易总数 [0m
+          [0m1[0m
+          [0m · 本页 [0m
+          [0m1[0m
+          [0m · offset [0m
+          [0m0[0m
+        [36m</p>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [36m<time>[39m
+              [0m2026-10-04T08:00:00Z[0m
+            [36m</time>[39m
+            [0m · [0m
+            [0mDEBIT[0m
+            [0m · [0m
+            [0m100.01[0m
+            [0m 元 · 原类别 [0m
+            [0mother[0m
+            [0m · [0m
+            [0m未确认类别[0m
+            [0m [0m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m读取交易 [0m
+              [0m81000000-0000-4000-8000-000000000003[0m
+            [36m</button>[39m
+          [36m</li>[39m
+        [36m</ul>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m上一页交易[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m下一页交易[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m重读所选交易原件[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"原消费交易类别复核"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m首次类别确认复核[0m
+        [36m</h2>[39m
+        [36m<p>[39m
+          [0m银行消费 [0m
+          [0m100.01[0m
+          [0m 元 · 原类别 [0m
+          [0mother[0m
+          [0m · 服务时点 [0m
+          [0m2026-10-05T08:00:00Z[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m原银行 evidence [0m
+          [0m81000000-0000-4000-8000-000000000005[0m
+          [0m · hash [0m
+          [0maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[0m
+        [36m</p>[39m
+        [36m<details>[39m
+          [36m<summary>[39m
+            [0m原银行事实与完整交易复核响应[0m
+          [36m</summary>[39m
+          [36m<pre[39m
+            [33mclass[39m=[32m"readonly-raw"[39m
+          [36m>[39m
+            [0m{"protocol":"transaction-category-review-v1","simulation":true,"user_id":"81000000-0000-4000-8000-000000000001","transaction_id":"81000000-0000-4000-8000-000000000003","epoch_id":"81000000-0000-4000-8000-000000000004","as_of":"2026-10-05T08:00:00Z","transaction":{"id":"81000000-0000-4000-8000-000000000003","account_id":"81000000-0000-4000-8000-000000000002","source_ref":"TOOL_ONLY_CONSUMPTION","evidence_id":"81000000-0000-4000-8000-000000000005","direction":"DEBIT","amount_cents":10001,"balance_after_cents":180001,"category":"other","counterparty_ref":"TOOL_ONLY_BANK_PAYEE","is_one_off":false,"category_confirmed":false,"occurred_at":"2026-10-04T08:00:00Z","observed_at":"2026-10-04T08:00:00Z","user_id":"81000000-0000-4000-8000-000000000001","created_at":"2026-10-04T08:00:00.000000Z"},"bank_fact":{"transaction_id":"81000000-0000-4000-8000-000000000003","user_id":"81000000-0000-4000-8000-000000000001","account_id":"81000000-0000-4000-8000-000000000002","direction":"DEBIT","amount_cents":10001,"balance_after_cents":180001,"occurred_at":"2026-10-04T08:00:00Z","observed_at":"2026-10-04T08:00:00Z","counterparty_ref":"TOOL_ONLY_BANK_PAYEE","source_ref":"TOOL_ONLY_CONSUMPTION","economic_role":"CONSUMPTION","evidence_id":"81000000-0000-4000-8000-000000000005","evidence_level":"BANK_CONFIRMED","evidence_source_type":"SIMULATED_BANK_TRANSACTION","evidence_source_ref":"TOOL_ONLY_BANK_FACT","evidence_hash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","evidence_observed_at":"2026-10-04T08:00:00Z","evidence_valid_from":"2026-10-04T08:00:00Z","evidence_valid_to":null,"evidence_status":"VALID"},"reviewed_transaction_hash":"431f745ef8a2f56eb1e9fb35fb27614e5c6c196a6d37f5f92689981a8609b24e","first_confirmation_supported":true,"grants_authority":false,"bank_facts_changed":false}[0m
+          [36m</pre>[39m
+        [36m</details>[39m
+        [36m<label>[39m
+          [0m用户明确选择类别[0m
+          [36m<select[39m
+            [33mdisabled[39m=[32m""[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m请选择类别[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"food"[39m
+            [36m>[39m
+              [0m食品[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"transport"[39m
+            [36m>[39m
+              [0m交通[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"daily_necessities"[39m
+            [36m>[39m
+              [0m日常必需品[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"rent"[39m
+            [36m>[39m
+              [0m房租[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"utilities"[39m
+            [36m>[39m
+              [0m水电[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"education"[39m
+            [36m>[39m
+              [0m教育[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"healthcare"[39m
+            [36m>[39m
+              [0m医疗[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"other"[39m
+            [36m>[39m
+              [0m其他[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label>[39m
+          [0m分类确认原因[0m
+          [36m<textarea[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mmaxlength[39m=[32m"500"[39m
+          [36m>[39m
+            [0m我复核此笔模拟银行消费为食品[0m
+          [36m</textarea>[39m
+        [36m</label>[39m
+        [36m<label>[39m
+          [36m<input[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtype[39m=[32m"checkbox"[39m
+          [36m/>[39m
+          [0m我已复核原银行消费，并明确确认此类别声明[0m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m提交首次类别确认[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m银行金额、方向、收付对象和经济角色保持原件；类别声明不授予策略或银行权限。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"周期规律建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m周期规律 · 只读候选[0m
+        [36m</h2>[39m
+        [36m<p[39m
+          [33mrole[39m=[32m"alert"[39m
+        [36m>[39m
+          [0m资金响应含无法精确显示的金额[0m
+        [36m</p>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m重读周期规律[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"节日储备建议"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0m节日储备 · 只读建议[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0m用户指定官方窗口 ID[0m
+          [36m<input[39m
+            [33mmaxlength[39m=[32m"160"[39m
+            [33mvalue[39m=[32m"CN-2026-NATIONAL_DAY"[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m读取指定节日建议[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m窗口由服务端官方通知登记，未登记或尚未发布的窗口保持 UNKNOWN；本页不推定全年安排。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"spending-evidence-page"[39m
+      [36m>[39m
+        [36m<header>[39m
+          [36m<h1>[39m
+            [0m支出证据与历史规律[0m
+          [36m</h1>[39m
+          [36m<p>[39m
+            [0m模拟银行原件与用户类别声明分别展示。规律候选只供复核；本页不会确认策略或执行资金动作。[0m
+          [36m</p>[39m
+        [36m</header>[39m
+        [36m<p[39m
+          [33mrole[39m=[32m"alert"[39m
+        [36m>[39m
+          [0m原窗口无效 · 请求编号 TOOL_ONLY_WINDOW_READ[0m
+        [36m</p>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"待核对分类原请求"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m待核对分类原请求[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0m交易 [0m
+            [0m81000000-0000-4000-8000-000000000003[0m
+            [0m · 原键 [0m
+            [0mcategory-b8b69403-584a-487a-a4db-8b22c43f74c5[0m
+            [0m · hash [0m
+            [0mcda26226d073ff05852d733d1e40f51f7dd042d77424585b315a8b81d1e3f821[0m
+          [36m</p>[39m
+          [36m<details>[39m
+            [36m<summary>[39m
+              [0m保存的完整原分类命令[0m
+            [36m</summary>[39m
+            [36m<pre[39m
+              [33mclass[39m=[32m"readonly-raw"[39m
+            [36m>[39m
+              [0m{
+  "protocol": "spending-category-browser-command-v1",
+  "user_id": "81000000-0000-4000-8000-000000000001",
+  "transaction_id": "81000000-0000-4000-8000-000000000003",
+  "path": "/transactions/81000000-0000-4000-8000-000000000003/category-confirmation",
+  "body": {
+    "category": "food",
+    "accepted": true,
+    "reason": "我复核此笔模拟银行消费为食品",
+    "reviewed_transaction_hash": "431f745ef8a2f56eb1e9fb35fb27614e5c6c196a6d37f5f92689981a8609b24e",
+    "expected_epoch_id": "81000000-0000-4000-8000-000000000004",
+    "idempotency_key": "category-b8b69403-584a-487a-a4db-8b22c43f74c5"
+  },
+  "body_json": "{\"category\":\"food\",\"accepted\":true,\"reason\":\"我复核此笔模拟银行消费为食品\",\"reviewed_transaction_hash\":\"431f745ef8a2f56eb1e9fb35fb27614e5c6c196a6d37f5f92689981a8609b24e\",\"expected_epoch_id\":\"81000000-0000-4000-8000-000000000004\",\"idempotency_key\":\"category-b8b69403-584a-487a-a4db-8b22c43f74c5\"}",
+  "request_hash": "cda26226d073ff05852d733d1e40f51f7dd042d77424585b315a8b81d1e3f821",
+  "bank_evidence_id": "81000000-0000-4000-8000-000000000005",
+  "bank_evidence_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "before_category": "other"
+}[0m
+            [36m</pre>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m只读核对原分类请求[0m
+          [36m</button>[39m
+          [36m<p>[39m
+            [0mHTTP 成功、拒绝和响应丢失均保留原请求。原键未找到不表示允许替换。[0m
+          [36m</p>[39m
+        [36m</section>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"账户与原银行交易"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m读取原银行消费交易[0m
+          [36m</h2>[39m
+          [36m<label>[39m
+            [0m交易账户[0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m""[39m
+              [36m>[39m
+                [0m明确选择账户[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"81000000-0000-4000-8000-000000000002"[39m
+              [36m>[39m
+                [0mHTTP 夹具现金账户[0m
+                [0m · [0m
+                [0mCASH[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<p>[39m
+            [0m实际交易总数 [0m
+            [0m1[0m
+            [0m · 本页 [0m
+            [0m1[0m
+            [0m · offset [0m
+            [0m0[0m
+          [36m</p>[39m
+          [36m<ul>[39m
+            [36m<li>[39m
+              [36m<time>[39m
+                [0m2026-10-04T08:00:00Z[0m
+              [36m</time>[39m
+              [0m · [0m
+              [0mDEBIT[0m
+              [0m · [0m
+              [0m100.01[0m
+              [0m 元 · 原类别 [0m
+              [0mother[0m
+              [0m · [0m
+              [0m未确认类别[0m
+              [0m [0m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0m读取交易 [0m
+                [0m81000000-0000-4000-8000-000000000003[0m
+              [36m</button>[39m
+            [36m</li>[39m
+          [36m</ul>[39m
+          [36m<button[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m上一页交易[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m下一页交易[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m重读所选交易原件[0m
+          [36m</button>[39m
+        [36m</section>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"原消费交易类别复核"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m首次类别确认复核[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0m银行消费 [0m
+            [0m100.01[0m
+            [0m 元 · 原类别 [0m
+            [0mother[0m
+            [0m · 服务时点 [0m
+            [0m2026-10-05T08:00:00Z[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m原银行 evidence [0m
+            [0m81000000-0000-4000-8000-000000000005[0m
+            [0m · hash [0m
+            [0maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[0m
+          [36m</p>[39m
+          [36m<details>[39m
+            [36m<summary>[39m
+              [0m原银行事实与完整交易复核响应[0m
+            [36m</summary>[39m
+            [36m<pre[39m
+              [33mclass[39m=[32m"readonly-raw"[39m
+            [36m>[39m
+              [0m{"protocol":"transaction-category-review-v1","simulation":true,"user_id":"81000000-0000-4000-8000-000000000001","transaction_id":"81000000-0000-4000-8000-000000000003","epoch_id":"81000000-0000-4000-8000-000000000004","as_of":"2026-10-05T08:00:00Z","transaction":{"id":"81000000-0000-4000-8000-000000000003","account_id":"81000000-0000-4000-8000-000000000002","source_ref":"TOOL_ONLY_CONSUMPTION","evidence_id":"81000000-0000-4000-8000-000000000005","direction":"DEBIT","amount_cents":10001,"balance_after_cents":180001,"category":"other","counterparty_ref":"TOOL_ONLY_BANK_PAYEE","is_one_off":false,"category_confirmed":false,"occurred_at":"2026-10-04T08:00:00Z","observed_at":"2026-10-04T08:00:00Z","user_id":"81000000-0000-4000-8000-000000000001","created_at":"2026-10-04T08:00:00.000000Z"},"bank_fact":{"transaction_id":"81000000-0000-4000-8000-000000000003","user_id":"81000000-0000-4000-8000-000000000001","account_id":"81000000-0000-4000-8000-000000000002","direction":"DEBIT","amount_cents":10001,"balance_after_cents":180001,"occurred_at":"2026-10-04T08:00:00Z","observed_at":"2026-10-04T08:00:00Z","counterparty_ref":"TOOL_ONLY_BANK_PAYEE","source_ref":"TOOL_ONLY_CONSUMPTION","economic_role":"CONSUMPTION","evidence_id":"81000000-0000-4000-8000-000000000005","evidence_level":"BANK_CONFIRMED","evidence_source_type":"SIMULATED_BANK_TRANSACTION","evidence_source_ref":"TOOL_ONLY_BANK_FACT","evidence_hash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","evidence_observed_at":"2026-10-04T08:00:00Z","evidence_valid_from":"2026-10-04T08:00:00Z","evidence_valid_to":null,"evidence_status":"VALID"},"reviewed_transaction_hash":"431f745ef8a2f56eb1e9fb35fb27614e5c6c196a6d37f5f92689981a8609b24e","first_confirmation_supported":true,"grants_authority":false,"bank_facts_changed":false}[0m
+            [36m</pre>[39m
+          [36m</details>[39m
+          [36m<label>[39m
+            [0m用户明确选择类别[0m
+            [36m<select[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m""[39m
+              [36m>[39m
+                [0m请选择类别[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"food"[39m
+              [36m>[39m
+                [0m食品[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"transport"[39m
+              [36m>[39m
+                [0m交通[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"daily_necessities"[39m
+              [36m>[39m
+                [0m日常必需品[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"rent"[39m
+              [36m>[39m
+                [0m房租[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"utilities"[39m
+              [36m>[39m
+                [0m水电[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"education"[39m
+              [36m>[39m
+                [0m教育[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"healthcare"[39m
+              [36m>[39m
+                [0m医疗[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"other"[39m
+              [36m>[39m
+                [0m其他[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m分类确认原因[0m
+            [36m<textarea[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mmaxlength[39m=[32m"500"[39m
+            [36m>[39m
+              [0m我复核此笔模拟银行消费为食品[0m
+            [36m</textarea>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [36m<input[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mtype[39m=[32m"checkbox"[39m
+            [36m/>[39m
+            [0m我已复核原银行消费，并明确确认此类别声明[0m
+          [36m</label>[39m
+          [36m<button[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m提交首次类别确认[0m
+          [36m</button>[39m
+          [36m<p>[39m
+            [0m银行金额、方向、收付对象和经济角色保持原件；类别声明不授予策略或银行权限。[0m
+          [36m</p>[39m
+        [36m</section>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"周期规律建议"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m周期规律 · 只读候选[0m
+          [36m</h2>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"alert"[39m
+          [36m>[39m
+            [0m资金响应含无法精确显示的金额[0m
+          [36m</p>[39m
+          [36m<button[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m重读周期规律[0m
+          [36m</button>[39m
+        [36m</section>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"节日储备建议"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m节日储备 · 只读建议[0m
+          [36m</h2>[39m
+          [36m<label>[39m
+            [0m用户指定官方窗口 ID[0m
+            [36m<input[39m
+              [33mmaxlength[39m=[32m"160"[39m
+              [33mvalue[39m=[32m"CN-2026-NATIONAL_DAY"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<button[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m读取指定节日建议[0m
+          [36m</button>[39m
+          [36m<p>[39m
+            [0m窗口由服务端官方通知登记，未登记或尚未发布的窗口保持 UNKNOWN；本页不推定全年安排。[0m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ src/pages/SpendingEvidencePage.test.tsx:51:333
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  6 failed | 24 passed (30)
+   Start at  01:13:24
+   Duration  6.93s (transform 522ms, setup 1.48s, collect 1.17s, tests 4.55s, environment 3.23s, prepare 986ms)
+

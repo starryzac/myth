@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/goal-adjustments.test.ts (22 tests) 22ms
+ ✓ src/components/GoalAdjustmentsPanel.test.tsx (5 tests) 288ms
+
+ Test Files  2 passed (2)
+      Tests  27 passed (27)
+   Start at  09:50:35
+   Duration  3.09s (transform 369ms, setup 1.11s, collect 598ms, tests 310ms, environment 2.21s, prepare 732ms)
+

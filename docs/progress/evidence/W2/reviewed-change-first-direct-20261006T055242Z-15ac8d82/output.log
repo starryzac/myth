@@ -1,0 +1,19 @@
+...................F...................                                  [100%]
+================================== FAILURES ===================================
+___ test_new_exact_algorithm_original_envelope_frozen_metadata_only[False] ____
+apps\api\app\tests\test_full_policy_reviewed_change.py:311: in test_new_exact_algorithm_original_envelope_frozen_metadata_only
+    value = trace(original, phase)
+            ^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\tests\test_full_policy_reviewed_change.py:176: in trace
+    return build_trace(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\domain\decision_trace.py:145: in build_trace
+    content = _TraceContent.model_validate(fields)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 1 validation error for _TraceContent
+E   inputs
+E     Value error, Trace monetary values must be integer cents [type=value_error, input_value={'review_phase': 'REVIEW'...l_verification': False}}, input_type=dict]
+E       For further information visit https://errors.pydantic.dev/2.13/v/value_error
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_policy_reviewed_change.py::test_new_exact_algorithm_original_envelope_frozen_metadata_only[False]
+1 failed, 38 passed in 6.64s

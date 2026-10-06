@@ -1,0 +1,36 @@
+{
+  "run_id": "20261005T071420Z-7a745c7b",
+  "task": "W1",
+  "label": "offline-export-integration-types",
+  "status": "PASSED",
+  "scope": [
+    "scripts/export_evidence.py",
+    "scripts/w1_offline_export_validation.py",
+    "scripts/tests/test_w1_offline_export_validation.py",
+    "scripts/tests/test_export_evidence.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "mypy",
+    "--explicit-package-bases",
+    "scripts/export_evidence.py",
+    "scripts/w1_offline_export_validation.py"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T07:14:20.909079+00:00",
+  "finished_at": "2026-10-05T07:14:22.099934+00:00",
+  "wall_seconds": 1.190855,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

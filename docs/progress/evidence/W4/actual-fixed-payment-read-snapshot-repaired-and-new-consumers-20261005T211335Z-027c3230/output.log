@@ -1,0 +1,149 @@
+F
+================================== FAILURES ===================================
+_ test_actual_signed_user_relation_uses_real_monthly_bank_payment_and_original_key_recovery[True] _
+
+annual_client = (<starlette.testclient.TestClient object at 0x000001D18B74F1D0>, Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_ac5389dbbedc40cea0e53f26518b35fa))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D18B7A1340>
+auto_execute = True
+
+    @pytest.mark.parametrize("auto_execute", [True, False])
+    def test_actual_signed_user_relation_uses_real_monthly_bank_payment_and_original_key_recovery(
+        annual_client: tuple[TestClient, Engine],
+        monkeypatch: pytest.MonkeyPatch,
+        auto_execute: bool,
+    ) -> None:
+        client, engine = annual_client
+        secret = "SYNTHETIC_LOCAL_SESSION_RISK_ONLY_606"
+        monkeypatch.setenv("BF_LOCAL_USER_SECRET", secret)
+        monkeypatch.setenv("BF_LOCAL_SIGNING_KEY", "cd" * 32)
+        local = NOW.astimezone(ZoneInfo("Asia/Shanghai"))
+        common = {
+            "payee_id": "synthetic-landlord-001",
+            "amount_rule": {"kind": "exact", "amount_cents": 100},
+            "due_day": local.day,
+            "auto_execute": auto_execute,
+            "prepare_days_before": 0,
+        }
+        with Session(engine) as session, session.begin():
+            account = session.scalar(
+                select(Account)
+                .where(Account.user_id == DEMO_USER_ID, Account.account_type == "CASH")
+                .order_by(Account.id)
+            )
+            assert account is not None
+            source_id = account.id
+            original_id, original_version = confirmed_policy(
+                session, common | {"type": "recurring_obligation"}, NOW
+            )
+        # Trusted isolated observer reads actual absence for this newly declared policy;
+        # this is an explicit simulation fact seam, not a guessed zero liability.
+        runner = ScenarioRunner(engine, DEMO_USER_ID)
+        period = local.strftime("%Y-%m")
+        observation = runner.observe_recurring_payment(original_id, period, NOW)
+        assert observation["observation"]["paid_cents"] == 0
+        assert observation["observation"]["observation_protocol"] == "scenario-empty-bank-payment-v1"
+        config = common | {
+            "type": "periodic_transfer",
+            "name": "606真实隔离固定关系",
+            "source_account_id": str(source_id),
+            "single_action_cap_cents": 100,
+            "valid_until": (local.date() + timedelta(days=60)).isoformat(),
+        }
+        created = client.post(
+            "/api/v1/full-policies/confirm",
+            json={
+                "template_name": "PeriodicTransferPolicy",
+                "configuration": config,
+                "reviewed_hash": configuration_hash(
+                    canonical_candidate("PeriodicTransferPolicy", config)
+                ),
+                "accepted": True,
+                "reason": "明确模拟周期与原MVP范围相同",
+                "idempotency_key": "606-full-model",
+            },
+        )
+        assert created.status_code == 200, created.text
+        full = created.json()
+        assert full["bank_authority"] is False
+        full_id, full_version = (
+            full["policy_id"],
+            full["version_id"],
+        )
+        epoch = full["epoch_id"]
+        body = {
+            "expected_epoch_id": epoch,
+            "full_policy_id": full_id,
+            "expected_full_version_id": full_version,
+            "original_policy_id": str(original_id),
+            "expected_original_version_id": str(original_version),
+            "idempotency_key": "606-user-start",
+        }
+        assert client.post("/api/v1/full-payment-relations/start", json=body).status_code == 401
+        logged = client.post(
+            "/api/v1/local-actor/login", json={"username": "bounded-user", "secret": secret}
+        )
+        assert logged.status_code == 200, logged.text
+        assert logged.json()["principal"]["human_identity_verified"] is False
+        started = client.post("/api/v1/full-payment-relations/start", json=body)
+        assert started.status_code == 200, started.text
+        start = started.json()["original"]
+        confirmed = client.post(
+            f"/api/v1/full-payment-relations/starts/{start['command_id']}/confirm",
+            json={
+                "expected_epoch_id": epoch,
+                "reviewed_scope_hash": start["scope_hash"],
+                "accepted": True,
+                "reason": "服务端已验证的模拟USER明确复核原身份范围",
+                "idempotency_key": "606-user-confirm",
+            },
+        )
+        assert confirmed.status_code == 200, confirmed.text
+        authorization = confirmed.json()["original"]["command_id"]
+        before_reads = physical_snapshot(engine)
+        lookup = client.get(f"/api/v1/full-payment-relations/commands/{epoch}/by-key/606-user-confirm")
+        assert (
+            lookup.status_code == 200
+            and lookup.json()["original"]["original"] == confirmed.json()["original"]
+        ), lookup.text
+        assert lookup.json()["original"]["current_scope_status"] == "CURRENT"
+        assert physical_snapshot(engine) == before_reads
+        prepare_body = {
+            "expected_epoch_id": epoch,
+            "period": period,
+            "idempotency_key": "606-original-payment",
+        }
+        prepared = client.post(
+            f"/api/v1/full-payment-relations/authorizations/{authorization}/prepare", json=prepare_body
+        )
+>       assert prepared.status_code == 200, prepared.text
+E       AssertionError: {"error":{"code":"FULL_EXECUTION_PROTECTION_UNKNOWN","message":"当前完整版保护未允许原动作：FULL_FUTURE_ACCOUNT_DEBITS_NOT_PROVEN","request_id":"cd297f78-f633-4f68-af39-ab9c6576fb72"}}
+E       assert 409 == 200
+E        +  where 409 = <Response [409 Conflict]>.status_code
+
+apps\api\app\tests\test_full_payment_permissions_integration.py:138: AssertionError
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "f0d1e7de-3140-4782-b9cd-712c102d47d3", "method": "POST", "status": 200, "duration_ms": 547.0}
+{"event": "http_request", "request_id": "f5b85ea5-b6e8-4305-80cc-a5d9c6115e66", "method": "POST", "status": 401, "duration_ms": 78.0}
+{"event": "http_request", "request_id": "4054bf96-0712-4796-a361-00e3e3f798d5", "method": "POST", "status": 200, "duration_ms": 94.0}
+{"event": "http_request", "request_id": "2993ac31-1869-49c6-a34f-47034474fce7", "method": "POST", "status": 200, "duration_ms": 828.0}
+{"event": "http_request", "request_id": "6b4e7c63-c5e9-4900-ad87-9bf86e79e469", "method": "POST", "status": 200, "duration_ms": 1328.0}
+{"event": "http_request", "request_id": "98e45099-adbe-4ff0-83a5-d729cc5fcf9b", "method": "GET", "status": 200, "duration_ms": 656.0}
+{"event": "http_request", "request_id": "cd297f78-f633-4f68-af39-ab9c6576fb72", "method": "POST", "status": 409, "duration_ms": 3313.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "f0d1e7de-3140-4782-b9cd-712c102d47d3", "method": "POST", "status": 200, "duration_ms": 547.0}
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "f5b85ea5-b6e8-4305-80cc-a5d9c6115e66", "method": "POST", "status": 401, "duration_ms": 78.0}
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "4054bf96-0712-4796-a361-00e3e3f798d5", "method": "POST", "status": 200, "duration_ms": 94.0}
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "2993ac31-1869-49c6-a34f-47034474fce7", "method": "POST", "status": 200, "duration_ms": 828.0}
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "6b4e7c63-c5e9-4900-ad87-9bf86e79e469", "method": "POST", "status": 200, "duration_ms": 1328.0}
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "98e45099-adbe-4ff0-83a5-d729cc5fcf9b", "method": "GET", "status": 200, "duration_ms": 656.0}
+INFO     bounded_funds.http:main.py:104 {"event": "http_request", "request_id": "cd297f78-f633-4f68-af39-ab9c6576fb72", "method": "POST", "status": 409, "duration_ms": 3313.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_payment_permissions_integration.py::test_actual_signed_user_relation_uses_real_monthly_bank_payment_and_original_key_recovery[True]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 warning in 18.07s

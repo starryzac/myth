@@ -10,6 +10,7 @@ pytest-cache-files-*/
 htmlcov/
 node_modules/
 dist/
+apps/web/dist-zhiyu/
 .pnpm-store/
 .uv-cache/
 .runtime/

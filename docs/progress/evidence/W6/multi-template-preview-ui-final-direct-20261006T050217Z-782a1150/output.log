@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/full-policy-change-multi.test.ts (23 tests) 1265ms
+ ✓ src/components/MultiTemplateFinancialPreviewPanel.test.tsx (3 tests) 1427ms
+   ✓ 无自动请求，手动完整366日期3阶段/负差额/只读无confirm  912ms
+
+ Test Files  2 passed (2)
+      Tests  26 passed (26)
+   Start at  13:02:20
+   Duration  4.71s (transform 658ms, setup 1.12s, collect 1.66s, tests 2.69s, environment 2.09s, prepare 667ms)
+

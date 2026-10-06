@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import ActualActionSetPanel from '../components/ActualActionSetPanel';
+import { useCallback, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import PolicyConfigForm, { ConfigurationReview } from '../components/PolicyConfigForm';
 import { changePolicy, changeState, compilePolicy, confirmProposal, discoverPolicies, getCompilation, getPolicies, getProposals, getVersions, previewChange, reviseCompilation } from '../api/policies';
@@ -6,6 +7,7 @@ import type { ChangeCommand, ChangePreview, Compilation, Configuration, Lifecycl
 import { ApiError, errorMessage } from '../api/http';
 import { lifecycleLabels, policyTypes } from '../features/policy-form';
 import { formatMoneyCents } from '../features/money';
+import PolicyMap from '../components/PolicyMap';
 
 function Result({ result }: { result: Lifecycle }) {
   return <div className="command-result" role="status"><p>服务端已返回此命令的处理记录，当前状态以重新读取的策略为准。</p>
@@ -17,12 +19,13 @@ function BoundaryComparison({ preview }: { preview: ChangePreview }) {
   const money = (value: number | null | undefined) => value == null ? '待核验' : `¥${formatMoneyCents(value)}`;
   return <section className="change-preview" aria-label="修改前后资金边界"><h4>修改前后资金边界</h4>
     <p className="caption">服务端查询时点 {preview.as_of} · {preview.timezone}；这是假设确认配置后的财务比较，未授予执行权限，也未锁定跨请求资金。</p>
-    <table><thead><tr><th>91日口径</th><th>修改前</th><th>假设修改后</th></tr></thead><tbody>
-      <tr><th>核验状态</th><td>{preview.before.state}</td><td>{preview.after.state}</td></tr>
-      <tr><th>安全闲置</th><td>{money(preview.before.safe_idle_cents)}</td><td>{money(preview.after.safe_idle_cents)}</td></tr>
-      <tr><th>最小余量（含负值）</th><td>{money(preview.before.minimum_margin_cents)}</td><td>{money(preview.after.minimum_margin_cents)}</td></tr>
-      <tr><th>资金缺口</th><td>{money(preview.before.deficit_cents)}</td><td>{money(preview.after.deficit_cents)}</td></tr>
-    </tbody></table><p>安全闲置变化：{money(preview.delta_safe_idle_cents)}；最小余量变化：{money(preview.delta_minimum_margin_cents)}</p>
+    <dl className="policy-boundary-comparison">{[
+      ['核验状态', preview.before.state, preview.after.state],
+      ['安全闲置', money(preview.before.safe_idle_cents), money(preview.after.safe_idle_cents)],
+      ['最小余量（含负值）', money(preview.before.minimum_margin_cents), money(preview.after.minimum_margin_cents)],
+      ['资金缺口', money(preview.before.deficit_cents), money(preview.after.deficit_cents)],
+    ].map(([label, before, after]) => <div key={label}><dt>{label}</dt><dd><span>修改前</span>{before}</dd><dd><span>假设修改后</span>{after}</dd></div>)}</dl>
+    <p>安全闲置变化：{money(preview.delta_safe_idle_cents)}；最小余量变化：{money(preview.delta_minimum_margin_cents)}</p>
     <p>假设状态：{lifecycleLabels[preview.assumed_status] ?? preview.assumed_status}；有效期 {preview.assumed_valid_from ?? '未限制'} 至 {preview.assumed_valid_until ?? '未限制'}（结束时点不包含）。</p>
     {preview.notes.map((note) => <p className="caption" key={note}>{note}</p>)}
     <details><summary>核验问题与比较依据</summary>{[...preview.before.issues ?? [], ...preview.after.issues ?? []].map((issue, i) => <p key={i}>{issue.code} · {issue.message}</p>)}
@@ -165,10 +168,14 @@ export default function PolicyCenterPage() {
   const [draft, setDraft] = useState<Configuration | null>(null); const [accepted, setAccepted] = useState(false);
   const [dirty, setDirty] = useState(false); const [busy, setBusy] = useState(false); const [error, setError] = useState('');
   const [editing, setEditing] = useState<Policy | null>(null); const [result, setResult] = useState<Lifecycle | null>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+  const focusEditor = useCallback((node: HTMLDivElement | null) => { node?.focus(); }, []);
+  function edit(policy: Policy) { openerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null; setEditing(policy); }
+  function closeEditor() { setEditing(null); if (openerRef.current?.isConnected) openerRef.current.focus(); }
   async function refresh() {
     await Promise.all(['policies', 'proposals', 'goals', 'dashboard', 'policy-versions'].map((key) => client.invalidateQueries({ queryKey: [key] })));
   }
-  async function done(receipt: Lifecycle) { setResult(receipt); setEditing(null); await refresh(); }
+  async function done(receipt: Lifecycle) { setResult(receipt); closeEditor(); await refresh(); }
   async function compile() {
     setBusy(true); setError(''); setAccepted(false);
     try { const response = await compilePolicy(text); setCompilation(response); setDraft(response.configuration); setDirty(false); await refresh(); }
@@ -190,9 +197,10 @@ export default function PolicyCenterPage() {
     setBusy(true); setError('');
     try { await discoverPolicies(); await refresh(); } catch (e) { setError(errorMessage(e)); } finally { setBusy(false); }
   }
-  return <><section className="page-intro"><div><p className="eyebrow">把自主安排写清楚，再逐项确认</p><h2>策略中心</h2></div><button onClick={() => void refresh()}>刷新策略</button></section>
+  return <div className="policy-center"><section className="page-intro"><div><p className="eyebrow">把自主安排写清楚，再逐项确认</p><h2>策略中心</h2></div><button onClick={() => void refresh()}>刷新策略</button></section>
     <p className="caption">策略状态以服务端可信时钟与当前版本为准；确认策略不等于直接执行资金动作。</p>
     {result && <Result result={result} />}
+    {!policies.isError && policies.data && <PolicyMap policies={policies.data.items} onEdit={edit} />}
     <section className="policy-section" aria-label="自然语言候选"><h3>用一句话起草策略</h3><p className="caption">规则编译支持目标储蓄与应急金。请先查看完整字段、问题和默认假设，再明确确认。</p>
       <label className="field">策略描述<textarea maxLength={2000} value={text} onChange={(e) => setText(e.target.value)} placeholder="例如：保留2000元应急金" /></label>
       <div className="button-row"><button disabled={!text.trim() || busy} onClick={() => void compile()}>编译候选</button><button disabled={busy} onClick={() => void discover()}>从真实模拟历史发现候选</button></div>
@@ -204,13 +212,13 @@ export default function PolicyCenterPage() {
         <label className="checkbox-field"><input type="checkbox" checked={accepted} disabled={dirty || !compilation.configuration} onChange={(e) => setAccepted(e.target.checked)} />我已逐项复核完整配置与原编译说明，明确接受此策略</label>
         <button disabled={!accepted || dirty || !compilation.proposal_id || busy} onClick={() => void confirm()}>确认编译策略</button></div>}
       {error && <p className="form-issues" role="alert">{error}</p>}</section>
-    {editing && <><PolicyEditor key={editing.id} policy={editing} done={done} /><button onClick={() => setEditing(null)}>关闭编辑</button></>}
+    {editing && <div key={editing.id} ref={focusEditor} tabIndex={-1} className="policy-editor-focus" aria-label="所选策略编辑区"><PolicyEditor key={editing.id} policy={editing} done={done} /><button onClick={closeEditor}>关闭编辑</button></div>}
     <section className="policy-section" aria-label="当前策略"><h3>当前策略</h3>
       {policies.isPending && <p role="status">正在读取策略…</p>}{policies.isError && <p role="alert">{errorMessage(policies.error)}</p>}
       {!policies.isError && policies.data?.items.length === 0 && <p className="empty">还没有已确认的策略。</p>}
-      {!policies.isError && policies.data?.items.map((policy) => <PolicyCard key={`${policy.id}-${policy.current_version?.id}-${policy.effective_status}`} policy={policy} edit={() => setEditing(policy)} done={done} />)}</section>
+      {!policies.isError && policies.data?.items.map((policy) => <PolicyCard key={`${policy.id}-${policy.current_version?.id}-${policy.effective_status}`} policy={policy} edit={() => edit(policy)} done={done} />)}</section>
     <section className="policy-section" aria-label="候选策略"><h3>候选与原始说明</h3>
       {proposals.isError && <p role="alert">{errorMessage(proposals.error)}</p>}{proposals.isPending && <p role="status">正在读取候选…</p>}
       {!proposals.isError && proposals.data?.items.filter((proposal) => proposal.id !== compilation?.proposal_id).map((proposal) => <CandidateReview key={`${proposal.id}-${proposal.status}-${proposal.configuration_hash}`} proposal={proposal} done={done} />)}
-    </section></>;
+    </section><ActualActionSetPanel /></div>;
 }

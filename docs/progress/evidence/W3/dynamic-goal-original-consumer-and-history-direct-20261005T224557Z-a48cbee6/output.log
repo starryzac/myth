@@ -1,0 +1,38 @@
+..F
+================================== FAILURES ===================================
+_____ test_new_consumer_never_accepts_only_numeric_or_stale_proof[clock] ______
+
+change = 'clock'
+
+    @pytest.mark.parametrize("change", ["cap", "clock", "effect"])
+    def test_new_consumer_never_accepts_only_numeric_or_stale_proof(change: str) -> None:
+        data = fixture()
+        effect, proof = build_full_dynamic_goal_effect(data, UUID(int=200))
+        context = data.context
+        if change == "cap":
+            proof = proof.model_copy(update={"dynamic_cap_cents": 200000})
+        elif change == "clock":
+            context = context.model_copy(update={"source_digest": "b" * 64})
+        else:
+            effect = effect.model_copy(update={"amount_cents": 160000})
+>       assert revalidate_execution(effect, context, full_dynamic_goal_proof=proof).status == "BLOCKED"
+E       AssertionError: assert 'READY' == 'BLOCKED'
+E         
+E         - BLOCKED
+E         + READY
+
+apps\api\app\tests\test_full_dynamic_goal_pipeline_seams.py:39: AssertionError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_dynamic_goal_pipeline_seams.py::test_new_consumer_never_accepts_only_numeric_or_stale_proof[clock]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 2 passed, 2 warnings in 6.38s

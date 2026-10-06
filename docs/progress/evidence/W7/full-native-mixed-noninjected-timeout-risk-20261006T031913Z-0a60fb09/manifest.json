@@ -1,0 +1,35 @@
+{
+  "run_id": "20261006T031913Z-0a60fb09",
+  "task": "W7",
+  "label": "full-native-mixed-noninjected-timeout-risk",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/full_native_operations.py",
+    "apps/api/app/services/full_native_cases.py",
+    "apps/api/app/tests/test_full_native_operation_extensions.py",
+    "apps/api/app/tests/test_full_native_cases.py",
+    "apps/api/app/tests/test_full_native_cases_integration.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_full_native_cases.py::test_noninjected_timeout_is_not_reported_as_bank_commit_or_response_loss",
+    "-q"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T03:19:15.638791+00:00",
+  "finished_at": "2026-10-06T03:19:19.689133+00:00",
+  "wall_seconds": 4.050342,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "81df24e4dcfe00befd7069101cdf5dff7c9d2016c6a255a55a6d54acc72396f0",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/components/FixedPaymentOriginalRecoveryPanel.test.tsx (3 tests) 1548ms
+   ✓ 不依赖Full详情/MVP列表/USER显示；只读原键GET完整核后解门，无POST或自动恢复  912ms
+   ✓ 身份会话不可用/其他族门仍可原GET，NOT_FOUND_NOT_FINAL保留同body与key  333ms
+   ✓ 原响应身份不匹配保留原件并报错，不以列表失败或200结果替换原请求  301ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  05:33:58
+   Duration  3.93s (transform 801ms, setup 438ms, collect 360ms, tests 1.55s, environment 818ms, prepare 285ms)
+

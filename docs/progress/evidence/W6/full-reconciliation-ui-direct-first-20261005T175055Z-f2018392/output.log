@@ -1,0 +1,703 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/full-reconciliation.test.ts (38 tests) 27ms
+ ❯ src/pages/ReconciliationPage.test.tsx (5 tests | 1 failed) 619ms
+   ✓ 三账分别显示原精确金额、八表分母；MATCHED不把准备行动译作已执行 199ms
+   × SETTLED但应用UNKNOWN无回执保原key、实际两腿和正负差额，不称资金未变 68ms
+     → Found multiple elements with the role "region" and name "具体未证明项"
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<section[39m
+  [33maria-label[39m=[32m"具体未证明项"[39m
+  [33mclass[39m=[32m"card readonly-section"[39m
+[36m>[39m
+  [36m<section[39m
+    [33maria-label[39m=[32m"具体未证明项"[39m
+  [36m>[39m
+    [36m<h4>[39m
+      [0m具体未证明项[0m
+      [0m · [0m
+      [0m1[0m
+      [0m项[0m
+    [36m</h4>[39m
+    [36m<ul>[39m
+      [36m<li>[39m
+        [36m<strong>[39m
+          [0mPENDING[0m
+          [0m / [0m
+          [0mSYNTHETIC_PENDING[0m
+        [36m</strong>[39m
+        [0m · [0m
+        [0m合成客户端检查；没有真实金融证明[0m
+        [0m · 原来源 [0m
+        [36m<code>[39m
+          [0mSYNTHETIC_SOURCE[0m
+        [36m</code>[39m
+      [36m</li>[39m
+    [36m</ul>[39m
+  [36m</section>[39m
+  [36m<section[39m
+    [33maria-label[39m=[32m"全部原问题"[39m
+  [36m>[39m
+    [36m<h4>[39m
+      [0m全部原问题[0m
+      [0m · [0m
+      [0m2[0m
+      [0m项[0m
+    [36m</h4>[39m
+    [36m<ul>[39m
+      [36m<li>[39m
+        [36m<strong>[39m
+          [0mDIFFERENCE[0m
+          [0m / [0m
+          [0mSYNTHETIC_DIFFERENCE[0m
+        [36m</strong>[39m
+        [0m · [0m
+        [0m合成客户端检查；没有真实金融证明[0m
+        [0m · 原来源 [0m
+        [36m<code>[39m
+          [0mSYNTHETIC_SOURCE[0m
+        [36m</code>[39m
+      [36m</li>[39m
+      [36m<li>[39m
+        [36m<strong>[39m
+          [0mPENDING[0m
+          [0m / [0m
+          [0mSYNTHETIC_PENDING[0m
+        [36m</strong>[39m
+        [0m · [0m
+        [0m合成客户端检查；没有真实金融证明[0m
+        [0m · 原来源 [0m
+        [36m<code>[39m
+          [0mSYNTHETIC_SOURCE[0m
+        [36m</code>[39m
+      [36m</li>[39m
+    [36m</ul>[39m
+  [36m</section>[39m
+  [36m<p[39m
+    [33mclass[39m=[32m"caption"[39m
+  [36m>[39m
+    [0mSYNTHETIC_HTTP_NOT_FINANCIAL_PROOF[0m
+  [36m</p>[39m
+  [36m<p[39m
+    [33mclass[39m=[32m"caption"[39m
+  [36m>[39m
+    [0m旧产权维度/九类全部执行/硬重启仍未完整验收；不修账[0m
+  [36m</p>[39m
+[36m</section>[39m
+
+Ignored nodes: comments, script, style
+[36m<section[39m
+  [33maria-label[39m=[32m"具体未证明项"[39m
+[36m>[39m
+  [36m<h4>[39m
+    [0m具体未证明项[0m
+    [0m · [0m
+    [0m1[0m
+    [0m项[0m
+  [36m</h4>[39m
+  [36m<ul>[39m
+    [36m<li>[39m
+      [36m<strong>[39m
+        [0mPENDING[0m
+        [0m / [0m
+        [0mSYNTHETIC_PENDING[0m
+      [36m</strong>[39m
+      [0m · [0m
+      [0m合成客户端检查；没有真实金融证明[0m
+      [0m · 原来源 [0m
+      [36m<code>[39m
+        [0mSYNTHETIC_SOURCE[0m
+      [36m</code>[39m
+    [36m</li>[39m
+  [36m</ul>[39m
+[36m</section>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"page-intro"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0m独立原件 · 三账口径 · 同一原键[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0m对账中心[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m只读刷新当前对账[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m模拟账本只读报告，不是真实资金执行。现金、持仓本金、目标归属分别核对；未授权修账、重试或替换原键。[0m
+      [36m</p>[39m
+      [36m<div>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"本次对账状态"[39m
+          [33mclass[39m=[32m"card readonly-section"[39m
+        [36m>[39m
+          [36m<h3>[39m
+            [0m需要人工核对 · MANUAL_REVIEW_REQUIRED[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m本次业务时点 [0m
+            [0m2026-10-05T12:00:00Z[0m
+            [0m · 原owner [0m
+            [36m<code>[39m
+              [0m91000000-0000-4000-8000-000000000001[0m
+            [36m</code>[39m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m独立模拟银行账本 [0m
+            [0m服务报告已核[0m
+            [0m；当前应用投影 [0m
+            [0m未匹配 / 未证明[0m
+            [0m；待投影差异 [0m
+            [0m服务报告可由原待投影解释，仍待核对[0m
+            [0m。[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m即使 MATCHED 或 SERVICE_RECEIPT_VERIFIED，本响应仍 economic_verified=false、receipt_is_current_authority=false，不提供当前资金权限或正式外部经济效果证明。[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"notice"[39m
+          [36m>[39m
+            [0m人工核对是当前报告状态；没有创建人工任务、修账或再次执行。请保留原键、原状态和具体问题。[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m信用卡负债未在本现金比较中；持仓只核本金，不以未到账收益或市场估值作现金。[0m
+          [36m</p>[39m
+        [36m</section>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"完整原行分母"[39m
+          [33mclass[39m=[32m"card readonly-section"[39m
+        [36m>[39m
+          [36m<h3>[39m
+            [0m完整原行分母[0m
+          [36m</h3>[39m
+          [36m<ul>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0maccounts[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m2[0m
+              [0m / 实际 [0m
+              [0m2[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0masset_positions[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m1[0m
+              [0m / 实际 [0m
+              [0m1[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0mgoals[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m1[0m
+              [0m / 实际 [0m
+              [0m1[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0maction_plans[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m1[0m
+              [0m / 实际 [0m
+              [0m1[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0mbank_operations[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m1[0m
+              [0m / 实际 [0m
+              [0m1[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0msimulated_bank_redemptions[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m0[0m
+              [0m / 实际 [0m
+              [0m0[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0maction_receipts[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m0[0m
+              [0m / 实际 [0m
+              [0m0[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0msimulated_bank_postings[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m6[0m
+              [0m / 实际 [0m
+              [0m6[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+          [36m</ul>[39m
+          [36m<p>[39m
+            [0m完整捕获不等于所有效果都已验证；未覆盖原数不从清单删除。[0m
+          [36m</p>[39m
+        [36m</section>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"现金账核对"[39m
+          [33mclass[39m=[32m"card readonly-section"[39m
+        [36m>[39m
+          [36m<h3>[39m
+            [0m现金账 · 账户原余额[0m
+          [36m</h3>[39m
+          [36m<article[39m
+            [33maria-label[39m=[32m"账户 91000000-0000-4000-8000-000000000002"[39m
+            [33mclass[39m=[32m"card"[39m
+          [36m>[39m
+            [36m<h4>[39m
+              [0m账户 91000000-0000-4000-8000-000000000002[0m
+            [36m</h4>[39m
+            [36m<p>[39m
+              [0m存在差额 · DIFFERENCE[0m
+              [0m · 原实体 [0m
+              [36m<code>[39m
+                [0m91000000-0000-4000-8000-000000000002[0m
+              [36m</code>[39m
+            [36m</p>[39m
+            [36m<dl[39m
+              [33mclass[39m=[32m"annual-amounts"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<dt>[39m
+                  [0m应用账面[0m
+                [36m</dt>[39m
+                [36m<dd>[39m
+                  [0m¥1,000.07[0m
+                [36m</dd>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<dt>[39m
+                  [0m独立模拟银行账面[0m
+                [36m</dt>[39m
+                [36m<dd>[39m
+                  [0m¥900.06[0m
+                [36m</dd>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<dt>[39m
+                  [0m差额（应用 − 银行）[0m
+                [36m</dt>[39m
+                [36m<dd>[39m
+                  [0m¥100.01[0m
+                [36m</dd>[39m
+              [36m</div>[39m
+            [36m</dl>[39m
+            [36m<p>[39m
+              [0m原银行head [0m
+              [0mCASH:91000000-0000-4000-8000-000000000002 / sequence 2 / 2026-10-05T12:00:00Z[0m
+              [0m [0m
+          ...
+   ✓ UNKNOWN与容量不足显示实际100001原分母及null，不隐去未覆盖或补0 48ms
+   ✓ 原坏hash和银行腿矛盾仅作为未核人工诊断可读，原JSON保留而非修账 178ms
+   ✓ 只读刷新失败不把旧报告当当前成功，也不发修复请求 123ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/pages/ReconciliationPage.test.tsx > SETTLED但应用UNKNOWN无回执保原key、实际两腿和正负差额，不称资金未变
+TestingLibraryElementError: Found multiple elements with the role "region" and name "具体未证明项"
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<section[39m
+  [33maria-label[39m=[32m"具体未证明项"[39m
+  [33mclass[39m=[32m"card readonly-section"[39m
+[36m>[39m
+  [36m<section[39m
+    [33maria-label[39m=[32m"具体未证明项"[39m
+  [36m>[39m
+    [36m<h4>[39m
+      [0m具体未证明项[0m
+      [0m · [0m
+      [0m1[0m
+      [0m项[0m
+    [36m</h4>[39m
+    [36m<ul>[39m
+      [36m<li>[39m
+        [36m<strong>[39m
+          [0mPENDING[0m
+          [0m / [0m
+          [0mSYNTHETIC_PENDING[0m
+        [36m</strong>[39m
+        [0m · [0m
+        [0m合成客户端检查；没有真实金融证明[0m
+        [0m · 原来源 [0m
+        [36m<code>[39m
+          [0mSYNTHETIC_SOURCE[0m
+        [36m</code>[39m
+      [36m</li>[39m
+    [36m</ul>[39m
+  [36m</section>[39m
+  [36m<section[39m
+    [33maria-label[39m=[32m"全部原问题"[39m
+  [36m>[39m
+    [36m<h4>[39m
+      [0m全部原问题[0m
+      [0m · [0m
+      [0m2[0m
+      [0m项[0m
+    [36m</h4>[39m
+    [36m<ul>[39m
+      [36m<li>[39m
+        [36m<strong>[39m
+          [0mDIFFERENCE[0m
+          [0m / [0m
+          [0mSYNTHETIC_DIFFERENCE[0m
+        [36m</strong>[39m
+        [0m · [0m
+        [0m合成客户端检查；没有真实金融证明[0m
+        [0m · 原来源 [0m
+        [36m<code>[39m
+          [0mSYNTHETIC_SOURCE[0m
+        [36m</code>[39m
+      [36m</li>[39m
+      [36m<li>[39m
+        [36m<strong>[39m
+          [0mPENDING[0m
+          [0m / [0m
+          [0mSYNTHETIC_PENDING[0m
+        [36m</strong>[39m
+        [0m · [0m
+        [0m合成客户端检查；没有真实金融证明[0m
+        [0m · 原来源 [0m
+        [36m<code>[39m
+          [0mSYNTHETIC_SOURCE[0m
+        [36m</code>[39m
+      [36m</li>[39m
+    [36m</ul>[39m
+  [36m</section>[39m
+  [36m<p[39m
+    [33mclass[39m=[32m"caption"[39m
+  [36m>[39m
+    [0mSYNTHETIC_HTTP_NOT_FINANCIAL_PROOF[0m
+  [36m</p>[39m
+  [36m<p[39m
+    [33mclass[39m=[32m"caption"[39m
+  [36m>[39m
+    [0m旧产权维度/九类全部执行/硬重启仍未完整验收；不修账[0m
+  [36m</p>[39m
+[36m</section>[39m
+
+Ignored nodes: comments, script, style
+[36m<section[39m
+  [33maria-label[39m=[32m"具体未证明项"[39m
+[36m>[39m
+  [36m<h4>[39m
+    [0m具体未证明项[0m
+    [0m · [0m
+    [0m1[0m
+    [0m项[0m
+  [36m</h4>[39m
+  [36m<ul>[39m
+    [36m<li>[39m
+      [36m<strong>[39m
+        [0mPENDING[0m
+        [0m / [0m
+        [0mSYNTHETIC_PENDING[0m
+      [36m</strong>[39m
+      [0m · [0m
+      [0m合成客户端检查；没有真实金融证明[0m
+      [0m · 原来源 [0m
+      [36m<code>[39m
+        [0mSYNTHETIC_SOURCE[0m
+      [36m</code>[39m
+    [36m</li>[39m
+  [36m</ul>[39m
+[36m</section>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"page-intro"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0m独立原件 · 三账口径 · 同一原键[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0m对账中心[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m只读刷新当前对账[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m模拟账本只读报告，不是真实资金执行。现金、持仓本金、目标归属分别核对；未授权修账、重试或替换原键。[0m
+      [36m</p>[39m
+      [36m<div>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"本次对账状态"[39m
+          [33mclass[39m=[32m"card readonly-section"[39m
+        [36m>[39m
+          [36m<h3>[39m
+            [0m需要人工核对 · MANUAL_REVIEW_REQUIRED[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m本次业务时点 [0m
+            [0m2026-10-05T12:00:00Z[0m
+            [0m · 原owner [0m
+            [36m<code>[39m
+              [0m91000000-0000-4000-8000-000000000001[0m
+            [36m</code>[39m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m独立模拟银行账本 [0m
+            [0m服务报告已核[0m
+            [0m；当前应用投影 [0m
+            [0m未匹配 / 未证明[0m
+            [0m；待投影差异 [0m
+            [0m服务报告可由原待投影解释，仍待核对[0m
+            [0m。[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m即使 MATCHED 或 SERVICE_RECEIPT_VERIFIED，本响应仍 economic_verified=false、receipt_is_current_authority=false，不提供当前资金权限或正式外部经济效果证明。[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"notice"[39m
+          [36m>[39m
+            [0m人工核对是当前报告状态；没有创建人工任务、修账或再次执行。请保留原键、原状态和具体问题。[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m信用卡负债未在本现金比较中；持仓只核本金，不以未到账收益或市场估值作现金。[0m
+          [36m</p>[39m
+        [36m</section>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"完整原行分母"[39m
+          [33mclass[39m=[32m"card readonly-section"[39m
+        [36m>[39m
+          [36m<h3>[39m
+            [0m完整原行分母[0m
+          [36m</h3>[39m
+          [36m<ul>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0maccounts[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m2[0m
+              [0m / 实际 [0m
+              [0m2[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0masset_positions[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m1[0m
+              [0m / 实际 [0m
+              [0m1[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0mgoals[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m1[0m
+              [0m / 实际 [0m
+              [0m1[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0maction_plans[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m1[0m
+              [0m / 实际 [0m
+              [0m1[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0mbank_operations[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m1[0m
+              [0m / 实际 [0m
+              [0m1[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0msimulated_bank_redemptions[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m0[0m
+              [0m / 实际 [0m
+              [0m0[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0maction_receipts[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m0[0m
+              [0m / 实际 [0m
+              [0m0[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<code>[39m
+                [0msimulated_bank_postings[0m
+              [36m</code>[39m
+              [0m · 捕获 [0m
+              [0m6[0m
+              [0m / 实际 [0m
+              [0m6[0m
+              [0m · [0m
+              [0m本表捕获完整[0m
+            [36m</li>[39m
+          [36m</ul>[39m
+          [36m<p>[39m
+            [0m完整捕获不等于所有效果都已验证；未覆盖原数不从清单删除。[0m
+          [36m</p>[39m
+        [36m</section>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"现金账核对"[39m
+          [33mclass[39m=[32m"card readonly-section"[39m
+        [36m>[39m
+          [36m<h3>[39m
+            [0m现金账 · 账户原余额[0m
+          [36m</h3>[39m
+          [36m<article[39m
+            [33maria-label[39m=[32m"账户 91000000-0000-4000-8000-000000000002"[39m
+            [33mclass[39m=[32m"card"[39m
+          [36m>[39m
+            [36m<h4>[39m
+              [0m账户 91000000-0000-4000-8000-000000000002[0m
+            [36m</h4>[39m
+            [36m<p>[39m
+              [0m存在差额 · DIFFERENCE[0m
+              [0m · 原实体 [0m
+              [36m<code>[39m
+                [0m91000000-0000-4000-8000-000000000002[0m
+              [36m</code>[39m
+            [36m</p>[39m
+            [36m<dl[39m
+              [33mclass[39m=[32m"annual-amounts"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<dt>[39m
+                  [0m应用账面[0m
+                [36m</dt>[39m
+                [36m<dd>[39m
+                  [0m¥1,000.07[0m
+                [36m</dd>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<dt>[39m
+                  [0m独立模拟银行账面[0m
+                [36m</dt>[39m
+                [36m<dd>[39m
+                  [0m¥900.06[0m
+                [36m</dd>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<dt>[39m
+                  [0m差额（应用 − 银行）[0m
+                [36m</dt>[39m
+                [36m<dd>[39m
+                  [0m¥100.01[0m
+                [36m</dd>[39m
+              [36m</div>[39m
+            [36m</dl>[39m
+            [36m<p>[39m
+              [0m原银行head [0m
+              [0mCASH:91000000-0000-4000-8000-000000000002 / sequence 2 / 2026-10-05T12:00:00Z[0m
+              [0m [0m
+          ...
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:20:35
+ ❯ getMultipleElementsFoundError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:23:10
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:55:13
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/pages/ReconciliationPage.test.tsx:15:418
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 42 passed (43)
+   Start at  01:50:57
+   Duration  3.41s (transform 288ms, setup 1.15s, collect 573ms, tests 646ms, environment 2.27s, prepare 645ms)
+
+undefined
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: vitest run src/api/full-reconciliation.test.ts src/pages/ReconciliationPage.test.tsx

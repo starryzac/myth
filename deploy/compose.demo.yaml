@@ -1,0 +1,139 @@
+# Separate file/project. Never merge with the repository's formal docker-compose.yml.
+# Runtime starts must use --no-build --pull never and an explicitly registered demo env.
+name: "bf-demo-${BF_DEMO_UUID:?Register one new 32 lowercase hex UUID}"
+
+x-demo-environment: &demo-environment
+  DATABASE_URL: "postgresql+psycopg://bf_demo:${BF_DEMO_PASSWORD:?Provide an independent hex-only demo password}@127.0.0.1:54329/bf_test_${BF_DEMO_UUID:?Register the owned demo UUID}"
+  SIMULATION_MODE: "true"
+  LLM_ENABLED: "false"
+  PYTHONUTF8: "1"
+  PYTHONUNBUFFERED: "1"
+  PYTHONDONTWRITEBYTECODE: "1"
+  TZ: UTC
+
+x-demo-labels: &demo-labels
+  io.bounded-funds.purpose: ISOLATED_SIMULATED_DEMO
+  io.bounded-funds.owner-uuid: "${BF_DEMO_UUID:?Register the owned demo UUID}"
+  io.bounded-funds.run-id: "${BF_DEMO_RUN_ID:?Register the actual deployment run}"
+
+services:
+  db:
+    image: "${BF_DEMO_POSTGRES_IMAGE:?Register the actual local pinned PostgreSQL16 image}"
+    platform: linux/amd64
+    pull_policy: never
+    command: ["postgres", "-p", "54329"]
+    # Docker still resolves owned service names; external DNS has only this
+    # namespace loopback as upstream. Actual failure probes remain mandatory.
+    dns: ["127.0.0.1"]
+    environment:
+      POSTGRES_USER: bf_demo
+      POSTGRES_PASSWORD: "${BF_DEMO_PASSWORD:?Provide an independent hex-only demo password}"
+      POSTGRES_DB: "bf_test_${BF_DEMO_UUID:?Register the owned demo UUID}"
+      TZ: UTC
+    labels: *demo-labels
+    ports:
+      # The namespace owner publishes the API's port. PostgreSQL is never host-published.
+      - "127.0.0.1:${BF_DEMO_API_PORT:-18049}:8000"
+    volumes:
+      - demo_pgdata:/var/lib/postgresql/data
+    networks: [demo_internal]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 54329 -U bf_demo -d \"$$POSTGRES_DB\""]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+      start_period: 5s
+    restart: unless-stopped
+
+  init:
+    image: "${BF_DEMO_API_IMAGE:?Register the actual local source-bound API image}"
+    platform: linux/amd64
+    pull_policy: never
+    network_mode: "service:db"
+    environment: *demo-environment
+    labels: *demo-labels
+    depends_on:
+      db:
+        condition: service_healthy
+    # The root-owned initializer guards the real DSN BEFORE migrations/seed.
+    # Existing history is read/verified, never automatically reset on restart.
+    command: ["python", "deploy/initialize_demo.py"]
+    read_only: true
+    tmpfs: [/tmp]
+    restart: "no"
+
+  api:
+    image: "${BF_DEMO_API_IMAGE:?Register the actual local source-bound API image}"
+    platform: linux/amd64
+    pull_policy: never
+    build:
+      context: ..
+      dockerfile: deploy/api.Dockerfile
+      args:
+        PYTHON_BASE_IMAGE: "${BF_PYTHON_BASE_IMAGE:?Register a digest-pinned Linux Python3.12 base}"
+        UV_BINARY_IMAGE: "${BF_UV_BINARY_IMAGE:?Register a digest-pinned uv binary image}"
+        BF_SOURCE_HEAD: "${BF_DEMO_SOURCE_HEAD:?Register the actual source HEAD}"
+        BF_SOURCE_DIGEST: "${BF_DEMO_SOURCE_DIGEST:?Register the actual dirty source digest}"
+        BF_UV_LOCK_SHA256: "${BF_UV_LOCK_SHA256:?Register the actual uv.lock SHA256}"
+    network_mode: "service:db"
+    environment: *demo-environment
+    labels: *demo-labels
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+      init:
+        condition: service_completed_successfully
+    read_only: true
+    tmpfs: [/tmp]
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import json,urllib.request; value=json.load(urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health',timeout=2)); assert value=={'status':'ok','service':'bounded-funds-api','simulation':True}"
+      interval: 5s
+      timeout: 3s
+      retries: 40
+      start_period: 5s
+    restart: unless-stopped
+
+  web:
+    image: "${BF_DEMO_WEB_IMAGE:?Register the actual local source-bound Web image}"
+    platform: linux/amd64
+    pull_policy: never
+    build:
+      context: ..
+      dockerfile: deploy/web.Dockerfile
+      args:
+        NODE_BASE_IMAGE: "${BF_NODE_BASE_IMAGE:?Register a digest-pinned Linux Node24 base}"
+        NGINX_BASE_IMAGE: "${BF_NGINX_BASE_IMAGE:?Register a digest-pinned Nginx Alpine base}"
+        BF_SOURCE_HEAD: "${BF_DEMO_SOURCE_HEAD:?Register the actual source HEAD}"
+        BF_SOURCE_DIGEST: "${BF_DEMO_SOURCE_DIGEST:?Register the actual dirty source digest}"
+        BF_PNPM_LOCK_SHA256: "${BF_PNPM_LOCK_SHA256:?Register the actual pnpm-lock.yaml SHA256}"
+    labels: *demo-labels
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${BF_DEMO_WEB_PORT:-15181}:80"
+    networks: [demo_internal, demo_frontend]
+    dns: ["127.0.0.1"]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/api/v1/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 40
+    restart: unless-stopped
+
+networks:
+  demo_internal:
+    internal: true
+    labels: *demo-labels
+  demo_frontend:
+    labels: *demo-labels
+
+volumes:
+  # Compose's bf-demo_UUID project prefix gives a new owned volume; never external.
+  demo_pgdata:
+    labels: *demo-labels

@@ -96,3 +96,18 @@ test('原编译reader可恢复，暂停明确接受后仅传版本并保留原�
   await screen.findByText(/在途原项待核对 1 项/);
   expect(requests.find((r) => r.path.endsWith('/suspend'))!.body).toEqual({ expected_version_id: policy.current_version!.id });
 });
+
+test('地图进入保留真实预览编辑区，焦点随开关返回，手机解释使用逐项比较而非宽表', async () => {
+  const policy = policyFixture();
+  installHttpFixture((_method, path) => path === '/api/v1/policies' ? { simulation: true, items: [policy] }
+    : path === '/api/v1/policy-proposals' ? { simulation: true, items: [] }
+      : path.endsWith('/versions') ? { simulation: true, items: [policy.current_version] } : previewFixture());
+  openPage(); fireEvent.click(await screen.findByRole('button', { name: /单元应急金.*应急金/ }));
+  const opener = screen.getByRole('button', { name: '修改当前策略并预览影响' }); opener.focus(); fireEvent.click(opener);
+  expect(screen.getByLabelText('所选策略编辑区')).toHaveFocus();
+  const input = screen.getByLabelText('应急金金额（元）'); input.focus(); fireEvent.change(input, { target: { value: '2500.01' } }); expect(input).toHaveFocus();
+  fireEvent.click(screen.getByRole('button', { name: '预览修改影响' }));
+  const comparison = await screen.findByRole('region', { name: '修改前后资金边界' });
+  expect(within(comparison).queryByRole('table')).not.toBeInTheDocument(); expect(within(comparison).getAllByText('修改前')).toHaveLength(4);
+  fireEvent.click(screen.getByRole('button', { name: '关闭编辑' })); expect(opener).toHaveFocus();
+});

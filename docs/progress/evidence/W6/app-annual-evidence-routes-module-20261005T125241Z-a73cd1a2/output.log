@@ -1,0 +1,48 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/App.test.tsx (15 tests | 1 failed) 2032ms
+   ✓ 演示原请求等待核对时资金表单不能另写，导航与总览GET保持可读  550ms
+   ✓ 所有卡片来自唯一总览请求，当前保护取今天分层而非窗口限制点 163ms
+   × 五个页面导航实际切换，演示入口可达并可回到总览 103ms
+     → expected [ <a href="#overview" …(1)></a>, …(6) ] to have a length of 5 but got 7
+   ✓ 待归属目标账户现金仍受保护，不能标成已归属现金 109ms
+   ✓ 断开时保留重试入口，恢复后整体重新获取 122ms
+   ✓ 刷新失败后撤下旧卡片，不宣称旧资金边界为当前结果 222ms
+   ✓ 资料不足显示待核验，原始账面现金仍独立展示 94ms
+   ✓ 流动性风险保留负余量与缺口，安全闲置明确为已知零 86ms
+   ✓ 拒绝不可信资金响应：simulation 40ms
+   ✓ 拒绝不可信资金响应：unsafe-money 36ms
+   ✓ 拒绝不可信资金响应：wrong-user 42ms
+   ✓ 可安全表达的大金额保留精确的最后一分 84ms
+   ✓ 逾期保留原到期日，区间上限与截断列表如实说明 100ms
+   ✓ UNKNOWN原操作、截断范围与历史恢复建议可查看，不产生确认或重扣请求 105ms
+   ✓ 刷新整体替换快照，保留目标归属交叉说明与审计范围 176ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/App.test.tsx > 五个页面导航实际切换，演示入口可达并可回到总览
+AssertionError: expected [ <a href="#overview" …(1)></a>, …(6) ] to have a length of 5 but got 7
+
+- Expected
++ Received
+
+- 5
++ 7
+
+ ❯ src/App.test.tsx:75:44
+     73| test('五个页面导航实际切换，演示入口可达并可回到总览', async () => {
+     74|   openApp(); await connected(); const nav = screen.getByRole('navigati…
+     75|   expect(within(nav).getAllByRole('link')).toHaveLength(5);
+       |                                            ^
+     76|   fireEvent.click(within(nav).getByRole('link', { name: '策略中心' }));
+     77|   await screen.findByRole('heading', { name: '策略中心' });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 passed (15)
+   Start at  20:52:43
+   Duration  4.27s (transform 391ms, setup 484ms, collect 506ms, tests 2.03s, environment 841ms, prepare 177ms)
+

@@ -1,0 +1,41 @@
+{
+  "run_id": "20261005T224742Z-37b03ba5",
+  "task": "W3",
+  "label": "dynamic-goal-original-consumer-history-valid-effect",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/execution.py",
+    "apps/api/app/services/decision_trace.py",
+    "apps/api/app/domain/full_dynamic_goal_execution.py",
+    "apps/api/app/tests/test_full_dynamic_goal_pipeline_seams.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "apps/api/app/tests/test_full_dynamic_goal_pipeline_seams.py",
+    "apps/api/app/tests/test_execution_domain.py",
+    "apps/api/app/tests/test_boundary_action_events.py",
+    "apps/api/app/tests/test_decision_trace_domain.py",
+    "-q",
+    "-x"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T22:47:43.988160+00:00",
+  "finished_at": "2026-10-05T22:47:55.873089+00:00",
+  "wall_seconds": 11.884929,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/web/src/components/FullDynamicGoalExecutionPanel.tsx"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "d5bc69101282e7d2f29afc09d7dfbb5dbbe1fc2a6699416d867790885c443d23",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

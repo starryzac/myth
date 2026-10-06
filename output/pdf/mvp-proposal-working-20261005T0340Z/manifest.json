@@ -1,0 +1,33 @@
+{
+  "status": "WORKING_DRAFT_NOT_ACCEPTANCE",
+  "created_at": "2026-10-05T03:40:07.684955+00:00",
+  "source": "docs\\proposal\\企划书_正文.md",
+  "source_sha256": "13fe372e26672830936980d905f34f547b07db5820681da2f8bd27e0691e5410",
+  "builder": ".runtime\\build_mvp_proposal_pdf.py",
+  "builder_sha256": "e2618797ddb07168e88bf584481bbf854806b1991109d49e10a3634cea73c3ea",
+  "font": "C:/Windows/Fonts/simhei.ttf",
+  "font_sha256": "9b1959db3b3abeb7efdaec26edf7dfe871a6039de8d614af7248575207be629e",
+  "pdf": "output\\pdf\\mvp-proposal-working-20261005T0340Z\\钱途有界_企划书_工作稿.pdf",
+  "pdf_sha256": "e50a10e0c0b47bcfdbfbc528bdd838f219305818c17372f7bf79a70cdcf98f15",
+  "actual_pages": 12,
+  "page_text_sha256": [
+    "3929923efa77783d0cc828317f3cf849d2e482945d0a5b3b2cbb1ebcb0d7bf1b",
+    "965fc566fe6204c3a586ed8c0380906279889093eb6ffa3389f55b84f0bdbec5",
+    "daddfee1b400884444c67d5efbe38a9918f9728bd6f47727001ce418fd539224",
+    "66bbc68f1bf4526b560b660f3d30a9287bbad9525169528ee9302ab9dbcd121c",
+    "e9f303cfe96e038f79fd34cfc9216f0e9b8e4ba653832cad2d7a7578f7509361",
+    "780e79e32c3e41c189d8be34c1f1e4768e6eecf2b4f5d9017e3bee8cd489a221",
+    "4bbbc684056b6151a68a5ddeb69e4ae832190b5831588a51a3016112b0047d6c",
+    "42e7e9fc98d3203658b60f7774e5a3782da6e295e667fe99808034dc524fbb88",
+    "8bbd043fc0cb5930b17fc4afc6db5a82fdf792b31f41a1998f472ab1904f9e55",
+    "35fb4c16f9a15350c929c710a076772a796d392ccf0ff186e5ae69b9dc8812c7",
+    "c77058e26acb73180ac58dd21713511a6824591e4d6ccc2470dec53edc2fc4b2",
+    "f9d08be092c66079148b294423548c9938daabea05c71b52b6202d260852a84a"
+  ],
+  "visual_review": "PENDING",
+  "final_figures": "MISSING",
+  "limitations": [
+    "Current draft source, not final acceptance material",
+    "Eight final figures and actual experiment results missing"
+  ]
+}

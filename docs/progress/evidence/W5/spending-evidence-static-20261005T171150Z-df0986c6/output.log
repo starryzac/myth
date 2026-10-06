@@ -1,0 +1,6 @@
+
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\api\spending-evidence.test.ts
+  12:152  error  This number literal will lose precision at runtime  no-loss-of-precision
+
+✖ 1 problem (1 error, 0 warnings)
+

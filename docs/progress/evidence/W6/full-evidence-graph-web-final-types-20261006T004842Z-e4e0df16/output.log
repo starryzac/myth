@@ -1,0 +1,19 @@
+$ tsc --noEmit
+src/api/actual-action-set.test.ts(30,12): error TS2532: Object is possibly 'undefined'.
+src/api/actual-action-set.test.ts(35,5): error TS2322: Type '{ actual_count: number; captured_count: number; complete: false; table?: string | undefined; rows_hash?: string | undefined; }' is not assignable to type '{ table: string; actual_count: number | null; captured_count: number; complete: boolean; rows_hash: string; }'.
+  Types of property 'table' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+src/api/actual-action-set.test.ts(38,12): error TS2532: Object is possibly 'undefined'.
+src/api/actual-action-set.test.ts(44,36): error TS2532: Object is possibly 'undefined'.
+src/api/actual-action-set.test.ts(45,42): error TS2532: Object is possibly 'undefined'.
+src/api/actual-action-set.test.ts(47,39): error TS2532: Object is possibly 'undefined'.
+src/components/ActualActionSetPanel.test.tsx(11,3): error TS2322: Type '{ state: "UNKNOWN"; signature: null; amount_cents: null; reasons: string[]; candidate_key?: string | undefined; action_type?: string | null | undefined; autonomy_level?: string | null | undefined; }' is not assignable to type '{ candidate_key: string; state: "UNKNOWN" | "INCLUDED" | "EXCLUDED"; action_type: string | null; amount_cents: number | null; autonomy_level: string | null; signature: string | null; reasons: string[]; }'.
+  Types of property 'candidate_key' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+src/components/ActualActionSetPanel.test.tsx(13,3): error TS2322: Type '{ actual_count: number; captured_count: number; complete: false; table?: string | undefined; rows_hash?: string | undefined; }' is not assignable to type '{ table: string; actual_count: number | null; captured_count: number; complete: boolean; rows_hash: string; }'.
+  Types of property 'table' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+[ELIFECYCLE] Command failed with exit code 2.

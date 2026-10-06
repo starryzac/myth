@@ -1,0 +1,49 @@
+
+=================================== ERRORS ====================================
+_______ ERROR collecting scripts/tests/test_w1_current_check_context.py _______
+ImportError while importing test module 'F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tests\test_w1_current_check_context.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\tests\test_w1_current_check_context.py:11: in <module>
+    from scripts.w1_check_browser_outputs import GROUPS
+E   ModuleNotFoundError: No module named 'scripts'
+_______ ERROR collecting scripts/tests/test_w1_check_browser_outputs.py _______
+ImportError while importing test module 'F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tests\test_w1_check_browser_outputs.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\tests\test_w1_check_browser_outputs.py:12: in <module>
+    from scripts.w1_check_browser_outputs import GROUPS, capture, sha, strict_json
+E   ModuleNotFoundError: No module named 'scripts'
+________ ERROR collecting scripts/tests/test_w1_browser_acceptance.py _________
+ImportError while importing test module 'F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tests\test_w1_browser_acceptance.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\tests\test_w1_browser_acceptance.py:10: in <module>
+    from scripts.w1_browser_acceptance import (
+E   ModuleNotFoundError: No module named 'scripts'
+_________ ERROR collecting scripts/tests/test_w1_final_acceptance.py __________
+ImportError while importing test module 'F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tests\test_w1_final_acceptance.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\tests\test_w1_final_acceptance.py:15: in <module>
+    from scripts import w1_final_acceptance as final
+E   ModuleNotFoundError: No module named 'scripts'
+=========================== short test summary info ===========================
+ERROR scripts/tests/test_w1_current_check_context.py
+ERROR scripts/tests/test_w1_check_browser_outputs.py
+ERROR scripts/tests/test_w1_browser_acceptance.py
+ERROR scripts/tests/test_w1_final_acceptance.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 4 errors during collection !!!!!!!!!!!!!!!!!!!
+4 errors in 0.90s

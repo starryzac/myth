@@ -1,0 +1,14 @@
+$ tsc --noEmit
+src/api/goal-reallocation.ts(73,34): error TS2571: Object is of type 'unknown'.
+src/api/goal-reallocation.ts(73,96): error TS18046: 'sum' is of type 'unknown'.
+src/api/goal-reallocation.ts(79,113): error TS18046: 'decision.math' is of type 'unknown'.
+src/api/goal-reallocation.ts(81,161): error TS18046: 'p.protected_cents_by_reason' is of type 'unknown'.
+src/api/goal-reallocation.ts(81,477): error TS18046: 'p.protected_cents_by_reason' is of type 'unknown'.
+src/api/goal-reallocation.ts(83,385): error TS18046: 'decision.reasons' is of type 'unknown'.
+src/tests/goal-conflict-fixture.ts(7,36): error TS2352: Conversion of type '{ protocol: string; simulation: boolean; user_id: string; as_of: string; original_conflicts: { protocol: string; simulation: boolean; user_id: string; epoch_id: string; as_of: string; state: string; ... 14 more ...; limits: string[]; }; ... 9 more ...; limitations: string[]; }' to type '{ protocol: "full-goal-repair-preview-v1"; simulation: true; user_id: string; as_of: string; original_conflicts: { protocol: "full-goal-conflict-read-v1"; simulation: true; user_id: string; ... 17 more ...; limits: string[]; }; ... 9 more ...; limitations: string[]; }' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  The types of 'proposal.repair.hypothetical_allocation.objective_vector' are incompatible between these types.
+    Type 'number[]' is not comparable to type '[number, number, number, number, number, number, number, number]'.
+      Target requires 8 element(s) but source may have fewer.
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @bounded-funds/web@0.1.0 typecheck: `tsc --noEmit`
+Exit status 2

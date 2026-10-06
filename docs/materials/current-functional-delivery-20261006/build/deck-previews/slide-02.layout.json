@@ -1,0 +1,559 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/xducd3",
+    "id": "xducd3",
+    "slide": 2,
+    "layoutId": "bab4f716-f2d3-467a-8ee8-c40fb0f6d330",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4b08397e-af96-4c7c-81b3-7ee5eb3bf765",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Microsoft YaHei"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "bab4f716-f2d3-467a-8ee8-c40fb0f6d330",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4b08397e-af96-4c7c-81b3-7ee5eb3bf765",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4b08397e-af96-4c7c-81b3-7ee5eb3bf765",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t8bex0jy",
+      "id": "1",
+      "bbox": [
+        80,
+        37,
+        1120,
+        36
+      ],
+      "geometry": "rect",
+      "text": "01 / 用户任务",
+      "textPreview": "01 / 用户任务",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Microsoft YaHei",
+        "color": "#13725A",
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "01 / 用户任务"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "01 / 用户任务",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Microsoft YaHei",
+            "color": "#13725A"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "01 / 用户任务",
+              "fontSize": 18,
+              "typeface": "Microsoft YaHei",
+              "color": "#13725A"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65kf2lkn",
+      "id": "2",
+      "bbox": [
+        80,
+        98,
+        1120,
+        72
+      ],
+      "geometry": "rect",
+      "text": "账户余额不等于可安排资金",
+      "textPreview": "账户余额不等于可安排资金",
+      "resolvedFontSize": 44,
+      "resolvedTextStyle": {
+        "fontSize": 44,
+        "typeface": "Microsoft YaHei",
+        "color": "#18352F",
+        "bold": true,
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "账户余额不等于可安排资金"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "账户余额不等于可安排资金",
+          "resolvedTextStyle": {
+            "fontSize": 44,
+            "typeface": "Microsoft YaHei",
+            "color": "#18352F",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "账户余额不等于可安排资金",
+              "fontSize": 44,
+              "typeface": "Microsoft YaHei",
+              "color": "#18352F",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/76twvq18",
+      "id": "3",
+      "bbox": [
+        80,
+        198,
+        1120,
+        140
+      ],
+      "geometry": "rect",
+      "text": "同一笔钱，同时承担不同截止与用途",
+      "textPreview": "同一笔钱，同时承担不同截止与用途",
+      "resolvedFontSize": 35,
+      "resolvedTextStyle": {
+        "fontSize": 35,
+        "typeface": "Microsoft YaHei",
+        "color": "#18352F",
+        "bold": true,
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "同一笔钱，同时承担不同截止与用途"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "同一笔钱，同时承担不同截止与用途",
+          "resolvedTextStyle": {
+            "fontSize": 35,
+            "typeface": "Microsoft YaHei",
+            "color": "#18352F",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "同一笔钱，同时承担不同截止与用途",
+              "fontSize": 35,
+              "typeface": "Microsoft YaHei",
+              "color": "#18352F",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gvmx8v2p",
+      "id": "4",
+      "bbox": [
+        80,
+        370,
+        1100,
+        66
+      ],
+      "geometry": "rect",
+      "text": "房租、账单、生活准备金、应急和未来目标",
+      "textPreview": "房租、账单、生活准备金、应急和未来目标",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Microsoft YaHei",
+        "color": "#566D66",
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "房租、账单、生活准备金、应急和未来目标"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "房租、账单、生活准备金、应急和未来目标",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Microsoft YaHei",
+            "color": "#566D66"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "房租、账单、生活准备金、应急和未来目标",
+              "fontSize": 24,
+              "typeface": "Microsoft YaHei",
+              "color": "#566D66"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1wvy10ja",
+      "id": "5",
+      "bbox": [
+        80,
+        443,
+        1100,
+        66
+      ],
+      "geometry": "rect",
+      "text": "未到账工资不扩大今天的自主边界",
+      "textPreview": "未到账工资不扩大今天的自主边界",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Microsoft YaHei",
+        "color": "#566D66",
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "未到账工资不扩大今天的自主边界"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "未到账工资不扩大今天的自主边界",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Microsoft YaHei",
+            "color": "#566D66"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "未到账工资不扩大今天的自主边界",
+              "fontSize": 24,
+              "typeface": "Microsoft YaHei",
+              "color": "#566D66"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9kf6lkj",
+      "id": "6",
+      "bbox": [
+        80,
+        516,
+        1100,
+        66
+      ],
+      "geometry": "rect",
+      "text": "Goal归属与产品本金可用时间必须分别核验",
+      "textPreview": "Goal归属与产品本金可用时间必须分别核验",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Microsoft YaHei",
+        "color": "#566D66",
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Goal归属与产品本金可用时间必须分别核验"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Goal归属与产品本金可用时间必须分别核验",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Microsoft YaHei",
+            "color": "#566D66"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Goal归属与产品本金可用时间必须分别核验",
+              "fontSize": 24,
+              "typeface": "Microsoft YaHei",
+              "color": "#566D66"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fadwzq14",
+      "id": "7",
+      "bbox": [
+        80,
+        657,
+        1040,
+        26
+      ],
+      "geometry": "rect",
+      "text": "SOURCE S01 · S02 · S08  |  全部模拟 · WORKING / NOT ACCEPTANCE",
+      "textPreview": "SOURCE S01 · S02 · S08  |  全部模拟 · WORKING / NOT ACCEPTANCE",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Microsoft YaHei",
+        "color": "#566D66",
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "SOURCE S01 · S02 · S08  |  全部模拟 · WORKING / NOT ACCEPTANCE"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "SOURCE S01 · S02 · S08  |  全部模拟 · WORKING / NOT ACCEPTANCE",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Microsoft YaHei",
+            "color": "#566D66"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "SOURCE S01 · S02 · S08  |  全部模拟 · WORKING / NOT ACCEPTANCE",
+              "fontSize": 14,
+              "typeface": "Microsoft YaHei",
+              "color": "#566D66"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ozmxcf2l",
+      "id": "8",
+      "bbox": [
+        1134,
+        657,
+        95,
+        26
+      ],
+      "geometry": "rect",
+      "text": "2 / 10",
+      "textPreview": "2 / 10",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Microsoft YaHei",
+        "color": "#13725A",
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "2 / 10"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "2 / 10",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Microsoft YaHei",
+            "color": "#13725A"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "2 / 10",
+              "fontSize": 14,
+              "typeface": "Microsoft YaHei",
+              "color": "#13725A"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

@@ -1,0 +1,43 @@
+{
+  "run_id": "20261005T110940Z-7f74f441",
+  "task": "W1",
+  "label": "observation-v2-final-shared-locator-tool-only-types",
+  "status": "PASSED",
+  "scope": [
+    "scripts/mvp_observ",
+    "scripts/mvp_trace_metrics.py",
+    "scripts/mvp_financial",
+    "scripts/mvp_readonly_oracle_dag.py",
+    "scripts/tests/test_mvp_trace_v2.py",
+    "scripts/tests/test_mvp_financial_v2.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "mypy",
+    "--strict",
+    "--explicit-package-bases",
+    "scripts/mvp_observation_v2.py",
+    "scripts/mvp_observations.py",
+    "scripts/mvp_trace_metrics.py",
+    "scripts/mvp_financial_metrics.py",
+    "scripts/mvp_financial_oracles.py",
+    "scripts/tests/test_mvp_trace_v2.py",
+    "scripts/tests/test_mvp_financial_v2.py"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T11:09:41.520053+00:00",
+  "finished_at": "2026-10-05T11:09:42.782615+00:00",
+  "wall_seconds": 1.262562,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "e2702f9afc4c0f80ff1e8624f77af7a7d2689ca184512114aae5967a76229ba8",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

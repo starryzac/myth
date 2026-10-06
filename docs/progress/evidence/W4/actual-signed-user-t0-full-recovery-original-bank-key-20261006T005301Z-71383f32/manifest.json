@@ -1,0 +1,62 @@
+{
+  "run_id": "20261006T005301Z-71383f32",
+  "task": "W4",
+  "label": "actual-signed-user-t0-full-recovery-original-bank-key",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/alembic/",
+    "apps/api/app/db/",
+    "apps/api/app/main.py",
+    "apps/api/app/api/dependencies.py",
+    "apps/api/app/api/v1/full_recovery_execution.py",
+    "apps/api/app/services/execution",
+    "apps/api/app/services/full_recovery_execution",
+    "apps/api/app/domain/full_recovery_execution",
+    "apps/api/app/services/full_protection",
+    "apps/api/app/domain/full_protection",
+    "apps/api/app/services/full_policy_lifecycle.py",
+    "apps/api/app/services/audit_chain.py",
+    "apps/api/app/services/financial_read.py",
+    "apps/api/app/tests/test_full_recovery_execution_integration.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "apps/api/app/tests/test_full_recovery_execution_integration.py::test_actual_signed_user_t0_original_bank_response_loss_recovers_once_after_full_revocation",
+    "-q",
+    "-x",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T00:53:02.675998+00:00",
+  "finished_at": "2026-10-06T01:11:31.327940+00:00",
+  "wall_seconds": 1108.651942,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/api/app/api/v1/full_decision_search.py",
+    "apps/api/app/api/v1/future_income_planning.py",
+    "apps/api/app/domain/full_decision_search.py",
+    "apps/api/app/domain/full_future_dated_history.py",
+    "apps/api/app/domain/future_income_planning.py",
+    "apps/api/app/services/full_decision_search.py",
+    "apps/api/app/services/full_future_dated_history.py",
+    "apps/api/app/services/future_income_planning.py",
+    "apps/api/app/tests/test_full_decision_search.py",
+    "apps/api/app/tests/test_full_future_dated_history.py",
+    "apps/api/app/tests/test_full_future_dated_history_service.py",
+    "apps/api/app/tests/test_future_income_planning.py",
+    "apps/api/app/tests/test_future_income_planning_api.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "a7afe3a2ae0e8a02fc6d81c5ca1644cea8202cbeb40140a2251e4b46ee84c722",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

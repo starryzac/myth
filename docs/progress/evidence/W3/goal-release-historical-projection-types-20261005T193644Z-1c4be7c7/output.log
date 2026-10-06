@@ -1,0 +1,2 @@
+apps\api\app\tests\test_full_goal_release_projection_audit.py:13: error: Module "app.tests.test_full_goal_release_audit" does not explicitly export attribute "NOW"  [attr-defined]
+Found 1 error in 1 file (checked 2 source files)

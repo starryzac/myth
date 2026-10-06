@@ -1,0 +1,16 @@
+{
+  "author_required_results": null,
+  "author_scope": "SYNTHETIC_ADULT_SIMULATION_NOT_HUMAN_RESEARCH",
+  "category": "GOAL_DEFERRAL",
+  "causal_topology": "USER_RANGE_REPAIR_AND_NEW_GOAL_VERSION",
+  "criteria": "Eight predeclared truth descriptions plus independent replay, never use P outputs to define correct finance",
+  "family_id": "D03",
+  "family_leakage_policy": "Whole causal family and both original numeric variants stay in same split",
+  "hypothesis": "Observe all seven mechanisms including refused/skipped/unknown opportunities; no asserted success or ranking",
+  "name": "用户提出月上限修复需再确认",
+  "protocol": "full-family-author-description-v1",
+  "reviewer": null,
+  "split": "VALIDATION",
+  "status": "AUTHORING_NOT_FROZEN_NOT_RUN",
+  "variant_policy": "v01 base; v02 income/target/fact cents +137, same full causal structure and original keys"
+}

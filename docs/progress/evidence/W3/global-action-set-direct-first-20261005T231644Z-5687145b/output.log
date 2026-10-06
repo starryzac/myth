@@ -1,0 +1,213 @@
+FF.................F....F....FF...                                       [100%]
+================================== FAILURES ===================================
+__ test_original_deterministic_goal_amount_and_risk_signature_not_log_label ___
+
+    def test_original_deterministic_goal_amount_and_risk_signature_not_log_label() -> None:
+        data = fixture()
+        value = derive_action_set(data)
+>       assert value.global_action_set_complete and value.status == "COMPLETE"
+E       AssertionError: assert (False)
+E        +  where False = ActionSetSnapshot(algorithm_version='full-policy-action-set-boundary-v1', scope='POLICY_BACKED_SERVER_PRODUCERS_V1', s...)], unsupported_producers=[], reasons=['ORIGINAL_CANDIDATE_BINDING_DIFFERS:goal:00000000-0000-0000-0000-000000000064']).global_action_set_complete
+
+apps\api\app\tests\test_full_action_set_boundary.py:213: AssertionError
+_____ test_numeric_raw_balance_change_without_action_change_only_observed _____
+
+    def test_numeric_raw_balance_change_without_action_change_only_observed() -> None:
+        data = fixture()
+        raw = copy.deepcopy(data.original_inventory)
+        raw["accounts"][0]["balance_cents"] += 100
+        row = data.candidates[0]
+        assert (
+            row.execution_context is not None and row.facts is not None and row.facts.effect is not None
+        )
+        context = row.execution_context.model_copy(
+            update={
+                "snapshot": row.execution_context.snapshot.model_copy(
+                    update={
+                        "cash_accounts": [
+                            row.execution_context.snapshot.cash_accounts[0].model_copy(
+                                update={"balance_cents": 1100}
+                            ),
+                            row.execution_context.snapshot.cash_accounts[1],
+                        ]
+                    }
+                )
+            }
+        )
+        basis = {**data.financial_basis, "snapshot": context.snapshot.model_dump(mode="json")}
+        digest = configuration_hash(basis)
+        row = row.model_copy(
+            update={
+                "execution_context": context,
+                "facts": row.facts.model_copy(
+                    update={
+                        "validation": revalidate_execution(row.facts.effect, context),
+                        "source_context_hash": digest,
+                    }
+                ),
+            }
+        )
+        after = derive_action_set(
+            data.model_copy(
+                update={
+                    "original_inventory": raw,
+                    "financial_basis": basis,
+                    "financial_input_hash": digest,
+                    "candidates": [row],
+                }
+            )
+        )
+        before = derive_action_set(data)
+        assert before.original_inventory_hash != after.original_inventory_hash
+        assert before.action_set_signature == after.action_set_signature
+>       assert compare_action_sets(before, after)[0] == "BoundaryObserved"
+E       AssertionError: assert None == 'BoundaryObserved'
+
+apps\api\app\tests\test_full_action_set_boundary.py:272: AssertionError
+__________ test_actual_inactive_policy_is_verified_empty_not_unknown __________
+
+    def test_actual_inactive_policy_is_verified_empty_not_unknown() -> None:
+        data = fixture()
+        raw = copy.deepcopy(data.original_inventory)
+        raw["policies"][0]["status"] = "SUSPENDED"
+        value = derive_action_set(
+            data.model_copy(
+                update={
+                    "original_inventory": raw,
+                    "candidates": [
+                        CandidateInput(
+                            candidate_key=data.candidates[0].candidate_key,
+                            excluded_by_current_policy=True,
+                        )
+                    ],
+                }
+            )
+        )
+        assert value.status == "COMPLETE" and value.candidates[0].state == "EXCLUDED"
+>       assert compare_action_sets(value, derive_action_set(fixture()))[0] == "BoundaryCrossed"
+E       AssertionError: assert None == 'BoundaryCrossed'
+
+apps\api\app\tests\test_full_action_set_boundary.py:407: AssertionError
+______ test_original_frozen_trace_reproduces_exact_math_and_source_refs _______
+
+    def test_original_frozen_trace_reproduces_exact_math_and_source_refs() -> None:
+        first = trace_for(fixture())
+        second = trace_for(fixture(200), key="second-original", previous=first)
+        value = service.verify_frozen_action_set_trace(second)
+>       assert value.kind == "BoundaryCrossed" and value.requires_user_attention
+E       AssertionError: assert (None == 'BoundaryCrossed')
+E        +  where None = GlobalBoundaryObservation(simulation=True, bank_authority=False, grants_authority=False, financial_write=False, user_i...lobal_action_set_complete=False, idempotent_replay=False, question_delivery='ROOT_GLOBAL_INTERVENTION_BRANCH_REQUIRED').kind
+
+apps\api\app\tests\test_full_action_set_boundary.py:428: AssertionError
+_________ test_rehashed_fake_outcome_or_refs_cannot_validate[source] __________
+
+risk = 'source'
+
+    @pytest.mark.parametrize(
+        "risk", ["amount", "previous-signature", "owner", "request", "source", "policy", "run-id"]
+    )
+    def test_rehashed_fake_outcome_or_refs_cannot_validate(risk: str) -> None:
+        trace = trace_for(fixture())
+        values: dict[str, Any] = {
+            name: getattr(trace, name)
+            for name in (
+                "run_id",
+                "user_id",
+                "phase",
+                "as_of",
+                "parent_run_id",
+                "action_id",
+                "algorithm_versions",
+                "inputs",
+                "sources",
+                "policies",
+                "constraints",
+                "candidates",
+                "outcome",
+            )
+        }
+        values["outcome"] = copy.deepcopy(values["outcome"])
+        if risk == "amount":
+            values["outcome"]["global_boundary_observation"]["snapshot"]["candidates"][0][
+                "amount_cents"
+            ] = 999
+        elif risk == "previous-signature":
+            values["outcome"]["global_boundary_observation"]["previous_action_set_signature"] = "a" * 64
+        elif risk == "owner":
+            values["user_id"] = UUID(int=999)
+        elif risk == "request":
+            values["inputs"] = copy.deepcopy(values["inputs"])
+            values["inputs"]["original_request"]["idempotency_key"] = "different-key"
+        elif risk == "source":
+            values["sources"] = []
+        elif risk == "policy":
+            values["policies"] = []
+        else:
+            values["run_id"] = UUID(int=999)
+>       with pytest.raises(ValueError):
+E       Failed: DID NOT RAISE ValueError
+
+apps\api\app\tests\test_full_action_set_boundary.py:473: Failed
+_________ test_rehashed_fake_outcome_or_refs_cannot_validate[policy] __________
+
+risk = 'policy'
+
+    @pytest.mark.parametrize(
+        "risk", ["amount", "previous-signature", "owner", "request", "source", "policy", "run-id"]
+    )
+    def test_rehashed_fake_outcome_or_refs_cannot_validate(risk: str) -> None:
+        trace = trace_for(fixture())
+        values: dict[str, Any] = {
+            name: getattr(trace, name)
+            for name in (
+                "run_id",
+                "user_id",
+                "phase",
+                "as_of",
+                "parent_run_id",
+                "action_id",
+                "algorithm_versions",
+                "inputs",
+                "sources",
+                "policies",
+                "constraints",
+                "candidates",
+                "outcome",
+            )
+        }
+        values["outcome"] = copy.deepcopy(values["outcome"])
+        if risk == "amount":
+            values["outcome"]["global_boundary_observation"]["snapshot"]["candidates"][0][
+                "amount_cents"
+            ] = 999
+        elif risk == "previous-signature":
+            values["outcome"]["global_boundary_observation"]["previous_action_set_signature"] = "a" * 64
+        elif risk == "owner":
+            values["user_id"] = UUID(int=999)
+        elif risk == "request":
+            values["inputs"] = copy.deepcopy(values["inputs"])
+            values["inputs"]["original_request"]["idempotency_key"] = "different-key"
+        elif risk == "source":
+            values["sources"] = []
+        elif risk == "policy":
+            values["policies"] = []
+        else:
+            values["run_id"] = UUID(int=999)
+>       with pytest.raises(ValueError):
+E       Failed: DID NOT RAISE ValueError
+
+apps\api\app\tests\test_full_action_set_boundary.py:473: Failed
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_action_set_boundary.py::test_original_deterministic_goal_amount_and_risk_signature_not_log_label
+FAILED apps/api/app/tests/test_full_action_set_boundary.py::test_numeric_raw_balance_change_without_action_change_only_observed
+FAILED apps/api/app/tests/test_full_action_set_boundary.py::test_actual_inactive_policy_is_verified_empty_not_unknown
+FAILED apps/api/app/tests/test_full_action_set_boundary.py::test_original_frozen_trace_reproduces_exact_math_and_source_refs
+FAILED apps/api/app/tests/test_full_action_set_boundary.py::test_rehashed_fake_outcome_or_refs_cannot_validate[source]
+FAILED apps/api/app/tests/test_full_action_set_boundary.py::test_rehashed_fake_outcome_or_refs_cannot_validate[policy]
+6 failed, 28 passed, 1 warning in 24.21s

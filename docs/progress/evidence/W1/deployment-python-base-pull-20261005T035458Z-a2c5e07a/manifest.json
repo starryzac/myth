@@ -1,0 +1,31 @@
+{
+  "run_id": "20261005T035458Z-a2c5e07a",
+  "task": "W1",
+  "label": "deployment-python-base-pull",
+  "status": "PASSED",
+  "scope": [
+    "deploy"
+  ],
+  "command": [
+    "docker",
+    "pull",
+    "--platform",
+    "linux/amd64",
+    "python:3.12-slim-bookworm"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T03:54:58.606931+00:00",
+  "finished_at": "2026-10-05T03:55:23.693101+00:00",
+  "wall_seconds": 25.08617,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "fa70cb94ecc6276d1e4a2bb2b0bbc95c9f99da11bda83f4d03ffc7af815ddc13",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

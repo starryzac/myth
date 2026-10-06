@@ -1,0 +1,2 @@
+apps\api\app\tests\test_full_experiment_asset_selection.py:35: error: Module "app.services.full_experiment_asset_selection" does not explicitly export attribute "REPOSITORY_ROOT"  [attr-defined]
+Found 1 error in 1 file (checked 4 source files)

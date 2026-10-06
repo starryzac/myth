@@ -1,0 +1,12 @@
+Downloading FFMPEG playwright build v1011[2m from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-win64.zip[22m
+Failed to install browsers
+Error: Failed to download FFMPEG playwright build v1011, caused by
+Error: spawn EPERM
+    at ChildProcess.spawn (node:internal/child_process:421:11)
+    at spawn (node:child_process:796:9)
+    at Object.fork (node:child_process:174:10)
+    at downloadBrowserWithProgressBarOutOfProcess (F:\学校活动\工行杯\钱途有界\bounded-funds\node_modules\.pnpm\playwright-core@1.56.0\node_modules\playwright-core\lib\server\registry\browserFetcher.js:83:27)
+    at downloadBrowserWithProgressBar (F:\学校活动\工行杯\钱途有界\bounded-funds\node_modules\.pnpm\playwright-core@1.56.0\node_modules\playwright-core\lib\server\registry\browserFetcher.js:58:31)
+    at async Registry._downloadExecutable (F:\学校活动\工行杯\钱途有界\bounded-funds\node_modules\.pnpm\playwright-core@1.56.0\node_modules\playwright-core\lib\server\registry\index.js:1131:5)
+    at async Registry.install (F:\学校活动\工行杯\钱途有界\bounded-funds\node_modules\.pnpm\playwright-core@1.56.0\node_modules\playwright-core\lib\server\registry\index.js:1025:9)
+    at async i.<anonymous> (F:\学校活动\工行杯\钱途有界\bounded-funds\node_modules\.pnpm\playwright-core@1.56.0\node_modules\playwright-core\lib\cli\program.js:216:7)

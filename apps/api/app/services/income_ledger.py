@@ -9,6 +9,7 @@ from uuid import UUID, uuid5
 from app.db.models import Account, ActionPlan, BankOperation, EvidenceItem, Goal, Transaction, User
 from app.domain.execution import ACTION_PLAN_TYPES, execution_effect_hash
 from app.domain.execution_types import BankCommand
+from app.domain.full_dynamic_goal_execution import FullDynamicGoalProof
 from app.domain.goal_allocation import IncomeLot
 from app.domain.history_coverage import bank_fact_snapshot
 from app.domain.income_ledger import (
@@ -62,11 +63,24 @@ def income_lots_for_action(
     ledger = state.ledger
     restored: dict[UUID, int] = {}
     if action_id is not None:
-        _, command = _action(session, user_id, action_id)
-        _reservation_matches(ledger, action_id, command)
-        reservation = next(item for item in ledger.reservations if item.action_id == action_id)
-        if reservation.state == "RESERVED":
-            restored = {use.fragment_id: use.amount_cents for use in reservation.uses}
+        action, command = _action(session, user_id, action_id, lock_owner=False)
+        reservation = next(
+            (item for item in ledger.reservations if item.action_id == action_id), None
+        )
+        if reservation is not None:
+            _reservation_matches(ledger, action_id, command)
+            if reservation.state == "RESERVED":
+                restored = {use.fragment_id: use.amount_cents for use in reservation.uses}
+        else:
+            # PREPARE/CONFIRM do not reserve income. They see only its currently
+            # unclaimed original balance; nothing is restored or persisted here.
+            bank = session.scalar(
+                select(BankOperation.id).where(
+                    BankOperation.user_id == user_id, BankOperation.action_plan_id == action_id
+                )
+            )
+            if action.status not in {"PLANNED", "AUTHORIZED"} or bank is not None:
+                raise _error("An accepted income action requires its original reservation")
     origins = {item.origin_transaction_id: item for item in ledger.origins}
     return [
         IncomeLot(
@@ -285,6 +299,7 @@ def reserve_income_for_action(
     now: datetime,
     *,
     destination_account_id: UUID | None = None,
+    _joint_current_proof: FullDynamicGoalProof | None = None,
 ) -> IncomeLedger:
     """Phase 1; caller owns the transaction containing the persisted action and reservation."""
     action, command = _action(session, user_id, action_id)
@@ -308,10 +323,24 @@ def reserve_income_for_action(
     ):
         raise _error("Income reservation must match the immutable execution effect")
     existing = next((item for item in ledger.reservations if item.action_id == action_id), None)
+    from app.services.full_joint_goal_execution_guards import has_full_joint_goal_binding
+
+    joint_bound = has_full_joint_goal_binding(session, action)
+    if joint_bound != (_joint_current_proof is not None):
+        raise _error("Joint income reservation requires its exact fresh current proof")
     if existing is None:
         if action.status not in {"PLANNED", "AUTHORIZED", "SUBMITTED"}:
             raise _error("An inactive action cannot acquire income reservations")
-        if not _prepared_income_matches(session, action.request.get("income_evidence"), proof, now):
+        if joint_bound:
+            assert _joint_current_proof is not None
+            from app.services.full_joint_goal_income_reservation import (
+                validate_current_joint_income_reservation,
+            )
+
+            validate_current_joint_income_reservation(session, action, _joint_current_proof, now)
+        elif not _prepared_income_matches(
+            session, action.request.get("income_evidence"), proof, now
+        ):
             raise _error("Prepared income evidence changed; revalidation is required")
     try:
         candidate = reserve_income(
@@ -430,8 +459,13 @@ def _prepared_income_matches(
     return False
 
 
-def _action(session: Session, user_id: UUID, action_id: UUID) -> tuple[ActionPlan, BankCommand]:
-    user = session.scalar(select(User).where(User.id == user_id).with_for_update())
+def _action(
+    session: Session, user_id: UUID, action_id: UUID, *, lock_owner: bool = True
+) -> tuple[ActionPlan, BankCommand]:
+    # Reserve/commit/release still serialize on the owner. A snapshot-only assessment
+    # verifies the same original command without requesting a write lock.
+    owner = select(User).where(User.id == user_id)
+    user = session.scalar(owner.with_for_update() if lock_owner else owner)
     action = session.scalar(
         select(ActionPlan).where(ActionPlan.id == action_id, ActionPlan.user_id == user_id)
     )

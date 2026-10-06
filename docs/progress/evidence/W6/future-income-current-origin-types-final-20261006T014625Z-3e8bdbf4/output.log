@@ -1,0 +1,32 @@
+apps/web/src/api/goal-adjustments.test.ts(8,275): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(8,419): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(8,507): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(8,581): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(9,407): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(9,844): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(9,910): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(9,991): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(9,1110): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(9,1212): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(9,1340): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(10,329): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(10,377): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(10,459): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(11,501): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(11,580): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(11,631): error TS2532: Object is possibly 'undefined'.
+apps/web/src/api/goal-adjustments.test.ts(11,729): error TS2532: Object is possibly 'undefined'.
+apps/web/src/components/GoalAdjustmentsPanel.test.tsx(7,692): error TS2532: Object is possibly 'undefined'.
+apps/web/src/components/GoalAdjustmentsPanel.test.tsx(8,88): error TS18048: 'selected' is possibly 'undefined'.
+apps/web/src/components/GoalAdjustmentsPanel.test.tsx(8,352): error TS18048: 'selected' is possibly 'undefined'.
+apps/web/src/components/GoalAdjustmentsPanel.test.tsx(8,361): error TS2339: Property 'lower_date' does not exist on type 'GoalAdjustmentRange'.
+  Property 'lower_date' does not exist on type '{ field: "monthly_min_cents"; goal_id: string; expected_version_id: string; lower_cents: number; upper_cents: number; }'.
+apps/web/src/components/GoalAdjustmentsPanel.test.tsx(8,447): error TS18048: 'selected' is possibly 'undefined'.
+apps/web/src/components/GoalAdjustmentsPanel.test.tsx(8,456): error TS2339: Property 'upper_date' does not exist on type 'GoalAdjustmentRange'.
+  Property 'upper_date' does not exist on type '{ field: "monthly_min_cents"; goal_id: string; expected_version_id: string; lower_cents: number; upper_cents: number; }'.
+apps/web/src/components/GoalAdjustmentsPanel.test.tsx(9,278): error TS2532: Object is possibly 'undefined'.
+apps/web/src/components/GoalAdjustmentsPanel.test.tsx(9,483): error TS2532: Object is possibly 'undefined'.
+apps/web/src/components/GoalAdjustmentsPanel.test.tsx(9,518): error TS2532: Object is possibly 'undefined'.
+apps/web/src/components/GoalAdjustmentsPanel.tsx(9,80): error TS18047: 'read' is possibly 'null'.
+apps/web/src/components/GoalAdjustmentsPanel.tsx(9,146): error TS18047: 'read' is possibly 'null'.
+apps/web/src/components/GoalAdjustmentsPanel.tsx(10,109): error TS18047: 'result' is possibly 'null'.

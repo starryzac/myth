@@ -1,0 +1,338 @@
+{
+  "adjustable_ranges": {
+    "author_original_sha256": "fd03f0ef8a7bef64f08781b29d80b408c5286e2c0b191171ddc52a0ae58fd855",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "changes": [],
+      "goal_configurations": [],
+      "hard_floor_relaxation_allowed": false,
+      "original_policy_limits": [
+        {
+          "configuration": {
+            "extra_buffer_cents": 10000,
+            "horizon_days": 14,
+            "method": {
+              "essential_categories": [
+                "food",
+                "transport",
+                "daily_necessities"
+              ],
+              "exclude_one_off": true,
+              "lookback_days": 60,
+              "name": "rolling_window_quantile",
+              "quantile": 0.9
+            },
+            "name": "作者 living",
+            "type": "living_reserve"
+          },
+          "dsl_version": "MVP_V1",
+          "role": "living"
+        },
+        {
+          "configuration": {
+            "amount_cents": 90000,
+            "name": "作者 emergency",
+            "type": "emergency_buffer"
+          },
+          "dsl_version": "MVP_V1",
+          "role": "emergency"
+        },
+        {
+          "configuration": {
+            "amount_rule": {
+              "amount_cents": 80137,
+              "kind": "exact"
+            },
+            "auto_execute": false,
+            "due_day": 15,
+            "name": "作者 rent-base",
+            "payee_id": "synthetic-landlord-001",
+            "prepare_days_before": 3,
+            "priority": {
+              "deferrable": false,
+              "importance": 99,
+              "minimum_cents": 80137,
+              "reducible": false
+            },
+            "type": "recurring_obligation"
+          },
+          "dsl_version": "MVP_V1",
+          "role": "rent-base"
+        },
+        {
+          "configuration": {
+            "amount_rule": {
+              "amount_cents": 80137,
+              "kind": "exact"
+            },
+            "auto_execute": false,
+            "due_day": 15,
+            "name": "作者 rent",
+            "payee_id": "synthetic-landlord-001",
+            "prepare_days_before": 3,
+            "single_action_cap_cents": 90137,
+            "source_account_id": {
+              "$ref": {
+                "pointer": "/result/account/id",
+                "step_id": "cash"
+              }
+            },
+            "type": "periodic_transfer",
+            "valid_from": "2026-10-04",
+            "valid_until": "2027-10-04"
+          },
+          "dsl_version": "FULL_V1",
+          "role": "rent",
+          "template_name": "PeriodicTransferPolicy"
+        }
+      ],
+      "reallocation_by_default": false
+    }
+  },
+  "allowed_actions": {
+    "author_original_sha256": "fd03f0ef8a7bef64f08781b29d80b408c5286e2c0b191171ddc52a0ae58fd855",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "all_execution_attempts_retained": [
+        "income",
+        "old-execute"
+      ],
+      "authored_opportunities": [
+        {
+          "at": "2026-10-04T10:01:00+08:00",
+          "expected_error": null,
+          "fault": "NONE",
+          "inputs": {
+            "authorization_id": {
+              "$ref": {
+                "pointer": "/result/original/command_id",
+                "step_id": "rent-relation"
+              }
+            },
+            "body": {
+              "expected_epoch_id": {
+                "$ref": {
+                  "pointer": "/result/epoch_id",
+                  "step_id": "epoch-read"
+                }
+              },
+              "idempotency_key": "full804-R03-pay-prepare",
+              "period": "2026-10"
+            }
+          },
+          "kind": "PAYMENT_PREPARE",
+          "step_id": "pay-prepare"
+        }
+      ],
+      "common_bank_gate": "Exact current safe effect and resource claims independently checked before bank acceptance",
+      "mechanism_skips_keep_denominator": true,
+      "no_agent_invented_payment": true
+    }
+  },
+  "expected_autonomy": {
+    "author_original_sha256": "fd03f0ef8a7bef64f08781b29d80b408c5286e2c0b191171ddc52a0ae58fd855",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "B0": "Registered manual choice + exact action confirmation; no autonomous recovery",
+      "B1_B2": "GENERAL purchase only; other intents skip with opportunity retained",
+      "B3": "Each economic action exact affirmative per-action confirmation",
+      "B4": "Registered actual source-bound confidence threshold proposal; common bank guard remains",
+      "B5": "Yield-priority without liquidity filter; common bank guard remains",
+      "P": "Deterministic current permissions/safe availability; changed effect/loss/payee/ambiguity ASK; missing sources UNKNOWN",
+      "actual_level_results": null,
+      "case_causal_rule": "SUSPEND_PAYMENT_SCOPE_RETAIN_ORIGINAL_RECEIPT"
+    }
+  },
+  "expected_conflicts": {
+    "author_original_sha256": "fd03f0ef8a7bef64f08781b29d80b408c5286e2c0b191171ddc52a0ae58fd855",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "authored_causal_topology": "SUSPEND_PAYMENT_SCOPE_RETAIN_ORIGINAL_RECEIPT",
+      "conflict_rules": "Hard obligation/living/emergency/owned goal first; current monthly max and guarantee immutable until new explicit version",
+      "explicit_expected_errors": [],
+      "observed_conflict_set": null,
+      "unknown_not_empty_success": true
+    }
+  },
+  "expected_recovery": {
+    "author_original_sha256": "fd03f0ef8a7bef64f08781b29d80b408c5286e2c0b191171ddc52a0ae58fd855",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "T1": "Before actual settlement cash credit=0; original accepted bank identity survives subsequent revoke",
+      "UNKNOWN": "Retain original logical operation/key; GET original receipt and manual same identity coordination only",
+      "actual_recovery_success": null,
+      "loss": "Original positive fee/loss never AUTO without exact effect confirmation",
+      "original_keys": []
+    }
+  },
+  "mandatory_obligations": {
+    "author_original_sha256": "fd03f0ef8a7bef64f08781b29d80b408c5286e2c0b191171ddc52a0ae58fd855",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "authored_configurations": [
+        {
+          "configuration": {
+            "extra_buffer_cents": 10000,
+            "horizon_days": 14,
+            "method": {
+              "essential_categories": [
+                "food",
+                "transport",
+                "daily_necessities"
+              ],
+              "exclude_one_off": true,
+              "lookback_days": 60,
+              "name": "rolling_window_quantile",
+              "quantile": 0.9
+            },
+            "name": "作者 living",
+            "type": "living_reserve"
+          },
+          "dsl_version": "MVP_V1",
+          "role": "living"
+        },
+        {
+          "configuration": {
+            "amount_cents": 90000,
+            "name": "作者 emergency",
+            "type": "emergency_buffer"
+          },
+          "dsl_version": "MVP_V1",
+          "role": "emergency"
+        },
+        {
+          "configuration": {
+            "amount_rule": {
+              "amount_cents": 80137,
+              "kind": "exact"
+            },
+            "auto_execute": false,
+            "due_day": 15,
+            "name": "作者 rent-base",
+            "payee_id": "synthetic-landlord-001",
+            "prepare_days_before": 3,
+            "priority": {
+              "deferrable": false,
+              "importance": 99,
+              "minimum_cents": 80137,
+              "reducible": false
+            },
+            "type": "recurring_obligation"
+          },
+          "dsl_version": "MVP_V1",
+          "role": "rent-base"
+        },
+        {
+          "configuration": {
+            "amount_rule": {
+              "amount_cents": 80137,
+              "kind": "exact"
+            },
+            "auto_execute": false,
+            "due_day": 15,
+            "name": "作者 rent",
+            "payee_id": "synthetic-landlord-001",
+            "prepare_days_before": 3,
+            "single_action_cap_cents": 90137,
+            "source_account_id": {
+              "$ref": {
+                "pointer": "/result/account/id",
+                "step_id": "cash"
+              }
+            },
+            "type": "periodic_transfer",
+            "valid_from": "2026-10-04",
+            "valid_until": "2027-10-04"
+          },
+          "dsl_version": "FULL_V1",
+          "role": "rent",
+          "template_name": "PeriodicTransferPolicy"
+        }
+      ],
+      "bank_opening_and_card_obligations": "FULL_INITIAL_SEED_SNAPSHOT_REQUIRED",
+      "cash_rule": "Only actual SETTLED ECONOMIC cash; no future income or unsettled principal",
+      "protected_goal_owned_rule": "All original goal cash/principal remain owned until exact release grant",
+      "unpaid_rule": "No transaction-label inference of paid; max range conservatively reserved"
+    }
+  },
+  "product_attributes": {
+    "author_original_sha256": "fd03f0ef8a7bef64f08781b29d80b408c5286e2c0b191171ddc52a0ae58fd855",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "authored_allowed_classes": {},
+      "availability": "Derive from original executed product/position terms and actual settlement; never class alias alone",
+      "early_withdrawal": "Exact original quote integer principal=net+fee+loss; effect-specific ASK",
+      "lookup": "Actual register_current_catalog + immutable version + current source match",
+      "missing_7_90_low_risk_products": "UNKNOWN_NOT_SYNTHESIZED"
+    }
+  },
+  "user_authority": {
+    "author_original_sha256": "fd03f0ef8a7bef64f08781b29d80b408c5286e2c0b191171ddc52a0ae58fd855",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "full_planning_confirmation_bank_authority": false,
+      "initial_and_runtime_actor_script": [
+        {
+          "human": false,
+          "phase": "INITIAL_AUTHORIZATION",
+          "review": "EXACT_SERVER_PROPOSAL_HASH",
+          "step_id": "living-confirm"
+        },
+        {
+          "human": false,
+          "phase": "INITIAL_AUTHORIZATION",
+          "review": "EXACT_SERVER_PROPOSAL_HASH",
+          "step_id": "emergency-confirm"
+        },
+        {
+          "human": false,
+          "phase": "INITIAL_AUTHORIZATION",
+          "review": "EXACT_SERVER_PROPOSAL_HASH",
+          "step_id": "rent-base-confirm"
+        },
+        {
+          "human": false,
+          "phase": "INITIAL_AUTHORIZATION",
+          "planning_confirmation_not_bank_grant": true,
+          "review": "EXACT_SERVER_FULL_CONFIGURATION",
+          "step_id": "rent-full"
+        },
+        {
+          "human": false,
+          "phase": "INITIAL_AUTHORIZATION",
+          "review": "EXACT_PAYMENT_SCOPE_SIGNED_USER",
+          "step_id": "rent-relation"
+        },
+        {
+          "human": false,
+          "phase": "RUNTIME_INTERVENTION",
+          "review": "EXACT_PAYMENT_ACTION",
+          "step_id": "pay-confirm"
+        }
+      ],
+      "old_receipts_authorize_new_operation": false,
+      "permission_check": "Exact then-current owner+epoch+version+type+scope+amount+source+destination+interval",
+      "signed_USER_services": [
+        "rent-start",
+        "rent-relation",
+        "pay-confirm"
+      ]
+    }
+  }
+}

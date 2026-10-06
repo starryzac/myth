@@ -1,0 +1,330 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_actual_full_physical_capture_preserves_stored_text_nulls_and_all24_rows _
+
+self = <sqlalchemy.engine.base.Connection object at 0x000001D400F49F40>
+dialect = <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x000001D4010B1310>
+context = <sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x000001D401242C90>
+statement = "SELECT n.nspname AS schema_name, c.relname AS table_name,\n c.relkind::text AS relkind, c.relrowsecurity AS row_secur...me <> 'information_schema' AND n.nspname NOT LIKE 'pg_%'\n AND c.relkind IN ('r','p','f') ORDER BY n.nspname,c.relname"
+parameters = [{}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Unpack[TupleAny]]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        evt_handled: bool = False
+        try:
+            if self._has_events or self.engine._has_events:
+                for fn in self.dispatch.before_cursor_execute:
+                    str_statement, effective_parameters = fn(
+                        self,
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                        context.executemany,
+                    )
+    
+            if self._echo:
+                self._log_info(str_statement)
+    
+                stats = context._get_cache_stats()
+    
+                if not self.engine.hide_parameters:
+                    self._log_info(
+                        "[%s] %r",
+                        stats,
+                        sql_util._repr_params(
+                            effective_parameters,
+                            batches=10,
+                            ismulti=context.executemany,
+                        ),
+                    )
+                else:
+                    self._log_info(
+                        "[%s] [SQL parameters hidden due to "
+                        "hide_parameters=True]",
+                        stats,
+                    )
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1943: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [BAD] at 0x1d400bbf1d0>
+query = "SELECT n.nspname AS schema_name, c.relname AS table_name,\n c.relkind::text AS relkind, c.relrowsecurity AS row_secur...me <> 'information_schema' AND n.nspname NOT LIKE 'pg_%'\n AND c.relkind IN ('r','p','f') ORDER BY n.nspname,c.relname"
+params = {}, prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.ProgrammingError: only '%s', '%b', '%t' are allowed as placeholders, got '%''
+
+.venv\Lib\site-packages\psycopg\cursor.py:117: ProgrammingError
+
+The above exception was the direct cause of the following exception:
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_9726f5d17b19447288975599869f1b14)
+
+    @pytest.mark.integration
+    def test_actual_full_physical_capture_preserves_stored_text_nulls_and_all24_rows(
+        demo_engine: Engine,
+    ) -> None:
+        seed_demo(demo_engine, _experiment_seed_extension="MVP503_SECOND_CASH_INITIAL_FACT_V1")
+        clock = SEED_AS_OF + timedelta(seconds=1)
+        with Session(demo_engine) as session:
+            cash = session.scalar(
+                select(Account).where(Account.external_ref == "mvp-301-v6:account:cash")
+            )
+            second = session.scalar(
+                select(Account).where(Account.external_ref == "mvp503-author-v2:account:cash-second")
+            )
+            assert cash is not None and second is not None
+            source_id, target_id = cash.id, second.id
+        prepared = prepare_action(
+            demo_engine,
+            DEMO_USER_ID,
+            PrepareActionRequest(
+                idempotency_key="DEVELOPMENT_COLLECTOR_ACTUAL_PREPARE",
+                intent=TransferIntent(
+                    kind="transfer_internal",
+                    source_account_id=source_id,
+                    destination_account_id=target_id,
+                    amount_cents=47143,
+                ),
+            ),
+            clock,
+        )
+        assert prepared.autonomy_level == "ASK_ONCE" and prepared.receipt is None
+        with Session(demo_engine) as session:
+            epoch = current_audit_epoch(session, DEMO_USER_ID)
+            assert epoch is not None and epoch.status == "OPEN"
+            epoch_id = str(epoch.id)
+            events = {str(row.id): row.canonical_text for row in session.scalars(select(AuditEvent))}
+            subjects = {
+                str(row.id): row.canonical_text for row in session.scalars(select(AuditSubjectSnapshot))
+            }
+        before = original_rows(demo_engine)
+        assert len(before) == 24 and events and subjects
+        directory = ROOT / ".runtime/W1-readonly-collector-development-pg" / uuid4().hex
+        source_names = collector.required_sources(ROOT)
+        source_files = []
+        for name in sorted(source_names):
+            raw = (ROOT / name).read_bytes()
+            archived = directory / "source-originals" / name
+            archived.parent.mkdir(parents=True, exist_ok=True)
+            with archived.open("xb") as stream:
+                stream.write(raw)
+            source_files.append({"path": name, "sha256": hashlib.sha256(raw).hexdigest()})
+        source_ref = write(
+            directory / "SOURCE.original.json",
+            {
+                "protocol": "mvp-development-source-inventory-v1",
+                "purpose": "DEVELOPMENT",
+                "files": source_files,
+                "formal_frozen": False,
+            },
+        )
+        refs = {}
+        for name in ("input", "oracle", "design", "rule"):
+            refs[name] = write(
+                directory / (name + ".original.json"),
+                {
+                    "protocol": "mvp-development-collector-integration-input-v1",
+                    "artifact_role": name,
+                    "purpose": "DEVELOPMENT",
+                    "formal_frozen": False,
+                    "financial_effect_evidence": False,
+                    "human_research": "NOT_STARTED",
+                    "test": "ACTUAL_FULL_PHYSICAL_READ_ONLY_CAPTURE_NOT_ORACLE_OR_ARM_VALIDATION",
+                },
+            )
+        bindings = {
+            "experiment_run_id": str(uuid4()),
+            "case_id": "DEVELOPMENT_UNFROZEN_COLLECTOR_CAPTURE",
+            "arm_id": "P",
+            "execution_mode": "SERVICE_INTEGRATION",
+            **{name + "_sha256": ref["sha256"] for name, ref in refs.items()},
+            "source_sha256": source_ref["sha256"],
+            "seed_version": "mvp-301-v6",
+            "isolated_db_epoch": epoch_id,
+            "purpose": "DEVELOPMENT",
+            "user_id": str(DEMO_USER_ID),
+        }
+        registration_ref = write(
+            directory / "collector-registration.original.json",
+            {
+                "protocol": collector.PROTOCOL,
+                "bindings": bindings,
+                "database_name": demo_engine.url.database,
+                "as_of": clock.isoformat(),
+                "role": "SNAPSHOT",
+                "source_ref": source_ref,
+                "root_registration_ref": None,
+            },
+        )
+>       manifest = collector.collect_readonly(
+            registration_ref,
+            directory / "actual-capture",
+            workspace=ROOT,
+        )
+
+apps\api\app\tests\test_mvp_readonly_collector_integration.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_readonly_collector.py:914: in collect_readonly
+    snapshot = read_snapshot(connection, registration)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_readonly_collector.py:514: in read_snapshot
+    physical = query(connection, TABLE_SQL, {}, log)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_readonly_collector.py:497: in query
+    result = connection.exec_driver_sql(sql, parameters)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1755: in exec_driver_sql
+    ret = self._execute_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1822: in _execute_context
+    return self._exec_single_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1962: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:2332: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1943: in _exec_single_context
+    self.dialect.do_execute(
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [BAD] at 0x1d400bbf1d0>
+query = "SELECT n.nspname AS schema_name, c.relname AS table_name,\n c.relkind::text AS relkind, c.relrowsecurity AS row_secur...me <> 'information_schema' AND n.nspname NOT LIKE 'pg_%'\n AND c.relkind IN ('r','p','f') ORDER BY n.nspname,c.relname"
+params = {}, prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           sqlalchemy.exc.ProgrammingError: (psycopg.ProgrammingError) only '%s', '%b', '%t' are allowed as placeholders, got '%''
+E           [SQL: SELECT n.nspname AS schema_name, c.relname AS table_name,
+E            c.relkind::text AS relkind, c.relrowsecurity AS row_security,
+E            c.relforcerowsecurity AS force_row_security
+E            FROM pg_catalog.pg_class c JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+E            WHERE n.nspname <> 'information_schema' AND n.nspname NOT LIKE 'pg_%'
+E            AND c.relkind IN ('r','p','f') ORDER BY n.nspname,c.relname]
+E           (Background on this error at: https://sqlalche.me/e/21/f405)
+
+.venv\Lib\site-packages\psycopg\cursor.py:117: ProgrammingError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_mvp_readonly_collector_integration.py::test_actual_full_physical_capture_preserves_stored_text_nulls_and_all24_rows
+1 failed in 13.21s

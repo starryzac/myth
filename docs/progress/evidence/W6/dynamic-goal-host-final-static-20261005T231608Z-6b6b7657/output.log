@@ -1,0 +1,10 @@
+
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\App.dynamic-goal-host.test.tsx
+  20:7  error  'intent' is never reassigned. Use 'const' instead  prefer-const
+  38:7  error  'intent' is never reassigned. Use 'const' instead  prefer-const
+
+✖ 2 problems (2 errors, 0 warnings)
+
+undefined
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: eslint src/App.tsx src/App.dynamic-goal-host.test.tsx src/pages/GoalsPage.tsx src/components/DynamicGoalOriginalRecoveryPanel.tsx --max-warnings 0

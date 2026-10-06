@@ -1,0 +1,4 @@
+apps\api\app\tests\test_full_joint_goal_execution_integration.py:222: error: Missing positional argument "user_id" in call to "_fault"  [call-arg]
+apps\api\app\tests\test_full_joint_goal_execution_integration.py:222: error: Argument 1 to "_fault" has incompatible type "Engine"; expected "str"  [arg-type]
+apps\api\app\tests\test_full_joint_goal_execution_integration.py:222: error: Argument 3 to "_fault" has incompatible type "bool"; expected "Engine"  [arg-type]
+Found 3 errors in 1 file (checked 1 source file)

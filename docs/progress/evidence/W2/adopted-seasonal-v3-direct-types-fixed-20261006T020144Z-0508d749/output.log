@@ -1,0 +1,3 @@
+apps\api\app\tests\test_full_seasonal_projection_consumers.py:75: error: Item "None" of "BoundaryResult | None" has no attribute "calculation_trace"  [union-attr]
+apps\api\app\tests\test_full_seasonal_projection_consumers.py:76: error: Unused "type: ignore" comment  [unused-ignore]
+Found 2 errors in 1 file (checked 7 source files)

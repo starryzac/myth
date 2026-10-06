@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/App.test.tsx (20 tests) 3695ms
+   ✓ 引导、目标及问答原请求刷新恢复后阻挡其他资金写入，自身只读核对入口保持可达  821ms
+   ✓ 问答原键待核对阻挡其他族写入，自身原键GET和资金总览仍可达  397ms
+   ✓ 十个页面导航实际切换，引导、年度、问答、证据与投递可达并保留原演示入口  566ms
+
+ Test Files  1 passed (1)
+      Tests  20 passed (20)
+   Start at  01:05:31
+   Duration  8.25s (transform 1.48s, setup 483ms, collect 2.20s, tests 3.70s, environment 1.01s, prepare 372ms)
+

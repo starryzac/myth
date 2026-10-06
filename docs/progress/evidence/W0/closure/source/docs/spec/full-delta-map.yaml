@@ -1,0 +1,3352 @@
+schema_version: 1
+purpose: W0 原 FULL 67 项复用/差量映射；本表是后续逐项关闭的输入，不是关闭证据。
+observed_at: '2026-10-04T22:19:06.881752+00:00'
+client_date: '2026-10-05'
+status: MAPPING_ONLY
+scope_boundary:
+  user_request: 第一批只完成 W0；W1 初版全量验收后按 W2—W8 真依赖推进。原 FULL 编号与验收含义不删减。
+  formal_completed_count: 20/92，来自当前 STATUS；MVP-404 dirty 工作尚未验收。
+  full_status_rule: 全部 67 项 PENDING；文件存在、可复用实现、历史 PASS、前置设计或本映射均不能直接关闭。
+  verification_this_mapping: 只读源码/原计划/追踪表/进度/索引核对；未运行 PG、浏览器、性质或全量测试。
+  history_preservation: 不回退代码、不改原失败证据、不 reset 正式模拟库、不补旧 hash/genesis。
+  financial_boundary: 全模拟；未到账收入不扩大执行边界；LLM 仅候选/解释；不接真实资金接口。
+  parallel_boundary: 只允许冻结合同后的前端、独立测试、工具/材料骨架并行；核心模型/迁移/执行/审计单负责人。
+  daily_validation: 变更模块及直接风险节点，真实资金/UNKNOWN/迁移 PG 集成保留；全量只在初版与完整版验收节点。
+  evidence_boundary: 历史 evidence 路径保留其原范围/版本/失败；下列引用尚未在当前 dirty 工作树重跑，不能代表 FULL 新增能力。
+  absence_boundary: 空实现/测试/证据列表表示本次未发现相应机制，不表示需求已取消；性能 W0 独立实测，真人研究尚未开展。
+  closure_gate: 每项实现+原验收+直接风险真实测试+文档/ADR/迁移或示例+docs/progress/FULL-xxx.md+版本源绑定证据；另须对应工作包可运行能力与明确未覆盖项。
+baseline:
+  review_baseline: 1a3b7175d2045e43184e4da3c69b88770ab88373
+  current_head: 4ccf84e973978482a1098d18c69fbfc9f011fac6
+  review_baseline_repo: F:/学校活动/工行杯/myth-upload
+  baseline_resolution: 该只读 clean checkout HEAD 已确认等于审查基线。当前仓库无该 commit 对象且两仓历史不直接 git diff；父工作包按 tree/path/hash
+    比较，不能据本映射声称全部源码等价。
+  comparison_evidence: docs/progress/evidence/W0/preflight/head-comparison-decoded.json
+  comparison_evidence_boundary: W0 父工作包的 tree/path/hash 对照及初始完整源指纹；本映射未单独复核对照的全部内容，引用不是 FULL 关闭证据。
+  working_tree_snapshot:
+    observed_at: '2026-10-04T22:19:06.881752+00:00'
+    dirty_paths:
+    - apps/api/app/api/dependencies.py
+    - apps/api/app/main.py
+    - apps/api/app/services/demo_seed.py
+    - apps/web/src/App.test.tsx
+    - apps/web/src/App.tsx
+    - apps/web/src/api/http.ts
+    - apps/web/src/styles.css
+    - docs/progress/HANDOFF.md
+    - docs/progress/QUOTA-HANDOFF-2026-10-04.md
+    - packages/contracts/openapi.json
+    - packages/contracts/schema.d.ts
+    - scripts/tasks.py
+    - apps/api/app/api/v1/demo.py
+    - apps/api/app/services/demo_console.py
+    - apps/api/app/services/demo_console_types.py
+    - apps/api/app/services/simulated_redemption_quote.py
+    - apps/api/app/tests/test_demo_console.py
+    - apps/api/app/tests/test_demo_console_types.py
+    - apps/api/app/tests/test_simulated_redemption_price.py
+    - apps/api/app/tests/test_simulated_redemption_quote.py
+    - apps/api/app/tests/test_task_orchestration.py
+    - apps/web/src/api/demo.test.ts
+    - apps/web/src/api/demo.ts
+    - apps/web/src/components/ActionEffectReview.tsx
+    - apps/web/src/features/demo-operation.test.ts
+    - apps/web/src/features/demo-operation.ts
+    - apps/web/src/features/write-flight.ts
+    - apps/web/src/pages/DemoConsolePage.test.tsx
+    - apps/web/src/pages/DemoConsolePage.tsx
+    - apps/web/src/tests/demo-fixture.ts
+    - docs/progress/MVP-404.md
+    - docs/progress/evidence/W0/
+    dirty_sha256:
+      apps/api/app/api/dependencies.py: 9abbeaa65dcc9e19f02e8bb9f5ad04544b61fc50cf71e16f21aedaa5247f6b11
+      apps/api/app/main.py: 448e4a6fe9fab5f31e36976a34b96f6351eede6e148e99f0dc4a02b4d4b394d3
+      apps/api/app/services/demo_seed.py: 8261239bedcf778c3a1f8890eccaf5d5ecbb582267cd2a759e9a5e58d0b2fb7e
+      apps/web/src/App.test.tsx: eda787f128c44fea5aab08fd6890e6ac0fe576283890c76540dd920a5e055d02
+      apps/web/src/App.tsx: c9000887592c3371f767f160ac98f8876ba925580acf976c1d5f8b4a9ab79690
+      apps/web/src/api/http.ts: 1e6c20882e038249b07aa29cbac675498b379a5a76d75329e9d5315d1e697318
+      apps/web/src/styles.css: 5d2dc4bb7e04faeecacfa2377ddc647d3070bb14159a5d29f300bcbeb5cd609d
+      docs/progress/HANDOFF.md: 7c335860239fbd6261913b04aabd03ba8dd0a49a485fdab3f7c2ceb1d11de154
+      docs/progress/QUOTA-HANDOFF-2026-10-04.md: 7c335860239fbd6261913b04aabd03ba8dd0a49a485fdab3f7c2ceb1d11de154
+      packages/contracts/openapi.json: 3f2ed94265e123eda07c8ab81e3981a21bfce65d8161ee53c8498fd56fe5794b
+      packages/contracts/schema.d.ts: 070677e279f32770108298fe291480caba8badad80ce09f59792f750c8b7075f
+      scripts/tasks.py: 6b1375794d8c6331b71a10c76334334d28fa9a75bb1c76fcd1ad204c2a1c5c44
+      apps/api/app/api/v1/demo.py: 6683386215f33a2924bbe1b4ab862615c0833e7794c6166ff7f75294ee7a442d
+      apps/api/app/services/demo_console.py: 68247f0ad268d4b10effbecca0d5e57f2b0b7fbdfd246fa773b4a4b5a19e83c7
+      apps/api/app/services/demo_console_types.py: ddebc65cdf7bf0429c672b4949188d54c15e7a0b6939e6a4d1e409a9850eb78e
+      apps/api/app/services/simulated_redemption_quote.py: c6bebd514f5cd69fd12d8a7901e439a852485a26a9ad45ffc45ab9563cc64f46
+      apps/api/app/tests/test_demo_console.py: ee7d7f3b36d1b7dc0cb6c6674e5119e8cbd4978e7267ff71b4bf14bcc1aaa6d0
+      apps/api/app/tests/test_demo_console_types.py: c1b0be8795e9ee51e8a32e9da0dde966964e6d46eb73baf5af869047d77d86c5
+      apps/api/app/tests/test_simulated_redemption_price.py: d405ff21d89458831062d8ccb8df4906dd08efd8595f1eec7e4d5ce023c4844e
+      apps/api/app/tests/test_simulated_redemption_quote.py: b9577e5f3bbdfe45b87736f357f10dbcabef91e36c6f7709d0d49307994bcea5
+      apps/api/app/tests/test_task_orchestration.py: 356a55f6729eb6770f82f4db05c56f1582c247056fd73c05ca9295e1127ed9ff
+      apps/web/src/api/demo.test.ts: 6602ec673bcb9f270d4376d5a0ee4a7e33d92ea1927e6b217feba2c889c2734f
+      apps/web/src/api/demo.ts: a8209b94e3f8df023b07a27e3106fa71b27e2daec5122a6860ab1a512959888b
+      apps/web/src/components/ActionEffectReview.tsx: fb4c999cefe1f192b6d839debf439dd2bf508ebbc83ff1133858359dc05a9e1e
+      apps/web/src/features/demo-operation.test.ts: e9d029fa38ed78e37507a0f4bb122f146b7cf2ffe405fd439b0f1f329092f301
+      apps/web/src/features/demo-operation.ts: 04d107f26e268a3cfbdf6202a6c185de1144642e5e7b9463b6e3ef022b4b9960
+      apps/web/src/features/write-flight.ts: 92623c97a1ba95ada4537ca4e93f4b653a96561f857e17a92bb65b0c6f472676
+      apps/web/src/pages/DemoConsolePage.test.tsx: 213bb7d11b9d8099c260fe020f7aab64f5bb030aa6512b4ea21eb3c819416eca
+      apps/web/src/pages/DemoConsolePage.tsx: e4a184505bbce18fb84fddada059cca546e16def6507b49a8a7c3a9e86674f7d
+      apps/web/src/tests/demo-fixture.ts: dc70a48d081aa997005f4e6364517c7f73e36d49438df27091f42b2ccfb84e2a
+      docs/progress/MVP-404.md: f3a94276dd37ea139d1e1ead0711f7845736e4701abc73c9f0b14469081aa123
+  source_plan_sha256:
+    钱途有界_完整开发计划_Codex执行版.md: 88be31edbb5f5442420942f821af744aa92c426617dbbac5b41cf2eb0b62fa06
+    钱途有界_初版开发计划_Codex执行版.md: 5a8747f6741ee8b5af8615508886d2708907d7997119c3df6b6393a75857a279
+  dependency_lock_sha256:
+    uv.lock: b3b1dae5cf20edd6ef96609427aeaf8f7d0108ba3c075158a00d102383e36e4c
+    pnpm-lock.yaml: abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83
+  initial_source_manifest: docs/progress/evidence/W0/preflight/initial-manifest.json
+authoritative_sources:
+  full_plan: 钱途有界_完整开发计划_Codex执行版.md
+  mvp_plan: 钱途有界_初版开发计划_Codex执行版.md
+  tracker: docs/spec/requirements-traceability.md
+  global_acceptance: docs/spec/acceptance-checklist.md
+  explicit_amendment: docs/spec/execution-amendment.md
+  provided_revision: C:/Users/starryzac/Downloads/BoundedFunds_完整版提效执行修订案.md
+acceptance_nodes:
+  W1: MVP-404/501—504 与原初版 25 项全量；成功前 FULL 仅前置准备，不关闭。
+  W2_to_W7: 工作包内逐原编号保留关闭记录；运行可运行能力及直接风险验证，未覆盖项明确列出。
+  W8: 原 FULL 67 项逐项核对+全部 92 项+G0—G4+完整版全量命令+原人工审查；失败同节点修复重跑。
+  study: 工具可运行与真人招募/开展分开记录；没有参与者或真实记录时明确未开展，不能合成填充研究结果。
+primary_closing_partition:
+  W2:
+  - FULL-001
+  - FULL-002
+  - FULL-003
+  - FULL-101
+  - FULL-102
+  - FULL-103
+  - FULL-104
+  - FULL-105
+  - FULL-601
+  - FULL-602
+  - FULL-603
+  - FULL-605
+  - FULL-607
+  W3:
+  - FULL-201
+  - FULL-202
+  - FULL-203
+  - FULL-204
+  - FULL-205
+  - FULL-206
+  - FULL-301
+  - FULL-302
+  - FULL-303
+  - FULL-304
+  - FULL-305
+  - FULL-306
+  - FULL-307
+  W4:
+  - FULL-401
+  - FULL-402
+  - FULL-403
+  - FULL-404
+  - FULL-405
+  - FULL-406
+  - FULL-604
+  - FULL-606
+  W5:
+  - FULL-106
+  - FULL-107
+  - FULL-108
+  - FULL-501
+  - FULL-502
+  - FULL-503
+  - FULL-504
+  - FULL-505
+  - FULL-506
+  - FULL-507
+  W6:
+  - FULL-701
+  - FULL-702
+  - FULL-703
+  - FULL-704
+  - FULL-705
+  - FULL-706
+  - FULL-707
+  - FULL-708
+  W7:
+  - FULL-801
+  - FULL-802
+  - FULL-803
+  - FULL-804
+  - FULL-805
+  - FULL-806
+  - FULL-807
+  - FULL-808
+  W8:
+  - FULL-901
+  - FULL-902
+  - FULL-903
+  - FULL-904
+  - FULL-905
+  - FULL-906
+  - FULL-907
+package_dependencies:
+  W2:
+  - W1 初版全量验收
+  - 事实/策略/动作/事件/错误/权限合同冻结
+  W3:
+  - W2 共同合同与可靠执行底座
+  W4:
+  - W2 共同合同
+  - W3 统一无副作用约束评估/多目标归属
+  W5:
+  - W2 完整候选与版本合同
+  - W3/W4 纯确定性引擎
+  W6:
+  - W1 已有真实页面
+  - 对应 W2—W5 API/DTO 合同冻结后可并行，最终联调仍需真实后端
+  W7:
+  - 设计/工具从 W0/W1 并行
+  - 最终关闭需对应 W2—W6 完整机制、冻结集/真实故障实验
+  W8:
+  - 骨架/主张台账从 W0/W1 并行
+  - 最终材料依赖 W7 实测与完整实现，原人工审查不可省
+requirements:
+- id: FULL-001
+  title: 规格一致性检查
+  status: PENDING
+  primary_closing_package: W2
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1154
+    traceability_source_lines: F:1154–1160
+  original_task_text: '### FULL-001 规格一致性检查
+
+
+    - 将本计划与初版计划合并成 `docs/spec/product-spec.md`；
+
+    - 提取不变量、非目标和权限矩阵；
+
+    - 建立需求到测试的追踪表。
+
+
+    验收：每条一级需求至少对应一个测试或人工审查项。'
+  original_requirement: 合并产品规格、不变量、非目标、权限矩阵、需求到测试追踪。
+  original_acceptance: docs/spec/product-spec.md；每条一级需求有具体测试或人工审查项；范围逐项审计。
+  reusable_implementation_paths:
+  - AGENTS.md
+  - docs/spec/requirements-traceability.md
+  - docs/spec/acceptance-checklist.md
+  - docs/spec/financial-semantics-review.md
+  reusable_test_paths: []
+  reusable_evidence_paths: []
+  reuse_boundary:
+  - 已有范围/质量门追踪，尚无统一 FULL 产品规格、权限矩阵或逐一级需求实际验收。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 建立 product-spec.md 合并两版范围、硬不变量/非目标/角色权限与修订语义
+  - 逐一级需求绑定具体测试/人工审查并实际核验，不能以此差量表替代关闭
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-002
+  title: 单仓升级
+  status: PENDING
+  primary_closing_package: W2
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1162
+    traceability_source_lines: F:1162–1166；230–264
+  original_task_text: '### FULL-002 单仓升级
+
+
+    - 增加 ADR、事件、实验、安全和白皮书目录；
+
+    - 更新 Makefile 和 CI；
+
+    - 为每个服务建立接口边界。'
+  original_requirement: 增加 ADR、事件、实验、安全、白皮书目录；升级 Makefile/CI；服务接口边界。
+  original_acceptance: 单仓/接口检查；CI 实际运行全部质量命令；持久组件配置及启动记录。
+  reusable_implementation_paths:
+  - Makefile
+  - make.cmd
+  - scripts/tasks.py
+  - docker-compose.yml
+  - pyproject.toml
+  - package.json
+  - apps/api/app/api/errors.py
+  reusable_test_paths:
+  - scripts/verify_quality_gates.py
+  - scripts/verify_contract_gate.py
+  - apps/api/app/tests/test_errors.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-001.md
+  - docs/progress/MVP-002.md
+  - docs/progress/MVP-003.md
+  reuse_boundary:
+  - 模块化单仓和本地质量入口已有；不代表 FULL 九命令、CI、事件/实验/安全/白皮书合同齐全。
+  dirty_candidate_paths:
+  - scripts/tasks.py
+  missing_increments:
+  - 补持久事件/实验/安全/白皮书结构与精确定义服务接口
+  - 接齐 CI 全部质量命令及持久组件启动证据，预留失败命令不能计成功
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-003
+  title: 统一领域术语
+  status: PENDING
+  primary_closing_package: W2
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1168
+    traceability_source_lines: F:1168–1170
+  original_task_text: '### FULL-003 统一领域术语
+
+
+    创建 `docs/spec/glossary.md`，固定：事实、证据、策略、归属、持仓、自主资金、边界、介入、恢复、回执等定义。'
+  original_requirement: 统一事实、证据、策略、归属、持仓、自主资金、边界、介入、恢复、回执术语。
+  original_acceptance: docs/spec/glossary.md；代码/API/界面/材料术语一致审查。
+  reusable_implementation_paths:
+  - AGENTS.md
+  - docs/spec/requirements-traceability.md
+  - docs/spec/acceptance-checklist.md
+  - docs/spec/financial-semantics-review.md
+  reusable_test_paths: []
+  reusable_evidence_paths: []
+  reuse_boundary:
+  - 已有范围/质量门追踪，尚无统一 FULL 产品规格、权限矩阵或逐一级需求实际验收。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 创建 glossary.md
+  - 逐代码/API/UI/材料核验统一事实、证据、策略、归属、持仓、自主资金、边界、介入、恢复、回执术语
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-101
+  title: 双时态事实模型
+  status: PENDING
+  primary_closing_package: W2
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1176
+    traceability_source_lines: F:1176–1178；270–296
+  original_task_text: '### FULL-101 双时态事实模型
+
+
+    实现 valid time / observed time、覆盖和冲突。'
+  original_requirement: valid time/observed time、覆盖与冲突、来源哈希、supersedes。
+  original_acceptance: 双时态查询及迟到事实回放；冲突 CONFLICTED、缺证 UNKNOWN；旧时点不见未来知识测试。
+  reusable_implementation_paths:
+  - apps/api/app/db/models.py
+  - apps/api/app/domain/external_bank_fact_types.py
+  - apps/api/app/domain/external_bank_fact.py
+  - apps/api/app/services/external_bank_facts.py
+  - apps/api/app/services/boundary.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_external_bank_fact_domain.py
+  - apps/api/app/tests/test_external_bank_facts.py
+  - apps/api/app/tests/test_boundary_service.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  reuse_boundary:
+  - 已存在 EvidenceItem valid/observed 字段、外部事实原件/覆盖核验与时点过滤；尚不是完整双时态事实查询、supersedes 冲突回放。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 建立双时态快照/有效覆盖/来源哈希/supersedes 冲突合同与查询
+  - 迟到事实按 observed time 回放、旧时点不见未来知识、CONFLICTED/UNKNOWN 定向 PG 验证
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-102
+  title: 证据图
+  status: PENDING
+  primary_closing_package: W2
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1180
+    traceability_source_lines: F:1180–1182
+  original_task_text: '### FULL-102 证据图
+
+
+    实现事实、候选策略、确认策略和动作之间的有向引用关系。'
+  original_requirement: 事实、候选、确认策略与动作的有向证据引用。
+  original_acceptance: 图关联查询；引用完整性测试；从回执反查来源及断链拒绝测试。
+  reusable_implementation_paths:
+  - apps/api/app/db/models.py
+  - apps/api/app/domain/external_bank_fact_types.py
+  - apps/api/app/domain/external_bank_fact.py
+  - apps/api/app/services/external_bank_facts.py
+  - apps/api/app/services/boundary.py
+  - apps/api/app/domain/policy_configuration.py
+  - apps/api/app/services/policy_lifecycle.py
+  - apps/api/alembic/versions/0002_immutable_policy_versions.py
+  - apps/api/app/domain/decision_trace.py
+  - apps/api/app/domain/decision_trace_types.py
+  - apps/api/app/services/decision_trace.py
+  - apps/api/app/services/decision_recording.py
+  - apps/web/src/pages/DecisionTracePage.tsx
+  - apps/web/src/api/decisions.ts
+  reusable_test_paths:
+  - apps/api/app/tests/test_external_bank_fact_domain.py
+  - apps/api/app/tests/test_external_bank_facts.py
+  - apps/api/app/tests/test_boundary_service.py
+  - apps/api/app/tests/test_policy_configuration.py
+  - apps/api/app/tests/test_policy_lifecycle.py
+  - apps/api/app/tests/test_policy_execution_lifecycle.py
+  - apps/api/app/tests/test_decision_trace_domain.py
+  - apps/api/app/tests/test_decision_trace_api.py
+  - apps/api/app/tests/test_decision_trace_audit.py
+  - apps/api/app/tests/test_decision_readonly_transaction.py
+  - apps/web/src/pages/DecisionTracePage.test.tsx
+  - apps/web/src/api/decisions.test.ts
+  reusable_evidence_paths:
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  - docs/progress/MVP-103.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-303.md
+  - docs/progress/MVP-403.md
+  - docs/progress/evidence/MVP-403/index.json
+  reuse_boundary:
+  - 已存在 EvidenceItem valid/observed 字段、外部事实原件/覆盖核验与时点过滤；尚不是完整双时态事实查询、supersedes 冲突回放。
+  - 严格配置当前仅 RecurringObligation/LivingReserve/GoalSaving/AssetAuthorization/EmergencyBuffer 五类；不可变版本、未提交失效、UNKNOWN
+    保留已有定向覆盖。
+  - 已有决策→事实/精确策略版本→原回执→当前审计回溯与真实 Edge 零写；FULL 搜索/版本筛选、冲突图和新增机制字段缺失。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 构造事实→候选→确认版本→动作有向证据图查询
+  - 验证引用完整性/环与断链拒绝及回执反查来源，不把 JSON 中存在 ID 当成完整证据图
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-103
+  title: 完整策略 DSL
+  status: PENDING
+  primary_closing_package: W2
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1184
+    traceability_source_lines: F:1184–1186；156–171
+  original_task_text: '### FULL-103 完整策略 DSL
+
+
+    实现第 3.3 节全部模板和 JSON Schema。'
+  original_requirement: 完整 12 策略模板及严格 JSON Schema。
+  original_acceptance: 每模板正负例、跨字段约束和未知字段拒绝；Schema/类型/文档一致。
+  reusable_implementation_paths:
+  - apps/api/app/domain/policy_configuration.py
+  - apps/api/app/services/policy_lifecycle.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0002_immutable_policy_versions.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_policy_configuration.py
+  - apps/api/app/tests/test_policy_lifecycle.py
+  - apps/api/app/tests/test_policy_execution_lifecycle.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-103.md
+  - docs/progress/MVP-402.md
+  reuse_boundary:
+  - 严格配置当前仅 RecurringObligation/LivingReserve/GoalSaving/AssetAuthorization/EmergencyBuffer 五类；不可变版本、未提交失效、UNKNOWN
+    保留已有定向覆盖。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 补全原 12 策略模板与独立严格 JSON Schema、类型和字段约束
+  - 每模板正负/未知字段/跨字段测试及 OpenAPI/文档一致，当前五类型不是完整 DSL
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-104
+  title: 策略生命周期
+  status: PENDING
+  primary_closing_package: W2
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1188
+    traceability_source_lines: F:1188–1190；298–318
+  original_task_text: '### FULL-104 策略生命周期
+
+
+    补齐到期、暂停、撤销、恢复、冲突版本和在途动作处理。'
+  original_requirement: 到期、暂停、撤销、恢复、冲突版本及在途动作复核。
+  original_acceptance: 不可变版本；未提交失效/在途复核/持仓重查/边界恢复测试和回放。
+  reusable_implementation_paths:
+  - apps/api/app/domain/policy_configuration.py
+  - apps/api/app/services/policy_lifecycle.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0002_immutable_policy_versions.py
+  - apps/api/app/domain/execution.py
+  - apps/api/app/domain/execution_types.py
+  - apps/api/app/services/execution.py
+  - apps/api/app/services/execution_bank.py
+  - apps/api/app/services/execution_reservations.py
+  - apps/api/app/services/execution_projection.py
+  - apps/api/app/services/action_contracts.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_policy_configuration.py
+  - apps/api/app/tests/test_policy_lifecycle.py
+  - apps/api/app/tests/test_policy_execution_lifecycle.py
+  - apps/api/app/tests/test_execution_domain.py
+  - apps/api/app/tests/test_execution_service.py
+  - apps/api/app/tests/test_execution_failures.py
+  - apps/api/app/tests/test_execution_reservations.py
+  - apps/api/app/tests/test_execution_receipt_integrity.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-103.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-302.md
+  reuse_boundary:
+  - 严格配置当前仅 RecurringObligation/LivingReserve/GoalSaving/AssetAuthorization/EmergencyBuffer 五类；不可变版本、未提交失效、UNKNOWN
+    保留已有定向覆盖。
+  - 已有分阶段独立提交、幂等、UNKNOWN 查询/投影及资源预留；当前 ActionType 仅五类，完整动作合同、持久消息和重启矩阵未验收。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 补恢复/冲突版本及全部新增模板生命周期
+  - 真实提交前失效、在途复核/UNKNOWN 占用、持仓重查和边界恢复竞争矩阵
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-105
+  title: 策略影响预览
+  status: PENDING
+  primary_closing_package: W2
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1192
+    traceability_source_lines: F:1192–1194
+  original_task_text: '### FULL-105 策略影响预览
+
+
+    修改前计算对自主资金、目标、持仓和未来动作的影响。'
+  original_requirement: 修改前预览自主资金、目标、持仓及未来动作影响。
+  original_acceptance: 无副作用预览；实际确认后的差分与预览一致；UI/接口测试。
+  reusable_implementation_paths:
+  - apps/api/app/services/policy_preview.py
+  - apps/api/app/services/policy_preview_types.py
+  - apps/api/app/domain/policy_change_types.py
+  - apps/api/app/api/v1/policy_preview.py
+  - apps/web/src/pages/PolicyCenterPage.tsx
+  reusable_test_paths:
+  - apps/api/app/tests/test_policy_change_boundary.py
+  - apps/api/app/tests/test_policy_change_preview_api.py
+  - apps/web/src/pages/PolicyCenterPage.test.tsx
+  reusable_evidence_paths:
+  - docs/progress/MVP-402.md
+  - docs/progress/evidence/MVP-402/index.json
+  reuse_boundary:
+  - 已实现只读修改边界差分；FULL 持仓/未来动作完整影响及全部新增模板尚未验收。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 覆盖修改对目标/全部持仓/未来动作的结构化影响
+  - 实际确认后差分与无副作用预览一致并做新增模板接口/UI 测试
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-106
+  title: 策略编译器
+  status: PENDING
+  primary_closing_package: W5
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1196
+    traceability_source_lines: F:1196–1198；352–388
+  original_task_text: '### FULL-106 策略编译器
+
+
+    实现规则编译、可选 LLM 编译、独立校验和差异解释。'
+  original_requirement: 规则、可选 LLM、独立校验、差异解释、脱敏和来源文本。
+  original_acceptance: Schema 违规/缺金额日期/规则冲突/越权字段负例；候选不能直接 ACTIVE；默认离线可运行。
+  reusable_implementation_paths:
+  - apps/api/app/domain/policy_compiler.py
+  - apps/api/app/services/policy_compilation.py
+  - apps/web/src/components/PolicyConfigForm.tsx
+  reusable_test_paths:
+  - apps/api/app/tests/test_policy_compiler.py
+  - apps/api/app/tests/test_policy_compilation.py
+  - apps/api/app/tests/test_policy_compilation_read.py
+  - apps/api/app/tests/test_compilation_api.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-105.md
+  - docs/progress/MVP-402.md
+  reuse_boundary:
+  - 规则编译实际限 goal_saving/emergency_buffer；可选外部模型默认关闭、候选确认门已有，不能声称完整 12 模板编译。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 扩展规则/可选 LLM 到完整模板并补脱敏、独立校验、缺字段询问与差异解释
+  - Schema/非法权限/金额日期冲突负例，候选不得直接 ACTIVE，默认离线
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-107
+  title: 周期规律发现
+  status: PENDING
+  primary_closing_package: W5
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1200
+    traceability_source_lines: F:1200–1202；392–408
+  original_task_text: '### FULL-107 周期规律发现
+
+
+    实现固定转账和账单模式候选发现，不自动生效。'
+  original_requirement: 固定转账、账单周期发现，仅输出建议不自动生效。
+  original_acceptance: 日期、金额方差、收款人、周期稳定性测试；候选未确认不改义务或权限。
+  reusable_implementation_paths:
+  - apps/api/app/services/policy_discovery.py
+  - apps/api/app/api/v1/policies.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_policy_discovery.py
+  - apps/api/app/tests/test_discovery_api.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-104.md
+  reuse_boundary:
+  - 已有历史房租/账单候选与来源核验，确认前不授权；FULL 方差/稳定性与完整固定转账类型需增量验证。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 扩展固定转账与周期发现的日期/金额方差/收款关系/稳定性
+  - 各候选确认前不改变义务/资金边界/权限，记录完整来源与真实测试
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-108
+  title: 节假日准备金候选
+  status: PENDING
+  primary_closing_package: W5
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1204
+    traceability_source_lines: F:1204–1206；410–420
+  original_task_text: '### FULL-108 节假日准备金候选
+
+
+    实现公共节假日窗口和相似历史窗口比较，输出建议并要求确认。'
+  original_requirement: 公共节日窗口与相似历史比较，临时准备金候选，首次确认。
+  original_acceptance: 日历来源与有效年；历史不足/无相似窗口测试；候选解释、用户确认后才生效。
+  reusable_implementation_paths:
+  - apps/api/app/domain/living_reserve.py
+  - apps/api/app/domain/history_coverage.py
+  - apps/api/app/services/living_reserve.py
+  - apps/api/app/services/policy_discovery.py
+  - apps/api/app/api/v1/policies.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_living_reserve.py
+  - apps/api/app/tests/test_living_reserve_service.py
+  - apps/api/app/tests/test_history_coverage.py
+  - apps/api/app/tests/test_policy_discovery.py
+  - apps/api/app/tests/test_discovery_api.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-201.md
+  - docs/progress/MVP-104.md
+  reuse_boundary:
+  - 已有确认类别、连续历史、分位数与一次性排除；尚无公共节日历/相似窗口候选。
+  - 已有历史房租/账单候选与来源核验，确认前不授权；FULL 方差/稳定性与完整固定转账类型需增量验证。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 引入注明来源和有效年的公共节日窗口
+  - 相似历史比较/历史不足/首次候选确认与无自动权限测试，不凭陈旧日历创建义务
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-201
+  title: 365日现金流投影
+  status: PENDING
+  primary_closing_package: W3
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1212
+    traceability_source_lines: F:1212–1214；432–452
+  original_task_text: '### FULL-201 365日现金流投影
+
+
+    实现日级投影、资产可用时间和保护需求曲线。'
+  original_requirement: 365 日日级投影、可用时间、保护需求曲线，规划执行分离。
+  original_acceptance: 365 日曲线/跨月年/赎回到期测试；执行视图与规划视图分离接口。
+  reusable_implementation_paths:
+  - apps/api/app/domain/boundary.py
+  - apps/api/app/domain/boundary_types.py
+  - apps/api/app/domain/boundary_details_types.py
+  - apps/api/app/services/boundary.py
+  - apps/api/app/services/financial_read.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_boundary.py
+  - apps/api/app/tests/test_boundary_properties.py
+  - apps/api/app/tests/test_boundary_details.py
+  - apps/api/app/tests/test_boundary_service.py
+  - apps/api/app/tests/test_boundary_api.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  reuse_boundary:
+  - BoundarySnapshot horizon_days 当前 Literal[90]；纯财务引擎与服务来源校验已有，FULL 365 日及统一五集合接口未完成。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 365 日日级投影/保护需求曲线和资产到账时间
+  - 闰年/月末/跨年/到期与赎回测试，规划执行视图分离，未来收入不补执行安全
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-202
+  title: 自主包络引擎
+  status: PENDING
+  primary_closing_package: W3
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1216
+    traceability_source_lines: F:1216–1218；454–479
+  original_task_text: '### FULL-202 自主包络引擎
+
+
+    实现五个集合的交集判定和边界解释。'
+  original_requirement: 财务安全、授权、流动性、充分证据、支持动作五集合交集。
+  original_acceptance: 每集合单独拒绝的负例；边界解释；全部七不变量性质测试。
+  reusable_implementation_paths:
+  - apps/api/app/domain/boundary.py
+  - apps/api/app/domain/boundary_types.py
+  - apps/api/app/domain/boundary_details_types.py
+  - apps/api/app/services/boundary.py
+  - apps/api/app/services/financial_read.py
+  - apps/api/app/domain/autonomy.py
+  - apps/api/app/domain/autonomy_types.py
+  - apps/api/app/services/autonomy.py
+  - apps/api/app/services/execution_context.py
+  - apps/api/app/domain/execution.py
+  - apps/api/app/domain/execution_types.py
+  - apps/api/app/services/execution.py
+  - apps/api/app/services/execution_bank.py
+  - apps/api/app/services/execution_reservations.py
+  - apps/api/app/services/execution_projection.py
+  - apps/api/app/services/action_contracts.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_boundary.py
+  - apps/api/app/tests/test_boundary_properties.py
+  - apps/api/app/tests/test_boundary_details.py
+  - apps/api/app/tests/test_boundary_service.py
+  - apps/api/app/tests/test_boundary_api.py
+  - apps/api/app/tests/test_autonomy_domain.py
+  - apps/api/app/tests/test_autonomy_service.py
+  - apps/api/app/tests/test_autonomy_api.py
+  - apps/api/app/tests/test_execution_context.py
+  - apps/api/app/tests/test_execution_domain.py
+  - apps/api/app/tests/test_execution_service.py
+  - apps/api/app/tests/test_execution_failures.py
+  - apps/api/app/tests/test_execution_reservations.py
+  - apps/api/app/tests/test_execution_receipt_integrity.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  - docs/progress/MVP-302.md
+  - docs/progress/MVP-301.md
+  reuse_boundary:
+  - BoundarySnapshot horizon_days 当前 Literal[90]；纯财务引擎与服务来源校验已有，FULL 365 日及统一五集合接口未完成。
+  - 已有四级分类与经济签名；有限偏好只支持一个 amount_cents 变量、2–8 候选，非通用多变量/minimax 问答。
+  - 已有分阶段独立提交、幂等、UNKNOWN 查询/投影及资源预留；当前 ActionType 仅五类，完整动作合同、持久消息和重启矩阵未验收。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 承接现有纯引擎建立统一五集合交集评估接口与结构化拒因
+  - 每集合单独拒绝、全部七不变量和完整动作后态测试
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-203
+  title: 未来收入隔离
+  status: PENDING
+  primary_closing_package: W3
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1220
+    traceability_source_lines: F:1220–1222
+  original_task_text: '### FULL-203 未来收入隔离
+
+
+    保证未来收入只出现在规划视图，无法进入执行边界。'
+  original_requirement: 未来收入只在规划视图，不能进入执行边界。
+  original_acceptance: 任意增减未来收入不改变当前自主资金/动作的变形测试；数据流隔离检查。
+  reusable_implementation_paths:
+  - apps/api/app/domain/boundary.py
+  - apps/api/app/domain/boundary_types.py
+  - apps/api/app/domain/boundary_details_types.py
+  - apps/api/app/services/boundary.py
+  - apps/api/app/services/financial_read.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_boundary.py
+  - apps/api/app/tests/test_boundary_properties.py
+  - apps/api/app/tests/test_boundary_details.py
+  - apps/api/app/tests/test_boundary_service.py
+  - apps/api/app/tests/test_boundary_api.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  reuse_boundary:
+  - BoundarySnapshot horizon_days 当前 Literal[90]；纯财务引擎与服务来源校验已有，FULL 365 日及统一五集合接口未完成。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 规划视图独立展示未来收入，执行视图 DTO/数据流不得消费
+  - 任意幅度/日期未来收入扰动的变形测试和新接口隔离核验
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-204
+  title: 边界事件检测
+  status: PENDING
+  primary_closing_package: W3
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1224
+    traceability_source_lines: F:1224–1226；652–664
+  original_task_text: '### FULL-204 边界事件检测
+
+
+    仅在动作集合变化时生成 `BoundaryCrossed`。'
+  original_requirement: 仅动作集合变化生成 BoundaryCrossed。
+  original_acceptance: 数字变但动作不变静默；动作类别/金额/归属/风险变化触发及去重测试。
+  reusable_implementation_paths:
+  - apps/api/app/domain/boundary.py
+  - apps/api/app/domain/boundary_types.py
+  - apps/api/app/domain/boundary_details_types.py
+  - apps/api/app/services/boundary.py
+  - apps/api/app/services/financial_read.py
+  - apps/api/app/domain/autonomy.py
+  - apps/api/app/domain/autonomy_types.py
+  - apps/api/app/services/autonomy.py
+  - apps/api/app/services/execution_context.py
+  - apps/api/app/domain/audit_chain.py
+  - apps/api/app/domain/audit_chain_types.py
+  - apps/api/app/services/audit_chain.py
+  - apps/api/app/services/audit_recording.py
+  - apps/api/app/db/audit_guard.py
+  - scripts/verify_audit_chain.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_boundary.py
+  - apps/api/app/tests/test_boundary_properties.py
+  - apps/api/app/tests/test_boundary_details.py
+  - apps/api/app/tests/test_boundary_service.py
+  - apps/api/app/tests/test_boundary_api.py
+  - apps/api/app/tests/test_autonomy_domain.py
+  - apps/api/app/tests/test_autonomy_service.py
+  - apps/api/app/tests/test_autonomy_api.py
+  - apps/api/app/tests/test_execution_context.py
+  - apps/api/app/tests/test_audit_chain_domain.py
+  - apps/api/app/tests/test_audit_subject_encoding.py
+  - apps/api/app/tests/test_audit_storage.py
+  - apps/api/app/tests/test_audit_guard.py
+  - apps/api/app/tests/test_audit_workflow_integration.py
+  - apps/api/app/tests/test_audit_cli.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  - docs/progress/MVP-302.md
+  - docs/progress/MVP-304.md
+  reuse_boundary:
+  - BoundarySnapshot horizon_days 当前 Literal[90]；纯财务引擎与服务来源校验已有，FULL 365 日及统一五集合接口未完成。
+  - 已有四级分类与经济签名；有限偏好只支持一个 amount_cents 变量、2–8 候选，非通用多变量/minimax 问答。
+  - 已有 append-only 存储门、原件 canonical/hash、缺失/篡改/检查点诊断；历史 LEGACY_UNAUDITED 保留，hash 不是签名或外部存证。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 建立完整经济动作集合签名/BoundaryCrossed 事件信封与持久去重
+  - 数字变但动作不变静默，类别/金额/归属/风险/费用/权限变化触发
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-205
+  title: 性质测试生成器
+  status: PENDING
+  primary_closing_package: W3
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1228
+    traceability_source_lines: F:1228–1230
+  original_task_text: '### FULL-205 性质测试生成器
+
+
+    生成随机策略、目标、产品和事件，验证不变量。'
+  original_requirement: 随机策略、目标、产品、事件生成并验证不变量。
+  original_acceptance: 生成器、覆盖分布、可重现种子与最小失败例；独立不变量判定。
+  reusable_implementation_paths:
+  - apps/api/app/domain/boundary.py
+  - apps/api/app/domain/boundary_types.py
+  - apps/api/app/domain/boundary_details_types.py
+  - apps/api/app/services/boundary.py
+  - apps/api/app/services/financial_read.py
+  - apps/api/app/domain/goal_allocation.py
+  - apps/api/app/services/goal_allocation.py
+  - apps/api/app/services/goals.py
+  - apps/api/app/domain/income_ledger.py
+  - apps/api/app/services/income_ledger.py
+  - apps/api/app/domain/asset_allocation.py
+  - apps/api/app/domain/asset_allocation_types.py
+  - apps/api/app/domain/asset_exposure.py
+  - apps/api/app/services/asset_allocation.py
+  - apps/api/app/domain/recovery.py
+  - apps/api/app/domain/recovery_types.py
+  - apps/api/app/services/recovery.py
+  - apps/api/app/services/recovery_sources.py
+  - apps/api/app/services/recovery_projection.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_boundary.py
+  - apps/api/app/tests/test_boundary_properties.py
+  - apps/api/app/tests/test_boundary_details.py
+  - apps/api/app/tests/test_boundary_service.py
+  - apps/api/app/tests/test_boundary_api.py
+  - apps/api/app/tests/test_goal_allocation.py
+  - apps/api/app/tests/test_goal_allocation_properties.py
+  - apps/api/app/tests/test_goal_allocation_service.py
+  - apps/api/app/tests/test_income_ledger.py
+  - apps/api/app/tests/test_execution_goal_creation.py
+  - apps/api/app/tests/test_asset_allocation.py
+  - apps/api/app/tests/test_asset_allocation_properties.py
+  - apps/api/app/tests/test_asset_allocation_service.py
+  - apps/api/app/tests/test_execution_redemption_flow.py
+  - apps/api/app/tests/test_recovery.py
+  - apps/api/app/tests/test_recovery_properties.py
+  - apps/api/app/tests/test_recovery_service.py
+  - apps/api/app/tests/test_recovery_goal_ownership.py
+  - apps/api/app/tests/test_recovery_receipt_integrity.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  - docs/progress/MVP-203.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-204.md
+  - docs/progress/MVP-205.md
+  - docs/progress/MVP-302.md
+  reuse_boundary:
+  - BoundarySnapshot horizon_days 当前 Literal[90]；纯财务引擎与服务来源校验已有，FULL 365 日及统一五集合接口未完成。
+  - 已有单明确目标/FIFO 新资金/月范围/归属保护；多个单目标预览不能求和当成联合分配或 FULL 八层词典序最优。
+  - 已有不可变产品条款引用、有限单产品过滤及明确退出方案；不含多资产联合优化/定存梯度/自动到期再配置。
+  - 已有按可用性恢复、损失授权/T1 真实等待/独立银行回执；FULL 全产品组合恢复与到期事件需新增。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 生成 FULL 随机策略/多目标/多产品/事件而非仅当前 MVP DTO
+  - 记录分布、可重现种子/缩小失败例，并用独立不变量判定覆盖七项
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-206
+  title: 边界差分解释
+  status: PENDING
+  primary_closing_package: W3
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1232
+    traceability_source_lines: F:1232–1234
+  original_task_text: '### FULL-206 边界差分解释
+
+
+    输出“哪个新事实导致自主资金从 X 变成 Y”。'
+  original_requirement: 解释哪个新事实引起自主资金 X→Y。
+  original_acceptance: 差分快照与因果来源、数值重算一致；解释不能由 LLM 虚构。
+  reusable_implementation_paths:
+  - apps/api/app/domain/boundary.py
+  - apps/api/app/domain/boundary_types.py
+  - apps/api/app/domain/boundary_details_types.py
+  - apps/api/app/services/boundary.py
+  - apps/api/app/services/financial_read.py
+  - apps/api/app/services/dashboard.py
+  - apps/api/app/services/dashboard_helpers.py
+  - apps/api/app/services/dashboard_types.py
+  - apps/web/src/pages/DashboardPage.tsx
+  - apps/api/app/domain/decision_trace.py
+  - apps/api/app/domain/decision_trace_types.py
+  - apps/api/app/services/decision_trace.py
+  - apps/api/app/services/decision_recording.py
+  - apps/web/src/pages/DecisionTracePage.tsx
+  - apps/web/src/api/decisions.ts
+  reusable_test_paths:
+  - apps/api/app/tests/test_boundary.py
+  - apps/api/app/tests/test_boundary_properties.py
+  - apps/api/app/tests/test_boundary_details.py
+  - apps/api/app/tests/test_boundary_service.py
+  - apps/api/app/tests/test_boundary_api.py
+  - apps/api/app/tests/test_dashboard_api.py
+  - apps/api/app/tests/test_dashboard_read_contracts.py
+  - apps/api/app/tests/test_dashboard_golden_chains.py
+  - apps/web/src/App.test.tsx
+  - apps/api/app/tests/test_decision_trace_domain.py
+  - apps/api/app/tests/test_decision_trace_api.py
+  - apps/api/app/tests/test_decision_trace_audit.py
+  - apps/api/app/tests/test_decision_readonly_transaction.py
+  - apps/web/src/pages/DecisionTracePage.test.tsx
+  - apps/web/src/api/decisions.test.ts
+  reusable_evidence_paths:
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  - docs/progress/evidence/MVP-401/index.json
+  - docs/progress/MVP-303.md
+  - docs/progress/MVP-403.md
+  - docs/progress/evidence/MVP-403/index.json
+  reuse_boundary:
+  - BoundarySnapshot horizon_days 当前 Literal[90]；纯财务引擎与服务来源校验已有，FULL 365 日及统一五集合接口未完成。
+  - 已有真实只读余额分层/保护/归属/自主/下一义务/介入/解释；FULL 时间轴、因果差分与新机制入口待增量。
+  - 已有决策→事实/精确策略版本→原回执→当前审计回溯与真实 Edge 零写；FULL 搜索/版本筛选、冲突图和新增机制字段缺失。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 绑定前后真实快照及新事实来源的数值差分/因果解释
+  - 独立重算 X→Y 与作用约束一致，不由 LLM 生成未发生事实
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-301
+  title: 多目标模型
+  status: PENDING
+  primary_closing_package: W3
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1240
+    traceability_source_lines: F:1240–1242；485–500
+  original_task_text: '### FULL-301 多目标模型
+
+
+    实现目标属性、月度范围、截止日期和资产策略。'
+  original_requirement: 多目标金额、日期、归属、月范围、重要度、最低额、部分/延期、成本、资产及回拨策略。
+  original_acceptance: 数据模型/迁移/Schema/API；所有属性改变的行为测试。
+  reusable_implementation_paths:
+  - apps/api/app/domain/goal_allocation.py
+  - apps/api/app/services/goal_allocation.py
+  - apps/api/app/services/goals.py
+  - apps/api/app/domain/income_ledger.py
+  - apps/api/app/services/income_ledger.py
+  - apps/api/app/domain/policy_configuration.py
+  - apps/api/app/services/policy_lifecycle.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0002_immutable_policy_versions.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_goal_allocation.py
+  - apps/api/app/tests/test_goal_allocation_properties.py
+  - apps/api/app/tests/test_goal_allocation_service.py
+  - apps/api/app/tests/test_income_ledger.py
+  - apps/api/app/tests/test_execution_goal_creation.py
+  - apps/api/app/tests/test_policy_configuration.py
+  - apps/api/app/tests/test_policy_lifecycle.py
+  - apps/api/app/tests/test_policy_execution_lifecycle.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-203.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-103.md
+  reuse_boundary:
+  - 已有单明确目标/FIFO 新资金/月范围/归属保护；多个单目标预览不能求和当成联合分配或 FULL 八层词典序最优。
+  - 严格配置当前仅 RecurringObligation/LivingReserve/GoalSaving/AssetAuthorization/EmergencyBuffer 五类；不可变版本、未提交失效、UNKNOWN
+    保留已有定向覆盖。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 补所有多目标属性：重要度/最低额/部分与延期/延期成本/资产及回拨策略
+  - 数据迁移/Schema/API 和逐属性行为测试
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-302
+  title: 新增资金分配优化
+  status: PENDING
+  primary_closing_package: W3
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1244
+    traceability_source_lines: F:1244–1246；502–515
+  original_task_text: '### FULL-302 新增资金分配优化
+
+
+    实现词典序约束优化。'
+  original_requirement: 新增未归属安全资金词典序优化。
+  original_acceptance: 八层目标顺序、紧资金及优先级冲突测试；独立小规模求解比较；不侵占保护资金。
+  reusable_implementation_paths:
+  - apps/api/app/domain/goal_allocation.py
+  - apps/api/app/services/goal_allocation.py
+  - apps/api/app/services/goals.py
+  - apps/api/app/domain/income_ledger.py
+  - apps/api/app/services/income_ledger.py
+  - apps/api/app/domain/boundary.py
+  - apps/api/app/domain/boundary_types.py
+  - apps/api/app/domain/boundary_details_types.py
+  - apps/api/app/services/boundary.py
+  - apps/api/app/services/financial_read.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_goal_allocation.py
+  - apps/api/app/tests/test_goal_allocation_properties.py
+  - apps/api/app/tests/test_goal_allocation_service.py
+  - apps/api/app/tests/test_income_ledger.py
+  - apps/api/app/tests/test_execution_goal_creation.py
+  - apps/api/app/tests/test_boundary.py
+  - apps/api/app/tests/test_boundary_properties.py
+  - apps/api/app/tests/test_boundary_details.py
+  - apps/api/app/tests/test_boundary_service.py
+  - apps/api/app/tests/test_boundary_api.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-203.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  reuse_boundary:
+  - 已有单明确目标/FIFO 新资金/月范围/归属保护；多个单目标预览不能求和当成联合分配或 FULL 八层词典序最优。
+  - BoundarySnapshot horizon_days 当前 Literal[90]；纯财务引擎与服务来源校验已有，FULL 365 日及统一五集合接口未完成。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 实现新增未归属安全资金八层词典序联合优化
+  - 硬保护/max 为可行域、小规模独立枚举/优先级冲突/容量超限，不用大权重浮点近似
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-303
+  title: 目标归属锁
+  status: PENDING
+  primary_closing_package: W3
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1248
+    traceability_source_lines: F:1248–1250；517–524
+  original_task_text: '### FULL-303 目标归属锁
+
+
+    已归属资金不得默认跨目标移动。'
+  original_requirement: 已归属资金默认不可跨目标移动；归属和资产放置分开。
+  original_acceptance: 同目标资产调整允许、跨目标默认拒绝、账本归属守恒测试。
+  reusable_implementation_paths:
+  - apps/api/app/domain/goal_allocation.py
+  - apps/api/app/services/goal_allocation.py
+  - apps/api/app/services/goals.py
+  - apps/api/app/domain/income_ledger.py
+  - apps/api/app/services/income_ledger.py
+  - apps/api/app/domain/asset_allocation.py
+  - apps/api/app/domain/asset_allocation_types.py
+  - apps/api/app/domain/asset_exposure.py
+  - apps/api/app/services/asset_allocation.py
+  - apps/api/app/domain/recovery.py
+  - apps/api/app/domain/recovery_types.py
+  - apps/api/app/services/recovery.py
+  - apps/api/app/services/recovery_sources.py
+  - apps/api/app/services/recovery_projection.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_goal_allocation.py
+  - apps/api/app/tests/test_goal_allocation_properties.py
+  - apps/api/app/tests/test_goal_allocation_service.py
+  - apps/api/app/tests/test_income_ledger.py
+  - apps/api/app/tests/test_execution_goal_creation.py
+  - apps/api/app/tests/test_asset_allocation.py
+  - apps/api/app/tests/test_asset_allocation_properties.py
+  - apps/api/app/tests/test_asset_allocation_service.py
+  - apps/api/app/tests/test_execution_redemption_flow.py
+  - apps/api/app/tests/test_recovery.py
+  - apps/api/app/tests/test_recovery_properties.py
+  - apps/api/app/tests/test_recovery_service.py
+  - apps/api/app/tests/test_recovery_goal_ownership.py
+  - apps/api/app/tests/test_recovery_receipt_integrity.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-203.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-204.md
+  - docs/progress/MVP-205.md
+  - docs/progress/MVP-302.md
+  reuse_boundary:
+  - 已有单明确目标/FIFO 新资金/月范围/归属保护；多个单目标预览不能求和当成联合分配或 FULL 八层词典序最优。
+  - 已有不可变产品条款引用、有限单产品过滤及明确退出方案；不含多资产联合优化/定存梯度/自动到期再配置。
+  - 已有按可用性恢复、损失授权/T1 真实等待/独立银行回执；FULL 全产品组合恢复与到期事件需新增。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 在多资产联合配置/恢复中验证归属与放置分离
+  - 同目标资产调节允许、跨目标默认拒绝，真实账本归属守恒
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-304
+  title: 跨目标预授权规则
+  status: PENDING
+  primary_closing_package: W3
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1252
+    traceability_source_lines: F:1252–1254
+  original_task_text: '### FULL-304 跨目标预授权规则
+
+
+    仅用户显式开启时允许紧急回拨。'
+  original_requirement: 仅用户显式 CrossGoalReallocationPolicy 允许特定紧急回拨。
+  original_acceptance: 默认关闭、条件/额度/版本限制、撤销、非紧急拒绝测试；回拨证据回执。
+  reusable_implementation_paths:
+  - apps/api/app/domain/goal_allocation.py
+  - apps/api/app/services/goal_allocation.py
+  - apps/api/app/services/goals.py
+  - apps/api/app/domain/income_ledger.py
+  - apps/api/app/services/income_ledger.py
+  - apps/api/app/domain/policy_configuration.py
+  - apps/api/app/services/policy_lifecycle.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0002_immutable_policy_versions.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_goal_allocation.py
+  - apps/api/app/tests/test_goal_allocation_properties.py
+  - apps/api/app/tests/test_goal_allocation_service.py
+  - apps/api/app/tests/test_income_ledger.py
+  - apps/api/app/tests/test_execution_goal_creation.py
+  - apps/api/app/tests/test_policy_configuration.py
+  - apps/api/app/tests/test_policy_lifecycle.py
+  - apps/api/app/tests/test_policy_execution_lifecycle.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-203.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-103.md
+  reuse_boundary:
+  - 已有单明确目标/FIFO 新资金/月范围/归属保护；多个单目标预览不能求和当成联合分配或 FULL 八层词典序最优。
+  - 严格配置当前仅 RecurringObligation/LivingReserve/GoalSaving/AssetAuthorization/EmergencyBuffer 五类；不可变版本、未提交失效、UNKNOWN
+    保留已有定向覆盖。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 实现显式 CrossGoalReallocationPolicy 及特定紧急条件/额度/版本/撤销
+  - 默认关闭与非紧急拒绝，独立回拨经济效果/证据回执
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-305
+  title: 最小冲突集
+  status: PENDING
+  primary_closing_package: W3
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1256
+    traceability_source_lines: F:1256–1258；526–535
+  original_task_text: '### FULL-305 最小冲突集
+
+
+    实现删除式或求解器辅助的最小不可满足约束查找。'
+  original_requirement: 删除式或求解器最小不可满足约束集。
+  original_acceptance: 不可满足及逐项移除后可满足的最小性检验；不能返回全体约束充数。
+  reusable_implementation_paths:
+  - apps/api/app/domain/boundary.py
+  - apps/api/app/domain/boundary_types.py
+  - apps/api/app/domain/boundary_details_types.py
+  - apps/api/app/services/boundary.py
+  - apps/api/app/services/financial_read.py
+  - apps/api/app/domain/goal_allocation.py
+  - apps/api/app/services/goal_allocation.py
+  - apps/api/app/services/goals.py
+  - apps/api/app/domain/income_ledger.py
+  - apps/api/app/services/income_ledger.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_boundary.py
+  - apps/api/app/tests/test_boundary_properties.py
+  - apps/api/app/tests/test_boundary_details.py
+  - apps/api/app/tests/test_boundary_service.py
+  - apps/api/app/tests/test_boundary_api.py
+  - apps/api/app/tests/test_goal_allocation.py
+  - apps/api/app/tests/test_goal_allocation_properties.py
+  - apps/api/app/tests/test_goal_allocation_service.py
+  - apps/api/app/tests/test_income_ledger.py
+  - apps/api/app/tests/test_execution_goal_creation.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  - docs/progress/MVP-203.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-402.md
+  reuse_boundary:
+  - BoundarySnapshot horizon_days 当前 Literal[90]；纯财务引擎与服务来源校验已有，FULL 365 日及统一五集合接口未完成。
+  - 已有单明确目标/FIFO 新资金/月范围/归属保护；多个单目标预览不能求和当成联合分配或 FULL 八层词典序最优。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 共享约束表示上查找不可满足集
+  - 定义子集极小/最小基数实际保证并以独立有限枚举检验，逐项移除后可满足，不能返回全部约束充数
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-306
+  title: 最小修复建议
+  status: PENDING
+  primary_closing_package: W3
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1260
+    traceability_source_lines: F:1260–1262
+  original_task_text: '### FULL-306 最小修复建议
+
+
+    生成只修改必要策略的建议，并展示不受影响部分。'
+  original_requirement: 仅必要可调整策略修复，排序最少改动/偏离/优先级损失，展示不受影响部分。
+  original_acceptance: 修复可行性和最小性测试；硬策略不能放松；确认后新版本。
+  reusable_implementation_paths:
+  - apps/api/app/domain/boundary.py
+  - apps/api/app/domain/boundary_types.py
+  - apps/api/app/domain/boundary_details_types.py
+  - apps/api/app/services/boundary.py
+  - apps/api/app/services/financial_read.py
+  - apps/api/app/domain/goal_allocation.py
+  - apps/api/app/services/goal_allocation.py
+  - apps/api/app/services/goals.py
+  - apps/api/app/domain/income_ledger.py
+  - apps/api/app/services/income_ledger.py
+  - apps/api/app/domain/policy_configuration.py
+  - apps/api/app/services/policy_lifecycle.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0002_immutable_policy_versions.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_boundary.py
+  - apps/api/app/tests/test_boundary_properties.py
+  - apps/api/app/tests/test_boundary_details.py
+  - apps/api/app/tests/test_boundary_service.py
+  - apps/api/app/tests/test_boundary_api.py
+  - apps/api/app/tests/test_goal_allocation.py
+  - apps/api/app/tests/test_goal_allocation_properties.py
+  - apps/api/app/tests/test_goal_allocation_service.py
+  - apps/api/app/tests/test_income_ledger.py
+  - apps/api/app/tests/test_execution_goal_creation.py
+  - apps/api/app/tests/test_policy_configuration.py
+  - apps/api/app/tests/test_policy_lifecycle.py
+  - apps/api/app/tests/test_policy_execution_lifecycle.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  - docs/progress/MVP-203.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-103.md
+  reuse_boundary:
+  - BoundarySnapshot horizon_days 当前 Literal[90]；纯财务引擎与服务来源校验已有，FULL 365 日及统一五集合接口未完成。
+  - 已有单明确目标/FIFO 新资金/月范围/归属保护；多个单目标预览不能求和当成联合分配或 FULL 八层词典序最优。
+  - 严格配置当前仅 RecurringObligation/LivingReserve/GoalSaving/AssetAuthorization/EmergencyBuffer 五类；不可变版本、未提交失效、UNKNOWN
+    保留已有定向覆盖。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 仅可调整策略的最小修复，按改动数/偏离/优先级损失排序
+  - 独立验证修复可行与最小、不放松硬策略，展示未受影响部分且确认生成新版本
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-307
+  title: 目标进度与动态节奏
+  status: PENDING
+  primary_closing_package: W3
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1264
+    traceability_source_lines: F:1264–1266
+  original_task_text: '### FULL-307 目标进度与动态节奏
+
+
+    在 `[min,target,max]` 范围内自动调整当期储备。'
+  original_requirement: '[min,target,max] 内动态月储备与进度。'
+  original_acceptance: 月周期、已归属、剩余目标、上下限及重复事件测试；进度真实账本关联。
+  reusable_implementation_paths:
+  - apps/api/app/domain/goal_allocation.py
+  - apps/api/app/services/goal_allocation.py
+  - apps/api/app/services/goals.py
+  - apps/api/app/domain/income_ledger.py
+  - apps/api/app/services/income_ledger.py
+  - apps/web/src/pages/PolicyCenterPage.tsx
+  - apps/web/src/pages/GoalsPage.tsx
+  - apps/web/src/features/policy-form.ts
+  - apps/web/src/components/PolicyConfigForm.tsx
+  reusable_test_paths:
+  - apps/api/app/tests/test_goal_allocation.py
+  - apps/api/app/tests/test_goal_allocation_properties.py
+  - apps/api/app/tests/test_goal_allocation_service.py
+  - apps/api/app/tests/test_income_ledger.py
+  - apps/api/app/tests/test_execution_goal_creation.py
+  - apps/web/src/pages/PolicyCenterPage.test.tsx
+  - apps/web/src/pages/GoalsPage.test.tsx
+  - apps/web/src/features/policy-form.test.ts
+  reusable_evidence_paths:
+  - docs/progress/MVP-203.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-402.md
+  - docs/progress/evidence/MVP-402/index.json
+  reuse_boundary:
+  - 已有单明确目标/FIFO 新资金/月范围/归属保护；多个单目标预览不能求和当成联合分配或 FULL 八层词典序最优。
+  - 已有策略候选/修改预览/确认/暂停/撤销/历史和目标归属展示；无首次八步引导、依赖地图及多目标冲突修复完整流程。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 多目标动态月节奏/到期/剩余目标/延期与联合分配进度
+  - 月周期和重复事件真实账本关联，上下限不能被联合优化绕过
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-401
+  title: 产品目录版本化
+  status: PENDING
+  primary_closing_package: W4
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1272
+    traceability_source_lines: F:1272–1274；563–578
+  original_task_text: '### FULL-401 产品目录版本化
+
+
+    产品属性变更后，旧决策仍能使用当时版本复现。'
+  original_requirement: 产品属性不可变版本、有效日期，旧决策使用当时版本复现。
+  original_acceptance: 产品变更后旧 run 重放一致；目录版本与决策引用约束。
+  reusable_implementation_paths:
+  - apps/api/app/domain/asset_allocation.py
+  - apps/api/app/domain/asset_allocation_types.py
+  - apps/api/app/domain/asset_exposure.py
+  - apps/api/app/services/asset_allocation.py
+  - apps/api/app/domain/decision_trace.py
+  - apps/api/app/domain/decision_trace_types.py
+  - apps/api/app/services/decision_trace.py
+  - apps/api/app/services/decision_recording.py
+  - apps/web/src/pages/DecisionTracePage.tsx
+  - apps/web/src/api/decisions.ts
+  reusable_test_paths:
+  - apps/api/app/tests/test_asset_allocation.py
+  - apps/api/app/tests/test_asset_allocation_properties.py
+  - apps/api/app/tests/test_asset_allocation_service.py
+  - apps/api/app/tests/test_execution_redemption_flow.py
+  - apps/api/app/tests/test_decision_trace_domain.py
+  - apps/api/app/tests/test_decision_trace_api.py
+  - apps/api/app/tests/test_decision_trace_audit.py
+  - apps/api/app/tests/test_decision_readonly_transaction.py
+  - apps/web/src/pages/DecisionTracePage.test.tsx
+  - apps/web/src/api/decisions.test.ts
+  reusable_evidence_paths:
+  - docs/progress/MVP-204.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-303.md
+  - docs/progress/MVP-403.md
+  - docs/progress/evidence/MVP-403/index.json
+  reuse_boundary:
+  - 已有不可变产品条款引用、有限单产品过滤及明确退出方案；不含多资产联合优化/定存梯度/自动到期再配置。
+  - 已有决策→事实/精确策略版本→原回执→当前审计回溯与真实 Edge 零写；FULL 搜索/版本筛选、冲突图和新增机制字段缺失。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 完整产品目录不可变版本/有效日期合同与真实更新路径
+  - 产品变更后旧 run 用原版本重放一致、目录版本与决策引用约束
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-402
+  title: 资产可行性过滤
+  status: PENDING
+  primary_closing_package: W4
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1276
+    traceability_source_lines: F:1276–1278
+  original_task_text: '### FULL-402 资产可行性过滤
+
+
+    实现风险、额度、流动性、锁定、使用日期和起投约束。'
+  original_requirement: 风险、额度、流动性、锁定、使用日期、起投等过滤。
+  original_acceptance: 各约束独立负例与组合冲突；本金波动资产不入 AUTO；过滤理由。
+  reusable_implementation_paths:
+  - apps/api/app/domain/asset_allocation.py
+  - apps/api/app/domain/asset_allocation_types.py
+  - apps/api/app/domain/asset_exposure.py
+  - apps/api/app/services/asset_allocation.py
+  - apps/api/app/domain/boundary.py
+  - apps/api/app/domain/boundary_types.py
+  - apps/api/app/domain/boundary_details_types.py
+  - apps/api/app/services/boundary.py
+  - apps/api/app/services/financial_read.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_asset_allocation.py
+  - apps/api/app/tests/test_asset_allocation_properties.py
+  - apps/api/app/tests/test_asset_allocation_service.py
+  - apps/api/app/tests/test_execution_redemption_flow.py
+  - apps/api/app/tests/test_boundary.py
+  - apps/api/app/tests/test_boundary_properties.py
+  - apps/api/app/tests/test_boundary_details.py
+  - apps/api/app/tests/test_boundary_service.py
+  - apps/api/app/tests/test_boundary_api.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-204.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  reuse_boundary:
+  - 已有不可变产品条款引用、有限单产品过滤及明确退出方案；不含多资产联合优化/定存梯度/自动到期再配置。
+  - BoundarySnapshot horizon_days 当前 Literal[90]；纯财务引擎与服务来源校验已有，FULL 365 日及统一五集合接口未完成。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 补全部 CASH/T0/T1/FD7/FD30/FD90/LOW_RISK_TERM 属性与类别
+  - 风险/本金波动/起投/额度/锁定/用款日期/授权组合独立负例与过滤理由
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-403
+  title: 多资产优化
+  status: PENDING
+  primary_closing_package: W4
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1280
+    traceability_source_lines: F:1280–1282；580–589
+  original_task_text: '### FULL-403 多资产优化
+
+
+    支持在有限产品中分配，但限制组合复杂度和换手。'
+  original_requirement: 有限多资产优化，限制组合复杂度、换手，遵循安全后收益顺序。
+  original_acceptance: 约束可行性、复杂度/换手限制、确定性收益、并列流动性测试。
+  reusable_implementation_paths:
+  - apps/api/app/domain/asset_allocation.py
+  - apps/api/app/domain/asset_allocation_types.py
+  - apps/api/app/domain/asset_exposure.py
+  - apps/api/app/services/asset_allocation.py
+  - apps/api/app/domain/goal_allocation.py
+  - apps/api/app/services/goal_allocation.py
+  - apps/api/app/services/goals.py
+  - apps/api/app/domain/income_ledger.py
+  - apps/api/app/services/income_ledger.py
+  - apps/api/app/domain/boundary.py
+  - apps/api/app/domain/boundary_types.py
+  - apps/api/app/domain/boundary_details_types.py
+  - apps/api/app/services/boundary.py
+  - apps/api/app/services/financial_read.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_asset_allocation.py
+  - apps/api/app/tests/test_asset_allocation_properties.py
+  - apps/api/app/tests/test_asset_allocation_service.py
+  - apps/api/app/tests/test_execution_redemption_flow.py
+  - apps/api/app/tests/test_goal_allocation.py
+  - apps/api/app/tests/test_goal_allocation_properties.py
+  - apps/api/app/tests/test_goal_allocation_service.py
+  - apps/api/app/tests/test_income_ledger.py
+  - apps/api/app/tests/test_execution_goal_creation.py
+  - apps/api/app/tests/test_boundary.py
+  - apps/api/app/tests/test_boundary_properties.py
+  - apps/api/app/tests/test_boundary_details.py
+  - apps/api/app/tests/test_boundary_service.py
+  - apps/api/app/tests/test_boundary_api.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-204.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-203.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  reuse_boundary:
+  - 已有不可变产品条款引用、有限单产品过滤及明确退出方案；不含多资产联合优化/定存梯度/自动到期再配置。
+  - 已有单明确目标/FIFO 新资金/月范围/归属保护；多个单目标预览不能求和当成联合分配或 FULL 八层词典序最优。
+  - BoundarySnapshot horizon_days 当前 Literal[90]；纯财务引擎与服务来源校验已有，FULL 365 日及统一五集合接口未完成。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 有限多资产联合分配与复杂度/换手/费用限制
+  - 先安全授权后净模拟收益、并列流动性，独立小规模最优解比较和容量失败状态
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-404
+  title: 定存梯度
+  status: PENDING
+  primary_closing_package: W4
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1284
+    traceability_source_lines: F:1284–1286；591–599
+  original_task_text: '### FULL-404 定存梯度
+
+
+    为长期目标生成到期匹配方案。'
+  original_requirement: 长期目标定存梯度、每批授权限额、截止前到期。
+  original_acceptance: 多批日期/金额/目标策略/到期匹配；近期开支不锁长期的反例。
+  reusable_implementation_paths:
+  - apps/api/app/domain/asset_allocation.py
+  - apps/api/app/domain/asset_allocation_types.py
+  - apps/api/app/domain/asset_exposure.py
+  - apps/api/app/services/asset_allocation.py
+  - apps/api/app/domain/goal_allocation.py
+  - apps/api/app/services/goal_allocation.py
+  - apps/api/app/services/goals.py
+  - apps/api/app/domain/income_ledger.py
+  - apps/api/app/services/income_ledger.py
+  - apps/api/app/domain/execution.py
+  - apps/api/app/domain/execution_types.py
+  - apps/api/app/services/execution.py
+  - apps/api/app/services/execution_bank.py
+  - apps/api/app/services/execution_reservations.py
+  - apps/api/app/services/execution_projection.py
+  - apps/api/app/services/action_contracts.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_asset_allocation.py
+  - apps/api/app/tests/test_asset_allocation_properties.py
+  - apps/api/app/tests/test_asset_allocation_service.py
+  - apps/api/app/tests/test_execution_redemption_flow.py
+  - apps/api/app/tests/test_goal_allocation.py
+  - apps/api/app/tests/test_goal_allocation_properties.py
+  - apps/api/app/tests/test_goal_allocation_service.py
+  - apps/api/app/tests/test_income_ledger.py
+  - apps/api/app/tests/test_execution_goal_creation.py
+  - apps/api/app/tests/test_execution_domain.py
+  - apps/api/app/tests/test_execution_service.py
+  - apps/api/app/tests/test_execution_failures.py
+  - apps/api/app/tests/test_execution_reservations.py
+  - apps/api/app/tests/test_execution_receipt_integrity.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-204.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-203.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-302.md
+  reuse_boundary:
+  - 已有不可变产品条款引用、有限单产品过滤及明确退出方案；不含多资产联合优化/定存梯度/自动到期再配置。
+  - 已有单明确目标/FIFO 新资金/月范围/归属保护；多个单目标预览不能求和当成联合分配或 FULL 八层词典序最优。
+  - 已有分阶段独立提交、幂等、UNKNOWN 查询/投影及资源预留；当前 ActionType 仅五类，完整动作合同、持久消息和重启矩阵未验收。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 到期匹配的定存梯度批次/每批授权与限额
+  - 各批日期/金额/目标截止匹配、短期义务不锁长期、真实开立效果测试
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-405
+  title: 提前支取影响
+  status: PENDING
+  primary_closing_package: W4
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1288
+    traceability_source_lines: F:1288–1290
+  original_task_text: '### FULL-405 提前支取影响
+
+
+    计算损失、恢复时间和是否超授权。'
+  original_requirement: 提前支取损失、恢复时间与授权后果计算。
+  original_acceptance: 损失金额独立计算、时间与版本测试；有损默认 ASK_ONCE，不能自动填安全现金。
+  reusable_implementation_paths:
+  - apps/api/app/domain/recovery.py
+  - apps/api/app/domain/recovery_types.py
+  - apps/api/app/services/recovery.py
+  - apps/api/app/services/recovery_sources.py
+  - apps/api/app/services/recovery_projection.py
+  - apps/api/app/domain/asset_allocation.py
+  - apps/api/app/domain/asset_allocation_types.py
+  - apps/api/app/domain/asset_exposure.py
+  - apps/api/app/services/asset_allocation.py
+  - apps/api/app/domain/execution.py
+  - apps/api/app/domain/execution_types.py
+  - apps/api/app/services/execution.py
+  - apps/api/app/services/execution_bank.py
+  - apps/api/app/services/execution_reservations.py
+  - apps/api/app/services/execution_projection.py
+  - apps/api/app/services/action_contracts.py
+  - apps/api/app/services/demo_console.py
+  - apps/api/app/services/demo_console_types.py
+  - apps/api/app/api/v1/demo.py
+  - apps/api/app/services/simulated_redemption_quote.py
+  - apps/web/src/pages/DemoConsolePage.tsx
+  - apps/web/src/features/demo-operation.ts
+  reusable_test_paths:
+  - apps/api/app/tests/test_recovery.py
+  - apps/api/app/tests/test_recovery_properties.py
+  - apps/api/app/tests/test_recovery_service.py
+  - apps/api/app/tests/test_recovery_goal_ownership.py
+  - apps/api/app/tests/test_recovery_receipt_integrity.py
+  - apps/api/app/tests/test_asset_allocation.py
+  - apps/api/app/tests/test_asset_allocation_properties.py
+  - apps/api/app/tests/test_asset_allocation_service.py
+  - apps/api/app/tests/test_execution_redemption_flow.py
+  - apps/api/app/tests/test_execution_domain.py
+  - apps/api/app/tests/test_execution_service.py
+  - apps/api/app/tests/test_execution_failures.py
+  - apps/api/app/tests/test_execution_reservations.py
+  - apps/api/app/tests/test_execution_receipt_integrity.py
+  - apps/api/app/tests/test_demo_console.py
+  - apps/api/app/tests/test_demo_console_types.py
+  - apps/api/app/tests/test_simulated_redemption_quote.py
+  - apps/web/src/pages/DemoConsolePage.test.tsx
+  - apps/web/src/features/demo-operation.test.ts
+  reusable_evidence_paths:
+  - docs/progress/MVP-205.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-302.md
+  - docs/progress/MVP-204.md
+  - docs/progress/MVP-404.md
+  reuse_boundary:
+  - 已有按可用性恢复、损失授权/T1 真实等待/独立银行回执；FULL 全产品组合恢复与到期事件需新增。
+  - 已有不可变产品条款引用、有限单产品过滤及明确退出方案；不含多资产联合优化/定存梯度/自动到期再配置。
+  - 已有分阶段独立提交、幂等、UNKNOWN 查询/投影及资源预留；当前 ActionType 仅五类，完整动作合同、持久消息和重启矩阵未验收。
+  - 当前未提交 MVP-404 草稿 IN_PROGRESS，只记录候选复用；尚未连续三轮、正式关闭或 FULL 可调参数模拟器验收。
+  dirty_candidate_paths:
+  - apps/api/app/services/demo_console.py
+  - apps/api/app/services/demo_console_types.py
+  - apps/api/app/api/v1/demo.py
+  - apps/api/app/services/simulated_redemption_quote.py
+  - apps/web/src/pages/DemoConsolePage.tsx
+  - apps/web/src/features/demo-operation.ts
+  missing_increments:
+  - 对全部定存类型计算提前支取损失/恢复时间/授权后果
+  - MVP-404 未提交报价仅候选复用，需独立损失真值及有损 ASK_ONCE/确认证据绑定
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-406
+  title: 到期再配置
+  status: PENDING
+  primary_closing_package: W4
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1292
+    traceability_source_lines: F:1292–1294
+  original_task_text: '### FULL-406 到期再配置
+
+
+    到期时重新使用最新策略和边界，不自动沿用旧产品。'
+  original_requirement: 到期使用当前策略和边界重新配置，不沿用旧产品。
+  original_acceptance: 到期前撤销/改策略/产品变更场景；新决策与回执、幂等到期事件。
+  reusable_implementation_paths:
+  - apps/api/app/domain/asset_allocation.py
+  - apps/api/app/domain/asset_allocation_types.py
+  - apps/api/app/domain/asset_exposure.py
+  - apps/api/app/services/asset_allocation.py
+  - apps/api/app/domain/policy_configuration.py
+  - apps/api/app/services/policy_lifecycle.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0002_immutable_policy_versions.py
+  - apps/api/app/domain/execution.py
+  - apps/api/app/domain/execution_types.py
+  - apps/api/app/services/execution.py
+  - apps/api/app/services/execution_bank.py
+  - apps/api/app/services/execution_reservations.py
+  - apps/api/app/services/execution_projection.py
+  - apps/api/app/services/action_contracts.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_asset_allocation.py
+  - apps/api/app/tests/test_asset_allocation_properties.py
+  - apps/api/app/tests/test_asset_allocation_service.py
+  - apps/api/app/tests/test_execution_redemption_flow.py
+  - apps/api/app/tests/test_policy_configuration.py
+  - apps/api/app/tests/test_policy_lifecycle.py
+  - apps/api/app/tests/test_policy_execution_lifecycle.py
+  - apps/api/app/tests/test_execution_domain.py
+  - apps/api/app/tests/test_execution_service.py
+  - apps/api/app/tests/test_execution_failures.py
+  - apps/api/app/tests/test_execution_reservations.py
+  - apps/api/app/tests/test_execution_receipt_integrity.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-204.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-103.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-302.md
+  reuse_boundary:
+  - 已有不可变产品条款引用、有限单产品过滤及明确退出方案；不含多资产联合优化/定存梯度/自动到期再配置。
+  - 严格配置当前仅 RecurringObligation/LivingReserve/GoalSaving/AssetAuthorization/EmergencyBuffer 五类；不可变版本、未提交失效、UNKNOWN
+    保留已有定向覆盖。
+  - 已有分阶段独立提交、幂等、UNKNOWN 查询/投影及资源预留；当前 ActionType 仅五类，完整动作合同、持久消息和重启矩阵未验收。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 幂等到期事实事件及最新策略/边界重新配置
+  - 撤销/修改/产品变更不能沿用旧授权，新决策/实际回执与重启重放
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-501
+  title: 不确定变量表示
+  status: PENDING
+  primary_closing_package: W5
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1300
+    traceability_source_lines: F:1300–1302；613–623
+  original_task_text: '### FULL-501 不确定变量表示
+
+
+    定义有限候选、来源和影响范围。'
+  original_requirement: 不确定变量有限候选、来源、影响范围。
+  original_acceptance: 变量 Schema/候选合法性、缺证保持未知；禁止置信度当金融安全概率。
+  reusable_implementation_paths:
+  - apps/api/app/domain/autonomy.py
+  - apps/api/app/domain/autonomy_types.py
+  - apps/api/app/services/autonomy.py
+  - apps/api/app/services/execution_context.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_autonomy_domain.py
+  - apps/api/app/tests/test_autonomy_service.py
+  - apps/api/app/tests/test_autonomy_api.py
+  - apps/api/app/tests/test_execution_context.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-302.md
+  reuse_boundary:
+  - 已有四级分类与经济签名；有限偏好只支持一个 amount_cents 变量、2–8 候选，非通用多变量/minimax 问答。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 通用有限不确定变量 Schema、来源与动作依赖/影响范围
+  - 多变量/缺证/容量完整性，不把置信度当资金安全概率
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-502
+  title: 反事实动作运行
+  status: PENDING
+  primary_closing_package: W5
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1304
+    traceability_source_lines: F:1304–1306
+  original_task_text: '### FULL-502 反事实动作运行
+
+
+    对不同候选世界运行确定性引擎。'
+  original_requirement: 候选世界分别运行确定性引擎。
+  original_acceptance: 真实引擎调用及世界→动作轨迹；世界隔离不产生执行副作用。
+  reusable_implementation_paths:
+  - apps/api/app/domain/autonomy.py
+  - apps/api/app/domain/autonomy_types.py
+  - apps/api/app/services/autonomy.py
+  - apps/api/app/services/execution_context.py
+  - apps/api/app/domain/boundary.py
+  - apps/api/app/domain/boundary_types.py
+  - apps/api/app/domain/boundary_details_types.py
+  - apps/api/app/services/boundary.py
+  - apps/api/app/services/financial_read.py
+  - apps/api/app/domain/asset_allocation.py
+  - apps/api/app/domain/asset_allocation_types.py
+  - apps/api/app/domain/asset_exposure.py
+  - apps/api/app/services/asset_allocation.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_autonomy_domain.py
+  - apps/api/app/tests/test_autonomy_service.py
+  - apps/api/app/tests/test_autonomy_api.py
+  - apps/api/app/tests/test_execution_context.py
+  - apps/api/app/tests/test_boundary.py
+  - apps/api/app/tests/test_boundary_properties.py
+  - apps/api/app/tests/test_boundary_details.py
+  - apps/api/app/tests/test_boundary_service.py
+  - apps/api/app/tests/test_boundary_api.py
+  - apps/api/app/tests/test_asset_allocation.py
+  - apps/api/app/tests/test_asset_allocation_properties.py
+  - apps/api/app/tests/test_asset_allocation_service.py
+  - apps/api/app/tests/test_execution_redemption_flow.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-302.md
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  - docs/progress/MVP-204.md
+  - docs/progress/MVP-301.md
+  reuse_boundary:
+  - 已有四级分类与经济签名；有限偏好只支持一个 amount_cents 变量、2–8 候选，非通用多变量/minimax 问答。
+  - BoundarySnapshot horizon_days 当前 Literal[90]；纯财务引擎与服务来源校验已有，FULL 365 日及统一五集合接口未完成。
+  - 已有不可变产品条款引用、有限单产品过滤及明确退出方案；不含多资产联合优化/定存梯度/自动到期再配置。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 每候选世界使用脱离 ORM 的不可变快照调用 W3/W4 同一确定性引擎
+  - 世界隔离零写/完整动作轨迹，剪枝须与小规模完整枚举一致
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-503
+  title: 动作稳定性判断
+  status: PENDING
+  primary_closing_package: W5
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1308
+    traceability_source_lines: F:1308–1310
+  original_task_text: '### FULL-503 动作稳定性判断
+
+
+    若所有世界动作一致，不询问。'
+  original_requirement: 全部世界动作一致不询问。
+  original_acceptance: 一致/类别差异/金额差异/归属差异/风险差异测试；不只比较文本标签。
+  reusable_implementation_paths:
+  - apps/api/app/domain/autonomy.py
+  - apps/api/app/domain/autonomy_types.py
+  - apps/api/app/services/autonomy.py
+  - apps/api/app/services/execution_context.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_autonomy_domain.py
+  - apps/api/app/tests/test_autonomy_service.py
+  - apps/api/app/tests/test_autonomy_api.py
+  - apps/api/app/tests/test_execution_context.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-302.md
+  reuse_boundary:
+  - 已有四级分类与经济签名；有限偏好只支持一个 amount_cents 变量、2–8 候选，非通用多变量/minimax 问答。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 比较全部动作类型/金额/收款关系/源目标账户/归属/风险费用损失/到账/权限
+  - 全世界一致才不询问，候选不完整/超限保留 UNKNOWN
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-504
+  title: Minimax问题选择
+  status: PENDING
+  primary_closing_package: W5
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1312
+    traceability_source_lines: F:1312–1314；625–638
+  original_task_text: '### FULL-504 Minimax问题选择
+
+
+    选择最能减少动作分歧的问题。'
+  original_requirement: minimax 选择回答后最大残余动作分歧最小的问题。
+  original_acceptance: 独立枚举小例验证最优选择、并列规则、非概率运行；与全量确认基线比较。
+  reusable_implementation_paths:
+  - apps/api/app/domain/autonomy.py
+  - apps/api/app/domain/autonomy_types.py
+  - apps/api/app/services/autonomy.py
+  - apps/api/app/services/execution_context.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_autonomy_domain.py
+  - apps/api/app/tests/test_autonomy_service.py
+  - apps/api/app/tests/test_autonomy_api.py
+  - apps/api/app/tests/test_execution_context.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-302.md
+  reuse_boundary:
+  - 已有四级分类与经济签名；有限偏好只支持一个 amount_cents 变量、2–8 候选，非通用多变量/minimax 问答。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 定义可回答集合/残余动作分歧/minimax 一步最优与并列规则
+  - 独立完整枚举证明问题选择、与全量确认比较，不宣传整树总问题最少
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-505
+  title: 一次一问状态机
+  status: PENDING
+  primary_closing_package: W5
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1316
+    traceability_source_lines: F:1316–1318
+  original_task_text: '### FULL-505 一次一问状态机
+
+
+    回答后重新计算，旧候选和旧确认失效。'
+  original_requirement: 一次一问，回答后重算，旧候选与旧确认失效。
+  original_acceptance: 状态机/答案验证/重放/过期答案/并发新事实测试；回答后的新 run。
+  reusable_implementation_paths:
+  - apps/api/app/domain/policy_configuration.py
+  - apps/api/app/services/policy_lifecycle.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0002_immutable_policy_versions.py
+  - apps/api/app/domain/autonomy.py
+  - apps/api/app/domain/autonomy_types.py
+  - apps/api/app/services/autonomy.py
+  - apps/api/app/services/execution_context.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_policy_configuration.py
+  - apps/api/app/tests/test_policy_lifecycle.py
+  - apps/api/app/tests/test_policy_execution_lifecycle.py
+  - apps/api/app/tests/test_autonomy_domain.py
+  - apps/api/app/tests/test_autonomy_service.py
+  - apps/api/app/tests/test_autonomy_api.py
+  - apps/api/app/tests/test_execution_context.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-103.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-302.md
+  reuse_boundary:
+  - 严格配置当前仅 RecurringObligation/LivingReserve/GoalSaving/AssetAuthorization/EmergencyBuffer 五类；不可变版本、未提交失效、UNKNOWN
+    保留已有定向覆盖。
+  - 已有四级分类与经济签名；有限偏好只支持一个 amount_cents 变量、2–8 候选，非通用多变量/minimax 问答。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 持久一次一问/答案校验/回答后新 run
+  - 旧候选确认失效、答案过期/并发新事实/重放/重启，回答不得自动扩增策略权限
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-506
+  title: 问题解释
+  status: PENDING
+  primary_closing_package: W5
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1320
+    traceability_source_lines: F:1320–1322
+  original_task_text: '### FULL-506 问题解释
+
+
+    告诉用户“为什么这个问题会改变金融动作”。'
+  original_requirement: 解释为什么这个问题改变金融动作。
+  original_acceptance: 问题→候选世界→受影响动作证据；解释金额和后果与计算一致。
+  reusable_implementation_paths:
+  - apps/api/app/domain/autonomy.py
+  - apps/api/app/domain/autonomy_types.py
+  - apps/api/app/services/autonomy.py
+  - apps/api/app/services/execution_context.py
+  - apps/api/app/domain/decision_trace.py
+  - apps/api/app/domain/decision_trace_types.py
+  - apps/api/app/services/decision_trace.py
+  - apps/api/app/services/decision_recording.py
+  - apps/web/src/pages/DecisionTracePage.tsx
+  - apps/web/src/api/decisions.ts
+  reusable_test_paths:
+  - apps/api/app/tests/test_autonomy_domain.py
+  - apps/api/app/tests/test_autonomy_service.py
+  - apps/api/app/tests/test_autonomy_api.py
+  - apps/api/app/tests/test_execution_context.py
+  - apps/api/app/tests/test_decision_trace_domain.py
+  - apps/api/app/tests/test_decision_trace_api.py
+  - apps/api/app/tests/test_decision_trace_audit.py
+  - apps/api/app/tests/test_decision_readonly_transaction.py
+  - apps/web/src/pages/DecisionTracePage.test.tsx
+  - apps/web/src/api/decisions.test.ts
+  reusable_evidence_paths:
+  - docs/progress/MVP-302.md
+  - docs/progress/MVP-303.md
+  - docs/progress/MVP-403.md
+  - docs/progress/evidence/MVP-403/index.json
+  reuse_boundary:
+  - 已有四级分类与经济签名；有限偏好只支持一个 amount_cents 变量、2–8 候选，非通用多变量/minimax 问答。
+  - 已有决策→事实/精确策略版本→原回执→当前审计回溯与真实 Edge 零写；FULL 搜索/版本筛选、冲突图和新增机制字段缺失。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 问题→候选世界→受影响动作的确定性解释
+  - 金额与风险后果逐字段对真实计算，缺失变量不由文字补造
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-507
+  title: 介入去重与节流
+  status: PENDING
+  primary_closing_package: W5
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1324
+    traceability_source_lines: F:1324–1326
+  original_task_text: '### FULL-507 介入去重与节流
+
+
+    同一边界事件不得重复弹出；非动作变化只记录。'
+  original_requirement: 同一边界事件介入去重、节流，非动作变化只记录。
+  original_acceptance: 重复事件与重启后不重复弹出；新有效事件不漏问；状态更新不弹窗。
+  reusable_implementation_paths:
+  - apps/api/app/domain/audit_chain.py
+  - apps/api/app/domain/audit_chain_types.py
+  - apps/api/app/services/audit_chain.py
+  - apps/api/app/services/audit_recording.py
+  - apps/api/app/db/audit_guard.py
+  - scripts/verify_audit_chain.py
+  - apps/api/app/domain/autonomy.py
+  - apps/api/app/domain/autonomy_types.py
+  - apps/api/app/services/autonomy.py
+  - apps/api/app/services/execution_context.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_audit_chain_domain.py
+  - apps/api/app/tests/test_audit_subject_encoding.py
+  - apps/api/app/tests/test_audit_storage.py
+  - apps/api/app/tests/test_audit_guard.py
+  - apps/api/app/tests/test_audit_workflow_integration.py
+  - apps/api/app/tests/test_audit_cli.py
+  - apps/api/app/tests/test_autonomy_domain.py
+  - apps/api/app/tests/test_autonomy_service.py
+  - apps/api/app/tests/test_autonomy_api.py
+  - apps/api/app/tests/test_execution_context.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-304.md
+  - docs/progress/MVP-401.md
+  - docs/progress/MVP-302.md
+  reuse_boundary:
+  - 已有 append-only 存储门、原件 canonical/hash、缺失/篡改/检查点诊断；历史 LEGACY_UNAUDITED 保留，hash 不是签名或外部存证。
+  - 已有四级分类与经济签名；有限偏好只支持一个 amount_cents 变量、2–8 候选，非通用多变量/minimax 问答。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 介入事件持久去重/节流与重启恢复
+  - 重复边界不重复弹出、无动作变化仅记录，用户确认事件不能被去重吞掉
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-601
+  title: 完整动作状态机
+  status: PENDING
+  primary_closing_package: W2
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1332
+    traceability_source_lines: F:1332–1334；670–683
+  original_task_text: '### FULL-601 完整动作状态机
+
+
+    实现 UNKNOWN、重试、对账和终态。'
+  original_requirement: 完整状态机、UNKNOWN、重试、对账、终态，root/attempt/幂等关联。
+  original_acceptance: 超时/丢回执/实际已成功/终败测试；UNKNOWN 不按失败盲重试；非法转移拒绝。
+  reusable_implementation_paths:
+  - apps/api/app/domain/execution.py
+  - apps/api/app/domain/execution_types.py
+  - apps/api/app/services/execution.py
+  - apps/api/app/services/execution_bank.py
+  - apps/api/app/services/execution_reservations.py
+  - apps/api/app/services/execution_projection.py
+  - apps/api/app/services/action_contracts.py
+  - apps/api/app/services/simulated_bank.py
+  - apps/api/app/domain/bank_posting_codec.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0004_execution_bank.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_execution_domain.py
+  - apps/api/app/tests/test_execution_service.py
+  - apps/api/app/tests/test_execution_failures.py
+  - apps/api/app/tests/test_execution_reservations.py
+  - apps/api/app/tests/test_execution_receipt_integrity.py
+  - apps/api/app/tests/test_simulated_bank.py
+  - apps/api/app/tests/test_execution_bank.py
+  - apps/api/app/tests/test_execution_projection.py
+  - apps/api/app/tests/test_external_bank_pending_reconciliation.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-302.md
+  - docs/progress/MVP-401.md
+  reuse_boundary:
+  - 已有分阶段独立提交、幂等、UNKNOWN 查询/投影及资源预留；当前 ActionType 仅五类，完整动作合同、持久消息和重启矩阵未验收。
+  - 已有独立模拟 BankOperation/Posting 真值、余额/持仓投影与独立提交；应用日志不是到账证明，FULL 完整消息/各产品对账尚待验证。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 定义完整 root/attempt/幂等/版本/终态合同及九类动作覆盖
+  - 丢回执/已成功/终败/UNKNOWN 不盲重试与非法状态转移、重启恢复矩阵
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-602
+  title: Outbox/Inbox
+  status: PENDING
+  primary_closing_package: W2
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1336
+    traceability_source_lines: F:1336–1338
+  original_task_text: '### FULL-602 Outbox/Inbox
+
+
+    保证动作消息不因重启丢失或重复。'
+  original_requirement: 持久 Outbox/Inbox，重启消息不丢失不重复。
+  original_acceptance: 在写入、提交、发送、接收边界故障注入；重启恢复和单次副作用证明。
+  reusable_implementation_paths:
+  - apps/api/app/domain/execution.py
+  - apps/api/app/domain/execution_types.py
+  - apps/api/app/services/execution.py
+  - apps/api/app/services/execution_bank.py
+  - apps/api/app/services/execution_reservations.py
+  - apps/api/app/services/execution_projection.py
+  - apps/api/app/services/action_contracts.py
+  - apps/api/app/services/simulated_bank.py
+  - apps/api/app/domain/bank_posting_codec.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0004_execution_bank.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_execution_domain.py
+  - apps/api/app/tests/test_execution_service.py
+  - apps/api/app/tests/test_execution_failures.py
+  - apps/api/app/tests/test_execution_reservations.py
+  - apps/api/app/tests/test_execution_receipt_integrity.py
+  - apps/api/app/tests/test_simulated_bank.py
+  - apps/api/app/tests/test_execution_bank.py
+  - apps/api/app/tests/test_execution_projection.py
+  - apps/api/app/tests/test_external_bank_pending_reconciliation.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-302.md
+  - docs/progress/MVP-401.md
+  reuse_boundary:
+  - 已有分阶段独立提交、幂等、UNKNOWN 查询/投影及资源预留；当前 ActionType 仅五类，完整动作合同、持久消息和重启矩阵未验收。
+  - 已有独立模拟 BankOperation/Posting 真值、余额/持仓投影与独立提交；应用日志不是到账证明，FULL 完整消息/各产品对账尚待验证。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 新增真正持久 Outbox/Inbox 与消息信封/去重合同，现有 BankOperation 不是 Outbox
+  - 写入/提交/发送/接收四边界故障注入及独立连接重启单副作用证明
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-603
+  title: 独立模拟账本
+  status: PENDING
+  primary_closing_package: W2
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1340
+    traceability_source_lines: F:1340–1342
+  original_task_text: '### FULL-603 独立模拟账本
+
+
+    应用决策和实际账本效果分离。'
+  original_requirement: 应用决策与独立模拟账本实际效果分离。
+  original_acceptance: 独立账本状态/查询与回执；应用日志错误或缺失不改变真值；事务守恒检查。
+  reusable_implementation_paths:
+  - apps/api/app/services/simulated_bank.py
+  - apps/api/app/services/execution_bank.py
+  - apps/api/app/domain/bank_posting_codec.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0004_execution_bank.py
+  - apps/api/app/domain/execution.py
+  - apps/api/app/domain/execution_types.py
+  - apps/api/app/services/execution.py
+  - apps/api/app/services/execution_reservations.py
+  - apps/api/app/services/execution_projection.py
+  - apps/api/app/services/action_contracts.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_simulated_bank.py
+  - apps/api/app/tests/test_execution_bank.py
+  - apps/api/app/tests/test_execution_projection.py
+  - apps/api/app/tests/test_external_bank_pending_reconciliation.py
+  - apps/api/app/tests/test_execution_domain.py
+  - apps/api/app/tests/test_execution_service.py
+  - apps/api/app/tests/test_execution_failures.py
+  - apps/api/app/tests/test_execution_reservations.py
+  - apps/api/app/tests/test_execution_receipt_integrity.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-401.md
+  - docs/progress/MVP-302.md
+  reuse_boundary:
+  - 已有独立模拟 BankOperation/Posting 真值、余额/持仓投影与独立提交；应用日志不是到账证明，FULL 完整消息/各产品对账尚待验证。
+  - 已有分阶段独立提交、幂等、UNKNOWN 查询/投影及资源预留；当前 ActionType 仅五类，完整动作合同、持久消息和重启矩阵未验收。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 覆盖 FULL 全动作/产品的应用决策与独立银行账本真值分离
+  - 应用日志缺失/错误不改银行效果，独立提交与现金/归属/持仓守恒
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-604
+  title: 安全恢复规划
+  status: PENDING
+  primary_closing_package: W4
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1344
+    traceability_source_lines: F:1344–1346；697–708
+  original_task_text: '### FULL-604 安全恢复规划
+
+
+    按流动性和损失排序生成恢复计划。'
+  original_requirement: 按自主现金、T0、T1、到期定存、损失与时限排序恢复。
+  original_acceptance: 各类组合、无法及时恢复、部分恢复、损失需确认；完整回执与 LIQUIDITY_RISK。
+  reusable_implementation_paths:
+  - apps/api/app/domain/recovery.py
+  - apps/api/app/domain/recovery_types.py
+  - apps/api/app/services/recovery.py
+  - apps/api/app/services/recovery_sources.py
+  - apps/api/app/services/recovery_projection.py
+  - apps/api/app/domain/asset_allocation.py
+  - apps/api/app/domain/asset_allocation_types.py
+  - apps/api/app/domain/asset_exposure.py
+  - apps/api/app/services/asset_allocation.py
+  - apps/api/app/domain/boundary.py
+  - apps/api/app/domain/boundary_types.py
+  - apps/api/app/domain/boundary_details_types.py
+  - apps/api/app/services/boundary.py
+  - apps/api/app/services/financial_read.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_recovery.py
+  - apps/api/app/tests/test_recovery_properties.py
+  - apps/api/app/tests/test_recovery_service.py
+  - apps/api/app/tests/test_recovery_goal_ownership.py
+  - apps/api/app/tests/test_recovery_receipt_integrity.py
+  - apps/api/app/tests/test_asset_allocation.py
+  - apps/api/app/tests/test_asset_allocation_properties.py
+  - apps/api/app/tests/test_asset_allocation_service.py
+  - apps/api/app/tests/test_execution_redemption_flow.py
+  - apps/api/app/tests/test_boundary.py
+  - apps/api/app/tests/test_boundary_properties.py
+  - apps/api/app/tests/test_boundary_details.py
+  - apps/api/app/tests/test_boundary_service.py
+  - apps/api/app/tests/test_boundary_api.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-205.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-302.md
+  - docs/progress/MVP-204.md
+  - docs/progress/MVP-202.md
+  - docs/progress/MVP-401.md
+  reuse_boundary:
+  - 已有按可用性恢复、损失授权/T1 真实等待/独立银行回执；FULL 全产品组合恢复与到期事件需新增。
+  - 已有不可变产品条款引用、有限单产品过滤及明确退出方案；不含多资产联合优化/定存梯度/自动到期再配置。
+  - BoundarySnapshot horizon_days 当前 Literal[90]；纯财务引擎与服务来源校验已有，FULL 365 日及统一五集合接口未完成。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 组合恢复按自主现金/T0/T1/到期定存/损失和截止排序
+  - 全部产品/部分恢复/来不及/有损确认，真实可用到账与 LIQUIDITY_RISK 回执
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-605
+  title: 在途策略变化
+  status: PENDING
+  primary_closing_package: W2
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1348
+    traceability_source_lines: F:1348–1350
+  original_task_text: '### FULL-605 在途策略变化
+
+
+    策略撤销或修改时重新检查未完成动作。'
+  original_requirement: 策略撤销/修改重查未完成和在途动作。
+  original_acceptance: 提交前/提交后/UNKNOWN 阶段版本竞争故障矩阵；不得臆造撤回已生效资金。
+  reusable_implementation_paths:
+  - apps/api/app/domain/policy_configuration.py
+  - apps/api/app/services/policy_lifecycle.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0002_immutable_policy_versions.py
+  - apps/api/app/domain/execution.py
+  - apps/api/app/domain/execution_types.py
+  - apps/api/app/services/execution.py
+  - apps/api/app/services/execution_bank.py
+  - apps/api/app/services/execution_reservations.py
+  - apps/api/app/services/execution_projection.py
+  - apps/api/app/services/action_contracts.py
+  - apps/api/app/services/simulated_bank.py
+  - apps/api/app/domain/bank_posting_codec.py
+  - apps/api/alembic/versions/0004_execution_bank.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_policy_configuration.py
+  - apps/api/app/tests/test_policy_lifecycle.py
+  - apps/api/app/tests/test_policy_execution_lifecycle.py
+  - apps/api/app/tests/test_execution_domain.py
+  - apps/api/app/tests/test_execution_service.py
+  - apps/api/app/tests/test_execution_failures.py
+  - apps/api/app/tests/test_execution_reservations.py
+  - apps/api/app/tests/test_execution_receipt_integrity.py
+  - apps/api/app/tests/test_simulated_bank.py
+  - apps/api/app/tests/test_execution_bank.py
+  - apps/api/app/tests/test_execution_projection.py
+  - apps/api/app/tests/test_external_bank_pending_reconciliation.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-103.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-302.md
+  - docs/progress/MVP-401.md
+  reuse_boundary:
+  - 严格配置当前仅 RecurringObligation/LivingReserve/GoalSaving/AssetAuthorization/EmergencyBuffer 五类；不可变版本、未提交失效、UNKNOWN
+    保留已有定向覆盖。
+  - 已有分阶段独立提交、幂等、UNKNOWN 查询/投影及资源预留；当前 ActionType 仅五类，完整动作合同、持久消息和重启矩阵未验收。
+  - 已有独立模拟 BankOperation/Posting 真值、余额/持仓投影与独立提交；应用日志不是到账证明，FULL 完整消息/各产品对账尚待验证。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 在提交前/提交后/UNKNOWN 的修改/撤销版本竞争完整矩阵
+  - 在途按原经济事实重查，不伪造撤回已生效资金，不释放 UNKNOWN 预留
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-606
+  title: 固定收款关系
+  status: PENDING
+  primary_closing_package: W4
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1352
+    traceability_source_lines: F:1352–1354
+  original_task_text: '### FULL-606 固定收款关系
+
+
+    支持周期自主；新收款人必须用户发起并确认。'
+  original_requirement: 固定收款周期自主，新收款人用户发起并确认。
+  original_acceptance: 周期执行、授权额度/到期、歧义收款、Agent 自生外付意图拒绝；角色鉴权。
+  reusable_implementation_paths:
+  - apps/api/app/domain/execution.py
+  - apps/api/app/domain/execution_types.py
+  - apps/api/app/services/execution.py
+  - apps/api/app/services/execution_bank.py
+  - apps/api/app/services/execution_reservations.py
+  - apps/api/app/services/execution_projection.py
+  - apps/api/app/services/action_contracts.py
+  - apps/api/app/domain/autonomy.py
+  - apps/api/app/domain/autonomy_types.py
+  - apps/api/app/services/autonomy.py
+  - apps/api/app/services/execution_context.py
+  - apps/api/app/domain/policy_configuration.py
+  - apps/api/app/services/policy_lifecycle.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0002_immutable_policy_versions.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_execution_domain.py
+  - apps/api/app/tests/test_execution_service.py
+  - apps/api/app/tests/test_execution_failures.py
+  - apps/api/app/tests/test_execution_reservations.py
+  - apps/api/app/tests/test_execution_receipt_integrity.py
+  - apps/api/app/tests/test_autonomy_domain.py
+  - apps/api/app/tests/test_autonomy_service.py
+  - apps/api/app/tests/test_autonomy_api.py
+  - apps/api/app/tests/test_execution_context.py
+  - apps/api/app/tests/test_policy_configuration.py
+  - apps/api/app/tests/test_policy_lifecycle.py
+  - apps/api/app/tests/test_policy_execution_lifecycle.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-302.md
+  - docs/progress/MVP-103.md
+  - docs/progress/MVP-402.md
+  reuse_boundary:
+  - 已有分阶段独立提交、幂等、UNKNOWN 查询/投影及资源预留；当前 ActionType 仅五类，完整动作合同、持久消息和重启矩阵未验收。
+  - 已有四级分类与经济签名；有限偏好只支持一个 amount_cents 变量、2–8 候选，非通用多变量/minimax 问答。
+  - 严格配置当前仅 RecurringObligation/LivingReserve/GoalSaving/AssetAuthorization/EmergencyBuffer 五类；不可变版本、未提交失效、UNKNOWN
+    保留已有定向覆盖。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 完整固定收款关系/周期期限额度及用户发起新收款确认合同
+  - 歧义收款/Agent 自发外付拒绝，USER/REVIEWER/SYSTEM/DEMO_ADMIN 角色鉴权
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-607
+  title: 动作对账
+  status: PENDING
+  primary_closing_package: W2
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1356
+    traceability_source_lines: F:1356–1358；710–719
+  original_task_text: '### FULL-607 动作对账
+
+
+    核对预期与实际效果，错误时进入人工处理。'
+  original_requirement: 余额、目标归属、持仓、回执、预期实际与重复副作用对账。
+  original_acceptance: 故意不一致进入人工处理；各状态对账和 UNKNOWN 收敛；独立账本真值比对。
+  reusable_implementation_paths:
+  - apps/api/app/services/simulated_bank.py
+  - apps/api/app/services/execution_bank.py
+  - apps/api/app/domain/bank_posting_codec.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0004_execution_bank.py
+  - apps/api/app/domain/execution.py
+  - apps/api/app/domain/execution_types.py
+  - apps/api/app/services/execution.py
+  - apps/api/app/services/execution_reservations.py
+  - apps/api/app/services/execution_projection.py
+  - apps/api/app/services/action_contracts.py
+  - apps/api/app/domain/recovery.py
+  - apps/api/app/domain/recovery_types.py
+  - apps/api/app/services/recovery.py
+  - apps/api/app/services/recovery_sources.py
+  - apps/api/app/services/recovery_projection.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_simulated_bank.py
+  - apps/api/app/tests/test_execution_bank.py
+  - apps/api/app/tests/test_execution_projection.py
+  - apps/api/app/tests/test_external_bank_pending_reconciliation.py
+  - apps/api/app/tests/test_execution_domain.py
+  - apps/api/app/tests/test_execution_service.py
+  - apps/api/app/tests/test_execution_failures.py
+  - apps/api/app/tests/test_execution_reservations.py
+  - apps/api/app/tests/test_execution_receipt_integrity.py
+  - apps/api/app/tests/test_recovery.py
+  - apps/api/app/tests/test_recovery_properties.py
+  - apps/api/app/tests/test_recovery_service.py
+  - apps/api/app/tests/test_recovery_goal_ownership.py
+  - apps/api/app/tests/test_recovery_receipt_integrity.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-401.md
+  - docs/progress/MVP-302.md
+  - docs/progress/MVP-205.md
+  reuse_boundary:
+  - 已有独立模拟 BankOperation/Posting 真值、余额/持仓投影与独立提交；应用日志不是到账证明，FULL 完整消息/各产品对账尚待验证。
+  - 已有分阶段独立提交、幂等、UNKNOWN 查询/投影及资源预留；当前 ActionType 仅五类，完整动作合同、持久消息和重启矩阵未验收。
+  - 已有按可用性恢复、损失授权/T1 真实等待/独立银行回执；FULL 全产品组合恢复与到期事件需新增。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 统一完整动作对账：余额/归属/持仓/回执/预期实际/重复效果
+  - 各状态差异进入人工处理，UNKNOWN 按独立银行真值收敛
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-701
+  title: 首次引导
+  status: PENDING
+  primary_closing_package: W6
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1364
+    traceability_source_lines: F:1364–1366；1003–1014
+  original_task_text: '### FULL-701 首次引导
+
+
+    实现候选发现、生活准备金、目标和资产授权的一次性引导。'
+  original_requirement: 一次引导候选义务、期限优先级、准备金、应急、目标、资产/恢复授权、权力边界。
+  original_acceptance: 首次完整浏览器流程、退出恢复与确认行为；未确认不生权；可用性审查。
+  reusable_implementation_paths:
+  - apps/web/src/pages/PolicyCenterPage.tsx
+  - apps/web/src/pages/GoalsPage.tsx
+  - apps/web/src/features/policy-form.ts
+  - apps/web/src/components/PolicyConfigForm.tsx
+  - apps/api/app/services/policy_discovery.py
+  - apps/api/app/api/v1/policies.py
+  - apps/api/app/domain/living_reserve.py
+  - apps/api/app/domain/history_coverage.py
+  - apps/api/app/services/living_reserve.py
+  reusable_test_paths:
+  - apps/web/src/pages/PolicyCenterPage.test.tsx
+  - apps/web/src/pages/GoalsPage.test.tsx
+  - apps/web/src/features/policy-form.test.ts
+  - apps/api/app/tests/test_policy_discovery.py
+  - apps/api/app/tests/test_discovery_api.py
+  - apps/api/app/tests/test_living_reserve.py
+  - apps/api/app/tests/test_living_reserve_service.py
+  - apps/api/app/tests/test_history_coverage.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-402.md
+  - docs/progress/evidence/MVP-402/index.json
+  - docs/progress/MVP-104.md
+  - docs/progress/MVP-201.md
+  reuse_boundary:
+  - 已有策略候选/修改预览/确认/暂停/撤销/历史和目标归属展示；无首次八步引导、依赖地图及多目标冲突修复完整流程。
+  - 已有历史房租/账单候选与来源核验，确认前不授权；FULL 方差/稳定性与完整固定转账类型需增量验证。
+  - 已有确认类别、连续历史、分位数与一次性排除；尚无公共节日历/相似窗口候选。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 首次八步引导串候选义务/期限优先级/准备金应急/目标/资产恢复授权/权限边界
+  - 退出恢复、完整真实浏览器流程、未确认不生权与可用性审查
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-702
+  title: 资金边界首页
+  status: PENDING
+  primary_closing_package: W6
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1368
+    traceability_source_lines: F:1368–1370；1016–1027
+  original_task_text: '### FULL-702 资金边界首页
+
+
+    实现时间轴、分层和边界变化解释。'
+  original_requirement: 现金/保护/归属/自主/持仓/关键日/待问/最近动作，时间轴及边界解释。
+  original_acceptance: 所有卡片与快照一致、事件实时更新、时间轴/差分入口 E2E。
+  reusable_implementation_paths:
+  - apps/api/app/services/dashboard.py
+  - apps/api/app/services/dashboard_helpers.py
+  - apps/api/app/services/dashboard_types.py
+  - apps/web/src/pages/DashboardPage.tsx
+  reusable_test_paths:
+  - apps/api/app/tests/test_dashboard_api.py
+  - apps/api/app/tests/test_dashboard_read_contracts.py
+  - apps/api/app/tests/test_dashboard_golden_chains.py
+  - apps/web/src/App.test.tsx
+  reusable_evidence_paths:
+  - docs/progress/MVP-401.md
+  - docs/progress/evidence/MVP-401/index.json
+  reuse_boundary:
+  - 已有真实只读余额分层/保护/归属/自主/下一义务/介入/解释；FULL 时间轴、因果差分与新机制入口待增量。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 补资金首页全部八卡/时间轴/新事实因果差分入口
+  - 实际快照/事件更新/E2E 与当前执行/规划显示隔离
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-703
+  title: 策略地图
+  status: PENDING
+  primary_closing_package: W6
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1372
+    traceability_source_lines: F:1372–1374；1029–1037
+  original_task_text: '### FULL-703 策略地图
+
+
+    实现生命周期、版本和影响预览。'
+  original_requirement: 策略地图、依赖、到期、版本、修改影响、撤销。
+  original_acceptance: 生命周期全路径、关系图与 API 一致、影响预览和版本筛选浏览器测试。
+  reusable_implementation_paths:
+  - apps/web/src/pages/PolicyCenterPage.tsx
+  - apps/web/src/pages/GoalsPage.tsx
+  - apps/web/src/features/policy-form.ts
+  - apps/web/src/components/PolicyConfigForm.tsx
+  - apps/api/app/services/policy_preview.py
+  - apps/api/app/services/policy_preview_types.py
+  - apps/api/app/domain/policy_change_types.py
+  - apps/api/app/api/v1/policy_preview.py
+  reusable_test_paths:
+  - apps/web/src/pages/PolicyCenterPage.test.tsx
+  - apps/web/src/pages/GoalsPage.test.tsx
+  - apps/web/src/features/policy-form.test.ts
+  - apps/api/app/tests/test_policy_change_boundary.py
+  - apps/api/app/tests/test_policy_change_preview_api.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-402.md
+  - docs/progress/evidence/MVP-402/index.json
+  reuse_boundary:
+  - 已有策略候选/修改预览/确认/暂停/撤销/历史和目标归属展示；无首次八步引导、依赖地图及多目标冲突修复完整流程。
+  - 已实现只读修改边界差分；FULL 持仓/未来动作完整影响及全部新增模板尚未验收。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 补依赖策略地图/到期关系/完整模板/筛选
+  - 生命周期全路径与关系 API、修改影响/撤销/不可变版本浏览器验证
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-704
+  title: 多目标中心
+  status: PENDING
+  primary_closing_package: W6
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1376
+    traceability_source_lines: F:1376–1378；1039–1048
+  original_task_text: '### FULL-704 多目标中心
+
+
+    实现目标归属、资产配置和冲突状态。'
+  original_requirement: 多目标归属/资产/冲突/进度/范围/到期/延期与修改预览。
+  original_acceptance: 归属与放置分开展示；多目标冲突修复确认流程、字段完整核验。
+  reusable_implementation_paths:
+  - apps/web/src/pages/PolicyCenterPage.tsx
+  - apps/web/src/pages/GoalsPage.tsx
+  - apps/web/src/features/policy-form.ts
+  - apps/web/src/components/PolicyConfigForm.tsx
+  - apps/api/app/domain/goal_allocation.py
+  - apps/api/app/services/goal_allocation.py
+  - apps/api/app/services/goals.py
+  - apps/api/app/domain/income_ledger.py
+  - apps/api/app/services/income_ledger.py
+  reusable_test_paths:
+  - apps/web/src/pages/PolicyCenterPage.test.tsx
+  - apps/web/src/pages/GoalsPage.test.tsx
+  - apps/web/src/features/policy-form.test.ts
+  - apps/api/app/tests/test_goal_allocation.py
+  - apps/api/app/tests/test_goal_allocation_properties.py
+  - apps/api/app/tests/test_goal_allocation_service.py
+  - apps/api/app/tests/test_income_ledger.py
+  - apps/api/app/tests/test_execution_goal_creation.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-402.md
+  - docs/progress/evidence/MVP-402/index.json
+  - docs/progress/MVP-203.md
+  - docs/progress/MVP-301.md
+  reuse_boundary:
+  - 已有策略候选/修改预览/确认/暂停/撤销/历史和目标归属展示；无首次八步引导、依赖地图及多目标冲突修复完整流程。
+  - 已有单明确目标/FIFO 新资金/月范围/归属保护；多个单目标预览不能求和当成联合分配或 FULL 八层词典序最优。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 多目标归属与资产分别展示、冲突/进度/月范围/到期/延期
+  - 联合冲突修复建议→修改预览→明确确认真实后端 E2E
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-705
+  title: 介入中心
+  status: PENDING
+  primary_closing_package: W6
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1380
+    traceability_source_lines: F:1380–1382；1050–1062
+  original_task_text: '### FULL-705 介入中心
+
+
+    只显示真正需要用户决定的问题。'
+  original_requirement: 只显示关键歧义、新损失、新收款、冲突、失效、提前支取、恢复风险。
+  original_acceptance: 一次一问与回答重算 E2E；普通更新无弹窗；去重/旧答案失效。
+  reusable_implementation_paths:
+  - apps/api/app/domain/autonomy.py
+  - apps/api/app/domain/autonomy_types.py
+  - apps/api/app/services/autonomy.py
+  - apps/api/app/services/execution_context.py
+  - apps/api/app/services/dashboard.py
+  - apps/api/app/services/dashboard_helpers.py
+  - apps/api/app/services/dashboard_types.py
+  - apps/web/src/pages/DashboardPage.tsx
+  reusable_test_paths:
+  - apps/api/app/tests/test_autonomy_domain.py
+  - apps/api/app/tests/test_autonomy_service.py
+  - apps/api/app/tests/test_autonomy_api.py
+  - apps/api/app/tests/test_execution_context.py
+  - apps/api/app/tests/test_dashboard_api.py
+  - apps/api/app/tests/test_dashboard_read_contracts.py
+  - apps/api/app/tests/test_dashboard_golden_chains.py
+  - apps/web/src/App.test.tsx
+  reusable_evidence_paths:
+  - docs/progress/MVP-302.md
+  - docs/progress/MVP-401.md
+  - docs/progress/evidence/MVP-401/index.json
+  reuse_boundary:
+  - 已有四级分类与经济签名；有限偏好只支持一个 amount_cents 变量、2–8 候选，非通用多变量/minimax 问答。
+  - 已有真实只读余额分层/保护/归属/自主/下一义务/介入/解释；FULL 时间轴、因果差分与新机制入口待增量。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 介入中心仅关键歧义/新损失/新收款/冲突/失效/恢复风险
+  - 一次一问/回答重算/去重/旧答案失效真实流程，已授权无损恢复不重复询问
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-706
+  title: 审计浏览器
+  status: PENDING
+  primary_closing_package: W6
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1384
+    traceability_source_lines: F:1384–1386；1064–1075
+  original_task_text: '### FULL-706 审计浏览器
+
+
+    实现证据到回执的完整回溯。'
+  original_requirement: 动作搜索、策略版本筛选、事实、候选、约束、介入原因、回执、链验证。
+  original_acceptance: 实际运行回溯和篡改错误提示；不依赖后端日志；真实截图。
+  reusable_implementation_paths:
+  - apps/api/app/domain/decision_trace.py
+  - apps/api/app/domain/decision_trace_types.py
+  - apps/api/app/services/decision_trace.py
+  - apps/api/app/services/decision_recording.py
+  - apps/web/src/pages/DecisionTracePage.tsx
+  - apps/web/src/api/decisions.ts
+  - apps/api/app/domain/audit_chain.py
+  - apps/api/app/domain/audit_chain_types.py
+  - apps/api/app/services/audit_chain.py
+  - apps/api/app/services/audit_recording.py
+  - apps/api/app/db/audit_guard.py
+  - scripts/verify_audit_chain.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_decision_trace_domain.py
+  - apps/api/app/tests/test_decision_trace_api.py
+  - apps/api/app/tests/test_decision_trace_audit.py
+  - apps/api/app/tests/test_decision_readonly_transaction.py
+  - apps/web/src/pages/DecisionTracePage.test.tsx
+  - apps/web/src/api/decisions.test.ts
+  - apps/api/app/tests/test_audit_chain_domain.py
+  - apps/api/app/tests/test_audit_subject_encoding.py
+  - apps/api/app/tests/test_audit_storage.py
+  - apps/api/app/tests/test_audit_guard.py
+  - apps/api/app/tests/test_audit_workflow_integration.py
+  - apps/api/app/tests/test_audit_cli.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-303.md
+  - docs/progress/MVP-403.md
+  - docs/progress/evidence/MVP-403/index.json
+  - docs/progress/MVP-304.md
+  - docs/progress/MVP-401.md
+  reuse_boundary:
+  - 已有决策→事实/精确策略版本→原回执→当前审计回溯与真实 Edge 零写；FULL 搜索/版本筛选、冲突图和新增机制字段缺失。
+  - 已有 append-only 存储门、原件 canonical/hash、缺失/篡改/检查点诊断；历史 LEGACY_UNAUDITED 保留，hash 不是签名或外部存证。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 补动作搜索/策略版本筛选/证据图与所有新增机制追溯字段
+  - 篡改错误实际展示、完整回溯不看后端日志及真实截图
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-707
+  title: 场景模拟器
+  status: PENDING
+  primary_closing_package: W6
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1388
+    traceability_source_lines: F:1388–1390
+  original_task_text: '### FULL-707 场景模拟器
+
+
+    允许调整事实、策略和产品参数，不能直接篡改结果。'
+  original_requirement: 可改事实/策略/产品参数的场景模拟器，不可直接改结果。
+  original_acceptance: 参数变动由引擎生成结果；API 禁止伪造结果；重置/重放和权限测试。
+  reusable_implementation_paths:
+  - apps/api/app/services/demo_console.py
+  - apps/api/app/services/demo_console_types.py
+  - apps/api/app/api/v1/demo.py
+  - apps/api/app/services/simulated_redemption_quote.py
+  - apps/web/src/pages/DemoConsolePage.tsx
+  - apps/web/src/features/demo-operation.ts
+  reusable_test_paths:
+  - apps/api/app/tests/test_demo_console.py
+  - apps/api/app/tests/test_demo_console_types.py
+  - apps/api/app/tests/test_simulated_redemption_quote.py
+  - apps/web/src/pages/DemoConsolePage.test.tsx
+  - apps/web/src/features/demo-operation.test.ts
+  reusable_evidence_paths:
+  - docs/progress/MVP-404.md
+  reuse_boundary:
+  - 当前未提交 MVP-404 草稿 IN_PROGRESS，只记录候选复用；尚未连续三轮、正式关闭或 FULL 可调参数模拟器验收。
+  dirty_candidate_paths:
+  - apps/api/app/services/demo_console.py
+  - apps/api/app/services/demo_console_types.py
+  - apps/api/app/api/v1/demo.py
+  - apps/api/app/services/simulated_redemption_quote.py
+  - apps/web/src/pages/DemoConsolePage.tsx
+  - apps/web/src/features/demo-operation.ts
+  missing_increments:
+  - MVP-404 草稿七固定事件先经 W1 实际验收
+  - 扩展合法事实/策略/产品参数模拟器调用正式引擎，禁止结果字段注入，权限/重置/重放/后端 E2E
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-708
+  title: 无障碍与移动端
+  status: PENDING
+  primary_closing_package: W6
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1392
+    traceability_source_lines: F:1392–1394
+  original_task_text: '### FULL-708 无障碍与移动端
+
+
+    保证关键流程在手机端可读，重要解释不用宽表格才能理解。'
+  original_requirement: 移动端可读和无障碍，关键解释不依赖宽表。
+  original_acceptance: 手机视口、键盘、标签、焦点、对比度检查；核心流程浏览器实测。
+  reusable_implementation_paths:
+  - apps/api/app/services/dashboard.py
+  - apps/api/app/services/dashboard_helpers.py
+  - apps/api/app/services/dashboard_types.py
+  - apps/web/src/pages/DashboardPage.tsx
+  - apps/web/src/pages/PolicyCenterPage.tsx
+  - apps/web/src/pages/GoalsPage.tsx
+  - apps/web/src/features/policy-form.ts
+  - apps/web/src/components/PolicyConfigForm.tsx
+  - apps/api/app/domain/decision_trace.py
+  - apps/api/app/domain/decision_trace_types.py
+  - apps/api/app/services/decision_trace.py
+  - apps/api/app/services/decision_recording.py
+  - apps/web/src/pages/DecisionTracePage.tsx
+  - apps/web/src/api/decisions.ts
+  reusable_test_paths:
+  - apps/api/app/tests/test_dashboard_api.py
+  - apps/api/app/tests/test_dashboard_read_contracts.py
+  - apps/api/app/tests/test_dashboard_golden_chains.py
+  - apps/web/src/App.test.tsx
+  - apps/web/src/pages/PolicyCenterPage.test.tsx
+  - apps/web/src/pages/GoalsPage.test.tsx
+  - apps/web/src/features/policy-form.test.ts
+  - apps/api/app/tests/test_decision_trace_domain.py
+  - apps/api/app/tests/test_decision_trace_api.py
+  - apps/api/app/tests/test_decision_trace_audit.py
+  - apps/api/app/tests/test_decision_readonly_transaction.py
+  - apps/web/src/pages/DecisionTracePage.test.tsx
+  - apps/web/src/api/decisions.test.ts
+  reusable_evidence_paths:
+  - docs/progress/MVP-401.md
+  - docs/progress/evidence/MVP-401/index.json
+  - docs/progress/MVP-402.md
+  - docs/progress/evidence/MVP-402/index.json
+  - docs/progress/MVP-303.md
+  - docs/progress/MVP-403.md
+  - docs/progress/evidence/MVP-403/index.json
+  reuse_boundary:
+  - 已有真实只读余额分层/保护/归属/自主/下一义务/介入/解释；FULL 时间轴、因果差分与新机制入口待增量。
+  - 已有策略候选/修改预览/确认/暂停/撤销/历史和目标归属展示；无首次八步引导、依赖地图及多目标冲突修复完整流程。
+  - 已有决策→事实/精确策略版本→原回执→当前审计回溯与真实 Edge 零写；FULL 搜索/版本筛选、冲突图和新增机制字段缺失。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 所有关键流程手机视口/键盘/标签/焦点/对比度及解释可读
+  - 现有 390px 截图不证明完整无障碍，需完整实际浏览器审查
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-801
+  title: 威胁模型
+  status: PENDING
+  primary_closing_package: W7
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1400
+    traceability_source_lines: F:1400–1402；972–984
+  original_task_text: '### FULL-801 威胁模型
+
+
+    完成 STRIDE 风格威胁清单和控制措施。'
+  original_requirement: STRIDE 威胁清单与控制。
+  original_acceptance: 提示注入、越权字段、旧策略、篡改、重复、产品漂移、在途撤销、假解释、账本不一致逐项证据。
+  reusable_implementation_paths:
+  - apps/api/app/domain/audit_chain.py
+  - apps/api/app/domain/audit_chain_types.py
+  - apps/api/app/services/audit_chain.py
+  - apps/api/app/services/audit_recording.py
+  - apps/api/app/db/audit_guard.py
+  - scripts/verify_audit_chain.py
+  - apps/api/app/domain/policy_configuration.py
+  - apps/api/app/services/policy_lifecycle.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0002_immutable_policy_versions.py
+  - apps/api/app/domain/policy_compiler.py
+  - apps/api/app/services/policy_compilation.py
+  - apps/web/src/components/PolicyConfigForm.tsx
+  - apps/api/app/domain/execution.py
+  - apps/api/app/domain/execution_types.py
+  - apps/api/app/services/execution.py
+  - apps/api/app/services/execution_bank.py
+  - apps/api/app/services/execution_reservations.py
+  - apps/api/app/services/execution_projection.py
+  - apps/api/app/services/action_contracts.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_audit_chain_domain.py
+  - apps/api/app/tests/test_audit_subject_encoding.py
+  - apps/api/app/tests/test_audit_storage.py
+  - apps/api/app/tests/test_audit_guard.py
+  - apps/api/app/tests/test_audit_workflow_integration.py
+  - apps/api/app/tests/test_audit_cli.py
+  - apps/api/app/tests/test_policy_configuration.py
+  - apps/api/app/tests/test_policy_lifecycle.py
+  - apps/api/app/tests/test_policy_execution_lifecycle.py
+  - apps/api/app/tests/test_policy_compiler.py
+  - apps/api/app/tests/test_policy_compilation.py
+  - apps/api/app/tests/test_policy_compilation_read.py
+  - apps/api/app/tests/test_compilation_api.py
+  - apps/api/app/tests/test_execution_domain.py
+  - apps/api/app/tests/test_execution_service.py
+  - apps/api/app/tests/test_execution_failures.py
+  - apps/api/app/tests/test_execution_reservations.py
+  - apps/api/app/tests/test_execution_receipt_integrity.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-304.md
+  - docs/progress/MVP-401.md
+  - docs/progress/MVP-103.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-105.md
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-302.md
+  reuse_boundary:
+  - 已有 append-only 存储门、原件 canonical/hash、缺失/篡改/检查点诊断；历史 LEGACY_UNAUDITED 保留，hash 不是签名或外部存证。
+  - 严格配置当前仅 RecurringObligation/LivingReserve/GoalSaving/AssetAuthorization/EmergencyBuffer 五类；不可变版本、未提交失效、UNKNOWN
+    保留已有定向覆盖。
+  - 规则编译实际限 goal_saving/emergency_buffer；可选外部模型默认关闭、候选确认门已有，不能声称完整 12 模板编译。
+  - 已有分阶段独立提交、幂等、UNKNOWN 查询/投影及资源预留；当前 ActionType 仅五类，完整动作合同、持久消息和重启矩阵未验收。
+  dirty_candidate_paths: []
+  missing_increments:
+  - STRIDE 威胁清单→控制→独立测试/人工证据覆盖注入、越权、旧策略、篡改、重复、产品漂移、在途撤销、假解释、账本不一致
+  - 生产角色/权限边界实际核验
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-802
+  title: LLM 防越权
+  status: PENDING
+  primary_closing_package: W7
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1404
+    traceability_source_lines: F:1404–1406
+  original_task_text: '### FULL-802 LLM 防越权
+
+
+    测试提示注入、非法字段和结构绕过。'
+  original_requirement: LLM 提示注入、非法字段、结构绕过防越权。
+  original_acceptance: 恶意候选不能改金额权限状态执行；独立验证、脱敏测试；默认无外部模型可运行。
+  reusable_implementation_paths:
+  - apps/api/app/domain/policy_compiler.py
+  - apps/api/app/services/policy_compilation.py
+  - apps/web/src/components/PolicyConfigForm.tsx
+  - apps/api/app/domain/policy_configuration.py
+  - apps/api/app/services/policy_lifecycle.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0002_immutable_policy_versions.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_policy_compiler.py
+  - apps/api/app/tests/test_policy_compilation.py
+  - apps/api/app/tests/test_policy_compilation_read.py
+  - apps/api/app/tests/test_compilation_api.py
+  - apps/api/app/tests/test_policy_configuration.py
+  - apps/api/app/tests/test_policy_lifecycle.py
+  - apps/api/app/tests/test_policy_execution_lifecycle.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-105.md
+  - docs/progress/MVP-402.md
+  - docs/progress/MVP-103.md
+  reuse_boundary:
+  - 规则编译实际限 goal_saving/emergency_buffer；可选外部模型默认关闭、候选确认门已有，不能声称完整 12 模板编译。
+  - 严格配置当前仅 RecurringObligation/LivingReserve/GoalSaving/AssetAuthorization/EmergencyBuffer 五类；不可变版本、未提交失效、UNKNOWN
+    保留已有定向覆盖。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 补完整 DSL/可选 LLM 的提示注入、非法字段、结构绕过/脱敏负例
+  - 恶意候选不能改金额权限状态执行，默认无外部模型仍可运行
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-803
+  title: 审计防篡改
+  status: PENDING
+  primary_closing_package: W7
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1408
+    traceability_source_lines: F:1408–1410
+  original_task_text: '### FULL-803 审计防篡改
+
+
+    增加链验证、签名或只追加限制。'
+  original_requirement: 哈希链验证与签名或只追加限制。
+  original_acceptance: 内容改写、删除、乱序、截断检查及能力边界；审计写权限测试。
+  reusable_implementation_paths:
+  - apps/api/app/domain/audit_chain.py
+  - apps/api/app/domain/audit_chain_types.py
+  - apps/api/app/services/audit_chain.py
+  - apps/api/app/services/audit_recording.py
+  - apps/api/app/db/audit_guard.py
+  - scripts/verify_audit_chain.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_audit_chain_domain.py
+  - apps/api/app/tests/test_audit_subject_encoding.py
+  - apps/api/app/tests/test_audit_storage.py
+  - apps/api/app/tests/test_audit_guard.py
+  - apps/api/app/tests/test_audit_workflow_integration.py
+  - apps/api/app/tests/test_audit_cli.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-304.md
+  - docs/progress/MVP-401.md
+  reuse_boundary:
+  - 已有 append-only 存储门、原件 canonical/hash、缺失/篡改/检查点诊断；历史 LEGACY_UNAUDITED 保留，hash 不是签名或外部存证。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 最终 FULL 审计权限/只追加或签名实际部署核验及内容改写/删除/乱序/截断强化负例
+  - 保留现有 canonical/hash/LEGACY_UNAUDITED 边界，hash 不冒充管理员不可篡改
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-804
+  title: 50族冻结案例集
+  status: PENDING
+  primary_closing_package: W7
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1412
+    traceability_source_lines: F:1412–1414；802–838
+  original_task_text: '### FULL-804 50族冻结案例集
+
+
+    生成、评审、冻结并保留真值。'
+  original_requirement: 至少 50 族冻结案例，每族多变体，生成、评审、冻结、独立真值。
+  original_acceptance: 场景族级 split，无数字变体泄漏；冻结版本与审查；义务/授权/等级/冲突/恢复真值。
+  reusable_implementation_paths: []
+  reusable_test_paths: []
+  reusable_evidence_paths: []
+  reuse_boundary:
+  - 本次只读检查未发现该项所需独立机制/成品/实测证据；空列表不表示无需实现。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 至少 50 冻结族且每族多变体，开发/验证另设族
+  - 生成/独立真值/评审/族级 split 冻结版本，调试公开场景不得复称未见
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-805
+  title: 基线与消融
+  status: PENDING
+  primary_closing_package: W7
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1416
+    traceability_source_lines: F:1416–1418；844–911
+  original_task_text: '### FULL-805 基线与消融
+
+
+    实现 B0—B5 和全部消融。'
+  original_requirement: B0–B5/P 和八项消融，安全/自主/效率/审计完整指标。
+  original_acceptance: 同条件真实运行、CSV/JSON、统计分母、失败样本；全部消融实际改变机制；同安全授权下收益比较。
+  reusable_implementation_paths: []
+  reusable_test_paths: []
+  reusable_evidence_paths: []
+  reuse_boundary:
+  - 本次只读检查未发现该项所需独立机制/成品/实测证据；空列表不表示无需实现。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 实际 B0–B5/P 与八项单机制消融
+  - 安全/授权一致条件比较收益，完整指标分母/失败样本/CSV/JSON 与原 run，消融不得保留被宣称移除逻辑
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-806
+  title: 青年用户研究工具
+  status: PENDING
+  primary_closing_package: W7
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1420
+    traceability_source_lines: F:1420–1422；913–941
+  original_task_text: '### FULL-806 青年用户研究工具
+
+
+    完成任务脚本、知情同意文本、问卷和匿名记录工具。'
+  original_requirement: 青年研究任务脚本、知情同意、问卷、匿名工具；计划 18–24 成年参与者。
+  original_acceptance: 工具可运行及实际开展状态；若有研究，仅实名外脱敏的真实记录与探索性结论；未招募不得造数。
+  reusable_implementation_paths: []
+  reusable_test_paths: []
+  reusable_evidence_paths: []
+  reuse_boundary:
+  - 本次只读检查未发现该项所需独立机制/成品/实测证据；空列表不表示无需实现。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 可运行研究任务脚本/知情同意/问卷/匿名工具
+  - 18–24 成年参与者为计划，真人招募/研究未开展，不造回答，工具与真实开展分别记状态
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+  human_study_status: NOT_CONDUCTED
+- id: FULL-807
+  title: 性能与故障实验
+  status: PENDING
+  primary_closing_package: W7
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1424
+    traceability_source_lines: F:1424–1426
+  original_task_text: '### FULL-807 性能与故障实验
+
+
+    测试并发、重启、重复请求、未知状态和大规模场景。'
+  original_requirement: 并发、重启、重复请求、UNKNOWN、大规模性能与故障实验。
+  original_acceptance: 可复现注入脚本、环境负载/时延/故障点/原始记录；独立效果一致性与失败样本。
+  reusable_implementation_paths:
+  - apps/api/app/domain/execution.py
+  - apps/api/app/domain/execution_types.py
+  - apps/api/app/services/execution.py
+  - apps/api/app/services/execution_bank.py
+  - apps/api/app/services/execution_reservations.py
+  - apps/api/app/services/execution_projection.py
+  - apps/api/app/services/action_contracts.py
+  - apps/api/app/services/simulated_bank.py
+  - apps/api/app/domain/bank_posting_codec.py
+  - apps/api/app/db/models.py
+  - apps/api/alembic/versions/0004_execution_bank.py
+  - apps/api/app/domain/audit_chain.py
+  - apps/api/app/domain/audit_chain_types.py
+  - apps/api/app/services/audit_chain.py
+  - apps/api/app/services/audit_recording.py
+  - apps/api/app/db/audit_guard.py
+  - scripts/verify_audit_chain.py
+  reusable_test_paths:
+  - apps/api/app/tests/test_execution_domain.py
+  - apps/api/app/tests/test_execution_service.py
+  - apps/api/app/tests/test_execution_failures.py
+  - apps/api/app/tests/test_execution_reservations.py
+  - apps/api/app/tests/test_execution_receipt_integrity.py
+  - apps/api/app/tests/test_simulated_bank.py
+  - apps/api/app/tests/test_execution_bank.py
+  - apps/api/app/tests/test_execution_projection.py
+  - apps/api/app/tests/test_external_bank_pending_reconciliation.py
+  - apps/api/app/tests/test_audit_chain_domain.py
+  - apps/api/app/tests/test_audit_subject_encoding.py
+  - apps/api/app/tests/test_audit_storage.py
+  - apps/api/app/tests/test_audit_guard.py
+  - apps/api/app/tests/test_audit_workflow_integration.py
+  - apps/api/app/tests/test_audit_cli.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-301.md
+  - docs/progress/MVP-302.md
+  - docs/progress/MVP-401.md
+  - docs/progress/MVP-304.md
+  reuse_boundary:
+  - 已有分阶段独立提交、幂等、UNKNOWN 查询/投影及资源预留；当前 ActionType 仅五类，完整动作合同、持久消息和重启矩阵未验收。
+  - 已有独立模拟 BankOperation/Posting 真值、余额/持仓投影与独立提交；应用日志不是到账证明，FULL 完整消息/各产品对账尚待验证。
+  - 已有 append-only 存储门、原件 canonical/hash、缺失/篡改/检查点诊断；历史 LEGACY_UNAUDITED 保留，hash 不是签名或外部存证。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 可复现并发/重启/重复/UNKNOWN/在途撤销/审计篡改与规模故障实验
+  - W0 性能测量只是局部准备，不关 FULL，完整环境/负载/时延/失败与独立效果证据
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-808
+  title: 证据包校验器
+  status: PENDING
+  primary_closing_package: W7
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1428
+    traceability_source_lines: F:1428–1430；762–779；1560–1584
+  original_task_text: '### FULL-808 证据包校验器
+
+
+    企划书中的数字必须能通过自动脚本找到对应运行记录。'
+  original_requirement: 数字→run_id/调查记录自动证据校验器，CI 拦截无源效果。
+  original_acceptance: 正例通过；缺 run/错指标/伪造值/缺文件失败；证据包 manifest 与文件校验。
+  reusable_implementation_paths:
+  - Makefile
+  - make.cmd
+  - scripts/tasks.py
+  - docker-compose.yml
+  - pyproject.toml
+  - package.json
+  - apps/api/app/api/errors.py
+  - apps/api/app/domain/decision_trace.py
+  - apps/api/app/domain/decision_trace_types.py
+  - apps/api/app/services/decision_trace.py
+  - apps/api/app/services/decision_recording.py
+  - apps/web/src/pages/DecisionTracePage.tsx
+  - apps/web/src/api/decisions.ts
+  reusable_test_paths:
+  - scripts/verify_quality_gates.py
+  - scripts/verify_contract_gate.py
+  - apps/api/app/tests/test_errors.py
+  - apps/api/app/tests/test_decision_trace_domain.py
+  - apps/api/app/tests/test_decision_trace_api.py
+  - apps/api/app/tests/test_decision_trace_audit.py
+  - apps/api/app/tests/test_decision_readonly_transaction.py
+  - apps/web/src/pages/DecisionTracePage.test.tsx
+  - apps/web/src/api/decisions.test.ts
+  reusable_evidence_paths:
+  - docs/progress/MVP-001.md
+  - docs/progress/MVP-002.md
+  - docs/progress/MVP-003.md
+  - docs/progress/MVP-303.md
+  - docs/progress/MVP-403.md
+  - docs/progress/evidence/MVP-403/index.json
+  reuse_boundary:
+  - 模块化单仓和本地质量入口已有；不代表 FULL 九命令、CI、事件/实验/安全/白皮书合同齐全。
+  - 已有决策→事实/精确策略版本→原回执→当前审计回溯与真实 Edge 零写；FULL 搜索/版本筛选、冲突图和新增机制字段缺失。
+  dirty_candidate_paths:
+  - scripts/tasks.py
+  missing_increments:
+  - 建立数字→指标→run_id/真实调查→原文件校验器及 manifest/CI
+  - 缺 run、错数、错版本、缺文件负例必须失败，现有任务源码哈希索引不是数字证据校验器
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-901
+  title: 竞赛企划书
+  status: PENDING
+  primary_closing_package: W8
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1436
+    traceability_source_lines: F:1436–1438；1468–1531
+  original_task_text: '### FULL-901 竞赛企划书
+
+
+    完成 10—12 页版本。'
+  original_requirement: 10–12 页竞赛企划书，真实实验、失败样本、青年场景、工行价值假设和边界。
+  original_acceptance: 有实际页数的成品与正文源；来源/主张登记；所有数字可追溯；无未支持宣传。
+  reusable_implementation_paths: []
+  reusable_test_paths: []
+  reusable_evidence_paths: []
+  reuse_boundary:
+  - 本次只读检查未发现该项所需独立机制/成品/实测证据；空列表不表示无需实现。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 实际 10–12 页企划书与可编辑正文源
+  - 冻结实测/失败样本/青年场景/工行业务价值假设与来源边界，所有效果数字到原记录
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-902
+  title: 技术白皮书
+  status: PENDING
+  primary_closing_package: W8
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1440
+    traceability_source_lines: F:1440–1442；1533–1558
+  original_task_text: '### FULL-902 技术白皮书
+
+
+    完成 25—35 页版本。'
+  original_requirement: 25–35 页技术白皮书，覆盖建议 22 章节及限制。
+  original_acceptance: 实际页数成品与源；算法、模型、实验、研究状态、失败与安全内容对实现核验。
+  reusable_implementation_paths: []
+  reusable_test_paths: []
+  reusable_evidence_paths: []
+  reuse_boundary:
+  - 本次只读检查未发现该项所需独立机制/成品/实测证据；空列表不表示无需实现。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 实际 25–35 页白皮书及正文源覆盖建议 22 章
+  - 逐实现核对算法/模型/实验/研究状态/失败/安全限制，章节目录不是分页成品
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-903
+  title: 实验报告
+  status: PENDING
+  primary_closing_package: W8
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1444
+    traceability_source_lines: F:1444–1446
+  original_task_text: '### FULL-903 实验报告
+
+
+    包含基线、消融、失败样本和统计口径。'
+  original_requirement: 基线、消融、失败样本与统计口径的实验报告。
+  original_acceptance: 原始运行、分母、环境/版本、复现命令、CSV/JSON、失败定位；结论与证据一致。
+  reusable_implementation_paths: []
+  reusable_test_paths: []
+  reusable_evidence_paths: []
+  reuse_boundary:
+  - 本次只读检查未发现该项所需独立机制/成品/实测证据；空列表不表示无需实现。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 真实基线/消融/失败/统计口径实验报告
+  - 原 run/分母/环境版本/复现命令/CSV/JSON，结论不得先于实验
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-904
+  title: 产品演示
+  status: PENDING
+  primary_closing_package: W8
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1448
+    traceability_source_lines: F:1448–1450；M:1038–1043
+  original_task_text: '### FULL-904 产品演示
+
+
+    完成四分钟现场版和备用录屏。'
+  original_requirement: 四分钟现场产品演示及完整备用录屏。
+  original_acceptance: 240 秒演示稿/实测时长；三黄金链和异常；真实浏览器录屏与截图同 run_id，离线演示。
+  reusable_implementation_paths:
+  - apps/api/app/services/demo_console.py
+  - apps/api/app/services/demo_console_types.py
+  - apps/api/app/api/v1/demo.py
+  - apps/api/app/services/simulated_redemption_quote.py
+  - apps/web/src/pages/DemoConsolePage.tsx
+  - apps/web/src/features/demo-operation.ts
+  - apps/api/app/services/dashboard.py
+  - apps/api/app/services/dashboard_helpers.py
+  - apps/api/app/services/dashboard_types.py
+  - apps/web/src/pages/DashboardPage.tsx
+  - apps/api/app/domain/decision_trace.py
+  - apps/api/app/domain/decision_trace_types.py
+  - apps/api/app/services/decision_trace.py
+  - apps/api/app/services/decision_recording.py
+  - apps/web/src/pages/DecisionTracePage.tsx
+  - apps/web/src/api/decisions.ts
+  reusable_test_paths:
+  - apps/api/app/tests/test_demo_console.py
+  - apps/api/app/tests/test_demo_console_types.py
+  - apps/api/app/tests/test_simulated_redemption_quote.py
+  - apps/web/src/pages/DemoConsolePage.test.tsx
+  - apps/web/src/features/demo-operation.test.ts
+  - apps/api/app/tests/test_dashboard_api.py
+  - apps/api/app/tests/test_dashboard_read_contracts.py
+  - apps/api/app/tests/test_dashboard_golden_chains.py
+  - apps/web/src/App.test.tsx
+  - apps/api/app/tests/test_decision_trace_domain.py
+  - apps/api/app/tests/test_decision_trace_api.py
+  - apps/api/app/tests/test_decision_trace_audit.py
+  - apps/api/app/tests/test_decision_readonly_transaction.py
+  - apps/web/src/pages/DecisionTracePage.test.tsx
+  - apps/web/src/api/decisions.test.ts
+  reusable_evidence_paths:
+  - docs/progress/MVP-404.md
+  - docs/progress/MVP-401.md
+  - docs/progress/evidence/MVP-401/index.json
+  - docs/progress/MVP-303.md
+  - docs/progress/MVP-403.md
+  - docs/progress/evidence/MVP-403/index.json
+  reuse_boundary:
+  - 当前未提交 MVP-404 草稿 IN_PROGRESS，只记录候选复用；尚未连续三轮、正式关闭或 FULL 可调参数模拟器验收。
+  - 已有真实只读余额分层/保护/归属/自主/下一义务/介入/解释；FULL 时间轴、因果差分与新机制入口待增量。
+  - 已有决策→事实/精确策略版本→原回执→当前审计回溯与真实 Edge 零写；FULL 搜索/版本筛选、冲突图和新增机制字段缺失。
+  dirty_candidate_paths:
+  - apps/api/app/services/demo_console.py
+  - apps/api/app/services/demo_console_types.py
+  - apps/api/app/api/v1/demo.py
+  - apps/api/app/services/simulated_redemption_quote.py
+  - apps/web/src/pages/DemoConsolePage.tsx
+  - apps/web/src/features/demo-operation.ts
+  missing_increments:
+  - 四分钟稿压为 240 秒并实测，真实现场与备用完整录屏
+  - 三黄金链/异常/离线场景，截图录屏同 run_id，当前无最终录屏证据
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-905
+  title: 答辩材料
+  status: PENDING
+  primary_closing_package: W8
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1452
+    traceability_source_lines: F:1452–1454
+  original_task_text: '### FULL-905 答辩材料
+
+
+    完成 8—12 页幻灯片、可能问答和证据索引。'
+  original_requirement: 8–12 页答辩幻灯片、问答和证据索引。
+  original_acceptance: 可打开且实际页数合规的幻灯片；图/数字来源；问答指向可验证证据。
+  reusable_implementation_paths: []
+  reusable_test_paths: []
+  reusable_evidence_paths: []
+  reuse_boundary:
+  - 本次只读检查未发现该项所需独立机制/成品/实测证据；空列表不表示无需实现。
+  dirty_candidate_paths: []
+  missing_increments:
+  - 可打开的实际 8–12 页答辩幻灯片、问答和证据索引
+  - 图/数字来源可追溯与视觉审查，禁止 LibreOffice
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-906
+  title: 来源与主张台账
+  status: PENDING
+  primary_closing_package: W8
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1456
+    traceability_source_lines: F:1456–1458；1560–1584
+  original_task_text: '### FULL-906 来源与主张台账
+
+
+    建立每条外部事实、业务假设和实验结论的来源记录。'
+  original_requirement: 外部事实、业务假设、实验结论来源主张台账与图表指标登记。
+  original_acceptance: claims/figures/metrics registry；类型/来源或 run_id/入正文许可/核验时间/责任人完整；外部来源实际核查。
+  reusable_implementation_paths: []
+  reusable_test_paths: []
+  reusable_evidence_paths: []
+  reuse_boundary:
+  - 本次只读检查未发现该项所需独立机制/成品/实测证据；空列表不表示无需实现。
+  dirty_candidate_paths: []
+  missing_increments:
+  - claims/figures/metrics 注册表与允许入正文/来源或 run_id/核验时间/责任人
+  - 外部事实/业务假设/实验结论区分并实际核查，已有内部计划不是外部事实验证
+  required_closing_evidence: []
+  acceptance_node: 主要工作包定向验收并保留 FULL 单项关闭证据；W8 版本全量复核
+- id: FULL-907
+  title: 最终交付核验
+  status: PENDING
+  primary_closing_package: W8
+  original_source:
+    plan: 钱途有界_完整开发计划_Codex执行版.md
+    task_line: 1460
+    traceability_source_lines: F:1460–1462；1639–1669；1704–1766
+  original_task_text: '### FULL-907 最终交付核验
+
+
+    运行全部命令，检查代码、文档、截图、录屏、数字和边界声明一致。'
+  original_requirement: G0–G4、软件/研究/竞赛全部交付；最终命令；代码/材料/截图/录屏/数字/声明一致。
+  original_acceptance: 全量命令输出、逐条人工核验、完整证据索引；所有未验证项显式保留，不能仅因测试绿而完成。
+  reusable_implementation_paths:
+  - AGENTS.md
+  - docs/spec/requirements-traceability.md
+  - docs/spec/acceptance-checklist.md
+  - docs/spec/financial-semantics-review.md
+  - Makefile
+  - make.cmd
+  - scripts/tasks.py
+  - docker-compose.yml
+  - pyproject.toml
+  - package.json
+  - apps/api/app/api/errors.py
+  reusable_test_paths:
+  - scripts/verify_quality_gates.py
+  - scripts/verify_contract_gate.py
+  - apps/api/app/tests/test_errors.py
+  reusable_evidence_paths:
+  - docs/progress/MVP-001.md
+  - docs/progress/MVP-002.md
+  - docs/progress/MVP-003.md
+  reuse_boundary:
+  - 已有范围/质量门追踪，尚无统一 FULL 产品规格、权限矩阵或逐一级需求实际验收。
+  - 模块化单仓和本地质量入口已有；不代表 FULL 九命令、CI、事件/实验/安全/白皮书合同齐全。
+  dirty_candidate_paths:
+  - scripts/tasks.py
+  missing_increments:
+  - 逐 92 项/G0–G4 软件研究竞赛交付核对与完整版全量最终命令
+  - 人工检查代码/材料/截图/录屏/数字/权限一致，未测/未研究/未验证明确保留
+  required_closing_evidence: []
+  acceptance_node: W8 完整版全量+人工审查

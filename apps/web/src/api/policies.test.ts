@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import { changePolicy, previewChange } from './policies';
+import { changePolicy, getPolicyMapVersions, previewChange } from './policies';
 import { ApiError } from './http';
 import { failure, hash, installHttpFixture, lifecycleFixture, policyFixture, policyId, previewFixture, versionId } from '../tests/policy-fixture';
 afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
@@ -26,4 +26,13 @@ test('非JSON/真实环境响应拒绝，网络中断保留可识别错误', asy
   await expect(changePolicy(policyId, {} as never)).rejects.toBeInstanceOf(ApiError);
   installHttpFixture(() => { throw new Error('unit socket lost'); });
   await expect(changePolicy(policyId, {} as never)).rejects.toMatchObject({ status: 0, code: 'NETWORK_ERROR' });
+});
+
+test('地图版本reader拒绝其他策略身份和重复编号，不通过空列表推定完整', async () => {
+  const version = policyFixture().current_version!;
+  let items = [{ ...version, policy_id: 'foreign-policy' }]; installHttpFixture(() => ({ simulation: true, items }));
+  await expect(getPolicyMapVersions(policyId)).rejects.toThrow('身份');
+  items = [version, { ...version, id: 'different-id' }]; await expect(getPolicyMapVersions(policyId)).rejects.toThrow('唯一性');
+  items = [version, { ...version, version_number: 2 }]; await expect(getPolicyMapVersions(policyId)).rejects.toThrow('唯一性');
+  items = []; expect((await getPolicyMapVersions(policyId)).items).toEqual([]);
 });

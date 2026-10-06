@@ -1,0 +1,13 @@
+
+=================================== ERRORS ====================================
+_ ERROR collecting apps/api/app/tests/test_full_seasonal_current_protection.py _
+apps\api\app\tests\test_full_seasonal_current_protection.py:8: in <module>
+    from app.domain.full_seasonal_current_protection import derive_current_seasonal_protection_bindings
+apps\api\app\domain\full_seasonal_current_protection.py:51: in <module>
+    sources: list[FullProtectionPolicySource],
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   NameError: name 'FullProtectionPolicySource' is not defined
+=========================== short test summary info ===========================
+ERROR apps/api/app/tests/test_full_seasonal_current_protection.py - NameError...
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 1.21s

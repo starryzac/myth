@@ -1,0 +1,2 @@
+apps\api\app\tests\test_full_payment_permissions_integration.py:193: error: Argument 2 to "uuid5" has incompatible type "object"; expected "str | bytes"  [arg-type]
+Found 1 error in 1 file (checked 1 source file)

@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/components/FinancialChangeImpactPanel.test.tsx (4 tests) 739ms
+   ✓ 无自动POST，手动366日期三阶段/精确负差额与没有授权展示  394ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  07:19:31
+   Duration  3.27s (transform 327ms, setup 454ms, collect 472ms, tests 739ms, environment 861ms, prepare 300ms)
+

@@ -3,6 +3,10 @@
 import base64
 import hashlib
 import json
+from collections.abc import Iterator
+from contextlib import contextmanager
+from contextvars import ContextVar
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any, Literal, cast
 from uuid import UUID, uuid4
@@ -54,10 +58,12 @@ from app.domain.audit_chain_types import (
     AuditEvent as AuditEventEnvelope,
 )
 from app.domain.bank_posting_codec import bank_posting_data, bank_posting_snapshot_version
+from app.domain.decision_trace_types import DecisionTrace
+from app.services.historical_read import historical_ledger_scope, stable_read_snapshot
 from app.services.policy_lifecycle import PolicyLifecycleError
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import func, inspect, select, text
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, SessionTransaction
 
 SUBJECT_MODELS: dict[str, Any] = {
     "USER": User,
@@ -303,7 +309,7 @@ def reset_archive_epoch(
             )
     manifest = session.scalar(text("SELECT audit_archive_manifest(:epoch)"), {"epoch": epoch.id})
     digest = hashlib.sha256(
-        b"bounded-funds/audit-archive-v1\0" + domain.canonical_bytes(manifest)
+        b"bounded-funds/audit-archive-v1\0" + domain.archive_manifest_bytes(manifest)
     ).hexdigest()
     clock = _db_clock(session)
     genesis = session.get(AuditEvent, epoch.genesis_event_id)
@@ -669,7 +675,145 @@ def _failure(
     )
 
 
+_AuditReadKey = tuple[UUID, UUID | None, str, str | None]
+
+
+@dataclass
+class _AuditReadProof:
+    key: _AuditReadKey
+    result: AuditVerification
+    originals: dict[tuple[type[Any], UUID], tuple[Any, str]] = field(default_factory=dict)
+
+
+@dataclass
+class _AuditReadScope:
+    session: Session
+    transaction: SessionTransaction | None
+    nested: SessionTransaction | None
+    proof: _AuditReadProof | None = None
+
+    def matches(self, session: Session) -> bool:
+        same = (
+            self.session is session
+            and self.transaction is session.get_transaction()
+            and self.nested is session.get_nested_transaction()
+        )
+        valid = same and stable_read_snapshot(session)
+        if not valid:
+            self.proof = None
+        return valid
+
+
+_audit_read_scope: ContextVar[_AuditReadScope | None] = ContextVar("audit_read_scope", default=None)
+_AUDIT_READ_MODELS = tuple({*SUBJECT_MODELS.values(), AuditEpoch, AuditEvent, AuditSubjectSnapshot})
+
+
+def _audit_read_key(
+    user_id: UUID,
+    epoch_id: UUID | None,
+    checkpoint: AuditCheckpoint | None,
+    mode: Literal["PREFIX", "EXACT"],
+) -> _AuditReadKey:
+    return user_id, epoch_id, mode, checkpoint.model_dump_json() if checkpoint else None
+
+
+def _audit_row_digest(row: Any) -> str:
+    # Check every column, including nested JSON and columns omitted by legacy
+    # bank codecs. No head/tail or ORM dirty flag stands in for source bytes.
+    data = {column.key: getattr(row, column.key) for column in inspect(type(row)).columns}
+    return hashlib.sha256(domain.canonical_bytes(data, raw=True)).hexdigest()
+
+
+@contextmanager
+def audit_read_scope(session: Session) -> Iterator[None]:
+    """One clean immutable read invocation; never store proofs on a Session."""
+    value = (
+        _AuditReadScope(session, session.get_transaction(), session.get_nested_transaction())
+        if stable_read_snapshot(session)
+        else None
+    )
+    token = _audit_read_scope.set(value)
+    try:
+        yield
+    finally:
+        if value is not None:
+            value.proof = None
+        _audit_read_scope.reset(token)
+
+
+def _remember_audit_read(session: Session, key: _AuditReadKey, result: AuditVerification) -> None:
+    value = _audit_read_scope.get()
+    if value is None or result.status != "VALID" or not value.matches(session):
+        return
+    proof = _AuditReadProof(key, result.model_copy(deep=True))
+    try:
+        # Retain strong references while the verifier's actual rows are still
+        # alive. Later identity-map loads cannot silently escape source checks.
+        for row in session.identity_map.values():
+            if isinstance(row, _AUDIT_READ_MODELS):
+                proof.originals[type(row), row.id] = row, _audit_row_digest(row)
+    except (TypeError, ValueError):
+        value.proof = None
+        return
+    value.proof = proof
+
+
 def verify_audit_chain(
+    session: Session,
+    user_id: UUID,
+    epoch_id: UUID | None = None,
+    checkpoint: AuditCheckpoint | None = None,
+    mode: Literal["PREFIX", "EXACT"] = "PREFIX",
+) -> AuditVerification:
+    value = _audit_read_scope.get()
+    key = _audit_read_key(user_id, epoch_id, checkpoint, mode)
+    if value is not None and value.matches(session) and value.proof is not None:
+        proof = value.proof
+        if proof.key == key:
+            try:
+                unchanged = all(
+                    digest == _audit_row_digest(row) for row, digest in proof.originals.values()
+                ) and all(
+                    not isinstance(row, _AUDIT_READ_MODELS)
+                    or (type(row), row.id) in proof.originals
+                    for row in session.identity_map.values()
+                )
+            except (TypeError, ValueError):
+                unchanged = False
+            if unchanged:
+                return proof.result.model_copy(deep=True)
+        value.proof = None
+    return _verify_audit_chain(session, user_id, epoch_id, checkpoint, mode)
+
+
+def _verified_maturity_link_clock(
+    trace: DecisionTrace, events: list[AuditEventEnvelope], wall_clock: datetime
+) -> datetime:
+    """Use an already verified new maturity projection's observation clock.
+
+    Called only after verify_epoch validated every canonical event and the
+    original frozen projection. This reads historical receipts, grants no
+    authority, and never changes a stored event, original clock or hash.
+    All old execution protocols retain their previous read clock.
+    """
+    if (
+        trace.algorithm_versions.get("full_maturity_execution") != "full-maturity-user-execution-v1"
+        or trace.action_id is None
+    ):
+        return wall_clock
+    return max(
+        [wall_clock]
+        + [
+            event.observed_at
+            for event in events
+            if event.event_type == "ACTION_PROJECTED"
+            and event.user_id == trace.user_id
+            and event.action_plan_id == trace.action_id
+        ]
+    )
+
+
+def _verify_audit_chain(
     session: Session,
     user_id: UUID,
     epoch_id: UUID | None = None,
@@ -772,6 +916,22 @@ def verify_audit_chain(
                     previous
                 ):
                     raise ValueError("原前序封口正文与保存的head不一致")
+            # Batch only inside a clean, immutable database snapshot. Writable callers
+            # retain the original identity-map semantics, including unflushed negatives.
+            actual_rows: dict[tuple[str, UUID], Any] | None = None
+            if epoch.status == "OPEN" and stable_read_snapshot(session):
+                actual_rows = {}
+                for kind in {snapshot.kind for snapshot in snapshots}:
+                    model = SUBJECT_MODELS.get(kind)
+                    if model is None:
+                        continue
+                    identities = list({s.entity_id for s in snapshots if s.kind == kind})
+                    for offset in range(0, len(identities), 500):
+                        loaded: Any = session.scalars(
+                            select(model).where(model.id.in_(identities[offset : offset + 500]))
+                        )
+                        for actual in loaded:
+                            actual_rows[kind, actual.id] = actual
             for snapshot in snapshots:
                 subject = domain.parse_subject(snapshot.canonical_text)
                 if (
@@ -788,7 +948,13 @@ def verify_audit_chain(
                 if epoch.status == "OPEN" and (subject.kind, subject.id) not in current_keys:
                     current_keys.add((subject.kind, subject.id))
                     model = SUBJECT_MODELS.get(subject.kind)
-                    actual = session.get(model, subject.id) if model is not None else None
+                    actual = (
+                        actual_rows.get((subject.kind, subject.id))
+                        if actual_rows is not None
+                        else session.get(model, subject.id)
+                        if model is not None
+                        else None
+                    )
                     if actual is not None:
                         actual_data = row_copy(actual)
                         current.append(
@@ -848,7 +1014,7 @@ def verify_audit_chain(
                     text("SELECT audit_archive_manifest(:epoch)"), {"epoch": epoch.id}
                 )
                 digest = hashlib.sha256(
-                    b"bounded-funds/audit-archive-v1\0" + domain.canonical_bytes(manifest)
+                    b"bounded-funds/audit-archive-v1\0" + domain.archive_manifest_bytes(manifest)
                 ).hexdigest()
                 if (
                     digest != epoch.archive_manifest_hash
@@ -872,36 +1038,64 @@ def verify_audit_chain(
                 from app.services.decision_trace import (
                     _action_links,
                     _current_references,
+                    _ReferenceReads,
                     _stored_trace,
                 )
 
-                checked: set[UUID] = set()
-                for event in events:
-                    if (
-                        event.event_type != "DECISION_RECORDED"
-                        or event.decision_run_id is None
-                        or event.decision_run_id in checked
-                    ):
-                        continue
-                    checked.add(event.decision_run_id)
-                    run = session.scalar(
-                        select(DecisionRun).where(
-                            DecisionRun.user_id == user_id, DecisionRun.id == event.decision_run_id
+                with historical_ledger_scope(session):
+                    reference_reads = _ReferenceReads() if actual_rows is not None else None
+                    checked: set[UUID] = set()
+                    for event in events:
+                        if (
+                            event.event_type != "DECISION_RECORDED"
+                            or event.decision_run_id is None
+                            or event.decision_run_id in checked
+                        ):
+                            continue
+                        checked.add(event.decision_run_id)
+                        run = session.scalar(
+                            select(DecisionRun).where(
+                                DecisionRun.user_id == user_id,
+                                DecisionRun.id == event.decision_run_id,
+                            )
                         )
-                    )
-                    if run is None:
-                        raise ValueError("当前轮次的原决策已缺失")
-                    try:
-                        completeness, trace = _stored_trace(session, run)
-                        if completeness == "UNSUPPORTED_VERSION":
-                            unsupported_trace = True
-                        elif completeness != "COMPLETE" or trace is None:
-                            raise ValueError("已记录决策的当前原轨迹无法完整核验")
-                        if trace is not None:
-                            _current_references(session, trace, allow_missing=True)
-                            _action_links(session, run, datetime.now(UTC), trace)
-                    except PolicyLifecycleError as error:
-                        raise ValueError("当前决策或经济回单原件未通过既有核验") from error
+                        if run is None:
+                            raise ValueError("当前轮次的原决策已缺失")
+                        try:
+                            completeness, trace = _stored_trace(session, run)
+                            if completeness == "UNSUPPORTED_VERSION":
+                                unsupported_trace = True
+                            elif completeness != "COMPLETE" or trace is None:
+                                raise ValueError("已记录决策的当前原轨迹无法完整核验")
+                            if trace is not None:
+                                _current_references(
+                                    session, trace, allow_missing=True, _reads=reference_reads
+                                )
+                                _action_links(
+                                    session,
+                                    run,
+                                    _verified_maturity_link_clock(trace, events, datetime.now(UTC)),
+                                    trace,
+                                )
+                        except PolicyLifecycleError as error:
+                            original_trace = run.input_snapshot.get("decision_trace", {})
+                            original_algorithms = (
+                                original_trace.get("algorithm_versions", {})
+                                if isinstance(original_trace, dict)
+                                else {}
+                            )
+                            if (
+                                isinstance(original_algorithms, dict)
+                                and original_algorithms.get("full_maturity_execution")
+                                == "full-maturity-user-execution-v1"
+                            ):
+                                raise ValueError(
+                                    "New maturity original refusal: "
+                                    + error.code
+                                    + ": "
+                                    + str(error)
+                                ) from error
+                            raise ValueError("当前决策或经济回单原件未通过既有核验") from error
             if unsupported_trace and verification.status != "UNSUPPORTED_VERSION":
                 return verification.model_copy(
                     update={
@@ -916,6 +1110,9 @@ def verify_audit_chain(
                         ],
                     }
                 )
+            _remember_audit_read(
+                session, _audit_read_key(user_id, epoch_id, checkpoint, mode), verification
+            )
             return verification
         except domain.AuditUnsupportedVersion as error:
             return _failure(user_id, epoch.id, "UNSUPPORTED_VERSION", str(error)).model_copy(

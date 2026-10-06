@@ -1,3 +1,4 @@
+import DecisionSearchPanel from '../components/DecisionSearchPanel';
 import { useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
@@ -172,8 +173,10 @@ function DecisionList() {
   const query = useInfiniteQuery({ queryKey: ['decision-list'], queryFn: ({ pageParam }) => getDecisions(pageParam), initialPageParam: undefined as string | undefined,
     getNextPageParam: (page) => page.next_cursor ?? undefined, retry: false });
   const items = query.data?.pages.flatMap((page) => page.items) ?? [];
+  const searchOwner = query.isError ? undefined : query.data?.pages[0]?.user_id;
   return <><div className="page-intro"><div><p className="eyebrow">DECISION TRACE</p><h2>决策轨迹</h2><p>从当时依据到当前回执，逐层查看保存的决策。</p></div><button disabled={query.isFetching} onClick={() => void query.refetch()}>刷新记录列表</button></div>
     <p className="caption">记录状态与资金执行结果分别展示。列表按接口保存时点排序，游标分页；已展示数量不代表全部历史记录。</p>
+    <DecisionSearchPanel key={searchOwner ?? 'unknown-owner'} ownerUserId={searchOwner} />
     {query.isPending && <p role="status">正在读取决策记录…</p>}{query.isError && <p role="alert">{errorMessage(query.error)} <button onClick={() => void (query.isFetchNextPageError ? query.fetchNextPage() : query.refetch())}>重试读取列表</button></p>}
     {(!query.isError || query.isFetchNextPageError) && query.data && <><p className="caption">已读取 {items.length} 条{query.hasNextPage ? '，还有下一页' : '，当前分页范围读取完毕'}。</p>
       {!items.length && <p className="empty">暂无保存的决策轨迹。</p>}<div className="trace-list">{items.map((item, index) => <article key={`${item.run_id}:${index}`} className="card trace-item"><h3>{item.phase ? label(item.phase, phaseNames) : '阶段未记录'}</h3><p>{item.as_of}</p><p>触发 {item.trigger_type} · 记录状态 {item.status}</p><p>{completeness[item.completeness]}</p>

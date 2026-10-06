@@ -1,0 +1,13 @@
+run_id=20261005T233327Z-9bf2c66c
++ uv run --frozen python scripts/evidence_check.py
+REJECTED: explicit evidence request is required; no newest file selected
+Traceback (most recent call last):
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tasks.py", line 610, in <module>
+    main(sys.argv[1])
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tasks.py", line 597, in main
+    uv("python", f"scripts/{target.replace('-', '_')}.py")
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tasks.py", line 115, in uv
+    run("uv", "run", "--frozen", *args)
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\tasks.py", line 111, in run
+    raise subprocess.CalledProcessError(code, args)
+subprocess.CalledProcessError: Command '('uv', 'run', '--frozen', 'python', 'scripts/evidence_check.py')' returned non-zero exit status 2.

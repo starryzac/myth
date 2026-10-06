@@ -1,0 +1,12 @@
+E501 Line too long (101 > 100)
+   --> apps\api\app\domain\audit_chain.py:140:101
+    |
+138 |                 raise ValueError("Noncanonical identity")
+139 |         except (ValueError, AttributeError) as error:
+140 |             raise AuditContractError("Audit archive identity must be canonical UUID text") from error
+    |                                                                                                     ^
+141 |         if type(digest) is not str or re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+142 |             raise AuditContractError("Audit archive snapshot hash must be original SHA256 text")
+    |
+
+Found 1 error.

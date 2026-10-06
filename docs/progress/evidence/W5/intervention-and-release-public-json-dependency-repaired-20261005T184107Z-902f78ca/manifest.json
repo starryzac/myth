@@ -1,0 +1,40 @@
+{
+  "run_id": "20261005T184107Z-902f78ca",
+  "task": "W5",
+  "label": "intervention-and-release-public-json-dependency-repaired",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/full_intervention.py",
+    "apps/api/app/domain/full_goal_release_authorization.py",
+    "apps/api/app/api/v1/full_intervention.py",
+    "apps/api/app/api/v1/full_goal_release_authorization.py",
+    "apps/api/app/tests/test_intervention_public_json.py",
+    "apps/api/app/tests/test_full_goal_release_authorization_api.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "-q",
+    "-x",
+    "apps/api/app/tests/test_intervention_public_json.py",
+    "apps/api/app/tests/test_full_goal_release_authorization_api.py",
+    "apps/api/app/tests/test_full_intervention.py"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T18:41:08.524084+00:00",
+  "finished_at": "2026-10-05T18:41:20.587008+00:00",
+  "wall_seconds": 12.062924,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "9fe68a79689b42fe57d8ccb8aaabb21572beb2170e8574d53b7030af25f384dc",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

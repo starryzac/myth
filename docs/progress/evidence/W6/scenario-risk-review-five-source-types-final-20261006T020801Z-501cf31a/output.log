@@ -1,0 +1,3 @@
+apps\api\app\tests\test_scenario_risk_review.py:538: error: Unsupported target for indexed assignment ("Collection[str]")  [index]
+apps\api\app\tests\test_scenario_risk_review.py:540: error: Unsupported target for indexed assignment ("Collection[str]")  [index]
+Found 2 errors in 1 file (checked 5 source files)

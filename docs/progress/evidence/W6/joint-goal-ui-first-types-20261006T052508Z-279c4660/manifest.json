@@ -1,0 +1,35 @@
+{
+  "run_id": "20261006T052508Z-279c4660",
+  "task": "W6",
+  "label": "joint-goal-ui-first-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/api/full-joint-goal-execution",
+    "apps/web/src/features/full-joint-goal-operation",
+    "apps/web/src/components/FullJointGoalExecutionPanel",
+    "apps/web/src/tests/full-joint-goal-execution-fixture",
+    "packages/contracts"
+  ],
+  "command": [
+    "node",
+    "apps/web/node_modules/typescript/bin/tsc",
+    "--noEmit",
+    "-p",
+    ".runtime/FULL-joint-goal-ui/owned-tsconfig.json"
+  ],
+  "exit_code": 2,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T05:25:10.708028+00:00",
+  "finished_at": "2026-10-06T05:25:16.605531+00:00",
+  "wall_seconds": 5.897503,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "179970a12e984b7004a33e7c191bc47eda31f942dc0467575a9f89076e6684cb",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

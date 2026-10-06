@@ -1,0 +1,5 @@
+apps/api/app/tests/test_scenario_service_steps.py::test_lookup_action_policy_snapshot_and_refused_overrides_keep_all_physical24_rows
+apps/api/app/tests/test_scenario_service_steps.py::test_original_goal_confirmation_then_creation_has_zero_ownership_and_no_cash_operation
+apps/api/app/tests/test_scenario_service_steps.py::test_real_policy_change_invalidates_old_action_without_replacing_its_effect_or_bank_rows
+
+3/153 tests collected (150 deselected) in 1.38s

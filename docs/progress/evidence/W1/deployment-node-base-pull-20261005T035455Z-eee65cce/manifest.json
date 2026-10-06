@@ -1,0 +1,31 @@
+{
+  "run_id": "20261005T035455Z-eee65cce",
+  "task": "W1",
+  "label": "deployment-node-base-pull",
+  "status": "PASSED",
+  "scope": [
+    "deploy"
+  ],
+  "command": [
+    "docker",
+    "pull",
+    "--platform",
+    "linux/amd64",
+    "node:24-bookworm-slim"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T03:54:56.439000+00:00",
+  "finished_at": "2026-10-05T03:55:25.048850+00:00",
+  "wall_seconds": 28.60985,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "3d50abd6546e356b7e42b3811499f208aa5fff51268ffa4d7b48788005ac5727",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

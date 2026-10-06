@@ -1,0 +1,43 @@
+E501 Line too long (116 > 100)
+   --> apps\api\app\domain\full_joint_goal_execution.py:658:101
+    |
+656 |         reasons=sorted(set(reasons)),
+657 |         limitations=[
+658 |             "Requires durable parent/child/consent and original typed execution hooks; preview performs no writes.",
+    |                                                                                                     ^^^^^^^^^^^^^^^^
+659 |             "Current monthly 2-8 complete goal scope only; no weekly or multi-period global execution.",
+660 |             "Every bank acceptance revalidates the original fixed amount and sources; UNKNOWN stops the next child.",
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\domain\full_joint_goal_execution.py:659:101
+    |
+657 |         limitations=[
+658 |             "Requires durable parent/child/consent and original typed execution hooks; preview performs no writes.",
+659 |             "Current monthly 2-8 complete goal scope only; no weekly or multi-period global execution.",
+    |                                                                                                     ^^^^
+660 |             "Every bank acceptance revalidates the original fixed amount and sources; UNKNOWN stops the next child.",
+661 |         ],
+    |
+
+E501 Line too long (117 > 100)
+   --> apps\api\app\domain\full_joint_goal_execution.py:660:101
+    |
+658 |             "Requires durable parent/child/consent and original typed execution hooks; preview performs no writes.",
+659 |             "Current monthly 2-8 complete goal scope only; no weekly or multi-period global execution.",
+660 |             "Every bank acceptance revalidates the original fixed amount and sources; UNKNOWN stops the next child.",
+    |                                                                                                     ^^^^^^^^^^^^^^^^^
+661 |         ],
+662 |     )
+    |
+
+E501 Line too long (105 > 100)
+   --> apps\api\app\tests\test_full_joint_goal_execution.py:409:101
+    |
+409 | def test_actual_sources_synthetic_whole_cap_can_differ_from_single_goal_without_changing_originals() -> (
+    |                                                                                                     ^^^^^
+410 |     None
+411 | ):
+    |
+
+Found 4 errors.

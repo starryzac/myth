@@ -1,0 +1,1 @@
+{"status": "PASSED", "path": "docs\\progress\\evidence\\W1\\loopback-health-20261005T060426Z-676839ad", "responses": [{"url": "http://127.0.0.1:15183/", "status": 200, "bytes": 475}, {"url": "http://127.0.0.1:15183/api/v1/health", "status": 200, "bytes": 63}]}

@@ -1,0 +1,25 @@
+HTTP/1.1 200 OK
+Server: nginx/1.31.6
+Date: Mon, 05 Oct 2026 06:04:28 GMT
+Content-Type: text/html
+Content-Length: 475
+Last-Modified: Mon, 05 Oct 2026 05:32:17 GMT
+Connection: close
+ETag: "6ac33661-1db"
+Cache-Control: no-store
+Accept-Ranges: bytes
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f8fafc" />
+    <title>钱途有界 · 模拟资金工作台</title>
+    <script type="module" crossorigin src="/assets/index-Dj-7SsYD.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BLUVy2UY.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

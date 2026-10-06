@@ -1,0 +1,3 @@
+apps/web/src/api/full-payment-relations.ts(127,428): error TS18047: 'intent.action' is possibly 'null'.
+apps/web/src/api/full-payment-relations.ts(127,515): error TS18047: 'intent.action' is possibly 'null'.
+apps/web/src/api/full-payment-relations.ts(127,621): error TS18047: 'intent.action' is possibly 'null'.

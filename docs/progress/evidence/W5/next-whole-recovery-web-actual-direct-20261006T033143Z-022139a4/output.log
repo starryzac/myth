@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/full-recovery-next.test.ts (14 tests) 654ms
+ ✓ src/components/FullRecoveryNextPanel.test.tsx (8 tests) 4225ms
+   ✓ 原完整服务器选择预览无金额/clock输入，prepare只保存真实v1 body/path，不调用v2prepare  2356ms
+   ✓ prepare响应丢失保真实原键/body和旧门，不自动重新prepare或推进新仓  399ms
+   ✓ UNKNOWN保未覆盖原因，不把无effect预览当READY  326ms
+
+ Test Files  2 passed (2)
+      Tests  22 passed (22)
+   Start at  11:31:46
+   Duration  7.89s (transform 1.58s, setup 1.18s, collect 2.61s, tests 4.88s, environment 2.08s, prepare 636ms)
+

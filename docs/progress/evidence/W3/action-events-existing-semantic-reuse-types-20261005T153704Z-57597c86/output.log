@@ -1,0 +1,3 @@
+apps\api\app\tests\test_boundary_action_events.py:90: error: Unsupported operand types for + ("None" and "timedelta")  [operator]
+apps\api\app\tests\test_boundary_action_events.py:90: note: Left operand is of type "datetime | None"
+Found 1 error in 1 file (checked 5 source files)

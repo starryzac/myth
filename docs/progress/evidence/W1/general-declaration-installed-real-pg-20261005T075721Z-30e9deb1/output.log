@@ -1,0 +1,377 @@
+..........FFF                                                            [100%]
+================================== FAILURES ===================================
+_ test_confirmed_original_configuration_tamper_is_refused_without_repair[bool_integer_alias] _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_b14eb73a77d14457a3ca3134a9ef07d6)
+mutation = 'bool_integer_alias'
+
+    @pytest.mark.parametrize("mutation", ["bool_integer_alias", "wrong_hash"])
+    def test_confirmed_original_configuration_tamper_is_refused_without_repair(
+        demo_engine: Engine, mutation: str
+    ) -> None:
+        seed_demo(demo_engine)
+        actual = declare(demo_engine)
+        with Session(demo_engine) as session, session.begin():
+            confirmed = confirm_proposal(
+                session,
+                DEMO_USER_ID,
+                actual.proposal_id,
+                actual.configuration_hash,
+                True,
+                NOW + timedelta(seconds=1),
+            )
+        with Session(demo_engine) as session, session.begin():
+            version = session.get(PolicyVersion, confirmed.current_version_id)
+            assert version is not None
+            if mutation == "bool_integer_alias":
+                version.configuration = {
+                    **version.configuration,
+                    "allow_auto_recovery_without_penalty": 1,
+                }
+            else:
+                version.content_hash = "0" * 64
+        before = database_snapshot(demo_engine)
+>       with pytest.raises(PolicyLifecycleError) as error:
+E       Failed: DID NOT RAISE PolicyLifecycleError
+
+apps\api\app\tests\test_scenario_policy_declaration.py:223: Failed
+_ test_confirmed_original_configuration_tamper_is_refused_without_repair[wrong_hash] _
+
+self = <sqlalchemy.engine.base.Connection object at 0x000002196FAC73E0>
+dialect = <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x000002196F861BE0>
+context = <sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x000002196F7C1400>
+statement = <sqlalchemy.dialects.postgresql.psycopg.PGCompiler_psycopg object at 0x000002196FAC87A0>
+parameters = [{'content_hash': '0000000000000000000000000000000000000000000000000000000000000000', 'policy_versions_id': UUID('29385913-c978-40c4-997d-d8231bde8d25')}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Unpack[TupleAny]]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        evt_handled: bool = False
+        try:
+            if self._has_events or self.engine._has_events:
+                for fn in self.dispatch.before_cursor_execute:
+                    str_statement, effective_parameters = fn(
+                        self,
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                        context.executemany,
+                    )
+    
+            if self._echo:
+                self._log_info(str_statement)
+    
+                stats = context._get_cache_stats()
+    
+                if not self.engine.hide_parameters:
+                    self._log_info(
+                        "[%s] %r",
+                        stats,
+                        sql_util._repr_params(
+                            effective_parameters,
+                            batches=10,
+                            ismulti=context.executemany,
+                        ),
+                    )
+                else:
+                    self._log_info(
+                        "[%s] [SQL parameters hidden due to "
+                        "hide_parameters=True]",
+                        stats,
+                    )
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1943: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_2874aeb7f8c94b43a0b7cc6d6c518532) at 0x2196dd4fc50>
+query = 'UPDATE policy_versions SET content_hash=%(content_hash)s::VARCHAR WHERE policy_versions.id = %(policy_versions_id)s::UUID'
+params = {'content_hash': '0000000000000000000000000000000000000000000000000000000000000000', 'policy_versions_id': UUID('29385913-c978-40c4-997d-d8231bde8d25')}
+prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.CheckViolation: PolicyVersion is immutable; append a new version
+E           CONTEXT:  PL/pgSQL function reject_policy_version_update() line 3 at RAISE
+
+.venv\Lib\site-packages\psycopg\cursor.py:117: CheckViolation
+
+The above exception was the direct cause of the following exception:
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_2874aeb7f8c94b43a0b7cc6d6c518532)
+mutation = 'wrong_hash'
+
+    @pytest.mark.parametrize("mutation", ["bool_integer_alias", "wrong_hash"])
+    def test_confirmed_original_configuration_tamper_is_refused_without_repair(
+        demo_engine: Engine, mutation: str
+    ) -> None:
+        seed_demo(demo_engine)
+        actual = declare(demo_engine)
+        with Session(demo_engine) as session, session.begin():
+            confirmed = confirm_proposal(
+                session,
+                DEMO_USER_ID,
+                actual.proposal_id,
+                actual.configuration_hash,
+                True,
+                NOW + timedelta(seconds=1),
+            )
+>       with Session(demo_engine) as session, session.begin():
+
+apps\api\app\tests\test_scenario_policy_declaration.py:212: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\engine\util.py:144: in __exit__
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\engine\util.py:142: in __exit__
+    self.commit()
+<sqlalchemy generated _go() wrapper for sqlalchemy.orm.session.SessionTransaction.commit>:2: in commit
+    return target(fn, self, _to_root=_to_root)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py:137: in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:1330: in commit
+    self._prepare_impl()
+<sqlalchemy generated _go() wrapper for sqlalchemy.orm.session.SessionTransaction._prepare_impl>:2: in _prepare_impl
+    return target(fn, self)
+           ^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py:137: in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:1304: in _prepare_impl
+    self.session.flush()
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4536: in flush
+    self._flush(objects)
+<sqlalchemy generated warned() wrapper for sqlalchemy.orm.session.Session._flush>:2: in _flush
+    return target(fn, self, objects=objects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\util\deprecations.py:281: in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4679: in _flush
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4640: in _flush
+    flush_context.execute()
+.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py:467: in execute
+    rec.execute(self)
+.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py:643: in execute
+    util.preloaded.orm_persistence._save_obj(
+.venv\Lib\site-packages\sqlalchemy\orm\persistence.py:84: in _save_obj
+    _emit_update_statements(
+.venv\Lib\site-packages\sqlalchemy\orm\persistence.py:916: in _emit_update_statements
+    c = connection.execute(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1448: in execute
+    return meth(
+.venv\Lib\site-packages\sqlalchemy\sql\elements.py:533: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1668: in _execute_clauseelement
+    ret = self._execute_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1822: in _execute_context
+    return self._exec_single_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1962: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:2332: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1943: in _exec_single_context
+    self.dialect.do_execute(
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=54329 user=bounded database=bf_test_2874aeb7f8c94b43a0b7cc6d6c518532) at 0x2196dd4fc50>
+query = 'UPDATE policy_versions SET content_hash=%(content_hash)s::VARCHAR WHERE policy_versions.id = %(policy_versions_id)s::UUID'
+params = {'content_hash': '0000000000000000000000000000000000000000000000000000000000000000', 'policy_versions_id': UUID('29385913-c978-40c4-997d-d8231bde8d25')}
+prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           sqlalchemy.exc.IntegrityError: (psycopg.errors.CheckViolation) PolicyVersion is immutable; append a new version
+E           CONTEXT:  PL/pgSQL function reject_policy_version_update() line 3 at RAISE
+E           [SQL: UPDATE policy_versions SET content_hash=%(content_hash)s::VARCHAR WHERE policy_versions.id = %(policy_versions_id)s::UUID]
+E           [parameters: {'content_hash': '0000000000000000000000000000000000000000000000000000000000000000', 'policy_versions_id': UUID('29385913-c978-40c4-997d-d8231bde8d25')}]
+E           (Background on this error at: https://sqlalche.me/e/21/gkpj)
+
+.venv\Lib\site-packages\psycopg\cursor.py:117: IntegrityError
+_ test_scenario_declaration_requires_actual_separate_confirmation_and_original_refs _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_64c25478aa1b40989475c9ef3f6e9d72)
+
+    def test_scenario_declaration_requires_actual_separate_confirmation_and_original_refs(
+        demo_engine: Engine,
+    ) -> None:
+        seed_demo(demo_engine)
+        original_epoch = epoch(demo_engine)
+        previous = {"$ref": {"step_id": "declare", "pointer": "/result/proposal_id"}}
+        reviewed = {"$ref": {"step_id": "declare", "pointer": "/result/configuration_hash"}}
+        case = Scenario(
+            scenario_id="DEVELOPMENT-original-declaration",
+            purpose="DEVELOPMENT",
+            dataset_id="DEVELOPMENT-not-formal-24",
+            family_id="DECLARATION_RISKS",
+            initial_state=InitialState(expected_epoch_id=original_epoch),
+            steps=[
+                ScenarioStep(
+                    step_id="declare",
+                    kind="DECLARE_POLICY",
+                    at=NOW,
+                    inputs={
+                        "configuration": config(),
+                        "idempotency_key": "scenario-native",
+                        "expected_epoch_id": str(original_epoch),
+                    },
+                ),
+                ScenarioStep(step_id="before", kind="SNAPSHOT", at=NOW, inputs={}),
+                ScenarioStep(
+                    step_id="refuse",
+                    kind="CONFIRM_POLICY",
+                    at=NOW + timedelta(seconds=1),
+                    inputs={"proposal_id": previous, "reviewed_hash": reviewed, "accepted": False},
+                    expected_error=ExpectedScenarioError(code="CONFIRMATION_REQUIRED", status_code=409),
+                ),
+                ScenarioStep(
+                    step_id="confirm",
+                    kind="CONFIRM_POLICY",
+                    at=NOW + timedelta(seconds=2),
+                    inputs={"proposal_id": previous, "reviewed_hash": reviewed, "accepted": True},
+                ),
+                ScenarioStep(
+                    step_id="after", kind="SNAPSHOT", at=NOW + timedelta(seconds=3), inputs={}
+                ),
+            ],
+            expected_properties=["BANK_LEDGER_VALID", "AUDIT_VALID"],
+        )
+        result = ScenarioRunner(demo_engine, DEMO_USER_ID).run(case)
+>       assert result.status == "EXECUTED" and len(result.steps) == 5
+E       AssertionError: assert ('FAILED' == 'EXECUTED'
+E         
+E         - EXECUTED
+E         + FAILED)
+
+apps\api\app\tests\test_scenario_policy_declaration.py:274: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_scenario_policy_declaration.py::test_confirmed_original_configuration_tamper_is_refused_without_repair[bool_integer_alias]
+FAILED apps/api/app/tests/test_scenario_policy_declaration.py::test_confirmed_original_configuration_tamper_is_refused_without_repair[wrong_hash]
+FAILED apps/api/app/tests/test_scenario_policy_declaration.py::test_scenario_declaration_requires_actual_separate_confirmation_and_original_refs
+3 failed, 10 passed in 43.36s

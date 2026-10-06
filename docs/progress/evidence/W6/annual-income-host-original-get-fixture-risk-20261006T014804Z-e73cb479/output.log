@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/pages/AnnualPlanningPage.test.tsx (4 tests) 1794ms
+   ✓ 真实GET消费者显示365未来日加初始日期/三阶段，并区分90参考与无授权年度规划  781ms
+   ✓ 原件不足保日期与null未知，不画零曲线或隐去来源问题  566ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  09:48:07
+   Duration  4.56s (transform 459ms, setup 410ms, collect 777ms, tests 1.79s, environment 813ms, prepare 294ms)
+

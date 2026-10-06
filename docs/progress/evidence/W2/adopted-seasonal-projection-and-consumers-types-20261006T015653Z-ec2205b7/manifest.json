@@ -1,0 +1,42 @@
+{
+  "run_id": "20261006T015653Z-ec2205b7",
+  "task": "W2",
+  "label": "adopted-seasonal-projection-and-consumers-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/domain/full_seasonal_protection.py",
+    "apps/api/app/domain/full_protection_projection.py",
+    "apps/api/app/domain/full_execution_protection.py",
+    "apps/api/app/domain/full_joint_goal_planning.py",
+    "apps/api/app/services/full_protection_projection.py",
+    "apps/api/app/services/full_joint_goal_planning.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "mypy",
+    "--strict",
+    "apps/api/app/domain/full_seasonal_protection.py",
+    "apps/api/app/domain/full_protection_projection.py",
+    "apps/api/app/domain/full_execution_protection.py",
+    "apps/api/app/domain/full_joint_goal_planning.py",
+    "apps/api/app/services/full_protection_projection.py",
+    "apps/api/app/services/full_joint_goal_planning.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T01:56:54.757295+00:00",
+  "finished_at": "2026-10-06T01:56:57.095518+00:00",
+  "wall_seconds": 2.338223,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "390efc31794c2cd3713c016433b4c1fe0232914895a957328f6fe6cceb8ff0ea",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

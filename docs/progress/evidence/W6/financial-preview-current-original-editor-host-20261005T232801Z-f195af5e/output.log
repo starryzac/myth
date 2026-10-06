@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/components/FullPoliciesPanel.financial-host.test.tsx (2 tests) 807ms
+   ✓ 资金差量只由当前草稿显式读取，不能替代原修改预览或解除确认门  706ms
+ ✓ src/components/FullPoliciesPanel.test.tsx (10 tests) 1753ms
+   ✓ 完整列表/版本/原命令只读加载，历史和未实现执行边界可见且无POST  363ms
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  07:28:04
+   Duration  6.57s (transform 1.74s, setup 1.15s, collect 4.79s, tests 2.56s, environment 2.17s, prepare 642ms)
+

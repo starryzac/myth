@@ -1,0 +1,12 @@
+E501 Line too long (109 > 100)
+   --> apps\api\app\domain\full_evidence_graph.py:280:101
+    |
+278 |                     reference=table_inventory.table,
+279 |                     detail=(
+280 |                         f"actual={table_inventory.actual_owned_count}, known={table_inventory.known_count}, "
+    |                                                                                                     ^^^^^^^^^
+281 |                         f"captured={table_inventory.captured_count}"
+282 |                     ),
+    |
+
+Found 1 error.

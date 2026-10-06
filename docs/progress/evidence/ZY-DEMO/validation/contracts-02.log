@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\generate_openapi.py", line 28, in <module>
+    generated = subprocess.run(
+                ^^^^^^^^^^^^^^^
+  File "C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['C:\\Users\\starryzac\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\bin\\fallback\\pnpm.CMD', 'exec', 'openapi-typescript']' returned non-zero exit status 1.

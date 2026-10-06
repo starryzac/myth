@@ -1,0 +1,36 @@
+{
+  "run_id": "20261006T031056Z-9ad4b718",
+  "task": "W7",
+  "label": "full-native-mixed-original-direct",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/full_native_operations.py",
+    "apps/api/app/services/full_native_cases.py",
+    "apps/api/app/tests/test_full_native_operation_extensions.py",
+    "apps/api/app/tests/test_full_native_cases.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_full_native_steps.py",
+    "apps/api/app/tests/test_full_native_operation_extensions.py",
+    "apps/api/app/tests/test_full_native_cases.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T03:10:58.211384+00:00",
+  "finished_at": "2026-10-06T03:11:03.312099+00:00",
+  "wall_seconds": 5.100715,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "ad36194b4ce64ddf2ae91189963fa9349cbfdc3c3abf4ba44d99af2fd8afc62f",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

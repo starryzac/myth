@@ -1,0 +1,6 @@
+scripts\mvp_native_schema.py: error: Source file found twice under different module names: "mvp_native_schema" and "scripts.mvp_native_schema"
+scripts\mvp_native_schema.py: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#mapping-file-paths-to-modules for more info
+scripts\mvp_native_schema.py: note: Common resolutions include:
+scripts\mvp_native_schema.py: note:     a) adding `__init__.py` somewhere,
+scripts\mvp_native_schema.py: note:     b) using `--explicit-package-bases` or adjusting `MYPYPATH`
+Found 1 error in 1 file (errors prevented further checking)

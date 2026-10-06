@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/full-policies.test.ts (8 tests) 15ms
+ ✓ src/features/full-policy-operation.test.ts (24 tests) 747ms
+ ✓ src/components/FullPoliciesPanel.test.tsx (10 tests) 1794ms
+   ✓ 修改需原只读preview+复核hash，未知财务delta不显示成零，发送真实after配置  337ms
+
+ Test Files  3 passed (3)
+      Tests  42 passed (42)
+   Start at  22:16:11
+   Duration  4.71s (transform 526ms, setup 1.86s, collect 1.13s, tests 2.56s, environment 3.22s, prepare 1.11s)
+

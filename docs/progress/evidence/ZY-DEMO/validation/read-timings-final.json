@@ -1,0 +1,451 @@
+{
+  "base_url": "http://127.0.0.1:19005",
+  "environment_id": "bf_test_b43172f572614275968085edd60b57ed",
+  "epoch_id": "084e1103-d5f4-4f35-9d8c-f32ab9e7391f",
+  "action_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+  "effect_hash": "9c2d95b11e089f5b7fbdb9b98d0fe298b694d943f676cda88c63a452b9f1d2af",
+  "method": "Sequential urllib HTTP request plus body download and JSON parsing; no browser rendering, no valid financial writes, no PG test suite.",
+  "before_execute": {
+    "started_at": "2026-10-06T07:22:12.728237+00:00",
+    "state": [
+      {
+        "http_status": 200,
+        "http_ms": 10417.087,
+        "json_parse_ms": 7.089,
+        "total_ms": 10424.176,
+        "response_bytes": 328623,
+        "index": 1,
+        "action_status": "PLANNED",
+        "goal_allocated_cents": 0
+      },
+      {
+        "http_status": 200,
+        "http_ms": 9529.566,
+        "json_parse_ms": 13.619,
+        "total_ms": 9543.185,
+        "response_bytes": 328623,
+        "index": 2,
+        "action_status": "PLANNED",
+        "goal_allocated_cents": 0
+      },
+      {
+        "http_status": 200,
+        "http_ms": 11263.238,
+        "json_parse_ms": 6.405,
+        "total_ms": 11269.643,
+        "response_bytes": 328623,
+        "index": 3,
+        "action_status": "PLANNED",
+        "goal_allocated_cents": 0
+      },
+      {
+        "http_status": 200,
+        "http_ms": 11062.944,
+        "json_parse_ms": 3.248,
+        "total_ms": 11066.192,
+        "response_bytes": 328623,
+        "index": 4,
+        "action_status": "PLANNED",
+        "goal_allocated_cents": 0
+      },
+      {
+        "http_status": 200,
+        "http_ms": 10620.236,
+        "json_parse_ms": 4.22,
+        "total_ms": 10624.457,
+        "response_bytes": 328623,
+        "index": 5,
+        "action_status": "PLANNED",
+        "goal_allocated_cents": 0
+      }
+    ],
+    "allocation_preview": [
+      {
+        "http_status": 200,
+        "http_ms": 477.996,
+        "json_parse_ms": 1.128,
+        "total_ms": 479.124,
+        "response_bytes": 158256,
+        "index": 1,
+        "allocation_status": "READY",
+        "suggested_cents": 100000
+      },
+      {
+        "http_status": 200,
+        "http_ms": 400.157,
+        "json_parse_ms": 1.977,
+        "total_ms": 402.134,
+        "response_bytes": 158256,
+        "index": 2,
+        "allocation_status": "READY",
+        "suggested_cents": 100000
+      },
+      {
+        "http_status": 200,
+        "http_ms": 519.301,
+        "json_parse_ms": 2.263,
+        "total_ms": 521.564,
+        "response_bytes": 158256,
+        "index": 3,
+        "allocation_status": "READY",
+        "suggested_cents": 100000
+      },
+      {
+        "http_status": 200,
+        "http_ms": 310.887,
+        "json_parse_ms": 1.127,
+        "total_ms": 312.013,
+        "response_bytes": 158256,
+        "index": 4,
+        "allocation_status": "READY",
+        "suggested_cents": 100000
+      },
+      {
+        "http_status": 200,
+        "http_ms": 926.367,
+        "json_parse_ms": 4.047,
+        "total_ms": 930.414,
+        "response_bytes": 158256,
+        "index": 5,
+        "allocation_status": "READY",
+        "suggested_cents": 100000
+      }
+    ],
+    "financial_projection": {
+      "accounts": [
+        [
+          "4eb14153-fdd3-5778-bd0c-7b8b82d16411",
+          160000
+        ],
+        [
+          "4f8f63e4-c7d3-5925-9399-39647b17e8f8",
+          0
+        ],
+        [
+          "61d172d3-9b8a-5f75-b00e-5d99b5e08dd1",
+          3502400
+        ],
+        [
+          "725f9582-4657-55b9-93c7-386e81bc2f58",
+          0
+        ],
+        [
+          "d55af6d9-d8f9-568c-853b-897cec2cb2cc",
+          0
+        ]
+      ],
+      "goals": [
+        [
+          "10ad470f-17f7-5cb4-974a-7bbfd88d308d",
+          0
+        ]
+      ],
+      "actions": [
+        [
+          "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+          "9c2d95b11e089f5b7fbdb9b98d0fe298b694d943f676cda88c63a452b9f1d2af",
+          "PLANNED",
+          null,
+          null
+        ]
+      ],
+      "income_received": true
+    },
+    "state_summary_ms": {
+      "min": 9543.185,
+      "median": 10624.457,
+      "max": 11269.643
+    },
+    "allocation_preview_summary_ms": {
+      "min": 312.013,
+      "median": 479.124,
+      "max": 930.414
+    },
+    "finished_at": "2026-10-06T07:23:08.325439+00:00"
+  },
+  "goal_id": "10ad470f-17f7-5cb4-974a-7bbfd88d308d",
+  "after_execute": {
+    "started_at": "2026-10-06T07:25:44.642866+00:00",
+    "state": [
+      {
+        "http_status": 200,
+        "http_ms": 21713.26,
+        "json_parse_ms": 3.631,
+        "total_ms": 21716.892,
+        "response_bytes": 328106,
+        "index": 1,
+        "action_status": "SUCCEEDED",
+        "goal_allocated_cents": 100000
+      },
+      {
+        "http_status": 200,
+        "http_ms": 19717.17,
+        "json_parse_ms": 4.896,
+        "total_ms": 19722.066,
+        "response_bytes": 328106,
+        "index": 2,
+        "action_status": "SUCCEEDED",
+        "goal_allocated_cents": 100000
+      },
+      {
+        "http_status": 200,
+        "http_ms": 21702.621,
+        "json_parse_ms": 6.741,
+        "total_ms": 21709.362,
+        "response_bytes": 328106,
+        "index": 3,
+        "action_status": "SUCCEEDED",
+        "goal_allocated_cents": 100000
+      },
+      {
+        "http_status": 200,
+        "http_ms": 21369.593,
+        "json_parse_ms": 4.788,
+        "total_ms": 21374.381,
+        "response_bytes": 328106,
+        "index": 4,
+        "action_status": "SUCCEEDED",
+        "goal_allocated_cents": 100000
+      },
+      {
+        "http_status": 200,
+        "http_ms": 20739.791,
+        "json_parse_ms": 6.062,
+        "total_ms": 20745.853,
+        "response_bytes": 328106,
+        "index": 5,
+        "action_status": "SUCCEEDED",
+        "goal_allocated_cents": 100000
+      }
+    ],
+    "allocation_preview": [
+      {
+        "http_status": 200,
+        "http_ms": 545.172,
+        "json_parse_ms": 2.354,
+        "total_ms": 547.527,
+        "response_bytes": 158005,
+        "index": 1,
+        "allocation_status": "READY",
+        "suggested_cents": 0
+      },
+      {
+        "http_status": 200,
+        "http_ms": 392.909,
+        "json_parse_ms": 1.878,
+        "total_ms": 394.787,
+        "response_bytes": 158005,
+        "index": 2,
+        "allocation_status": "READY",
+        "suggested_cents": 0
+      },
+      {
+        "http_status": 200,
+        "http_ms": 362.168,
+        "json_parse_ms": 1.793,
+        "total_ms": 363.961,
+        "response_bytes": 158005,
+        "index": 3,
+        "allocation_status": "READY",
+        "suggested_cents": 0
+      },
+      {
+        "http_status": 200,
+        "http_ms": 303.771,
+        "json_parse_ms": 1.757,
+        "total_ms": 305.528,
+        "response_bytes": 158005,
+        "index": 4,
+        "allocation_status": "READY",
+        "suggested_cents": 0
+      },
+      {
+        "http_status": 200,
+        "http_ms": 299.447,
+        "json_parse_ms": 2.267,
+        "total_ms": 301.714,
+        "response_bytes": 158005,
+        "index": 5,
+        "allocation_status": "READY",
+        "suggested_cents": 0
+      }
+    ],
+    "financial_projection": {
+      "accounts": [
+        [
+          "4eb14153-fdd3-5778-bd0c-7b8b82d16411",
+          260000
+        ],
+        [
+          "4f8f63e4-c7d3-5925-9399-39647b17e8f8",
+          0
+        ],
+        [
+          "61d172d3-9b8a-5f75-b00e-5d99b5e08dd1",
+          3402400
+        ],
+        [
+          "725f9582-4657-55b9-93c7-386e81bc2f58",
+          0
+        ],
+        [
+          "d55af6d9-d8f9-568c-853b-897cec2cb2cc",
+          0
+        ]
+      ],
+      "goals": [
+        [
+          "10ad470f-17f7-5cb4-974a-7bbfd88d308d",
+          100000
+        ]
+      ],
+      "actions": [
+        [
+          "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+          "9c2d95b11e089f5b7fbdb9b98d0fe298b694d943f676cda88c63a452b9f1d2af",
+          "SUCCEEDED",
+          "SETTLED",
+          {
+            "simulation": true,
+            "receipt_id": "a9dde84e-b495-5faa-ae48-2d9d7bfa4f3c",
+            "action_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+            "bank_operation_id": "d1b9da6d-8588-4298-9d48-11bdab57c13a",
+            "status": "SUCCEEDED",
+            "executed_cents": 100000,
+            "fee_cents": 0,
+            "loss_cents": 0,
+            "posting_ids": [
+              "0083fa54-558b-5aae-8af2-f4688e941288",
+              "20ccc320-d452-5e09-af4f-0811b281991f",
+              "35b1d053-54e9-506a-acb9-c8771fbb4288",
+              "b2ff9360-b45d-5e9c-b0ec-b3b980587cca",
+              "e58d60b6-0672-5426-b711-751637337e39"
+            ],
+            "occurred_at": "2026-10-06T07:24:11.937749Z",
+            "reconciled_at": "2026-10-06T07:24:11.937749Z"
+          }
+        ]
+      ],
+      "income_received": true
+    },
+    "state_summary_ms": {
+      "min": 19722.066,
+      "median": 21374.381,
+      "max": 21716.892
+    },
+    "allocation_preview_summary_ms": {
+      "min": 301.714,
+      "median": 363.961,
+      "max": 547.527
+    },
+    "finished_at": "2026-10-06T07:27:44.567208+00:00"
+  },
+  "cheap_contract_checks": {
+    "openapi_paths": {
+      "/api/v1/actions/{action_id}": [
+        "get"
+      ],
+      "/api/v1/actions/{action_id}/confirm": [
+        "post"
+      ],
+      "/api/v1/goals/{goal_id}/allocation-preview": [
+        "get"
+      ],
+      "/api/v1/health": [
+        "get"
+      ],
+      "/api/v1/policies": [
+        "get"
+      ],
+      "/api/v1/policies/compile": [
+        "post"
+      ],
+      "/api/v1/policies/{policy_id}/revoke": [
+        "post"
+      ],
+      "/api/v1/policies/{policy_id}/suspend": [
+        "post"
+      ],
+      "/api/v1/policy-compilations/{compilation_id}": [
+        "get"
+      ],
+      "/api/v1/policy-proposals": [
+        "get"
+      ],
+      "/api/v1/policy-proposals/{proposal_id}/confirm": [
+        "post"
+      ],
+      "/api/v1/zhiyu/actions/prepare": [
+        "post"
+      ],
+      "/api/v1/zhiyu/actions/{action_id}/execute": [
+        "post"
+      ],
+      "/api/v1/zhiyu/environment": [
+        "get"
+      ],
+      "/api/v1/zhiyu/goal": [
+        "post"
+      ],
+      "/api/v1/zhiyu/income": [
+        "post"
+      ],
+      "/api/v1/zhiyu/presets": [
+        "get"
+      ],
+      "/api/v1/zhiyu/state": [
+        "get"
+      ]
+    },
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/api/v1/boundary/full-action-set",
+        "http_status": 404,
+        "error_code": "DEMO_ROUTE_NOT_ENABLED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/dashboard",
+        "http_status": 404,
+        "error_code": "DEMO_ROUTE_NOT_ENABLED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/demo/state",
+        "http_status": 404,
+        "error_code": "DEMO_ROUTE_NOT_ENABLED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/zhiyu/state?now=2026-01-01T00:00:00Z",
+        "http_status": 422,
+        "error_code": "UNSUPPORTED_QUERY"
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/zhiyu/income",
+        "http_status": 422,
+        "error_code": "VALIDATION_ERROR"
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/zhiyu/actions/prepare",
+        "http_status": 422,
+        "error_code": "VALIDATION_ERROR"
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/zhiyu/actions/d1b9da6d-8588-4298-9d48-11bdab57c13a/execute",
+        "http_status": 422,
+        "error_code": "VALIDATION_ERROR"
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/zhiyu/goal",
+        "http_status": 422,
+        "error_code": "VALIDATION_ERROR"
+      }
+    ]
+  }
+}

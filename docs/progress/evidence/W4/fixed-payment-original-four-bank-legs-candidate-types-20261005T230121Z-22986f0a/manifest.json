@@ -1,0 +1,32 @@
+{
+  "run_id": "20261005T230121Z-22986f0a",
+  "task": "W4",
+  "label": "fixed-payment-original-four-bank-legs-candidate-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/tests/test_full_payment_permissions_integration.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "mypy",
+    "--strict",
+    "apps/api/app/tests/test_full_payment_permissions_integration.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T23:01:22.485539+00:00",
+  "finished_at": "2026-10-05T23:01:24.115767+00:00",
+  "wall_seconds": 1.630228,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "e071ff2c34eeba3043d08d1877fe396cd35b3e9ad557b6e97dad64ec45b1fc1e",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

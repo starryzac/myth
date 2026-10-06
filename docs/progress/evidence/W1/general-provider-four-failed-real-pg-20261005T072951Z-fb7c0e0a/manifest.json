@@ -1,0 +1,42 @@
+{
+  "run_id": "20261005T072951Z-fb7c0e0a",
+  "task": "W1",
+  "label": "general-provider-four-failed-real-pg",
+  "status": "FAILED",
+  "scope": [
+    "scripts/mvp_arm_executor.py",
+    "scripts/tests/test_mvp_arm_executor.py",
+    "apps/api/app/services/experiment_arms.py",
+    "apps/api/app/tests/test_experiment_arms.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "python",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_experiment_arms.py::test_b3_actual_original_confirmation_binds_registered_actor_and_effect",
+    "apps/api/app/tests/test_experiment_arms.py::test_original_bank_commit_response_loss_stays_unknown_with_same_hash",
+    "apps/api/app/tests/test_experiment_arms.py::test_real_funding_income_is_used_for_new_effect_without_fabricated_fragment",
+    "apps/api/app/tests/test_experiment_arms.py::test_real_bank_commit_projection_failure_preserves_original_unknown",
+    "-q",
+    "--basetemp",
+    ".runtime/pytest-provider-four-20261005T0732Z"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T07:29:52.083476+00:00",
+  "finished_at": "2026-10-05T07:31:45.145500+00:00",
+  "wall_seconds": 113.062024,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "daa46e29dfbc502f235e85a852d1c16f44dd5559cf2c7fdf196323b07787268c",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

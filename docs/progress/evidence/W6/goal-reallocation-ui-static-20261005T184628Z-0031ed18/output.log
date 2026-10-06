@@ -1,0 +1,9 @@
+
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\GoalReallocationPanel.test.tsx
+  9:623  error  Parsing error: ',' expected
+
+✖ 1 problem (1 error, 0 warnings)
+
+undefined
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: eslint src/api/goal-reallocation.ts src/components/GoalReallocationPanel.tsx src/api/goal-reallocation.test.ts src/components/GoalReallocationPanel.test.tsx src/tests/goal-reallocation-fixture.ts --max-warnings 0

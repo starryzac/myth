@@ -1,0 +1,492 @@
+.........................FFFFF                                           [100%]
+================================== FAILURES ===================================
+_ test_new_frozen_exact_originals_recompute_amount_with_complete_denominator __
+
+    def test_new_frozen_exact_originals_recompute_amount_with_complete_denominator() -> None:
+>       trace = frozen_trace()
+                ^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_dynamic_goal_execution_history.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def frozen_trace() -> DecisionTrace:
+        data = fixture()
+        contents: dict[Any, dict[str, Any]] = {
+            MODEL: data.model_original,
+            BANK: {"simulation": True, "synthetic_direct_original": str(BANK)},
+            OWN: {"simulation": True, "synthetic_direct_original": str(OWN)},
+            MONTH: {"simulation": True, "synthetic_direct_original": str(MONTH)},
+        }
+        income = data.income.model_copy(
+            update={
+                "origins": (
+                    data.income.origins[0].model_copy(
+                        update={"bank_evidence_hash": configuration_hash(contents[BANK])}
+                    ),
+                )
+            }
+        )
+        contents[INCOME] = income.model_dump(mode="json")
+        data = data.model_copy(
+            update={
+                "income": income,
+                "income_evidence_hash": configuration_hash(contents[INCOME]),
+                "source_refs": [
+                    row.model_copy(
+                        update={"content_hash": configuration_hash(contents[row.evidence_id])}
+                    )
+                    for row in data.source_refs
+                ],
+            }
+        )
+        effect, proof = build_full_dynamic_goal_effect(data, OWN)
+        marker = {
+            "protocol": ALGORITHM,
+            "user_id": str(USER),
+            "epoch_id": str(data.epoch_id),
+            "request": data.request.model_dump(mode="json"),
+            "request_hash": configuration_hash(data.request.model_dump(mode="json")),
+            "effect_hash": proof.effect_hash,
+            "original_proof": proof.model_dump(mode="json"),
+        }
+        original_request = {
+            MARKER: marker,
+            "execution": {"effect": effect.model_dump(mode="json"), "effect_hash": proof.effect_hash},
+        }
+        sources = [
+            TraceEvidence(
+                id=key,
+                user_id=USER,
+                evidence_level="USER_CONFIRMED_POLICY" if key == MODEL else "BANK_CONFIRMED",
+                source_type="FULL_GOAL_MODEL_V1"
+                if key == MODEL
+                else ("SIMULATED_NEW_FUNDS_LEDGER" if key == INCOME else "SYNTHETIC_DIRECT_ORIGINAL"),
+                source_ref=str(data.request.goal_id) if key == MODEL else str(key),
+                content=value,
+                content_hash=configuration_hash(value),
+                captured_content_hash=configuration_hash(value),
+                content_integrity="VERIFIED",
+                status_at_decision="VALID",
+                observed_at=data.context.versions[0].confirmed_at if key == MODEL else NOW,
+                valid_from=data.context.versions[0].confirmed_at if key == MODEL else NOW,
+            )
+            for key, value in contents.items()
+        ]
+        version = data.context.versions[0]
+>       policy = TracePolicy(
+            id=version.version_id,
+            user_id=USER,
+            policy_id=version.policy_id,
+            version_number=1,
+            configuration=version.configuration,
+            configuration_hash=version.content_hash,
+            captured_configuration_hash=version.content_hash,
+            configuration_integrity="VERIFIED",
+            status_at_decision="ACTIVE",
+            confirmed_at=version.confirmed_at,
+            valid_from=version.valid_from,
+            valid_until=version.valid_until,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for TracePolicy
+E       valid_until
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=None, input_type=NoneType]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_dynamic_goal_execution_history.py:91: ValidationError
+_ test_removing_original_source_or_version_rejected_even_with_new_consistent_trace_hash[sources] _
+
+denominator = 'sources'
+
+    @pytest.mark.parametrize("denominator", ["sources", "policies"])
+    def test_removing_original_source_or_version_rejected_even_with_new_consistent_trace_hash(
+        denominator: str,
+    ) -> None:
+>       trace = frozen_trace()
+                ^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_dynamic_goal_execution_history.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def frozen_trace() -> DecisionTrace:
+        data = fixture()
+        contents: dict[Any, dict[str, Any]] = {
+            MODEL: data.model_original,
+            BANK: {"simulation": True, "synthetic_direct_original": str(BANK)},
+            OWN: {"simulation": True, "synthetic_direct_original": str(OWN)},
+            MONTH: {"simulation": True, "synthetic_direct_original": str(MONTH)},
+        }
+        income = data.income.model_copy(
+            update={
+                "origins": (
+                    data.income.origins[0].model_copy(
+                        update={"bank_evidence_hash": configuration_hash(contents[BANK])}
+                    ),
+                )
+            }
+        )
+        contents[INCOME] = income.model_dump(mode="json")
+        data = data.model_copy(
+            update={
+                "income": income,
+                "income_evidence_hash": configuration_hash(contents[INCOME]),
+                "source_refs": [
+                    row.model_copy(
+                        update={"content_hash": configuration_hash(contents[row.evidence_id])}
+                    )
+                    for row in data.source_refs
+                ],
+            }
+        )
+        effect, proof = build_full_dynamic_goal_effect(data, OWN)
+        marker = {
+            "protocol": ALGORITHM,
+            "user_id": str(USER),
+            "epoch_id": str(data.epoch_id),
+            "request": data.request.model_dump(mode="json"),
+            "request_hash": configuration_hash(data.request.model_dump(mode="json")),
+            "effect_hash": proof.effect_hash,
+            "original_proof": proof.model_dump(mode="json"),
+        }
+        original_request = {
+            MARKER: marker,
+            "execution": {"effect": effect.model_dump(mode="json"), "effect_hash": proof.effect_hash},
+        }
+        sources = [
+            TraceEvidence(
+                id=key,
+                user_id=USER,
+                evidence_level="USER_CONFIRMED_POLICY" if key == MODEL else "BANK_CONFIRMED",
+                source_type="FULL_GOAL_MODEL_V1"
+                if key == MODEL
+                else ("SIMULATED_NEW_FUNDS_LEDGER" if key == INCOME else "SYNTHETIC_DIRECT_ORIGINAL"),
+                source_ref=str(data.request.goal_id) if key == MODEL else str(key),
+                content=value,
+                content_hash=configuration_hash(value),
+                captured_content_hash=configuration_hash(value),
+                content_integrity="VERIFIED",
+                status_at_decision="VALID",
+                observed_at=data.context.versions[0].confirmed_at if key == MODEL else NOW,
+                valid_from=data.context.versions[0].confirmed_at if key == MODEL else NOW,
+            )
+            for key, value in contents.items()
+        ]
+        version = data.context.versions[0]
+>       policy = TracePolicy(
+            id=version.version_id,
+            user_id=USER,
+            policy_id=version.policy_id,
+            version_number=1,
+            configuration=version.configuration,
+            configuration_hash=version.content_hash,
+            captured_configuration_hash=version.content_hash,
+            configuration_integrity="VERIFIED",
+            status_at_decision="ACTIVE",
+            confirmed_at=version.confirmed_at,
+            valid_from=version.valid_from,
+            valid_until=version.valid_until,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for TracePolicy
+E       valid_until
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=None, input_type=NoneType]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_dynamic_goal_execution_history.py:91: ValidationError
+_ test_removing_original_source_or_version_rejected_even_with_new_consistent_trace_hash[policies] _
+
+denominator = 'policies'
+
+    @pytest.mark.parametrize("denominator", ["sources", "policies"])
+    def test_removing_original_source_or_version_rejected_even_with_new_consistent_trace_hash(
+        denominator: str,
+    ) -> None:
+>       trace = frozen_trace()
+                ^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_dynamic_goal_execution_history.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def frozen_trace() -> DecisionTrace:
+        data = fixture()
+        contents: dict[Any, dict[str, Any]] = {
+            MODEL: data.model_original,
+            BANK: {"simulation": True, "synthetic_direct_original": str(BANK)},
+            OWN: {"simulation": True, "synthetic_direct_original": str(OWN)},
+            MONTH: {"simulation": True, "synthetic_direct_original": str(MONTH)},
+        }
+        income = data.income.model_copy(
+            update={
+                "origins": (
+                    data.income.origins[0].model_copy(
+                        update={"bank_evidence_hash": configuration_hash(contents[BANK])}
+                    ),
+                )
+            }
+        )
+        contents[INCOME] = income.model_dump(mode="json")
+        data = data.model_copy(
+            update={
+                "income": income,
+                "income_evidence_hash": configuration_hash(contents[INCOME]),
+                "source_refs": [
+                    row.model_copy(
+                        update={"content_hash": configuration_hash(contents[row.evidence_id])}
+                    )
+                    for row in data.source_refs
+                ],
+            }
+        )
+        effect, proof = build_full_dynamic_goal_effect(data, OWN)
+        marker = {
+            "protocol": ALGORITHM,
+            "user_id": str(USER),
+            "epoch_id": str(data.epoch_id),
+            "request": data.request.model_dump(mode="json"),
+            "request_hash": configuration_hash(data.request.model_dump(mode="json")),
+            "effect_hash": proof.effect_hash,
+            "original_proof": proof.model_dump(mode="json"),
+        }
+        original_request = {
+            MARKER: marker,
+            "execution": {"effect": effect.model_dump(mode="json"), "effect_hash": proof.effect_hash},
+        }
+        sources = [
+            TraceEvidence(
+                id=key,
+                user_id=USER,
+                evidence_level="USER_CONFIRMED_POLICY" if key == MODEL else "BANK_CONFIRMED",
+                source_type="FULL_GOAL_MODEL_V1"
+                if key == MODEL
+                else ("SIMULATED_NEW_FUNDS_LEDGER" if key == INCOME else "SYNTHETIC_DIRECT_ORIGINAL"),
+                source_ref=str(data.request.goal_id) if key == MODEL else str(key),
+                content=value,
+                content_hash=configuration_hash(value),
+                captured_content_hash=configuration_hash(value),
+                content_integrity="VERIFIED",
+                status_at_decision="VALID",
+                observed_at=data.context.versions[0].confirmed_at if key == MODEL else NOW,
+                valid_from=data.context.versions[0].confirmed_at if key == MODEL else NOW,
+            )
+            for key, value in contents.items()
+        ]
+        version = data.context.versions[0]
+>       policy = TracePolicy(
+            id=version.version_id,
+            user_id=USER,
+            policy_id=version.policy_id,
+            version_number=1,
+            configuration=version.configuration,
+            configuration_hash=version.content_hash,
+            captured_configuration_hash=version.content_hash,
+            configuration_integrity="VERIFIED",
+            status_at_decision="ACTIVE",
+            confirmed_at=version.confirmed_at,
+            valid_from=version.valid_from,
+            valid_until=version.valid_until,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for TracePolicy
+E       valid_until
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=None, input_type=NoneType]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_dynamic_goal_execution_history.py:91: ValidationError
+_ test_plausible_success_status_or_cap_not_a_substitute_for_original_source_binding _
+
+    def test_plausible_success_status_or_cap_not_a_substitute_for_original_source_binding() -> None:
+>       trace = frozen_trace()
+                ^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_dynamic_goal_execution_history.py:154: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def frozen_trace() -> DecisionTrace:
+        data = fixture()
+        contents: dict[Any, dict[str, Any]] = {
+            MODEL: data.model_original,
+            BANK: {"simulation": True, "synthetic_direct_original": str(BANK)},
+            OWN: {"simulation": True, "synthetic_direct_original": str(OWN)},
+            MONTH: {"simulation": True, "synthetic_direct_original": str(MONTH)},
+        }
+        income = data.income.model_copy(
+            update={
+                "origins": (
+                    data.income.origins[0].model_copy(
+                        update={"bank_evidence_hash": configuration_hash(contents[BANK])}
+                    ),
+                )
+            }
+        )
+        contents[INCOME] = income.model_dump(mode="json")
+        data = data.model_copy(
+            update={
+                "income": income,
+                "income_evidence_hash": configuration_hash(contents[INCOME]),
+                "source_refs": [
+                    row.model_copy(
+                        update={"content_hash": configuration_hash(contents[row.evidence_id])}
+                    )
+                    for row in data.source_refs
+                ],
+            }
+        )
+        effect, proof = build_full_dynamic_goal_effect(data, OWN)
+        marker = {
+            "protocol": ALGORITHM,
+            "user_id": str(USER),
+            "epoch_id": str(data.epoch_id),
+            "request": data.request.model_dump(mode="json"),
+            "request_hash": configuration_hash(data.request.model_dump(mode="json")),
+            "effect_hash": proof.effect_hash,
+            "original_proof": proof.model_dump(mode="json"),
+        }
+        original_request = {
+            MARKER: marker,
+            "execution": {"effect": effect.model_dump(mode="json"), "effect_hash": proof.effect_hash},
+        }
+        sources = [
+            TraceEvidence(
+                id=key,
+                user_id=USER,
+                evidence_level="USER_CONFIRMED_POLICY" if key == MODEL else "BANK_CONFIRMED",
+                source_type="FULL_GOAL_MODEL_V1"
+                if key == MODEL
+                else ("SIMULATED_NEW_FUNDS_LEDGER" if key == INCOME else "SYNTHETIC_DIRECT_ORIGINAL"),
+                source_ref=str(data.request.goal_id) if key == MODEL else str(key),
+                content=value,
+                content_hash=configuration_hash(value),
+                captured_content_hash=configuration_hash(value),
+                content_integrity="VERIFIED",
+                status_at_decision="VALID",
+                observed_at=data.context.versions[0].confirmed_at if key == MODEL else NOW,
+                valid_from=data.context.versions[0].confirmed_at if key == MODEL else NOW,
+            )
+            for key, value in contents.items()
+        ]
+        version = data.context.versions[0]
+>       policy = TracePolicy(
+            id=version.version_id,
+            user_id=USER,
+            policy_id=version.policy_id,
+            version_number=1,
+            configuration=version.configuration,
+            configuration_hash=version.content_hash,
+            captured_configuration_hash=version.content_hash,
+            configuration_integrity="VERIFIED",
+            status_at_decision="ACTIVE",
+            confirmed_at=version.confirmed_at,
+            valid_from=version.valid_from,
+            valid_until=version.valid_until,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for TracePolicy
+E       valid_until
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=None, input_type=NoneType]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_dynamic_goal_execution_history.py:91: ValidationError
+_________ test_legacy_execution_trace_is_not_reinterpreted_as_dynamic _________
+
+    def test_legacy_execution_trace_is_not_reinterpreted_as_dynamic() -> None:
+        trace = rebuild(
+>           frozen_trace(), algorithm_versions={"execution": "economic-effect-revalidation-v1"}
+            ^^^^^^^^^^^^^^
+        )
+
+apps\api\app\tests\test_full_dynamic_goal_execution_history.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def frozen_trace() -> DecisionTrace:
+        data = fixture()
+        contents: dict[Any, dict[str, Any]] = {
+            MODEL: data.model_original,
+            BANK: {"simulation": True, "synthetic_direct_original": str(BANK)},
+            OWN: {"simulation": True, "synthetic_direct_original": str(OWN)},
+            MONTH: {"simulation": True, "synthetic_direct_original": str(MONTH)},
+        }
+        income = data.income.model_copy(
+            update={
+                "origins": (
+                    data.income.origins[0].model_copy(
+                        update={"bank_evidence_hash": configuration_hash(contents[BANK])}
+                    ),
+                )
+            }
+        )
+        contents[INCOME] = income.model_dump(mode="json")
+        data = data.model_copy(
+            update={
+                "income": income,
+                "income_evidence_hash": configuration_hash(contents[INCOME]),
+                "source_refs": [
+                    row.model_copy(
+                        update={"content_hash": configuration_hash(contents[row.evidence_id])}
+                    )
+                    for row in data.source_refs
+                ],
+            }
+        )
+        effect, proof = build_full_dynamic_goal_effect(data, OWN)
+        marker = {
+            "protocol": ALGORITHM,
+            "user_id": str(USER),
+            "epoch_id": str(data.epoch_id),
+            "request": data.request.model_dump(mode="json"),
+            "request_hash": configuration_hash(data.request.model_dump(mode="json")),
+            "effect_hash": proof.effect_hash,
+            "original_proof": proof.model_dump(mode="json"),
+        }
+        original_request = {
+            MARKER: marker,
+            "execution": {"effect": effect.model_dump(mode="json"), "effect_hash": proof.effect_hash},
+        }
+        sources = [
+            TraceEvidence(
+                id=key,
+                user_id=USER,
+                evidence_level="USER_CONFIRMED_POLICY" if key == MODEL else "BANK_CONFIRMED",
+                source_type="FULL_GOAL_MODEL_V1"
+                if key == MODEL
+                else ("SIMULATED_NEW_FUNDS_LEDGER" if key == INCOME else "SYNTHETIC_DIRECT_ORIGINAL"),
+                source_ref=str(data.request.goal_id) if key == MODEL else str(key),
+                content=value,
+                content_hash=configuration_hash(value),
+                captured_content_hash=configuration_hash(value),
+                content_integrity="VERIFIED",
+                status_at_decision="VALID",
+                observed_at=data.context.versions[0].confirmed_at if key == MODEL else NOW,
+                valid_from=data.context.versions[0].confirmed_at if key == MODEL else NOW,
+            )
+            for key, value in contents.items()
+        ]
+        version = data.context.versions[0]
+>       policy = TracePolicy(
+            id=version.version_id,
+            user_id=USER,
+            policy_id=version.policy_id,
+            version_number=1,
+            configuration=version.configuration,
+            configuration_hash=version.content_hash,
+            captured_configuration_hash=version.content_hash,
+            configuration_integrity="VERIFIED",
+            status_at_decision="ACTIVE",
+            confirmed_at=version.confirmed_at,
+            valid_from=version.valid_from,
+            valid_until=version.valid_until,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for TracePolicy
+E       valid_until
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=None, input_type=NoneType]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_dynamic_goal_execution_history.py:91: ValidationError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_dynamic_goal_execution_history.py::test_new_frozen_exact_originals_recompute_amount_with_complete_denominator
+FAILED apps/api/app/tests/test_full_dynamic_goal_execution_history.py::test_removing_original_source_or_version_rejected_even_with_new_consistent_trace_hash[sources]
+FAILED apps/api/app/tests/test_full_dynamic_goal_execution_history.py::test_removing_original_source_or_version_rejected_even_with_new_consistent_trace_hash[policies]
+FAILED apps/api/app/tests/test_full_dynamic_goal_execution_history.py::test_plausible_success_status_or_cap_not_a_substitute_for_original_source_binding
+FAILED apps/api/app/tests/test_full_dynamic_goal_execution_history.py::test_legacy_execution_trace_is_not_reinterpreted_as_dynamic
+5 failed, 25 passed, 1 warning in 16.50s

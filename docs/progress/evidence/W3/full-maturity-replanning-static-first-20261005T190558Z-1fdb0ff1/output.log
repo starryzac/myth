@@ -1,0 +1,10 @@
+E501 Line too long (105 > 100)
+   --> apps\api\app\tests\test_full_maturity_replanning.py:149:101
+    |
+149 | def test_same_event_version_key_stable_across_financial_source_changes_but_new_version_is_reviewed() -> (
+    |                                                                                                     ^^^^^
+150 |     None
+151 | ):
+    |
+
+Found 1 error.

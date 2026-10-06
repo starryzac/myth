@@ -1,0 +1,32 @@
+{
+  "run_id": "20261005T031120Z-d27b06fb",
+  "task": "W1",
+  "label": "edge-video-runtime-plan",
+  "status": "PASSED",
+  "scope": [
+    "pnpm-lock.yaml",
+    "apps/web/package.json"
+  ],
+  "command": [
+    "node",
+    "apps/web/node_modules/@playwright/test/cli.js",
+    "install",
+    "ffmpeg",
+    "--dry-run"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T03:11:20.795254+00:00",
+  "finished_at": "2026-10-05T03:11:21.677595+00:00",
+  "wall_seconds": 0.882341,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "f68e9104b540ec129f4661b99be482f109ca2d98dcef520264ce3d627bfdfba8",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

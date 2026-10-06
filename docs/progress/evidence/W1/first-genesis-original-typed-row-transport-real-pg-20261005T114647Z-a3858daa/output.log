@@ -1,0 +1,113 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_initial_facts_are_first_genesis_before_any_action_and_capture_writes_nothing _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_0f5ff533c434494ab9b01161c58f0300)
+
+    @pytest.mark.integration
+    def test_initial_facts_are_first_genesis_before_any_action_and_capture_writes_nothing(
+        demo_engine: Engine,
+    ) -> None:
+        seed_demo(demo_engine, _experiment_seed_extension="MVP503_SECOND_CASH_INITIAL_FACT_V1")
+        before = original_rows(demo_engine)
+        assert len(before) == 24
+        for table in (
+            "action_plans",
+            "action_receipts",
+            "bank_operations",
+            "action_resource_reservations",
+        ):
+            assert before[table] == []
+        with Session(demo_engine) as session:
+            epochs = list(session.scalars(select(AuditEpoch)))
+            assert len(epochs) == 1 and epochs[0].status == "OPEN"
+            assert epochs[0].genesis_event_hash is not None
+            assert len(epochs[0].genesis_event_hash) == 64
+            epoch_id = str(epochs[0].id)
+        assert len(before["audit_events"]) == 1
+        assert before["audit_events"][0]["event_type"] == "EPOCH_STARTED"
+        directory = ROOT / ".runtime/W1-first-genesis-initial-facts-pg" / uuid4().hex
+        source_files = []
+        for name in sorted(collector.required_sources(ROOT)):
+            raw = (ROOT / name).read_bytes()
+            archived = directory / "source-originals" / name
+            archived.parent.mkdir(parents=True, exist_ok=True)
+            with archived.open("xb") as stream:
+                stream.write(raw)
+            source_files.append({"path": name, "sha256": hashlib.sha256(raw).hexdigest()})
+        source_ref = write(
+            directory / "SOURCE.original.json",
+            {
+                "protocol": "mvp-development-source-inventory-v1",
+                "purpose": "DEVELOPMENT",
+                "files": source_files,
+                "formal_frozen": False,
+            },
+        )
+        refs = {
+            name: write(
+                directory / (name + ".original.json"),
+                {
+                    "protocol": "mvp-development-first-genesis-capture-registration-v1",
+                    "artifact_role": name,
+                    "purpose": "DEVELOPMENT",
+                    "status": "FIRST_GENESIS_BEFORE_ANY_ACTION_NOT_A_FORMAL_CASE",
+                    "financial_effect_evidence": False,
+                    "human_research": "NOT_STARTED",
+                },
+            )
+            for name in ("input", "oracle", "design", "rule")
+        }
+        bindings = {
+            "experiment_run_id": str(uuid4()),
+            "case_id": "DEVELOPMENT_FIRST_GENESIS_INITIAL_FACTS",
+            "arm_id": "P",
+            "execution_mode": "SERVICE_INTEGRATION",
+            **{name + "_sha256": ref["sha256"] for name, ref in refs.items()},
+            "source_sha256": source_ref["sha256"],
+            "seed_version": "mvp-301-v6",
+            "isolated_db_epoch": epoch_id,
+            "purpose": "DEVELOPMENT",
+            "user_id": str(DEMO_USER_ID),
+        }
+        registration_ref = write(
+            directory / "collector-registration.original.json",
+            {
+                "protocol": collector.PROTOCOL,
+                "bindings": bindings,
+                "database_name": demo_engine.url.database,
+                "as_of": SEED_AS_OF.isoformat(),
+                "role": "BEFORE",
+                "source_ref": source_ref,
+                "root_registration_ref": None,
+            },
+        )
+        manifest = collector.collect_readonly(
+            registration_ref, directory / "actual-capture", workspace=ROOT
+        )
+        assert manifest["status"] == "CAPTURED_RAW_NOT_ECONOMICALLY_VERIFIED"
+        assert original_rows(demo_engine) == before
+        physical = json.loads((directory / "actual-capture/physical-snapshot.json").read_bytes())
+>       assert physical["payload"]["tables"] == json.loads(collector.canonical(before))
+                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_mvp_initial_facts.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_readonly_collector.py:173: in canonical
+    json_value(value),
+    ^^^^^^^^^^^^^^^^^
+scripts\mvp_readonly_collector.py:164: in json_value
+    check(all(type(key) is str for key in value), "NONSTRING_ORIGINAL_JSON_KEY")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, reason = 'NONSTRING_ORIGINAL_JSON_KEY'
+
+    def check(condition: bool, reason: str) -> None:
+        if not condition:
+>           raise CollectorRefused(reason)
+E           scripts.mvp_readonly_collector.CollectorRefused: NONSTRING_ORIGINAL_JSON_KEY
+
+scripts\mvp_readonly_collector.py:118: CollectorRefused
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_mvp_initial_facts.py::test_initial_facts_are_first_genesis_before_any_action_and_capture_writes_nothing
+1 failed in 9.98s

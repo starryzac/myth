@@ -1,0 +1,6 @@
+apps\api\app\services\full_payment_permissions.py:1393: error: Incompatible types in assignment (expression has type "ActionResponse", variable has type "ActionPlan | None")  [assignment]
+apps\api\app\services\full_payment_permissions.py:1395: error: Item "None" of "ActionPlan | None" has no attribute "autonomy_level"  [union-attr]
+apps\api\app\services\full_payment_permissions.py:1396: error: Argument 3 to "_action_consent" has incompatible type "ActionPlan | None"; expected "ActionResponse"  [arg-type]
+apps\api\app\tests\test_full_payment_permissions_service.py:170: error: Module "app.services.full_payment_permissions" does not explicitly export attribute "row_copy"  [attr-defined]
+apps\api\app\tests\test_full_payment_permissions_service.py:179: error: Module "app.services.full_payment_permissions" does not explicitly export attribute "row_copy"  [attr-defined]
+Found 5 errors in 2 files (checked 7 source files)

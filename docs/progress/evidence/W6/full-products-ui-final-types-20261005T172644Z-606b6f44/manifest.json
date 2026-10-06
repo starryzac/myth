@@ -1,0 +1,32 @@
+{
+  "run_id": "20261005T172644Z-606b6f44",
+  "task": "W6",
+  "label": "full-products-ui-final-types",
+  "status": "PASSED",
+  "scope": [
+    "apps/web/src/api/full-products",
+    "apps/web/src/pages/FullProductsPage",
+    "apps/web/src/tests/full-products-fixture.ts"
+  ],
+  "command": [
+    "pnpm.cmd",
+    "--filter",
+    "@bounded-funds/web",
+    "typecheck"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T17:26:45.272606+00:00",
+  "finished_at": "2026-10-05T17:26:56.981270+00:00",
+  "wall_seconds": 11.708664,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "5a3973f79ed9becd5f23c4feff467513814de7ea381d75a4d2e339aa8b8edca9",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

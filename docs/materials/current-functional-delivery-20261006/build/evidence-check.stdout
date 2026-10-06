@@ -1,0 +1,6 @@
+{
+  "status": "REJECTED",
+  "exit_code": 2,
+  "error": "[Errno 2] No such file or directory: 'F:\\\\学校活动\\\\工行杯\\\\钱途有界\\\\bounded-funds\\\\docs\\\\materials\\\\current-functional-delivery-20261006\\\\REQUIRED_REAL_EVIDENCE_REQUEST_MISSING.json'",
+  "task_closed": false
+}

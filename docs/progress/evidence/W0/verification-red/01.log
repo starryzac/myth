@@ -1,0 +1,39 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Scripts\python.exe
+hypothesis profile 'default'
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... ERROR: found no collectors for F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\tests\test_decision_trace_audit.py::test_t1_history_get_preserves_waiting_cash_and_does_not_settle_revoked_action
+
+collected 0 items / 1 error
+
+=================================== ERRORS ====================================
+_ ERROR collecting docs/progress/evidence/W0/preflight/baseline-source/apps/api/app/tests/test_decision_trace_audit.py _
+ImportError while importing test module 'F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\tests\test_decision_trace_audit.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.venv\Lib\site-packages\_pytest\python.py:508: in importtestmodule
+    mod = import_path(
+.venv\Lib\site-packages\_pytest\pathlib.py:596: in import_path
+    importlib.import_module(module_name)
+C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\tests\test_decision_trace_audit.py:7: in <module>
+    import app.services.execution as execution
+E   ModuleNotFoundError: No module named 'app'
+=========================== short test summary info ===========================
+ERROR docs/progress/evidence/W0/preflight/baseline-source/apps/api/app/tests/test_decision_trace_audit.py
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+============================== 1 error in 1.03s ===============================

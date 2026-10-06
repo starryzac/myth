@@ -1,0 +1,33 @@
+{
+  "run_id": "20261005T031544Z-9b39f5dc",
+  "task": "W1",
+  "label": "corpus-tool-ruff-final",
+  "status": "FAILED",
+  "scope": [
+    "scripts/mvp_corpus.py",
+    "scripts/tests/test_mvp_corpus.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "ruff",
+    "check",
+    "scripts/mvp_corpus.py",
+    "scripts/tests/test_mvp_corpus.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T03:15:44.866801+00:00",
+  "finished_at": "2026-10-05T03:15:45.114863+00:00",
+  "wall_seconds": 0.248062,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "0ede7242f75b5b7e549d5977bcd3262f996cbb3ef71d89a17b1cab9cc0aba590",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

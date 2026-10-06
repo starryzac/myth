@@ -1,0 +1,14 @@
+phase=migration status=PASSED seconds=0.761
+phase=native_seed_once status=PASSED seconds=1.357
+phase=native_baseline_snapshot status=PASSED seconds=0.223
+phase=api_ready status=PASSED seconds=2.398
+phase=web_ready status=PASSED seconds=0.026
+phase=snapshot:independent-case-start-before status=PASSED seconds=0.160
+phase=snapshot:independent-case-start-after status=PASSED seconds=0.237
+phase=snapshot:salary-real-legs status=PASSED seconds=3.013
+phase=snapshot:replay-before status=PASSED seconds=3.838
+phase=snapshot:salary-replay-zero-write status=PASSED seconds=4.916
+phase=snapshot:independent-case-start-before status=PASSED seconds=3.770
+phase=snapshot:independent-case-start-after status=PASSED seconds=2.148
+phase=snapshot:goal-before status=PASSED seconds=3.830
+W1 FAILED evidence=output\playwright\w1-20261005T035730Z-53e0cf0b

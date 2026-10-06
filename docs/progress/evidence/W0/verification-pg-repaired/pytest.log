@@ -1,0 +1,36 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Scripts\python.exe
+hypothesis profile 'default'
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 20 items
+
+apps/api/app/tests/test_historical_read.py::test_one_rr_readonly_scope_verifies_once_and_separate_scope_verifies_again PASSED [  5%]
+apps/api/app/tests/test_historical_read.py::test_read_committed_and_write_transactions_never_reuse_ledger_verification PASSED [ 10%]
+apps/api/app/tests/test_historical_read.py::test_pending_new_dirty_and_deleted_objects_invalidate_reuse_without_flushing PASSED [ 15%]
+apps/api/app/tests/test_historical_read.py::test_session_transaction_and_nested_boundaries_never_reuse_another_snapshot PASSED [ 20%]
+apps/api/app/tests/test_historical_read.py::test_exception_closes_scope_and_cannot_leave_a_verified_request_context PASSED [ 25%]
+apps/api/app/tests/test_historical_read.py::test_next_request_rejects_nonhead_tampering_even_when_all_ledger_heads_are_unchanged PASSED [ 30%]
+apps/api/app/tests/test_historical_read.py::test_in_place_nonhead_metadata_mutation_invalidates_same_request_ledger_result PASSED [ 35%]
+apps/api/app/tests/test_decision_readonly_transaction.py::test_history_and_receipt_gets_are_readonly_before_the_first_user_select PASSED [ 40%]
+apps/api/app/tests/test_decision_readonly_transaction.py::test_history_errors_discard_previous_success_and_never_repair_or_make_commands_readonly PASSED [ 45%]
+apps/api/app/tests/test_decision_trace_audit.py::test_t1_history_get_preserves_waiting_cash_and_does_not_settle_revoked_action[legacy-income] PASSED [ 50%]
+apps/api/app/tests/test_decision_trace_audit.py::test_unknown_lost_response_keeps_original_committed_bank_trace_on_retry PASSED [ 55%]
+apps/api/app/tests/test_execution_receipt_integrity.py::test_completed_receipt_read_and_replay_reject_tampered_bank_evidence[executed_amount] PASSED [ 60%]
+apps/api/app/tests/test_execution_receipt_integrity.py::test_completed_receipt_read_and_replay_reject_tampered_bank_evidence[missing_postings] PASSED [ 65%]
+apps/api/app/tests/test_execution_receipt_integrity.py::test_completed_receipt_read_and_replay_reject_tampered_bank_evidence[duplicate_postings] PASSED [ 70%]
+apps/api/app/tests/test_recovery_receipt_integrity.py::test_unflushed_immutable_bank_objects_are_checked_without_autoflush[request_rehash] PASSED [ 75%]
+apps/api/app/tests/test_recovery_receipt_integrity.py::test_unflushed_immutable_bank_objects_are_checked_without_autoflush[posting_leg] PASSED [ 80%]
+apps/api/app/tests/test_audit_storage.py::test_open_missing_original_fails_but_lifecycle_and_sealed_reset_remain_valid PASSED [ 85%]
+apps/api/app/tests/test_audit_storage.py::test_verification_refuses_budget_before_loading_original_text PASSED [ 90%]
+apps/api/app/tests/test_audit_api.py::test_audit_verify_uses_real_repeatable_read_and_read_only_transaction PASSED [ 95%]
+apps/api/app/tests/test_execution_api.py::test_http_preparation_confirmation_execution_and_receipt_roundtrip PASSED [100%]
+
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 20 passed, 1 warning in 680.07s (0:11:20) ==================

@@ -1,0 +1,1 @@
+apps/web/src/features/future-income-operation.ts(51,128): error TS18047: 'workspace' is possibly 'null'.

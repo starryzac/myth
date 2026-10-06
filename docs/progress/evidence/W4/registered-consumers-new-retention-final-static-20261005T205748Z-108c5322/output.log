@@ -1,0 +1,12 @@
+E501 Line too long (105 > 100)
+   --> apps\api\app\services\full_protection_projection.py:202:101
+    |
+200 |                         {
+201 |                             "kind": "VERIFIED_CURRENT_PERIODIC_RELATION",
+202 |                             "original_full_planning_confirmation_valid": row.planning_confirmation_valid,
+    |                                                                                                     ^^^^^
+203 |                             "original_full_reference_validation": row.reference_validation,
+204 |                             "proof": binding.model_dump(mode="json"),
+    |
+
+Found 1 error.

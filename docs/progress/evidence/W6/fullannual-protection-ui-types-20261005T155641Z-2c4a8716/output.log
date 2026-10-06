@@ -1,0 +1,6 @@
+$ tsc --noEmit
+src/api/full-annual.ts(79,506): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ code: string; source_ref: string; message: string; }'.
+  No index signature with a parameter of type 'string' was found on type '{ code: string; source_ref: string; message: string; }'.
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @bounded-funds/web@0.1.0 typecheck: `tsc --noEmit`
+Exit status 2

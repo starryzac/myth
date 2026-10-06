@@ -1,0 +1,39 @@
+{
+  "run_id": "20261005T180948Z-aff9d3d3",
+  "task": "W6",
+  "label": "scenario-simulation-backend-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/domain/scenario_simulation.py",
+    "apps/api/app/services/scenario_simulation.py",
+    "apps/api/app/api/v1/scenario_simulation.py",
+    "apps/api/app/tests/test_scenario_simulation.py"
+  ],
+  "command": [
+    "uv",
+    "--cache-dir",
+    ".uv-cache",
+    "run",
+    "--offline",
+    "mypy",
+    "apps/api/app/domain/scenario_simulation.py",
+    "apps/api/app/services/scenario_simulation.py",
+    "apps/api/app/api/v1/scenario_simulation.py",
+    "apps/api/app/tests/test_scenario_simulation.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T18:09:49.210858+00:00",
+  "finished_at": "2026-10-05T18:09:50.796214+00:00",
+  "wall_seconds": 1.585356,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "b08e7ebdabd23203a78c7643a5472f4e5151a85ec14b563609ab8dabdd95f2eb",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

@@ -1,0 +1,35 @@
+{
+  "run_id": "20261005T030517Z-4011633c",
+  "task": "W1",
+  "label": "acceptance-wiring-types-final",
+  "status": "PASSED",
+  "scope": [
+    "scripts/tasks.py",
+    "apps/api/app"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "mypy",
+    "scripts/tasks.py",
+    "apps/api/app/tests/test_task_orchestration.py",
+    "apps/api/app/tests/test_asset_allocation_properties.py",
+    "apps/api/app/tests/test_recovery_properties.py",
+    "--explicit-package-bases"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T03:05:17.776041+00:00",
+  "finished_at": "2026-10-05T03:05:18.832770+00:00",
+  "wall_seconds": 1.056729,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "d9a5631f7d87a741fbecc3236286d1792d22d349ff13846d71cdc9217307bb76",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

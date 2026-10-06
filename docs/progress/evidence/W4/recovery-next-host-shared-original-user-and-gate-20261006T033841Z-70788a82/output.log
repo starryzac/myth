@@ -1,0 +1,10 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/components/FullRecoveryExecutionHost.test.tsx (2 tests) 102ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  11:38:44
+   Duration  2.73s (transform 248ms, setup 427ms, collect 424ms, tests 102ms, environment 934ms, prepare 366ms)
+

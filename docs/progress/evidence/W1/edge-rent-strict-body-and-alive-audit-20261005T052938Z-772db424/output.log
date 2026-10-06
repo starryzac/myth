@@ -1,0 +1,11 @@
+phase=migration status=PASSED seconds=0.664
+phase=native_seed_once status=PASSED seconds=1.522
+phase=native_baseline_snapshot status=PASSED seconds=0.280
+phase=api_ready status=PASSED seconds=2.394
+phase=web_ready status=PASSED seconds=0.049
+phase=snapshot:independent-case-start-before status=PASSED seconds=0.129
+phase=snapshot:independent-case-start-after status=PASSED seconds=0.332
+phase=snapshot:rent-real-version-change status=PASSED seconds=0.768
+phase=final_snapshot status=PASSED seconds=0.657
+phase=final_alive_audit status=PASSED seconds=8.223
+W1 PARTIAL_SCOPE_PASSED evidence=output\playwright\w1-20261005T052939Z-623b0ac5

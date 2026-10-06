@@ -1,0 +1,37 @@
+{
+  "run_id": "20261005T070014Z-97009127",
+  "task": "W1",
+  "label": "scenario-original-references-final-real-pg",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/services/scenario_",
+    "apps/api/app/tests/test_scenario_"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "python",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_scenario_runner.py::test_actual_template_reference_and_registered_refusal_continue_original_confirmation",
+    "-q",
+    "--basetemp",
+    ".runtime/pytest-scenario-references-final-pg-20261005T0703Z"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T07:00:15.422160+00:00",
+  "finished_at": "2026-10-05T07:00:22.560754+00:00",
+  "wall_seconds": 7.138594,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "443ec8f25fd9fc07224d0fa49bf9265f776d4866f2c66f9195b7c3246211f745",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

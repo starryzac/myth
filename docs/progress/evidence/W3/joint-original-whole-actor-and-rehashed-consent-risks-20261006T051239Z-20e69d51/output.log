@@ -1,0 +1,38 @@
+F.......                                                                 [100%]
+================================== FAILURES ===================================
+_ test_original_whole_user_consent_binds_actual_actor_and_exact_original_plan _
+
+plan = FullJointFrozenPlan(protocol='registered-joint-goal-execution-v2', simulation=True, bank_authority=False, funds_reserv...1cba6b0dbdc83f7d68abdd7c4a68297216f46')], plan_hash='e80bee72f81a3f284d1a682de0993e1d71170b39f60f94b9b2df917756a42d8d')
+
+    def test_original_whole_user_consent_binds_actual_actor_and_exact_original_plan(
+        plan: FullJointFrozenPlan,
+    ) -> None:
+>       trace = consent_trace(plan)
+                ^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_joint_goal_execution_trace.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_full_joint_goal_execution_trace.py:78: in consent_trace
+    return build_trace(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fields = {'run_id': UUID('71c9d813-1b7d-5793-bb26-e687a68eba9e'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'action_id': None, 'parent_run_id': UUID('45b63bd5-580b-57d0-afa6-f14fbb0f459c'), ...}
+
+    def build_trace(**fields: Any) -> DecisionTrace:
+        """Freeze exact supplied facts/results; caller-provided hash fields are rejected."""
+>       content = _TraceContent.model_validate(fields)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for _TraceContent
+E         Value error, Complete decision trace exceeds the byte limit [type=value_error, input_value={'run_id': UUID('71c9d813...on_status': 'COMPUTED'}}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/value_error
+
+apps\api\app\domain\decision_trace.py:134: ValidationError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_joint_goal_execution_trace.py::test_original_whole_user_consent_binds_actual_actor_and_exact_original_plan
+1 failed, 7 passed, 1 warning in 34.20s

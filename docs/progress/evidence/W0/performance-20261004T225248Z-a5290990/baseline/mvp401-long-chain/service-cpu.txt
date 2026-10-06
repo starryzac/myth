@@ -1,0 +1,216 @@
+         61316911 function calls (39965797 primitive calls) in 179.714 seconds
+
+   Ordered by: cumulative time
+   List reduced from 1031 to 100 due to restriction <100>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000  179.708  179.708 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\dashboard.py:359(get_dashboard)
+        1    0.054    0.054  175.734  175.734 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\dashboard_helpers.py:12(current_epoch_audit)
+        1    0.512    0.512  175.670  175.670 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\audit_chain.py:672(verify_audit_chain)
+        1    0.098    0.098   80.354   80.354 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:2015(verify_epoch)
+    15397    0.545    0.000   76.030    0.005 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:46(canonical_bytes)
+    22285    1.642    0.000   72.030    0.003 {method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects}
+11900270/15397   58.498    0.000   64.376    0.004 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:52(convert)
+     2033    0.008    0.000   54.442    0.027 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\pydantic\main.py:693(model_validate)
+     1303    0.185    0.000   50.508    0.039 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:163(_validated_subject_bytes)
+       32    0.012    0.000   49.460    1.546 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:1587(_references)
+        9    0.131    0.015   44.898    4.989 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\decision_trace.py:492(_stored_trace)
+    60296    0.709    0.000   43.985    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace_types.py:29(_bounded_json_object)
+    59096    0.198    0.000   43.476    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace_types.py:82(_json_object)
+     1782    0.031    0.000   36.960    0.021 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain_types.py:71(<lambda>)
+     1910    0.047    0.000   36.948    0.019 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain_types.py:64(_json)
+       18    0.063    0.003   35.215    1.956 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace.py:142(verify_trace)
+      530    0.002    0.000   32.025    0.060 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\pydantic\main.py:742(model_validate_json)
+      530    1.596    0.003   32.024    0.060 {method 'validate_json' of 'pydantic_core._pydantic_core.SchemaValidator' objects}
+3121183/60296   13.140    0.000   28.610    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\copy.py:118(deepcopy)
+233450/60296    5.074    0.000   27.901    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\copy.py:217(_deepcopy_dict)
+      754    0.003    0.000   24.617    0.033 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:199(build_subject)
+    78247    0.566    0.000   21.355    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py:183(dumps)
+    78247    0.457    0.000   20.672    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py:183(encode)
+    78247   20.000    0.000   20.000    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py:205(iterencode)
+    20248    0.050    0.000   17.645    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\pydantic\main.py:253(__init__)
+      375    0.075    0.000   17.203    0.046 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:220(subject_hash)
+        1    0.068    0.068   15.520   15.520 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:1446(_subject_index)
+      174    0.084    0.000   15.473    0.089 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:226(parse_subject)
+223232/121737    0.776    0.000   15.049    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\copy.py:191(_deepcopy_list)
+       36    0.156    0.004   13.229    0.367 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace_types.py:232(bounded_snapshot)
+       36    0.264    0.007   13.072    0.363 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace.py:75(_validate_content)
+        9    0.093    0.010   11.749    1.305 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\decision_trace.py:344(_verify_constraints)
+    19656    0.304    0.000   10.260    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\decision_trace.py:330(_constraint_copy)
+1634155/60296    8.438    0.000   10.145    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace_types.py:34(visit)
+     4100    2.449    0.001   10.096    0.002 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\pydantic\main.py:427(model_dump)
+ 18435536    9.723    0.000    9.736    0.000 {built-in method builtins.isinstance}
+     2140    0.031    0.000    8.630    0.004 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\policy_configuration.py:231(configuration_hash)
+    17061    0.092    0.000    8.265    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py:299(loads)
+    17061    0.125    0.000    7.829    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py:332(decode)
+     4100    7.647    0.002    7.647    0.002 {method 'to_python' of 'pydantic_core._pydantic_core.SchemaSerializer' objects}
+    17061    6.918    0.000    7.594    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py:343(raw_decode)
+      403    0.040    0.000    7.428    0.018 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:1476(_immutable)
+        1    0.022    0.022    7.255    7.255 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:1461(_current_index)
+1666568/36    5.121    0.000    7.086    0.197 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace.py:106(owners)
+1841673/2140    5.710    0.000    6.894    0.003 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\policy_configuration.py:215(_require_json_value)
+857354/18    3.514    0.000    5.494    0.305 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace.py:145(declared)
+       36    0.001    0.000    5.378    0.149 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace_types.py:244(matching_hashes)
+       36    0.162    0.004    5.377    0.149 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace.py:125(_validate_hashes)
+      582    0.013    0.000    5.078    0.009 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\session.py:2201(_execute_internal)
+      108    0.016    0.000    4.442    0.041 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace.py:48(_encoded)
+  6281382    4.132    0.000    4.137    0.000 {method 'get' of 'dict' objects}
+      581    0.003    0.000    4.014    0.007 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\context.py:306(orm_execute_statement)
+      582    0.003    0.000    3.953    0.007 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1404(execute)
+      582    0.006    0.000    3.950    0.007 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\elements.py:524(_execute_on_connection)
+      582    0.014    0.000    3.944    0.007 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1618(_execute_clauseelement)
+        1    0.002    0.002    3.858    3.858 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\financial_read.py:20(load_verified_financial_context)
+      582    0.008    0.000    3.839    0.007 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1767(_execute_context)
+      582    0.014    0.000    3.779    0.006 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1826(_exec_single_context)
+      131    0.008    0.000    3.668    0.028 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\audit_chain.py:377(row_copy)
+      583    0.004    0.000    3.656    0.006 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\cursor.py:100(execute)
+      582    0.001    0.000    3.656    0.006 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\default.py:1191(do_execute)
+      591    0.002    0.000    3.653    0.006 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\connection.py:479(wait)
+      591    0.017    0.000    3.650    0.006 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\waiting.py:329(wait_select)
+  979/973    0.014    0.000    3.489    0.004 {built-in method builtins.any}
+     3425    0.009    0.000    3.446    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:104(canonical_text)
+     2618    3.371    0.001    3.371    0.001 {built-in method select.select}
+     1162    0.050    0.000    3.087    0.003 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\loading.py:214(chunks)
+       36    0.001    0.000    2.965    0.082 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace.py:71(_content_payload)
+       12    0.003    0.000    2.826    0.236 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:939(_financial_identity)
+      320    0.009    0.000    2.727    0.009 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\session.py:2517(scalar)
+        9    0.003    0.000    2.645    0.294 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\decision_trace.py:599(_action_links)
+       20    0.004    0.000    2.618    0.131 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:1940(<genexpr>)
+   456682    1.918    0.000    2.502    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\copy.py:231(_keep_alive)
+      581    0.001    0.000    2.427    0.004 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\cursor.py:2376(_fetchall_impl)
+      581    0.002    0.000    2.427    0.004 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\cursor.py:1309(fetchall)
+      581    0.221    0.000    2.419    0.004 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\cursor.py:274(fetchall)
+    11986    0.078    0.000    2.196    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\types\json.py:256(load)
+  4095660    2.152    0.000    2.152    0.000 {built-in method builtins.id}
+        9    0.001    0.000    2.078    0.231 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:1169(verify_frozen_settlement)
+        1    0.001    0.001    1.882    1.882 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\boundary.py:754(load_boundary_context)
+  2435985    1.857    0.000    1.857    0.000 {method 'items' of 'dict' objects}
+        1    0.001    0.001    1.811    1.811 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\simulated_bank.py:263(validate_recovery_exposure)
+        2    0.001    0.001    1.744    0.872 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\asset_exposure.py:61(asset_exposure_snapshot)
+       20    0.015    0.001    1.716    0.086 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\asset_exposure.py:50(_manifest)
+  1555018    1.572    0.000    1.572    0.000 {method 'endswith' of 'str' objects}
+1827/1826    0.003    0.000    1.569    0.001 {built-in method builtins.next}
+        1    0.001    0.001    1.502    1.502 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\asset_exposure_import.py:70(load_all_asset_exposure)
+      624    0.001    0.000    1.447    0.002 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\result.py:1877(_fetchone_impl)
+      468    0.002    0.000    1.438    0.003 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\session.py:3732(get)
+      468    0.013    0.000    1.436    0.003 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\session.py:3907(_get_impl)
+      109    0.001    0.000    1.399    0.013 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\session.py:2565(scalars)
+      150    0.005    0.000    1.398    0.009 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\loading.py:535(_load_on_pk_identity)
+        3    0.000    0.000    1.304    0.435 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:1238(verify_frozen_projection)
+       31    0.000    0.000    1.249    0.040 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\result.py:1372(all)
+       31    0.000    0.000    1.249    0.040 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\result.py:1282(_fetchall_impl)
+       31    0.001    0.000    1.249    0.040 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\result.py:1890(_fetchall_impl)
+102870/5502    0.917    0.000    1.153    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\asset_exposure.py:36(_json)
+        3    0.001    0.000    1.152    0.384 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\simulated_bank.py:171(validate_bank_projection)
+      206    0.007    0.000    1.103    0.005 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:114(_read)
+        3    0.003    0.001    1.086    0.362 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\external_bank_facts.py:222(verify_external_facts)
+
+
+         61316911 function calls (39965797 primitive calls) in 179.714 seconds
+
+   Ordered by: internal time
+   List reduced from 1031 to 100 due to restriction <100>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+11900270/15397   58.498    0.000   64.376    0.004 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:52(convert)
+    78247   20.000    0.000   20.000    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py:205(iterencode)
+3121183/60296   13.140    0.000   28.610    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\copy.py:118(deepcopy)
+ 18435536    9.723    0.000    9.736    0.000 {built-in method builtins.isinstance}
+1634155/60296    8.438    0.000   10.145    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace_types.py:34(visit)
+     4100    7.647    0.002    7.647    0.002 {method 'to_python' of 'pydantic_core._pydantic_core.SchemaSerializer' objects}
+    17061    6.918    0.000    7.594    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py:343(raw_decode)
+1841673/2140    5.710    0.000    6.894    0.003 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\policy_configuration.py:215(_require_json_value)
+1666568/36    5.121    0.000    7.086    0.197 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace.py:106(owners)
+233450/60296    5.074    0.000   27.901    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\copy.py:217(_deepcopy_dict)
+  6281382    4.132    0.000    4.137    0.000 {method 'get' of 'dict' objects}
+857354/18    3.514    0.000    5.494    0.305 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace.py:145(declared)
+     2618    3.371    0.001    3.371    0.001 {built-in method select.select}
+     4100    2.449    0.001   10.096    0.002 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\pydantic\main.py:427(model_dump)
+  4095660    2.152    0.000    2.152    0.000 {built-in method builtins.id}
+   456682    1.918    0.000    2.502    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\copy.py:231(_keep_alive)
+  2435985    1.857    0.000    1.857    0.000 {method 'items' of 'dict' objects}
+    22285    1.642    0.000   72.030    0.003 {method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects}
+      530    1.596    0.003   32.024    0.060 {method 'validate_json' of 'pydantic_core._pydantic_core.SchemaValidator' objects}
+  1555018    1.572    0.000    1.572    0.000 {method 'endswith' of 'str' objects}
+102870/5502    0.917    0.000    1.153    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\asset_exposure.py:36(_json)
+    79345    0.901    0.000    0.901    0.000 {method 'encode' of 'str' objects}
+  2664501    0.900    0.000    0.900    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\copy.py:172(_deepcopy_atomic)
+223232/121737    0.776    0.000   15.049    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\copy.py:191(_deepcopy_list)
+    60296    0.709    0.000   43.985    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace_types.py:29(_bounded_json_object)
+    85157    0.676    0.000    0.676    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:118(pairs)
+    78247    0.566    0.000   21.355    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py:183(dumps)
+   548142    0.554    0.000    0.913    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace_types.py:108(aware_utc)
+    15397    0.545    0.000   76.030    0.005 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:46(canonical_bytes)
+        1    0.512    0.512  175.670  175.670 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\audit_chain.py:672(verify_audit_chain)
+    78247    0.457    0.000   20.672    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py:183(encode)
+   342845    0.401    0.000    0.401    0.000 {method 'values' of 'dict' objects}
+   486713    0.368    0.000    0.368    0.000 {method 'append' of 'list' objects}
+    19656    0.304    0.000   10.260    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\decision_trace.py:330(_constraint_copy)
+   235055    0.286    0.000    0.286    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\attributes.py:561(__get__)
+       36    0.264    0.007   13.072    0.363 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace.py:75(_validate_content)
+    25497    0.258    0.000    0.258    0.000 {method 'decode' of 'bytes' objects}
+      581    0.221    0.000    2.419    0.004 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\cursor.py:274(fetchall)
+    59096    0.198    0.000   43.476    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace_types.py:82(_json_object)
+    11510    0.187    0.000    0.187    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\state.py:206(__init__)
+     1303    0.185    0.000   50.508    0.039 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:163(_validated_subject_bytes)
+     2987    0.171    0.000    0.171    0.000 {built-in method _hashlib.openssl_sha256}
+       36    0.162    0.004    5.377    0.149 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace.py:125(_validate_hashes)
+       36    0.156    0.004   13.229    0.367 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace_types.py:232(bounded_snapshot)
+21166/472    0.149    0.000    0.263    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:272(_declared)
+        9    0.131    0.015   44.898    4.989 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\decision_trace.py:492(_stored_trace)
+    17061    0.125    0.000    7.829    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py:332(decode)
+    30323    0.121    0.000    0.121    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\uuid.py:280(__str__)
+    78190    0.117    0.000    0.117    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py:105(__init__)
+    12489    0.115    0.000    0.569    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\loading.py:1075(_instance)
+     3199    0.103    0.000    0.201    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:275(_maybe_prepare_gen)
+113591/113577    0.102    0.000    0.125    0.000 {built-in method builtins.getattr}
+        1    0.098    0.098   80.354   80.354 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:2015(verify_epoch)
+    22554    0.097    0.000    0.157    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\pydantic\_internal\_utils.py:431(__get__)
+        9    0.093    0.010   11.749    1.305 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\decision_trace.py:344(_verify_constraints)
+    17061    0.092    0.000    8.265    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py:299(loads)
+9900/9844    0.088    0.000    0.110    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\pydantic\main.py:1164(__eq__)
+      174    0.084    0.000   15.473    0.089 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:226(parse_subject)
+    11986    0.078    0.000    2.196    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\types\json.py:256(load)
+    34122    0.077    0.000    0.077    0.000 {method 'match' of 're.Pattern' objects}
+   117621    0.077    0.000    0.077    0.000 {built-in method builtins.len}
+      375    0.075    0.000   17.203    0.046 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:220(subject_hash)
+40706/2834    0.072    0.000    0.097    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\external_bank_fact.py:51(arrays)
+    11516    0.069    0.000    0.069    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\loading.py:1336(_populate_full)
+        1    0.068    0.068   15.520   15.520 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:1446(_subject_index)
+    13916    0.064    0.000    0.114    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py:244(detect_encoding)
+    78262    0.063    0.000    0.064    0.000 {method 'join' of 'str' objects}
+       18    0.063    0.003   35.215    1.956 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\decision_trace.py:142(verify_trace)
+  31352/9    0.063    0.000    0.088    0.010 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:1494(_missing_references)
+      539    0.054    0.000    0.054    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:583(_send_query_prepared)
+        1    0.054    0.054  175.734  175.734 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\services\dashboard_helpers.py:12(current_epoch_audit)
+    70573    0.052    0.000    0.096    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\uuid.py:268(__hash__)
+    11510    0.050    0.000    0.112    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\identity.py:262(_fast_discard)
+    20248    0.050    0.000   17.645    0.001 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\pydantic\main.py:253(__init__)
+     1162    0.050    0.000    3.087    0.003 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\loading.py:214(chunks)
+    11510    0.048    0.000    0.161    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\state.py:540(_cleanup)
+     1910    0.047    0.000   36.948    0.019 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain_types.py:64(_json)
+72340/72334    0.045    0.000    0.045    0.000 {built-in method builtins.hash}
+    21168    0.042    0.000    0.059    0.000 <frozen importlib._bootstrap>:1390(_handle_fromlist)
+    41748    0.041    0.000    0.041    0.000 {method 'startswith' of 'bytes' objects}
+      403    0.040    0.000    7.428    0.018 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:1476(_immutable)
+     2951    0.040    0.000    0.096    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\coercions.py:323(expect)
+    36164    0.037    0.000    0.059    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain_types.py:86(aware)
+    11510    0.036    0.000    0.240    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\instrumentation.py:493(new_instance)
+      582    0.035    0.000    0.054    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\cache_key.py:209(_generate_cache_key)
+    22554    0.035    0.000    0.060    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\pydantic\main.py:275(model_fields)
+    12957    0.034    0.000    0.065    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\identity.py:219(get)
+     1782    0.031    0.000   36.960    0.021 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain_types.py:71(<lambda>)
+     2140    0.031    0.000    8.630    0.004 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\policy_configuration.py:231(configuration_hash)
+     3763    0.030    0.000    0.030    0.000 {method 'isoformat' of 'datetime.datetime' objects}
+    11624    0.029    0.000    0.043    0.000 {method 'pop' of 'dict' objects}
+     7982    0.028    0.000    0.060    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_column.py:20(__init__)
+    24009    0.025    0.000    0.025    0.000 {method 'astimezone' of 'datetime.datetime' objects}
+    34122    0.023    0.000    0.023    0.000 {method 'end' of 're.Match' objects}
+      160    0.023    0.000    0.361    0.002 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:320(_known_event_integrity)
+    12649    0.022    0.000    0.034    0.000 {method 'issuperset' of 'frozenset' objects}
+        1    0.022    0.022    7.255    7.255 F:\学校活动\工行杯\钱途有界\bounded-funds\docs\progress\evidence\W0\preflight\baseline-source\apps\api\app\domain\audit_chain.py:1461(_current_index)
+      583    0.021    0.000    0.028    0.000 F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\_cursor_base.py:504(_select_current_result)
+     7570    0.020    0.000    0.020    0.000 {method 'utcoffset' of 'datetime.datetime' objects}
+     1652    0.019    0.000    0.024    0.000 C:\Users\starryzac\AppData\Local\Programs\Python\Python312\Lib\uuid.py:139(__init__)
+
+

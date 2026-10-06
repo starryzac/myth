@@ -1,0 +1,44 @@
+{
+  "run_id": "20261005T235135Z-d26c5eac",
+  "task": "W5",
+  "label": "global-notification-real-nodes-collection",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/full_intervention.py",
+    "apps/api/app/services/full_intervention.py",
+    "apps/api/app/db/full_models.py",
+    "apps/api/alembic/versions/0014_global_action_set_notifications.py",
+    "apps/api/app/tests/test_global_intervention.py",
+    "apps/api/app/tests/test_global_intervention_migration.py",
+    "apps/api/app/tests/test_global_intervention_integration.py",
+    "apps/api/app/tests/test_global_intervention_migration_contract.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_global_intervention_migration.py",
+    "apps/api/app/tests/test_global_intervention_integration.py",
+    "--collect-only",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T23:51:36.927151+00:00",
+  "finished_at": "2026-10-05T23:51:44.004152+00:00",
+  "wall_seconds": 7.077001,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/web/src/api/full-recovery-execution.ts"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "634207e2c98631879b4600407452b229376c7bc75b77f9f38fd57ab69fb20962",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

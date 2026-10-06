@@ -1,0 +1,233 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> apps\api\app\api\v1\question_workflow.py:3:1
+   |
+ 1 |   """Persist original planning questions and exact answers; no permission or bank submissions."""
+ 2 |
+ 3 | / import logging
+ 4 | | from datetime import datetime
+ 5 | | from typing import Annotated
+ 6 | | from uuid import UUID
+ 7 | |
+ 8 | | from app.api.dependencies import ClockDependency, DemoUserDependency, SessionDependency, get_engine
+ 9 | | from app.api.errors import ErrorEnvelope
+10 | | from app.api.v1.full_policies import require_no_query
+11 | | from app.domain.question_workflow import CommandKey
+12 | | from app.services.question_workflow import (
+13 | |     QuestionAnswerRequest,
+14 | |     QuestionCloseRequest,
+15 | |     QuestionCommandLookupResponse,
+16 | |     QuestionRefreshRequest,
+17 | |     QuestionStartRequest,
+18 | |     QuestionWorkflowResponse,
+19 | |     answer_question_session,
+20 | |     close_question_session,
+21 | |     read_question_command,
+22 | |     read_question_session,
+23 | |     read_question_start_command,
+24 | |     start_question_session,
+25 | | )
+26 | | from app.services.question_intervention_producer import produce_current_question_intervention
+27 | | from fastapi import APIRouter, Depends, Response
+28 | | from sqlalchemy.engine import Engine
+   | |____________________________________^
+29 |
+30 |   router = APIRouter(
+   |
+help: Organize imports
+   |
+11 | from app.domain.question_workflow import CommandKey
+12 + from app.services.question_intervention_producer import produce_current_question_intervention
+13 | from app.services.question_workflow import (
+--------------------------------------------------------------------------------
+26 | )
+   - from app.services.question_intervention_producer import produce_current_question_intervention
+27 | from fastapi import APIRouter, Depends, Response
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> apps\api\app\main.py:1:1
+   |
+ 1 | / import json
+ 2 | | import logging
+ 3 | | from time import monotonic
+ 4 | | from typing import Literal
+ 5 | | from uuid import uuid4
+ 6 | |
+ 7 | | from fastapi import FastAPI, Request, Response
+ 8 | | from fastapi.exceptions import RequestValidationError
+ 9 | | from fastapi.responses import JSONResponse
+10 | | from pydantic import BaseModel
+11 | | from starlette.exceptions import HTTPException
+12 | | from starlette.middleware.base import RequestResponseEndpoint
+13 | |
+14 | | from app.api.errors import (
+15 | |     ErrorEnvelope,
+16 | |     error_response,
+17 | |     http_error_handler,
+18 | |     validation_error_handler,
+19 | | )
+20 | | from app.api.v1.accounts import router as account_router
+21 | | from app.api.v1.actions import router as action_router
+22 | | from app.api.v1.assets import router as asset_router
+23 | | from app.api.v1.audit import router as audit_router
+24 | | from app.api.v1.autonomy_envelope import router as autonomy_envelope_router
+25 | | from app.api.v1.boundary import router as boundary_router
+26 | | from app.api.v1.boundary_action_events import router as boundary_action_events_router
+27 | | from app.api.v1.boundary_difference import router as boundary_difference_router
+28 | | from app.api.v1.dashboard import router as dashboard_router
+29 | | from app.api.v1.decisions import router as decision_router
+30 | | from app.api.v1.delivery import router as delivery_router
+31 | | from app.api.v1.demo import router as demo_router
+32 | | from app.api.v1.dynamic_goal_reserve import router as dynamic_goal_reserve_router
+33 | | from app.api.v1.evidence import router as evidence_router
+34 | | from app.api.v1.finite_uncertainty import router as finite_uncertainty_router
+35 | | from app.api.v1.full_asset_allocation import router as full_asset_allocation_router
+36 | | from app.api.v1.full_asset_execution import router as full_asset_execution_router
+37 | | from app.api.v1.full_goal_commands import router as full_goal_command_router
+38 | | from app.api.v1.full_goal_conflicts import router as full_goal_conflict_router
+39 | | from app.api.v1.full_goal_reallocation import router as full_goal_reallocation_router
+40 | | from app.api.v1.full_goal_release_authorization import (
+41 | |     router as full_goal_release_authorization_router,
+42 | | )
+43 | | from app.api.v1.full_goal_release_execution import router as full_goal_release_execution_router
+44 | | from app.api.v1.full_goals import router as full_goal_router
+45 | | from app.api.v1.full_intervention import router as full_intervention_router
+46 | | from app.api.v1.full_joint_goal_planning import router as full_joint_goal_router
+47 | | from app.api.v1.full_maturity_replanning import router as full_maturity_replanning_router
+48 | | from app.api.v1.full_payment_permissions import (
+49 | |     get_guarded_payment_executor,
+50 | |     router as full_payment_relation_router,
+51 | | )
+52 | | from app.api.v1.full_policies import router as full_policy_router
+53 | | from app.api.v1.full_protection_projection import router as full_protection_router
+54 | | from app.api.v1.full_reconciliation import router as full_reconciliation_router
+55 | | from app.api.v1.full_recovery_planning import router as full_recovery_planning_router
+56 | | from app.api.v1.goals import router as goal_router
+57 | | from app.api.v1.living_reserve import router as reserve_router
+58 | | from app.api.v1.local_actor_sessions import router as local_actor_session_router
+59 | | from app.api.v1.planning import router as planning_router
+60 | | from app.api.v1.policies import router as policy_router
+61 | | from app.api.v1.policy_preview import router as policy_preview_router
+62 | | from app.api.v1.policy_suggestions import router as policy_suggestion_router
+63 | | from app.api.v1.policy_templates import router as policy_template_router
+64 | | from app.api.v1.product_catalog import router as product_catalog_router
+65 | | from app.api.v1.question_workflow import router as question_workflow_router
+66 | | from app.api.v1.recovery import router as recovery_router
+67 | | from app.api.v1.scenario_simulation import router as scenario_simulation_router
+68 | | from app.api.v1.transaction_category import router as transaction_category_router
+69 | | from app.api.v1.user_policy_declaration import router as user_policy_declaration_router
+70 | | from app.services.policy_lifecycle import PolicyLifecycleError
+   | |______________________________________________________________^
+71 |
+72 |   logger = logging.getLogger("bounded_funds.http")
+   |
+help: Organize imports
+   |
+49 |     get_guarded_payment_executor,
+50 + )
+51 + from app.api.v1.full_payment_permissions import (
+52 |     router as full_payment_relation_router,
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+   --> apps\api\app\services\execution.py:529:17
+    |
+527 |                 )
+528 |             if has_full_asset_batch_binding(session, action):
+529 |                 from app.services.full_asset_execution_dispatch import enforce_full_asset_batch_phase1
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+530 |
+531 |                 enforce_full_asset_batch_phase1(
+    |
+help: Organize imports
+    |
+528 |             if has_full_asset_batch_binding(session, action):
+    -                 from app.services.full_asset_execution_dispatch import enforce_full_asset_batch_phase1
+529 +                 from app.services.full_asset_execution_dispatch import (
+530 +                     enforce_full_asset_batch_phase1,
+531 +                 )
+532 |
+    |
+
+E501 Line too long (102 > 100)
+   --> apps\api\app\services\execution.py:529:101
+    |
+527 |                 )
+528 |             if has_full_asset_batch_binding(session, action):
+529 |                 from app.services.full_asset_execution_dispatch import enforce_full_asset_batch_phase1
+    |                                                                                                     ^^
+530 |
+531 |                 enforce_full_asset_batch_phase1(
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> apps\api\app\services\full_protection_projection.py:3:1
+   |
+ 1 |   """Read actual FULL commitments without rewriting MVP contexts or confirmation hashes."""
+ 2 |
+ 3 | / from datetime import datetime, timedelta
+ 4 | | from typing import Literal
+ 5 | | from uuid import UUID
+ 6 | | from zoneinfo import ZoneInfo
+ 7 | |
+ 8 | | from app.db.models import Policy, PolicyVersion
+ 9 | | from app.domain.boundary_types import BoundaryPoint
+10 | | from app.domain.full_protection_projection import (
+11 | |     FullProtectedReference,
+12 | |     FullProtectionPolicySource,
+13 | |     FullProtectionProjectionInput,
+14 | |     FullProtectionProjectionResult,
+15 | |     ProtectionTemplate,
+16 | |     project_full_protection,
+17 | | )
+18 | | from app.domain.policy_configuration import configuration_hash, validate_configuration
+19 | | from app.services.boundary import BoundarySourceIssue
+20 | | from app.services.dashboard_helpers import current_epoch_audit
+21 | | from app.services.dashboard_types import DashboardAuditCard
+22 | | from app.services.financial_read import finalize_financial_context, load_verified_financial_context
+23 | | from app.services.full_policy_lifecycle import (
+24 | |     FullPolicyView,
+25 | |     _read_snapshot,
+26 | |     list_full_policies,
+27 | | )
+28 | | from app.services.full_payment_permissions import (
+29 | |     PeriodicTransferProjectionBinding,
+30 | |     verified_periodic_transfer_projection_binding,
+31 | | )
+32 | | from app.services.full_projection import AnnualDailyCheckpoint, FutureIncomeProjection, _checkpoint
+33 | | from app.services.policy_lifecycle import PolicyLifecycleError, _evidence, _now, effective_status
+34 | | from pydantic import BaseModel, ConfigDict
+35 | | from sqlalchemy import select
+36 | | from sqlalchemy.orm import Session
+   | |__________________________________^
+help: Organize imports
+   |
+22 | from app.services.financial_read import finalize_financial_context, load_verified_financial_context
+23 + from app.services.full_payment_permissions import (
+24 +     PeriodicTransferProjectionBinding,
+25 +     verified_periodic_transfer_projection_binding,
+26 + )
+27 | from app.services.full_policy_lifecycle import (
+28 |     FullPolicyView,
+29 |     _read_snapshot,
+30 |     list_full_policies,
+   - )
+   - from app.services.full_payment_permissions import (
+   -     PeriodicTransferProjectionBinding,
+   -     verified_periodic_transfer_projection_binding,
+31 | )
+   |
+
+E501 Line too long (105 > 100)
+   --> apps\api\app\services\full_protection_projection.py:202:101
+    |
+200 |                         {
+201 |                             "kind": "VERIFIED_CURRENT_PERIODIC_RELATION",
+202 |                             "original_full_planning_confirmation_valid": row.planning_confirmation_valid,
+    |                                                                                                     ^^^^^
+203 |                             "original_full_reference_validation": row.reference_validation,
+204 |                             "proof": binding.model_dump(mode="json"),
+    |
+
+Found 6 errors.
+[*] 4 fixable with the `--fix` option.

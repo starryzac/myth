@@ -1,0 +1,34 @@
+E501 Line too long (105 > 100)
+  --> apps\api\app\tests\test_audit_request_read_scope.py:60:101
+   |
+58 |                 other.execute(text("SET TRANSACTION READ ONLY"))
+59 |                 for _ in range(2):
+60 |                     assert audit.verify_audit_chain(other, DEMO_USER_ID, head.epoch_id).status == "VALID"
+   |                                                                                                     ^^^^^
+61 |             assert len(calls) == 3
+62 |             assert audit.verify_audit_chain(session, DEMO_USER_ID, head.epoch_id).status == "VALID"
+   |
+
+E501 Line too long (103 > 100)
+  --> apps\api\app\tests\test_audit_request_read_scope.py:65:101
+   |
+63 |             assert len(calls) == 4
+64 |             with session.begin_nested():
+65 |                 assert audit.verify_audit_chain(session, DEMO_USER_ID, head.epoch_id).status == "VALID"
+   |                                                                                                     ^^^
+66 |             assert len(calls) == 5
+67 |             for _ in range(2):
+   |
+
+E501 Line too long (103 > 100)
+  --> apps\api\app\tests\test_audit_request_read_scope.py:68:101
+   |
+66 |             assert len(calls) == 5
+67 |             for _ in range(2):
+68 |                 assert audit.verify_audit_chain(session, DEMO_USER_ID, head.epoch_id).status == "VALID"
+   |                                                                                                     ^^^
+69 |             assert len(calls) == 6
+70 |             checkpoint = domain.build_checkpoint(head, captured_at=SEED_AS_OF)
+   |
+
+Found 3 errors.

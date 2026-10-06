@@ -1,0 +1,10 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/pages/ReconciliationPage.test.tsx (5 tests) 370ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  01:51:41
+   Duration  2.68s (transform 146ms, setup 426ms, collect 244ms, tests 370ms, environment 884ms, prepare 300ms)
+

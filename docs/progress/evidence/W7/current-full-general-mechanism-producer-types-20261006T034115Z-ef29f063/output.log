@@ -1,0 +1,2 @@
+apps\api\app\services\full_experiment_asset_selection.py:164: error: Need type annotation for "products" (hint: "products: list[<type>] = ...")  [var-annotated]
+Found 1 error in 1 file (checked 3 source files)

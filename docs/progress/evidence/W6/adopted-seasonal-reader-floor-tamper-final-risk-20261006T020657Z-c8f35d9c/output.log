@@ -1,0 +1,10 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/full-annual.seasonal.test.ts (2 tests) 195ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  10:07:00
+   Duration  2.43s (transform 132ms, setup 430ms, collect 171ms, tests 195ms, environment 843ms, prepare 296ms)
+

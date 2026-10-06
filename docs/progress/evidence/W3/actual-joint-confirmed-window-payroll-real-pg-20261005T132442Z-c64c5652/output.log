@@ -1,0 +1,123 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_joint_planning_uses_actual_full_confirmation_and_unassigned_income_readonly _
+
+goal_client = (<starlette.testclient.TestClient object at 0x000001AF1B9CAF30>, Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_89a444c35d9649788231eeaaa69552b2))
+
+    def test_joint_planning_uses_actual_full_confirmation_and_unassigned_income_readonly(
+        goal_client: tuple[TestClient, Engine],
+    ) -> None:
+        client, engine = goal_client
+        goal_id, command = confirmed_existing_goal(client, engine)
+        configuration: dict[str, Any] = command["configuration"]
+        configuration["monthly_contribution"] = {
+            "min_cents": 0,
+            "target_cents": 10000,
+            "max_cents": 20000,
+        }
+        configuration["minimum_guarantee_cents"] = 0
+        model_url = f"/api/v1/goals/{goal_id}/full-model"
+        preview = client.post(
+            model_url + "/preview",
+            json={key: command[key] for key in ("expected_version_id", "configuration")},
+        )
+        assert preview.status_code == 200
+        review = preview.json()
+        confirmation = client.post(
+            model_url + "/confirm",
+            json=command
+            | {
+                "accepted": True,
+                "reviewed_full_hash": review["full_configuration_hash"],
+                "reviewed_base_hash": review["base_configuration_hash"],
+            },
+        )
+        assert confirmation.status_code == 200
+        receipt = confirmation.json()
+        # Historic income precedes the newly confirmed policy window. Do not backdate
+        # that authority or treat old cash as newly eligible income.
+        historic = client.get(URL)
+        assert historic.status_code == 200
+        assert historic.json()["allocation"]["goals"][0]["amount_cents"] == 0
+        with Session(engine) as session:
+            cash = session.scalar(
+                select(Account).where(Account.user_id == DEMO_USER_ID, Account.account_type == "CASH")
+            )
+            assert cash is not None
+            income_request = ExternalFactRequest(
+                user_id=DEMO_USER_ID,
+                account_id=cash.id,
+                kind="INCOME",
+                amount_cents=600000,
+                external_ref="full-joint-actual-payroll",
+                idempotency_key="full-joint-actual-payroll",
+                counterparty_ref="payroll",
+                occurred_at=NOW,
+            )
+        settled = ingest_external_fact(engine, DEMO_USER_ID, income_request, NOW)
+        assert settled.bank_status == "SETTLED" and settled.projection_status == "PROJECTED"
+        assert settled.transaction_id is not None and len(settled.economic_posting_ids) == 2
+        with Session(engine) as session:
+            income = read_income_state(session, DEMO_USER_ID, NOW)
+            fragments = {str(row.fragment_id): row for row in income.ledger.fragments}
+            available = sum(row.available_cents for row in fragments.values())
+        before = physical_snapshot(engine)
+        result = client.get(URL)
+        assert result.status_code == 200
+        value = result.json()
+        assert value["state"] == "COMPUTED"
+        assert value["source_issues"] == []
+        assert value["independent_bank_projection_matched"] is True
+        assert value["registered_goal_count"] == 1
+        assert value["included_goal_ids"] == [goal_id] and value["uncovered_goal_ids"] == []
+        assert receipt["evidence_id"] in value["source_evidence_ids"]
+        assert value["funds_scope"] == "ACTUAL_CURRENT_UNASSIGNED_INCOME_ONLY"
+        assert value["protection_scope"] == "ALL_ORIGINAL_365_DAY_RESERVES_RETAINED"
+        assert value["grants_authority"] is False
+        allocation = value["allocation"]
+        assert allocation["status"] == "OPTIMAL"
+        assert allocation["purpose"] == "CURRENT_PERIOD_PLANNING_ONLY"
+        assert allocation["grants_authority"] is False
+        assert len(allocation["objective_vector"]) == 8
+        goal = allocation["goals"][0]
+        assert goal["goal_id"] == goal_id
+        assert goal["effective_policy_version_id"] == receipt["lifecycle"]["current_version_id"]
+        assert 0 < goal["amount_cents"] <= 20000
+        assert goal["completion_date"] is None and goal["delay_censored"] is True
+        uses = allocation["income_uses"]
+        assert uses and all(use["origin_transaction_id"] == str(settled.transaction_id) for use in uses)
+        assert sum(use["amount_cents"] for use in uses) == goal["amount_cents"]
+        assert goal["amount_cents"] <= allocation["budget_cents"] <= available
+        for use in uses:
+            fragment = fragments[use["fragment_id"]]
+            assert use["origin_transaction_id"] == str(fragment.origin_transaction_id)
+>           assert use["account_id"] == str(fragment.account_id)
+                   ^^^^^^^^^^^^^^^^^
+E           KeyError: 'account_id'
+
+apps\api\app\tests\test_multi_goal_planning_api.py:150: KeyError
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "d110a20b-bbce-445c-9eb7-ff9d571c495e", "method": "POST", "status": 200, "duration_ms": 172.0}
+{"event": "http_request", "request_id": "0939a443-1149-434d-a538-d73ee2567352", "method": "POST", "status": 200, "duration_ms": 94.0}
+{"event": "http_request", "request_id": "5a6c381e-d838-4c59-abf3-5ad02b22aade", "method": "POST", "status": 200, "duration_ms": 625.0}
+{"event": "http_request", "request_id": "e93a7835-7a45-405a-9f45-9e3c067d4cd1", "method": "POST", "status": 200, "duration_ms": 328.0}
+{"event": "http_request", "request_id": "c625116a-de6c-4e30-aae5-461c57798553", "method": "POST", "status": 200, "duration_ms": 157.0}
+{"event": "http_request", "request_id": "5559ceb5-a314-43ee-9333-0a5d03ae7111", "method": "GET", "status": 200, "duration_ms": 875.0}
+{"event": "http_request", "request_id": "ad85b34b-9450-462a-9b6e-2e35529ecb00", "method": "GET", "status": 200, "duration_ms": 1750.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:70 {"event": "http_request", "request_id": "d110a20b-bbce-445c-9eb7-ff9d571c495e", "method": "POST", "status": 200, "duration_ms": 172.0}
+INFO     bounded_funds.http:main.py:70 {"event": "http_request", "request_id": "0939a443-1149-434d-a538-d73ee2567352", "method": "POST", "status": 200, "duration_ms": 94.0}
+INFO     bounded_funds.http:main.py:70 {"event": "http_request", "request_id": "5a6c381e-d838-4c59-abf3-5ad02b22aade", "method": "POST", "status": 200, "duration_ms": 625.0}
+INFO     bounded_funds.http:main.py:70 {"event": "http_request", "request_id": "e93a7835-7a45-405a-9f45-9e3c067d4cd1", "method": "POST", "status": 200, "duration_ms": 328.0}
+INFO     bounded_funds.http:main.py:70 {"event": "http_request", "request_id": "c625116a-de6c-4e30-aae5-461c57798553", "method": "POST", "status": 200, "duration_ms": 157.0}
+INFO     bounded_funds.http:main.py:70 {"event": "http_request", "request_id": "5559ceb5-a314-43ee-9333-0a5d03ae7111", "method": "GET", "status": 200, "duration_ms": 875.0}
+INFO     bounded_funds.http:main.py:70 {"event": "http_request", "request_id": "ad85b34b-9450-462a-9b6e-2e35529ecb00", "method": "GET", "status": 200, "duration_ms": 1750.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_multi_goal_planning_api.py::test_joint_planning_uses_actual_full_confirmation_and_unassigned_income_readonly
+1 failed, 1 warning in 12.98s

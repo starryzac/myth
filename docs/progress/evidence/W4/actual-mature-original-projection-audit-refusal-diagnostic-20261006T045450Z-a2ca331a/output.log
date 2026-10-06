@@ -1,0 +1,396 @@
+F
+================================== FAILURES ===================================
+__ test_actual_mature_whole_user_ask_unknown_key_revoke_recovery_and_tamper ___
+
+session = <sqlalchemy.orm.session.Session object at 0x000001D06A1DC6E0>
+action = <app.db.models.ActionPlan object at 0x000001D067E0F8C0>
+now = datetime.datetime(2026, 11, 3, 20, 0, tzinfo=datetime.timezone.utc)
+
+    def _frozen(
+        session: Session, action: ActionPlan, now: datetime
+    ) -> tuple[FullMaturityInput, FullMaturityProof, MaturityContractCommand]:
+        try:
+            read = get_decision_trace(session, action.user_id, action.decision_run_id, now)
+            trace = read.trace
+            if read.completeness != "COMPLETE" or read.audit_chain_status != "VALID" or trace is None:
+>               raise ValueError("Complete original trace and its actual audit are required")
+E               ValueError: Complete original trace and its actual audit are required
+
+apps\api\app\services\full_maturity_execution.py:380: ValueError
+
+The above exception was the direct cause of the following exception:
+
+annual_client = (<starlette.testclient.TestClient object at 0x000001D058CC1B50>, Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_6269a4053c15425fb479b0a6154e7e03))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D064177B60>
+
+    def test_actual_mature_whole_user_ask_unknown_key_revoke_recovery_and_tamper(
+        annual_client: tuple[TestClient, Engine], monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        client, engine = annual_client
+        require_installed_guard()
+        actual_income(engine)
+        asset_id, position_id, bought = actual_purchase(client, engine, "FIXED_ASSET")
+        policy_id = UUID(actual_recovery_confirmation(client, asset_id))
+        with Session(engine) as read:
+            position = read.get(AssetPosition, position_id)
+            assert position is not None and position.maturity_at is not None
+            product = read.get(AssetProduct, position.product_id)
+            assert product is not None
+            mature_at = position.maturity_at + timedelta(days=product.redemption_delay_days)
+            assert mature_at == position.purchased_at + timedelta(
+                days=product.maturity_rule["term_days"] + product.redemption_delay_days
+            )
+        assert isinstance(client.app, FastAPI)
+        client.app.dependency_overrides[get_now] = lambda: mature_at
+        secret = "SYNTHETIC_ISOLATED_MATURITY_USER"
+        monkeypatch.setenv("BF_LOCAL_USER_SECRET", secret)
+        monkeypatch.setenv("BF_LOCAL_SIGNING_KEY", "bc" * 32)
+        assert (
+            client.post(
+                "/api/v1/local-actor/login", json={"username": "bounded-user", "secret": secret}
+            ).status_code
+            == 200
+        )
+        token = client.cookies.get(COOKIE_NAME)
+        assert token is not None
+        principal = verify_local_actor_session(token, DEMO_USER_ID, mature_at)
+        with _reader(engine) as read:
+            full = read_full_policy(read, DEMO_USER_ID, policy_id, mature_at)
+            body = FullMaturityRequest(
+                policy_id=policy_id,
+                expected_version_id=full.current_version.version_id,
+                expected_epoch_id=full.epoch_id,
+                position_id=position_id,
+                idempotency_key="actual-whole-mature-user-original-key",
+            )
+        before = physical_snapshot(engine)
+        with _reader(engine) as read:
+            preview = preview_maturity_execution(read, DEMO_USER_ID, body, mature_at)
+        assert preview.proof.status == "VERIFIED_SCOPE", preview.proof.reasons
+        assert preview.proof.command is not None
+        assert preview.proof.command.kind == "MATURE"
+        assert preview.proof.command.principal_cents == bought["executed_cents"]
+        assert not preview.proof.projected_cash_is_current_cash
+        assert physical_snapshot(engine) == before
+        prepared = prepare_maturity_execution(engine, DEMO_USER_ID, body, principal, mature_at)
+        assert prepared.status == "PLANNED" and prepared.autonomy_level == "ASK_ONCE"
+        saved = physical_snapshot(engine)
+        assert prepare_maturity_execution(engine, DEMO_USER_ID, body, principal, mature_at) == prepared
+        assert physical_snapshot(engine) == saved
+        execute_body = FullMaturityExecuteRequest(
+            expected_epoch_id=body.expected_epoch_id,
+            reviewed_command_hash=prepared.reviewed_command_hash,
+        )
+        with pytest.raises(PolicyLifecycleError):
+            execute_maturity_execution(
+                engine, DEMO_USER_ID, prepared.action_id, execute_body, principal, mature_at
+            )
+        assert physical_snapshot(engine) == saved
+        accepted = confirm_maturity_execution(
+            engine,
+            DEMO_USER_ID,
+            prepared.action_id,
+            FullMaturityConfirmation(
+                expected_epoch_id=body.expected_epoch_id,
+                reviewed_command_hash=prepared.reviewed_command_hash,
+                accepted=True,
+            ),
+            principal,
+            mature_at,
+        )
+        assert accepted.status == "AUTHORIZED" and accepted.original_consent is not None
+        native = simulated_bank.process_redemption
+    
+        def lose_actual_committed_response(
+            target: Engine, user: UUID, action: UUID, at: datetime
+        ) -> None:
+            native(target, user, action, at)
+            raise TimeoutError("ACTUAL_MATURE_BANK_COMMIT_RESPONSE_LOST")
+    
+        with monkeypatch.context() as fault:
+            fault.setattr(simulated_bank, "process_redemption", lose_actual_committed_response)
+            with pytest.raises(TimeoutError, match="ACTUAL_MATURE_BANK_COMMIT"):
+                execute_maturity_execution(
+                    engine, DEMO_USER_ID, prepared.action_id, execute_body, principal, mature_at
+                )
+        unknown = physical_snapshot(engine)
+        with _reader(engine) as read:
+            lookup = lookup_maturity_execution(read, DEMO_USER_ID, body.idempotency_key, mature_at)
+        assert lookup.action is not None and lookup.action.status == "UNKNOWN"
+        assert not lookup.action.service_receipt_verified
+        assert lookup.action.original_request == body
+        assert lookup.action.original_event["proof_status"] == "UNKNOWN"
+        assert physical_snapshot(engine) == unknown
+        with Session(engine) as read:
+            operations = list(
+                read.scalars(
+                    select(BankOperation).where(BankOperation.action_plan_id == prepared.action_id)
+                )
+            )
+            assert len(operations) == 1 and operations[0].status == "SETTLED"
+            operation_id = operations[0].id
+            legs = list(
+                read.scalars(
+                    select(SimulatedBankPosting).where(
+                        SimulatedBankPosting.operation_id == operation_id
+                    )
+                )
+            )
+            assert len(legs) == 2 and sum(row.delta_cents for row in legs) == 0
+            assert sorted(row.delta_cents for row in legs) == [
+                -bought["executed_cents"],
+                bought["executed_cents"],
+            ]
+        revoked = client.post(
+            f"/api/v1/full-policies/{policy_id}/revoke",
+            json={
+                "expected_version_id": str(body.expected_version_id),
+                "reason": "仅恢复已受理原银行键",
+                "idempotency_key": "maturity-revoke-after-bank-acceptance",
+            },
+        )
+        assert revoked.status_code == 200, revoked.text
+        try:
+>           done = execute_maturity_execution(
+                engine, DEMO_USER_ID, prepared.action_id, execute_body, principal, mature_at
+            )
+
+apps\api\app\tests\test_full_maturity_execution_integration.py:180: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\services\full_maturity_execution.py:875: in execute_maturity_execution
+    return _view(read, _owned(read, user_id, action_id), now)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\full_maturity_execution.py:495: in _view
+    data, proof, command = _frozen(session, action, now)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = <sqlalchemy.orm.session.Session object at 0x000001D06A1DC6E0>
+action = <app.db.models.ActionPlan object at 0x000001D067E0F8C0>
+now = datetime.datetime(2026, 11, 3, 20, 0, tzinfo=datetime.timezone.utc)
+
+    def _frozen(
+        session: Session, action: ActionPlan, now: datetime
+    ) -> tuple[FullMaturityInput, FullMaturityProof, MaturityContractCommand]:
+        try:
+            read = get_decision_trace(session, action.user_id, action.decision_run_id, now)
+            trace = read.trace
+            if read.completeness != "COMPLETE" or read.audit_chain_status != "VALID" or trace is None:
+                raise ValueError("Complete original trace and its actual audit are required")
+            verify_trace(trace)
+            verify_frozen_maturity_trace(trace)
+            data = FullMaturityInput.model_validate_json(json.dumps(trace.inputs["maturity_input"]))
+            proof = derive_maturity_proof(data)
+            command = MaturityContractCommand.model_validate_json(
+                json.dumps(action.request["bank_request"])
+            )
+            expected = _payload(data, proof, action.id)
+            if (
+                trace.phase != "PREPARE"
+                or trace.action_id != action.id
+                or trace.user_id != action.user_id
+                or trace.algorithm_versions.get(MARKER) != ALGORITHM
+                or trace.inputs["action_request"] != expected
+                or action.request != expected
+                or action.request_hash != configuration_hash(expected)
+                or proof.status != "VERIFIED_SCOPE"
+                or proof.command != command
+                or trace.outcome != {"maturity_proof": proof.model_dump(mode="json")}
+                or action.id != uuid5(data.epoch_id, maturity_bank_key(data.request.idempotency_key))
+                or action.idempotency_key != maturity_bank_key(data.request.idempotency_key)
+                or action.action_type != "ASSET_MATURITY"
+                or action.autonomy_level != "ASK_ONCE"
+                or action.policy_version_id != command.original_policy_version_id
+                or action.amount_cents != command.principal_cents
+                or action.position_id != command.position_id
+                or action.goal_id != command.goal_id
+                or action.product_id != command.product_id
+                or action.source_account_id != command.position_account_id
+                or action.destination_account_id != command.destination_account_id
+                or action.expires_at != command.expires_at
+                or action.created_at != command.requested_at
+            ):
+                raise ValueError("Original immutable action, complete inputs and proof disagree")
+            return data, proof, command
+        except (ValueError, KeyError, TypeError) as error:
+>           raise _fail("FULL_MATURITY_ORIGINAL_INVALID", str(error)) from error
+E           app.services.policy_lifecycle.PolicyLifecycleError: Complete original trace and its actual audit are required
+
+apps\api\app\services\full_maturity_execution.py:417: PolicyLifecycleError
+
+During handling of the above exception, another exception occurred:
+
+annual_client = (<starlette.testclient.TestClient object at 0x000001D058CC1B50>, Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_6269a4053c15425fb479b0a6154e7e03))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D064177B60>
+
+    def test_actual_mature_whole_user_ask_unknown_key_revoke_recovery_and_tamper(
+        annual_client: tuple[TestClient, Engine], monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        client, engine = annual_client
+        require_installed_guard()
+        actual_income(engine)
+        asset_id, position_id, bought = actual_purchase(client, engine, "FIXED_ASSET")
+        policy_id = UUID(actual_recovery_confirmation(client, asset_id))
+        with Session(engine) as read:
+            position = read.get(AssetPosition, position_id)
+            assert position is not None and position.maturity_at is not None
+            product = read.get(AssetProduct, position.product_id)
+            assert product is not None
+            mature_at = position.maturity_at + timedelta(days=product.redemption_delay_days)
+            assert mature_at == position.purchased_at + timedelta(
+                days=product.maturity_rule["term_days"] + product.redemption_delay_days
+            )
+        assert isinstance(client.app, FastAPI)
+        client.app.dependency_overrides[get_now] = lambda: mature_at
+        secret = "SYNTHETIC_ISOLATED_MATURITY_USER"
+        monkeypatch.setenv("BF_LOCAL_USER_SECRET", secret)
+        monkeypatch.setenv("BF_LOCAL_SIGNING_KEY", "bc" * 32)
+        assert (
+            client.post(
+                "/api/v1/local-actor/login", json={"username": "bounded-user", "secret": secret}
+            ).status_code
+            == 200
+        )
+        token = client.cookies.get(COOKIE_NAME)
+        assert token is not None
+        principal = verify_local_actor_session(token, DEMO_USER_ID, mature_at)
+        with _reader(engine) as read:
+            full = read_full_policy(read, DEMO_USER_ID, policy_id, mature_at)
+            body = FullMaturityRequest(
+                policy_id=policy_id,
+                expected_version_id=full.current_version.version_id,
+                expected_epoch_id=full.epoch_id,
+                position_id=position_id,
+                idempotency_key="actual-whole-mature-user-original-key",
+            )
+        before = physical_snapshot(engine)
+        with _reader(engine) as read:
+            preview = preview_maturity_execution(read, DEMO_USER_ID, body, mature_at)
+        assert preview.proof.status == "VERIFIED_SCOPE", preview.proof.reasons
+        assert preview.proof.command is not None
+        assert preview.proof.command.kind == "MATURE"
+        assert preview.proof.command.principal_cents == bought["executed_cents"]
+        assert not preview.proof.projected_cash_is_current_cash
+        assert physical_snapshot(engine) == before
+        prepared = prepare_maturity_execution(engine, DEMO_USER_ID, body, principal, mature_at)
+        assert prepared.status == "PLANNED" and prepared.autonomy_level == "ASK_ONCE"
+        saved = physical_snapshot(engine)
+        assert prepare_maturity_execution(engine, DEMO_USER_ID, body, principal, mature_at) == prepared
+        assert physical_snapshot(engine) == saved
+        execute_body = FullMaturityExecuteRequest(
+            expected_epoch_id=body.expected_epoch_id,
+            reviewed_command_hash=prepared.reviewed_command_hash,
+        )
+        with pytest.raises(PolicyLifecycleError):
+            execute_maturity_execution(
+                engine, DEMO_USER_ID, prepared.action_id, execute_body, principal, mature_at
+            )
+        assert physical_snapshot(engine) == saved
+        accepted = confirm_maturity_execution(
+            engine,
+            DEMO_USER_ID,
+            prepared.action_id,
+            FullMaturityConfirmation(
+                expected_epoch_id=body.expected_epoch_id,
+                reviewed_command_hash=prepared.reviewed_command_hash,
+                accepted=True,
+            ),
+            principal,
+            mature_at,
+        )
+        assert accepted.status == "AUTHORIZED" and accepted.original_consent is not None
+        native = simulated_bank.process_redemption
+    
+        def lose_actual_committed_response(
+            target: Engine, user: UUID, action: UUID, at: datetime
+        ) -> None:
+            native(target, user, action, at)
+            raise TimeoutError("ACTUAL_MATURE_BANK_COMMIT_RESPONSE_LOST")
+    
+        with monkeypatch.context() as fault:
+            fault.setattr(simulated_bank, "process_redemption", lose_actual_committed_response)
+            with pytest.raises(TimeoutError, match="ACTUAL_MATURE_BANK_COMMIT"):
+                execute_maturity_execution(
+                    engine, DEMO_USER_ID, prepared.action_id, execute_body, principal, mature_at
+                )
+        unknown = physical_snapshot(engine)
+        with _reader(engine) as read:
+            lookup = lookup_maturity_execution(read, DEMO_USER_ID, body.idempotency_key, mature_at)
+        assert lookup.action is not None and lookup.action.status == "UNKNOWN"
+        assert not lookup.action.service_receipt_verified
+        assert lookup.action.original_request == body
+        assert lookup.action.original_event["proof_status"] == "UNKNOWN"
+        assert physical_snapshot(engine) == unknown
+        with Session(engine) as read:
+            operations = list(
+                read.scalars(
+                    select(BankOperation).where(BankOperation.action_plan_id == prepared.action_id)
+                )
+            )
+            assert len(operations) == 1 and operations[0].status == "SETTLED"
+            operation_id = operations[0].id
+            legs = list(
+                read.scalars(
+                    select(SimulatedBankPosting).where(
+                        SimulatedBankPosting.operation_id == operation_id
+                    )
+                )
+            )
+            assert len(legs) == 2 and sum(row.delta_cents for row in legs) == 0
+            assert sorted(row.delta_cents for row in legs) == [
+                -bought["executed_cents"],
+                bought["executed_cents"],
+            ]
+        revoked = client.post(
+            f"/api/v1/full-policies/{policy_id}/revoke",
+            json={
+                "expected_version_id": str(body.expected_version_id),
+                "reason": "仅恢复已受理原银行键",
+                "idempotency_key": "maturity-revoke-after-bank-acceptance",
+            },
+        )
+        assert revoked.status_code == 200, revoked.text
+        try:
+            done = execute_maturity_execution(
+                engine, DEMO_USER_ID, prepared.action_id, execute_body, principal, mature_at
+            )
+        except PolicyLifecycleError:
+            # Retain the actual audit refusal; no synthetic receipt or weakened gate.
+            with _reader(engine) as read:
+                actual_audit = verify_audit_chain(read, DEMO_USER_ID)
+>           assert actual_audit.status == "VALID", actual_audit.model_dump_json()
+E           AssertionError: {"schema_version":"audit-verification-v1","simulation":true,"user_id":"271a9827-f82a-5be6-9e0a-50f721029fb0","epoch_id":"5602b78c-9fce-445b-9303-05fe121d8ad4","status":"INTEGRITY_ERROR","chain_status":"INTEGRITY_ERROR","reference_status":"INTEGRITY_ERROR","checkpoint_status":"NOT_REQUESTED","actual_count":0,"expected_count":0,"actual_tail_id":null,"actual_tail_hash":null,"expected_tail_id":null,"expected_tail_hash":null,"verified_through_sequence":0,"errors":[{"code":"AUDIT_INTEGRITY_ERROR","sequence_number":null,"event_id":null,"reference":null,"message":"当前决策或经济回单原件未通过既有核验"}],"warnings":[],"errors_truncated":false}
+E           assert 'INTEGRITY_ERROR' == 'VALID'
+E             
+E             - VALID
+E             + INTEGRITY_ERROR
+
+apps\api\app\tests\test_full_maturity_execution_integration.py:187: AssertionError
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "e88a08d9-184b-4edb-ab9d-09df8084a5b5", "method": "POST", "status": 200, "duration_ms": 1266.0}
+{"event": "http_request", "request_id": "629e5d9a-12d2-4254-ba5f-7d288ac3b63e", "method": "POST", "status": 200, "duration_ms": 94.0}
+{"event": "http_request", "request_id": "05863a56-f764-4bc3-9166-92d69eb8acc9", "method": "POST", "status": 200, "duration_ms": 5219.0}
+{"event": "http_request", "request_id": "d9a65172-03a6-4ce2-b562-31af2a6e571a", "method": "POST", "status": 200, "duration_ms": 11046.0}
+{"event": "http_request", "request_id": "d8bb6b47-6e00-4764-8608-9e3eb1c3e30d", "method": "POST", "status": 200, "duration_ms": 63.0}
+{"event": "http_request", "request_id": "f1bad621-7fbf-4e9d-9732-63fdd1ec6486", "method": "POST", "status": 200, "duration_ms": 46.0}
+{"event": "http_request", "request_id": "92f7a001-0265-4ede-beff-8ee6e80c5b98", "method": "POST", "status": 200, "duration_ms": 0.0}
+{"event": "http_request", "request_id": "1654af4c-2a0d-4be4-848e-e2786fee17c9", "method": "POST", "status": 200, "duration_ms": 78.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:132 {"event": "http_request", "request_id": "e88a08d9-184b-4edb-ab9d-09df8084a5b5", "method": "POST", "status": 200, "duration_ms": 1266.0}
+INFO     bounded_funds.http:main.py:132 {"event": "http_request", "request_id": "629e5d9a-12d2-4254-ba5f-7d288ac3b63e", "method": "POST", "status": 200, "duration_ms": 94.0}
+INFO     bounded_funds.http:main.py:132 {"event": "http_request", "request_id": "05863a56-f764-4bc3-9166-92d69eb8acc9", "method": "POST", "status": 200, "duration_ms": 5219.0}
+INFO     bounded_funds.http:main.py:132 {"event": "http_request", "request_id": "d9a65172-03a6-4ce2-b562-31af2a6e571a", "method": "POST", "status": 200, "duration_ms": 11046.0}
+INFO     bounded_funds.http:main.py:132 {"event": "http_request", "request_id": "d8bb6b47-6e00-4764-8608-9e3eb1c3e30d", "method": "POST", "status": 200, "duration_ms": 63.0}
+INFO     bounded_funds.http:main.py:132 {"event": "http_request", "request_id": "f1bad621-7fbf-4e9d-9732-63fdd1ec6486", "method": "POST", "status": 200, "duration_ms": 46.0}
+INFO     bounded_funds.http:main.py:132 {"event": "http_request", "request_id": "92f7a001-0265-4ede-beff-8ee6e80c5b98", "method": "POST", "status": 200, "duration_ms": 0.0}
+INFO     bounded_funds.http:main.py:132 {"event": "http_request", "request_id": "1654af4c-2a0d-4be4-848e-e2786fee17c9", "method": "POST", "status": 200, "duration_ms": 78.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_maturity_execution_integration.py::test_actual_mature_whole_user_ask_unknown_key_revoke_recovery_and_tamper
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 warning in 440.63s (0:07:20)

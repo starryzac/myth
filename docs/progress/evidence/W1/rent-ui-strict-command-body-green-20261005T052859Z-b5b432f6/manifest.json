@@ -1,0 +1,38 @@
+{
+  "run_id": "20261005T052859Z-b5b432f6",
+  "task": "W1",
+  "label": "rent-ui-strict-command-body-green",
+  "status": "PASSED",
+  "scope": [
+    "apps/web/src/pages/DemoConsolePage.tsx",
+    "apps/web/src/pages/DemoConsolePage.test.tsx",
+    "apps/web/src/api/policies.ts"
+  ],
+  "command": [
+    "node",
+    "apps/web/node_modules/vitest/vitest.mjs",
+    "run",
+    "--root",
+    "apps/web",
+    "--config",
+    "vitest.config.ts",
+    "src/pages/DemoConsolePage.test.tsx"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T05:29:00.194604+00:00",
+  "finished_at": "2026-10-05T05:29:07.084906+00:00",
+  "wall_seconds": 6.890302,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "scripts/tests/test_w1_final_acceptance.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "c9c67531df776136f7cf917d4370394db80531119c59567c30dd7f93122fe950",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

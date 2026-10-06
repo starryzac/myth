@@ -1,0 +1,759 @@
+{
+  "family_id": "O04",
+  "initial_state": {
+    "expected_epoch_id": null,
+    "mode": "EXISTING",
+    "seed_version": "mvp-301-v6"
+  },
+  "profile": "FULL",
+  "protocol": "full-family-case-input-v1",
+  "purpose": "DEVELOPMENT",
+  "scenario_id": "O04-v02",
+  "steps": [
+    {
+      "at": "2026-10-04T10:00:02+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "SNAPSHOT",
+      "step_id": "initial-snapshot"
+    },
+    {
+      "at": "2026-10-04T10:00:04+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "DEMO_STATE_READ",
+      "step_id": "epoch-read"
+    },
+    {
+      "at": "2026-10-04T10:00:06+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "LOCAL_USER_LOGIN",
+      "step_id": "local-user-login"
+    },
+    {
+      "at": "2026-10-04T10:00:08+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "external_ref": "mvp-301-v6:account:cash"
+      },
+      "kind": "LOOKUP_ACCOUNT",
+      "step_id": "cash"
+    },
+    {
+      "at": "2026-10-04T10:00:10+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "external_ref": "mvp-301-v6:account:goal"
+      },
+      "kind": "LOOKUP_ACCOUNT",
+      "step_id": "goal-account"
+    },
+    {
+      "at": "2026-10-04T10:00:12+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "configuration": {
+          "extra_buffer_cents": 10000,
+          "horizon_days": 14,
+          "method": {
+            "essential_categories": [
+              "food",
+              "transport",
+              "daily_necessities"
+            ],
+            "exclude_one_off": true,
+            "lookback_days": 60,
+            "name": "rolling_window_quantile",
+            "quantile": 0.9
+          },
+          "name": "作者 living",
+          "type": "living_reserve"
+        },
+        "expected_epoch_id": {
+          "$ref": {
+            "pointer": "/result/epoch_id",
+            "step_id": "epoch-read"
+          }
+        },
+        "idempotency_key": "full804-O04-living-declare"
+      },
+      "kind": "DECLARE_POLICY",
+      "step_id": "living-declare"
+    },
+    {
+      "at": "2026-10-04T10:00:14+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "accepted": true,
+        "proposal_id": {
+          "$ref": {
+            "pointer": "/result/proposal_id",
+            "step_id": "living-declare"
+          }
+        },
+        "reviewed_hash": {
+          "$ref": {
+            "pointer": "/result/configuration_hash",
+            "step_id": "living-declare"
+          }
+        }
+      },
+      "kind": "CONFIRM_POLICY",
+      "step_id": "living-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:16+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "configuration": {
+          "amount_cents": 90000,
+          "name": "作者 emergency",
+          "type": "emergency_buffer"
+        },
+        "expected_epoch_id": {
+          "$ref": {
+            "pointer": "/result/epoch_id",
+            "step_id": "epoch-read"
+          }
+        },
+        "idempotency_key": "full804-O04-emergency-declare"
+      },
+      "kind": "DECLARE_POLICY",
+      "step_id": "emergency-declare"
+    },
+    {
+      "at": "2026-10-04T10:00:18+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "accepted": true,
+        "proposal_id": {
+          "$ref": {
+            "pointer": "/result/proposal_id",
+            "step_id": "emergency-declare"
+          }
+        },
+        "reviewed_hash": {
+          "$ref": {
+            "pointer": "/result/configuration_hash",
+            "step_id": "emergency-declare"
+          }
+        }
+      },
+      "kind": "CONFIRM_POLICY",
+      "step_id": "emergency-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:20+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "configuration": {
+          "amount_rule": {
+            "amount_cents": 80137,
+            "kind": "exact"
+          },
+          "auto_execute": true,
+          "due_day": 31,
+          "name": "作者 rent-base",
+          "payee_id": "synthetic-rent-category",
+          "prepare_days_before": 3,
+          "priority": {
+            "deferrable": false,
+            "importance": 99,
+            "minimum_cents": 80137,
+            "reducible": false
+          },
+          "type": "recurring_obligation"
+        },
+        "expected_epoch_id": {
+          "$ref": {
+            "pointer": "/result/epoch_id",
+            "step_id": "epoch-read"
+          }
+        },
+        "idempotency_key": "full804-O04-rent-base-declare"
+      },
+      "kind": "DECLARE_POLICY",
+      "step_id": "rent-base-declare"
+    },
+    {
+      "at": "2026-10-04T10:00:22+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "accepted": true,
+        "proposal_id": {
+          "$ref": {
+            "pointer": "/result/proposal_id",
+            "step_id": "rent-base-declare"
+          }
+        },
+        "reviewed_hash": {
+          "$ref": {
+            "pointer": "/result/configuration_hash",
+            "step_id": "rent-base-declare"
+          }
+        }
+      },
+      "kind": "CONFIRM_POLICY",
+      "step_id": "rent-base-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:24+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "configuration": {
+            "amount_rule": {
+              "amount_cents": 80137,
+              "kind": "exact"
+            },
+            "auto_execute": true,
+            "due_day": 31,
+            "name": "作者 rent",
+            "payee_id": "synthetic-rent-category",
+            "prepare_days_before": 3,
+            "single_action_cap_cents": 90137,
+            "source_account_id": {
+              "$ref": {
+                "pointer": "/result/account/id",
+                "step_id": "cash"
+              }
+            },
+            "type": "periodic_transfer",
+            "valid_from": "2026-10-04",
+            "valid_until": "2027-10-04"
+          },
+          "dsl_version": "FULL_V1",
+          "template_name": "PeriodicTransferPolicy"
+        }
+      },
+      "kind": "FULL_POLICY_VALIDATE",
+      "step_id": "rent-validate"
+    },
+    {
+      "at": "2026-10-04T10:00:26+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "accepted": true,
+          "configuration": {
+            "$ref": {
+              "pointer": "/result/normalized_configuration",
+              "step_id": "rent-validate"
+            }
+          },
+          "idempotency_key": "full804-O04-rent-full",
+          "reason": "预登记合成 USER 明确复核此完整声明",
+          "reviewed_hash": {
+            "$ref": {
+              "pointer": "/result/configuration_hash",
+              "step_id": "rent-validate"
+            }
+          },
+          "template_name": "PeriodicTransferPolicy"
+        }
+      },
+      "kind": "FULL_POLICY_CONFIRM",
+      "step_id": "rent-full"
+    },
+    {
+      "at": "2026-10-04T10:00:28+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "period": "2026-10",
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "rent-base-confirm"
+          }
+        }
+      },
+      "kind": "OBSERVE_RECURRING_PAYMENT",
+      "step_id": "rent-observe-2026-10"
+    },
+    {
+      "at": "2026-10-04T10:00:30+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "period": "2026-11",
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "rent-base-confirm"
+          }
+        }
+      },
+      "kind": "OBSERVE_RECURRING_PAYMENT",
+      "step_id": "rent-observe-2026-11"
+    },
+    {
+      "at": "2026-10-04T10:00:32+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "period": "2026-12",
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "rent-base-confirm"
+          }
+        }
+      },
+      "kind": "OBSERVE_RECURRING_PAYMENT",
+      "step_id": "rent-observe-2026-12"
+    },
+    {
+      "at": "2026-10-04T10:00:34+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "period": "2027-01",
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "rent-base-confirm"
+          }
+        }
+      },
+      "kind": "OBSERVE_RECURRING_PAYMENT",
+      "step_id": "rent-observe-2027-01"
+    },
+    {
+      "at": "2026-10-04T10:00:36+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "period": "2027-02",
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "rent-base-confirm"
+          }
+        }
+      },
+      "kind": "OBSERVE_RECURRING_PAYMENT",
+      "step_id": "rent-observe-2027-02"
+    },
+    {
+      "at": "2026-10-04T10:00:38+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "period": "2027-03",
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "rent-base-confirm"
+          }
+        }
+      },
+      "kind": "OBSERVE_RECURRING_PAYMENT",
+      "step_id": "rent-observe-2027-03"
+    },
+    {
+      "at": "2026-10-04T10:00:40+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "period": "2027-04",
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "rent-base-confirm"
+          }
+        }
+      },
+      "kind": "OBSERVE_RECURRING_PAYMENT",
+      "step_id": "rent-observe-2027-04"
+    },
+    {
+      "at": "2026-10-04T10:00:42+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "period": "2027-05",
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "rent-base-confirm"
+          }
+        }
+      },
+      "kind": "OBSERVE_RECURRING_PAYMENT",
+      "step_id": "rent-observe-2027-05"
+    },
+    {
+      "at": "2026-10-04T10:00:44+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "period": "2027-06",
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "rent-base-confirm"
+          }
+        }
+      },
+      "kind": "OBSERVE_RECURRING_PAYMENT",
+      "step_id": "rent-observe-2027-06"
+    },
+    {
+      "at": "2026-10-04T10:00:46+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "period": "2027-07",
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "rent-base-confirm"
+          }
+        }
+      },
+      "kind": "OBSERVE_RECURRING_PAYMENT",
+      "step_id": "rent-observe-2027-07"
+    },
+    {
+      "at": "2026-10-04T10:00:48+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "period": "2027-08",
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "rent-base-confirm"
+          }
+        }
+      },
+      "kind": "OBSERVE_RECURRING_PAYMENT",
+      "step_id": "rent-observe-2027-08"
+    },
+    {
+      "at": "2026-10-04T10:00:50+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "period": "2027-09",
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "rent-base-confirm"
+          }
+        }
+      },
+      "kind": "OBSERVE_RECURRING_PAYMENT",
+      "step_id": "rent-observe-2027-09"
+    },
+    {
+      "at": "2026-10-04T10:00:52+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "period": "2027-10",
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "rent-base-confirm"
+          }
+        }
+      },
+      "kind": "OBSERVE_RECURRING_PAYMENT",
+      "step_id": "rent-observe-2027-10"
+    },
+    {
+      "at": "2026-10-04T10:00:54+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "expected_epoch_id": {
+            "$ref": {
+              "pointer": "/result/epoch_id",
+              "step_id": "epoch-read"
+            }
+          },
+          "expected_full_version_id": {
+            "$ref": {
+              "pointer": "/result/version_id",
+              "step_id": "rent-full"
+            }
+          },
+          "expected_original_version_id": {
+            "$ref": {
+              "pointer": "/result/current_version_id",
+              "step_id": "rent-base-confirm"
+            }
+          },
+          "full_policy_id": {
+            "$ref": {
+              "pointer": "/result/policy_id",
+              "step_id": "rent-full"
+            }
+          },
+          "idempotency_key": "full804-O04-rent-start",
+          "original_policy_id": {
+            "$ref": {
+              "pointer": "/result/policy_id",
+              "step_id": "rent-base-confirm"
+            }
+          }
+        }
+      },
+      "kind": "PAYMENT_START",
+      "step_id": "rent-start"
+    },
+    {
+      "at": "2026-10-04T10:00:56+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "accepted": true,
+          "expected_epoch_id": {
+            "$ref": {
+              "pointer": "/result/epoch_id",
+              "step_id": "epoch-read"
+            }
+          },
+          "idempotency_key": "full804-O04-rent-relation",
+          "reason": "合成 USER 签名会话明确发起原收款关系",
+          "reviewed_scope_hash": {
+            "$ref": {
+              "pointer": "/result/original/scope_hash",
+              "step_id": "rent-start"
+            }
+          }
+        },
+        "start_command_id": {
+          "$ref": {
+            "pointer": "/result/original/command_id",
+            "step_id": "rent-start"
+          }
+        }
+      },
+      "kind": "PAYMENT_CONFIRM",
+      "step_id": "rent-relation"
+    },
+    {
+      "at": "2026-10-04T10:00:58+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "account_id": {
+          "$ref": {
+            "pointer": "/result/account/id",
+            "step_id": "cash"
+          }
+        },
+        "amount_cents": 5200178,
+        "counterparty_ref": "payroll",
+        "currency": "CNY",
+        "external_ref": "full804-O04-income",
+        "idempotency_key": "full804-O04-income",
+        "kind": "INCOME",
+        "occurred_at": "2026-10-04T10:00:58+08:00",
+        "protocol_version": "bank-external-fact-v1",
+        "simulation": true,
+        "source_id": "bounded-funds-external-v1",
+        "user_id": {
+          "$ref": {
+            "pointer": "/result/principal/user_id",
+            "step_id": "local-user-login"
+          }
+        }
+      },
+      "kind": "EXTERNAL_FACT",
+      "step_id": "income"
+    },
+    {
+      "at": "2027-02-28T08:00:00+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "LOCAL_USER_LOGIN",
+      "step_id": "month-check-user-login"
+    },
+    {
+      "at": "2027-02-28T08:00:00+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "FULL_ANNUAL_READ",
+      "step_id": "month-check"
+    },
+    {
+      "at": "2027-02-28T08:00:02+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "authorization_id": {
+          "$ref": {
+            "pointer": "/result/original/command_id",
+            "step_id": "rent-relation"
+          }
+        },
+        "body": {
+          "expected_epoch_id": {
+            "$ref": {
+              "pointer": "/result/epoch_id",
+              "step_id": "epoch-read"
+            }
+          },
+          "idempotency_key": "full804-O04-february-prepare",
+          "period": "2027-02"
+        }
+      },
+      "kind": "PAYMENT_PREPARE",
+      "step_id": "february-prepare"
+    },
+    {
+      "at": "2027-02-28T08:00:04+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "action_id": {
+          "$ref": {
+            "pointer": "/result/action_id",
+            "step_id": "february-prepare"
+          }
+        },
+        "body": {
+          "accepted": true,
+          "expected_epoch_id": {
+            "$ref": {
+              "pointer": "/result/epoch_id",
+              "step_id": "epoch-read"
+            }
+          },
+          "reviewed_effect_hash": {
+            "$ref": {
+              "pointer": "/result/effect_hash",
+              "step_id": "february-prepare"
+            }
+          }
+        }
+      },
+      "kind": "PAYMENT_ACTION_CONFIRM",
+      "step_id": "february-confirm"
+    },
+    {
+      "at": "2027-02-28T08:00:06+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "action_id": {
+          "$ref": {
+            "pointer": "/result/action_id",
+            "step_id": "february-prepare"
+          }
+        },
+        "body": {
+          "expected_epoch_id": {
+            "$ref": {
+              "pointer": "/result/epoch_id",
+              "step_id": "epoch-read"
+            }
+          }
+        }
+      },
+      "kind": "PAYMENT_EXECUTE",
+      "step_id": "february-execute"
+    },
+    {
+      "at": "2027-03-31T08:00:00+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "LOCAL_USER_LOGIN",
+      "step_id": "march-clock-user-login"
+    },
+    {
+      "at": "2027-03-31T08:00:00+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "FULL_ANNUAL_READ",
+      "step_id": "march-clock"
+    },
+    {
+      "at": "2027-03-31T08:00:02+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "authorization_id": {
+          "$ref": {
+            "pointer": "/result/original/command_id",
+            "step_id": "rent-relation"
+          }
+        },
+        "body": {
+          "expected_epoch_id": {
+            "$ref": {
+              "pointer": "/result/epoch_id",
+              "step_id": "epoch-read"
+            }
+          },
+          "idempotency_key": "full804-O04-march-prepare",
+          "period": "2027-03"
+        }
+      },
+      "kind": "PAYMENT_PREPARE",
+      "step_id": "march-prepare"
+    },
+    {
+      "at": "2027-03-31T08:00:04+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "action_id": {
+          "$ref": {
+            "pointer": "/result/action_id",
+            "step_id": "march-prepare"
+          }
+        },
+        "body": {
+          "accepted": true,
+          "expected_epoch_id": {
+            "$ref": {
+              "pointer": "/result/epoch_id",
+              "step_id": "epoch-read"
+            }
+          },
+          "reviewed_effect_hash": {
+            "$ref": {
+              "pointer": "/result/effect_hash",
+              "step_id": "march-prepare"
+            }
+          }
+        }
+      },
+      "kind": "PAYMENT_ACTION_CONFIRM",
+      "step_id": "march-confirm"
+    },
+    {
+      "at": "2027-03-31T08:00:06+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "SNAPSHOT",
+      "step_id": "final"
+    }
+  ]
+}

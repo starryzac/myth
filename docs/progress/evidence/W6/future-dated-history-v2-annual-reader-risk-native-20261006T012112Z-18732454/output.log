@@ -1,0 +1,10 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/full-annual.test.ts (9 tests) 752ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  09:21:14
+   Duration  3.00s (transform 131ms, setup 439ms, collect 163ms, tests 752ms, environment 897ms, prepare 300ms)
+

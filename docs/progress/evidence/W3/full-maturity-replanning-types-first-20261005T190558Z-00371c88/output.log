@@ -1,0 +1,3 @@
+apps\api\app\tests\test_full_maturity_replanning.py:462: error: Argument 1 to "preview_maturity_replanning" has incompatible type "SyntheticSession"; expected "Session"  [arg-type]
+apps\api\app\tests\test_full_maturity_replanning.py:468: error: Unused "type: ignore" comment  [unused-ignore]
+Found 2 errors in 1 file (checked 4 source files)

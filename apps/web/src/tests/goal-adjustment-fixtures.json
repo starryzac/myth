@@ -1,0 +1,780 @@
+{
+  "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+  "read": {
+    "protocol": "full-goal-adjustment-read-v1",
+    "simulation": true,
+    "user_id": "00000000-0000-0000-0000-000000000001",
+    "as_of": "2026-10-05T12:00:00Z",
+    "state": "COMPUTED",
+    "original_conflicts": {
+      "protocol": "full-goal-conflict-read-v1",
+      "simulation": true,
+      "user_id": "00000000-0000-0000-0000-000000000001",
+      "epoch_id": "00000000-0000-0000-0000-0000000002bc",
+      "as_of": "2026-10-05T12:00:00Z",
+      "state": "COMPUTED",
+      "registered_goal_count": 1,
+      "included_goal_ids": [
+        "00000000-0000-0000-0000-00000000000a"
+      ],
+      "uncovered_goal_ids": [],
+      "current_input_hash": "901a23e2ed1d98780f146f7896cfd6ff59113e6b19af87df464baf5fb482a1f0",
+      "review_state_hash": "869d65d7edf8ed1c379f9f82e029357a22762391f143fe1d0079b5c1aac3f6a4",
+      "planning_source_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "full_binding_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "explanation": {
+        "protocol": "full-goal-minimal-conflict-v1",
+        "original_input_hash": "901a23e2ed1d98780f146f7896cfd6ff59113e6b19af87df464baf5fb482a1f0",
+        "registered_input_goal_ids": [
+          "00000000-0000-0000-0000-00000000000a"
+        ],
+        "conflict": {
+          "status": "MINIMAL_CONFLICT",
+          "scope": "GOAL_POLICIES_WITH_IMMUTABLE_FINANCIAL_BASE",
+          "grants_authority": false,
+          "input_hash": "901a23e2ed1d98780f146f7896cfd6ff59113e6b19af87df464baf5fb482a1f0",
+          "constraint_ids": [
+            "DEADLINE_COMPLETION:00000000-0000-0000-0000-00000000000a"
+          ],
+          "deletion_checks": [
+            {
+              "removed_constraint_id": "DEADLINE_COMPLETION:00000000-0000-0000-0000-00000000000a",
+              "remaining_feasible": true,
+              "counterfactual_only": true,
+              "witness_amounts_cents": {
+                "00000000-0000-0000-0000-00000000000a": 0
+              }
+            }
+          ],
+          "reasons": []
+        },
+        "constraints": [
+          {
+            "constraint_id": "DEADLINE_COMPLETION:00000000-0000-0000-0000-00000000000a",
+            "kind": "DEADLINE_COMPLETION",
+            "goal_id": "00000000-0000-0000-0000-00000000000a",
+            "policy_id": "00000000-0000-0000-0000-0000000000d2",
+            "current_version_id": "00000000-0000-0000-0000-000000000136",
+            "original_parameter_cents": 50,
+            "current_owned_cents": 0,
+            "current_month_contributed_cents": 0,
+            "required_new_cents": 50,
+            "allowed_new_cents": null,
+            "deadline": "2026-10-05",
+            "source_refs": [
+              {
+                "user_id": "00000000-0000-0000-0000-000000000001",
+                "evidence_id": "00000000-0000-0000-0000-00000000000a",
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            ]
+          }
+        ],
+        "goals_outside_this_minimal_set": [],
+        "all_other_goal_constraints_proven_compatible": false,
+        "minimality": "DELETION_MINIMAL_NOT_MINIMUM_CARDINALITY",
+        "removal_witness_scope": "THIS_MINIMAL_SET_MINUS_ONE",
+        "immutable_financial_point_count": 1,
+        "immutable_base_blocks": [],
+        "grants_authority": false
+      },
+      "current_permission_repair": {
+        "status": "NO_PERMITTED_REPAIR",
+        "original_input_hash": "901a23e2ed1d98780f146f7896cfd6ff59113e6b19af87df464baf5fb482a1f0",
+        "grants_authority": false,
+        "requires_new_version_confirmation": true,
+        "candidates": [],
+        "unaffected_goal_ids": [
+          "00000000-0000-0000-0000-00000000000a"
+        ],
+        "changed_policy_count": null,
+        "parameter_deviation_numerator": null,
+        "parameter_deviation_denominator": null,
+        "priority_loss_cents": null,
+        "hypothetical_allocation": null,
+        "reasons": [
+          "NO_REGISTERED_GOAL_REPAIR_RESTORES_FEASIBILITY"
+        ]
+      },
+      "source_evidence_ids": [
+        "00000000-0000-0000-0000-00000000000a"
+      ],
+      "reasons": [],
+      "planning_only": true,
+      "grants_authority": false,
+      "execution_support": "NOT_IMPLEMENTED",
+      "limits": [
+        "SYNTHETIC_DIRECT_ONLY"
+      ]
+    },
+    "goals": [
+      {
+        "goal_id": "00000000-0000-0000-0000-00000000000a",
+        "policy_id": "00000000-0000-0000-0000-0000000000d2",
+        "current_version_id": "00000000-0000-0000-0000-000000000136",
+        "monthly_min_cents": 1,
+        "monthly_target_cents": 15,
+        "monthly_max_cents": 25,
+        "minimum_guarantee_cents": 0,
+        "deadline": "2026-10-05",
+        "allow_partial": false,
+        "allow_deferral": false,
+        "current_owned_cents": 0,
+        "current_month_contributed_cents": 0,
+        "valid_until_exclusive": null,
+        "original_model": {
+          "simulation": true,
+          "goal_id": "00000000-0000-0000-0000-00000000000a",
+          "policy_id": "00000000-0000-0000-0000-0000000000d2",
+          "base_policy_version_id": "00000000-0000-0000-0000-000000000136",
+          "epoch_id": "00000000-0000-0000-0000-0000000002bc",
+          "status": "VERIFIED",
+          "policy_effective_status": "ACTIVE",
+          "evidence_id": "00000000-0000-0000-0000-00000000000a",
+          "evidence_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "full_configuration": {
+            "name": "SYNTHETIC_DIRECT_ONLY",
+            "valid_from": null,
+            "valid_until": null,
+            "type": "long_term_goal",
+            "target_cents": 50,
+            "deadline": "2026-10-05",
+            "monthly_contribution": {
+              "min_cents": 1,
+              "target_cents": 15,
+              "max_cents": 25
+            },
+            "importance": 50,
+            "minimum_guarantee_cents": 0,
+            "allow_partial": false,
+            "allow_deferral": false,
+            "deferral_cost_cents_per_day": 0,
+            "asset_policy_id": null,
+            "cross_goal_reallocation_allowed": false,
+            "cross_goal_reallocation_policy_id": null
+          },
+          "full_configuration_hash": "23716d261c9ad2bdd2b10cba0078df8dfe2f96fd621aa86a10ad02250af0c938",
+          "base_configuration_hash": "17abcb80930b89207908b159d5ef22372892f864423c2b2fb103badee5b2cf60",
+          "confirmed_at": "2026-10-03T12:00:00Z",
+          "bank_authority": false,
+          "dedicated_audit_event": false
+        }
+      }
+    ],
+    "reasons": [],
+    "planning_only": true,
+    "grants_authority": false,
+    "writes_performed": false
+  },
+  "selection": {
+    "expected_epoch_id": "00000000-0000-0000-0000-0000000002bc",
+    "reviewed_state_hash": "869d65d7edf8ed1c379f9f82e029357a22762391f143fe1d0079b5c1aac3f6a4",
+    "adjustments": [
+      {
+        "field": "deadline",
+        "goal_id": "00000000-0000-0000-0000-00000000000a",
+        "expected_version_id": "00000000-0000-0000-0000-000000000136",
+        "lower_date": "2026-10-05",
+        "upper_date": "2026-10-08"
+      }
+    ]
+  },
+  "preview": {
+    "protocol": "full-goal-adjustment-preview-v1",
+    "simulation": true,
+    "user_id": "00000000-0000-0000-0000-000000000001",
+    "as_of": "2026-10-05T12:00:00Z",
+    "original": {
+      "protocol": "full-goal-adjustment-read-v1",
+      "simulation": true,
+      "user_id": "00000000-0000-0000-0000-000000000001",
+      "as_of": "2026-10-05T12:00:00Z",
+      "state": "COMPUTED",
+      "original_conflicts": {
+        "protocol": "full-goal-conflict-read-v1",
+        "simulation": true,
+        "user_id": "00000000-0000-0000-0000-000000000001",
+        "epoch_id": "00000000-0000-0000-0000-0000000002bc",
+        "as_of": "2026-10-05T12:00:00Z",
+        "state": "COMPUTED",
+        "registered_goal_count": 1,
+        "included_goal_ids": [
+          "00000000-0000-0000-0000-00000000000a"
+        ],
+        "uncovered_goal_ids": [],
+        "current_input_hash": "901a23e2ed1d98780f146f7896cfd6ff59113e6b19af87df464baf5fb482a1f0",
+        "review_state_hash": "869d65d7edf8ed1c379f9f82e029357a22762391f143fe1d0079b5c1aac3f6a4",
+        "planning_source_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "full_binding_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "explanation": {
+          "protocol": "full-goal-minimal-conflict-v1",
+          "original_input_hash": "901a23e2ed1d98780f146f7896cfd6ff59113e6b19af87df464baf5fb482a1f0",
+          "registered_input_goal_ids": [
+            "00000000-0000-0000-0000-00000000000a"
+          ],
+          "conflict": {
+            "status": "MINIMAL_CONFLICT",
+            "scope": "GOAL_POLICIES_WITH_IMMUTABLE_FINANCIAL_BASE",
+            "grants_authority": false,
+            "input_hash": "901a23e2ed1d98780f146f7896cfd6ff59113e6b19af87df464baf5fb482a1f0",
+            "constraint_ids": [
+              "DEADLINE_COMPLETION:00000000-0000-0000-0000-00000000000a"
+            ],
+            "deletion_checks": [
+              {
+                "removed_constraint_id": "DEADLINE_COMPLETION:00000000-0000-0000-0000-00000000000a",
+                "remaining_feasible": true,
+                "counterfactual_only": true,
+                "witness_amounts_cents": {
+                  "00000000-0000-0000-0000-00000000000a": 0
+                }
+              }
+            ],
+            "reasons": []
+          },
+          "constraints": [
+            {
+              "constraint_id": "DEADLINE_COMPLETION:00000000-0000-0000-0000-00000000000a",
+              "kind": "DEADLINE_COMPLETION",
+              "goal_id": "00000000-0000-0000-0000-00000000000a",
+              "policy_id": "00000000-0000-0000-0000-0000000000d2",
+              "current_version_id": "00000000-0000-0000-0000-000000000136",
+              "original_parameter_cents": 50,
+              "current_owned_cents": 0,
+              "current_month_contributed_cents": 0,
+              "required_new_cents": 50,
+              "allowed_new_cents": null,
+              "deadline": "2026-10-05",
+              "source_refs": [
+                {
+                  "user_id": "00000000-0000-0000-0000-000000000001",
+                  "evidence_id": "00000000-0000-0000-0000-00000000000a",
+                  "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                }
+              ]
+            }
+          ],
+          "goals_outside_this_minimal_set": [],
+          "all_other_goal_constraints_proven_compatible": false,
+          "minimality": "DELETION_MINIMAL_NOT_MINIMUM_CARDINALITY",
+          "removal_witness_scope": "THIS_MINIMAL_SET_MINUS_ONE",
+          "immutable_financial_point_count": 1,
+          "immutable_base_blocks": [],
+          "grants_authority": false
+        },
+        "current_permission_repair": {
+          "status": "NO_PERMITTED_REPAIR",
+          "original_input_hash": "901a23e2ed1d98780f146f7896cfd6ff59113e6b19af87df464baf5fb482a1f0",
+          "grants_authority": false,
+          "requires_new_version_confirmation": true,
+          "candidates": [],
+          "unaffected_goal_ids": [
+            "00000000-0000-0000-0000-00000000000a"
+          ],
+          "changed_policy_count": null,
+          "parameter_deviation_numerator": null,
+          "parameter_deviation_denominator": null,
+          "priority_loss_cents": null,
+          "hypothetical_allocation": null,
+          "reasons": [
+            "NO_REGISTERED_GOAL_REPAIR_RESTORES_FEASIBILITY"
+          ]
+        },
+        "source_evidence_ids": [
+          "00000000-0000-0000-0000-00000000000a"
+        ],
+        "reasons": [],
+        "planning_only": true,
+        "grants_authority": false,
+        "execution_support": "NOT_IMPLEMENTED",
+        "limits": [
+          "SYNTHETIC_DIRECT_ONLY"
+        ]
+      },
+      "goals": [
+        {
+          "goal_id": "00000000-0000-0000-0000-00000000000a",
+          "policy_id": "00000000-0000-0000-0000-0000000000d2",
+          "current_version_id": "00000000-0000-0000-0000-000000000136",
+          "monthly_min_cents": 1,
+          "monthly_target_cents": 15,
+          "monthly_max_cents": 25,
+          "minimum_guarantee_cents": 0,
+          "deadline": "2026-10-05",
+          "allow_partial": false,
+          "allow_deferral": false,
+          "current_owned_cents": 0,
+          "current_month_contributed_cents": 0,
+          "valid_until_exclusive": null,
+          "original_model": {
+            "simulation": true,
+            "goal_id": "00000000-0000-0000-0000-00000000000a",
+            "policy_id": "00000000-0000-0000-0000-0000000000d2",
+            "base_policy_version_id": "00000000-0000-0000-0000-000000000136",
+            "epoch_id": "00000000-0000-0000-0000-0000000002bc",
+            "status": "VERIFIED",
+            "policy_effective_status": "ACTIVE",
+            "evidence_id": "00000000-0000-0000-0000-00000000000a",
+            "evidence_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "full_configuration": {
+              "name": "SYNTHETIC_DIRECT_ONLY",
+              "valid_from": null,
+              "valid_until": null,
+              "type": "long_term_goal",
+              "target_cents": 50,
+              "deadline": "2026-10-05",
+              "monthly_contribution": {
+                "min_cents": 1,
+                "target_cents": 15,
+                "max_cents": 25
+              },
+              "importance": 50,
+              "minimum_guarantee_cents": 0,
+              "allow_partial": false,
+              "allow_deferral": false,
+              "deferral_cost_cents_per_day": 0,
+              "asset_policy_id": null,
+              "cross_goal_reallocation_allowed": false,
+              "cross_goal_reallocation_policy_id": null
+            },
+            "full_configuration_hash": "23716d261c9ad2bdd2b10cba0078df8dfe2f96fd621aa86a10ad02250af0c938",
+            "base_configuration_hash": "17abcb80930b89207908b159d5ef22372892f864423c2b2fb103badee5b2cf60",
+            "confirmed_at": "2026-10-03T12:00:00Z",
+            "bank_authority": false,
+            "dedicated_audit_event": false
+          }
+        }
+      ],
+      "reasons": [],
+      "planning_only": true,
+      "grants_authority": false,
+      "writes_performed": false
+    },
+    "proposal": {
+      "protocol": "full-goal-conditional-adjustments-v1",
+      "original_input_hash": "901a23e2ed1d98780f146f7896cfd6ff59113e6b19af87df464baf5fb482a1f0",
+      "selection_hash": "90aec5de3689f669bcb04a2affc281c6316ce2ffa8041c73b2b6dcc6308097ea",
+      "actual_selection": {
+        "expected_epoch_id": "00000000-0000-0000-0000-0000000002bc",
+        "reviewed_state_hash": "869d65d7edf8ed1c379f9f82e029357a22762391f143fe1d0079b5c1aac3f6a4",
+        "adjustments": [
+          {
+            "field": "deadline",
+            "goal_id": "00000000-0000-0000-0000-00000000000a",
+            "expected_version_id": "00000000-0000-0000-0000-000000000136",
+            "lower_date": "2026-10-05",
+            "upper_date": "2026-10-08"
+          }
+        ]
+      },
+      "original_baseline_repair": {
+        "status": "NO_PERMITTED_REPAIR",
+        "original_input_hash": "901a23e2ed1d98780f146f7896cfd6ff59113e6b19af87df464baf5fb482a1f0",
+        "grants_authority": false,
+        "requires_new_version_confirmation": true,
+        "candidates": [],
+        "unaffected_goal_ids": [
+          "00000000-0000-0000-0000-00000000000a"
+        ],
+        "changed_policy_count": null,
+        "parameter_deviation_numerator": null,
+        "parameter_deviation_denominator": null,
+        "priority_loss_cents": null,
+        "hypothetical_allocation": null,
+        "reasons": [
+          "NO_REGISTERED_GOAL_REPAIR_RESTORES_FEASIBILITY"
+        ]
+      },
+      "original_allocation": {
+        "algorithm_version": "critical-flow-lexicographic-v1",
+        "status": "INFEASIBLE",
+        "purpose": "CURRENT_PERIOD_PLANNING_ONLY",
+        "grants_authority": false,
+        "input_hash": "901a23e2ed1d98780f146f7896cfd6ff59113e6b19af87df464baf5fb482a1f0",
+        "objective_vector": null,
+        "budget_cents": 20,
+        "goals": [
+          {
+            "goal_id": "00000000-0000-0000-0000-00000000000a",
+            "effective_policy_version_id": "00000000-0000-0000-0000-000000000136",
+            "amount_cents": null,
+            "minimum_shortfall_cents": null,
+            "projected_owned_cents": null,
+            "completion_date": null,
+            "delay_lower_bound_days": null,
+            "delay_censored": true,
+            "deferral_cost_lower_bound_cents": null
+          }
+        ],
+        "income_uses": [],
+        "visited_nodes": 1,
+        "reasons": [
+          "NO_FEASIBLE_CURRENT_PERIOD_ALLOCATION"
+        ],
+        "delay_scope": "ACTIVE_INCOMPLETE_GOALS_CURRENT_DECISION_LOWER_BOUND"
+      },
+      "hard_repair": {
+        "status": "PROPOSAL",
+        "original_input_hash": "901a23e2ed1d98780f146f7896cfd6ff59113e6b19af87df464baf5fb482a1f0",
+        "grants_authority": false,
+        "requires_new_version_confirmation": true,
+        "candidates": [
+          {
+            "candidate_id": "58885c63-b329-5083-aeed-0e072da0437f",
+            "goal_id": "00000000-0000-0000-0000-00000000000a",
+            "source_policy_version_id": "00000000-0000-0000-0000-000000000136",
+            "monthly_min_cents": null,
+            "monthly_max_cents": null,
+            "deadline": "2026-10-06",
+            "permission_ref": {
+              "user_id": "00000000-0000-0000-0000-000000000001",
+              "evidence_id": "00000000-0000-0000-0000-00000000000a",
+              "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          }
+        ],
+        "unaffected_goal_ids": [],
+        "changed_policy_count": 1,
+        "parameter_deviation_numerator": 1,
+        "parameter_deviation_denominator": 1,
+        "priority_loss_cents": 0,
+        "hypothetical_allocation": {
+          "algorithm_version": "critical-flow-lexicographic-v1",
+          "status": "OPTIMAL",
+          "purpose": "CURRENT_PERIOD_PLANNING_ONLY",
+          "grants_authority": false,
+          "input_hash": "8a70f98fa77e5295ee1af1327208145d9d4b44afb160ed139f12a7a903320847",
+          "objective_vector": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "budget_cents": 20,
+          "goals": [
+            {
+              "goal_id": "00000000-0000-0000-0000-00000000000a",
+              "effective_policy_version_id": "00000000-0000-0000-0000-000000000136",
+              "amount_cents": 15,
+              "minimum_shortfall_cents": 0,
+              "projected_owned_cents": 15,
+              "completion_date": null,
+              "delay_lower_bound_days": 0,
+              "delay_censored": true,
+              "deferral_cost_lower_bound_cents": 0
+            }
+          ],
+          "income_uses": [
+            {
+              "fragment_id": "00000000-0000-0000-0000-0000000001f4",
+              "origin_transaction_id": "00000000-0000-0000-0000-000000000190",
+              "source_account_id": "00000000-0000-0000-0000-0000000001f4",
+              "goal_id": "00000000-0000-0000-0000-00000000000a",
+              "amount_cents": 15
+            }
+          ],
+          "visited_nodes": 7,
+          "reasons": [
+            "EXACT_CURRENT_PERIOD_LEXICOGRAPHIC_OPTIMUM",
+            "UNFINISHED_DELAY_IS_CENSORED"
+          ],
+          "delay_scope": "ACTIVE_INCOMPLETE_GOALS_CURRENT_DECISION_LOWER_BOUND"
+        },
+        "reasons": [
+          "HYPOTHETICAL_DEADLINE_ONLY_REQUIRES_NEW_VERSION_CONFIRMATION"
+        ]
+      },
+      "outcomes": [
+        {
+          "goal_id": "00000000-0000-0000-0000-00000000000a",
+          "current_version_id": "00000000-0000-0000-0000-000000000136",
+          "field": "deadline",
+          "original_value": "2026-10-05",
+          "proposed_value": "2026-10-06",
+          "reason": "CRITICAL_CURRENT_PERIOD_DEADLINE_NEW_VERSION_ONLY",
+          "candidate": {
+            "candidate_id": "58885c63-b329-5083-aeed-0e072da0437f",
+            "goal_id": "00000000-0000-0000-0000-00000000000a",
+            "source_policy_version_id": "00000000-0000-0000-0000-000000000136",
+            "monthly_min_cents": null,
+            "monthly_max_cents": null,
+            "deadline": "2026-10-06",
+            "permission_ref": {
+              "user_id": "00000000-0000-0000-0000-000000000001",
+              "evidence_id": "00000000-0000-0000-0000-00000000000a",
+              "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          },
+          "hypothetical_allocation": null,
+          "monthly_min_is_soft": true,
+          "existing_financial_permission": false
+        }
+      ],
+      "soft_preference_candidates": [],
+      "evaluated_subset_count": 1,
+      "subset_limit": 256,
+      "state": "PROPOSAL",
+      "minimality_scope": "CURRENT_PERIOD_SELECTED_HARD_DEADLINE_CRITICAL_SUBSETS",
+      "selection_source": "USER_CURRENT_READONLY_PREVIEW_REQUEST",
+      "identity_refs_are_financial_permissions": false,
+      "original_hard_protection_unchanged": true,
+      "minimum_guarantees_unchanged": true,
+      "original_ownership_and_income_unchanged": true,
+      "original_allow_deferral_unchanged": true,
+      "future_income_used_cents": 0,
+      "grants_authority": false,
+      "requires_new_version_confirmation": true
+    },
+    "version_previews": [
+      {
+        "goal_id": "00000000-0000-0000-0000-00000000000a",
+        "current_version_id": "00000000-0000-0000-0000-000000000136",
+        "field": "deadline",
+        "scope": "CURRENT_PERIOD_HARD_DEADLINE_REPAIR",
+        "original_value": "2026-10-05",
+        "proposed_value": "2026-10-06",
+        "original_full_configuration": {
+          "name": "SYNTHETIC_DIRECT_ONLY",
+          "valid_from": null,
+          "valid_until": null,
+          "type": "long_term_goal",
+          "target_cents": 50,
+          "deadline": "2026-10-05",
+          "monthly_contribution": {
+            "min_cents": 1,
+            "target_cents": 15,
+            "max_cents": 25
+          },
+          "importance": 50,
+          "minimum_guarantee_cents": 0,
+          "allow_partial": false,
+          "allow_deferral": false,
+          "deferral_cost_cents_per_day": 0,
+          "asset_policy_id": null,
+          "cross_goal_reallocation_allowed": false,
+          "cross_goal_reallocation_policy_id": null
+        },
+        "original_full_configuration_hash": "23716d261c9ad2bdd2b10cba0078df8dfe2f96fd621aa86a10ad02250af0c938",
+        "actual_existing_preview": {
+          "simulation": true,
+          "preview_only": true,
+          "grants_authority": false,
+          "goal_id": "00000000-0000-0000-0000-00000000000a",
+          "epoch_id": "00000000-0000-0000-0000-0000000002bc",
+          "expected_version_id": "00000000-0000-0000-0000-000000000136",
+          "full_configuration": {
+            "name": "SYNTHETIC_DIRECT_ONLY",
+            "valid_from": null,
+            "valid_until": null,
+            "type": "long_term_goal",
+            "target_cents": 50,
+            "deadline": "2026-10-06",
+            "monthly_contribution": {
+              "min_cents": 1,
+              "target_cents": 15,
+              "max_cents": 25
+            },
+            "importance": 50,
+            "minimum_guarantee_cents": 0,
+            "allow_partial": false,
+            "allow_deferral": false,
+            "deferral_cost_cents_per_day": 0,
+            "asset_policy_id": null,
+            "cross_goal_reallocation_allowed": false,
+            "cross_goal_reallocation_policy_id": null
+          },
+          "full_configuration_hash": "39f72e060609b79073577e959a275aca49350a8784e55e4c6cdb3f3c99467c9b",
+          "base_configuration": {
+            "name": "SYNTHETIC_DIRECT_ONLY",
+            "valid_from": null,
+            "valid_until": null,
+            "type": "goal_saving",
+            "target_cents": 50,
+            "deadline": "2026-10-06",
+            "monthly_contribution": {
+              "min_cents": 1,
+              "target_cents": 15,
+              "max_cents": 25
+            },
+            "priority": {
+              "importance": 50,
+              "minimum_cents": 0,
+              "reducible": false,
+              "deferrable": false
+            },
+            "cross_goal_reallocation_allowed": false,
+            "asset_policy_id": null
+          },
+          "base_configuration_hash": "40e2832da7077da09b1d036efae71f4ba8c27e5b928a3adb4330a84d528ba4d2",
+          "base_policy_impact": {
+            "schema_version": "policy-change-preview-v1",
+            "simulation": true,
+            "preview_only": true,
+            "financial_only": true,
+            "user_id": "00000000-0000-0000-0000-000000000001",
+            "as_of": "2026-10-05T12:00:00Z",
+            "timezone": "UTC",
+            "policy_id": "00000000-0000-0000-0000-0000000000d2",
+            "expected_version_id": "00000000-0000-0000-0000-000000000136",
+            "configuration": {
+              "name": "SYNTHETIC_DIRECT_ONLY",
+              "valid_from": null,
+              "valid_until": null,
+              "type": "goal_saving",
+              "target_cents": 50,
+              "deadline": "2026-10-06",
+              "monthly_contribution": {
+                "min_cents": 1,
+                "target_cents": 15,
+                "max_cents": 25
+              },
+              "priority": {
+                "importance": 50,
+                "minimum_cents": 0,
+                "reducible": false,
+                "deferrable": false
+              },
+              "cross_goal_reallocation_allowed": false,
+              "asset_policy_id": null
+            },
+            "configuration_hash": "40e2832da7077da09b1d036efae71f4ba8c27e5b928a3adb4330a84d528ba4d2",
+            "assumed_status": "ACTIVE",
+            "assumed_valid_from": "2026-10-03T12:00:00Z",
+            "assumed_valid_until": null,
+            "assumption_digest": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "current_fact_input_digest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "hypothetical_input_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "before": {
+              "state": "PROVEN",
+              "financial_only": true,
+              "status": "READY",
+              "safe_idle_cents": 20,
+              "minimum_margin_cents": 20,
+              "deficit_cents": 0,
+              "protected_cents_by_reason": {},
+              "current_protected_cents": 0,
+              "current_protected_cents_by_reason": {},
+              "current_margin_cents": 20,
+              "constraining_date": "2026-10-05",
+              "window_start": "2026-10-05",
+              "window_end": "2026-10-05",
+              "input_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+              "boundary_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+              "blocking_constraints": [],
+              "calculation_notes": [],
+              "issues": []
+            },
+            "after": {
+              "state": "PROVEN",
+              "financial_only": true,
+              "status": "READY",
+              "safe_idle_cents": 20,
+              "minimum_margin_cents": 20,
+              "deficit_cents": 0,
+              "protected_cents_by_reason": {},
+              "current_protected_cents": 0,
+              "current_protected_cents_by_reason": {},
+              "current_margin_cents": 20,
+              "constraining_date": "2026-10-05",
+              "window_start": "2026-10-05",
+              "window_end": "2026-10-05",
+              "input_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+              "boundary_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+              "blocking_constraints": [],
+              "calculation_notes": [],
+              "issues": []
+            },
+            "delta_safe_idle_cents": 0,
+            "delta_minimum_margin_cents": 0,
+            "notes": [
+              "SYNTHETIC_DIRECT_ONLY"
+            ]
+          },
+          "extra_fields_in_base_impact": false,
+          "notes": [
+            "SYNTHETIC_DIRECT_ONLY"
+          ]
+        },
+        "preview_endpoint": "/api/v1/goals/00000000-0000-0000-0000-00000000000a/full-model/preview",
+        "preview_request": {
+          "expected_version_id": "00000000-0000-0000-0000-000000000136",
+          "configuration": {
+            "name": "SYNTHETIC_DIRECT_ONLY",
+            "valid_from": null,
+            "valid_until": null,
+            "type": "long_term_goal",
+            "target_cents": 50,
+            "deadline": "2026-10-06",
+            "monthly_contribution": {
+              "min_cents": 1,
+              "target_cents": 15,
+              "max_cents": 25
+            },
+            "importance": 50,
+            "minimum_guarantee_cents": 0,
+            "allow_partial": false,
+            "allow_deferral": false,
+            "deferral_cost_cents_per_day": 0,
+            "asset_policy_id": null,
+            "cross_goal_reallocation_allowed": false,
+            "cross_goal_reallocation_policy_id": null
+          }
+        },
+        "confirmation_endpoint": "/api/v1/goals/00000000-0000-0000-0000-00000000000a/full-model/confirm",
+        "confirmation_bindings": {
+          "expected_version_id": "00000000-0000-0000-0000-000000000136",
+          "expected_epoch_id": "00000000-0000-0000-0000-0000000002bc",
+          "configuration": {
+            "name": "SYNTHETIC_DIRECT_ONLY",
+            "valid_from": null,
+            "valid_until": null,
+            "type": "long_term_goal",
+            "target_cents": 50,
+            "deadline": "2026-10-06",
+            "monthly_contribution": {
+              "min_cents": 1,
+              "target_cents": 15,
+              "max_cents": 25
+            },
+            "importance": 50,
+            "minimum_guarantee_cents": 0,
+            "allow_partial": false,
+            "allow_deferral": false,
+            "deferral_cost_cents_per_day": 0,
+            "asset_policy_id": null,
+            "cross_goal_reallocation_allowed": false,
+            "cross_goal_reallocation_policy_id": null
+          },
+          "reviewed_full_hash": "39f72e060609b79073577e959a275aca49350a8784e55e4c6cdb3f3c99467c9b",
+          "reviewed_base_hash": "40e2832da7077da09b1d036efae71f4ba8c27e5b928a3adb4330a84d528ba4d2"
+        },
+        "missing_explicit_user_fields": [
+          "accepted",
+          "reason",
+          "idempotency_key"
+        ],
+        "ready_to_submit_confirmation": false,
+        "current_execution_permission_changed": false
+      }
+    ],
+    "state": "PROPOSAL",
+    "reasons": [
+      "HYPOTHETICAL_DEADLINE_ONLY_REQUIRES_NEW_VERSION_CONFIRMATION"
+    ],
+    "planning_only": true,
+    "grants_authority": false,
+    "writes_performed": false,
+    "confirmation_is_separate": true,
+    "multi_version_atomic_confirmation_supported": false,
+    "limitations": [
+      "月最低额是原当前期偏好；降低它不修复最低保证、硬保护或到期硬冲突。",
+      "期限修复仅当前期明确选择的临界日期与最多256子集；不承诺多期达标或全局延期最优。",
+      "原allow_deferral、归属、收入、最低保证及全部365/FULL保护不变；未来收入始终零。",
+      "新版本需重新原预览并独立双hash明确确认；本接口零写、无资金授权，多版本确认非原子。"
+    ]
+  }
+}

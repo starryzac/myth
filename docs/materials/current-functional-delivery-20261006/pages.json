@@ -1,0 +1,1948 @@
+{
+  "protocol": "bounded-funds-w8-current-material-pages-v1",
+  "captured_at": "2026-10-06T00:31:08.686725+00:00",
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "status": "WORKING_NOT_ACCEPTANCE",
+  "task_closed": false,
+  "formal_closed_count": 21,
+  "requirement_denominator": 92,
+  "proposal": [
+    {
+      "title": "钱途有界",
+      "strap": "面向青年的可审计分级自主资金 Agent",
+      "sections": [
+        {
+          "heading": "产品主张",
+          "text": "把“账户里有多少钱”转化为“哪些钱受到保护、今天能做什么、哪些动作还需要我确认”。在用户复核的策略范围内，确定性引擎计算模拟动作；自然语言只产生候选，银行状态和回执来自独立模拟服务。"
+        },
+        {
+          "heading": "当前版交付",
+          "text": "已形成策略、目标、年度保护、产品规划、一次一问、通知、原键恢复、只读对账及反事实模拟的 API 与前端模块。不同模块的定向证据分别登记，不能把可调用页面等同于全产品验收。"
+        },
+        {
+          "heading": "阅读约定",
+          "text": "本材料是2026-10-06的当前功能版。正式关闭仍21/92，FULL各项保持PENDING；最终初版和完整版验收未完成。所有账户、资金、产品与身份均模拟，无真实工行接口或合作证据。真人研究为0，当前新功能性能未测。"
+        }
+      ],
+      "refs": [
+        "S01",
+        "S04",
+        "S05",
+        "S38"
+      ],
+      "table": []
+    },
+    {
+      "title": "余额有界，用途才清楚",
+      "strap": "青年资金场景来自产品问题定义，尚无真人发生频次",
+      "sections": [
+        {
+          "heading": "同一余额，不同约束",
+          "text": "工资到账后，余额可能同时承担房租、账单、生活准备金、应急和长期目标。把它们合并为一个可投资数字，会丢失截止时间、已确认用途和资产流动性。系统要回答的是某笔动作能否在每个保护时点维持现金覆盖。"
+        },
+        {
+          "heading": "今日事实与未来意图",
+          "text": "已到账收入有原流水与来源；下个月工资只是未来展示。产品本金可能尚未可用，目标归属也不能被一般资金缺口任意借走。缺事实、缺条款或缺授权时显示UNKNOWN，不能补零。"
+        },
+        {
+          "heading": "服务范围",
+          "text": "普通消费只作为用户自己的账户事实，不评价其生活选择，不推荐商户。单银行体系闭环是设计范围；痛点强度、使用频率、理解效果与接受程度仍需成年人模拟研究，当前没有比例或用户规模数据。"
+        }
+      ],
+      "refs": [
+        "S01",
+        "S02",
+        "S32"
+      ],
+      "table": []
+    },
+    {
+      "title": "把安排能力与执行权限分开",
+      "strap": "比较的是机制，未做市场份额或效果优劣结论",
+      "sections": [
+        {
+          "heading": "手工预算与阈值",
+          "text": "手工预算依赖逐次选择；余额阈值只观察一个时点。它们可作为实验基线，但不能凭定义认定其不安全，也不能把共同安全网关拒绝的候选算成真实资金违规。"
+        },
+        {
+          "heading": "静态规则与全量确认",
+          "text": "静态规则忽略动态保护、目标归属或到账时刻时，候选可能偏离真实约束；全量确认则用每次明确确认换取保守执行。钱途有界拟检验在确切已授权动作内减少重复介入的可能性，现无对照效果数值。"
+        },
+        {
+          "heading": "确定性产品边界",
+          "text": "金额、状态、约束和执行由规则与引擎计算。模型候选不能新增用户角色、银行事实、额度、成功结果或授权。五组实验必须调用实际不同机制，不能把P的回执改名为B0—B3。 完整版还必须实际比较B4仅模型置信度与B5忽略流动性的收益优先优化器；当前二者没有正式效果结果。"
+        }
+      ],
+      "refs": [
+        "S01",
+        "S06",
+        "S11"
+      ],
+      "table": [
+        [
+          "机制",
+          "候选来源",
+          "当前比较证据"
+        ],
+        [
+          "B0 / B1",
+          "手工选择 / 余额阈值",
+          "未完成正式执行"
+        ],
+        [
+          "B2 / B3",
+          "静态规则 / 全量确认",
+          "未完成正式执行"
+        ],
+        [
+          "P",
+          "真实边界与原权限",
+          "局部链路证据，非优势证明"
+        ]
+      ]
+    },
+    {
+      "title": "事实 → 策略 → 边界 → 动作 → 回执",
+      "strap": "一笔动作可回到当时的原来源和原确认",
+      "sections": [
+        {
+          "heading": "不同来源，不同职责",
+          "text": "账户、流水、账单与产品条款构成有时效的事实；USER_DECLARED表示用户意图；复核原配置哈希后才能形成确认的不可变版本。READY_FOR_REVIEW不是ACTIVE，HTTP200也不是银行结算。"
+        },
+        {
+          "heading": "提交前重新核验",
+          "text": "规划从当前事实和版本产生候选；prepare保存具体经济效果。需要单次确认时绑定同一effect hash。实际执行和首次银行受理重新核验当前权限、保护和原引用，避免使用读取时的旧状态。"
+        },
+        {
+          "heading": "恢复仍是同一笔",
+          "text": "应用与模拟银行状态分开。响应丢失保留原action/key和UNKNOWN；只能查询、协调或人工核对原件，不能换键新增动作来绕过未知结果。原银行已结算而应用未投影并不意味着现金没有变化。"
+        }
+      ],
+      "refs": [
+        "S08",
+        "S10",
+        "S21",
+        "S22",
+        "S23"
+      ],
+      "table": [
+        [
+          "层",
+          "回答的问题"
+        ],
+        [
+          "事实 / 策略",
+          "发生了什么 / 用户确认什么"
+        ],
+        [
+          "边界 / 动作",
+          "当前允许什么 / 具体经济效果是什么"
+        ],
+        [
+          "银行 / 回执",
+          "实际结算什么 / 原投影是否一致"
+        ]
+      ]
+    },
+    {
+      "title": "首次引导与三条黄金链",
+      "strap": "八步是草稿与复核位置，不是八次自动授权",
+      "sections": [
+        {
+          "heading": "首次引导",
+          "text": "账户摘要与交易来源、房租账单候选、持续时间与优先级、生活准备金、应急、未来目标、资产及恢复授权、最后权力边界复核。只在用户主动点击时发现或声明候选；退出可恢复草稿和未决原请求。明确确认仍通过实际策略或目标入口。"
+        },
+        {
+          "heading": "三条真实业务内容",
+          "text": "A：工资到账，先保护再目标分配与允许的申购。B：自然语言目标产生候选，用户修改、首次确认ACTIVE，后续新增收入再分配。C：消费收缩后按原授权无损恢复，出现定存损失则展示原报价并明确询问。"
+        },
+        {
+          "heading": "当前演示缺口",
+          "text": "历史三轮原生录屏可作为历史素材，不能替代最终当前源的完整三链。当前版四分钟主演示、备用离线三链、B链完整画面与真人内容审阅未全部取得；本包交付的是240秒计划脚本，不声称录制或实测时长完成。"
+        }
+      ],
+      "refs": [
+        "S27",
+        "S04",
+        "S05"
+      ],
+      "table": []
+    },
+    {
+      "title": "五集合交集定义自主边界",
+      "strap": "安全金额不等于用户自动授权额度",
+      "sections": [
+        {
+          "heading": "包络定义",
+          "text": "AutonomyEnvelope = FinanciallySafeSet ∩ UserAuthorizedSet ∩ LiquidityCompatibleSet ∩ EvidenceSufficientSet ∩ SupportedActionSet。只看余额、单个财务安全上限或旧确认，均不足以证明AUTO。任何集合未知或不满足，都保留具体拒因。"
+        },
+        {
+          "heading": "分级结果",
+          "text": "AUTO_EXECUTE只用于当前满足原授权与约束的动作；ASK_ONCE要求确切经济效果的单次确认；ADVISE_ONLY只建议；BLOCKED禁止动作。标签来自确定性服务，不由模型置信度或前端按钮产生。"
+        },
+        {
+          "heading": "资金时间轴",
+          "text": "完整年度保护使用初始日加365未来日期，每日期三个阶段，共1098阶段点。付款前、付款后和本金到账后分开，不能把1098误写成天数。未来收入计入今日自主资金为0，条件回款不变成实际现金。"
+        }
+      ],
+      "refs": [
+        "S01",
+        "S02",
+        "S07",
+        "S12"
+      ],
+      "table": [
+        [
+          "集合",
+          "不足时的处理"
+        ],
+        [
+          "财务 / 流动性",
+          "保护缺口、可用时刻不符 → 拒绝/未知"
+        ],
+        [
+          "授权 / 证据",
+          "缺版本、原确认或来源 → 不自动执行"
+        ],
+        [
+          "支持动作",
+          "未实现的动作族 → 明示未覆盖"
+        ]
+      ]
+    },
+    {
+      "title": "策略会变，归属不能偷偷变",
+      "strap": "当前版本、历史版本与变更影响分别展示",
+      "sections": [
+        {
+          "heading": "不可变生命周期",
+          "text": "创建、修改、暂停、撤销、恢复采用原配置、版本与顺序命令。旧回执证明历史动作，不是当前资金权限。原键lookup返回确切原body/hash；NOT_FOUND非终局，客户端保存原请求并锁住新写。"
+        },
+        {
+          "heading": "目标与最小修复",
+          "text": "Full目标模型增加属性、底线和节奏，需双hash明确确认；联合规划与冲突预览显示原goal分母和候选，而不是宣称全局多期最优。跨目标默认关闭；专用回拨授权只声明scope，实际回拨要再核原三腿效果与具体确认。"
+        },
+        {
+          "heading": "修改影响",
+          "text": "当前资金差量预览仅对已支持的未来DatedExpense/PeriodicTransfer重新计算保守曲线；今日、逾期和当前月义务保持原含义。其他模板及未来目标分配保持UNKNOWN。预览没有写事实、资金或当前动作。"
+        }
+      ],
+      "refs": [
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S28"
+      ],
+      "table": []
+    },
+    {
+      "title": "只问会改变动作的问题",
+      "strap": "有限世界是完整枚举范围内的计算，不是安全概率",
+      "sections": [
+        {
+          "heading": "不确定性与反事实",
+          "text": "有限变量形成最多128个世界；每世界调用原引擎，保留当前来源、权限和拒因。旧动作的单次确认不会自动授予反事实动作。缺来源的世界记UNKNOWN并留在分母，不能剪掉后宣布稳定。"
+        },
+        {
+          "heading": "一次一问",
+          "text": "服务持久化session/revision、原问题与答案，按当前动作语义分歧选minimax问题。回答只筛选世界，随后重算，不是金融确认。来源变更或过期使旧答案失效；CLOSED不重新生产问题。"
+        },
+        {
+          "heading": "通知不是已读",
+          "text": "原Question提交后独立观察通知；观察、投递、Inbox claim、ACK、回答和资金确认是不同动作。当前观察proof与旧immutable payload分开展示，已领取/ACK或旧终态不能借refresh复活。通知本身不授予银行权限。"
+        }
+      ],
+      "refs": [
+        "S18",
+        "S19",
+        "S20"
+      ],
+      "table": [
+        [
+          "动作",
+          "它不代表什么"
+        ],
+        [
+          "回答",
+          "不代表同意执行资金"
+        ],
+        [
+          "observe / deliver",
+          "不代表真人已见 / 已答"
+        ],
+        [
+          "ACK",
+          "不代表答案或具体经济授权"
+        ]
+      ]
+    },
+    {
+      "title": "产品期限必须匹配钱的用途",
+      "strap": "规划容量、可购买性与真实执行分别证明",
+      "sections": [
+        {
+          "heading": "产品与本金可用",
+          "text": "目录版本和条款先验真，再按期限、到账、风险、锁定、金额和用户范围筛选。活期、T0、T1与固定产品是模拟类型，不代表工行实际在售产品。期限分桶与续期规划只依据当前已知条款。"
+        },
+        {
+          "heading": "整组执行",
+          "text": "原组合prepare固定full/MVP/goal版本、整组hash及确认。execute-next固定expected batch/action，一次一批；原批重放不推进下一批，UNKNOWN后批停止。读取保留原consent、银行key与回执，不自动回滚或替键。"
+        },
+        {
+          "heading": "恢复与到期",
+          "text": "无损资金恢复受scope和当前保护约束；有损支取必须展示原报价及单次确认。到期已实收后重新读取当前事实/策略/目录，原成熟回执不是新授权。当前Full恢复、动态目标等新路径真实集中验收仍待，不能把候选容量当权限。"
+        }
+      ],
+      "refs": [
+        "S16",
+        "S17",
+        "S29",
+        "S30",
+        "S34"
+      ],
+      "table": []
+    },
+    {
+      "title": "解释可回原件，异常可留未知",
+      "strap": "对账吻合不等于经济效果独立证明",
+      "sections": [
+        {
+          "heading": "决策和审计",
+          "text": "DecisionTrace关联输入、策略/产品/算法版本、约束、原行动及原receipt。typed审计核原canonical/event/reference/checkpoint，不用通用自制hash替代原协议。缺现代审计的旧历史保持LEGACY_UNAUDITED，不回填可信起点。 当前Full证据图v2登记35张业务表并有31不同纯/HTTP检查，实际PG仍NOT_RUN；不是银行效果或完整审计集成证明。"
+        },
+        {
+          "heading": "三账口径",
+          "text": "只读对账比较应用现金、独立模拟银行和Goal归属；差额为应用减银行。缺原件的bank数值或差额保留null，不能填0。MATCHED表示本快照账目符合当前核验范围，既不是每个准备动作都执行，也不是现实经济验真。"
+        },
+        {
+          "heading": "身份和界面",
+          "text": "服务器固定本地USER的签名HttpOnly会话只模拟身份，不是真人KYC或金融确认。金融每次请求独立验真；跨页pending、原键恢复和存储错误门避免产生第二动作。手机与键盘样式已增量实现，实际可用性/无障碍审阅仍待。"
+        }
+      ],
+      "refs": [
+        "S23",
+        "S24",
+        "S25",
+        "S26",
+        "S31",
+        "S40"
+      ],
+      "table": []
+    },
+    {
+      "title": "已有实证与待实验",
+      "strap": "不以定向PASS推导收益、效率或普遍安全",
+      "sections": [
+        {
+          "heading": "可引用定向链路",
+          "text": "固定付款原AUTO与ASK两个真实隔离PG节点通过，相关scope稳定；全源变化为独立开发，不能称全仓冻结。607对账所属三节点批次通过，但未记录单项时延。整组资产旧节点通过时相关shared变化，只作为诊断证明。"
+        },
+        {
+          "heading": "效果结果仍缺",
+          "text": "初版24作者案例×B0—B3/P及14指标完整oracle结果未纳入验收。完整版另要求至少50族、每族多变体，B0—B5/P七机制及移除证据/版本/动态生活/多目标/流动性/最小问题/恢复/审计八消融；全部效果待实验。真人0，当前新性能未测，无效率、收益或理解改善结论。"
+        },
+        {
+          "heading": "历史性能保留反例",
+          "text": "W0三固定开发场景每格n=1，长链API101.635→19.960秒，但扩大场景112.629→138.811秒变慢，Python峰值亦增加。只限原版本/场景，不能外推当前产品SLA。原失败、相关源变化和NOT_RUN均列入报告。"
+        }
+      ],
+      "refs": [
+        "E01",
+        "E02",
+        "E03",
+        "E04",
+        "S06",
+        "S35"
+      ],
+      "table": [
+        [
+          "问题",
+          "当前值 / 证据"
+        ],
+        [
+          "真实用户 / 当前新性能",
+          "0 / NOT_MEASURED"
+        ],
+        [
+          "五臂优势 / 消融效果",
+          "待实验，不填优势柱形"
+        ],
+        [
+          "最终两版全量",
+          "未完成，21/92不是当前完成率"
+        ]
+      ]
+    },
+    {
+      "title": "工行价值是待验证的落地假设",
+      "strap": "用可复核的小范围试点验证能力与边界",
+      "sections": [
+        {
+          "heading": "拟验证价值",
+          "text": "同体系事实、明确策略和原回执的连贯展示，可能帮助青年理解资金用途；合适的自主范围可能减少重复介入；一致的UNKNOWN与原键处理可能提高异常可解释性。以上均是业务假设，未获得工行准入、合作、客户数据或商业效果。"
+        },
+        {
+          "heading": "试点前置",
+          "text": "先在模拟与成年人研究中完成冻结对照、全部风险链、最终当前六E2E、离线三链和材料人工一致性审阅。真实接口、角色和安全合规须由银行独立审批与验证，本版本不会启用真实资金。"
+        },
+        {
+          "heading": "明确下一步",
+          "text": "当前产品按真实依赖交付，继续修复已知失败并集中初版/FULL全量验收。保留正式模拟历史、原失败和原hash，不复用旧文件直接关闭编号。材料的页数与可打开性只是成品结构证明；没有研究与实验不能写成完整竞赛验收。"
+        }
+      ],
+      "refs": [
+        "S01",
+        "S04",
+        "S26",
+        "S32",
+        "S33",
+        "S38"
+      ],
+      "table": []
+    }
+  ],
+  "whitepaper": [
+    {
+      "title": "01 摘要与版本界限",
+      "strap": "钱途有界当前功能版技术白皮书",
+      "sections": [
+        {
+          "heading": "研究问题",
+          "text": "个人资金自主安排不能只由余额或语言模型建议决定。需要将有来源的事实、明确用户策略、截止前现金覆盖、产品流动性及支持动作共同约束，并保留具体动作与原回执。钱途有界给出确定性模拟实现，把自然语言候选、规划、权限和执行分开。"
+        },
+        {
+          "heading": "当前贡献",
+          "text": "系统已有不可变策略生命周期、年度保护、联合目标、有限不确定世界、持久一次一问、原消息当前观察、银行/app分层执行与对账、原键恢复和有界反事实模块。贡献是当前可审查实现路径，不是实际客户收益、全部功能验收或未经测试的算法最优性。"
+        },
+        {
+          "heading": "证据等级",
+          "text": "本书区分SOURCE_IMPLEMENTATION、ACTUAL_SCOPED_RUN、DIAGNOSTIC_WITH_SOURCE_CHANGE、HYPOTHESIS和MISSING。定向纯测试与HTTP夹具不充当资金效果；历史PG与历史录屏不自动变当前源验收。正式关闭21/92，FULL项仍PENDING。"
+        },
+        {
+          "heading": "文档可重建",
+          "text": "本包保存正文、分页数据、源路径/SHA和实际PDF/PPTX。引用ID对应sources.json；复制的public原件按原字节留存。资料与代码在独立开发中可能更新，本书只对捕获时点成立，不宣称整仓运行冻结。"
+        }
+      ],
+      "refs": [
+        "S01",
+        "S04",
+        "S05",
+        "S38"
+      ],
+      "table": [
+        [
+          "项目",
+          "本书口径"
+        ],
+        [
+          "功能状态",
+          "可调用模块 / 逐范围证据"
+        ],
+        [
+          "原项关闭",
+          "21/92；FULL均PENDING"
+        ],
+        [
+          "材料状态",
+          "页数实核；内容验收INCOMPLETE"
+        ]
+      ]
+    },
+    {
+      "title": "02 问题定义与术语",
+      "strap": "先确定事实、权限和状态的所属层",
+      "sections": [
+        {
+          "heading": "事实与意图",
+          "text": "Fact回答有证据发生的状态，Evidence保原来源、owner、有效时间和观察时刻。用户声明是希望如何安排；确认是同意确切配置或经济效果。MODEL_INFERRED、USER_DECLARED、BANK_CONFIRMED不能互相借用。"
+        },
+        {
+          "heading": "权限与容量",
+          "text": "safe_idle_cents是财务条件下的当前上限，不是授权额度；conditional cash是尚未执行/到账的规划假设，不是实际现金。AUTO必须同时满足五集合，缺任何证据或支持动作均不能默认为允许。"
+        },
+        {
+          "heading": "两种恢复",
+          "text": "资金恢复解决保护截止前现金缺口；原键协调解决响应丢失/投影中断。前者要当前规划和权限，后者要原银行身份与原效果。混淆两者会误用新授权、重复扣款或把原结算当未发生。"
+        },
+        {
+          "heading": "三个成功口径",
+          "text": "SETTLED属于银行经济结算，SUCCEEDED属于应用投影，VALID属于特定范围typed审计。HTTP200不替代这些状态；MATCHED也不替代动作执行或现实经济证明。UNKNOWN不等于终败，null不等于0。"
+        }
+      ],
+      "refs": [
+        "S02",
+        "S21",
+        "S22",
+        "S24"
+      ],
+      "table": [
+        [
+          "术语",
+          "实际含义"
+        ],
+        [
+          "Fact / Policy",
+          "来源状态 / 确切意图与权限"
+        ],
+        [
+          "Action / Receipt",
+          "经济身份 / 原范围证明"
+        ],
+        [
+          "UNKNOWN / null",
+          "结果未知 / 数值未知，不补0"
+        ]
+      ]
+    },
+    {
+      "title": "03 青年场景与使用任务",
+      "strap": "场景是设计依据，真人需求强度仍未知",
+      "sections": [
+        {
+          "heading": "账户时间差",
+          "text": "工资、房租、账单和本金回款有不同有效时点；一笔余额能否安排取决于所有保护截止。收入尚未到账、产品尚未可用、消费随后结算时，系统须保留实际时序，不把预测当现金。"
+        },
+        {
+          "heading": "用途与归属",
+          "text": "长期目标的资金不只是心理标签。收入source分和Goal归属要原证据关联，已经属于目标的现金和本金不能因为一般账户缺口被暗中借走。资产放置可变化，但用途归属不自动变化。"
+        },
+        {
+          "heading": "用户参与点",
+          "text": "用户先复核持续义务、准备金、目标与授权，再在新损失、歧义、新收款关系或范围变化时参与具体确认。普通消费只作为事实，不评价生活选择；界面解释保护、条件回款、原权限和拒因。"
+        },
+        {
+          "heading": "研究边界",
+          "text": "当前没有访谈样本、痛点频次、转化率或用户理解改善。FULL806匿名研究工具已准备，但真人0、记录0、NOT_STARTED。任何人群普遍性、市场规模与业务效果均不在当前可引用事实内。"
+        }
+      ],
+      "refs": [
+        "S01",
+        "S27",
+        "S32"
+      ],
+      "table": [
+        [
+          "使用任务",
+          "必须保留的约束"
+        ],
+        [
+          "收入安排",
+          "已到账原来源与保护截止"
+        ],
+        [
+          "目标储备",
+          "用途归属与当前月资格"
+        ],
+        [
+          "产品配置",
+          "实际本金可用时刻"
+        ]
+      ]
+    },
+    {
+      "title": "04 设计原则与不变量",
+      "strap": "确定性、证据充分、未知保留、最小权限",
+      "sections": [
+        {
+          "heading": "确定性决策",
+          "text": "金额用整数分，业务时间带时区；同固定输入调用相同版本引擎得到可复算输出。模型只帮助候选与解释，不能决定金额、权限、产品安全、策略状态或执行。服务端选择可信clock，客户端不能提交成功结果或银行事实替代核验。"
+        },
+        {
+          "heading": "现金保护",
+          "text": "自动动作后须满足所有硬义务；未来收入不扩大今日边界；已归属目标不被低优先级动作占用；本金实际可用前不算现金；有损支取没有精确确认不自动执行。这里是规范，不是已对全部分布证明的安全定理。"
+        },
+        {
+          "heading": "身份与历史",
+          "text": "失效版本不能产生新权限，重试不产生第二经济效果。新功能不回退后来成果，不改原hash、原失败或正式模拟历史；旧LEGACY_UNAUDITED保持缺证边界，不能追补伪造起点。"
+        },
+        {
+          "heading": "检查策略",
+          "text": "日常只核变更和直接风险，金融/迁移保留真实集成。初版与FULL最终当前代码集中全量；已通过且未变范围可复用，不把局部通过冒全量。功能完成与原需求关闭分开登记。"
+        }
+      ],
+      "refs": [
+        "S01",
+        "S04",
+        "S26",
+        "S38"
+      ],
+      "table": [
+        [
+          "不变量",
+          "验收关注"
+        ],
+        [
+          "现金保护",
+          "硬义务截止、占用、Goal归属"
+        ],
+        [
+          "权限不扩大",
+          "失效版本 / 未来收入 / 单次确认"
+        ],
+        [
+          "经济身份",
+          "UNKNOWN同key、同effect"
+        ]
+      ]
+    },
+    {
+      "title": "05 事实时间与证据层级",
+      "strap": "valid time、known time和实际银行时刻各自有含义",
+      "sections": [
+        {
+          "heading": "双时间语义",
+          "text": "事实在业务上适用的valid time与系统取得它的observed_at不同。历史查询不能看到当时尚未知的证据；未来known时间须服务器拒绝。当前scope中重复读复用不能让旧状态跨请求变当前状态。"
+        },
+        {
+          "heading": "来源验真",
+          "text": "同一Evidence ID不证明内容正确。必须核owner、源身份、状态、内容hash、引用及有效窗口；被SUPERSEDED、CONFLICTED或缺失的证据不能继续授予权限。同ID内容冲突保原件并拒绝，不覆盖旧hash。"
+        },
+        {
+          "heading": "银行与用户分层",
+          "text": "BANK_CONFIRMED由实际模拟银行原请求/posting产生；用户声明和模型候选不能写成银行等级。资金来源、目标产权与产品条款均保持独立原引用，展示REFERENCES_RESOLVED也不是金融验真。"
+        },
+        {
+          "heading": "展示未知",
+          "text": "服务返回null/UNKNOWN/issue时，前端应保具体原因，不能从金额相等或存在某个文件推断成功。证据图只绘实际edges；当前图与历史原件分开，断链和缺版本保持缺项。 Full图v2新登记35表原件与typed链接，31不同纯/HTTP检查只说明合同；actual PG尚未运行，历史可变状态不能重建时保持null。"
+        }
+      ],
+      "refs": [
+        "S02",
+        "S08",
+        "S23",
+        "S24",
+        "S40"
+      ],
+      "table": [
+        [
+          "来源字段",
+          "核验职责"
+        ],
+        [
+          "owner / status",
+          "主体及当前来源状态"
+        ],
+        [
+          "valid / observed",
+          "适用时间及系统知悉时间"
+        ],
+        [
+          "content / reference",
+          "原内容hash和引用完整性"
+        ]
+      ]
+    },
+    {
+      "title": "06 收入源分与目标产权",
+      "strap": "现金、收入来源、归属和产品本金分别守恒",
+      "sections": [
+        {
+          "heading": "收入源",
+          "text": "新增收入由真实原流水/银行来源形成可分配source-fragment。金额单位是分，分配保持来源余额、已保护及已归属的完整分母，防止同一笔工资在准备金与多个目标中重复记账。"
+        },
+        {
+          "heading": "目标建立与分配",
+          "text": "首次创建目标可为零归属；只有真实新增收入和当前有效确认进入后续分配。当前版本确认时点/valid_from之前的旧收入可能不eligible，所以零计划不等于缺收入证据，也不能虚构零回执来满足流程。"
+        },
+        {
+          "heading": "本金与现金",
+          "text": "把目标资金购买产品改变资产放置，不把归属变一般闲置资金。本金到期前只是持仓；已REDEEMED原本金与当前outstanding分开。对账缺银行产权anchor时保UNKNOWN，应用 allocated 相等不充银行事实。"
+        },
+        {
+          "heading": "原回拨",
+          "text": "跨Goal默认拒绝。专用scope与具体动作确认需核sourceGoal、destination受保护现金、当前各版本、底线、累计和单次caps；真实三腿及来源分重验。声明界面与真实执行分别证明，不能把声明视作已经回拨。"
+        }
+      ],
+      "refs": [
+        "S08",
+        "S13",
+        "S15",
+        "S24"
+      ],
+      "table": [
+        [
+          "账本口径",
+          "保持独立"
+        ],
+        [
+          "收入source-fragment",
+          "来源可分配余额与保护"
+        ],
+        [
+          "Goal ownership",
+          "现金/本金的用途归属"
+        ],
+        [
+          "asset position",
+          "放置、可用、实际回款"
+        ]
+      ]
+    },
+    {
+      "title": "07 完整策略DSL与目录",
+      "strap": "十二模板目录不等于十二类银行执行全实现",
+      "sections": [
+        {
+          "heading": "严格配置",
+          "text": "模板候选按实际Schema校验UUID引用、金额类型、有效期、优先级、范围、caps及风险/锁定/到账容忍。额外字段、布尔金额、浮点金额和未知枚举拒绝。配置canonical hash属于确切版本，不用前端临时对象替代。"
+        },
+        {
+          "heading": "模板边界",
+          "text": "Full八模板有持久生命周期，若干模板桥接旧MVP，LongTerm Goal沿目标模型。目录覆盖不自动意味着每模板具备执行、金融差量预览和已验收前端；未支持消费显示NOT_IMPLEMENTED/UNKNOWN。"
+        },
+        {
+          "heading": "规则与授权",
+          "text": "义务与保护描述安全需求；资产/恢复/回拨权限描述允许动作。自动金额不能由“我想多存一点”直接决定；用户具体scope、max及当前来源仍由后续确定性服务重验。"
+        },
+        {
+          "heading": "复核入口",
+          "text": "JSON候选可先validate和change-preview；复核reviewed hash后才confirm/change。预览hash、事实digest和具体动作effect hash属于不同协议，不能互换。候选受理不是ACTIVE或银行grant。"
+        }
+      ],
+      "refs": [
+        "S09",
+        "S10",
+        "S11",
+        "S28"
+      ],
+      "table": [
+        [
+          "配置层",
+          "实际行为"
+        ],
+        [
+          "Schema校验",
+          "候选合法字段/类型"
+        ],
+        [
+          "config hash",
+          "确切规范化配置"
+        ],
+        [
+          "explicit confirm",
+          "后续独立用户动作"
+        ]
+      ]
+    },
+    {
+      "title": "08 不可变生命周期与顺序命令",
+      "strap": "历史命令是留存证明，当前有效性须重新读取",
+      "sections": [
+        {
+          "heading": "状态推进",
+          "text": "CREATE/CHANGE/SUSPEND/REVOKE/RESUME记录原请求和期望版本，原config及history不改。当前状态、到期和引用可影响新权限；版本切换不能覆盖旧回执的原确认配置。"
+        },
+        {
+          "heading": "幂等与原键",
+          "text": "客户端POST前保存完整body、稳定key、intent和hash。server by-key查询核完整原命令链，RECORDED须匹配原key/body/policy/kind/hash/receipt。NOT_FOUND非终局，响应不明和4xx都不能据此换键重新提交。"
+        },
+        {
+          "heading": "撤销边界",
+          "text": "只有证据完整、未提交且物理零效果的动作才可失效。银行在途或已结算动作保原key及占用，通过原身份协调；撤销策略不是银行回滚，也不借当前授权替代原结算确认。"
+        },
+        {
+          "heading": "未覆盖",
+          "text": "完整并发/强杀矩阵、各动作族撤销竞争与终局拒绝恢复仍需真实节点。客户端坏session或存储权限失败锁新写，不能删除pending来宣称恢复；跨页门防第二请求不是服务器授权缓存。"
+        }
+      ],
+      "refs": [
+        "S10",
+        "S21",
+        "S22",
+        "S26"
+      ],
+      "table": [
+        [
+          "原命令",
+          "留存要件"
+        ],
+        [
+          "CREATE / CHANGE",
+          "原body、版本、key/hash"
+        ],
+        [
+          "SUSPEND / REVOKE",
+          "当前权限与未提交零效果"
+        ],
+        [
+          "by-key RECORDED",
+          "原回执匹配，不借latest"
+        ]
+      ]
+    },
+    {
+      "title": "09 自然语言候选编译",
+      "strap": "有限离线句式，来源与候选保持可复核",
+      "sections": [
+        {
+          "heading": "当前实际能力",
+          "text": "Full编译器覆盖十二种有限中文语法，按服务器日期/时区和原引用产生严格配置、缺项、来源片段及假设。未知散文保不支持，默认关闭外部provider，不把有限grammar称通用自然语言理解。"
+        },
+        {
+          "heading": "可选provider门",
+          "text": "server-only provider仅接脱敏且已识别片段；输出受独立JSON大小/深度/节点与严格Schema约束，并须与原规则canonical及引用token一致。模型不能新增银行来源、角色、确认或额度。"
+        },
+        {
+          "heading": "用户修订",
+          "text": "候选应显示原话/结构化字段/差异；修改后重新validate，旧勾选和理由不沿用。首次确认产生原ACTIVE版本，目标还要实际账户与Full模型确认。不能把模板按钮改名成NL链。"
+        },
+        {
+          "heading": "证据边界",
+          "text": "有限句式的直接纯/FastAPI检查是合同证据，不是真实provider、真人表达或完整B链录屏。原模板、引用未服务端验真时保NOT_SERVER_VERIFIED；当前所有确认仍由实际独立用户动作产生。"
+        }
+      ],
+      "refs": [
+        "S11",
+        "S27",
+        "S01"
+      ],
+      "table": [
+        [
+          "编译阶段",
+          "输出边界"
+        ],
+        [
+          "有限规则",
+          "配置、片段、缺项与假设"
+        ],
+        [
+          "可选provider",
+          "默认关闭；不添加新事实"
+        ],
+        [
+          "用户确认",
+          "实际服务确认后才生版本"
+        ]
+      ]
+    },
+    {
+      "title": "10 自主包络与分类",
+      "strap": "五集合交集，不以单个分数替代多层条件",
+      "sections": [
+        {
+          "heading": "集合定义",
+          "text": "财务安全集来自保护曲线；用户授权集来自有效版本与具体确认；流动性集来自条款和到账规则；证据充分集核来源与完整分母；支持动作集说明当前引擎可表达的族。交集才是可自主安排范围。"
+        },
+        {
+          "heading": "分类语义",
+          "text": "AUTO_EXECUTE、ASK_ONCE、ADVISE_ONLY、BLOCKED由原确定性服务返回。ASK的确认必须绑定具体经济effect；单一safe_idle或策略auto_execute字段不是全条件证明。原状态不充当前授权。"
+        },
+        {
+          "heading": "完整性",
+          "text": "全局动作集合只有所有已登记producer完整覆盖且可复算时才完整。有活跃未覆盖模板、未知事实或family partial时不能把有限结果称全局complete；数值变动也不一定产生经济动作集合跨越。"
+        },
+        {
+          "heading": "比较边界",
+          "text": "比较对象包含类别、金额、来源/去向、目标归属、风险/损失、到账与权限。事件去重使用原semantic协议，不能只比较按钮文案或任意结果hash。新Full版本另列source/version，不改旧协议原hash。"
+        }
+      ],
+      "refs": [
+        "S01",
+        "S07",
+        "S02"
+      ],
+      "table": [
+        [
+          "集合",
+          "缺失处理"
+        ],
+        [
+          "安全 / 流动性",
+          "BLOCKED或UNKNOWN"
+        ],
+        [
+          "授权 / 证据",
+          "不得AUTO"
+        ],
+        [
+          "支持动作",
+          "具体NOT_IMPLEMENTED"
+        ]
+      ]
+    },
+    {
+      "title": "11 年度现金流与三个阶段",
+      "strap": "366个日期 × 3阶段 = 1098阶段点",
+      "sections": [
+        {
+          "heading": "有界时轴",
+          "text": "初始日0和未来1—365日分别在BEFORE_PAYMENT、AFTER_PAYMENT、AFTER_PRINCIPAL观察资金。硬义务付款和产品本金回款在同日也保有顺序，不能将预计到期本金提前用于付款前保护。旧90日执行视图保持自身算法与来源。"
+        },
+        {
+          "heading": "保护输入",
+          "text": "完整已登记固定/周期义务、生活应急、Goal及占用形成保守需求；缺Seasonal采纳额保null，未来income未接入或恒0不充当前安全现金。已支付覆盖或未登记债务的边界必须明确，不造“所有现实义务已完备”。"
+        },
+        {
+          "heading": "曲线含义",
+          "text": "每点cash/required/margin和全周期最低余量是规划响应，不是所有日期已实际发生的银行流水。conditional本金/赎回的曲线须单独标假设，current事实与future预测不混合。"
+        },
+        {
+          "heading": "验收重点",
+          "text": "检查期初/截止/到期边界、空/缺来源、同日付款与本金順序、可用delay和占用竞争。当前页面按原服务输出展示并保UNKNOWN，真实集中验收仍需最终源全量，不由1098点数量推导正确性。"
+        }
+      ],
+      "refs": [
+        "S02",
+        "S12",
+        "S07"
+      ],
+      "table": [
+        [
+          "时点",
+          "阶段语义"
+        ],
+        [
+          "BEFORE_PAYMENT",
+          "硬付款前观察"
+        ],
+        [
+          "AFTER_PAYMENT",
+          "付款后观察"
+        ],
+        [
+          "AFTER_PRINCIPAL",
+          "本金实际可用后观察"
+        ]
+      ]
+    },
+    {
+      "title": "12 策略变更金融影响",
+      "strap": "当前支持未来Dated/Periodic两模板的保守替换",
+      "sections": [
+        {
+          "heading": "只读输入",
+          "text": "POST financial-change-preview保存当前owner/version和候选配置，服务在干净RRRO快照读取当前实际事实、Goal和持仓。旧版本、当前动作、原资金和历史hash不写；当前请求clock绑定新协议事实digest。"
+        },
+        {
+          "heading": "支持窗口",
+          "text": "明天起的DatedExpense/PeriodicTransfer未来待付可作假设替换；今日、逾期、当期已到期月和其他保护/占用保留。其他十模板、欠源或Seasonal采纳未知时保UNKNOWN，不能给零delta。"
+        },
+        {
+          "heading": "差量",
+          "text": "PROJECTED须before/after及各差量非null，delta=after−before，包括负值。after含1098点及绑定实际input的curve hash；UNKNOWN的after/deltas为null，before可保原已知。旧preview fact digest不能与新协议直接比较。"
+        },
+        {
+          "heading": "Goal/本金说明",
+          "text": "current allocation/principal delta=0仅说明本preview没有写事实；未来分配/未来处置为null UNKNOWN。原recorded principal与current outstanding分开，已REDEEMED当前本金0不抹旧历史。curve hash不用于确认或授权。"
+        }
+      ],
+      "refs": [
+        "S28",
+        "S12",
+        "S10"
+      ],
+      "table": [
+        [
+          "响应",
+          "保留原语义"
+        ],
+        [
+          "PROJECTED",
+          "before / after / delta已计算"
+        ],
+        [
+          "UNKNOWN",
+          "after / delta为null"
+        ],
+        [
+          "current delta=0",
+          "只代表预览没有写事实"
+        ]
+      ]
+    },
+    {
+      "title": "13 多目标联合规划",
+      "strap": "保持全部Goal分母与收入资格",
+      "sections": [
+        {
+          "heading": "当前期任务",
+          "text": "服务基于当前Goal版本、属性、底线、已归属余额及新收入资格，输出实际8层规划结果与来源。版本确认时点之前的历史收入可能不eligible；零建议要写原原因，而不是断言缺收入或自动创建零动作。"
+        },
+        {
+          "heading": "优先层与约束",
+          "text": "同一来源分受硬保护、底线、目标优先、月贡献和剩余需求约束。当前期确定性次序可复算，但不能称所有未来年份、全部随机流量的全局多期最优。期望目标额不替代已到账可分配资金。"
+        },
+        {
+          "heading": "执行区分",
+          "text": "只读Joint响应不是银行grant。真实新增资金归属由原prepare/confirm/execution路径建立，保存effect与原收入来源；Full额外属性需要明确双hash确认，Goal旧策略与Full模型缺任一版本保持UNKNOWN。"
+        },
+        {
+          "heading": "当前显示",
+          "text": "目标页保留真实已归属，与projected计划分开；365 reserve、延期下界、当前版本和缺模型分别解释。UI synthetic夹具验证reader/展示，不证明银行金额或目标可按期达成。"
+        }
+      ],
+      "refs": [
+        "S13",
+        "S08",
+        "S04"
+      ],
+      "table": [
+        [
+          "规划数据",
+          "解释"
+        ],
+        [
+          "Goal分母",
+          "当前原版本/属性/余额完整清单"
+        ],
+        [
+          "income eligibility",
+          "确认/有效起点后的合格来源"
+        ],
+        [
+          "projected allocation",
+          "计划，不是已归属"
+        ]
+      ]
+    },
+    {
+      "title": "14 动态目标节奏与执行",
+      "strap": "用户[min,target,max]约束当前原动作",
+      "sections": [
+        {
+          "heading": "只读节奏",
+          "text": "动态储备按原Full模型、目标剩余需求、月资格及真实贡献/收入计算，不从未来预测收入产生当日授权。UNKNOWN/EXPIRED/INACTIVE和未实现执行状态保原理由。建议额与实际已分配分开。"
+        },
+        {
+          "heading": "实际请求",
+          "text": "动态prepare六字段绑定goal、原policy版本、原model Evidence ID/hash、epoch和稳定key；server重新读取来源与计划，客户端不供应金额或proof。原Action执行/确认仍沿旧原接口，新proof不改原历史默认算法。"
+        },
+        {
+          "heading": "恢复证明",
+          "text": "by-key返回原六字段/client hash、完整原Action.request/server hash和ConfirmationGrant。确认核原Evidence时刻，不能把过期consent当live grant；AUTONOMY/status不代替原确认。NOT_FOUND保原请求和未决工作区。"
+        },
+        {
+          "heading": "未覆盖",
+          "text": "新path直接合同与接缝已交，但本材料未纳入最终当前动态动作银行完整节点。时间deadline、当前实际model缺失和未来变化可能拒绝，不能承诺每个Goal当前都有可执行额。"
+        }
+      ],
+      "refs": [
+        "S29",
+        "S08",
+        "S13"
+      ],
+      "table": [
+        [
+          "动态请求",
+          "server核验对象"
+        ],
+        [
+          "Goal / policy / model",
+          "实际原身份、版本、Evidence hash"
+        ],
+        [
+          "epoch / key",
+          "当前期与同原请求"
+        ],
+        [
+          "lookup dual hash",
+          "client六字段 / server完整request"
+        ]
+      ]
+    },
+    {
+      "title": "15 冲突诊断与最小修复",
+      "strap": "候选是解释，不是自动重新分配资金",
+      "sections": [
+        {
+          "heading": "诊断范围",
+          "text": "原goal/保护/义务组合出现冲突时，服务读取当前源和完整分母，给冲突位置、目标底线和可行修复候选。缺模型、usage UNKNOWN或candidate null按原响应展示，不推断不存在的可行金额。"
+        },
+        {
+          "heading": "修复意图",
+          "text": "调整目标期限、降低建议、暂缓低优先级任务或申请合法回拨可改变规划可行性；修改事实/目标属性与真实回拨分别须原明确确认。界面暂没有候选就展示原因，不默认选择最省事的方案。"
+        },
+        {
+          "heading": "跨Goal的门",
+          "text": "只有当前已存在CrossGoal规则和专用scope确认允许的来源/目标范围可提出回拨；核owner、epoch、双方原/Full版本、最低保障、受保护现金目的、紧急条件和累计caps。旧声明不是当前可执行授权。"
+        },
+        {
+          "heading": "精确限制",
+          "text": "当前冲突/修复预览不表示全部多期最优解，也不自动调用银行。实际回拨每次具体effect及来源分仍重验，缺真实oracle/全冲突案例时不能声称“所有目标冲突已自动修好”。"
+        }
+      ],
+      "refs": [
+        "S14",
+        "S15",
+        "S13"
+      ],
+      "table": [
+        [
+          "修复类型",
+          "确认边界"
+        ],
+        [
+          "目标属性修改",
+          "原Goal/模型hash复核"
+        ],
+        [
+          "资金回拨授权",
+          "专用原scope确认"
+        ],
+        [
+          "真实回拨",
+          "具体effect、来源分与三腿"
+        ]
+      ]
+    },
+    {
+      "title": "16 资产目录、期限相容与优化",
+      "strap": "原产品条款不随反事实或界面候选改写",
+      "sections": [
+        {
+          "heading": "目录身份",
+          "text": "产品代码、版本、类、最小申购、延迟、锁定、风险、本金与条款原hash保持原来源。T0/T1/fixed是模拟目录概念，不发布真实在售产品推荐、收益率或工行授权产品承诺。"
+        },
+        {
+          "heading": "候选过滤",
+          "text": "用户作用域、完整财务保护、可用时刻、风险与锁定先决定可适配候选，再在真实允许范围内优化组合。最小申购如未被当前planner消费不可宣称改变结果；无持仓/无适配参数影响应给明确原因。"
+        },
+        {
+          "heading": "组合证明",
+          "text": "Full optimizer与build形成原组合、batches和组合hash。容量只反映规划，不是银行许可；整组版本和确认在prepare及execute重验。期限分桶和续期只读结果不能证明每种期限当前可买。"
+        },
+        {
+          "heading": "到期再计划",
+          "text": "原到期银行operation/action/receipt先验真已实收，再按当前总事实/scope/策略/目录重算新决策。原purchase意图可走当前prepare二次核验；旧成熟回执不沿用为新购买权限，不自动提交。"
+        }
+      ],
+      "refs": [
+        "S16",
+        "S17",
+        "S04"
+      ],
+      "table": [
+        [
+          "产品约束",
+          "核验来源"
+        ],
+        [
+          "期限 / delay / lock",
+          "原目录条款及版本"
+        ],
+        [
+          "risk / minimum / amount",
+          "原用户范围与optimizer"
+        ],
+        [
+          "maturity receipt",
+          "旧回款，不是新权限"
+        ]
+      ]
+    },
+    {
+      "title": "17 多资产整组与固定批执行",
+      "strap": "UNKNOWN保原组合和原批，后批停止",
+      "sections": [
+        {
+          "heading": "准备与确认",
+          "text": "prepare body包含原full/MVP/Goal期望版本、epoch、规划模式及稳定key。完整组合hash来自server，确认保存accepted及原reviewed whole hash；原consent留原body/hash/Evidence，不把history receipt称currentauthority。"
+        },
+        {
+          "heading": "固定批次",
+          "text": "execute-next必须指明expected_batch_number和expected_action_id。该批已有原receipt时返回原read，不推进后批；越序或未确认拒绝。前批UNKNOWN只能读原portfolio/key/action，不能新enqueue、新金额或替key继续。"
+        },
+        {
+          "heading": "银行与应用",
+          "text": "每批保原effect、bank key、receipt和trace；真实银行commit后响应丢失，银行可能已SETTLED而应用无receipt。原GET不能擅自修账；明确协调同原经济身份，后续批只有前批完整核实后才允许。"
+        },
+        {
+          "heading": "已有诊断边界",
+          "text": "旧单资产实际节点完成原组合与UNKNOWN/fixed replay负例，但运行中相关shared源变化，只是诊断。source稳定的新银行节点仍需集中取得；旧500及历史clock门失败原件不改。"
+        }
+      ],
+      "refs": [
+        "S17",
+        "S21",
+        "S22",
+        "S34",
+        "E03"
+      ],
+      "table": [
+        [
+          "阶段",
+          "固定身份"
+        ],
+        [
+          "prepare / confirm",
+          "原portfolio / whole hash"
+        ],
+        [
+          "execute-next",
+          "expected batch + action"
+        ],
+        [
+          "UNKNOWN",
+          "保原批/key，后批停"
+        ]
+      ]
+    },
+    {
+      "title": "18 资金恢复、损失与deadline",
+      "strap": "今天需要现金不等于产品已经到账",
+      "sections": [
+        {
+          "heading": "无损范围",
+          "text": "Full Recovery从当前受保护缺口和实际持仓、scope、版本及quote推导可恢复额，不能接客户端amount/time/结果。当前零损失whole-position T0/T1范围与其他部分/组合/到期分开，未支持保NOT_IMPLEMENTED。"
+        },
+        {
+          "heading": "损失确认",
+          "text": "固定早退的fee/loss绑定原quote和effect。无本动作明确确认不执行；报价过期只能拒绝，不刷新历史quote/hash或借另一笔确认。只读条件回款和真实执行本金到账保持不同字段。"
+        },
+        {
+          "heading": "deadline",
+          "text": "规划估计可用时刻与不可变hard bound区分，准备与首次银行受理会复核。trusted固定clock能通过不证明任意下一时刻仍可完成；实际wallclock越界LIQUIDITY_RISK应如实展示，不隐藏为网络错误。"
+        },
+        {
+          "heading": "身份与恢复",
+          "text": "新604仅actual local USER和原scope权限，服务强制ASK及原用户consent。丢确认/执行响应从exact original key读取原request/effect/consent/Action，未知不清门；历史结算重验不授当前权限。"
+        }
+      ],
+      "refs": [
+        "S30",
+        "S21",
+        "S22",
+        "S26"
+      ],
+      "table": [
+        [
+          "恢复数据",
+          "原件要求"
+        ],
+        [
+          "position / quote",
+          "原持仓与fee/loss/可用规则"
+        ],
+        [
+          "deadline",
+          "服务器实际时刻及原上界"
+        ],
+        [
+          "consent",
+          "确切用户与原effect"
+        ]
+      ]
+    },
+    {
+      "title": "19 有限不确定世界与反事实",
+      "strap": "世界分母完整，候选不继承旧单次确认",
+      "sections": [
+        {
+          "heading": "输入空间",
+          "text": "用户提供小范围变量定义，由server真实base action/context形成完整枚举，最多128世界。每个世界只改允许字段，调用原事实、规划、权限与安全引擎。无剪枝或客户端world结果，不能计算“安全概率”。"
+        },
+        {
+          "heading": "原确认隔离",
+          "text": "原确切动作单次确认只属于原effect。反事实重新产生内存候选，不传旧action_id/effect/exact consent；已提交或UNKNOWN等状态不能作为新反事实执行的base。世界输出没有资金写入、Evidence或grant。"
+        },
+        {
+          "heading": "未知与拒绝",
+          "text": "foreign引用、缺银行来源或不支持配置保持UNKNOWN，仍在全世界分母。BLOCKED是当前条件拒绝，不删除后宣称动作全同。行动类别、金额、来源、归属、损失、时刻与权限共同定义语义。"
+        },
+        {
+          "heading": "场景模拟器",
+          "text": "独立707允许明确有界现金/应急/产品延迟假设，并用server引擎计算；HYPOTHETICAL不能改原产品条款/真实事实，当前未覆盖完整lock/risk/optimizer时必须标限制，不称完整可购性。"
+        }
+      ],
+      "refs": [
+        "S18",
+        "S01",
+        "S02"
+      ],
+      "table": [
+        [
+          "世界状态",
+          "计入分母"
+        ],
+        [
+          "可执行 / 拒绝",
+          "都保存原来源与拒因"
+        ],
+        [
+          "UNKNOWN",
+          "不剔除，不填安全"
+        ],
+        [
+          "candidate effect",
+          "内存候选，不继承旧确认"
+        ]
+      ]
+    },
+    {
+      "title": "20 最小介入问题与持久revision",
+      "strap": "答案筛选世界，不替代金融确认",
+      "sections": [
+        {
+          "heading": "问题选择",
+          "text": "在有限动作分歧上计算minimax问题及固定tie；只问当前影响动作的问题。一个世界完整枚举仍不代表现实不确定性完备，额外未知来源和未支持动作保限制。静态阈值概率或模型置信度不替代该选择。"
+        },
+        {
+          "heading": "START / ANSWER / REFRESH / CLOSE",
+          "text": "每个原命令保存request/epoch/revision/key和原receipt。回答后重新计算，来源变化产生当前revision或REBASE，原答案不跨旧source充授权。CLOSED保原历史问题但current question/fresh source为空，不再refresh/answer。"
+        },
+        {
+          "heading": "响应丢失",
+          "text": "两个只读lookup覆盖START及session内命令，返回精确原envelope/hash/receipt与当前revision分列；不能用latest清早先pending。NOT_FOUND_NOT_FINAL与replacement_allowed=false保原键，不自动POST或制造第二session。"
+        },
+        {
+          "heading": "解释界面",
+          "text": "一次一问显示当前问题、原答案/历史和具体未覆盖；所有authority/execution标识false。关闭、ACK或“已回答”都不是具体资金效果确认。最终source的六E2E与真人负担结果仍缺。"
+        }
+      ],
+      "refs": [
+        "S19",
+        "S18",
+        "S02"
+      ],
+      "table": [
+        [
+          "问答命令",
+          "恢复对象"
+        ],
+        [
+          "START",
+          "原session与exact start receipt"
+        ],
+        [
+          "ANSWER / REFRESH",
+          "原revision、source、命令hash"
+        ],
+        [
+          "CLOSE",
+          "旧历史保留，current为空"
+        ]
+      ]
+    },
+    {
+      "title": "21 介入通知与当前观察proof",
+      "strap": "原payload留存，当前来源证明单独追加",
+      "sections": [
+        {
+          "heading": "生产接缝",
+          "text": "Question command提交后独立producer读取fresh RRRO当前ASKING workflow和原VALID Trace，再调用原observe。稳定key绑定epoch/session/revision/run/pending question hash；生产失败仅诊断，不掩盖已commit问答，也不换新观察key。"
+        },
+        {
+          "heading": "同语义refresh",
+          "text": "新有效观察可证明同semantic question当前仍成立，旧payload/hash保原件。只要原PENDING尚未claim/ACK且新proof真实有效，消费当前观察；旧INVALIDATED/ACK/已claim终态不复活，明确LEGACY_TERMINAL_SOURCE。"
+        },
+        {
+          "heading": "一次消费",
+          "text": "observe、deliver/claim、ACK、answer各自原命令。首次present_once才提示，再启不二次弹；GET不claim。新proof不自动DELIVER/ACK或宣称人已见，原message来源与当前trace/session/revision字段分开展示。"
+        },
+        {
+          "heading": "全局集合变化",
+          "text": "新GLOBAL精确版本比较完整可执行经济集合，纯数值静默不生产通知；旧有限v1与Full sources分列。活跃未覆盖family或proof未知不能产生假的全局complete/当前有效；实际HTTP新批失败继续保留。"
+        }
+      ],
+      "refs": [
+        "S20",
+        "S19",
+        "E04",
+        "S02"
+      ],
+      "table": [
+        [
+          "对象",
+          "语义"
+        ],
+        [
+          "original payload",
+          "历史immutable身份"
+        ],
+        [
+          "current observation",
+          "当前run/trace/question proof"
+        ],
+        [
+          "claim / ACK",
+          "一次副作用，终态不复活"
+        ]
+      ]
+    },
+    {
+      "title": "22 执行状态与安全协调",
+      "strap": "预留、银行受理、结算、应用投影是不同阶段",
+      "sections": [
+        {
+          "heading": "准备",
+          "text": "server根据原planner创建Action/effect/request/DecisionTrace，preserve owner、epoch、source和policy/product版本。ASK需确切effect确认。prepared不表示已受理，预留仍保护未来截止；客户端不能提交bank result或new clock。"
+        },
+        {
+          "heading": "新受理门",
+          "text": "首次bank accept前重核完整当前权限、边界、quote、产品和源。失效策略不产生新权；原银行已接受的同key动作继续协调，而不是用新版本重新创造经济身份。原hash/canonical不为新门改写。"
+        },
+        {
+          "heading": "UNKNOWN",
+          "text": "网络丢失和应用rollback后不能判断银行没有发生。原BankOperation、posting、fee/loss和receipt逐层核验；SETTLED应用未完成只修原投影，不第二扣款。没有原件的UNKNOWN保等待/人工核对，不填FAILED或0。"
+        },
+        {
+          "heading": "失败保留",
+          "text": "真实拒绝、篡改、projection错和trigger拒绝都保存原日志/source。只修源代码再新run，不能重标旧FAILED或删负例。全部并发/kill/跨归档矩阵尚缺，当前定向链证据不作普遍可靠性保证。"
+        }
+      ],
+      "refs": [
+        "S21",
+        "S22",
+        "S23",
+        "S26"
+      ],
+      "table": [
+        [
+          "所属层",
+          "状态例"
+        ],
+        [
+          "应用",
+          "PLANNED / UNKNOWN / SUCCEEDED"
+        ],
+        [
+          "模拟银行",
+          "ACCEPTED / SETTLED / REJECTED"
+        ],
+        [
+          "原回执",
+          "具体效果和投影核验"
+        ]
+      ]
+    },
+    {
+      "title": "23 审计、溯源与请求内复用",
+      "strap": "采用原typed协议，不为性能降低验真边界",
+      "sections": [
+        {
+          "heading": "原链算法",
+          "text": "审计按原canonical/event/subject/reference/checkpoint/tail方案验证，历史epoch串联OPEN与SEALED。不能用一般SHA串行拼接替代服务协议，也不借当前VALID标旧LEGACY_UNAUDITED。证据图只展示真实引用edges。"
+        },
+        {
+          "heading": "分母与只读",
+          "text": "完整核验保存全部业务表、独立alembic元数据、physical tables和原行计数；RO/RR before/after数据摘要相同才说明该观测未写。超预算必须显式FAILED/UNKNOWN，不能截断历史或把样本当全库。"
+        },
+        {
+          "heading": "同请求scope",
+          "text": "audit/history复用限同干净RRRO Session、同事务和完整行digest未变；原地JSON改动、dirty/write或scope退出必须失效。此优化不保存跨请求授权、原bank当前真值或用户principal cache。"
+        },
+        {
+          "heading": "可解释而非证实经济",
+          "text": "Trace和Receipt证明特定原服务判断/投影范围；经济实证还需独立银行原件、完整腿与一致性。服务receipt_verified不应展示成economic_verified，外部签名锚与生产运维特权攻击尚未证明。"
+        }
+      ],
+      "refs": [
+        "S23",
+        "S24",
+        "S02",
+        "S35"
+      ],
+      "table": [
+        [
+          "验证范围",
+          "不得替代"
+        ],
+        [
+          "EXACT / PREFIX",
+          "仅原指定链范围"
+        ],
+        [
+          "LEGACY_UNAUDITED",
+          "不回填现代genesis"
+        ],
+        [
+          "clean RRRO scope",
+          "不缓存跨请求授权"
+        ]
+      ]
+    },
+    {
+      "title": "24 三账只读对账",
+      "strap": "应用减银行，缺原件保持null",
+      "sections": [
+        {
+          "heading": "观察范围",
+          "text": "当前报告在RRRO读取八owner表，先核actual_count，再完整captured_count。普通表和postings有明确容量门；超容量保原分母和UNKNOWN。银行连续ledger、应用projection和EXACT audit分别调用原验证器。"
+        },
+        {
+          "heading": "现金/本金/归属",
+          "text": "应用余额−bank余额是difference；wrong head identity保原引用但子项MISSING/null，不因金额巧合标MATCHED。Goal owned position与原产权Evidence单核，legacy缺银行anchor保UNSUPPORTED；信用卡债务与收益估值不是本比较范围。"
+        },
+        {
+          "heading": "原动作状态",
+          "text": "BANK_SETTLED_APPLICATION_UNRESOLVED保原key和实际腿；PENDING_BANK、PREPARED_NO_BANK_OBSERVED、NO_EFFECT_OBSERVED_NOT_FINAL分别展示。银行原REJECTED且核零腿/零回执才能填actual0，不能由无记录假定终败。"
+        },
+        {
+          "heading": "人工核对",
+          "text": "报告没有修账/retry POST；MANUAL_REVIEW_REQUIRED只是本只读推导，不声称人工已经处理。MATCHED需要完整分母、ledger/projection/audit与issues为空，仍不表示所有准备动作已执行或现实经济效果。"
+        }
+      ],
+      "refs": [
+        "S24",
+        "S31",
+        "E02"
+      ],
+      "table": [
+        [
+          "报告字段",
+          "当前含义"
+        ],
+        [
+          "difference",
+          "应用减bank，缺项null"
+        ],
+        [
+          "MATCHED",
+          "当前范围账目相符"
+        ],
+        [
+          "MANUAL_REVIEW_REQUIRED",
+          "只读诊断，没有修账"
+        ]
+      ]
+    },
+    {
+      "title": "25 安全、身份与隐私",
+      "strap": "本地USER是模拟主体，不是完整生产身份系统",
+      "sections": [
+        {
+          "heading": "服务器身份",
+          "text": "固定本地username/secret在server验证，签名HttpOnly SameSiteStrict短会话只含模拟USER。公开请求不能选择SYSTEM/DEMO_ADMIN，cookie不充银行授权。secret不存session/localStorage、日志或DOM回显，未配置诚实401。"
+        },
+        {
+          "heading": "权限最小化",
+          "text": "每次金融请求核原用户、scope、版本、Evidence和具体效果；没有跨请求授权cache。Agent不新增收款关系，临时外付与有损行为须真实USER明确同意。新UI pending只防第二写，不替代server权限判断。"
+        },
+        {
+          "heading": "事实与模型隔离",
+          "text": "provider默认离线；敏感银行原件不直接外发，识别片段脱敏。模型输出受严格schema/source/config校对，提示注入不能生成角色、金额、permission或成功。有限PII规则不等通用隐私保证。"
+        },
+        {
+          "heading": "实际风险",
+          "text": "已记录的security-check原run扫描Ruff S规则报告106项，未静默豁免；当前无完整依赖漏洞扫描、渗透/角色管理、真实生产审计或外部锚验证。部署离线与容器出口需真实probe，pull_policy或内部网标签本身不证明整体断网。"
+        }
+      ],
+      "refs": [
+        "S25",
+        "S26",
+        "S33"
+      ],
+      "table": [
+        [
+          "主体/检查",
+          "未证明边界"
+        ],
+        [
+          "local USER",
+          "模拟身份，非KYC"
+        ],
+        [
+          "Ruff S告警",
+          "规则诊断，非全部漏洞结论"
+        ],
+        [
+          "provider privacy",
+          "有限脱敏，非通用PII保护"
+        ]
+      ]
+    },
+    {
+      "title": "26 工程交付、部署与页面",
+      "strap": "本地模拟可调用模块与最终验收分别登记",
+      "sections": [
+        {
+          "heading": "模块组织",
+          "text": "单仓API/Web/contracts，models/迁移、domain确定性算法、services事实/权限适配和API strict DTO分层。当前实际OpenAPI由Main生成并独立check；手写client成功shape或模拟bank回执不能替代真实合同。"
+        },
+        {
+          "heading": "客户端写入门",
+          "text": "资金family POST前持久完整原body/key/hash/owner/epoch，网络/解析/4xx不自动清门。原GET核确切receipt后才解除pending，未决PLANNED工作区仍阻其他资金/演示reset。坏storage锁新写；自己的只读恢复可越自身门。"
+        },
+        {
+          "heading": "部署保全",
+          "text": "隔离owned bf_test项目/容器/卷，init先严格DSN guard；全空才seed，已有合法历史保留。原正式模拟库不reset/migrate，旧卷和失败保留。容器当前image/source与实际egras/DNS探测分别证明，旧镜像不称当前源。"
+        },
+        {
+          "heading": "页面与未覆盖",
+          "text": "独立readers逐字段核actual flags/null/金额，手机/键盘增量保持原操作。实际手机、screenreader/contrast、最终当前浏览器和离线三链尚缺。最终九项命令/材料/真人分别验收，CI配置存在不称Actions已跑。"
+        }
+      ],
+      "refs": [
+        "S27",
+        "S33",
+        "S26",
+        "S04"
+      ],
+      "table": [
+        [
+          "产物",
+          "状态边界"
+        ],
+        [
+          "API / UI",
+          "合同/模块证明分列"
+        ],
+        [
+          "CI config",
+          "未实际Actions，不填成功"
+        ],
+        [
+          "offline / browser",
+          "必须当前image/source及原capture"
+        ]
+      ]
+    },
+    {
+      "title": "27 实验设计与统计口径",
+      "strap": "预登记完整输入、机制、oracle与全部失败分母",
+      "sections": [
+        {
+          "heading": "初版实验",
+          "text": "原24案例配额6/6/4/4/2/2，五臂B0/B1/B2/B3/P真实不同机制。原作者输入需与DEVELOPMENT whole flow分层、检查同构新颖性；改金额/标题不算独立案例。局部provider风险登记不能冒完整Scenario。"
+        },
+        {
+          "heading": "独立oracle",
+          "text": "保护时轴、source分、版本/确认窗口、safe-auto机会与required evidence由独立输入推导，不导入P的判断当答案。候选违规、共同网关拒绝、实际违规分开，外生消费缺口不混系统动作造成缺口。"
+        },
+        {
+          "heading": "完整指标",
+          "text": "14指标保存value/numerator/denominator/applicable_units/raw_refs；NOT_RUN或MISSING为null，零分母NOT_APPLICABLE。失败与未尝试预登记机会不消失，未完成恢复保censored而不是零时延。B0人工actor不称真人耗时。"
+        },
+        {
+          "heading": "Full扩展",
+          "text": "原FULL804要求至少50族、每族多变体与族级split/真值；FULL805要求B0—B5/P七机制及八消融，FULL807另核并发/重启/UNKNOWN/规模性能。初版24案不能替代Full范围。全部原结果未纳入验收，缺数据不画柱形、不写百分比、不作显著性结论。"
+        }
+      ],
+      "refs": [
+        "S06",
+        "S39",
+        "S03"
+      ],
+      "table": [
+        [
+          "证据字段",
+          "统计要求"
+        ],
+        [
+          "numerator / denominator",
+          "预登记完整机会/时点"
+        ],
+        [
+          "raw_refs / run",
+          "原数据与代码/环境绑定"
+        ],
+        [
+          "null / censored",
+          "缺失、零分母、未完成分别留存"
+        ]
+      ]
+    },
+    {
+      "title": "28 已有运行结果与性能边界",
+      "strap": "实际定向结果不是收益或全局安全证明",
+      "sections": [
+        {
+          "heading": "固定付款",
+          "text": "E01的两个真实隔离PG节点原AUTO与ASK通过，command记录实际两个parameter节点，relatedscope稳定true/allsourcefalse。完整四legs、原键协调与只读尾部有原日志。848.02秒是pytest批时长，不能当单付款时延或benchmark。"
+        },
+        {
+          "heading": "其他证据",
+          "text": "E02对账所属三节点批通过，但没有单项时长；E03资产node2826.45秒且relatedshared运行中改变，只作diagnostic。E04原0014/有限/Full/HTTP batch exit1、FAILED；后续未执行节点不能补成通过。"
+        },
+        {
+          "heading": "历史性能",
+          "text": "W0三个固定开发场景每格n=1，同输入hash/零写核；长链API101.635072→19.960296秒，扩大API112.629382→138.810674秒变慢。Python峰值长链249640231→280724062字节亦增。没有P95/P99、稳定倍数或当前Full SLA。"
+        },
+        {
+          "heading": "当前空白",
+          "text": "24×5和14指标正式结果、消融、当前新功能性能均未纳入验收。不能把全源变化忽略为stable，也不能将TOOL_ONLY合成检查数累加成产品能力百分比。所有本章数字都限定原run与量的定义。"
+        }
+      ],
+      "refs": [
+        "E01",
+        "E02",
+        "E03",
+        "E04",
+        "S35"
+      ],
+      "table": [
+        [
+          "结果",
+          "可引用范围"
+        ],
+        [
+          "E01 / E02",
+          "原定向PG范围，非全产品"
+        ],
+        [
+          "E03",
+          "相关源改变，只diagnostic"
+        ],
+        [
+          "E04 / W0",
+          "原失败保留 / n=1旧性能"
+        ]
+      ]
+    },
+    {
+      "title": "29 真人研究与失败案例",
+      "strap": "研究0，失败是约束和修复的具体证据",
+      "sections": [
+        {
+          "heading": "真人研究",
+          "text": "当前成年模拟研究招募、知情同意、原任务日志和访谈均未开展。匿名记录工具及研究材料只有工具证据，0参与者/0records。主观信任、理解、介入负担与接受度没有均值/评分，不能由自动化UI测试代替。"
+        },
+        {
+          "heading": "prepare500",
+          "text": "整组asset旧fixture历史NOW早于actualOPEN epoch，0013元数据触发器拒绝，公开500保留。新candidate仅在自己的actualseed后固定serverUTC并核opened_at，未改trigger/hash/其他global fixture。该修复只证明当前OPEN用法，不证明历史clock。"
+        },
+        {
+          "heading": "丢回执与不完整源",
+          "text": "bank commit后应用无receipt应保UNKNOWN和原key，不能判现金未变；wronghead identity须MISSING/null。资产诊断通过但relatedsource变动不作稳定验收，GLOBAL批实际FAILED保原状态。拒绝与失败说明边界，不作为违规成功或全安全证明。"
+        },
+        {
+          "heading": "当前改进条件",
+          "text": "每个已知问题在相关源码窄修并新run保before/after；篡改/负例不删。下一全量、真实三链、全部对照/消融、用户研究与当前性能仍需独立原件，不以材料文字填补。"
+        }
+      ],
+      "refs": [
+        "S32",
+        "S34",
+        "E03",
+        "E04",
+        "S24"
+      ],
+      "table": [
+        [
+          "案例",
+          "后续核验"
+        ],
+        [
+          "prepare500",
+          "当前OPEN固定serverclock专用"
+        ],
+        [
+          "bank settled/app unknown",
+          "同key原投影协调"
+        ],
+        [
+          "研究空白",
+          "0真人，工具不充人群证据"
+        ]
+      ]
+    },
+    {
+      "title": "30 工行落地假设、限制与下一步",
+      "strap": "范围可复核，外部效益待实证",
+      "sections": [
+        {
+          "heading": "落地假设",
+          "text": "同体系账户/账单/目标/低风险产品的来源一致性，可能降低用户理解成本和机构复核成本；明确授权范围可能减少重复介入。当前无工行合作、真实接口准入、客户规模、业务收益或风险降低数据，这些假设需要独立业务校核。"
+        },
+        {
+          "heading": "前置验证",
+          "text": "先完成最终当前源初版与Full软件/集成/浏览器/安全、冻结实验/消融、真人研究与材料一致性。真实银行API、身份KYC、运维权限、外部审计锚和合规均由机构独立评估，不在本地模拟中默认成立。"
+        },
+        {
+          "heading": "已知限制",
+          "text": "有限中文语法、有限世界/registered actions、部分模板金融影响/执行、legacy产权与审计、条件现金和新当前路径实证仍有缺口。算法容量/目录存在不代表权限，历史素材不代表当前录屏，页数达标不代表竞赛材料内容验收。"
+        },
+        {
+          "heading": "交付清单",
+          "text": "12页企划、30页本书、10页答辩、实验报告和240秒脚本及来源索引以新路径保存。903无真实完整结果、904未录当前四分钟、906外部事实验证/人工一致性仍缺；FULL901—906全部继续PENDING，旧原件不覆盖。"
+        }
+      ],
+      "refs": [
+        "S01",
+        "S03",
+        "S04",
+        "S26",
+        "S38"
+      ],
+      "table": [
+        [
+          "下一依赖",
+          "当前状态"
+        ],
+        [
+          "最终两版全量",
+          "未完成"
+        ],
+        [
+          "实验/研究/录屏",
+          "分开取得原件"
+        ],
+        [
+          "真实资金准入",
+          "未启用，机构独立评估"
+        ]
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "title": "钱途有界",
+      "kicker": "青年金融服务 · 当前功能版 / 模拟",
+      "headline": "让每笔自主安排\n守住用途、时间与授权",
+      "body": [
+        "事实有来源，候选需复核，动作有边界",
+        "确定性引擎计算；自然语言不产生权限",
+        "全量验收未完成 · 真人0 · 当前性能未测"
+      ],
+      "refs": [
+        "S01",
+        "S04",
+        "S05"
+      ],
+      "note": "介绍当前功能交付，不声称正式产品完成或银行合作。"
+    },
+    {
+      "title": "账户余额不等于可安排资金",
+      "kicker": "01 / 用户任务",
+      "headline": "同一笔钱，同时承担不同截止与用途",
+      "body": [
+        "房租、账单、生活准备金、应急和未来目标",
+        "未到账工资不扩大今天的自主边界",
+        "Goal归属与产品本金可用时间必须分别核验"
+      ],
+      "refs": [
+        "S01",
+        "S02",
+        "S08"
+      ],
+      "note": "需求来自产品设计；没有真人痛点比例或市场数据。"
+    },
+    {
+      "title": "五集合共同约束自主动作",
+      "kicker": "02 / 自主包络",
+      "headline": "财务安全 ∩ 用户授权 ∩ 流动性\n∩ 证据充分 ∩ 支持动作",
+      "body": [
+        "AUTO / ASK_ONCE / ADVISE_ONLY / BLOCKED由原引擎确定",
+        "safe_idle是财务容量，不是自动权限",
+        "UNKNOWN和null保持未知；未来收入计入今日额度为0"
+      ],
+      "refs": [
+        "S01",
+        "S07",
+        "S12"
+      ],
+      "note": "公式为设计定义。未对全部现实场景给安全保证，不称性能或效果结果。"
+    },
+    {
+      "title": "从事实到原回执的闭环",
+      "kicker": "03 / 实现机制",
+      "headline": "事实 → 原策略版本 → 边界\n→ 具体效果 → 银行 → 原回执",
+      "body": [
+        "候选与明确确认分开；具体确认绑定同effect hash",
+        "首次银行受理重验当前源与权限",
+        "UNKNOWN保原action/key，查询协调同一经济身份"
+      ],
+      "refs": [
+        "S10",
+        "S21",
+        "S22",
+        "S23"
+      ],
+      "note": "此流程是SOURCE_SCHEMATIC，不是原生截图。银行/app状态分层，不以HTTP200充结算。"
+    },
+    {
+      "title": "策略、目标与资产是可调用模块",
+      "kicker": "04 / 当前功能",
+      "headline": "用途归属不因资产放置自动改变",
+      "body": [
+        "不可变生命周期 / Goal双hash / 当前期联合规划",
+        "1098年度阶段点，原90日执行视图独立保留",
+        "整组原确认与固定批；UNKNOWN后批停，原批重放不推进"
+      ],
+      "refs": [
+        "S10",
+        "S13",
+        "S16",
+        "S17"
+      ],
+      "note": "1098=366日期×3阶段，绝不是天数。未证明全局多期最优/全部期限可买。"
+    },
+    {
+      "title": "一次一问，回答不是授权",
+      "kicker": "05 / 最小介入",
+      "headline": "只有当前动作语义分歧才询问",
+      "body": [
+        "最多128世界完整枚举，缺源世界保留分母",
+        "持久revision与exact by-key原receipt恢复",
+        "observe / deliver / ACK / answer / financial confirm各自独立"
+      ],
+      "refs": [
+        "S18",
+        "S19",
+        "S20"
+      ],
+      "note": "有限世界不是概率；当前proof与旧payload分开，legacy终态不复活。"
+    },
+    {
+      "title": "三条黄金链与四分钟镜头",
+      "kicker": "06 / 演示计划",
+      "headline": "A 工资安排　B NL目标修改确认\nC 消费收缩与无损/有损恢复",
+      "body": [
+        "主片计划240秒，当前仍NOT_RECORDED",
+        "B必须真实原话→修订→首次ACTIVE→后续新增收入分配",
+        "历史三轮素材只历史；最终当前离线三链待取得"
+      ],
+      "refs": [
+        "S27",
+        "S03",
+        "S04"
+      ],
+      "note": "无假画面/假视频，不将演示模板冒NL链。对应demo-240s-script.md。"
+    },
+    {
+      "title": "已有实证与缺失结果一起展示",
+      "kicker": "07 / 证据",
+      "headline": "定向链路通过 ≠ 产品效果证明",
+      "body": [
+        "固定付款原AUTO/ASK：真实2节点通过，相关scope稳定",
+        "旧整组资产：诊断通过但相关source改变",
+        "初版24×5；FULL50族×7机制 / 八消融 / 真人 / 当前性能：待实验"
+      ],
+      "refs": [
+        "E01",
+        "E02",
+        "E03",
+        "E04",
+        "S06",
+        "S35"
+      ],
+      "note": "不相加重叠测试、不写提升比例。原GLOBAL批FAILED。W0 n=1混合结果不是当前benchmark。"
+    },
+    {
+      "title": "可信的边界与具体失败",
+      "kicker": "08 / 安全与限制",
+      "headline": "模拟资金，明确未知，保留原件",
+      "body": [
+        "本地USER签名会话不是真人KYC或金融确认",
+        "原bank已SETTLED而app无receipt，仍保原键协调",
+        "原安全扫描106项告警；全量/渗透/手机实测均未完成"
+      ],
+      "refs": [
+        "S25",
+        "S26",
+        "S33",
+        "S34"
+      ],
+      "note": "Ruff S规则告警不等于全部可利用漏洞，也不声称安全审计完成。"
+    },
+    {
+      "title": "以可复核试点验证工行价值",
+      "kicker": "09 / 下一步",
+      "headline": "先验证理解、介入与复核成本\n再评估真实业务准入",
+      "body": [
+        "同体系闭环为业务假设，无合作或真实收益证据",
+        "最终两版软件验收 + 冻结实验 + 真人研究 + 当前录屏",
+        "正式21/92；FULL项PENDING；材料结构成品不充内容验收"
+      ],
+      "refs": [
+        "S01",
+        "S04",
+        "S32",
+        "S38"
+      ],
+      "note": "可能问答和证据索引附defense.md，效果主张当前不放行。"
+    }
+  ],
+  "layout_revision": "FINAL_CONTENT_V3_FULL_SCOPE_EXPLICIT_NOT_NEW_RESULTS"
+}

@@ -1,0 +1,35 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_tool_only_small_payload_equals_original_decoder_byte_for_byte ______
+
+native = {'owner': {'tool_input_context': 'TOOL_ONLY', 'owner_uuid': '11111111111111111111111111111111', 'run_id': 'TOOL_ONLY_o...aa', 'io.bounded-funds.pnpm-lock-sha256': 'abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83'}}}]}, ...}
+
+    def test_tool_only_small_payload_equals_original_decoder_byte_for_byte(
+        native: dict[str, Any],
+    ) -> None:
+>       owned, new_command, new_frame = framed512(native)
+                                        ^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_demo_container_transport512.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\tests\test_demo_container_transport512.py:36: in framed512
+    return owned, tool.build_snapshot_command512(owned, "TOOL_ONLY_snapshot"), value
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+transport = OwnedTransport(owner_uuid='11111111111111111111111111111111', owner_run_id='TOOL_ONLY_owner', start_run_id='TOOL_ONLY_...ad05f7b', network_boundary='DB_API_SHARED_LOOPBACK_NAMESPACE; NETWORK_INTERNAL_FLAG_UNVERIFIED; WEB_EGRESS_UNVERIFIED')
+run_id = 'TOOL_ONLY_snapshot'
+
+    def build_snapshot_command512(transport: OwnedTransport, run_id: str) -> PreparedCommand:
+        frozen_dependencies()
+        require(
+>           re.fullmatch(r"[A-Za-z0-9_-]{1,160}", run_id) is not None,
+            ^^
+            "Explicit safe observation run required",
+        )
+E       NameError: name 're' is not defined. Did you forget to import 're'
+
+scripts\demo_container_transport512.py:74: NameError
+=========================== short test summary info ===========================
+FAILED scripts/tests/test_demo_container_transport512.py::test_tool_only_small_payload_equals_original_decoder_byte_for_byte
+1 failed in 0.87s

@@ -1,0 +1,584 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/84000v",
+    "id": "84000v",
+    "slide": 4,
+    "layoutId": "bab4f716-f2d3-467a-8ee8-c40fb0f6d330",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4b08397e-af96-4c7c-81b3-7ee5eb3bf765",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Microsoft YaHei"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "bab4f716-f2d3-467a-8ee8-c40fb0f6d330",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4b08397e-af96-4c7c-81b3-7ee5eb3bf765",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4b08397e-af96-4c7c-81b3-7ee5eb3bf765",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ofi9kv2x",
+      "id": "1",
+      "bbox": [
+        80,
+        37,
+        1120,
+        36
+      ],
+      "geometry": "rect",
+      "text": "03 / 实现机制",
+      "textPreview": "03 / 实现机制",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Microsoft YaHei",
+        "color": "#13725A",
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "03 / 实现机制"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "03 / 实现机制",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Microsoft YaHei",
+            "color": "#13725A"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "03 / 实现机制",
+              "fontSize": 18,
+              "typeface": "Microsoft YaHei",
+              "color": "#13725A"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3e9srq1c",
+      "id": "2",
+      "bbox": [
+        80,
+        98,
+        1120,
+        72
+      ],
+      "geometry": "rect",
+      "text": "从事实到原回执的闭环",
+      "textPreview": "从事实到原回执的闭环",
+      "resolvedFontSize": 44,
+      "resolvedTextStyle": {
+        "fontSize": 44,
+        "typeface": "Microsoft YaHei",
+        "color": "#18352F",
+        "bold": true,
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "从事实到原回执的闭环"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "从事实到原回执的闭环",
+          "resolvedTextStyle": {
+            "fontSize": 44,
+            "typeface": "Microsoft YaHei",
+            "color": "#18352F",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "从事实到原回执的闭环",
+              "fontSize": 44,
+              "typeface": "Microsoft YaHei",
+              "color": "#18352F",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2dgri5k7",
+      "id": "3",
+      "bbox": [
+        80,
+        198,
+        1120,
+        140
+      ],
+      "geometry": "rect",
+      "text": "事实 → 原策略版本 → 边界\n→ 具体效果 → 银行 → 原回执",
+      "textPreview": "事实 → 原策略版本 → 边界 | → 具体效果 → 银行 → 原回执",
+      "resolvedFontSize": 35,
+      "resolvedTextStyle": {
+        "fontSize": 35,
+        "typeface": "Microsoft YaHei",
+        "color": "#18352F",
+        "bold": true,
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "事实 → 原策略版本 → 边界"
+          },
+          {
+            "index": 2,
+            "text": "→ 具体效果 → 银行 → 原回执"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "事实 → 原策略版本 → 边界",
+          "resolvedTextStyle": {
+            "fontSize": 35,
+            "typeface": "Microsoft YaHei",
+            "color": "#18352F",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "事实 → 原策略版本 → 边界",
+              "fontSize": 35,
+              "typeface": "Microsoft YaHei",
+              "color": "#18352F",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "→ 具体效果 → 银行 → 原回执",
+          "resolvedTextStyle": {
+            "fontSize": 35,
+            "typeface": "Microsoft YaHei",
+            "color": "#18352F",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→ 具体效果 → 银行 → 原回执",
+              "fontSize": 35,
+              "typeface": "Microsoft YaHei",
+              "color": "#18352F",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dkraxkju",
+      "id": "4",
+      "bbox": [
+        80,
+        370,
+        1100,
+        66
+      ],
+      "geometry": "rect",
+      "text": "候选与明确确认分开；具体确认绑定同effect hash",
+      "textPreview": "候选与明确确认分开；具体确认绑定同effect hash",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Microsoft YaHei",
+        "color": "#566D66",
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "候选与明确确认分开；具体确认绑定同effect hash"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "候选与明确确认分开；具体确认绑定同effect hash",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Microsoft YaHei",
+            "color": "#566D66"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "候选与明确确认分开；具体确认绑定同effect hash",
+              "fontSize": 24,
+              "typeface": "Microsoft YaHei",
+              "color": "#566D66"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cji9of29",
+      "id": "5",
+      "bbox": [
+        80,
+        443,
+        1100,
+        66
+      ],
+      "geometry": "rect",
+      "text": "首次银行受理重验当前源与权限",
+      "textPreview": "首次银行受理重验当前源与权限",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Microsoft YaHei",
+        "color": "#566D66",
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "首次银行受理重验当前源与权限"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "首次银行受理重验当前源与权限",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Microsoft YaHei",
+            "color": "#566D66"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "首次银行受理重验当前源与权限",
+              "fontSize": 24,
+              "typeface": "Microsoft YaHei",
+              "color": "#566D66"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bi9sva1o",
+      "id": "6",
+      "bbox": [
+        80,
+        516,
+        1100,
+        66
+      ],
+      "geometry": "rect",
+      "text": "UNKNOWN保原action/key，查询协调同一经济身份",
+      "textPreview": "UNKNOWN保原action/key，查询协调同一经济身份",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Microsoft YaHei",
+        "color": "#566D66",
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "UNKNOWN保原action/key，查询协调同一经济身份"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "UNKNOWN保原action/key，查询协调同一经济身份",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Microsoft YaHei",
+            "color": "#566D66"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "UNKNOWN保原action/key，查询协调同一经济身份",
+              "fontSize": 24,
+              "typeface": "Microsoft YaHei",
+              "color": "#566D66"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qh0rm5k3",
+      "id": "7",
+      "bbox": [
+        80,
+        657,
+        1040,
+        26
+      ],
+      "geometry": "rect",
+      "text": "SOURCE S10 · S21 · S22 · S23  |  全部模拟 · WORKING / NOT ACCEPTANCE",
+      "textPreview": "SOURCE S10 · S21 · S22 · S23  |  全部模拟 · WORKING / NOT ACCEPTANCE",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Microsoft YaHei",
+        "color": "#566D66",
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "SOURCE S10 · S21 · S22 · S23  |  全部模拟 · WORKING / NOT ACCEPTANCE"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "SOURCE S10 · S21 · S22 · S23  |  全部模拟 · WORKING / NOT ACCEPTANCE",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Microsoft YaHei",
+            "color": "#566D66"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "SOURCE S10 · S21 · S22 · S23  |  全部模拟 · WORKING / NOT ACCEPTANCE",
+              "fontSize": 14,
+              "typeface": "Microsoft YaHei",
+              "color": "#566D66"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l8ba1kjq",
+      "id": "8",
+      "bbox": [
+        1134,
+        657,
+        95,
+        26
+      ],
+      "geometry": "rect",
+      "text": "4 / 10",
+      "textPreview": "4 / 10",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Microsoft YaHei",
+        "color": "#13725A",
+        "alignment": "left",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "4 / 10"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "4 / 10",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Microsoft YaHei",
+            "color": "#13725A"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "4 / 10",
+              "fontSize": 14,
+              "typeface": "Microsoft YaHei",
+              "color": "#13725A"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

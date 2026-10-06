@@ -1,0 +1,607 @@
+{
+  "family_id": "D02",
+  "initial_state": {
+    "expected_epoch_id": null,
+    "mode": "EXISTING",
+    "seed_version": "mvp-301-v6"
+  },
+  "profile": "FULL",
+  "protocol": "full-family-case-input-v1",
+  "purpose": "DEVELOPMENT",
+  "scenario_id": "D02-v01",
+  "steps": [
+    {
+      "at": "2026-10-04T10:00:02+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "SNAPSHOT",
+      "step_id": "initial"
+    },
+    {
+      "at": "2026-10-04T10:00:04+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "LOCAL_USER_LOGIN",
+      "step_id": "local-user-login"
+    },
+    {
+      "at": "2026-10-04T10:00:06+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "external_ref": "mvp-301-v6:account:cash"
+      },
+      "kind": "LOOKUP_ACCOUNT",
+      "step_id": "cash"
+    },
+    {
+      "at": "2026-10-04T10:00:08+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "external_ref": "mvp-301-v6:account:goal"
+      },
+      "kind": "LOOKUP_ACCOUNT",
+      "step_id": "goal-account"
+    },
+    {
+      "at": "2026-10-04T10:00:10+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "configuration": {
+          "extra_buffer_cents": 10000,
+          "horizon_days": 14,
+          "method": {
+            "essential_categories": [
+              "food",
+              "transport",
+              "daily_necessities"
+            ],
+            "exclude_one_off": true,
+            "lookback_days": 60,
+            "name": "rolling_window_quantile",
+            "quantile": 0.9
+          },
+          "name": "作者 living",
+          "type": "living_reserve"
+        },
+        "expected_epoch_id": {
+          "$ref": {
+            "pointer": "/result/tables/audit_epochs/0/id",
+            "step_id": "initial"
+          }
+        },
+        "idempotency_key": "full804-D02-living-declare"
+      },
+      "kind": "DECLARE_POLICY",
+      "step_id": "living-declare"
+    },
+    {
+      "at": "2026-10-04T10:00:12+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "accepted": true,
+        "proposal_id": {
+          "$ref": {
+            "pointer": "/result/proposal_id",
+            "step_id": "living-declare"
+          }
+        },
+        "reviewed_hash": {
+          "$ref": {
+            "pointer": "/result/configuration_hash",
+            "step_id": "living-declare"
+          }
+        }
+      },
+      "kind": "CONFIRM_POLICY",
+      "step_id": "living-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:14+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "configuration": {
+          "amount_cents": 90000,
+          "name": "作者 emergency",
+          "type": "emergency_buffer"
+        },
+        "expected_epoch_id": {
+          "$ref": {
+            "pointer": "/result/tables/audit_epochs/0/id",
+            "step_id": "initial"
+          }
+        },
+        "idempotency_key": "full804-D02-emergency-declare"
+      },
+      "kind": "DECLARE_POLICY",
+      "step_id": "emergency-declare"
+    },
+    {
+      "at": "2026-10-04T10:00:16+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "accepted": true,
+        "proposal_id": {
+          "$ref": {
+            "pointer": "/result/proposal_id",
+            "step_id": "emergency-declare"
+          }
+        },
+        "reviewed_hash": {
+          "$ref": {
+            "pointer": "/result/configuration_hash",
+            "step_id": "emergency-declare"
+          }
+        }
+      },
+      "kind": "CONFIRM_POLICY",
+      "step_id": "emergency-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:18+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "configuration": {
+          "asset_policy_id": null,
+          "cross_goal_reallocation_allowed": false,
+          "deadline": "2026-12-10",
+          "monthly_contribution": {
+            "max_cents": 100000,
+            "min_cents": 100000,
+            "target_cents": 100000
+          },
+          "name": "作者 goal-a",
+          "priority": {
+            "deferrable": true,
+            "importance": 60,
+            "minimum_cents": 100000,
+            "reducible": true
+          },
+          "target_cents": 1200000,
+          "type": "goal_saving",
+          "valid_from": "2026-10-04",
+          "valid_until": "2027-10-04"
+        },
+        "expected_epoch_id": {
+          "$ref": {
+            "pointer": "/result/tables/audit_epochs/0/id",
+            "step_id": "initial"
+          }
+        },
+        "idempotency_key": "full804-D02-goal-a-base-declare"
+      },
+      "kind": "DECLARE_POLICY",
+      "step_id": "goal-a-base-declare"
+    },
+    {
+      "at": "2026-10-04T10:00:20+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "accepted": true,
+        "proposal_id": {
+          "$ref": {
+            "pointer": "/result/proposal_id",
+            "step_id": "goal-a-base-declare"
+          }
+        },
+        "reviewed_hash": {
+          "$ref": {
+            "pointer": "/result/configuration_hash",
+            "step_id": "goal-a-base-declare"
+          }
+        }
+      },
+      "kind": "CONFIRM_POLICY",
+      "step_id": "goal-a-base-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:22+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "account_id": {
+          "$ref": {
+            "pointer": "/result/account/id",
+            "step_id": "goal-account"
+          }
+        },
+        "expected_version_id": {
+          "$ref": {
+            "pointer": "/result/current_version_id",
+            "step_id": "goal-a-base-confirm"
+          }
+        },
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "goal-a-base-confirm"
+          }
+        }
+      },
+      "kind": "CREATE_GOAL",
+      "step_id": "goal-a-create"
+    },
+    {
+      "at": "2026-10-04T10:00:24+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "configuration": {
+            "allow_deferral": true,
+            "allow_partial": true,
+            "asset_policy_id": null,
+            "cross_goal_reallocation_allowed": false,
+            "cross_goal_reallocation_policy_id": null,
+            "deadline": "2026-12-10",
+            "deferral_cost_cents_per_day": 200,
+            "importance": 60,
+            "minimum_guarantee_cents": 100000,
+            "monthly_contribution": {
+              "max_cents": 100000,
+              "min_cents": 100000,
+              "target_cents": 100000
+            },
+            "name": "作者 goal-a",
+            "target_cents": 1200000,
+            "type": "long_term_goal",
+            "valid_from": "2026-10-04",
+            "valid_until": "2027-10-04"
+          },
+          "expected_version_id": {
+            "$ref": {
+              "pointer": "/result/current_version_id",
+              "step_id": "goal-a-base-confirm"
+            }
+          }
+        },
+        "goal_id": {
+          "$ref": {
+            "pointer": "/result/id",
+            "step_id": "goal-a-create"
+          }
+        }
+      },
+      "kind": "FULL_GOAL_PREVIEW",
+      "step_id": "goal-a-preview"
+    },
+    {
+      "at": "2026-10-04T10:00:26+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "accepted": true,
+          "configuration": {
+            "$ref": {
+              "pointer": "/result/full_configuration",
+              "step_id": "goal-a-preview"
+            }
+          },
+          "expected_epoch_id": {
+            "$ref": {
+              "pointer": "/result/tables/audit_epochs/0/id",
+              "step_id": "initial"
+            }
+          },
+          "expected_version_id": {
+            "$ref": {
+              "pointer": "/result/expected_version_id",
+              "step_id": "goal-a-preview"
+            }
+          },
+          "idempotency_key": "full804-D02-goal-a-model",
+          "reason": "作者预登记双 hash 明确复核",
+          "reviewed_base_hash": {
+            "$ref": {
+              "pointer": "/result/base_configuration_hash",
+              "step_id": "goal-a-preview"
+            }
+          },
+          "reviewed_full_hash": {
+            "$ref": {
+              "pointer": "/result/full_configuration_hash",
+              "step_id": "goal-a-preview"
+            }
+          }
+        },
+        "goal_id": {
+          "$ref": {
+            "pointer": "/result/id",
+            "step_id": "goal-a-create"
+          }
+        }
+      },
+      "kind": "FULL_GOAL_CONFIRM",
+      "step_id": "goal-a-model"
+    },
+    {
+      "at": "2026-10-04T10:00:28+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "configuration": {
+          "asset_policy_id": null,
+          "cross_goal_reallocation_allowed": false,
+          "deadline": "2027-02-10",
+          "monthly_contribution": {
+            "max_cents": 180000,
+            "min_cents": 180000,
+            "target_cents": 180000
+          },
+          "name": "作者 goal-b",
+          "priority": {
+            "deferrable": false,
+            "importance": 80,
+            "minimum_cents": 180000,
+            "reducible": true
+          },
+          "target_cents": 1200000,
+          "type": "goal_saving",
+          "valid_from": "2026-10-04",
+          "valid_until": "2027-10-04"
+        },
+        "expected_epoch_id": {
+          "$ref": {
+            "pointer": "/result/tables/audit_epochs/0/id",
+            "step_id": "initial"
+          }
+        },
+        "idempotency_key": "full804-D02-goal-b-base-declare"
+      },
+      "kind": "DECLARE_POLICY",
+      "step_id": "goal-b-base-declare"
+    },
+    {
+      "at": "2026-10-04T10:00:30+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "accepted": true,
+        "proposal_id": {
+          "$ref": {
+            "pointer": "/result/proposal_id",
+            "step_id": "goal-b-base-declare"
+          }
+        },
+        "reviewed_hash": {
+          "$ref": {
+            "pointer": "/result/configuration_hash",
+            "step_id": "goal-b-base-declare"
+          }
+        }
+      },
+      "kind": "CONFIRM_POLICY",
+      "step_id": "goal-b-base-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:32+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "account_id": {
+          "$ref": {
+            "pointer": "/result/account/id",
+            "step_id": "goal-account"
+          }
+        },
+        "expected_version_id": {
+          "$ref": {
+            "pointer": "/result/current_version_id",
+            "step_id": "goal-b-base-confirm"
+          }
+        },
+        "policy_id": {
+          "$ref": {
+            "pointer": "/result/policy_id",
+            "step_id": "goal-b-base-confirm"
+          }
+        }
+      },
+      "kind": "CREATE_GOAL",
+      "step_id": "goal-b-create"
+    },
+    {
+      "at": "2026-10-04T10:00:34+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "configuration": {
+            "allow_deferral": false,
+            "allow_partial": true,
+            "asset_policy_id": null,
+            "cross_goal_reallocation_allowed": false,
+            "cross_goal_reallocation_policy_id": null,
+            "deadline": "2027-02-10",
+            "deferral_cost_cents_per_day": 0,
+            "importance": 80,
+            "minimum_guarantee_cents": 180000,
+            "monthly_contribution": {
+              "max_cents": 180000,
+              "min_cents": 180000,
+              "target_cents": 180000
+            },
+            "name": "作者 goal-b",
+            "target_cents": 1200000,
+            "type": "long_term_goal",
+            "valid_from": "2026-10-04",
+            "valid_until": "2027-10-04"
+          },
+          "expected_version_id": {
+            "$ref": {
+              "pointer": "/result/current_version_id",
+              "step_id": "goal-b-base-confirm"
+            }
+          }
+        },
+        "goal_id": {
+          "$ref": {
+            "pointer": "/result/id",
+            "step_id": "goal-b-create"
+          }
+        }
+      },
+      "kind": "FULL_GOAL_PREVIEW",
+      "step_id": "goal-b-preview"
+    },
+    {
+      "at": "2026-10-04T10:00:36+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "accepted": true,
+          "configuration": {
+            "$ref": {
+              "pointer": "/result/full_configuration",
+              "step_id": "goal-b-preview"
+            }
+          },
+          "expected_epoch_id": {
+            "$ref": {
+              "pointer": "/result/tables/audit_epochs/0/id",
+              "step_id": "initial"
+            }
+          },
+          "expected_version_id": {
+            "$ref": {
+              "pointer": "/result/expected_version_id",
+              "step_id": "goal-b-preview"
+            }
+          },
+          "idempotency_key": "full804-D02-goal-b-model",
+          "reason": "作者预登记双 hash 明确复核",
+          "reviewed_base_hash": {
+            "$ref": {
+              "pointer": "/result/base_configuration_hash",
+              "step_id": "goal-b-preview"
+            }
+          },
+          "reviewed_full_hash": {
+            "$ref": {
+              "pointer": "/result/full_configuration_hash",
+              "step_id": "goal-b-preview"
+            }
+          }
+        },
+        "goal_id": {
+          "$ref": {
+            "pointer": "/result/id",
+            "step_id": "goal-b-create"
+          }
+        }
+      },
+      "kind": "FULL_GOAL_CONFIRM",
+      "step_id": "goal-b-model"
+    },
+    {
+      "at": "2026-10-04T10:00:38+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "account_id": {
+          "$ref": {
+            "pointer": "/result/account/id",
+            "step_id": "cash"
+          }
+        },
+        "amount_cents": 600043,
+        "counterparty_ref": "payroll",
+        "currency": "CNY",
+        "external_ref": "full804-D02-income",
+        "idempotency_key": "full804-D02-income",
+        "kind": "INCOME",
+        "occurred_at": "2026-10-04T10:00:38+08:00",
+        "protocol_version": "bank-external-fact-v1",
+        "simulation": true,
+        "source_id": "bounded-funds-external-v1",
+        "user_id": {
+          "$ref": {
+            "pointer": "/result/tables/users/0/id",
+            "step_id": "initial"
+          }
+        }
+      },
+      "kind": "EXTERNAL_FACT",
+      "step_id": "income"
+    },
+    {
+      "at": "2026-10-04T10:00:40+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "JOINT_GOAL_PLAN",
+      "step_id": "joint"
+    },
+    {
+      "at": "2026-10-04T10:00:42+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "FULL_GOAL_CONFLICTS",
+      "step_id": "conflicts"
+    },
+    {
+      "at": "2026-10-04T10:00:44+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "configuration": {
+            "allow_deferral": true,
+            "allow_partial": true,
+            "asset_policy_id": null,
+            "cross_goal_reallocation_allowed": false,
+            "cross_goal_reallocation_policy_id": null,
+            "deadline": "2027-03-10",
+            "deferral_cost_cents_per_day": 200,
+            "importance": 60,
+            "minimum_guarantee_cents": 100000,
+            "monthly_contribution": {
+              "max_cents": 100000,
+              "min_cents": 100000,
+              "target_cents": 100000
+            },
+            "name": "作者 goal-a",
+            "target_cents": 1200000,
+            "type": "long_term_goal",
+            "valid_from": "2026-10-04",
+            "valid_until": "2027-10-04"
+          },
+          "expected_version_id": {
+            "$ref": {
+              "pointer": "/result/lifecycle/current_version_id",
+              "step_id": "goal-a-model"
+            }
+          }
+        },
+        "goal_id": {
+          "$ref": {
+            "pointer": "/result/id",
+            "step_id": "goal-a-create"
+          }
+        }
+      },
+      "kind": "FULL_GOAL_PREVIEW",
+      "step_id": "deferral-revision"
+    },
+    {
+      "at": "2026-10-04T10:00:46+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "SNAPSHOT",
+      "step_id": "final"
+    }
+  ]
+}

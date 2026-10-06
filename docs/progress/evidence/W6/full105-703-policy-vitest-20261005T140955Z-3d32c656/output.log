@@ -1,0 +1,1193 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/api/full-policies.test.ts (8 tests | 1 failed) 21ms
+   ✓ 完整版本/命令连续链保原identity与hash，断序/跨策略/伪当前权限拒绝 5ms
+   ✓ 历史版本可保原证据缺行状态，但不能把ARCHIVED当当前规划授权 0ms
+   ✓ 只读preview严格原version/before配置/金融null，未实现不是0 1ms
+   ✓ lookup NOT_FOUND保未终结语义，伪final或错误命令不成为恢复成功 1ms
+   ✓ by-key完整encode斜线，写入发送原DTO/body字节一次且回执不代替lookup 4ms
+   × 目录/Schema没有simulation仍必须候选且无授权，fraction合法而不安全金额拒绝 6ms
+     → 完整策略响应未通过原确认、身份或无银行授权校验
+   ✓ 模板候选返回wrong template或伪authority时拒绝，不自动转确认POST 1ms
+   ✓ 暂停body无accepted/configuration；恢复不能同旧version回执假成功 1ms
+ ✓ src/features/full-policy-operation.test.ts (22 tests) 606ms
+ ❯ src/components/FullPoliciesPanel.test.tsx (9 tests | 1 failed) 1641ms
+   ✓ 完整列表/版本/原命令只读加载，历史和未实现执行边界可见且无POST 189ms
+   ✓ 候选Schema与字段校验不自动confirm；改变配置立即丢弃已复核候选 203ms
+   × 首次确认响应丢失后保原body/key；NOT_FOUND不清且手动只重放同body/key 372ms
+     → Unable to find an accessible element with the role "button" and name "准备新完整版策略"
+
+Here are the accessible roles:
+
+  region:
+
+  Name "完整版策略生命周期":
+  [36m<section[39m
+    [33maria-label[39m=[32m"完整版策略生命周期"[39m
+    [33mclass[39m=[32m"full-policies-panel readonly-section"[39m
+  [36m/>[39m
+
+  Name "待核对的完整版原请求":
+  [36m<section[39m
+    [33maria-label[39m=[32m"待核对的完整版原请求"[39m
+    [33mclass[39m=[32m"full-policy-pending"[39m
+  [36m/>[39m
+
+  Name "完整版策略候选与首次确认":
+  [36m<section[39m
+    [33maria-label[39m=[32m"完整版策略候选与首次确认"[39m
+    [33mclass[39m=[32m"full-policy-editor"[39m
+  [36m/>[39m
+
+  Name "服务器规范化策略候选":
+  [36m<section[39m
+    [33maria-label[39m=[32m"服务器规范化策略候选"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "完整版策略 · 原配置与命令生命周期":
+  [36m<h3 />[39m
+
+  Name "原请求待核对 · CREATE":
+  [36m<h4 />[39m
+
+  Name "准备新策略 · 用户明确确认":
+  [36m<h4 />[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  code:
+
+  Name "":
+  [36m<code />[39m
+
+  Name "":
+  [36m<code />[39m
+
+  Name "":
+  [36m<code />[39m
+
+  Name "":
+  [36m<code />[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details />[39m
+
+  Name "":
+  [36m<details />[39m
+
+  Name "":
+  [36m<details />[39m
+
+  Name "":
+  [36m<details />[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "只读核对原命令":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "手动重放同一原请求":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "只读刷新完整版策略":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "收起新策略候选":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "仅校验候选配置":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "明确确认新策略":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  checkbox:
+
+  Name "我已核对原请求，明确仅重放同一body和同一键":
+  [36m<input[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  Name "我已复核规范化候选和配置hash，明确确认这份新策略":
+  [36m<input[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ul[39m
+    [33mclass[39m=[32m"full-policy-list"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "策略模板":
+  [36m<select[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "RecurringObligationPolicy · 原MVP确认入口":
+  [36m<option[39m
+    [33mvalue[39m=[32m"RecurringObligationPolicy"[39m
+  [36m/>[39m
+
+  Name "LivingReservePolicy · 原MVP确认入口":
+  [36m<option[39m
+    [33mvalue[39m=[32m"LivingReservePolicy"[39m
+  [36m/>[39m
+
+  Name "EmergencyBufferPolicy · 原MVP确认入口":
+  [36m<option[39m
+    [33mvalue[39m=[32m"EmergencyBufferPolicy"[39m
+  [36m/>[39m
+
+  Name "DatedExpensePolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"DatedExpensePolicy"[39m
+  [36m/>[39m
+
+  Name "LongTermGoalPolicy · 目标双hash确认入口":
+  [36m<option[39m
+    [33mvalue[39m=[32m"LongTermGoalPolicy"[39m
+  [36m/>[39m
+
+  Name "PeriodicTransferPolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"PeriodicTransferPolicy"[39m
+  [36m/>[39m
+
+  Name "AssetAuthorizationPolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"AssetAuthorizationPolicy"[39m
+  [36m/>[39m
+
+  Name "RecoveryPolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"RecoveryPolicy"[39m
+  [36m/>[39m
+
+  Name "GoalAllocationPolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"GoalAllocationPolicy"[39m
+  [36m/>[39m
+
+  Name "CrossGoalReallocationPolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"CrossGoalReallocationPolicy"[39m
+  [36m/>[39m
+
+  Name "SeasonalReservePolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"SeasonalReservePolicy"[39m
+  [36m/>[39m
+
+  Name "InterventionPolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"InterventionPolicy"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "新策略完整配置JSON（金额为整数分）":
+  [36m<textarea[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mrows[39m=[32m"12"[39m
+  [36m/>[39m
+
+  Name "首次确认理由":
+  [36m<input[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mmaxlength[39m=[32m"1000"[39m
+    [33mvalue[39m=[32m"USER_EXPLICIT_FIXTURE_CREATE"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"完整版策略生命周期"[39m
+      [33mclass[39m=[32m"full-policies-panel readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m完整版策略 · 原配置与命令生命周期[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m8类独立FULL策略已接原服务；12类目录保留既存确认入口。所有回执 bank_authority=false；专用审计事件和FULL金融执行适配器尚未接入。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"status"[39m
+      [36m>[39m
+        [0m当前只读快照未找到原键：NOT_FOUND不是最终未提交证明，原请求仍保留。[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"待核对的完整版原请求"[39m
+        [33mclass[39m=[32m"full-policy-pending"[39m
+      [36m>[39m
+        [36m<h4>[39m
+          [0m原请求待核对 · [0m
+          [0mCREATE[0m
+        [36m</h4>[39m
+        [36m<p>[39m
+          [0m原键 [0m
+          [36m<code>[39m
+            [0mfull-policy-ui:c3e87a97-4f78-4a64-9bcd-74688a98276a[0m
+          [36m</code>[39m
+          [0m；原策略 [0m
+          [36m<code>[39m
+            [0m首次创建，身份由服务生成[0m
+          [36m</code>[39m
+          [0m。本地记录没有授权效力。[0m
+        [36m</p>[39m
+        [36m<details>[39m
+          [36m<summary>[39m
+            [0m查看不可改写的原请求body与恢复身份[0m
+          [36m</summary>[39m
+          [36m<pre[39m
+            [33mclass[39m=[32m"readonly-raw"[39m
+          [36m>[39m
+            [0m{
+  "protocol": "full-policy-browser-command-v1",
+  "kind": "CREATE",
+  "policy_id": null,
+  "original_epoch_id": null,
+  "original_configuration_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "path": "/full-policies/confirm",
+  "body": {
+    "template_name": "DatedExpensePolicy",
+    "configuration": {
+      "type": "dated_expense",
+      "name": "HTTP夹具支出",
+      "valid_from": null,
+      "valid_until": null,
+      "due_date": "2027-01-03",
+      "amount_cents": 123007,
+      "priority": {
+        "importance": 100,
+        "minimum_cents": 123007,
+        "reducible": false,
+        "deferrable": false
+      },
+      "must_not_reduce": true
+    },
+    "reviewed_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "accepted": true,
+    "reason": "USER_EXPLICIT_FIXTURE_CREATE",
+    "idempotency_key": "full-policy-ui:c3e87a97-4f78-4a64-9bcd-74688a98276a"
+  },
+  "body_json": "{\"template_name\":\"DatedExpensePolicy\",\"configuration\":{\"type\":\"dated_expense\",\"name\":\"HTTP夹具支出\",\"valid_from\":null,\"valid_until\":null,\"due_date\":\"2027-01-03\",\"amount_cents\":123007,\"priority\":{\"importance\":100,\"minimum_cents\":123007,\"reducible\":false,\"deferrable\":false},\"must_not_reduce\":true},\"reviewed_hash\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"accepted\":true,\"reason\":\"USER_EXPLICIT_FIXTURE_CREATE\",\"idempotency_key\":\"full-policy-ui:c3e87a97-4f78-4a64-9bcd-74688a98276a\"}"
+}[0m
+          [36m</pre>[39m
+        [36m</details>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m只读核对原命令[0m
+        [36m</button>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"full-policy-check"[39m
+        [36m>[39m
+          [36m<input[39m
+            [33mtype[39m=[32m"checkbox"[39m
+          [36m/>[39m
+          [0m我已核对原请求，明确仅重放同一body和同一键[0m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m手动重放同一原请求[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m不会自动重试或新增行动。即使服务器拒绝且查询未找到，仍不能用NOT_FOUND清除原请求；缺少最终拒绝证明时需保留并核查。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"full-policy-actions"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m只读刷新完整版策略[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m收起新策略候选[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<ul[39m
+        [33mclass[39m=[32m"full-policy-list"[39m
+      [36m/>[39m
+      [36m<p>[39m
+        [0m当前未登记独立FULL策略；目录候选不等于已确认策略。[0m
+      [36m</p>[39m
+      [36m<details>[39m
+        [36m<summary>[39m
+          [0m完整版策略列表原JSON响应[0m
+        [36m</summary>[39m
+        [36m<pre[39m
+          [33mclass[39m=[32m"readonly-raw"[39m
+        [36m>[39m
+          [0m{"simulation":true,"bank_authority":false,"dedicated_audit_event":false,"items":[]}[0m
+        [36m</pre>[39m
+      [36m</details>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"完整版策略候选与首次确认"[39m
+        [33mclass[39m=[32m"full-policy-editor"[39m
+      [36m>[39m
+        [36m<h4>[39m
+          [0m准备新策略 · 用户明确确认[0m
+        [36m</h4>[39m
+        [36m<p>[39m
+          [0m目录和Schema仅描述候选；服务器字段校验不产生授权。首次确认保存原配置、复核hash和用户理由。[0m
+        [36m</p>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m策略模板[0m
+          [36m<select[39m
+            [33mdisabled[39m=[32m""[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"RecurringObligationPolicy"[39m
+            [36m>[39m
+              [0mRecurringObligationPolicy[0m
+              [0m · [0m
+              [0m原MVP确认入口[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"LivingReservePolicy"[39m
+            [36m>[39m
+              [0mLivingReservePolicy[0m
+              [0m · [0m
+              [0m原MVP确认入口[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"EmergencyBufferPolicy"[39m
+            [36m>[39m
+              [0mEmergencyBufferPolicy[0m
+              [0m · [0m
+              [0m原MVP确认入口[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"DatedExpensePolicy"[39m
+            [36m>[39m
+              [0mDatedExpensePolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"LongTermGoalPolicy"[39m
+            [36m>[39m
+              [0mLongTermGoalPolicy[0m
+              [0m · [0m
+              [0m目标双hash确认入口[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"PeriodicTransferPolicy"[39m
+            [36m>[39m
+              [0mPeriodicTransferPolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"AssetAuthorizationPolicy"[39m
+            [36m>[39m
+              [0mAssetAuthorizationPolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"RecoveryPolicy"[39m
+            [36m>[39m
+              [0mRecoveryPolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"GoalAllocationPolicy"[39m
+            [36m>[39m
+              [0mGoalAllocationPolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"CrossGoalReallocationPolicy"[39m
+            [36m>[39m
+              [0mCrossGoalReallocationPolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"SeasonalReservePolicy"[39m
+            [36m>[39m
+              [0mSeasonalReservePolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"InterventionPolicy"[39m
+            [36m>[39m
+              [0mInterventionPolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<p>[39m
+          [0m原Schema摘要 [0m
+          [36m<code>[39m
+            [0mffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff[0m
+          [36m</code>[39m
+          [0m；仍需服务器跨字段与引用条件校验。[0m
+        [36m</p>[39m
+        [36m<details>[39m
+          [36m<summary>[39m
+            [0m查看服务器完整JSON Schema原响应[0m
+          [36m</summary>[39m
+          [36m<pre[39m
+            [33mclass[39m=[32m"readonly-raw"[39m
+          [36m>[39m
+            [0m{"template_name":"DatedExpensePolicy","dsl_version":"FULL_V1","json_schema":{"type":"object","required":["name","amount_cents"],"additionalProperties":false},"schema_sha256":"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff","cross_field_validation_required":true,"candidate_only":true,"authority_granted":false}[0m
+          [36m</pre>[39m
+        [36m</details>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m新策略完整配置JSON（金额为整数分）[0m
+          [36m<textarea[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mrows[39m=[32m"12"[39m
+          [36m>[39m
+            [0m{"type":"dated_expense","name":"HTTP夹具支出","valid_from":null,"valid_until":null,"due_date":"2027-01-03","amount_cents":123007,"priority":{"importance":100,"minimum_cents":123007,"reducible":false,"deferrable":false},"must_not_reduce":true}[0m
+          [36m</textarea>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m仅校验候选配置[0m
+        [36m</button>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"服务器规范化策略候选"[39m
+        [36m>[39m
+          [36m<p>[39m
+            [0m候选配置摘要 [0m
+            [36m<code>[39m
+              [0maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[0m
+            [36m</code>[39m
+            [0m；引用有效性仍待正式确认服务核对，未获银行授权。[0m
+          [36m</p>[39m
+          [36m<details>[39m
+            [36m<summary>[39m
+              [0m查看规范化候选原JSON响应[0m
+            [36m</summary>[39m
+            [36m<pre[39m
+              [33mclass[39m=[32m"readonly-raw"[39m
+            [36m>[39m
+              [0m{"template_name":"DatedExpensePolicy","dsl_version":"FULL_V1","normalized_configuration":{"type":"dated_expense","name":"HTTP夹具支出","valid_from":null,"valid_until":null,"due_date":"2027-01-03","amount_cents":123007,"priority":{"importance":100,"minimum_cents":123007,"reducible":false,"deferrable":false},"must_not_reduce":true},"configuration_hash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","candidate_only":true,"authority_granted":false,"reference_validation_pending":true}[0m
+            [36m</pre>[39m
+          [36m</details>[39m
+        [36m</section>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m首次确认理由[0m
+          [36m<input[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mmaxlength[39m=[32m"1000"[39m
+            [33mvalue[39m=[32m"USER_EXPLICIT_FIXTURE_CREATE"[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"full-policy-check"[39m
+        [36m>[39m
+          [36m<input[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtype[39m=[32m"checkbox"[39m
+          [36m/>[39m
+          [0m我已复核规范化候选和配置hash，明确确认这份新策略[0m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m明确确认新策略[0m
+        [36m</button>[39m
+      [36m</section>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   ✓ 暂停原expectedVersion保持不造grant，HTTP0成功仍pending；匹配RECORDED才解除 178ms
+   ✓ 恢复沿原配置hash和原预期version明确确认，不发送未确认configuration 151ms
+   ✓ 修改需原只读preview+复核hash，未知财务delta不显示成零，发送真实after配置 292ms
+   ✓ 历史周期或其他family blocked不能新写，完整readonly历史仍可核 95ms
+   ✓ lookup错原键不放行新写，不自动POST；本地恢复保原不可编辑identity 54ms
+   ✓ 目录完整保留12模板，LongTerm选择路由原目标桥而不能此页独立确认 105ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/api/full-policies.test.ts > 目录/Schema没有simulation仍必须候选且无授权，fraction合法而不安全金额拒绝
+Error: 完整策略响应未通过原确认、身份或无银行授权校验
+ ❯ requireValue src/api/full-policies.ts:34:86
+
+ ❯ validateFullPolicyCandidate src/api/full-policies.ts:137:3
+ ❯ src/api/full-policies.test.ts:26:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/components/FullPoliciesPanel.test.tsx > 首次确认响应丢失后保原body/key；NOT_FOUND不清且手动只重放同body/key
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "准备新完整版策略"
+
+Here are the accessible roles:
+
+  region:
+
+  Name "完整版策略生命周期":
+  [36m<section[39m
+    [33maria-label[39m=[32m"完整版策略生命周期"[39m
+    [33mclass[39m=[32m"full-policies-panel readonly-section"[39m
+  [36m/>[39m
+
+  Name "待核对的完整版原请求":
+  [36m<section[39m
+    [33maria-label[39m=[32m"待核对的完整版原请求"[39m
+    [33mclass[39m=[32m"full-policy-pending"[39m
+  [36m/>[39m
+
+  Name "完整版策略候选与首次确认":
+  [36m<section[39m
+    [33maria-label[39m=[32m"完整版策略候选与首次确认"[39m
+    [33mclass[39m=[32m"full-policy-editor"[39m
+  [36m/>[39m
+
+  Name "服务器规范化策略候选":
+  [36m<section[39m
+    [33maria-label[39m=[32m"服务器规范化策略候选"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "完整版策略 · 原配置与命令生命周期":
+  [36m<h3 />[39m
+
+  Name "原请求待核对 · CREATE":
+  [36m<h4 />[39m
+
+  Name "准备新策略 · 用户明确确认":
+  [36m<h4 />[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  code:
+
+  Name "":
+  [36m<code />[39m
+
+  Name "":
+  [36m<code />[39m
+
+  Name "":
+  [36m<code />[39m
+
+  Name "":
+  [36m<code />[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details />[39m
+
+  Name "":
+  [36m<details />[39m
+
+  Name "":
+  [36m<details />[39m
+
+  Name "":
+  [36m<details />[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "只读核对原命令":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "手动重放同一原请求":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "只读刷新完整版策略":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "收起新策略候选":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "仅校验候选配置":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "明确确认新策略":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  checkbox:
+
+  Name "我已核对原请求，明确仅重放同一body和同一键":
+  [36m<input[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  Name "我已复核规范化候选和配置hash，明确确认这份新策略":
+  [36m<input[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ul[39m
+    [33mclass[39m=[32m"full-policy-list"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "策略模板":
+  [36m<select[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "RecurringObligationPolicy · 原MVP确认入口":
+  [36m<option[39m
+    [33mvalue[39m=[32m"RecurringObligationPolicy"[39m
+  [36m/>[39m
+
+  Name "LivingReservePolicy · 原MVP确认入口":
+  [36m<option[39m
+    [33mvalue[39m=[32m"LivingReservePolicy"[39m
+  [36m/>[39m
+
+  Name "EmergencyBufferPolicy · 原MVP确认入口":
+  [36m<option[39m
+    [33mvalue[39m=[32m"EmergencyBufferPolicy"[39m
+  [36m/>[39m
+
+  Name "DatedExpensePolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"DatedExpensePolicy"[39m
+  [36m/>[39m
+
+  Name "LongTermGoalPolicy · 目标双hash确认入口":
+  [36m<option[39m
+    [33mvalue[39m=[32m"LongTermGoalPolicy"[39m
+  [36m/>[39m
+
+  Name "PeriodicTransferPolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"PeriodicTransferPolicy"[39m
+  [36m/>[39m
+
+  Name "AssetAuthorizationPolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"AssetAuthorizationPolicy"[39m
+  [36m/>[39m
+
+  Name "RecoveryPolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"RecoveryPolicy"[39m
+  [36m/>[39m
+
+  Name "GoalAllocationPolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"GoalAllocationPolicy"[39m
+  [36m/>[39m
+
+  Name "CrossGoalReallocationPolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"CrossGoalReallocationPolicy"[39m
+  [36m/>[39m
+
+  Name "SeasonalReservePolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"SeasonalReservePolicy"[39m
+  [36m/>[39m
+
+  Name "InterventionPolicy · 完整版独立生命周期":
+  [36m<option[39m
+    [33mvalue[39m=[32m"InterventionPolicy"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "新策略完整配置JSON（金额为整数分）":
+  [36m<textarea[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mrows[39m=[32m"12"[39m
+  [36m/>[39m
+
+  Name "首次确认理由":
+  [36m<input[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mmaxlength[39m=[32m"1000"[39m
+    [33mvalue[39m=[32m"USER_EXPLICIT_FIXTURE_CREATE"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"完整版策略生命周期"[39m
+      [33mclass[39m=[32m"full-policies-panel readonly-section"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m完整版策略 · 原配置与命令生命周期[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m8类独立FULL策略已接原服务；12类目录保留既存确认入口。所有回执 bank_authority=false；专用审计事件和FULL金融执行适配器尚未接入。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"status"[39m
+      [36m>[39m
+        [0m当前只读快照未找到原键：NOT_FOUND不是最终未提交证明，原请求仍保留。[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"待核对的完整版原请求"[39m
+        [33mclass[39m=[32m"full-policy-pending"[39m
+      [36m>[39m
+        [36m<h4>[39m
+          [0m原请求待核对 · [0m
+          [0mCREATE[0m
+        [36m</h4>[39m
+        [36m<p>[39m
+          [0m原键 [0m
+          [36m<code>[39m
+            [0mfull-policy-ui:c3e87a97-4f78-4a64-9bcd-74688a98276a[0m
+          [36m</code>[39m
+          [0m；原策略 [0m
+          [36m<code>[39m
+            [0m首次创建，身份由服务生成[0m
+          [36m</code>[39m
+          [0m。本地记录没有授权效力。[0m
+        [36m</p>[39m
+        [36m<details>[39m
+          [36m<summary>[39m
+            [0m查看不可改写的原请求body与恢复身份[0m
+          [36m</summary>[39m
+          [36m<pre[39m
+            [33mclass[39m=[32m"readonly-raw"[39m
+          [36m>[39m
+            [0m{
+  "protocol": "full-policy-browser-command-v1",
+  "kind": "CREATE",
+  "policy_id": null,
+  "original_epoch_id": null,
+  "original_configuration_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "path": "/full-policies/confirm",
+  "body": {
+    "template_name": "DatedExpensePolicy",
+    "configuration": {
+      "type": "dated_expense",
+      "name": "HTTP夹具支出",
+      "valid_from": null,
+      "valid_until": null,
+      "due_date": "2027-01-03",
+      "amount_cents": 123007,
+      "priority": {
+        "importance": 100,
+        "minimum_cents": 123007,
+        "reducible": false,
+        "deferrable": false
+      },
+      "must_not_reduce": true
+    },
+    "reviewed_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "accepted": true,
+    "reason": "USER_EXPLICIT_FIXTURE_CREATE",
+    "idempotency_key": "full-policy-ui:c3e87a97-4f78-4a64-9bcd-74688a98276a"
+  },
+  "body_json": "{\"template_name\":\"DatedExpensePolicy\",\"configuration\":{\"type\":\"dated_expense\",\"name\":\"HTTP夹具支出\",\"valid_from\":null,\"valid_until\":null,\"due_date\":\"2027-01-03\",\"amount_cents\":123007,\"priority\":{\"importance\":100,\"minimum_cents\":123007,\"reducible\":false,\"deferrable\":false},\"must_not_reduce\":true},\"reviewed_hash\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"accepted\":true,\"reason\":\"USER_EXPLICIT_FIXTURE_CREATE\",\"idempotency_key\":\"full-policy-ui:c3e87a97-4f78-4a64-9bcd-74688a98276a\"}"
+}[0m
+          [36m</pre>[39m
+        [36m</details>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m只读核对原命令[0m
+        [36m</button>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"full-policy-check"[39m
+        [36m>[39m
+          [36m<input[39m
+            [33mtype[39m=[32m"checkbox"[39m
+          [36m/>[39m
+          [0m我已核对原请求，明确仅重放同一body和同一键[0m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m手动重放同一原请求[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m不会自动重试或新增行动。即使服务器拒绝且查询未找到，仍不能用NOT_FOUND清除原请求；缺少最终拒绝证明时需保留并核查。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"full-policy-actions"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m只读刷新完整版策略[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m收起新策略候选[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<ul[39m
+        [33mclass[39m=[32m"full-policy-list"[39m
+      [36m/>[39m
+      [36m<p>[39m
+        [0m当前未登记独立FULL策略；目录候选不等于已确认策略。[0m
+      [36m</p>[39m
+      [36m<details>[39m
+        [36m<summary>[39m
+          [0m完整版策略列表原JSON响应[0m
+        [36m</summary>[39m
+        [36m<pre[39m
+          [33mclass[39m=[32m"readonly-raw"[39m
+        [36m>[39m
+          [0m{"simulation":true,"bank_authority":false,"dedicated_audit_event":false,"items":[]}[0m
+        [36m</pre>[39m
+      [36m</details>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"完整版策略候选与首次确认"[39m
+        [33mclass[39m=[32m"full-policy-editor"[39m
+      [36m>[39m
+        [36m<h4>[39m
+          [0m准备新策略 · 用户明确确认[0m
+        [36m</h4>[39m
+        [36m<p>[39m
+          [0m目录和Schema仅描述候选；服务器字段校验不产生授权。首次确认保存原配置、复核hash和用户理由。[0m
+        [36m</p>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m策略模板[0m
+          [36m<select[39m
+            [33mdisabled[39m=[32m""[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"RecurringObligationPolicy"[39m
+            [36m>[39m
+              [0mRecurringObligationPolicy[0m
+              [0m · [0m
+              [0m原MVP确认入口[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"LivingReservePolicy"[39m
+            [36m>[39m
+              [0mLivingReservePolicy[0m
+              [0m · [0m
+              [0m原MVP确认入口[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"EmergencyBufferPolicy"[39m
+            [36m>[39m
+              [0mEmergencyBufferPolicy[0m
+              [0m · [0m
+              [0m原MVP确认入口[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"DatedExpensePolicy"[39m
+            [36m>[39m
+              [0mDatedExpensePolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"LongTermGoalPolicy"[39m
+            [36m>[39m
+              [0mLongTermGoalPolicy[0m
+              [0m · [0m
+              [0m目标双hash确认入口[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"PeriodicTransferPolicy"[39m
+            [36m>[39m
+              [0mPeriodicTransferPolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"AssetAuthorizationPolicy"[39m
+            [36m>[39m
+              [0mAssetAuthorizationPolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"RecoveryPolicy"[39m
+            [36m>[39m
+              [0mRecoveryPolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"GoalAllocationPolicy"[39m
+            [36m>[39m
+              [0mGoalAllocationPolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"CrossGoalReallocationPolicy"[39m
+            [36m>[39m
+              [0mCrossGoalReallocationPolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"SeasonalReservePolicy"[39m
+            [36m>[39m
+              [0mSeasonalReservePolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"InterventionPolicy"[39m
+            [36m>[39m
+              [0mInterventionPolicy[0m
+              [0m · [0m
+              [0m完整版独立生命周期[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<p>[39m
+          [0m原Schema摘要 [0m
+          [36m<code>[39m
+            [0mffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff[0m
+          [36m</code>[39m
+          [0m；仍需服务器跨字段与引用条件校验。[0m
+        [36m</p>[39m
+        [36m<details>[39m
+          [36m<summary>[39m
+            [0m查看服务器完整JSON Schema原响应[0m
+          [36m</summary>[39m
+          [36m<pre[39m
+            [33mclass[39m=[32m"readonly-raw"[39m
+          [36m>[39m
+            [0m{"template_name":"DatedExpensePolicy","dsl_version":"FULL_V1","json_schema":{"type":"object","required":["name","amount_cents"],"additionalProperties":false},"schema_sha256":"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff","cross_field_validation_required":true,"candidate_only":true,"authority_granted":false}[0m
+          [36m</pre>[39m
+        [36m</details>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m新策略完整配置JSON（金额为整数分）[0m
+          [36m<textarea[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mrows[39m=[32m"12"[39m
+          [36m>[39m
+            [0m{"type":"dated_expense","name":"HTTP夹具支出","valid_from":null,"valid_until":null,"due_date":"2027-01-03","amount_cents":123007,"priority":{"importance":100,"minimum_cents":123007,"reducible":false,"deferrable":false},"must_not_reduce":true}[0m
+          [36m</textarea>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m仅校验候选配置[0m
+        [36m</button>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"服务器规范化策略候选"[39m
+        [36m>[39m
+          [36m<p>[39m
+            [0m候选配置摘要 [0m
+            [36m<code>[39m
+              [0maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[0m
+            [36m</code>[39m
+            [0m；引用有效性仍待正式确认服务核对，未获银行授权。[0m
+          [36m</p>[39m
+          [36m<details>[39m
+            [36m<summary>[39m
+              [0m查看规范化候选原JSON响应[0m
+            [36m</summary>[39m
+            [36m<pre[39m
+              [33mclass[39m=[32m"readonly-raw"[39m
+            [36m>[39m
+              [0m{"template_name":"DatedExpensePolicy","dsl_version":"FULL_V1","normalized_configuration":{"type":"dated_expense","name":"HTTP夹具支出","valid_from":null,"valid_until":null,"due_date":"2027-01-03","amount_cents":123007,"priority":{"importance":100,"minimum_cents":123007,"reducible":false,"deferrable":false},"must_not_reduce":true},"configuration_hash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","candidate_only":true,"authority_granted":false,"reference_validation_pending":true}[0m
+            [36m</pre>[39m
+          [36m</details>[39m
+        [36m</section>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m首次确认理由[0m
+          [36m<input[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mmaxlength[39m=[32m"1000"[39m
+            [33mvalue[39m=[32m"USER_EXPLICIT_FIXTURE_CREATE"[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"full-policy-check"[39m
+        [36m>[39m
+          [36m<input[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtype[39m=[32m"checkbox"[39m
+          [36m/>[39m
+          [0m我已复核规范化候选和配置hash，明确确认这份新策略[0m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m明确确认新策略[0m
+        [36m</button>[39m
+      [36m</section>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/FullPoliciesPanel.test.tsx:43:267
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  2 failed | 37 passed (39)
+   Start at  22:09:57
+   Duration  4.54s (transform 385ms, setup 1.67s, collect 789ms, tests 2.27s, environment 3.49s, prepare 1.03s)
+
+undefined
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: vitest run src/api/full-policies.test.ts src/features/full-policy-operation.test.ts src/components/FullPoliciesPanel.test.tsx

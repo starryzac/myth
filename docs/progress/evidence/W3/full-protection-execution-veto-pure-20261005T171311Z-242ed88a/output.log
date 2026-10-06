@@ -1,0 +1,300 @@
+F.FFFFFF................................................                 [100%]
+================================== FAILURES ===================================
+__ test_confirmed_full_dated_floor_vetoes_a_previously_safe_goal_allocation ___
+
+    def test_confirmed_full_dated_floor_vetoes_a_previously_safe_goal_allocation() -> None:
+        effect, original = goal_example()
+        validation = revalidate_execution(effect, original)
+        assert validation.status == "READY"
+        protected = source("DatedExpensePolicy", dated(amount=1100), now=NOW)
+        checked = validate_full_execution_protection(effect, original, validation, [protected])
+        assert checked.status == "BLOCKED"
+>       assert checked.minimum_projected_margin_cents == -200
+E       AssertionError: assert -400 == -200
+E        +  where -400 = FullExecutionProtectionResult(protocol='full-execution-protection-v1', simulation=True, grants_authority=False, origin...OTECTED_COMMITMENT_WOULD_BE_VIOLATED'], result_hash='cad6edc3a68778577b29e14b34a9097e9c268f5034e8d055512b0fed442956cf').minimum_projected_margin_cents
+
+apps\api\app\tests\test_full_execution_protection.py:17: AssertionError
+____ test_other_reserved_cash_remains_protected_in_full_post_effect_curve _____
+
+    def test_other_reserved_cash_remains_protected_in_full_post_effect_curve() -> None:
+        effect, original = transfer(), context()
+>       original.reserved_cash_by_account = {original.snapshot.cash_accounts[0].account_id: 100}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_execution_protection.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\pydantic\main.py:1048: in __setattr__
+    elif (setattr_handler := self._setattr_handler(name, value)) is not None:
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pydantic\main.py:1084: in _setattr_handler
+    _check_frozen(cls, name, value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+model_cls = <class 'app.domain.execution_types.ExecutionContext'>
+name = 'reserved_cash_by_account'
+value = {UUID('00000000-0000-0000-0000-000000000002'): 100}
+
+    def _check_frozen(model_cls: type[BaseModel], name: str, value: Any) -> None:
+        if model_cls.model_config.get('frozen'):
+            error_type = 'frozen_instance'
+        elif getattr(model_cls.__pydantic_fields__.get(name), 'frozen', False):
+            error_type = 'frozen_field'
+        else:
+            return
+    
+>       raise ValidationError.from_exception_data(
+            model_cls.__name__, [{'type': error_type, 'loc': (name,), 'input': value}]
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ExecutionContext
+E       reserved_cash_by_account
+E         Instance is frozen [type=frozen_instance, input_value={UUID('00000000-0000-0000...000-000000000002'): 100}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/frozen_instance
+
+.venv\Lib\site-packages\pydantic\main.py:90: ValidationError
+__ test_unverified_original_projection_never_passes_full_check[effect_hash] ___
+
+mode = 'effect_hash'
+
+    @pytest.mark.parametrize("mode", ["effect_hash", "user", "missing_post", "clock", "blocked"])
+    def test_unverified_original_projection_never_passes_full_check(mode: str) -> None:
+        effect, original = transfer(), context()
+        validation = revalidate_execution(effect, original)
+        if mode == "effect_hash":
+>           validation.effect_hash = "f" * 64
+            ^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_execution_protection.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\pydantic\main.py:1048: in __setattr__
+    elif (setattr_handler := self._setattr_handler(name, value)) is not None:
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pydantic\main.py:1084: in _setattr_handler
+    _check_frozen(cls, name, value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+model_cls = <class 'app.domain.execution_types.ExecutionValidation'>
+name = 'effect_hash'
+value = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+
+    def _check_frozen(model_cls: type[BaseModel], name: str, value: Any) -> None:
+        if model_cls.model_config.get('frozen'):
+            error_type = 'frozen_instance'
+        elif getattr(model_cls.__pydantic_fields__.get(name), 'frozen', False):
+            error_type = 'frozen_field'
+        else:
+            return
+    
+>       raise ValidationError.from_exception_data(
+            model_cls.__name__, [{'type': error_type, 'loc': (name,), 'input': value}]
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ExecutionValidation
+E       effect_hash
+E         Instance is frozen [type=frozen_instance, input_value='ffffffffffffffffffffffff...fffffffffffffffffffffff', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/frozen_instance
+
+.venv\Lib\site-packages\pydantic\main.py:90: ValidationError
+______ test_unverified_original_projection_never_passes_full_check[user] ______
+
+mode = 'user'
+
+    @pytest.mark.parametrize("mode", ["effect_hash", "user", "missing_post", "clock", "blocked"])
+    def test_unverified_original_projection_never_passes_full_check(mode: str) -> None:
+        effect, original = transfer(), context()
+        validation = revalidate_execution(effect, original)
+        if mode == "effect_hash":
+            validation.effect_hash = "f" * 64
+        elif mode == "user":
+>           original.user_id = original.snapshot.cash_accounts[0].account_id
+            ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_execution_protection.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\pydantic\main.py:1048: in __setattr__
+    elif (setattr_handler := self._setattr_handler(name, value)) is not None:
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pydantic\main.py:1084: in _setattr_handler
+    _check_frozen(cls, name, value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+model_cls = <class 'app.domain.execution_types.ExecutionContext'>
+name = 'user_id', value = UUID('00000000-0000-0000-0000-000000000002')
+
+    def _check_frozen(model_cls: type[BaseModel], name: str, value: Any) -> None:
+        if model_cls.model_config.get('frozen'):
+            error_type = 'frozen_instance'
+        elif getattr(model_cls.__pydantic_fields__.get(name), 'frozen', False):
+            error_type = 'frozen_field'
+        else:
+            return
+    
+>       raise ValidationError.from_exception_data(
+            model_cls.__name__, [{'type': error_type, 'loc': (name,), 'input': value}]
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ExecutionContext
+E       user_id
+E         Instance is frozen [type=frozen_instance, input_value=UUID('00000000-0000-0000-0000-000000000002'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/frozen_instance
+
+.venv\Lib\site-packages\pydantic\main.py:90: ValidationError
+__ test_unverified_original_projection_never_passes_full_check[missing_post] __
+
+mode = 'missing_post'
+
+    @pytest.mark.parametrize("mode", ["effect_hash", "user", "missing_post", "clock", "blocked"])
+    def test_unverified_original_projection_never_passes_full_check(mode: str) -> None:
+        effect, original = transfer(), context()
+        validation = revalidate_execution(effect, original)
+        if mode == "effect_hash":
+            validation.effect_hash = "f" * 64
+        elif mode == "user":
+            original.user_id = original.snapshot.cash_accounts[0].account_id
+        elif mode == "missing_post":
+>           validation.projected_snapshot = None
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_execution_protection.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\pydantic\main.py:1048: in __setattr__
+    elif (setattr_handler := self._setattr_handler(name, value)) is not None:
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pydantic\main.py:1084: in _setattr_handler
+    _check_frozen(cls, name, value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+model_cls = <class 'app.domain.execution_types.ExecutionValidation'>
+name = 'projected_snapshot', value = None
+
+    def _check_frozen(model_cls: type[BaseModel], name: str, value: Any) -> None:
+        if model_cls.model_config.get('frozen'):
+            error_type = 'frozen_instance'
+        elif getattr(model_cls.__pydantic_fields__.get(name), 'frozen', False):
+            error_type = 'frozen_field'
+        else:
+            return
+    
+>       raise ValidationError.from_exception_data(
+            model_cls.__name__, [{'type': error_type, 'loc': (name,), 'input': value}]
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ExecutionValidation
+E       projected_snapshot
+E         Instance is frozen [type=frozen_instance, input_value=None, input_type=NoneType]
+E           For further information visit https://errors.pydantic.dev/2.13/v/frozen_instance
+
+.venv\Lib\site-packages\pydantic\main.py:90: ValidationError
+_____ test_unverified_original_projection_never_passes_full_check[clock] ______
+
+mode = 'clock'
+
+    @pytest.mark.parametrize("mode", ["effect_hash", "user", "missing_post", "clock", "blocked"])
+    def test_unverified_original_projection_never_passes_full_check(mode: str) -> None:
+        effect, original = transfer(), context()
+        validation = revalidate_execution(effect, original)
+        if mode == "effect_hash":
+            validation.effect_hash = "f" * 64
+        elif mode == "user":
+            original.user_id = original.snapshot.cash_accounts[0].account_id
+        elif mode == "missing_post":
+            validation.projected_snapshot = None
+        elif mode == "clock":
+            assert validation.projected_snapshot is not None
+>           validation.projected_snapshot.timezone = "Asia/Shanghai"
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_execution_protection.py:58: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\pydantic\main.py:1048: in __setattr__
+    elif (setattr_handler := self._setattr_handler(name, value)) is not None:
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pydantic\main.py:1084: in _setattr_handler
+    _check_frozen(cls, name, value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+model_cls = <class 'app.domain.boundary_types.BoundarySnapshot'>
+name = 'timezone', value = 'Asia/Shanghai'
+
+    def _check_frozen(model_cls: type[BaseModel], name: str, value: Any) -> None:
+        if model_cls.model_config.get('frozen'):
+            error_type = 'frozen_instance'
+        elif getattr(model_cls.__pydantic_fields__.get(name), 'frozen', False):
+            error_type = 'frozen_field'
+        else:
+            return
+    
+>       raise ValidationError.from_exception_data(
+            model_cls.__name__, [{'type': error_type, 'loc': (name,), 'input': value}]
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for BoundarySnapshot
+E       timezone
+E         Instance is frozen [type=frozen_instance, input_value='Asia/Shanghai', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/frozen_instance
+
+.venv\Lib\site-packages\pydantic\main.py:90: ValidationError
+____ test_unverified_original_projection_never_passes_full_check[blocked] _____
+
+mode = 'blocked'
+
+    @pytest.mark.parametrize("mode", ["effect_hash", "user", "missing_post", "clock", "blocked"])
+    def test_unverified_original_projection_never_passes_full_check(mode: str) -> None:
+        effect, original = transfer(), context()
+        validation = revalidate_execution(effect, original)
+        if mode == "effect_hash":
+            validation.effect_hash = "f" * 64
+        elif mode == "user":
+            original.user_id = original.snapshot.cash_accounts[0].account_id
+        elif mode == "missing_post":
+            validation.projected_snapshot = None
+        elif mode == "clock":
+            assert validation.projected_snapshot is not None
+            validation.projected_snapshot.timezone = "Asia/Shanghai"
+        else:
+>           validation.status = "BLOCKED"
+            ^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_execution_protection.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\pydantic\main.py:1048: in __setattr__
+    elif (setattr_handler := self._setattr_handler(name, value)) is not None:
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pydantic\main.py:1084: in _setattr_handler
+    _check_frozen(cls, name, value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+model_cls = <class 'app.domain.execution_types.ExecutionValidation'>
+name = 'status', value = 'BLOCKED'
+
+    def _check_frozen(model_cls: type[BaseModel], name: str, value: Any) -> None:
+        if model_cls.model_config.get('frozen'):
+            error_type = 'frozen_instance'
+        elif getattr(model_cls.__pydantic_fields__.get(name), 'frozen', False):
+            error_type = 'frozen_field'
+        else:
+            return
+    
+>       raise ValidationError.from_exception_data(
+            model_cls.__name__, [{'type': error_type, 'loc': (name,), 'input': value}]
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ExecutionValidation
+E       status
+E         Instance is frozen [type=frozen_instance, input_value='BLOCKED', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/frozen_instance
+
+.venv\Lib\site-packages\pydantic\main.py:90: ValidationError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_execution_protection.py::test_confirmed_full_dated_floor_vetoes_a_previously_safe_goal_allocation
+FAILED apps/api/app/tests/test_full_execution_protection.py::test_other_reserved_cash_remains_protected_in_full_post_effect_curve
+FAILED apps/api/app/tests/test_full_execution_protection.py::test_unverified_original_projection_never_passes_full_check[effect_hash]
+FAILED apps/api/app/tests/test_full_execution_protection.py::test_unverified_original_projection_never_passes_full_check[user]
+FAILED apps/api/app/tests/test_full_execution_protection.py::test_unverified_original_projection_never_passes_full_check[missing_post]
+FAILED apps/api/app/tests/test_full_execution_protection.py::test_unverified_original_projection_never_passes_full_check[clock]
+FAILED apps/api/app/tests/test_full_execution_protection.py::test_unverified_original_projection_never_passes_full_check[blocked]
+7 failed, 49 passed, 2 warnings in 5.32s

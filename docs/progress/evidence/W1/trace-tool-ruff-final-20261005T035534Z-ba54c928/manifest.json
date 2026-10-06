@@ -1,0 +1,34 @@
+{
+  "run_id": "20261005T035534Z-ba54c928",
+  "task": "W1",
+  "label": "trace-tool-ruff-final",
+  "status": "PASSED",
+  "scope": [
+    "scripts/mvp_trace_metrics.py",
+    "scripts/tests/test_mvp_trace_metrics.py",
+    "apps/api/app/domain/"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "ruff",
+    "check",
+    "scripts/mvp_trace_metrics.py",
+    "scripts/tests/test_mvp_trace_metrics.py"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T03:55:34.588491+00:00",
+  "finished_at": "2026-10-05T03:55:34.837396+00:00",
+  "wall_seconds": 0.248905,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

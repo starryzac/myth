@@ -1,0 +1,35 @@
+{
+  "run_id": "20261006T041345Z-fafc2b64",
+  "task": "W3",
+  "label": "joint-producers-result-canonical-json-positive",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/domain/full_action_set_joint_producers.py",
+    "apps/api/app/services/full_action_set_joint_producers.py",
+    "apps/api/app/tests/test_full_action_set_joint_producers.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "apps/api/app/tests/test_full_action_set_joint_producers.py::test_complete_single_goal_joint_maps_only_to_the_exact_existing_effect",
+    "-q",
+    "--tb=short"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T04:13:47.660048+00:00",
+  "finished_at": "2026-10-06T04:13:59.866965+00:00",
+  "wall_seconds": 12.206917,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "4869a760d0479ed15a7a16103733156271ef53c6fa0bdf703c3422401aa0081c",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

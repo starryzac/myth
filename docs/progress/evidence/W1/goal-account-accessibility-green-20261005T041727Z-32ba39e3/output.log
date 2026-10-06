@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/pages/GoalsPage.test.tsx (8 tests) 1464ms
+   ✓ 原准备响应丢失只重试同一键，存储失败不得先发出金融请求  334ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  12:17:28
+   Duration  3.82s (transform 231ms, setup 435ms, collect 374ms, tests 1.46s, environment 822ms, prepare 281ms)
+

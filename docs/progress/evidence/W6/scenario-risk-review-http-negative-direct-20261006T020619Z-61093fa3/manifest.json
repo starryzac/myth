@@ -1,0 +1,36 @@
+{
+  "run_id": "20261006T020619Z-61093fa3",
+  "task": "W6",
+  "label": "scenario-risk-review-http-negative-direct",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/scenario_risk_review.py",
+    "apps/api/app/services/scenario_risk_review.py",
+    "apps/api/app/api/v1/scenario_risk_review.py",
+    "apps/api/app/tests/test_scenario_risk_review.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_scenario_risk_review.py::test_real_http_extra_query_and_forged_originals_stop_before_capture",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T02:06:20.876446+00:00",
+  "finished_at": "2026-10-06T02:06:26.549908+00:00",
+  "wall_seconds": 5.673462,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "7ae639ea4f08849e6aee99a339c3327ef8306d0f3ace5664c191fb5079ea9651",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

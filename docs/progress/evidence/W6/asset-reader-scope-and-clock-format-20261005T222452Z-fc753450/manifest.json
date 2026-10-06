@@ -1,0 +1,37 @@
+{
+  "run_id": "20261005T222452Z-fc753450",
+  "task": "W6",
+  "label": "asset-reader-scope-and-clock-format",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/services/full_asset_execution_store.py",
+    "apps/api/app/tests/test_full_asset_execution_service.py",
+    "apps/api/app/tests/test_full_asset_execution_integration.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "ruff",
+    "format",
+    "--check",
+    "apps/api/app/services/full_asset_execution_store.py",
+    "apps/api/app/tests/test_full_asset_execution_service.py",
+    "apps/api/app/tests/test_full_asset_execution_integration.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T22:24:53.418605+00:00",
+  "finished_at": "2026-10-05T22:24:53.558761+00:00",
+  "wall_seconds": 0.140156,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "1a8637e3173620a29be5701da7cc6a1bd5f464f49d5143c5b7f623af7f334fe2",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

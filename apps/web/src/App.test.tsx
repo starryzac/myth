@@ -1,4 +1,5 @@
 import { createServer } from 'node:http';
+import { webcrypto } from 'node:crypto';
 import type { AddressInfo } from 'node:net';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
@@ -6,6 +7,23 @@ import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import App from './App';
 import type { Dashboard } from './api/dashboard';
 import { dashboardFixture } from './tests/dashboard-fixture';
+import { beginDemoOperation, endDemoOperation } from './features/demo-operation';
+import { clearFullPolicyOperationAfterLookup, endFullPolicyAttempt, getFullPolicyOperation } from './features/full-policy-operation';
+import { createFullIntent, fullLookupFixture } from './tests/full-policy-fixture';
+import { beginOnboardingCommand, emptyOnboardingDraft, endOnboardingAttempt, getOnboardingDraft, prepareOnboardingIntent, retainOnboardingCandidate } from './features/onboarding-draft';
+import { compilationRef } from './api/onboarding';
+import { compilationFixture, emergencyText, onboardingBinding } from './tests/onboarding-fixture';
+import { presetsFixture, stateFixture } from './tests/demo-fixture';
+import { beginFullGoalOperation, clearFullGoalOperationAfterLookup, endFullGoalAttempt, getFullGoalOperation } from './features/full-goal-operation';
+import { fullGoalIntentFixture, fullGoalLookupFixture } from './tests/full-goal-fixture';
+import { beginOneQuestionOperation, clearOneQuestionAfterLookup, endOneQuestionAttempt, getOneQuestionOperation } from './features/one-question-operation';
+import { questionIntentFixture, questionLookupFixture } from './tests/question-fixture';
+import { beginSpendingEvidenceOperation, clearSpendingEvidenceAfterLookup, endSpendingEvidenceAttempt, getSpendingEvidenceOperation } from './features/spending-evidence-operation';
+import { categoryResultFixture, spendingIntentFixture } from './tests/spending-evidence-fixture';
+import { beginInterventionOperation, clearInterventionAfterRead, endInterventionAttempt, getInterventionOperation } from './features/intervention-operation';
+import { interventionIntentFixture, interventionLookupFixture } from './tests/intervention-fixture';
+import { beginGoalReleaseAuthorizationOperation, clearGoalReleaseAuthorizationAfterLookup, endGoalReleaseAuthorizationAttempt, getGoalReleaseAuthorizationOperation } from './features/goal-release-authorization-operation';
+import { releaseIntentFixture, releaseLookupFixture } from './tests/goal-release-authorization-fixture';
 
 let disconnected: boolean;
 let fixture: Dashboard;
@@ -15,6 +33,18 @@ let requests: string[];
 // Unit HTTP fixture, deliberately distinct from the real API/Edge acceptance.
 const api = createServer((request, response) => {
   requests.push(`${request.method} ${request.url}`);
+  if (request.method === 'GET' && ['/api/v1/demo/state', '/api/v1/demo/presets'].includes(request.url ?? '')) {
+    response.writeHead(200, { 'Content-Type': 'application/json' });
+    response.end(JSON.stringify(request.url === '/api/v1/demo/state' ? stateFixture() : presetsFixture())); return;
+  }
+  if (request.method === 'GET' && request.url?.startsWith('/api/v1/full-policies/commands/by-key/')) {
+    const original = getFullPolicyOperation().pending;
+    if (original) { response.writeHead(200, { 'Content-Type': 'application/json' }); response.end(JSON.stringify(fullLookupFixture(original))); return; }
+  }
+  if (request.method === 'GET' && request.url?.includes('/category-confirmations/')) {
+    const original = getSpendingEvidenceOperation().pending;
+    if (original) { response.writeHead(200, { 'Content-Type': 'application/json' }); response.end(JSON.stringify(categoryResultFixture(original))); return; }
+  }
   if (request.method !== 'GET' || request.url !== '/api/v1/dashboard') {
     response.writeHead(404); response.end(); return;
   }
@@ -33,10 +63,155 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
+  endGoalReleaseAuthorizationAttempt(); const releaseOriginal = getGoalReleaseAuthorizationOperation().pending;
+  if (releaseOriginal) await clearGoalReleaseAuthorizationAfterLookup(releaseOriginal, await releaseLookupFixture(releaseOriginal));
+  endInterventionAttempt(); const interventionOriginal = getInterventionOperation().pending;
+  if (interventionOriginal) await clearInterventionAfterRead(interventionOriginal, interventionLookupFixture(interventionOriginal));
+  endSpendingEvidenceAttempt(); const spendingOriginal = getSpendingEvidenceOperation().pending;
+  if (spendingOriginal) await clearSpendingEvidenceAfterLookup(spendingOriginal, categoryResultFixture(spendingOriginal));
+  endOneQuestionAttempt(); const questionOriginal = getOneQuestionOperation().pending;
+  if (questionOriginal) await clearOneQuestionAfterLookup(questionOriginal, questionLookupFixture(questionOriginal));
+  endOnboardingAttempt(); const onboardingOriginal = getOnboardingDraft().draft.pending;
+  if (onboardingOriginal?.kind === 'EMERGENCY') retainOnboardingCandidate(onboardingOriginal, compilationRef(onboardingOriginal, compilationFixture()));
+  endFullPolicyAttempt(); const fullOriginal = getFullPolicyOperation().pending;
+  if (fullOriginal) clearFullPolicyOperationAfterLookup(fullOriginal, fullLookupFixture(fullOriginal));
+  endFullGoalAttempt(); const goalOriginal = getFullGoalOperation().pending;
+  if (goalOriginal) await clearFullGoalOperationAfterLookup(goalOriginal, fullGoalLookupFixture(goalOriginal));
+  endDemoOperation(true); sessionStorage.clear();
   client.clear(); api.closeAllConnections();
   await new Promise<void>((resolve, reject) => api.close((error) => {
     if (error) reject(error); else resolve();
   }));
+});
+
+test('引导、目标及问答原请求刷新恢复后阻挡其他资金写入，自身只读核对入口保持可达', async () => {
+  vi.stubGlobal('crypto', webcrypto);
+  const goalOriginal = await fullGoalIntentFixture('ROOT_APP_ORIGINAL_GOAL/1');
+  sessionStorage.setItem(`bounded-funds-full-goal-operation-v1:${import.meta.env.VITE_API_BASE_URL}`, JSON.stringify(goalOriginal));
+  const original = prepareOnboardingIntent('EMERGENCY', onboardingBinding(), emergencyText);
+  sessionStorage.setItem(`bounded-funds-onboarding-draft-v1:${import.meta.env.VITE_API_BASE_URL}`, JSON.stringify({ ...emptyOnboardingDraft(), pending: original }));
+  const questionOriginal = await questionIntentFixture('START', 'ROOT_APP_QUESTION_RESTORE');
+  sessionStorage.setItem(`bounded-funds-one-question-operation-v1:${import.meta.env.VITE_API_BASE_URL}`, JSON.stringify(questionOriginal));
+  openApp(); await connected();
+  expect(await screen.findByText(/引导原候选请求正在处理或待核对/)).toBeVisible();
+  expect(await screen.findByText(/完整目标原确认正在处理或待核对/)).toBeVisible();
+  expect(getFullGoalOperation().pending).toEqual(goalOriginal);
+  expect(await screen.findByText(/一次一问原请求正在处理或待核对/)).toBeVisible();
+  expect(getOneQuestionOperation().pending).toEqual(questionOriginal);
+  fireEvent.click(screen.getByRole('link', { name: '策略中心' }));
+  await screen.findByRole('heading', { name: '策略中心' });
+  expect(screen.getByRole('button', { name: '从真实模拟历史发现候选' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: '准备新完整版策略' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '首次引导' }));
+  await screen.findByRole('heading', { name: '首次引导 · 明确事实与授权' });
+  expect(screen.getByRole('button', { name: '只读核对原引导候选' })).toBeEnabled();
+  expect(getOnboardingDraft().draft.pending).toEqual(original);
+  fireEvent.click(screen.getByRole('link', { name: '一次一问' }));
+  await screen.findByRole('heading', { name: '一次一问' });
+  expect(screen.getByRole('button', { name: '原键只读核对' })).toBeEnabled();
+  expect(screen.getByRole('button', { name: '手动重放同一原请求' })).toBeDisabled();
+  expect(requests.every((entry) => entry.startsWith('GET'))).toBe(true);
+});
+
+test('问答原键待核对阻挡其他族写入，自身原键GET和资金总览仍可达', async () => {
+  vi.stubGlobal('crypto', webcrypto);
+  const original = await questionIntentFixture('START', 'ROOT_APP_QUESTION_PENDING');
+  await beginOneQuestionOperation(original); endOneQuestionAttempt();
+  window.history.replaceState(null, '', '/#policies'); openApp();
+  await screen.findByRole('heading', { name: '策略中心' });
+  expect(screen.getByRole('button', { name: '从真实模拟历史发现候选' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: '准备新完整版策略' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '首次引导' }));
+  await screen.findByRole('heading', { name: '首次引导 · 明确事实与授权' });
+  fireEvent.click(screen.getByRole('button', { name: '2. 发现义务候选' }));
+  expect(screen.getByRole('button', { name: '用户主动从历史发现候选' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '演示控制台' }));
+  await screen.findByRole('heading', { name: '演示控制台' });
+  expect(await screen.findByRole('button', { name: '恢复演示初始状态' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '一次一问' }));
+  await screen.findByRole('heading', { name: '一次一问' });
+  expect(screen.getByRole('button', { name: '原键只读核对' })).toBeEnabled();
+  expect(getOneQuestionOperation().pending).toEqual(original);
+  fireEvent.click(screen.getByRole('link', { name: '资金总览' })); await connected();
+  expect(requests.every((entry) => entry.startsWith('GET'))).toBe(true);
+});
+
+test('分类原请求阻挡问答与资金写入，自己的原键GET完整匹配才解门', async () => {
+  vi.stubGlobal('crypto', webcrypto); const original = spendingIntentFixture('ROOT_APP_CATEGORY_PENDING');
+  await beginSpendingEvidenceOperation(original); endSpendingEvidenceAttempt();
+  window.history.replaceState(null, '', '/#policies'); openApp();
+  await screen.findByRole('heading', { name: '策略中心' });
+  expect(screen.getByRole('button', { name: '从真实模拟历史发现候选' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: '准备新完整版策略' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '一次一问' }));
+  await screen.findByRole('heading', { name: '一次一问' });
+  expect(screen.getByRole('button', { name: '保存原请求并开始问答' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '演示控制台' }));
+  await screen.findByRole('heading', { name: '演示控制台' });
+  expect(await screen.findByRole('button', { name: '恢复演示初始状态' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '消费证据' }));
+  await screen.findByRole('heading', { name: '支出证据与历史规律' });
+  const lookup = screen.getByRole('button', { name: '只读核对原分类请求' });
+  expect(lookup).toBeEnabled(); fireEvent.click(lookup);
+  await waitFor(() => expect(getSpendingEvidenceOperation().pending).toBeNull());
+  fireEvent.click(screen.getByRole('link', { name: '策略中心' }));
+  await screen.findByRole('heading', { name: '策略中心' });
+  expect(screen.getByRole('button', { name: '从真实模拟历史发现候选' })).toBeEnabled();
+  expect(requests.some((entry) => entry.includes('/category-confirmations/'))).toBe(true);
+  expect(requests.every((entry) => entry.startsWith('GET'))).toBe(true);
+});
+
+test('完整目标原确认跨页阻挡新策略、引导声明和演示重置，导航仍可读', async () => {
+  vi.stubGlobal('crypto', webcrypto); const original = await fullGoalIntentFixture('ROOT_APP_GOAL_PENDING/1');
+  beginFullGoalOperation(original); endFullGoalAttempt();
+  window.history.replaceState(null, '', '/#policies'); openApp();
+  await screen.findByRole('heading', { name: '策略中心' });
+  expect(screen.getByRole('button', { name: '从真实模拟历史发现候选' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: '准备新完整版策略' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '首次引导' }));
+  await screen.findByRole('heading', { name: '首次引导 · 明确事实与授权' });
+  fireEvent.click(screen.getByRole('button', { name: '2. 发现义务候选' }));
+  expect(screen.getByRole('button', { name: '用户主动从历史发现候选' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '演示控制台' }));
+  await screen.findByRole('heading', { name: '演示控制台' });
+  expect(await screen.findByRole('button', { name: '恢复演示初始状态' })).toBeDisabled();
+  expect(getFullGoalOperation().pending).toEqual(original);
+  expect(requests.every((entry) => entry.startsWith('GET'))).toBe(true);
+});
+
+test('运行中的引导候选跨页阻挡演示重置与新资金动作', async () => {
+  const original = prepareOnboardingIntent('EMERGENCY', onboardingBinding(), emergencyText);
+  beginOnboardingCommand(original); endOnboardingAttempt();
+  window.history.replaceState(null, '', '/#demo'); openApp();
+  await screen.findByRole('heading', { name: '演示控制台' });
+  expect(await screen.findByRole('button', { name: '恢复演示初始状态' })).toBeDisabled();
+  expect(getOnboardingDraft().draft.pending).toEqual(original);
+  expect(requests.every((entry) => entry.startsWith('GET'))).toBe(true);
+});
+
+test('刷新恢复完整版原body与键后阻止其他资金提交，策略页原查询不被自身门锁住', async () => {
+  const original = createFullIntent('root-app/original-key');
+  sessionStorage.setItem(`bounded-funds-full-policy-operation-v1:${import.meta.env.VITE_API_BASE_URL}`, JSON.stringify(original));
+  openApp(); await connected();
+  expect(await screen.findByText(/完整版策略原请求正在处理或待核对/)).toBeVisible();
+  fireEvent.click(screen.getByRole('link', { name: '策略中心' }));
+  await screen.findByRole('region', { name: '完整版策略生命周期' });
+  expect(screen.getByRole('button', { name: '从真实模拟历史发现候选' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: '只读核对原命令' })).toBeEnabled();
+  expect(screen.getByRole('button', { name: '准备新完整版策略' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('button', { name: '只读核对原命令' }));
+  await screen.findByText(/已解除本族待核对门/);
+  expect(getFullPolicyOperation().pending).toBeNull();
+  await waitFor(() => expect(screen.getByRole('button', { name: '从真实模拟历史发现候选' })).toBeEnabled());
+  expect(requests).toContain('GET /api/v1/full-policies/commands/by-key/root-app%2Foriginal-key');
+  expect(requests.every((item) => item.startsWith('GET'))).toBe(true);
+});
+
+test('演示原请求等待核对时资金表单不能另写，导航与总览GET保持可读', async () => {
+  beginDemoOperation({ kind: 'event', epoch_id: '10000000-0000-0000-0000-000000000090', event_kind: 'SALARY_RECEIVED' }); endDemoOperation(false);
+  window.history.replaceState(null, '', '/#policies'); openApp(); await screen.findByRole('heading', { name: '策略中心' });
+  expect(screen.getByRole('button', { name: '从真实模拟历史发现候选' })).toBeDisabled(); expect(screen.getByText(/演示原命令结果尚待核对/)).toBeVisible();
+  fireEvent.click(screen.getByRole('link', { name: '资金总览' })); await connected(); expect(requests.every((item) => item.startsWith('GET'))).toBe(true);
 });
 
 function openApp() {
@@ -49,7 +224,7 @@ async function connected() {
 
 test('所有卡片来自唯一总览请求，当前保护取今天分层而非窗口限制点', async () => {
   openApp(); await connected();
-  expect(screen.getByRole('heading', { name: '钱途有界' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: '知余' })).toBeVisible();
   expect(screen.getByText(/所有资金动作均为模拟/)).toBeVisible();
   expect(requests).toEqual(['GET /api/v1/dashboard']);
   expect(screen.getByRole('region', { name: '91日资金边界' })).toHaveTextContent('¥3,800.00');
@@ -61,15 +236,83 @@ test('所有卡片来自唯一总览请求，当前保护取今天分层而非�
   expect(screen.getByRole('region', { name: '已自主配置' })).toHaveTextContent('已排除 2 笔手工持仓');
 });
 
-test('页面导航实际切换并可回到总览，保留只读403入口且未出现404控制台', async () => {
+test('十六个页面导航实际切换，分项风险与场景模拟可达并保留原演示入口', async () => {
   openApp(); await connected(); const nav = screen.getByRole('navigation', { name: '页面导航' });
-  expect(within(nav).getAllByRole('link')).toHaveLength(4);
+  expect(within(nav).getAllByRole('link')).toHaveLength(16);
+  fireEvent.click(within(nav).getByRole('link', { name: '首次引导' }));
+  await screen.findByRole('heading', { name: '首次引导 · 明确事实与授权' });
+  fireEvent.click(within(nav).getByRole('link', { name: '年度规划' }));
+  await screen.findByRole('heading', { name: '年度规划' });
+  fireEvent.click(within(nav).getByRole('link', { name: '一次一问' }));
+  await screen.findByRole('heading', { name: '一次一问' });
+  fireEvent.click(within(nav).getByRole('link', { name: '介入中心' }));
+  await screen.findByRole('heading', { name: '介入中心' });
+  fireEvent.click(within(nav).getByRole('link', { name: '分项反事实评估' }));
+  await screen.findByRole('heading', { name: '分项反事实评估' });
+  expect(within(nav).getByRole('link', { name: '分项反事实评估' })).toHaveAttribute('aria-current', 'page');
+  fireEvent.click(within(nav).getByRole('link', { name: '场景模拟器' }));
+  await screen.findByRole('heading', { name: '场景模拟器' });
+  fireEvent.click(within(nav).getByRole('link', { name: '消费证据' }));
+  await screen.findByRole('heading', { name: '支出证据与历史规律' });
+  fireEvent.click(within(nav).getByRole('link', { name: '产品与期限' }));
+  await screen.findByRole('heading', { name: '产品与期限' });
+  fireEvent.click(within(nav).getByRole('link', { name: '事实与证据' }));
+  await screen.findByRole('heading', { name: '事实与证据' });
+  fireEvent.click(within(nav).getByRole('link', { name: '投递记录' }));
+  await screen.findByRole('heading', { name: '命令投递' });
+  fireEvent.click(within(nav).getByRole('link', { name: '对账中心' }));
+  await screen.findByRole('heading', { name: '对账中心' });
   fireEvent.click(within(nav).getByRole('link', { name: '策略中心' }));
   await screen.findByRole('heading', { name: '策略中心' });
   expect(within(nav).getByRole('link', { name: '策略中心' })).toHaveAttribute('aria-current', 'page');
   fireEvent.click(within(nav).getByRole('link', { name: '目标储备' })); await screen.findByRole('heading', { name: '目标储备' });
+  fireEvent.click(within(nav).getByRole('link', { name: '演示控制台' })); await screen.findByRole('heading', { name: '演示控制台' });
   fireEvent.click(within(nav).getByRole('link', { name: '资金总览' })); await connected();
   expect(screen.getByRole('region', { name: '91日资金边界' })).toBeVisible();
+});
+
+test('通知原请求待核对阻挡其他变更，自身GET与只读模拟器保持可达', async () => {
+  vi.stubGlobal('crypto', webcrypto);
+  const original = interventionIntentFixture('OBSERVE', 'ROOT_APP_INTERVENTION_PENDING');
+  await beginInterventionOperation(original); endInterventionAttempt();
+  window.history.replaceState(null, '', '/#policies'); openApp();
+  await screen.findByRole('heading', { name: '策略中心' });
+  expect(screen.getByRole('button', { name: '从真实模拟历史发现候选' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: '准备新完整版策略' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '一次一问' }));
+  await screen.findByRole('heading', { name: '一次一问' });
+  expect(screen.getByRole('button', { name: '保存原请求并开始问答' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '演示控制台' }));
+  await screen.findByRole('heading', { name: '演示控制台' });
+  expect(await screen.findByRole('button', { name: '恢复演示初始状态' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '介入中心' }));
+  await screen.findByRole('heading', { name: '介入中心' });
+  expect(await screen.findByRole('button', { name: '只读核对原通知请求' })).toBeEnabled();
+  expect(getInterventionOperation().pending).toEqual(original);
+  fireEvent.click(screen.getByRole('link', { name: '场景模拟器' }));
+  await screen.findByRole('heading', { name: '场景模拟器' });
+  fireEvent.click(screen.getByRole('link', { name: '资金总览' })); await connected();
+  expect(requests.every((entry) => entry.startsWith('GET'))).toBe(true);
+});
+
+test('专用授权原确认跨页暂停其他写入，列表外原键只读核对仍可达', async () => {
+  vi.stubGlobal('crypto', webcrypto);
+  const original = await releaseIntentFixture('ROOT_APP_RELEASE_PENDING');
+  await beginGoalReleaseAuthorizationOperation(original); endGoalReleaseAuthorizationAttempt();
+  window.history.replaceState(null, '', '/#policies'); openApp();
+  await screen.findByRole('heading', { name: '策略中心' });
+  expect(screen.getByRole('button', { name: '准备新完整版策略' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '一次一问' }));
+  await screen.findByRole('heading', { name: '一次一问' });
+  expect(screen.getByRole('button', { name: '保存原请求并开始问答' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '演示控制台' }));
+  expect(await screen.findByRole('button', { name: '恢复演示初始状态' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', { name: '目标储备' }));
+  const lookup = await screen.findByRole('button', { name: '只读核对原专用授权' });
+  expect(lookup).toBeEnabled(); fireEvent.click(lookup);
+  await waitFor(() => expect(requests.some((entry) => entry.includes('/goal-release-authorizations/commands/') && entry.includes('ROOT_APP_RELEASE_PENDING'))).toBe(true));
+  expect(getGoalReleaseAuthorizationOperation().pending).toEqual(original);
+  expect(requests.every((entry) => entry.startsWith('GET'))).toBe(true);
 });
 
 test('待归属目标账户现金仍受保护，不能标成已归属现金', async () => {

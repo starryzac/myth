@@ -1,0 +1,12 @@
+E501 Line too long (119 > 100)
+   --> scripts\tests\test_mvp_arm_executor.py:663:101
+    |
+661 |     provider = tmp_path / "provider.py"
+662 |     provider.write_text(
+663 |         "def prepare_arm_action(context, request, *, candidate_selector=None):\n    raise RuntimeError('TOOL_ONLY')\n",
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^
+664 |         encoding="utf-8",
+665 |     )
+    |
+
+Found 1 error.

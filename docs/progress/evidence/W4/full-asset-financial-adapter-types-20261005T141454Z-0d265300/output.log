@@ -1,0 +1,6 @@
+apps\api\app\services\full_asset_allocation.py:68: error: Argument 1 to "UUID" has incompatible type "UUID"; expected "str | None"  [arg-type]
+apps\api\app\services\full_asset_allocation.py:181: error: Argument "unavailable_asset_classes" to "FullAssetAllocationResponse" has incompatible type "list[Literal['CASH', 'CASH_MGMT_T0', 'CASH_MGMT_T1', 'FIXED_DEPOSIT_7D', 'FIXED_DEPOSIT_30D', 'FIXED_DEPOSIT_90D', 'LOW_RISK_TERM']]"; expected "list[str]"  [arg-type]
+apps\api\app\services\full_asset_allocation.py:181: note: "list" is invariant -- see https://mypy.readthedocs.io/en/stable/common_issues.html#variance
+apps\api\app\services\full_asset_allocation.py:181: note: Consider using "Sequence" instead, which is covariant
+apps\api\app\tests\test_full_asset_allocation_api.py:16: error: Module "app.tests.test_full_projection_api" does not explicitly export attribute "NOW"  [attr-defined]
+Found 3 errors in 2 files (checked 6 source files)

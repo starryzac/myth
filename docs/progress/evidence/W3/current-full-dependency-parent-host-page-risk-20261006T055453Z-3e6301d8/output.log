@@ -1,0 +1,462 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/components/FullPoliciesPanel.test.tsx (10 tests | 1 failed | 9 skipped) 337ms
+   × 完整列表/版本/原命令只读加载，历史和未实现执行边界可见且无POST 335ms
+     → Unable to find an element with the text: /银行授权=false/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<section[39m
+  [33maria-label[39m=[32m"完整版策略详情 71000000-0000-4000-8000-000000000001"[39m
+  [33mclass[39m=[32m"full-policy-workspace"[39m
+[36m>[39m
+  [36m<h4>[39m
+    [0mHTTP夹具支出[0m
+    [0m · [0m
+    [0mDatedExpensePolicy[0m
+  [36m</h4>[39m
+  [36m<p>[39m
+    [0m持久状态 [0m
+    [0mACTIVE[0m
+    [0m；当前有效状态 [0m
+    [0mACTIVE[0m
+    [0m；引用 [0m
+    [0mCURRENT[0m
+    [0m。[0m
+  [36m</p>[39m
+  [36m<p>[39m
+    [0m规划确认[0m
+    [0m仍通过原引用条件[0m
+    [0m；此配置确认不授予银行执行权限，资金执行需在对应工作区复核原效果。[0m
+  [36m</p>[39m
+  [36m<dl[39m
+    [33mclass[39m=[32m"full-policy-fields"[39m
+  [36m>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m原策略 / 审计周期[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [36m<code>[39m
+          [0m71000000-0000-4000-8000-000000000001[0m
+        [36m</code>[39m
+        [0m / [0m
+        [36m<code>[39m
+          [0m71000000-0000-4000-8000-000000000004[0m
+        [36m</code>[39m
+      [36m</dd>[39m
+    [36m</div>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m原当前版本[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [36m<code>[39m
+          [0m71000000-0000-4000-8000-000000000002[0m
+        [36m</code>[39m
+      [36m</dd>[39m
+    [36m</div>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m原配置hash[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [36m<code>[39m
+          [0maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[0m
+        [36m</code>[39m
+      [36m</dd>[39m
+    [36m</div>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m有效期[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [0m2026-10-05T12:00:00Z[0m
+        [0m → [0m
+        [0m未设结束时点[0m
+      [36m</dd>[39m
+    [36m</div>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m确认摘要[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [0mSYNTHETIC_CURRENT_VERSION_SUMMARY[0m
+      [36m</dd>[39m
+    [36m</div>[39m
+  [36m</dl>[39m
+  [36m<details>[39m
+    [36m<summary>[39m
+      [0m查看完整版策略详情原JSON响应[0m
+    [36m</summary>[39m
+    [36m<pre[39m
+      [33mclass[39m=[32m"readonly-raw"[39m
+    [36m>[39m
+      [0m{"simulation":true,"bank_authority":false,"dedicated_audit_event":false,"policy_id":"71000000-0000-4000-8000-000000000001","epoch_id":"71000000-0000-4000-8000-000000000004","template_name":"DatedExpensePolicy","name":"HTTP夹具支出","status":"ACTIVE","effective_status":"ACTIVE","planning_confirmation_valid":true,"reference_validation":"CURRENT","execution_support":"NOT_IMPLEMENTED","updated_at":"2026-10-05T12:00:00Z","current_version":{"simulation":true,"bank_authority":false,"dedicated_audit_event":false,"version_id":"71000000-0000-4000-8000-000000000002","policy_id":"71000000-0000-4000-8000-000000000001","version_number":1,"configuration":{"type":"dated_expense","name":"HTTP夹具支出","valid_from":null,"valid_until":null,"due_date":"2027-01-03","amount_cents":123007,"priority":{"importance":100,"minimum_cents":123007,"reducible":false,"deferrable":false},"must_not_reduce":true},"content_hash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","previous_hash":null,"summary":"SYNTHETIC_CURRENT_VERSION_SUMMARY","confirmed_at":"2026-10-05T12:00:00Z","valid_from":"2026-10-05T12:00:00Z","valid_until":null,"change_reason":"SYNTHETIC_CONFIRMATION","evidence_ids":["71000000-0000-4000-8000-000000000007"],"confirmation_evidence_status":"CURRENT_EVIDENCE_MATCHED","impact_analysis":{"bank_authority":false,"dedicated_audit_event":false,"action_dependencies_supported":false,"candidate_financial_status":"NOT_IMPLEMENTED","candidate_financial_delta_cents":null,"reference_snapshots":[]},"confirmation":{"protocol":"full-policy-confirmation-v1","user_id":"71000000-0000-4000-8000-000000000005","epoch_id":"71000000-0000-4000-8000-000000000004","policy_id":"71000000-0000-4000-8000-000000000001","version_id":"71000000-0000-4000-8000-000000000002","template_name":"DatedExpensePolicy","reviewed_hash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","confirmed_at":"2026-10-05T12:00:00Z","accepted":true,"bank_authority":false,"confirmation_evidence_id":"71000000-0000-4000-8000-000000000007","request_key":"unit/original-create-key","request_hash":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}}}[0m
+    [36m</pre>[39m
+  [36m</details>[39m
+  [36m<section[39m
+    [33maria-label[39m=[32m"当前完整策略依赖"[39m
+    [33mclass[39m=[32m"card"[39m
+  [36m>[39m
+    [36m<h3>[39m
+      [0m当前完整策略依赖[0m
+    [36m</h3>[39m
+    [36m<p>[39m
+      [0m手动读取当前周期的全部完整策略声明，核对确认时引用与当前引用。循环只提示需要复核；读取不授资金权限，不自动修改策略。[0m
+    [36m</p>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0m刷新当前策略依赖[0m
+    [36m</button>[39m
+  [36m</section>[39m
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m>[39m
+    [0m读取完整版本与原命令历史[0m
+  [36m</button>[39m
+  [36m<section[39m
+    [33maria-label[39m=[32m"修改或停止完整版策略"[39m
+    [33mclass[39m=[32m"full-policy-editor"[39m
+  [36m>[39m
+    [36m<h5>[39m
+      [0m用户复核后提交原版本命令[0m
+    [36m</h5>[39m
+    [36m<p>[39m
+      [0m修改与恢复创建新版本；暂停和撤销保留原版本。每次命令需理由与原预期版本，旧材料完整保留。[0m
+    [36m</p>[39m
+    [36m<label[39m
+      [33mclass[39m=[32m"field"[39m
+    [36m>[39m
+      [0m修改候选完整配置JSON（金额为整数分）[0m
+      [36m<textarea[39m
+        [33mrows[39m=[32m"12"[39m
+      [36m>[39m
+        [0m{
+  "type": "dated_expense",
+  "name": "HTTP夹具支出",
+  "valid_from": null,
+  "valid_until": null,
+  "due_date": "2027-01-03",
+  "amount_cents": 123007,
+  "priority": {
+    "importance": 100,
+    "minimum_cents": 123007,
+    "reducible": false,
+    "deferrable": false
+  },
+  "must_not_reduce": true
+}[0m
+      [36m</textarea>[39m
+    [36m</label>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0m只读预览完整版修改[0m
+    [36m</button>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"原编辑器资金差量入口"[39m
+    [36m>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m打开候选资金差量预览[0m
+      [36m</button>[39m
+    [36m</section>[39m
+    [36m<label[39m
+      [33mclass[39m=[32m"field"[39m
+    [36m>[39m
+      [0m完整版命令理由[0m
+      [36m<input[39m
+        [33mmaxlength[39m=[32m"1000"[39m
+        [33mvalue[39m=[32m""[39m
+      [36m/>[39m
+    [36m</label>[39m
+    [36m<label[39m
+      [33mclass[39m=[32m"full-policy-check"[39m
+    [36m>[39m
+      [36m<input[39m
+        [33mtype[39m=[32m"checkbox"[39m
+      [36m/>[39m
+      [0m我已复核原版本、配置hash与操作含义，明确提交所选命令[0m
+    [36m</label>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"full-policy-actions"[39m
+    [36m>[39m
+      [36m<button[39m
+        [33mdisabled[39m=[32m""[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m明确确认修改[0m
+      [36m</button>[39m
+      [36m<button[39m
+        [33mdisabled[39m=[32m""[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m明确暂停策略[0m
+      [36m</button>[39m
+      [36m<button[39m
+        [33mdisabled[39m=[32m""[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m明确撤销策略[0m
+      [36m</button>[39m
+      [36m<button[39m
+        [33mdisabled[39m=[32m""[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m明确重新确认并恢复[0m
+      [36m</button>[39m
+    [36m</div>[39m
+    [36m<p[39m
+      [33mclass[39m=[32m"caption"[39m
+    [36m>[39m
+      [0m恢复使用当前原配置hash；不是激活未确认候选。修改预览的金额变化未知，停止回执中的行动依赖列表不代表已覆盖未来执行。[0m
+    [36m</p>[39m
+  [36m</section>[39m
+[36m</section>[39m
+   ↓ 候选Schema与字段校验不自动confirm；改变配置立即丢弃已复核候选
+   ↓ 首次确认响应丢失后保原body/key；NOT_FOUND不清且手动只重放同body/key
+   ↓ 暂停原expectedVersion保持不造grant，HTTP0成功仍pending；匹配RECORDED才解除
+   ↓ 恢复沿原配置hash和原预期version明确确认，不发送未确认configuration
+   ↓ 修改需原只读preview+复核hash，未知财务delta不显示成零，发送真实after配置
+   ↓ 历史周期或其他family blocked不能新写，完整readonly历史仍可核
+   ↓ lookup错原键不放行新写，不自动POST；本地恢复保原不可编辑identity
+   ↓ 目录完整保留12模板，LongTerm选择路由原目标桥而不能此页独立确认
+   ↓ 独立历史读缺所选原version时明确UNKNOWN，不回落当前详情伪造历史成功
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/FullPoliciesPanel.test.tsx > 完整列表/版本/原命令只读加载，历史和未实现执行边界可见且无POST
+TestingLibraryElementError: Unable to find an element with the text: /银行授权=false/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<section[39m
+  [33maria-label[39m=[32m"完整版策略详情 71000000-0000-4000-8000-000000000001"[39m
+  [33mclass[39m=[32m"full-policy-workspace"[39m
+[36m>[39m
+  [36m<h4>[39m
+    [0mHTTP夹具支出[0m
+    [0m · [0m
+    [0mDatedExpensePolicy[0m
+  [36m</h4>[39m
+  [36m<p>[39m
+    [0m持久状态 [0m
+    [0mACTIVE[0m
+    [0m；当前有效状态 [0m
+    [0mACTIVE[0m
+    [0m；引用 [0m
+    [0mCURRENT[0m
+    [0m。[0m
+  [36m</p>[39m
+  [36m<p>[39m
+    [0m规划确认[0m
+    [0m仍通过原引用条件[0m
+    [0m；此配置确认不授予银行执行权限，资金执行需在对应工作区复核原效果。[0m
+  [36m</p>[39m
+  [36m<dl[39m
+    [33mclass[39m=[32m"full-policy-fields"[39m
+  [36m>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m原策略 / 审计周期[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [36m<code>[39m
+          [0m71000000-0000-4000-8000-000000000001[0m
+        [36m</code>[39m
+        [0m / [0m
+        [36m<code>[39m
+          [0m71000000-0000-4000-8000-000000000004[0m
+        [36m</code>[39m
+      [36m</dd>[39m
+    [36m</div>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m原当前版本[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [36m<code>[39m
+          [0m71000000-0000-4000-8000-000000000002[0m
+        [36m</code>[39m
+      [36m</dd>[39m
+    [36m</div>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m原配置hash[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [36m<code>[39m
+          [0maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[0m
+        [36m</code>[39m
+      [36m</dd>[39m
+    [36m</div>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m有效期[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [0m2026-10-05T12:00:00Z[0m
+        [0m → [0m
+        [0m未设结束时点[0m
+      [36m</dd>[39m
+    [36m</div>[39m
+    [36m<div>[39m
+      [36m<dt>[39m
+        [0m确认摘要[0m
+      [36m</dt>[39m
+      [36m<dd>[39m
+        [0mSYNTHETIC_CURRENT_VERSION_SUMMARY[0m
+      [36m</dd>[39m
+    [36m</div>[39m
+  [36m</dl>[39m
+  [36m<details>[39m
+    [36m<summary>[39m
+      [0m查看完整版策略详情原JSON响应[0m
+    [36m</summary>[39m
+    [36m<pre[39m
+      [33mclass[39m=[32m"readonly-raw"[39m
+    [36m>[39m
+      [0m{"simulation":true,"bank_authority":false,"dedicated_audit_event":false,"policy_id":"71000000-0000-4000-8000-000000000001","epoch_id":"71000000-0000-4000-8000-000000000004","template_name":"DatedExpensePolicy","name":"HTTP夹具支出","status":"ACTIVE","effective_status":"ACTIVE","planning_confirmation_valid":true,"reference_validation":"CURRENT","execution_support":"NOT_IMPLEMENTED","updated_at":"2026-10-05T12:00:00Z","current_version":{"simulation":true,"bank_authority":false,"dedicated_audit_event":false,"version_id":"71000000-0000-4000-8000-000000000002","policy_id":"71000000-0000-4000-8000-000000000001","version_number":1,"configuration":{"type":"dated_expense","name":"HTTP夹具支出","valid_from":null,"valid_until":null,"due_date":"2027-01-03","amount_cents":123007,"priority":{"importance":100,"minimum_cents":123007,"reducible":false,"deferrable":false},"must_not_reduce":true},"content_hash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","previous_hash":null,"summary":"SYNTHETIC_CURRENT_VERSION_SUMMARY","confirmed_at":"2026-10-05T12:00:00Z","valid_from":"2026-10-05T12:00:00Z","valid_until":null,"change_reason":"SYNTHETIC_CONFIRMATION","evidence_ids":["71000000-0000-4000-8000-000000000007"],"confirmation_evidence_status":"CURRENT_EVIDENCE_MATCHED","impact_analysis":{"bank_authority":false,"dedicated_audit_event":false,"action_dependencies_supported":false,"candidate_financial_status":"NOT_IMPLEMENTED","candidate_financial_delta_cents":null,"reference_snapshots":[]},"confirmation":{"protocol":"full-policy-confirmation-v1","user_id":"71000000-0000-4000-8000-000000000005","epoch_id":"71000000-0000-4000-8000-000000000004","policy_id":"71000000-0000-4000-8000-000000000001","version_id":"71000000-0000-4000-8000-000000000002","template_name":"DatedExpensePolicy","reviewed_hash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","confirmed_at":"2026-10-05T12:00:00Z","accepted":true,"bank_authority":false,"confirmation_evidence_id":"71000000-0000-4000-8000-000000000007","request_key":"unit/original-create-key","request_hash":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}}}[0m
+    [36m</pre>[39m
+  [36m</details>[39m
+  [36m<section[39m
+    [33maria-label[39m=[32m"当前完整策略依赖"[39m
+    [33mclass[39m=[32m"card"[39m
+  [36m>[39m
+    [36m<h3>[39m
+      [0m当前完整策略依赖[0m
+    [36m</h3>[39m
+    [36m<p>[39m
+      [0m手动读取当前周期的全部完整策略声明，核对确认时引用与当前引用。循环只提示需要复核；读取不授资金权限，不自动修改策略。[0m
+    [36m</p>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0m刷新当前策略依赖[0m
+    [36m</button>[39m
+  [36m</section>[39m
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m>[39m
+    [0m读取完整版本与原命令历史[0m
+  [36m</button>[39m
+  [36m<section[39m
+    [33maria-label[39m=[32m"修改或停止完整版策略"[39m
+    [33mclass[39m=[32m"full-policy-editor"[39m
+  [36m>[39m
+    [36m<h5>[39m
+      [0m用户复核后提交原版本命令[0m
+    [36m</h5>[39m
+    [36m<p>[39m
+      [0m修改与恢复创建新版本；暂停和撤销保留原版本。每次命令需理由与原预期版本，旧材料完整保留。[0m
+    [36m</p>[39m
+    [36m<label[39m
+      [33mclass[39m=[32m"field"[39m
+    [36m>[39m
+      [0m修改候选完整配置JSON（金额为整数分）[0m
+      [36m<textarea[39m
+        [33mrows[39m=[32m"12"[39m
+      [36m>[39m
+        [0m{
+  "type": "dated_expense",
+  "name": "HTTP夹具支出",
+  "valid_from": null,
+  "valid_until": null,
+  "due_date": "2027-01-03",
+  "amount_cents": 123007,
+  "priority": {
+    "importance": 100,
+    "minimum_cents": 123007,
+    "reducible": false,
+    "deferrable": false
+  },
+  "must_not_reduce": true
+}[0m
+      [36m</textarea>[39m
+    [36m</label>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0m只读预览完整版修改[0m
+    [36m</button>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"原编辑器资金差量入口"[39m
+    [36m>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m打开候选资金差量预览[0m
+      [36m</button>[39m
+    [36m</section>[39m
+    [36m<label[39m
+      [33mclass[39m=[32m"field"[39m
+    [36m>[39m
+      [0m完整版命令理由[0m
+      [36m<input[39m
+        [33mmaxlength[39m=[32m"1000"[39m
+        [33mvalue[39m=[32m""[39m
+      [36m/>[39m
+    [36m</label>[39m
+    [36m<label[39m
+      [33mclass[39m=[32m"full-policy-check"[39m
+    [36m>[39m
+      [36m<input[39m
+        [33mtype[39m=[32m"checkbox"[39m
+      [36m/>[39m
+      [0m我已复核原版本、配置hash与操作含义，明确提交所选命令[0m
+    [36m</label>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"full-policy-actions"[39m
+    [36m>[39m
+      [36m<button[39m
+        [33mdisabled[39m=[32m""[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m明确确认修改[0m
+      [36m</button>[39m
+      [36m<button[39m
+        [33mdisabled[39m=[32m""[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m明确暂停策略[0m
+      [36m</button>[39m
+      [36m<button[39m
+        [33mdisabled[39m=[32m""[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m明确撤销策略[0m
+      [36m</button>[39m
+      [36m<button[39m
+        [33mdisabled[39m=[32m""[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m明确重新确认并恢复[0m
+      [36m</button>[39m
+    [36m</div>[39m
+    [36m<p[39m
+      [33mclass[39m=[32m"caption"[39m
+    [36m>[39m
+      [0m恢复使用当前原配置hash；不是激活未确认候选。修改预览的金额变化未知，停止回执中的行动依赖列表不代表已覆盖未来执行。[0m
+    [36m</p>[39m
+  [36m</section>[39m
+[36m</section>[39m
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/FullPoliciesPanel.test.tsx:35:97
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 skipped (10)
+   Start at  13:54:57
+   Duration  5.74s (transform 2.08s, setup 489ms, collect 3.02s, tests 337ms, environment 1.05s, prepare 329ms)
+
+undefined
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: vitest run src/components/FullPoliciesPanel.test.tsx -t "完整列表"

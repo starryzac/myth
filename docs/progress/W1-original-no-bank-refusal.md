@@ -1,0 +1,7 @@
+# W1原银行前拒绝原件
+
+追加显式W1_PROVIDER_ORIGINAL_NO_BANK_REFUSAL_V3。root发现V01/L03真实过期旧action拒绝后无bank row，producer原末尾强拒使error_ref失去返回。归档2e provider后，仅允许实际original execute异常且四经济表完整、前后完全不变、无本action经济引用时返回明确拒绝raw。真实status_code保null或原值，不造bank/pipeline成功/经济TRUE；V1/V2原成功与有bank错误路径继续原断言，不改core/executor。
+
+新增26+直接相关135共161纯风险PASS3.72s，strict types2/Ruff/format通过；旧包装单一纯控制流回放1FAIL保原RED。新的完整source proof、原provider2e、旧RED在 `.runtime/W1-original-no-bank-refusal-20261005T1130Z`，原ownEngine135及candidate12 proof保留不覆盖。测试仅Python控制流/SQLAlchemy未连接Engine，假service只抛错或返回sentinel，不是金融成功/银行效果或PG实证。
+
+root实际PG待排程，完成后才按真实原件记录范围。provider与新风险测试从本proof完成起冻结；B3/B0/phaseV2后续先只读设计，本子任务不跑PG/Browser/Docker。

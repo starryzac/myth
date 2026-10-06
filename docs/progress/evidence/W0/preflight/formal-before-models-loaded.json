@@ -1,0 +1,123 @@
+{
+  "sha256": "7c1b7d2975793cc52a65dc1357b3df0de5fbfd9299e11362821ac567c69ae12d",
+  "snapshot_json_bytes": 314140,
+  "total_rows": 408,
+  "tables": {
+    "asset_products": {
+      "rows": 6,
+      "snapshot_json_bytes": 5557,
+      "sha256": "9d1a7ae9904f2826da4ae28d3eea563886d0f853c23f26f394cffce3dfb9c055"
+    },
+    "users": {
+      "rows": 1,
+      "snapshot_json_bytes": 233,
+      "sha256": "954b7c633917d80d7f4cab1dc14cd2e55ee468faf6ce84cb7bb84fb3a5cec5b1"
+    },
+    "accounts": {
+      "rows": 5,
+      "snapshot_json_bytes": 1805,
+      "sha256": "23fdbf4ad2296f79fe35aa3bbdcbd677de9af189f7515453ab882f1fc26e7bb8"
+    },
+    "audit_epochs": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "audit_events": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "decision_runs": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "evidence_items": {
+      "rows": 254,
+      "snapshot_json_bytes": 223693,
+      "sha256": "22d787d6bf4638616ee5372d54d315f0a778ee4a9533770dc1e24f8e3ef3671b"
+    },
+    "policies": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "audit_subject_snapshots": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "credit_card_bills": {
+      "rows": 3,
+      "snapshot_json_bytes": 1303,
+      "sha256": "75ddc3de20c4c6c31734b98236b6f8c87cdb653cc82a55f4b66704c2f680f9c9"
+    },
+    "external_bank_facts": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "policy_proposals": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "policy_versions": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "transactions": {
+      "rows": 129,
+      "snapshot_json_bytes": 75318,
+      "sha256": "2d3fc0f9d012040261999b62a32119c7882f92b8e8cf33a302675d63fcfc5524"
+    },
+    "decision_constraints": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "goals": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "asset_positions": {
+      "rows": 3,
+      "snapshot_json_bytes": 1382,
+      "sha256": "60b023d6ed8985c163907fc3e8ad1522af60e3f9344400f0479842324d7c6577"
+    },
+    "action_plans": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "action_receipts": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "action_resource_reservations": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "simulated_bank_redemptions": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "bank_operations": {
+      "rows": 0,
+      "snapshot_json_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "simulated_bank_postings": {
+      "rows": 7,
+      "snapshot_json_bytes": 4334,
+      "sha256": "e45c609043de94abd562937853c79a5d23d3498de7be28ffb56592c2a891eec8"
+    }
+  },
+  "raw_snapshot": "formal-before-models-loaded.json.gz"
+}

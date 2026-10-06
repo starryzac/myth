@@ -97,7 +97,7 @@ class UnassignedGoalCash(SourcedFact):
 class BoundarySnapshot(BoundaryModel):
     as_of: datetime
     timezone: Literal["Asia/Shanghai", "UTC"]
-    horizon_days: Literal[90] = 90
+    horizon_days: Annotated[StrictInt, Field(ge=1, le=365)] = 90
     cash_accounts: Annotated[list[CashFact], Field(max_length=100)]
     bills: Annotated[list[BillFact], Field(max_length=10000)] = Field(default_factory=list)
     occurrence_settlements: Annotated[list[SettlementFact], Field(max_length=10000)] = Field(

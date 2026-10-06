@@ -1,0 +1,6 @@
+scripts\w1_current_check_context.py: error: Source file found twice under different module names: "w1_current_check_context" and "scripts.w1_current_check_context"
+scripts\w1_current_check_context.py: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#mapping-file-paths-to-modules for more info
+scripts\w1_current_check_context.py: note: Common resolutions include:
+scripts\w1_current_check_context.py: note:     a) adding `__init__.py` somewhere,
+scripts\w1_current_check_context.py: note:     b) using `--explicit-package-bases` or adjusting `MYPYPATH`
+Found 1 error in 1 file (errors prevented further checking)

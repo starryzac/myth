@@ -1,0 +1,69 @@
+FF...............................FF...........................           [100%]
+================================== FAILURES ===================================
+_________ test_protection_components_are_computed_from_original_rows __________
+
+    def test_protection_components_are_computed_from_original_rows() -> None:
+        fixture, _, _ = complete_fixture()
+        original = fixture.facts()
+        before = encoded(original)
+        result = compute_timeline(original, [checkpoint()])
+        assert result["facts_status"] == "VERIFIED"
+        measured = result["checkpoints"][0]
+        assert measured["status"] == "MEASURED"
+        assert measured["available_cash_cents"] == 100_000
+>       assert measured["protected_required_cents"] == 49_500
+E       assert 69500 == 49500
+
+scripts\tests\test_mvp_financial_oracles.py:545: AssertionError
+_______ test_e4_uses_simultaneous_financial_income_and_permission_caps ________
+
+    def test_e4_uses_simultaneous_financial_income_and_permission_caps() -> None:
+        fixture, policy, product = complete_fixture()
+        result = measure(
+            fixture,
+            "DEPLOYMENT",
+            policy_id=policy["id"],
+            product_id=product["id"],
+            requested_action_type="PURCHASE_ASSET",
+        )
+        assert result["status"] == "MEASURED"
+>       assert result["safe_authorized_deployable_cents"] == 40_000
+E       assert 30500 == 40000
+
+scripts\tests\test_mvp_financial_oracles.py:564: AssertionError
+____ test_recurring_due_day_clamps_to_february_and_range_uses_upper_bound _____
+
+    def test_recurring_due_day_clamps_to_february_and_range_uses_upper_bound() -> None:
+        fixture = Fixture()
+        _, version = fixture.rent(day=31)
+        version["configuration"]["amount_rule"] = {
+            "kind": "range",
+            "min_cents": 10_000,
+            "max_cents": 20_000,
+        }
+        version["content_hash"] = hashed(version["configuration"])
+        version["confirmation"]["reviewed_hash"] = version["content_hash"]
+        result = measure(fixture, "DUE")
+        assert result["status"] == "MEASURED"
+        assert component(result, "RECURRING")["due_on"] == "2026-02-28"
+>       assert result["protected_required_cents"] == 20_000
+E       assert 40000 == 20000
+
+scripts\tests\test_mvp_financial_oracles.py:746: AssertionError
+_ test_historical_unpaid_cannot_be_assumed_zero_or_cleared_by_natural_expiry __
+
+    def test_historical_unpaid_cannot_be_assumed_zero_or_cleared_by_natural_expiry() -> None:
+        fixture = Fixture()
+        policy, version = fixture.rent(day=10)
+        assert measure(fixture, "DUE")["status"] == "MISSING"
+        fixture.settlement(policy, 5000)
+>       assert measure(fixture, "DUE")["protected_required_cents"] == 15_000
+E       assert 35000 == 15000
+
+scripts\tests\test_mvp_financial_oracles.py:754: AssertionError
+=========================== short test summary info ===========================
+FAILED scripts/tests/test_mvp_financial_oracles.py::test_protection_components_are_computed_from_original_rows
+FAILED scripts/tests/test_mvp_financial_oracles.py::test_e4_uses_simultaneous_financial_income_and_permission_caps
+FAILED scripts/tests/test_mvp_financial_oracles.py::test_recurring_due_day_clamps_to_february_and_range_uses_upper_bound
+FAILED scripts/tests/test_mvp_financial_oracles.py::test_historical_unpaid_cannot_be_assumed_zero_or_cleared_by_natural_expiry
+4 failed, 58 passed in 0.99s

@@ -1,0 +1,5 @@
+phase=migration status=PASSED seconds=1.172
+phase=native_seed_once status=PASSED seconds=1.851
+phase=native_baseline_snapshot status=PASSED seconds=0.246
+phase=api_ready status=FAILED seconds=2.301
+W1 FAILED evidence=output\playwright\w1-20261005T030706Z-30a3213b

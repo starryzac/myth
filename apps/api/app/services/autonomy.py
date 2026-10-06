@@ -355,7 +355,66 @@ def _facts(
             session, user_id, effect, now, own_action_id=action_id, base_context=basis.context
         )
         confirmation = read_execution_confirmation(session, effect, now) if action_id else None
-        validation = revalidate_execution(effect, context, confirmation=confirmation)
+        dynamic_proof = None
+        if action_id is not None and effect.action_type == "REDEEM_ASSET":
+            from app.services.execution_context import require_full_recovery_confirmation_context
+            from app.services.full_recovery_execution import has_full_recovery_binding
+            from app.services.full_recovery_execution_read import read_current_full_recovery_proof
+
+            action = session.get(ActionPlan, action_id)
+            if action is None:
+                raise PolicyLifecycleError("NOT_FOUND", "原恢复动作不存在", 404)
+            if has_full_recovery_binding(session, action):
+                read_current_full_recovery_proof(
+                    session,
+                    user_id,
+                    action,
+                    BankCommand(effect=effect, effect_hash=execution_effect_hash(effect)),
+                    now,
+                )
+                context = require_full_recovery_confirmation_context(session, context)
+        if action_id is not None and effect.action_type == "ALLOCATE_GOAL":
+            from app.services.full_dynamic_goal_execution import (
+                has_full_dynamic_goal_binding,
+                read_current_full_dynamic_goal_proof,
+            )
+
+            action = session.get(ActionPlan, action_id)
+            if action is None:
+                raise PolicyLifecycleError("NOT_FOUND", "原目标动作不存在", 404)
+            from app.services.full_joint_goal_execution_guards import (
+                has_full_joint_goal_binding,
+                read_current_full_joint_goal_proof,
+            )
+
+            if has_full_joint_goal_binding(session, action):
+                from app.services.execution_joint_goal_bridge import require_joint_goal_context
+
+                dynamic_proof = read_current_full_joint_goal_proof(
+                    session,
+                    user_id,
+                    action,
+                    BankCommand(effect=effect, effect_hash=execution_effect_hash(effect)),
+                    now,
+                    own_action_id=action_id,
+                )
+                context = require_joint_goal_context(session, effect, context, dynamic_proof)
+            elif has_full_dynamic_goal_binding(session, action):
+                dynamic_proof = read_current_full_dynamic_goal_proof(
+                    session,
+                    user_id,
+                    action,
+                    BankCommand(effect=effect, effect_hash=execution_effect_hash(effect)),
+                    now,
+                    own_action_id=action_id,
+                )
+        validation = (
+            revalidate_execution(effect, context, confirmation=confirmation)
+            if dynamic_proof is None
+            else revalidate_execution(
+                effect, context, confirmation=confirmation, full_dynamic_goal_proof=dynamic_proof
+            )
+        )
     except PolicyLifecycleError as error:
         if error.status_code == 404:
             raise

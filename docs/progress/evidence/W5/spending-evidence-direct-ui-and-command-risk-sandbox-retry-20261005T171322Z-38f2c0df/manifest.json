@@ -1,0 +1,37 @@
+{
+  "run_id": "20261005T171322Z-38f2c0df",
+  "task": "W5",
+  "label": "spending-evidence-direct-ui-and-command-risk-sandbox-retry",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/api/spending-evidence",
+    "apps/web/src/features/spending-evidence-operation",
+    "apps/web/src/pages/SpendingEvidencePage",
+    "apps/web/src/tests/spending-evidence-fixture.ts"
+  ],
+  "command": [
+    "node",
+    "apps/web/node_modules/vitest/vitest.mjs",
+    "run",
+    "--root",
+    "apps/web",
+    "src/api/spending-evidence.test.ts",
+    "src/features/spending-evidence-operation.test.ts",
+    "src/pages/SpendingEvidencePage.test.tsx"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T17:13:23.324066+00:00",
+  "finished_at": "2026-10-05T17:13:31.273576+00:00",
+  "wall_seconds": 7.94951,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "766da994feef2a71732ae1c4d1bd9bd8c57d447a67d94dc92010356277af023b",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

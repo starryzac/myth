@@ -1,0 +1,5 @@
+apps\api\app\domain\full_protection_projection.py:470: error: Argument "max_allocatable_by_product" to "BoundaryResult" has incompatible type "dict[str, int]"; expected "dict[str, int | None]"  [arg-type]
+apps\api\app\domain\full_protection_projection.py:470: note: "dict" is invariant -- see https://mypy.readthedocs.io/en/stable/common_issues.html#variance
+apps\api\app\domain\full_protection_projection.py:470: note: Consider using "Mapping" instead, which is covariant in the value type
+apps\api\app\services\full_protection_projection.py:238: error: Need type annotation for "grouped" (hint: "grouped: dict[<type>, <type>] = ...")  [var-annotated]
+Found 2 errors in 2 files (checked 5 source files)

@@ -1,0 +1,29 @@
+...............................F................................         [100%]
+================================== FAILURES ===================================
+___ test_child_environment_removes_inherited_financial_and_compose_controls ___
+
+sandbox = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/w1-final-pure-fixtures/af4b2a69d75f41bea572e5bd4f3ab96d')
+
+    def test_child_environment_removes_inherited_financial_and_compose_controls(sandbox: Path) -> None:
+        inherited = {
+            "PATH": "native",
+            "BF_RESET": "1",
+            "bf_cache": "1",
+            "COMPOSE_FILE": "evil",
+            "PGPASSWORD": "old",
+            "DATABASE_URL": "formal",
+            "PYTEST_ADDOPTS": "--cov-append",
+            "COVERAGE_FILE": "old",
+            "W1_FINAL_DB_PASSWORD": "sensitive",
+            "PYTHONHOME": "old",
+        }
+        child = final.child_environment(inherited, "p@ss$ word", DB, sandbox / "context.json")
+        assert child["PATH"] == "native"
+>       assert all(key not in child for key in inherited if key != "PATH")
+E       assert False
+E        +  where False = all(<generator object test_child_environment_removes_inherited_financial_and_compose_controls.<locals>.<genexpr> at 0x00000192F53F8AD0>)
+
+scripts\tests\test_w1_final_acceptance.py:304: AssertionError
+=========================== short test summary info ===========================
+FAILED scripts/tests/test_w1_final_acceptance.py::test_child_environment_removes_inherited_financial_and_compose_controls
+1 failed, 63 passed in 1.39s

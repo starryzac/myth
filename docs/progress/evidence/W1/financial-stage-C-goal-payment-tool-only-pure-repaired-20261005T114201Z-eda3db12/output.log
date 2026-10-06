@@ -1,0 +1,207 @@
+........F.................                                               [100%]
+================================== FAILURES ===================================
+___ test_goal_source_identity_and_exact_authority_are_required[old_version] ___
+
+mutation = 'old_version'
+
+    @pytest.mark.parametrize(
+        "mutation",
+        [
+            "goal_owner",
+            "destination",
+            "missing_month",
+            "old_version",
+            "future_confirmation",
+            "changed_confirmation",
+            "fragment",
+        ],
+    )
+    def test_goal_source_identity_and_exact_authority_are_required(mutation: str) -> None:
+        fixture, value = goal_actual()
+        if mutation == "goal_owner":
+            value["before"]["tables"]["goals"][0]["policy_id"] = str(UUID(int=899))
+        elif mutation == "destination":
+            value["effect"]["destination_account_id"] = str(UUID(int=899))
+        elif mutation == "missing_month":
+            fixture.tables["evidence_items"] = [
+                row
+                for row in fixture.tables["evidence_items"]
+                if row["source_type"] != "SIMULATED_GOAL_MONTH_CONTRIBUTION"
+            ]
+            value["before"] = fixture.facts()
+        elif mutation == "old_version":
+            version = copy.deepcopy(fixture.tables["policy_versions"][0])
+            version["id"] = str(UUID(int=899))
+            version["version_number"] = 2
+            version["confirmation"]["version_id"] = version["id"]
+            proof = copy.deepcopy(
+                next(
+                    row
+                    for row in fixture.tables["evidence_items"]
+                    if row.get("source_ref") == value["effect"]["policy_version_id"]
+                )
+            )
+            proof.update(
+                id=fixture.identity(),
+                source_ref=version["id"],
+                content=copy.deepcopy(version["confirmation"]),
+            )
+            proof["content_hash"] = digest_value(proof["content"])
+            fixture.tables["evidence_items"].append(proof)
+            fixture.tables["policy_versions"].append(version)
+            value["before"] = fixture.facts()
+>           assert metrics._permission(value)["authorized"] is False
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_permissions_v2.py:207: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1178: in _permission
+    active, version = _current_version(facts, identity, at)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+facts = {'protocol': 'mvp-financial-facts-v1', 'user_id': '00000000-0000-0000-0000-0000000186a0', 'timezone': 'Asia/Shanghai', 'as_of': '2026-02-15T04:00:00+00:00', ...}
+version_id = '00000000-0000-0000-0000-000000000004'
+at = datetime.datetime(2026, 2, 15, 4, 0, tzinfo=datetime.timezone.utc)
+
+    def _current_version(
+        facts: dict[str, Any], version_id: str, at: datetime
+    ) -> tuple[bool, dict[str, Any]]:
+        version = _find(facts, "policy_versions", version_id)
+        policy = _find(facts, "policies", version["policy_id"])
+        configuration = _object(_need(version, "configuration"), "original policy configuration")
+        _check(
+            digest_value(configuration) == version.get("content_hash"),
+            "Original policy configuration hash differs",
+        )
+        confirmation = _object(_need(version, "confirmation"), "original policy confirmation")
+        confirmed_at = _time(_need(version, "confirmed_at"), "version confirmed_at")
+        _check(
+            confirmation.get("accepted") is True
+            and confirmation.get("reviewed_hash") == version["content_hash"]
+            and confirmation.get("user_id") == facts["user_id"]
+            and confirmation.get("policy_id") == policy["id"]
+            and confirmation.get("version_id") == version_id
+            and _time(_need(confirmation, "confirmed_at"), "policy consent time") == confirmed_at,
+            "Original formal policy consent is rebound",
+        )
+        _check(
+            _time(_need(confirmation, "effective_from"), "consented effective start")
+            == _time(_need(version, "valid_from"), "stored effective start")
+            and (
+                (
+                    None
+                    if confirmation.get("effective_until") is None
+                    else _time(confirmation["effective_until"], "consented effective end")
+                )
+                == (
+                    None
+                    if version.get("valid_until") is None
+                    else _time(version["valid_until"], "stored effective end")
+                )
+            ),
+            "Original formal confirmation and effective interval differ",
+        )
+        originals = [
+            row
+            for row in _rows(facts, "evidence_items").values()
+            if row.get("source_type") == "POLICY_CONFIRMATION"
+            and row.get("source_ref") == version_id
+            and row.get("content") == confirmation
+        ]
+        if len(originals) != 1:
+            raise Missing("Original formal policy confirmation evidence is missing or ambiguous")
+        _check(
+            digest_value(confirmation) == originals[0].get("content_hash"),
+            "Policy consent original hash differs",
+        )
+        proof = originals[0]
+        _check(
+            proof.get("evidence_level") == "USER_CONFIRMED_POLICY"
+            and proof.get("status") == "VALID"
+            and _time(_need(proof, "observed_at"), "policy proof observation") <= at
+            and _time(_need(proof, "valid_from"), "policy proof start") <= at
+            and (proof.get("valid_to") is None or at < _time(proof["valid_to"], "policy proof end")),
+            "Formal policy confirmation evidence is not valid at consumption",
+        )
+        candidates = [
+            row
+            for row in _rows(facts, "policy_versions").values()
+            if row.get("policy_id") == policy["id"]
+            and row.get("confirmed_at") is not None
+            and _time(row["confirmed_at"], "version time") <= at
+        ]
+        if not candidates:
+            return False, version
+        latest = max(
+            candidates, key=lambda row: _integer(_need(row, "version_number"), "version number")
+        )
+        status = _text(_need(policy, "status"), "original policy status")
+        event_originals = _list(_need(facts, "policy_state_events"), "policy events")
+        if facts.get("policy_state_events_protocol") == "TYPED_AUDIT_POLICY_EVENTS_V1":
+            from scripts.mvp_financial_oracles import Facts
+    
+            event_originals = Facts(facts).events
+        events = [
+            _object(row, "original policy state event")
+            for row in event_originals
+            if _object(row, "policy event").get("policy_id") == policy["id"]
+        ]
+        if not events:
+            raise Missing("Original policy state history at consuming time is missing")
+        chronological = sorted(events, key=lambda row: _time(row["occurred_at"], "state time"))
+        for previous, current in zip(chronological, chronological[1:], strict=False):
+            _check(
+                previous.get("to_status") == current.get("from_status"),
+                "Original complete policy state history is discontinuous",
+            )
+        _check(
+            chronological[-1].get("to_status") == status,
+            "Original policy state events differ from current snapshot",
+        )
+        if not any(
+            row.get("version_id") == version_id
+            and _time(row["occurred_at"], "version activation") == confirmed_at
+            and row.get("to_status") in {"CONFIRMED", "ACTIVE"}
+            for row in events
+        ):
+            raise Missing("Original exact confirmed version activation is missing")
+        numbers = [_integer(_need(row, "version_number"), "candidate version") for row in candidates]
+        _check(len(numbers) == len(set(numbers)), "Original policy version numbers repeat")
+        for candidate in candidates:
+            content = _object(_need(candidate, "confirmation"), "candidate formal confirmation")
+            _check(
+                content.get("accepted") is True
+                and content.get("user_id") == facts["user_id"]
+                and content.get("policy_id") == policy["id"]
+                and content.get("version_id") == candidate["id"]
+                and content.get("reviewed_hash") == candidate["content_hash"]
+                and digest_value(candidate["configuration"]) == candidate["content_hash"]
+                and _time(_need(content, "confirmed_at"), "candidate consent time")
+                == _time(candidate["confirmed_at"], "candidate confirmation time"),
+                "Candidate replacement is not an exact original formal confirmation",
+            )
+            matches = [
+                row
+                for row in _rows(facts, "evidence_items").values()
+                if row.get("source_type") == "POLICY_CONFIRMATION"
+                and row.get("source_ref") == candidate["id"]
+                and row.get("evidence_level") == "USER_CONFIRMED_POLICY"
+                and row.get("content") == content
+                and row.get("content_hash") == digest_value(content)
+                and _time(_need(row, "observed_at"), "candidate evidence time") <= at
+            ]
+            if len(matches) != 1 or not any(
+                row.get("version_id") == candidate["id"]
+                and _time(row["occurred_at"], "candidate activation")
+                == _time(candidate["confirmed_at"], "candidate confirmation")
+                and row.get("to_status") in {"ACTIVE", "CONFIRMED"}
+                for row in events
+            ):
+>               raise Missing("Original replacement confirmation/activation evidence is missing")
+E               scripts.mvp_trace_metrics.Missing: Original replacement confirmation/activation evidence is missing
+
+scripts\mvp_financial_metrics.py:498: Missing
+=========================== short test summary info ===========================
+FAILED scripts/tests/test_mvp_financial_permissions_v2.py::test_goal_source_identity_and_exact_authority_are_required[old_version]
+1 failed, 25 passed in 0.82s

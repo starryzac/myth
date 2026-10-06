@@ -1,0 +1,888 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFF.                                           [100%]
+================================== FAILURES ===================================
+___ test_complete_single_goal_joint_maps_only_to_the_exact_existing_effect ____
+apps\api\app\tests\test_full_action_set_joint_producers.py:252: in test_complete_single_goal_joint_maps_only_to_the_exact_existing_effect
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[goals] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:287: in test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[owner] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:287: in test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[clock] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:287: in test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[source] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:287: in test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[income] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:287: in test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[model] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:287: in test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[rawgoal] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:287: in test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[denominator] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:287: in test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[projection] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:287: in test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[permission] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:287: in test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[solver] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:287: in test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[audit] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:287: in test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[policy] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:287: in test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_a_joint_allocation_cannot_relabel_a_different_original_effect[amount] __
+apps\api\app\tests\test_full_action_set_joint_producers.py:383: in test_a_joint_allocation_cannot_relabel_a_different_original_effect
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_a_joint_allocation_cannot_relabel_a_different_original_effect[source] __
+apps\api\app\tests\test_full_action_set_joint_producers.py:383: in test_a_joint_allocation_cannot_relabel_a_different_original_effect
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+__ test_a_joint_allocation_cannot_relabel_a_different_original_effect[goal] ___
+apps\api\app\tests\test_full_action_set_joint_producers.py:383: in test_a_joint_allocation_cannot_relabel_a_different_original_effect
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_a_joint_allocation_cannot_relabel_a_different_original_effect[destination] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:383: in test_a_joint_allocation_cannot_relabel_a_different_original_effect
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_a_joint_allocation_cannot_relabel_a_different_original_effect[version] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:383: in test_a_joint_allocation_cannot_relabel_a_different_original_effect
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_original_command_cannot_hide_historical_responsibility[PLANNED] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:417: in test_missing_original_command_cannot_hide_historical_responsibility
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_original_command_cannot_hide_historical_responsibility[AUTHORIZED] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:417: in test_missing_original_command_cannot_hide_historical_responsibility
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_original_command_cannot_hide_historical_responsibility[SUBMITTED] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:417: in test_missing_original_command_cannot_hide_historical_responsibility
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_original_command_cannot_hide_historical_responsibility[UNKNOWN] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:417: in test_missing_original_command_cannot_hide_historical_responsibility
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_missing_original_command_cannot_hide_historical_responsibility[SUCCEEDED] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:417: in test_missing_original_command_cannot_hide_historical_responsibility
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_internal_typed_input_rejects_extra_financial_or_success_claims[amount_cents] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:449: in test_internal_typed_input_rejects_extra_financial_or_success_claims
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_internal_typed_input_rejects_extra_financial_or_success_claims[bank_authority] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:449: in test_internal_typed_input_rejects_extra_financial_or_success_claims
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_internal_typed_input_rejects_extra_financial_or_success_claims[clock] __
+apps\api\app\tests\test_full_action_set_joint_producers.py:449: in test_internal_typed_input_rejects_extra_financial_or_success_claims
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_internal_typed_input_rejects_extra_financial_or_success_claims[result] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:449: in test_internal_typed_input_rejects_extra_financial_or_success_claims
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+_ test_internal_typed_input_rejects_extra_financial_or_success_claims[current_permissions] _
+apps\api\app\tests\test_full_action_set_joint_producers.py:449: in test_internal_typed_input_rejects_extra_financial_or_success_claims
+    data = fixture()
+           ^^^^^^^^^
+apps\api\app\tests\test_full_action_set_joint_producers.py:49: in fixture
+    model = FullGoalModelContent.model_validate(original.model_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 7 validation errors for FullGoalModelContent
+E   user_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000001', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   epoch_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000007', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   goal_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000002', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   policy_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000003', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   base_policy_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000004', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   expected_version_id
+E     Input should be an instance of UUID [type=is_instance_of, input_value='00000000-0000-0000-0000-000000000064', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
+E   confirmed_at
+E     Input should be a valid datetime [type=datetime_type, input_value='2026-10-03T12:00:00Z', input_type=str]
+E       For further information visit https://errors.pydantic.dev/2.13/v/datetime_type
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_complete_single_goal_joint_maps_only_to_the_exact_existing_effect
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[goals]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[owner]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[clock]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[source]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[income]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[model]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[rawgoal]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[denominator]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[projection]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[permission]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[solver]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[audit]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_or_changed_real_source_never_becomes_a_smaller_successful_joint[policy]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_a_joint_allocation_cannot_relabel_a_different_original_effect[amount]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_a_joint_allocation_cannot_relabel_a_different_original_effect[source]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_a_joint_allocation_cannot_relabel_a_different_original_effect[goal]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_a_joint_allocation_cannot_relabel_a_different_original_effect[destination]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_a_joint_allocation_cannot_relabel_a_different_original_effect[version]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_original_command_cannot_hide_historical_responsibility[PLANNED]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_original_command_cannot_hide_historical_responsibility[AUTHORIZED]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_original_command_cannot_hide_historical_responsibility[SUBMITTED]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_original_command_cannot_hide_historical_responsibility[UNKNOWN]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_missing_original_command_cannot_hide_historical_responsibility[SUCCEEDED]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_internal_typed_input_rejects_extra_financial_or_success_claims[amount_cents]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_internal_typed_input_rejects_extra_financial_or_success_claims[bank_authority]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_internal_typed_input_rejects_extra_financial_or_success_claims[clock]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_internal_typed_input_rejects_extra_financial_or_success_claims[result]
+FAILED apps/api/app/tests/test_full_action_set_joint_producers.py::test_internal_typed_input_rejects_extra_financial_or_success_claims[current_permissions]
+29 failed, 1 passed, 3 warnings in 27.31s

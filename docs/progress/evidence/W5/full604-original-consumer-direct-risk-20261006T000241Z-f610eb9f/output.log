@@ -1,0 +1,785 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/full-recovery-execution.test.ts (17 tests) 98ms
+ ✓ src/features/full-recovery-execution-operation.test.ts (15 tests) 4394ms
+   ✓ POST前原body/hash/key深冻结持久化，仅独立原GET释放prepare并保工作区  1385ms
+ ❯ src/components/FullRecoveryExecutionPanel.test.tsx (9 tests | 1 failed) 5742ms
+   ✓ 只用户点击才实际读取服务器候选和预览，无金额/clock输入，scopeproof不金融授权  1908ms
+   ✓ prepare→原GET→USER明确confirm→原GET→固定execute→原GET回执，POST从不清门  811ms
+   ✓ AUTHORIZED无独立USER consent保确认未知，绝不拿状态授权执行  542ms
+   × execute响应丢失+银行SETTLED无应用receipt仍保原Action/键/body，不自动重试 883ms
+     → Unable to find an accessible element with the role "button" and name "手动恢复同一恢复原请求"
+
+Here are the accessible roles:
+
+  region:
+
+  Name "完整安全恢复原动作":
+  [36m<section[39m
+    [33maria-label[39m=[32m"完整安全恢复原动作"[39m
+    [33mclass[39m=[32m"card"[39m
+  [36m/>[39m
+
+  Name "恢复待核对原请求":
+  [36m<section[39m
+    [33maria-label[39m=[32m"恢复待核对原请求"[39m
+  [36m/>[39m
+
+  Name "实际恢复候选":
+  [36m<section[39m
+    [33maria-label[39m=[32m"实际恢复候选"[39m
+  [36m/>[39m
+
+  Name "固定原恢复动作":
+  [36m<section[39m
+    [33maria-label[39m=[32m"固定原恢复动作"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "安全恢复 · 原USER逐次同意":
+  [36m<h3 />[39m
+
+  Name "原 EXECUTE 待核对":
+  [36m<h4 />[39m
+
+  Name "原键结果 RECORDED":
+  [36m<h4 />[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details />[39m
+
+  Name "":
+  [36m<details />[39m
+
+  Name "":
+  [36m<details />[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "独立读取原恢复结果":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "只读加载当前恢复规划与USER身份":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "读取服务器原恢复执行预览":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "明确确认这一次原恢复动作":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "明确执行或核对同一原恢复动作":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "服务器实际选中的无损整仓":
+  [36m<select[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "没有可证明候选/请选择":
+  [36m<option[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "00000000-0000-0000-0000-00000000000a · 原本金 ¥500.00":
+  [36m<option[39m
+    [33mvalue[39m=[32m"00000000-0000-0000-0000-00000000000a"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ul />[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li />[39m
+
+  --------------------------------------------------
+  checkbox:
+
+  Name "我以当前本地USER明确复核原仓位、目的账户、零fee/loss、轮次和完整effectHash，并同意这一次操作":
+  [36m<input[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"完整安全恢复原动作"[39m
+      [33mclass[39m=[32m"card"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m安全恢复 · 原USER逐次同意[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m全部是模拟资金操作。只使用服务器当前策略、真实原仓位、原报价和期限；本页不输入金额、银行回执或时钟。当前新适配只支持零损失/零费用的授权整仓T0/T1；不承诺组合、部分或有损恢复。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"status"[39m
+      [36m>[39m
+        [0m独立原GET已匹配原body/双hash及本次结果；历史USER同意和回执不是当前银行权限。[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"恢复待核对原请求"[39m
+      [36m>[39m
+        [36m<h4>[39m
+          [0m原 [0m
+          [0mEXECUTE[0m
+          [0m 待核对[0m
+        [36m</h4>[39m
+        [36m<p>[39m
+          [0m原键 [0m
+          [0mrecovery-45be1328-69f3-4bb8-8e60-27a7c0ac27c3[0m
+          [0m · 仓位 [0m
+          [0m00000000-0000-0000-0000-00000000000a[0m
+          [0m · 轮次 [0m
+          [0m00000000-0000-0000-0000-000000000320[0m
+        [36m</p>[39m
+        [36m<details>[39m
+          [36m<summary>[39m
+            [0mPOST前保存的完整恢复body/hash[0m
+          [36m</summary>[39m
+          [36m<pre>[39m
+            [0m{
+  "protocol": "full-recovery-browser-v1",
+  "kind": "EXECUTE",
+  "user_id": "00000000-0000-0000-0000-000000000001",
+  "prepare_request": {
+    "policy_id": "00000000-0000-0000-0000-0000000002bc",
+    "expected_version_id": "00000000-0000-0000-0000-0000000002bd",
+    "expected_epoch_id": "00000000-0000-0000-0000-000000000320",
+    "position_id": "00000000-0000-0000-0000-00000000000a",
+    "idempotency_key": "recovery-45be1328-69f3-4bb8-8e60-27a7c0ac27c3"
+  },
+  "action": {
+    "simulation": true,
+    "user_id": "00000000-0000-0000-0000-000000000001",
+    "action_id": "00000000-0000-0000-0000-000000000321",
+    "decision_run_id": "00000000-0000-0000-0000-000000000923",
+    "status": "AUTHORIZED",
+    "autonomy_level": "ASK_ONCE",
+    "effect": {
+      "simulation": true,
+      "operation_id": "00000000-0000-0000-0000-000000000321",
+      "user_id": "00000000-0000-0000-0000-000000000001",
+      "business_key": "redeem:00000000-0000-0000-0000-00000000000a",
+      "action_type": "REDEEM_ASSET",
+      "amount_cents": 50000,
+      "cash_uses": [],
+      "income_uses": [],
+      "destination_account_id": "00000000-0000-0000-0000-000000000002",
+      "goal_id": null,
+      "policy_id": "00000000-0000-0000-0000-000000000004",
+      "policy_version_id": "00000000-0000-0000-0000-000000000005",
+      "policy_version_ids": [
+        "00000000-0000-0000-0000-000000000005"
+      ],
+      "liability": null,
+      "payee_id": null,
+      "payee_evidence_id": null,
+      "product_id": "00000000-0000-0000-0000-0000000003f2",
+      "product_version_number": 2,
+      "terms_digest": "3ae738fdadb6c1527ed0df3a334ed024e6492f0f86f363e9f2e738124a5abec7",
+      "position_id": "00000000-0000-0000-0000-00000000000a",
+      "position_account_id": "00000000-0000-0000-0000-000000000003",
+      "return_account_id": null,
+      "purchase_exit": null,
+      "original_policy_version_id": "00000000-0000-0000-0000-000000000005",
+      "fee_cents": 0,
+      "loss_cents": 0,
+      "net_cents": 50000,
+      "quote_id": "00000000-0000-0000-0000-0000000007da",
+      "settlement_delay_days": 0,
+      "latest_arrival_at": "2026-10-04T08:02:00Z",
+      "valid_from": "2026-10-04T08:00:00Z",
+      "expires_at": "2026-10-04T08:05:00Z"
+    },
+    "effect_hash": "c15dd110649a0f1cd56c02695caddf24f460b2eb2c80c56866a58cc458f80519",
+    "prepared_at": "2026-10-04T08:00:00Z",
+    "as_of": "2026-10-04T08:00:00Z",
+    "prepared_validation": {
+      "simulation": true,
+      "financial_only": true,
+      "status": "CONFIRMATION_REQUIRED",
+      "effect_hash": "c15dd110649a0f1cd56c02695caddf24f460b2eb2c80c56866a58cc458f80519",
+      "baseline_boundary": {
+        "algorithm_version": "unit-boundary",
+        "status": "READY",
+        "financial_only": true,
+        "safe_idle_cents": 10000,
+        "minimum_margin_cents": -1200,
+        "deficit_cents": 1200,
+        "protected_cents_by_reason": {},
+        "max_allocatable_by_product": {},
+        "blocking_constraints": [],
+        "calculation_trace": [],
+        "boundary_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "calculation_notes": [
+          "单元HTTP夹具，不是金融计算"
+        ]
+      },
+      "reasons": [
+        "TOOL_ONLY_SYNTHETIC_NOT_FINANCIAL_PROOF"
+      ]
+    },
+    "bank_status": null,
+    "receipt": null
+  },
+  "path": "/full-recovery-actions/actions/00000000-0000-0000-0000-000000000321/execute",
+  "body": {
+    "expected_epoch_id": "00000000-0000-0000-0000-000000000320",
+    "reviewed_effect_hash": "c15dd110649a0f1cd56c02695caddf24f460b2eb2c80c56866a58cc458f80519"
+  },
+  "body_json": "{\"expected_epoch_id\":\"00000000-0000-0000-0000-000000000320\",\"reviewed_effect_hash\":\"c15dd110649a0f1cd56c02695caddf24f460b2eb2c80c56866a58cc458f80519\"}",
+  "request_hash": "e6fd45ebfd12b4668478497f61435a851eeb245b76505f3dffe8d599f46a3ce6"
+}[0m
+          [36m</pre>[39m
+        [36m</details>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m独立读取原恢复结果[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m网络/解析/4xx不清门；NOT_FOUND不是最终未提交证明。自己的原GET可越过自身待核对门，刷新不自动POST。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<button[39m
+        [33mdisabled[39m=[32m""[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读加载当前恢复规划与USER身份[0m
+      [36m</button>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"实际恢复候选"[39m
+      [36m>[39m
+        [36m<p>[39m
+          [0m服务器原规划 [0m
+          [0mCOMPUTED[0m
+          [0m · [0m
+          [0mLIQUIDITY_RISK[0m
+          [0m · 原规划执行标记 [0m
+          [0mNOT_IMPLEMENTED[0m
+          [0m。本页独立新执行入口仍需原生产和银行守卫。[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m当前scope现金 [0m
+          [0m¥119.98[0m
+          [0m · 原待恢复额 [0m
+          [0m¥100.01[0m
+          [0m · 条件准时净额 [0m
+          [0m¥0.00[0m
+          [0m · 原截止 [0m
+          [0m2026-10-07T09:00:00+08:00[0m
+        [36m</p>[39m
+        [36m<label>[39m
+          [0m服务器实际选中的无损整仓[0m
+          [36m<select[39m
+            [33mdisabled[39m=[32m""[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m没有可证明候选/请选择[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"00000000-0000-0000-0000-00000000000a"[39m
+            [36m>[39m
+              [0m00000000-0000-0000-0000-00000000000a[0m
+              [0m · 原本金 [0m
+              [0m¥500.00[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [0m00000000-0...
+   ✓ 他族mutationBlocked仍可自己GET原pending，禁止新preview/confirm/execute  342ms
+   ✓ 刷新workspace不自动网络/POST，必须独立GET才可复核原动作 281ms
+   ✓ 当前版本prop变更不拿旧preview支持新prepare 279ms
+   ✓ UNKNOWN proof无effect，真实缺项保留且不能准备  422ms
+   ✓ preview原body保存失败禁止POST，不替换来源/伪造成功 272ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/FullRecoveryExecutionPanel.test.tsx > execute响应丢失+银行SETTLED无应用receipt仍保原Action/键/body，不自动重试
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "手动恢复同一恢复原请求"
+
+Here are the accessible roles:
+
+  region:
+
+  Name "完整安全恢复原动作":
+  [36m<section[39m
+    [33maria-label[39m=[32m"完整安全恢复原动作"[39m
+    [33mclass[39m=[32m"card"[39m
+  [36m/>[39m
+
+  Name "恢复待核对原请求":
+  [36m<section[39m
+    [33maria-label[39m=[32m"恢复待核对原请求"[39m
+  [36m/>[39m
+
+  Name "实际恢复候选":
+  [36m<section[39m
+    [33maria-label[39m=[32m"实际恢复候选"[39m
+  [36m/>[39m
+
+  Name "固定原恢复动作":
+  [36m<section[39m
+    [33maria-label[39m=[32m"固定原恢复动作"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "安全恢复 · 原USER逐次同意":
+  [36m<h3 />[39m
+
+  Name "原 EXECUTE 待核对":
+  [36m<h4 />[39m
+
+  Name "原键结果 RECORDED":
+  [36m<h4 />[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details />[39m
+
+  Name "":
+  [36m<details />[39m
+
+  Name "":
+  [36m<details />[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "独立读取原恢复结果":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "只读加载当前恢复规划与USER身份":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "读取服务器原恢复执行预览":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "明确确认这一次原恢复动作":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "明确执行或核对同一原恢复动作":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "服务器实际选中的无损整仓":
+  [36m<select[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "没有可证明候选/请选择":
+  [36m<option[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "00000000-0000-0000-0000-00000000000a · 原本金 ¥500.00":
+  [36m<option[39m
+    [33mvalue[39m=[32m"00000000-0000-0000-0000-00000000000a"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ul />[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li />[39m
+
+  --------------------------------------------------
+  checkbox:
+
+  Name "我以当前本地USER明确复核原仓位、目的账户、零fee/loss、轮次和完整effectHash，并同意这一次操作":
+  [36m<input[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"完整安全恢复原动作"[39m
+      [33mclass[39m=[32m"card"[39m
+    [36m>[39m
+      [36m<h3>[39m
+        [0m安全恢复 · 原USER逐次同意[0m
+      [36m</h3>[39m
+      [36m<p>[39m
+        [0m全部是模拟资金操作。只使用服务器当前策略、真实原仓位、原报价和期限；本页不输入金额、银行回执或时钟。当前新适配只支持零损失/零费用的授权整仓T0/T1；不承诺组合、部分或有损恢复。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"status"[39m
+      [36m>[39m
+        [0m独立原GET已匹配原body/双hash及本次结果；历史USER同意和回执不是当前银行权限。[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"恢复待核对原请求"[39m
+      [36m>[39m
+        [36m<h4>[39m
+          [0m原 [0m
+          [0mEXECUTE[0m
+          [0m 待核对[0m
+        [36m</h4>[39m
+        [36m<p>[39m
+          [0m原键 [0m
+          [0mrecovery-45be1328-69f3-4bb8-8e60-27a7c0ac27c3[0m
+          [0m · 仓位 [0m
+          [0m00000000-0000-0000-0000-00000000000a[0m
+          [0m · 轮次 [0m
+          [0m00000000-0000-0000-0000-000000000320[0m
+        [36m</p>[39m
+        [36m<details>[39m
+          [36m<summary>[39m
+            [0mPOST前保存的完整恢复body/hash[0m
+          [36m</summary>[39m
+          [36m<pre>[39m
+            [0m{
+  "protocol": "full-recovery-browser-v1",
+  "kind": "EXECUTE",
+  "user_id": "00000000-0000-0000-0000-000000000001",
+  "prepare_request": {
+    "policy_id": "00000000-0000-0000-0000-0000000002bc",
+    "expected_version_id": "00000000-0000-0000-0000-0000000002bd",
+    "expected_epoch_id": "00000000-0000-0000-0000-000000000320",
+    "position_id": "00000000-0000-0000-0000-00000000000a",
+    "idempotency_key": "recovery-45be1328-69f3-4bb8-8e60-27a7c0ac27c3"
+  },
+  "action": {
+    "simulation": true,
+    "user_id": "00000000-0000-0000-0000-000000000001",
+    "action_id": "00000000-0000-0000-0000-000000000321",
+    "decision_run_id": "00000000-0000-0000-0000-000000000923",
+    "status": "AUTHORIZED",
+    "autonomy_level": "ASK_ONCE",
+    "effect": {
+      "simulation": true,
+      "operation_id": "00000000-0000-0000-0000-000000000321",
+      "user_id": "00000000-0000-0000-0000-000000000001",
+      "business_key": "redeem:00000000-0000-0000-0000-00000000000a",
+      "action_type": "REDEEM_ASSET",
+      "amount_cents": 50000,
+      "cash_uses": [],
+      "income_uses": [],
+      "destination_account_id": "00000000-0000-0000-0000-000000000002",
+      "goal_id": null,
+      "policy_id": "00000000-0000-0000-0000-000000000004",
+      "policy_version_id": "00000000-0000-0000-0000-000000000005",
+      "policy_version_ids": [
+        "00000000-0000-0000-0000-000000000005"
+      ],
+      "liability": null,
+      "payee_id": null,
+      "payee_evidence_id": null,
+      "product_id": "00000000-0000-0000-0000-0000000003f2",
+      "product_version_number": 2,
+      "terms_digest": "3ae738fdadb6c1527ed0df3a334ed024e6492f0f86f363e9f2e738124a5abec7",
+      "position_id": "00000000-0000-0000-0000-00000000000a",
+      "position_account_id": "00000000-0000-0000-0000-000000000003",
+      "return_account_id": null,
+      "purchase_exit": null,
+      "original_policy_version_id": "00000000-0000-0000-0000-000000000005",
+      "fee_cents": 0,
+      "loss_cents": 0,
+      "net_cents": 50000,
+      "quote_id": "00000000-0000-0000-0000-0000000007da",
+      "settlement_delay_days": 0,
+      "latest_arrival_at": "2026-10-04T08:02:00Z",
+      "valid_from": "2026-10-04T08:00:00Z",
+      "expires_at": "2026-10-04T08:05:00Z"
+    },
+    "effect_hash": "c15dd110649a0f1cd56c02695caddf24f460b2eb2c80c56866a58cc458f80519",
+    "prepared_at": "2026-10-04T08:00:00Z",
+    "as_of": "2026-10-04T08:00:00Z",
+    "prepared_validation": {
+      "simulation": true,
+      "financial_only": true,
+      "status": "CONFIRMATION_REQUIRED",
+      "effect_hash": "c15dd110649a0f1cd56c02695caddf24f460b2eb2c80c56866a58cc458f80519",
+      "baseline_boundary": {
+        "algorithm_version": "unit-boundary",
+        "status": "READY",
+        "financial_only": true,
+        "safe_idle_cents": 10000,
+        "minimum_margin_cents": -1200,
+        "deficit_cents": 1200,
+        "protected_cents_by_reason": {},
+        "max_allocatable_by_product": {},
+        "blocking_constraints": [],
+        "calculation_trace": [],
+        "boundary_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "calculation_notes": [
+          "单元HTTP夹具，不是金融计算"
+        ]
+      },
+      "reasons": [
+        "TOOL_ONLY_SYNTHETIC_NOT_FINANCIAL_PROOF"
+      ]
+    },
+    "bank_status": null,
+    "receipt": null
+  },
+  "path": "/full-recovery-actions/actions/00000000-0000-0000-0000-000000000321/execute",
+  "body": {
+    "expected_epoch_id": "00000000-0000-0000-0000-000000000320",
+    "reviewed_effect_hash": "c15dd110649a0f1cd56c02695caddf24f460b2eb2c80c56866a58cc458f80519"
+  },
+  "body_json": "{\"expected_epoch_id\":\"00000000-0000-0000-0000-000000000320\",\"reviewed_effect_hash\":\"c15dd110649a0f1cd56c02695caddf24f460b2eb2c80c56866a58cc458f80519\"}",
+  "request_hash": "e6fd45ebfd12b4668478497f61435a851eeb245b76505f3dffe8d599f46a3ce6"
+}[0m
+          [36m</pre>[39m
+        [36m</details>[39m
+        [36m<button[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m独立读取原恢复结果[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m网络/解析/4xx不清门；NOT_FOUND不是最终未提交证明。自己的原GET可越过自身待核对门，刷新不自动POST。[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<button[39m
+        [33mdisabled[39m=[32m""[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m只读加载当前恢复规划与USER身份[0m
+      [36m</button>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"实际恢复候选"[39m
+      [36m>[39m
+        [36m<p>[39m
+          [0m服务器原规划 [0m
+          [0mCOMPUTED[0m
+          [0m · [0m
+          [0mLIQUIDITY_RISK[0m
+          [0m · 原规划执行标记 [0m
+          [0mNOT_IMPLEMENTED[0m
+          [0m。本页独立新执行入口仍需原生产和银行守卫。[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m当前scope现金 [0m
+          [0m¥119.98[0m
+          [0m · 原待恢复额 [0m
+          [0m¥100.01[0m
+          [0m · 条件准时净额 [0m
+          [0m¥0.00[0m
+          [0m · 原截止 [0m
+          [0m2026-10-07T09:00:00+08:00[0m
+        [36m</p>[39m
+        [36m<label>[39m
+          [0m服务器实际选中的无损整仓[0m
+          [36m<select[39m
+            [33mdisabled[39m=[32m""[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m没有可证明候选/请选择[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"00000000-0000-0000-0000-00000000000a"[39m
+            [36m>[39m
+              [0m00000000-0000-0000-0000-00000000000a[0m
+              [0m · 原本金 [0m
+              [0m¥500.00[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [0m00000000-0...
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/FullRecoveryExecutionPanel.test.tsx:31:1152
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 40 passed (41)
+   Start at  08:02:43
+   Duration  9.19s (transform 2.01s, setup 1.60s, collect 4.05s, tests 10.23s, environment 3.47s, prepare 1.12s)
+

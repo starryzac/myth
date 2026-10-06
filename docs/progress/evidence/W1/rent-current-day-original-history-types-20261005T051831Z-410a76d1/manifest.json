@@ -1,0 +1,37 @@
+{
+  "run_id": "20261005T051831Z-410a76d1",
+  "task": "W1",
+  "label": "rent-current-day-original-history-types",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/services/demo_console.py",
+    "apps/api/app/tests/test_demo_rent_identity.py",
+    "scripts/w1_browser_acceptance.py",
+    "scripts/tests/test_w1_browser_acceptance.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "mypy",
+    "--explicit-package-bases",
+    "apps/api/app/services/demo_console.py",
+    "apps/api/app/tests/test_demo_rent_identity.py",
+    "scripts/w1_browser_acceptance.py",
+    "scripts/tests/test_w1_browser_acceptance.py"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T05:18:32.112119+00:00",
+  "finished_at": "2026-10-05T05:18:33.616045+00:00",
+  "wall_seconds": 1.503926,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "d9a5631f7d87a741fbecc3236286d1792d22d349ff13846d71cdc9217307bb76",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

@@ -1,0 +1,1918 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/App.dynamic-goal-host.test.tsx (2 tests | 2 failed) 3984ms
+   × pending原动态准备在当前列表失败时仍独立GET，NOT_FOUND保留完整原件并阻挡reset 3185ms
+     → Unable to find an accessible element with the role "button" and name "恢复演示初始状态"
+
+Here are the accessible roles:
+
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mclass[39m=[32m"app-shell"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"app-header"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "钱途有界":
+  [36m<h1 />[39m
+
+  Name "本地模拟身份":
+  [36m<h2[39m
+    [33mid[39m=[32m"«r0»"[39m
+  [36m/>[39m
+
+  Name "演示控制台":
+  [36m<h2 />[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"simulation-note"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"notice"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"caption"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details />[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "本地模拟身份":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"«r0»"[39m
+    [33mclass[39m=[32m"local-actor-session-panel"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "只读读取当前身份":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "明确登录本地会话":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"submit"[39m
+  [36m/>[39m
+
+  Name "明确注销本地会话":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "读取实际演示状态":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "服务器固定用户名":
+  [36m<input[39m
+    [33mautocomplete[39m=[32m"username"[39m
+    [33mname[39m=[32m"username"[39m
+    [33mreadonly[39m=[32m""[39m
+    [33mvalue[39m=[32m"bounded-user"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "页面导航":
+  [36m<nav[39m
+    [33maria-label[39m=[32m"页面导航"[39m
+    [33mclass[39m=[32m"main-nav"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  link:
+
+  Name "资金总览":
+  [36m<a[39m
+    [33mhref[39m=[32m"#overview"[39m
+  [36m/>[39m
+
+  Name "首次引导":
+  [36m<a[39m
+    [33mhref[39m=[32m"#onboarding"[39m
+  [36m/>[39m
+
+  Name "策略中心":
+  [36m<a[39m
+    [33mhref[39m=[32m"#policies"[39m
+  [36m/>[39m
+
+  Name "目标储备":
+  [36m<a[39m
+    [33mhref[39m=[32m"#goals"[39m
+  [36m/>[39m
+
+  Name "产品与期限":
+  [36m<a[39m
+    [33mhref[39m=[32m"#products"[39m
+  [36m/>[39m
+
+  Name "年度规划":
+  [36m<a[39m
+    [33mhref[39m=[32m"#annual"[39m
+  [36m/>[39m
+
+  Name "一次一问":
+  [36m<a[39m
+    [33mhref[39m=[32m"#questions"[39m
+  [36m/>[39m
+
+  Name "介入中心":
+  [36m<a[39m
+    [33mhref[39m=[32m"#interventions"[39m
+  [36m/>[39m
+
+  Name "消费证据":
+  [36m<a[39m
+    [33mhref[39m=[32m"#spending-evidence"[39m
+  [36m/>[39m
+
+  Name "事实与证据":
+  [36m<a[39m
+    [33mhref[39m=[32m"#evidence"[39m
+  [36m/>[39m
+
+  Name "投递记录":
+  [36m<a[39m
+    [33mhref[39m=[32m"#delivery"[39m
+  [36m/>[39m
+
+  Name "对账中心":
+  [36m<a[39m
+    [33mhref[39m=[32m"#reconciliation"[39m
+  [36m/>[39m
+
+  Name "场景模拟器":
+  [36m<a[39m
+    [33mhref[39m=[32m"#simulation"[39m
+  [36m/>[39m
+
+  Name "决策轨迹":
+  [36m<a[39m
+    [33mhref[39m=[32m"#decisions"[39m
+  [36m/>[39m
+
+  Name "演示控制台":
+  [36m<a[39m
+    [33maria-current[39m=[32m"page"[39m
+    [33mhref[39m=[32m"#demo"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  contentinfo:
+
+  Name "":
+  [36m<footer[39m
+    [33mclass[39m=[32m"app-footer"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"app-shell"[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"app-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"brand"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"brand-mark"[39m
+          [36m>[39m
+            [0m界[0m
+          [36m</span>[39m
+          [36m<div>[39m
+            [36m<h1>[39m
+              [0m钱途有界[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mBOUNDED FUNDS[0m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"simulation-badge"[39m
+        [36m>[39m
+          [0m模拟环境[0m
+        [36m</span>[39m
+      [36m</header>[39m
+      [36m<details>[39m
+        [36m<summary>[39m
+          [0m本地用户身份会话[0m
+        [36m</summary>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"«r0»"[39m
+          [33mclass[39m=[32m"local-actor-session-panel"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"«r0»"[39m
+          [36m>[39m
+            [0m本地模拟身份[0m
+          [36m</h2>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"status"[39m
+          [36m>[39m
+            [0m尚未读取当前身份[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m身份仅用于展示。本地签名会话不是银行授权、金融确认或真人身份核验；每个新金融请求仍由服务器独立验真。[0m
+          [36m</p>[39m
+          [36m<button[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m只读读取当前身份[0m
+          [36m</button>[39m
+          [36m<form>[39m
+            [36m<label>[39m
+              [0m服务器固定用户名[0m
+              [36m<input[39m
+                [33mautocomplete[39m=[32m"username"[39m
+                [33mname[39m=[32m"username"[39m
+                [33mreadonly[39m=[32m""[39m
+                [33mvalue[39m=[32m"bounded-user"[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<label>[39m
+              [0m本地凭证[0m
+              [36m<input[39m
+                [33mautocomplete[39m=[32m"off"[39m
+                [33mdisabled[39m=[32m""[39m
+                [33mmaxlength[39m=[32m"1024"[39m
+                [33mname[39m=[32m"secret"[39m
+                [33mtype[39m=[32m"password"[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<button[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0m明确登录本地会话[0m
+            [36m</button>[39m
+          [36m</form>[39m
+          [36m<button[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m明确注销本地会话[0m
+          [36m</button>[39m
+          [36m<p>[39m
+            [0m金融原请求仍保留。先只读核对身份后，可手动续登录服务器固定的同一 USER；不能切换用户、注销、确认金融结果或重发付款。[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m凭证提交即清空，不写入浏览器存储或返回正文。15分钟 HttpOnly / SameSite=Strict Cookie 的实际行为须由服务器与浏览器验收证明。[0m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</details>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"页面导航"[39m
+        [33mclass[39m=[32m"main-nav"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#overview"[39m
+        [36m>[39m
+          [0m资金总览[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#onboarding"[39m
+        [36m>[39m
+          [0m首次引导[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#policies"[39m
+        [36m>[39m
+          [0m策略中心[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#goals"[39m
+        [36m>[39m
+          [0m目标储备[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#products"[39m
+        [36m>[39m
+          [0m产品与期限[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#annual"[39m
+        [36m>[39m
+          [0m年度规划[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#questions"[39m
+        [36m>[39m
+          [0m一次一问[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#interventions"[39m
+        [36m>[39m
+          [0m介入中心[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#spending-evidence"[39m
+        [36m>[39m
+          [0m消费证据[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#evidence"[39m
+        [36m>[39m
+          [0m事实与证据[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#delivery"[39m
+        [36m>[39m
+          [0m投递记录[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#reconciliation"[39m
+        [36m>[39m
+          [0m对账中心[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#simulation"[39m
+        [36m>[39m
+          [0m场景模拟器[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#decisions"[39m
+        [36m>[39m
+          [0m决策轨迹[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33maria-current[39m=[32m"page"[39m
+          [33mhref[39m=[32m"#demo"[39m
+        [36m>[39m
+          [0m演示控制台[0m
+        [36m</a>[39m
+      [36m</nav>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m所有资金动作均为模拟，未接入真实银行账户、支付或理财交易接口。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"notice"[39m
+      [36m>[39m
+        [0m动态目标原请求或固定动作尚未终局，其他资金变更暂不可提交；可前往目标储备独立核对原键与回执。[0m
+      [36m</p>[39m
+      [36m<div>[39m
+        [36m<section[39m
+          [33mclass[39m=[32m"page-content"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"page-heading"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<h2>[39m
+                [0m演示控制台[0m
+              [36m</h2>[39m
+              [36m<p>[39m
+                [0m只注入预定义合成事件，资金、授权与恢复结果均来自实际引擎。[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m读取实际演示状态[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m每轮每个事件固定使用同一原命令身份。推荐先确认买车与无损配置模板，建立零归属目标，再走工资、消费和恢复；房租修改放在资金链最后。[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"status"[39m
+          [36m>[39m
+            [0m正在读取预定义输入与实际原件…[0m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</div>[39m
+      [36m<footer[39m
+        [33mclass[39m=[32m"app-footer"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0m钱途有界 · 竞赛模拟原型[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0m财务计算、策略权限与原操作核验分别展示[0m
+        [36m</span>[39m
+      [36m</footer>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   × prepare已独立核对但固定PLANNED尚未终局，跨页门保留且原GET仍可达 796ms
+     → Unable to find an accessible element with the role "button" and name "恢复演示初始状态"
+
+Here are the accessible roles:
+
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mclass[39m=[32m"app-shell"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"app-header"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "钱途有界":
+  [36m<h1 />[39m
+
+  Name "本地模拟身份":
+  [36m<h2[39m
+    [33mid[39m=[32m"«r1»"[39m
+  [36m/>[39m
+
+  Name "演示控制台":
+  [36m<h2 />[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"simulation-note"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"notice"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"caption"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details />[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "本地模拟身份":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"«r1»"[39m
+    [33mclass[39m=[32m"local-actor-session-panel"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "只读读取当前身份":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "明确登录本地会话":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"submit"[39m
+  [36m/>[39m
+
+  Name "明确注销本地会话":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "读取实际演示状态":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "服务器固定用户名":
+  [36m<input[39m
+    [33mautocomplete[39m=[32m"username"[39m
+    [33mname[39m=[32m"username"[39m
+    [33mreadonly[39m=[32m""[39m
+    [33mvalue[39m=[32m"bounded-user"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "页面导航":
+  [36m<nav[39m
+    [33maria-label[39m=[32m"页面导航"[39m
+    [33mclass[39m=[32m"main-nav"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  link:
+
+  Name "资金总览":
+  [36m<a[39m
+    [33mhref[39m=[32m"#overview"[39m
+  [36m/>[39m
+
+  Name "首次引导":
+  [36m<a[39m
+    [33mhref[39m=[32m"#onboarding"[39m
+  [36m/>[39m
+
+  Name "策略中心":
+  [36m<a[39m
+    [33mhref[39m=[32m"#policies"[39m
+  [36m/>[39m
+
+  Name "目标储备":
+  [36m<a[39m
+    [33mhref[39m=[32m"#goals"[39m
+  [36m/>[39m
+
+  Name "产品与期限":
+  [36m<a[39m
+    [33mhref[39m=[32m"#products"[39m
+  [36m/>[39m
+
+  Name "年度规划":
+  [36m<a[39m
+    [33mhref[39m=[32m"#annual"[39m
+  [36m/>[39m
+
+  Name "一次一问":
+  [36m<a[39m
+    [33mhref[39m=[32m"#questions"[39m
+  [36m/>[39m
+
+  Name "介入中心":
+  [36m<a[39m
+    [33mhref[39m=[32m"#interventions"[39m
+  [36m/>[39m
+
+  Name "消费证据":
+  [36m<a[39m
+    [33mhref[39m=[32m"#spending-evidence"[39m
+  [36m/>[39m
+
+  Name "事实与证据":
+  [36m<a[39m
+    [33mhref[39m=[32m"#evidence"[39m
+  [36m/>[39m
+
+  Name "投递记录":
+  [36m<a[39m
+    [33mhref[39m=[32m"#delivery"[39m
+  [36m/>[39m
+
+  Name "对账中心":
+  [36m<a[39m
+    [33mhref[39m=[32m"#reconciliation"[39m
+  [36m/>[39m
+
+  Name "场景模拟器":
+  [36m<a[39m
+    [33mhref[39m=[32m"#simulation"[39m
+  [36m/>[39m
+
+  Name "决策轨迹":
+  [36m<a[39m
+    [33mhref[39m=[32m"#decisions"[39m
+  [36m/>[39m
+
+  Name "演示控制台":
+  [36m<a[39m
+    [33maria-current[39m=[32m"page"[39m
+    [33mhref[39m=[32m"#demo"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  contentinfo:
+
+  Name "":
+  [36m<footer[39m
+    [33mclass[39m=[32m"app-footer"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"app-shell"[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"app-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"brand"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"brand-mark"[39m
+          [36m>[39m
+            [0m界[0m
+          [36m</span>[39m
+          [36m<div>[39m
+            [36m<h1>[39m
+              [0m钱途有界[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mBOUNDED FUNDS[0m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"simulation-badge"[39m
+        [36m>[39m
+          [0m模拟环境[0m
+        [36m</span>[39m
+      [36m</header>[39m
+      [36m<details>[39m
+        [36m<summary>[39m
+          [0m本地用户身份会话[0m
+        [36m</summary>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"«r1»"[39m
+          [33mclass[39m=[32m"local-actor-session-panel"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"«r1»"[39m
+          [36m>[39m
+            [0m本地模拟身份[0m
+          [36m</h2>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"status"[39m
+          [36m>[39m
+            [0m尚未读取当前身份[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m身份仅用于展示。本地签名会话不是银行授权、金融确认或真人身份核验；每个新金融请求仍由服务器独立验真。[0m
+          [36m</p>[39m
+          [36m<button[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m只读读取当前身份[0m
+          [36m</button>[39m
+          [36m<form>[39m
+            [36m<label>[39m
+              [0m服务器固定用户名[0m
+              [36m<input[39m
+                [33mautocomplete[39m=[32m"username"[39m
+                [33mname[39m=[32m"username"[39m
+                [33mreadonly[39m=[32m""[39m
+                [33mvalue[39m=[32m"bounded-user"[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<label>[39m
+              [0m本地凭证[0m
+              [36m<input[39m
+                [33mautocomplete[39m=[32m"off"[39m
+                [33mdisabled[39m=[32m""[39m
+                [33mmaxlength[39m=[32m"1024"[39m
+                [33mname[39m=[32m"secret"[39m
+                [33mtype[39m=[32m"password"[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<button[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0m明确登录本地会话[0m
+            [36m</button>[39m
+          [36m</form>[39m
+          [36m<button[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m明确注销本地会话[0m
+          [36m</button>[39m
+          [36m<p>[39m
+            [0m金融原请求仍保留。先只读核对身份后，可手动续登录服务器固定的同一 USER；不能切换用户、注销、确认金融结果或重发付款。[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m凭证提交即清空，不写入浏览器存储或返回正文。15分钟 HttpOnly / SameSite=Strict Cookie 的实际行为须由服务器与浏览器验收证明。[0m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</details>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"页面导航"[39m
+        [33mclass[39m=[32m"main-nav"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#overview"[39m
+        [36m>[39m
+          [0m资金总览[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#onboarding"[39m
+        [36m>[39m
+          [0m首次引导[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#policies"[39m
+        [36m>[39m
+          [0m策略中心[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#goals"[39m
+        [36m>[39m
+          [0m目标储备[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#products"[39m
+        [36m>[39m
+          [0m产品与期限[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#annual"[39m
+        [36m>[39m
+          [0m年度规划[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#questions"[39m
+        [36m>[39m
+          [0m一次一问[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#interventions"[39m
+        [36m>[39m
+          [0m介入中心[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#spending-evidence"[39m
+        [36m>[39m
+          [0m消费证据[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#evidence"[39m
+        [36m>[39m
+          [0m事实与证据[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#delivery"[39m
+        [36m>[39m
+          [0m投递记录[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#reconciliation"[39m
+        [36m>[39m
+          [0m对账中心[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#simulation"[39m
+        [36m>[39m
+          [0m场景模拟器[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#decisions"[39m
+        [36m>[39m
+          [0m决策轨迹[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33maria-current[39m=[32m"page"[39m
+          [33mhref[39m=[32m"#demo"[39m
+        [36m>[39m
+          [0m演示控制台[0m
+        [36m</a>[39m
+      [36m</nav>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m所有资金动作均为模拟，未接入真实银行账户、支付或理财交易接口。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"notice"[39m
+      [36m>[39m
+        [0m动态目标原请求或固定动作尚未终局，其他资金变更暂不可提交；可前往目标储备独立核对原键与回执。[0m
+      [36m</p>[39m
+      [36m<div>[39m
+        [36m<section[39m
+          [33mclass[39m=[32m"page-content"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"page-heading"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<h2>[39m
+                [0m演示控制台[0m
+              [36m</h2>[39m
+              [36m<p>[39m
+                [0m只注入预定义合成事件，资金、授权与恢复结果均来自实际引擎。[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m读取实际演示状态[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m每轮每个事件固定使用同一原命令身份。推荐先确认买车与无损配置模板，建立零归属目标，再走工资、消费和恢复；房租修改放在资金链最后。[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"status"[39m
+          [36m>[39m
+            [0m正在读取预定义输入与实际原件…[0m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</div>[39m
+      [36m<footer[39m
+        [33mclass[39m=[32m"app-footer"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0m钱途有界 · 竞赛模拟原型[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0m财务计算、策略权限与原操作核验分别展示[0m
+        [36m</span>[39m
+      [36m</footer>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ✓ src/pages/GoalsPage.test.tsx (15 tests) 3406ms
+   ✓ 原授权目标不在当前列表时仍可GET原epoch键，撤销后原记录匹配才解门  393ms
+   ✓ 完整保护联合规划惰性GET仍可越过写门，刷新重取且不授予执行  609ms
+   ✓ UNKNOWN保留原身份，重建页面必须GET原件后只恢复同action，不生成新prepare键  384ms
+ ✓ src/App.test.tsx (23 tests) 5350ms
+   ✓ 引导、目标及问答原请求刷新恢复后阻挡其他资金写入，自身只读核对入口保持可达  918ms
+   ✓ 问答原键待核对阻挡其他族写入，自身原键GET和资金总览仍可达  595ms
+   ✓ 分类原请求阻挡问答与资金写入，自己的原键GET完整匹配才解门  370ms
+   ✓ 十五个页面导航实际切换，介入与场景模拟可达并保留原演示入口  786ms
+   ✓ 通知原请求待核对阻挡其他变更，自身GET与只读模拟器保持可达  458ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/App.dynamic-goal-host.test.tsx > pending原动态准备在当前列表失败时仍独立GET，NOT_FOUND保留完整原件并阻挡reset
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "恢复演示初始状态"
+
+Here are the accessible roles:
+
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mclass[39m=[32m"app-shell"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"app-header"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "钱途有界":
+  [36m<h1 />[39m
+
+  Name "本地模拟身份":
+  [36m<h2[39m
+    [33mid[39m=[32m"«r0»"[39m
+  [36m/>[39m
+
+  Name "演示控制台":
+  [36m<h2 />[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"simulation-note"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"notice"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"caption"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details />[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "本地模拟身份":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"«r0»"[39m
+    [33mclass[39m=[32m"local-actor-session-panel"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "只读读取当前身份":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "明确登录本地会话":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"submit"[39m
+  [36m/>[39m
+
+  Name "明确注销本地会话":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "读取实际演示状态":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "服务器固定用户名":
+  [36m<input[39m
+    [33mautocomplete[39m=[32m"username"[39m
+    [33mname[39m=[32m"username"[39m
+    [33mreadonly[39m=[32m""[39m
+    [33mvalue[39m=[32m"bounded-user"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "页面导航":
+  [36m<nav[39m
+    [33maria-label[39m=[32m"页面导航"[39m
+    [33mclass[39m=[32m"main-nav"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  link:
+
+  Name "资金总览":
+  [36m<a[39m
+    [33mhref[39m=[32m"#overview"[39m
+  [36m/>[39m
+
+  Name "首次引导":
+  [36m<a[39m
+    [33mhref[39m=[32m"#onboarding"[39m
+  [36m/>[39m
+
+  Name "策略中心":
+  [36m<a[39m
+    [33mhref[39m=[32m"#policies"[39m
+  [36m/>[39m
+
+  Name "目标储备":
+  [36m<a[39m
+    [33mhref[39m=[32m"#goals"[39m
+  [36m/>[39m
+
+  Name "产品与期限":
+  [36m<a[39m
+    [33mhref[39m=[32m"#products"[39m
+  [36m/>[39m
+
+  Name "年度规划":
+  [36m<a[39m
+    [33mhref[39m=[32m"#annual"[39m
+  [36m/>[39m
+
+  Name "一次一问":
+  [36m<a[39m
+    [33mhref[39m=[32m"#questions"[39m
+  [36m/>[39m
+
+  Name "介入中心":
+  [36m<a[39m
+    [33mhref[39m=[32m"#interventions"[39m
+  [36m/>[39m
+
+  Name "消费证据":
+  [36m<a[39m
+    [33mhref[39m=[32m"#spending-evidence"[39m
+  [36m/>[39m
+
+  Name "事实与证据":
+  [36m<a[39m
+    [33mhref[39m=[32m"#evidence"[39m
+  [36m/>[39m
+
+  Name "投递记录":
+  [36m<a[39m
+    [33mhref[39m=[32m"#delivery"[39m
+  [36m/>[39m
+
+  Name "对账中心":
+  [36m<a[39m
+    [33mhref[39m=[32m"#reconciliation"[39m
+  [36m/>[39m
+
+  Name "场景模拟器":
+  [36m<a[39m
+    [33mhref[39m=[32m"#simulation"[39m
+  [36m/>[39m
+
+  Name "决策轨迹":
+  [36m<a[39m
+    [33mhref[39m=[32m"#decisions"[39m
+  [36m/>[39m
+
+  Name "演示控制台":
+  [36m<a[39m
+    [33maria-current[39m=[32m"page"[39m
+    [33mhref[39m=[32m"#demo"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  contentinfo:
+
+  Name "":
+  [36m<footer[39m
+    [33mclass[39m=[32m"app-footer"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"app-shell"[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"app-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"brand"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"brand-mark"[39m
+          [36m>[39m
+            [0m界[0m
+          [36m</span>[39m
+          [36m<div>[39m
+            [36m<h1>[39m
+              [0m钱途有界[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mBOUNDED FUNDS[0m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"simulation-badge"[39m
+        [36m>[39m
+          [0m模拟环境[0m
+        [36m</span>[39m
+      [36m</header>[39m
+      [36m<details>[39m
+        [36m<summary>[39m
+          [0m本地用户身份会话[0m
+        [36m</summary>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"«r0»"[39m
+          [33mclass[39m=[32m"local-actor-session-panel"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"«r0»"[39m
+          [36m>[39m
+            [0m本地模拟身份[0m
+          [36m</h2>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"status"[39m
+          [36m>[39m
+            [0m尚未读取当前身份[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m身份仅用于展示。本地签名会话不是银行授权、金融确认或真人身份核验；每个新金融请求仍由服务器独立验真。[0m
+          [36m</p>[39m
+          [36m<button[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m只读读取当前身份[0m
+          [36m</button>[39m
+          [36m<form>[39m
+            [36m<label>[39m
+              [0m服务器固定用户名[0m
+              [36m<input[39m
+                [33mautocomplete[39m=[32m"username"[39m
+                [33mname[39m=[32m"username"[39m
+                [33mreadonly[39m=[32m""[39m
+                [33mvalue[39m=[32m"bounded-user"[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<label>[39m
+              [0m本地凭证[0m
+              [36m<input[39m
+                [33mautocomplete[39m=[32m"off"[39m
+                [33mdisabled[39m=[32m""[39m
+                [33mmaxlength[39m=[32m"1024"[39m
+                [33mname[39m=[32m"secret"[39m
+                [33mtype[39m=[32m"password"[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<button[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0m明确登录本地会话[0m
+            [36m</button>[39m
+          [36m</form>[39m
+          [36m<button[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m明确注销本地会话[0m
+          [36m</button>[39m
+          [36m<p>[39m
+            [0m金融原请求仍保留。先只读核对身份后，可手动续登录服务器固定的同一 USER；不能切换用户、注销、确认金融结果或重发付款。[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m凭证提交即清空，不写入浏览器存储或返回正文。15分钟 HttpOnly / SameSite=Strict Cookie 的实际行为须由服务器与浏览器验收证明。[0m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</details>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"页面导航"[39m
+        [33mclass[39m=[32m"main-nav"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#overview"[39m
+        [36m>[39m
+          [0m资金总览[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#onboarding"[39m
+        [36m>[39m
+          [0m首次引导[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#policies"[39m
+        [36m>[39m
+          [0m策略中心[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#goals"[39m
+        [36m>[39m
+          [0m目标储备[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#products"[39m
+        [36m>[39m
+          [0m产品与期限[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#annual"[39m
+        [36m>[39m
+          [0m年度规划[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#questions"[39m
+        [36m>[39m
+          [0m一次一问[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#interventions"[39m
+        [36m>[39m
+          [0m介入中心[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#spending-evidence"[39m
+        [36m>[39m
+          [0m消费证据[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#evidence"[39m
+        [36m>[39m
+          [0m事实与证据[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#delivery"[39m
+        [36m>[39m
+          [0m投递记录[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#reconciliation"[39m
+        [36m>[39m
+          [0m对账中心[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#simulation"[39m
+        [36m>[39m
+          [0m场景模拟器[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#decisions"[39m
+        [36m>[39m
+          [0m决策轨迹[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33maria-current[39m=[32m"page"[39m
+          [33mhref[39m=[32m"#demo"[39m
+        [36m>[39m
+          [0m演示控制台[0m
+        [36m</a>[39m
+      [36m</nav>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m所有资金动作均为模拟，未接入真实银行账户、支付或理财交易接口。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"notice"[39m
+      [36m>[39m
+        [0m动态目标原请求或固定动作尚未终局，其他资金变更暂不可提交；可前往目标储备独立核对原键与回执。[0m
+      [36m</p>[39m
+      [36m<div>[39m
+        [36m<section[39m
+          [33mclass[39m=[32m"page-content"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"page-heading"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<h2>[39m
+                [0m演示控制台[0m
+              [36m</h2>[39m
+              [36m<p>[39m
+                [0m只注入预定义合成事件，资金、授权与恢复结果均来自实际引擎。[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m读取实际演示状态[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m每轮每个事件固定使用同一原命令身份。推荐先确认买车与无损配置模板，建立零归属目标，再走工资、消费和恢复；房租修改放在资金链最后。[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"status"[39m
+          [36m>[39m
+            [0m正在读取预定义输入与实际原件…[0m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</div>[39m
+      [36m<footer[39m
+        [33mclass[39m=[32m"app-footer"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0m钱途有界 · 竞赛模拟原型[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0m财务计算、策略权限与原操作核验分别展示[0m
+        [36m</span>[39m
+      [36m</footer>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/App.dynamic-goal-host.test.tsx:32:17
+     30|   await screen.findByText(/NOT_FOUND不是最终未提交证明/); expect(store.getDynam…
+     31|   demo(); await screen.findByRole('heading', { name: '演示控制台' });
+     32|   expect(screen.getByRole('button', { name: '恢复演示初始状态' })).toBeDisable…
+       |                 ^
+     33|   expect(calls.every((call) => call.method === 'GET')).toBe(true);
+     34|   expect(calls.filter((call) => call.path.includes('/dynamic-goal-acti…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/App.dynamic-goal-host.test.tsx > prepare已独立核对但固定PLANNED尚未终局，跨页门保留且原GET仍可达
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "恢复演示初始状态"
+
+Here are the accessible roles:
+
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mclass[39m=[32m"app-shell"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"app-header"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "钱途有界":
+  [36m<h1 />[39m
+
+  Name "本地模拟身份":
+  [36m<h2[39m
+    [33mid[39m=[32m"«r1»"[39m
+  [36m/>[39m
+
+  Name "演示控制台":
+  [36m<h2 />[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"simulation-note"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"notice"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"caption"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details />[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "本地模拟身份":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"«r1»"[39m
+    [33mclass[39m=[32m"local-actor-session-panel"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "只读读取当前身份":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "明确登录本地会话":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"submit"[39m
+  [36m/>[39m
+
+  Name "明确注销本地会话":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "读取实际演示状态":
+  [36m<button[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "服务器固定用户名":
+  [36m<input[39m
+    [33mautocomplete[39m=[32m"username"[39m
+    [33mname[39m=[32m"username"[39m
+    [33mreadonly[39m=[32m""[39m
+    [33mvalue[39m=[32m"bounded-user"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "页面导航":
+  [36m<nav[39m
+    [33maria-label[39m=[32m"页面导航"[39m
+    [33mclass[39m=[32m"main-nav"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  link:
+
+  Name "资金总览":
+  [36m<a[39m
+    [33mhref[39m=[32m"#overview"[39m
+  [36m/>[39m
+
+  Name "首次引导":
+  [36m<a[39m
+    [33mhref[39m=[32m"#onboarding"[39m
+  [36m/>[39m
+
+  Name "策略中心":
+  [36m<a[39m
+    [33mhref[39m=[32m"#policies"[39m
+  [36m/>[39m
+
+  Name "目标储备":
+  [36m<a[39m
+    [33mhref[39m=[32m"#goals"[39m
+  [36m/>[39m
+
+  Name "产品与期限":
+  [36m<a[39m
+    [33mhref[39m=[32m"#products"[39m
+  [36m/>[39m
+
+  Name "年度规划":
+  [36m<a[39m
+    [33mhref[39m=[32m"#annual"[39m
+  [36m/>[39m
+
+  Name "一次一问":
+  [36m<a[39m
+    [33mhref[39m=[32m"#questions"[39m
+  [36m/>[39m
+
+  Name "介入中心":
+  [36m<a[39m
+    [33mhref[39m=[32m"#interventions"[39m
+  [36m/>[39m
+
+  Name "消费证据":
+  [36m<a[39m
+    [33mhref[39m=[32m"#spending-evidence"[39m
+  [36m/>[39m
+
+  Name "事实与证据":
+  [36m<a[39m
+    [33mhref[39m=[32m"#evidence"[39m
+  [36m/>[39m
+
+  Name "投递记录":
+  [36m<a[39m
+    [33mhref[39m=[32m"#delivery"[39m
+  [36m/>[39m
+
+  Name "对账中心":
+  [36m<a[39m
+    [33mhref[39m=[32m"#reconciliation"[39m
+  [36m/>[39m
+
+  Name "场景模拟器":
+  [36m<a[39m
+    [33mhref[39m=[32m"#simulation"[39m
+  [36m/>[39m
+
+  Name "决策轨迹":
+  [36m<a[39m
+    [33mhref[39m=[32m"#decisions"[39m
+  [36m/>[39m
+
+  Name "演示控制台":
+  [36m<a[39m
+    [33maria-current[39m=[32m"page"[39m
+    [33mhref[39m=[32m"#demo"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  contentinfo:
+
+  Name "":
+  [36m<footer[39m
+    [33mclass[39m=[32m"app-footer"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"app-shell"[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"app-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"brand"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"brand-mark"[39m
+          [36m>[39m
+            [0m界[0m
+          [36m</span>[39m
+          [36m<div>[39m
+            [36m<h1>[39m
+              [0m钱途有界[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mBOUNDED FUNDS[0m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"simulation-badge"[39m
+        [36m>[39m
+          [0m模拟环境[0m
+        [36m</span>[39m
+      [36m</header>[39m
+      [36m<details>[39m
+        [36m<summary>[39m
+          [0m本地用户身份会话[0m
+        [36m</summary>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"«r1»"[39m
+          [33mclass[39m=[32m"local-actor-session-panel"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"«r1»"[39m
+          [36m>[39m
+            [0m本地模拟身份[0m
+          [36m</h2>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"status"[39m
+          [36m>[39m
+            [0m尚未读取当前身份[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m身份仅用于展示。本地签名会话不是银行授权、金融确认或真人身份核验；每个新金融请求仍由服务器独立验真。[0m
+          [36m</p>[39m
+          [36m<button[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m只读读取当前身份[0m
+          [36m</button>[39m
+          [36m<form>[39m
+            [36m<label>[39m
+              [0m服务器固定用户名[0m
+              [36m<input[39m
+                [33mautocomplete[39m=[32m"username"[39m
+                [33mname[39m=[32m"username"[39m
+                [33mreadonly[39m=[32m""[39m
+                [33mvalue[39m=[32m"bounded-user"[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<label>[39m
+              [0m本地凭证[0m
+              [36m<input[39m
+                [33mautocomplete[39m=[32m"off"[39m
+                [33mdisabled[39m=[32m""[39m
+                [33mmaxlength[39m=[32m"1024"[39m
+                [33mname[39m=[32m"secret"[39m
+                [33mtype[39m=[32m"password"[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<button[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0m明确登录本地会话[0m
+            [36m</button>[39m
+          [36m</form>[39m
+          [36m<button[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m明确注销本地会话[0m
+          [36m</button>[39m
+          [36m<p>[39m
+            [0m金融原请求仍保留。先只读核对身份后，可手动续登录服务器固定的同一 USER；不能切换用户、注销、确认金融结果或重发付款。[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m凭证提交即清空，不写入浏览器存储或返回正文。15分钟 HttpOnly / SameSite=Strict Cookie 的实际行为须由服务器与浏览器验收证明。[0m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</details>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"页面导航"[39m
+        [33mclass[39m=[32m"main-nav"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#overview"[39m
+        [36m>[39m
+          [0m资金总览[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#onboarding"[39m
+        [36m>[39m
+          [0m首次引导[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#policies"[39m
+        [36m>[39m
+          [0m策略中心[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#goals"[39m
+        [36m>[39m
+          [0m目标储备[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#products"[39m
+        [36m>[39m
+          [0m产品与期限[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#annual"[39m
+        [36m>[39m
+          [0m年度规划[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#questions"[39m
+        [36m>[39m
+          [0m一次一问[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#interventions"[39m
+        [36m>[39m
+          [0m介入中心[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#spending-evidence"[39m
+        [36m>[39m
+          [0m消费证据[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#evidence"[39m
+        [36m>[39m
+          [0m事实与证据[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#delivery"[39m
+        [36m>[39m
+          [0m投递记录[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#reconciliation"[39m
+        [36m>[39m
+          [0m对账中心[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#simulation"[39m
+        [36m>[39m
+          [0m场景模拟器[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#decisions"[39m
+        [36m>[39m
+          [0m决策轨迹[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33maria-current[39m=[32m"page"[39m
+          [33mhref[39m=[32m"#demo"[39m
+        [36m>[39m
+          [0m演示控制台[0m
+        [36m</a>[39m
+      [36m</nav>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m所有资金动作均为模拟，未接入真实银行账户、支付或理财交易接口。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"notice"[39m
+      [36m>[39m
+        [0m动态目标原请求或固定动作尚未终局，其他资金变更暂不可提交；可前往目标储备独立核对原键与回执。[0m
+      [36m</p>[39m
+      [36m<div>[39m
+        [36m<section[39m
+          [33mclass[39m=[32m"page-content"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"page-heading"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<h2>[39m
+                [0m演示控制台[0m
+              [36m</h2>[39m
+              [36m<p>[39m
+                [0m只注入预定义合成事件，资金、授权与恢复结果均来自实际引擎。[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m读取实际演示状态[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m每轮每个事件固定使用同一原命令身份。推荐先确认买车与无损配置模板，建立零归属目标，再走工资、消费和恢复；房租修改放在资金链最后。[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"status"[39m
+          [36m>[39m
+            [0m正在读取预定义输入与实际原件…[0m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</div>[39m
+      [36m<footer[39m
+        [33mclass[39m=[32m"app-footer"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0m钱途有界 · 竞赛模拟原型[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0m财务计算、策略权限与原操作核验分别展示[0m
+        [36m</span>[39m
+      [36m</footer>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/App.dynamic-goal-host.test.tsx:54:17
+     52|   await waitFor(() => expect(calls.filter((call) => call.path.includes…
+     53|   demo(); await screen.findByRole('heading', { name: '演示控制台' });
+     54|   expect(screen.getByRole('button', { name: '恢复演示初始状态' })).toBeDisable…
+       |                 ^
+     55|   expect(calls.every((call) => call.method === 'GET')).toBe(true);
+     56| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  2 failed | 38 passed (40)
+   Start at  07:16:13
+   Duration  12.35s (transform 4.19s, setup 2.13s, collect 8.70s, tests 12.74s, environment 3.48s, prepare 1.12s)
+
+undefined
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: vitest run src/App.dynamic-goal-host.test.tsx src/App.test.tsx src/pages/GoalsPage.test.tsx

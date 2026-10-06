@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/composed-action-set.test.ts (18 tests) 50ms
+ ✓ src/components/ComposedActionSetPanel.test.tsx (2 tests) 463ms
+   ✓ only an explicit request reads current composition once; there is no payment or notification POST  355ms
+
+ Test Files  2 passed (2)
+      Tests  20 passed (20)
+   Start at  10:41:11
+   Duration  3.55s (transform 499ms, setup 1.13s, collect 1.21s, tests 514ms, environment 2.17s, prepare 658ms)
+

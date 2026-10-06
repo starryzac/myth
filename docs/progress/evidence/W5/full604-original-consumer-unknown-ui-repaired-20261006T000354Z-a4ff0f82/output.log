@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/components/FullRecoveryExecutionPanel.test.tsx (9 tests | 8 skipped) 2241ms
+   ✓ execute响应丢失+银行SETTLED无应用receipt仍保原Action/键/body，不自动重试  2240ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 8 skipped (9)
+   Start at  08:03:56
+   Duration  4.89s (transform 1.27s, setup 470ms, collect 536ms, tests 2.24s, environment 892ms, prepare 288ms)
+

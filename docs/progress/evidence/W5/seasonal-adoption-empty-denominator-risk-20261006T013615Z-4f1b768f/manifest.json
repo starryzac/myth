@@ -1,0 +1,39 @@
+{
+  "run_id": "20261006T013615Z-4f1b768f",
+  "task": "W5",
+  "label": "seasonal-adoption-empty-denominator-risk",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/full_seasonal_adoption.py",
+    "apps/api/app/services/full_seasonal_adoption.py",
+    "apps/api/app/api/v1/full_seasonal_adoption.py",
+    "apps/api/app/tests/test_full_seasonal_adoption.py",
+    "apps/api/app/tests/test_full_seasonal_adoption_service.py",
+    "apps/api/app/tests/test_full_seasonal_adoption_api.py",
+    "apps/api/app/tests/test_full_seasonal_adoption_integration.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_full_seasonal_adoption_service.py",
+    "-q",
+    "--basetemp",
+    ".runtime/seasonal-adoption-empty-denominator-pytest"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T01:36:16.777300+00:00",
+  "finished_at": "2026-10-06T01:36:21.256672+00:00",
+  "wall_seconds": 4.479372,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "37b67e6f1d6e7dca9fd03726861414bb940fe186df8845a81a9bd74a2791ba6c",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

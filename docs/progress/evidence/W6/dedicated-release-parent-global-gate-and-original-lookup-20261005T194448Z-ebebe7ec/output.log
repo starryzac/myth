@@ -1,0 +1,21 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/pages/GoalsPage.test.tsx (15 tests) 3593ms
+   ✓ 原授权目标不在当前列表时仍可GET原epoch键，撤销后原记录匹配才解门  377ms
+   ✓ 现金回拨预览惰性读取原规则并越过金融写门，只有主动只读预览不授权限  346ms
+   ✓ 完整保护联合规划惰性GET仍可越过写门，刷新重取且不授予执行  652ms
+   ✓ UNKNOWN保留原身份，重建页面必须GET原件后只恢复同action，不生成新prepare键  446ms
+ ✓ src/App.test.tsx (23 tests) 6556ms
+   ✓ 引导、目标及问答原请求刷新恢复后阻挡其他资金写入，自身只读核对入口保持可达  859ms
+   ✓ 问答原键待核对阻挡其他族写入，自身原键GET和资金总览仍可达  457ms
+   ✓ 分类原请求阻挡问答与资金写入，自己的原键GET完整匹配才解门  322ms
+   ✓ 十五个页面导航实际切换，介入与场景模拟可达并保留原演示入口  1205ms
+   ✓ 通知原请求待核对阻挡其他变更，自身GET与只读模拟器保持可达  452ms
+   ✓ 刷新整体替换快照，保留目标归属交叉说明与审计范围  524ms
+
+ Test Files  2 passed (2)
+      Tests  38 passed (38)
+   Start at  03:44:50
+   Duration  14.65s (transform 5.85s, setup 1.09s, collect 10.58s, tests 10.15s, environment 2.20s, prepare 598ms)
+

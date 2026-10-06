@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/full-policy-change-history.test.ts (22 tests) 530ms
+ ✓ src/components/FinancialChangeHistoryImpactPanel.test.tsx (4 tests) 1532ms
+   ✓ 手动只读新协议，366日三阶段、原历史分母和负差额可读；无确认入口  908ms
+
+ Test Files  2 passed (2)
+      Tests  26 passed (26)
+   Start at  10:57:30
+   Duration  5.46s (transform 790ms, setup 1.14s, collect 2.80s, tests 2.06s, environment 2.15s, prepare 688ms)
+

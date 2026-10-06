@@ -1,0 +1,98 @@
+F
+================================== FAILURES ===================================
+_ test_actual_physical_v2_dynamic_goal_silence_crossing_and_zero_financial_writes _
+
+goal_client = (<starlette.testclient.TestClient object at 0x00000182E4BFEC60>, Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_b860dc8a601940949514ca3c241a96b8))
+
+    def test_actual_physical_v2_dynamic_goal_silence_crossing_and_zero_financial_writes(
+        goal_client: tuple[TestClient, Engine],
+    ) -> None:
+        client, engine = goal_client
+        goal_id, model_id = full_dynamic_goal(client, engine)
+        model = client.get(f"/api/v1/goals/{goal_id}/full-model").json()
+        assert model["status"] == "VERIFIED" and model["evidence_id"] == model_id
+        with Session(engine) as session, session.begin():
+            for policy in session.scalars(select(Policy).where(Policy.user_id == DEMO_USER_ID)):
+                version = session.scalar(
+                    select(PolicyVersion)
+                    .where(PolicyVersion.policy_id == policy.id)
+                    .order_by(PolicyVersion.version_number.desc())
+                    .limit(1)
+                )
+                assert version is not None
+                if (
+                    policy.id != UUID(model["policy_id"])
+                    and version.configuration["type"]
+                    in {"recurring_obligation", "goal_saving", "asset_authorization"}
+                    and policy.status == "ACTIVE"
+                ):
+                    suspend_policy(session, DEMO_USER_ID, policy.id, version.id, NOW)
+            cash = session.scalar(
+                select(Account)
+                .where(Account.user_id == DEMO_USER_ID, Account.account_type == "CASH")
+                .order_by(Account.id)
+            )
+            epoch = current_audit_epoch(session, DEMO_USER_ID)
+            assert cash is not None and epoch is not None
+            cash_id, epoch_id = cash.id, epoch.id
+        previous = None
+        for index, amount in enumerate((600000, 100000)):
+            fact = ingest_external_fact(
+                engine,
+                DEMO_USER_ID,
+                ExternalFactRequest(
+                    user_id=DEMO_USER_ID,
+                    account_id=cash_id,
+                    kind="INCOME",
+                    amount_cents=amount,
+                    external_ref=f"actual-full-global-payroll-{index}",
+                    idempotency_key=f"actual-full-global-payroll-{index}",
+                    counterparty_ref="payroll",
+                    occurred_at=NOW,
+                ),
+                NOW,
+            )
+            assert fact.bank_status == "SETTLED" and fact.projection_status == "PROJECTED"
+            before = physical_snapshot(engine)
+            response = client.get("/api/v1/boundary/actual-action-set/current")
+            assert response.status_code == 200, response.text
+            snapshot = response.json()
+>           assert snapshot["global_action_set_complete"] is True, json.dumps(
+                {
+                    "reasons": snapshot["reasons"],
+                    "unsupported_producers": snapshot["unsupported_producers"],
+                    "candidates": snapshot["candidates"],
+                    "table_gaps": [row for row in snapshot["table_coverage"] if not row["complete"]],
+                },
+                ensure_ascii=False,
+            )
+E           AssertionError: {"reasons": ["ACTUAL_CURRENT_PRODUCER_UNKNOWN", "ACTUAL_UNSUPPORTED_CURRENT_PRODUCERS"], "unsupported_producers": ["DYNAMIC_GOAL_PRODUCER_ADAPTER_MISSING:e58409bf-26a6-5661-958c-560ec82c9e87"], "candidates": [{"candidate_key": "goal:e58409bf-26a6-5661-958c-560ec82c9e87", "state": "UNKNOWN", "action_type": "ALLOCATE_GOAL", "amount_cents": null, "autonomy_level": null, "signature": null, "reasons": ["DYNAMIC_ORIGINAL_MODEL_OR_INCOME_COPY_DIFFERS"]}, {"candidate_key": "redemption:71418810-fc8c-549b-948f-d3ea5bd74c59", "state": "EXCLUDED", "action_type": null, "amount_cents": null, "autonomy_level": null, "signature": null, "reasons": ["CURRENT_ORIGINAL_POLICY_NOT_ACTIVE"]}, {"candidate_key": "redemption:7560448c-5d88-5dcd-87e7-541b8615e6d9", "state": "EXCLUDED", "action_type": null, "amount_cents": null, "autonomy_level": null, "signature": null, "reasons": ["CURRENT_ORIGINAL_POLICY_NOT_ACTIVE"]}, {"candidate_key": "redemption:eb7624e8-d564-5ec3-9d2b-0e59a74c85f8", "state": "EXCLUDED", "action_type": null, "amount_cents": null, "autonomy_level": null, "signature": null, "reasons": ["CURRENT_ORIGINAL_POLICY_NOT_ACTIVE"]}], "table_gaps": []}
+E           assert False is True
+
+apps\api\app\tests\test_full_action_set_boundary_actual_integration.py:85: AssertionError
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "583630e0-3ae5-435f-8503-139f54e4452b", "method": "POST", "status": 200, "duration_ms": 172.0}
+{"event": "http_request", "request_id": "959dcfd5-95cb-4dd7-8650-df96abc5c7af", "method": "POST", "status": 200, "duration_ms": 125.0}
+{"event": "http_request", "request_id": "70fd1421-fc1f-4ceb-8e2f-0534535b600c", "method": "POST", "status": 200, "duration_ms": 594.0}
+{"event": "http_request", "request_id": "e4e3a4a7-5a9d-46a3-910c-d4e850a7c58b", "method": "POST", "status": 200, "duration_ms": 375.0}
+{"event": "http_request", "request_id": "667a6c9e-3dd0-4f56-9494-89dbc59c6fb5", "method": "POST", "status": 200, "duration_ms": 234.0}
+{"event": "http_request", "request_id": "e66929b7-3a14-4117-8a16-c764945db8de", "method": "GET", "status": 200, "duration_ms": 46.0}
+{"event": "http_request", "request_id": "39c4d1cd-e529-4fc4-bf5e-0d9fba4ba521", "method": "GET", "status": 200, "duration_ms": 4922.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:114 {"event": "http_request", "request_id": "583630e0-3ae5-435f-8503-139f54e4452b", "method": "POST", "status": 200, "duration_ms": 172.0}
+INFO     bounded_funds.http:main.py:114 {"event": "http_request", "request_id": "959dcfd5-95cb-4dd7-8650-df96abc5c7af", "method": "POST", "status": 200, "duration_ms": 125.0}
+INFO     bounded_funds.http:main.py:114 {"event": "http_request", "request_id": "70fd1421-fc1f-4ceb-8e2f-0534535b600c", "method": "POST", "status": 200, "duration_ms": 594.0}
+INFO     bounded_funds.http:main.py:114 {"event": "http_request", "request_id": "e4e3a4a7-5a9d-46a3-910c-d4e850a7c58b", "method": "POST", "status": 200, "duration_ms": 375.0}
+INFO     bounded_funds.http:main.py:114 {"event": "http_request", "request_id": "667a6c9e-3dd0-4f56-9494-89dbc59c6fb5", "method": "POST", "status": 200, "duration_ms": 234.0}
+INFO     bounded_funds.http:main.py:114 {"event": "http_request", "request_id": "e66929b7-3a14-4117-8a16-c764945db8de", "method": "GET", "status": 200, "duration_ms": 46.0}
+INFO     bounded_funds.http:main.py:114 {"event": "http_request", "request_id": "39c4d1cd-e529-4fc4-bf5e-0d9fba4ba521", "method": "GET", "status": 200, "duration_ms": 4922.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_action_set_boundary_actual_integration.py::test_actual_physical_v2_dynamic_goal_silence_crossing_and_zero_financial_writes
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 warning in 17.37s

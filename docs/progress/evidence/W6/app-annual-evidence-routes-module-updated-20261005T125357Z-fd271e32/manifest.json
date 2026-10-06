@@ -1,0 +1,44 @@
+{
+  "run_id": "20261005T125357Z-fd271e32",
+  "task": "W6",
+  "label": "app-annual-evidence-routes-module-updated",
+  "status": "PASSED",
+  "scope": [
+    "apps/web/src/App.tsx",
+    "apps/web/src/App.test.tsx",
+    "apps/web/src/pages/AnnualPlanningPage.tsx",
+    "apps/web/src/pages/EvidencePage.tsx"
+  ],
+  "command": [
+    "cmd.exe",
+    "/d",
+    "/s",
+    "/c",
+    "pnpm",
+    "--dir",
+    "apps/web",
+    "exec",
+    "vitest",
+    "run",
+    "src/App.test.tsx",
+    "--pool",
+    "threads",
+    "--maxWorkers",
+    "1"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T12:53:58.283775+00:00",
+  "finished_at": "2026-10-05T12:54:04.926983+00:00",
+  "wall_seconds": 6.643208,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "e358f53ba33271a0b80e1ddc4ea7a13cf22a779c9ae99938826802a6d2c65f6e",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

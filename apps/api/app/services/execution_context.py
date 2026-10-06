@@ -2,7 +2,7 @@
 
 import json
 from datetime import datetime, timedelta
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from uuid import UUID
 
 from app.db.models import (
@@ -27,6 +27,69 @@ from app.services.policy_lifecycle import PolicyLifecycleError, is_version_autho
 from app.services.simulated_bank import validate_bank_projection
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+
+if TYPE_CHECKING:
+    from app.domain.full_dynamic_goal_execution import FullDynamicGoalProof
+
+
+def require_full_dynamic_goal_proof_context(
+    session: Session,
+    effect: ExecutionEffect,
+    context: ExecutionContext,
+    proof: "FullDynamicGoalProof",
+) -> ExecutionContext:
+    """Verify actual originals before adding only producer exposure references."""
+    from app.domain.full_dynamic_goal_execution import bind_full_dynamic_goal_consumer_context
+    from app.services.decision_recording import capture_evidence, current_capture
+    from app.services.policy_lifecycle import _evidence
+
+    try:
+        bound = bind_full_dynamic_goal_consumer_context(effect, context, proof)
+        rows = _evidence(
+            session,
+            context.user_id,
+            [str(row.evidence_id) for row in proof.inputs.source_refs],
+            context.snapshot.as_of,
+            lock=False,
+        )
+        actual = {row.id: row.content_hash for row in rows}
+        if actual != {row.evidence_id: row.content_hash for row in proof.inputs.source_refs}:
+            raise ValueError("DYNAMIC_GOAL_CONTEXT_ORIGINAL_HASH_CHANGED")
+    except ValueError as error:
+        raise PolicyLifecycleError(
+            "DYNAMIC_GOAL_CURRENT_CONTEXT_CHANGED", str(error), 409
+        ) from error
+    capture_evidence(session, context.user_id, list(actual))
+    capture = current_capture(session)
+    if capture is not None:
+        capture.inputs["execution_context"] = bound.model_dump(mode="json")
+    return bound
+
+
+def require_full_recovery_confirmation_context(
+    session: Session, context: ExecutionContext
+) -> ExecutionContext:
+    """Only the new verified recovery branch adds mandatory one-shot consent."""
+    from app.services.decision_recording import current_capture
+
+    required = context.model_copy(update={"requires_confirmation": True})
+    capture = current_capture(session)
+    if capture is not None:
+        capture.inputs["execution_context"] = required.model_dump(mode="json")
+    return required
+
+
+def require_full_experiment_asset_context(
+    session: Session, context: ExecutionContext
+) -> ExecutionContext:
+    """A new private selection always requires the original explicit USER confirmation."""
+    required = context.model_copy(update={"requires_confirmation": True})
+    from app.services.decision_recording import current_capture
+
+    capture = current_capture(session)
+    if capture is not None:
+        capture.inputs["execution_context"] = required.model_dump(mode="json")
+    return required
 
 
 def load_execution_context(

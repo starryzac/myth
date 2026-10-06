@@ -2,7 +2,12 @@ from typing import Literal
 
 from alembic import context
 from alembic.autogenerate.api import AutogenContext
-from app.db import models  # noqa: F401 -- register the complete metadata
+from app.db import (  # noqa: F401 -- register all metadata
+    catalog_models,
+    full_joint_goal_execution_models,
+    full_models,
+    models,
+)
 from app.db.base import Base, MoneyCents, UTCDateTime
 from app.db.session import create_database_engine
 from app.db.settings import DatabaseSettings

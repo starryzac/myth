@@ -1,0 +1,44 @@
+{
+  "run_id": "20261005T125050Z-9cca9bd9",
+  "task": "W6",
+  "label": "annual-evidence-related-vitest",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/pages/AnnualPlanningPage",
+    "apps/web/src/pages/EvidencePage",
+    "apps/web/src/api/planning",
+    "apps/web/src/api/evidence",
+    "apps/web/src/tests/annual-fixture",
+    "apps/web/src/tests/evidence-fixture",
+    "apps/web/src/styles.css"
+  ],
+  "command": [
+    "pnpm.cmd",
+    "--filter",
+    "@bounded-funds/web",
+    "exec",
+    "vitest",
+    "run",
+    "src/api/planning.test.ts",
+    "src/api/evidence.test.ts",
+    "src/pages/AnnualPlanningPage.test.tsx",
+    "src/pages/EvidencePage.test.tsx"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T12:50:51.545120+00:00",
+  "finished_at": "2026-10-05T12:51:47.831726+00:00",
+  "wall_seconds": 56.286606,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/web/src/App.tsx"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "52ca92c5001e6fadc55554868dd7e9703ab8569df1aac09d1856e0de44d14763",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

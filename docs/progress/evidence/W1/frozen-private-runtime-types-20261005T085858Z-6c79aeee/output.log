@@ -1,0 +1,5 @@
+scripts\mvp_frozen_runtime.py:124: error: Returning Any from function declared to return "dict[str, Any]"  [no-any-return]
+scripts\tests\test_mvp_frozen_runtime.py:15: error: Missing type arguments for generic type "dict"  [type-arg]
+scripts\tests\test_mvp_frozen_runtime.py:65: error: Missing type arguments for generic type "dict"  [type-arg]
+scripts\tests\test_mvp_frozen_runtime.py:109: error: Function is missing a type annotation  [no-untyped-def]
+Found 4 errors in 2 files (checked 2 source files)

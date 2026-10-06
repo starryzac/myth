@@ -1,0 +1,17 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/App.test.tsx (16 tests) 2722ms
+   ✓ 刷新恢复完整版原body与键后阻止其他资金提交，策略页原查询不被自身门锁住  654ms
+   ✓ 八个页面导航实际切换，年度、证据与投递可达并保留原演示入口  486ms
+ ✓ src/pages/DemoConsolePage.test.tsx (12 tests) 4407ms
+   ✓ 模板候选生成不自动授权，用户复核完整字段后只确认原proposal和hash  362ms
+   ✓ 有损动作具体确认后UNKNOWN保留原id/hash；再次恢复只执行原动作且不新prepare  796ms
+   ✓ 定存购入和有损早支取两段ASK各自复核，第一段确认不能自动授权第二段  927ms
+   ✓ 房租完整配置与真实边界预览复核后PATCH保持原键，断网重试同一payload  761ms
+
+ Test Files  2 passed (2)
+      Tests  28 passed (28)
+   Start at  22:27:59
+   Duration  7.90s (transform 1.41s, setup 1.16s, collect 2.44s, tests 7.13s, environment 2.53s, prepare 640ms)
+

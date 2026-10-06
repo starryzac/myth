@@ -1,0 +1,120 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_salary_after_actual_monthly_target_has_no_fake_goal_action_or_permanent_pending _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_ca7e98c15ceb4802af0b28e6658bd226)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000255CCA1A810>
+
+    def test_salary_after_actual_monthly_target_has_no_fake_goal_action_or_permanent_pending(
+        demo_engine: Engine,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        # Preserve the real service result while surfacing exceptions hidden by HTTP's 500 envelope.
+        original_run = demo_console.run_demo_event
+        service_errors: list[Exception] = []
+    
+        def capture_error(
+            engine: Engine, user_id: UUID, body: DemoEventRequest, now: datetime
+        ) -> DemoCommandView:
+            try:
+                return original_run(engine, user_id, body, now)
+            except Exception as error:
+                service_errors.append(error)
+                raise
+    
+        monkeypatch.setattr(demo_console, "run_demo_event", capture_error)
+        seed_demo(demo_engine)
+        epoch_id, clock = _epoch_id(demo_engine), [NOW]
+        with _client(demo_engine, clock) as client:
+            for kind in ["CAR_GOAL", "LIQUID_ASSET"]:
+                _confirm_template(client, clock, epoch_id, kind)
+            created = client.post(
+                "/api/v1/demo/events",
+                json={"event_kind": "CREATE_CAR_GOAL", "expected_epoch_id": str(epoch_id)},
+            )
+            assert created.status_code == 200, created.text
+            goal_id = created.json()["goal_id"]
+            assert goal_id is not None
+            with Session(demo_engine) as session:
+                cash = session.scalar(
+                    select(Account)
+                    .where(Account.user_id == DEMO_USER_ID, Account.account_type == "CASH")
+                    .order_by(Account.id)
+                    .limit(1)
+                )
+                assert cash is not None
+                account_id = cash.id
+            clock[0] += timedelta(seconds=1)
+            first_income = external_bank_facts.ingest_external_fact(
+                demo_engine,
+                DEMO_USER_ID,
+                ExternalFactRequest(
+                    user_id=DEMO_USER_ID,
+                    idempotency_key="actual-monthly-target-income",
+                    external_ref="actual-monthly-target-income",
+                    kind="INCOME",
+                    account_id=account_id,
+                    amount_cents=200_000,
+                    counterparty_ref="payroll",
+                    occurred_at=clock[0],
+                ),
+                clock[0],
+            )
+            assert first_income.bank_status == "SETTLED"
+            assert first_income.projection_status == "PROJECTED"
+            clock[0] += timedelta(seconds=1)
+            prepared = client.post(
+                "/api/v1/actions/prepare",
+                json={
+                    "idempotency_key": "actual-monthly-target-allocation",
+                    "intent": {"kind": "allocate_goal", "goal_id": goal_id},
+                },
+            )
+            assert prepared.status_code == 200, prepared.text
+            allocation = prepared.json()
+            assert allocation["effect"]["amount_cents"] == 200_000
+            assert allocation["autonomy_level"] == "AUTO_EXECUTE"
+            clock[0] += timedelta(seconds=1)
+            executed = client.post(f"/api/v1/actions/{allocation['action_id']}/execute", json={})
+            assert executed.status_code == 200, executed.text
+            assert executed.json()["status"] == "SUCCEEDED"
+            assert executed.json()["receipt"]["executed_cents"] == 200_000
+            before_salary = json.loads(database_snapshot(demo_engine))
+            clock[0] += timedelta(seconds=1)
+            body = {"event_kind": "SALARY_RECEIVED", "expected_epoch_id": str(epoch_id)}
+            response = client.post("/api/v1/demo/events", json=body)
+            if response.status_code == 500 and service_errors:
+                raise service_errors[-1]
+>           assert response.status_code == 200, response.text
+E           AssertionError: {"error":{"code":"INTERNAL_ERROR","message":"服务暂时不可用","request_id":"76a05855-a300-4096-ad8b-cdd2269b4ea2"}}
+E           assert 500 == 200
+E            +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+apps\api\app\tests\test_demo_console.py:440: AssertionError
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "3fecf495-7b68-460a-958f-132bca95a057", "method": "POST", "status": 200, "duration_ms": 265.0}
+{"event": "http_request", "request_id": "377d5d58-7138-41c0-8a26-71d70764557c", "method": "POST", "status": 200, "duration_ms": 78.0}
+{"event": "http_request", "request_id": "190d9c80-8a38-460b-9130-16cd44963f50", "method": "POST", "status": 200, "duration_ms": 31.0}
+{"event": "http_request", "request_id": "7bc8792b-adff-4613-8a0b-f0f8073399c0", "method": "POST", "status": 200, "duration_ms": 78.0}
+{"event": "http_request", "request_id": "6c48b600-b9ce-44ab-b66a-63f4a546005c", "method": "POST", "status": 200, "duration_ms": 813.0}
+{"event": "http_request", "request_id": "58b45869-7569-43d8-9193-57614fa8426d", "method": "POST", "status": 200, "duration_ms": 7672.0}
+{"event": "http_request", "request_id": "b505af71-9685-4671-930d-71207faa7354", "method": "POST", "status": 200, "duration_ms": 16844.0}
+{"event": "http_request", "request_id": "76a05855-a300-4096-ad8b-cdd2269b4ea2", "method": "POST", "status": 500, "duration_ms": 28172.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "3fecf495-7b68-460a-958f-132bca95a057", "method": "POST", "status": 200, "duration_ms": 265.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "377d5d58-7138-41c0-8a26-71d70764557c", "method": "POST", "status": 200, "duration_ms": 78.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "190d9c80-8a38-460b-9130-16cd44963f50", "method": "POST", "status": 200, "duration_ms": 31.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "7bc8792b-adff-4613-8a0b-f0f8073399c0", "method": "POST", "status": 200, "duration_ms": 78.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "6c48b600-b9ce-44ab-b66a-63f4a546005c", "method": "POST", "status": 200, "duration_ms": 813.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "58b45869-7569-43d8-9193-57614fa8426d", "method": "POST", "status": 200, "duration_ms": 7672.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "b505af71-9685-4671-930d-71207faa7354", "method": "POST", "status": 200, "duration_ms": 16844.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "76a05855-a300-4096-ad8b-cdd2269b4ea2", "method": "POST", "status": 500, "duration_ms": 28172.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_demo_console.py::test_salary_after_actual_monthly_target_has_no_fake_goal_action_or_permanent_pending
+1 failed, 1 warning in 64.39s (0:01:04)

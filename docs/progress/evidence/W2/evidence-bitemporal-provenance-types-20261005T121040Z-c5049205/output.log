@@ -1,0 +1,6 @@
+apps\api\app\services\evidence_graph.py:246: error: Need type annotation for "nodes" (hint: "nodes: list[<type>] = ...")  [var-annotated]
+apps\api\app\services\evidence_graph.py:256: error: Argument 1 to "scalar" of "Session" has incompatible type "Select[Base]"; expected "TypedReturnsRows[Never]"  [arg-type]
+apps\api\app\services\evidence_graph.py:256: error: "type[Base]" has no attribute "id"  [attr-defined]
+apps\api\app\services\evidence_graph.py:256: error: "type[Base]" has no attribute "user_id"  [attr-defined]
+apps\api\app\services\evidence_graph.py:304: error: Argument 1 to "append" of "deque" has incompatible type "tuple[str, UUID]"; expected "tuple[Literal['EVIDENCE', 'PROPOSAL', 'POLICY', 'POLICY_VERSION', 'DECISION', 'ACTION', 'RECEIPT'], UUID]"  [arg-type]
+Found 5 errors in 1 file (checked 3 source files)

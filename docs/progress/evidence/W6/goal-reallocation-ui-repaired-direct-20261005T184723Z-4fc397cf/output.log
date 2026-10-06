@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/goal-reallocation.test.ts (50 tests) 26ms
+ ✓ src/components/GoalReallocationPanel.test.tsx (5 tests) 600ms
+
+ Test Files  2 passed (2)
+      Tests  55 passed (55)
+   Start at  02:47:26
+   Duration  3.59s (transform 476ms, setup 1.07s, collect 1.07s, tests 625ms, environment 2.21s, prepare 633ms)
+

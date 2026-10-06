@@ -1,0 +1,34 @@
+### Result
+{"label":"C1","reload_read_and_recovery_ms":42614,"recovery_http_ms":8493,"recovery_visible_ms":19401,"action_id":"df98cc52-daca-4a14-93b3-8233978d352e","effect_hash":"9b5c733742275d9333c69736e430de69c212b181703f6ce3f095bee3295d20d0","receipt":{"simulation":true,"receipt_id":"182a8755-a010-549f-aa18-9f9b9f45f86f","action_id":"df98cc52-daca-4a14-93b3-8233978d352e","bank_operation_id":"df98cc52-daca-4a14-93b3-8233978d352e","status":"SUCCEEDED","executed_cents":100000,"fee_cents":0,"loss_cents":0,"posting_ids":["3783c1b6-2eb5-585e-a20a-f90724d8b953","6c4fb56f-12b8-516c-8abb-d8de618ef541","855eeb45-5c81-5a32-9128-d7ba37d79634","c6a0d312-3915-5f0b-af7a-56feb688cfc1","df54aef5-fdf0-54ff-94ce-f17d67720aee"],"occurred_at":"2026-10-06T06:54:34.137906Z","reconciled_at":"2026-10-06T06:58:01.137161Z"}}
+### Ran Playwright code
+```js
+await (async (page) => {
+  const label={19175:'C1',19177:'C2'}[new URL(page.url()).port];
+  if (!label) throw new Error('Unregistered recovery URL');
+  const stored=await page.evaluate(()=>Object.entries(localStorage).filter(([key])=>key.startsWith('zhiyu-original-v1:')).map(([,value])=>JSON.parse(value)));
+  if (stored.length!==1 || !stored[0].action_id) throw new Error('Original locator not retained');
+  const original=stored[0];
+  const t=Date.now(); await page.reload();
+  await page.waitForFunction(()=>document.querySelectorAll('[role="status"]').length===0);
+  await page.getByRole('region',{name:'待核实原操作',exact:true}).waitFor();
+  await page.getByRole('button',{name:'目标与执行',exact:true}).click();
+  await page.getByRole('button',{name:'读取原结果',exact:true}).click();
+  await page.waitForFunction(()=>document.querySelectorAll('[role="status"]').length===0);
+  await page.getByRole('region',{name:'待核实原操作',exact:true}).waitFor();
+  await page.screenshot({path:`output/playwright/zhiyu-20261006/${label}-unknown-after-refresh.png`,fullPage:true});
+  const response=page.waitForResponse(r=>r.url().endsWith(`/api/v1/zhiyu/actions/${original.action_id}/execute`) && r.request().method()==='POST');
+  const recoveryStart=Date.now(); await page.getByRole('button',{name:'恢复同一原请求',exact:true}).click();
+  const r=await response; const action=await r.json(); const httpMs=Date.now()-recoveryStart;
+  await page.getByText('实际执行 ¥1,000.00，回执已保存。目标进度与边界已重新读取。',{exact:true}).waitFor();
+  await page.getByRole('region',{name:'待核实原操作',exact:true}).waitFor({state:'hidden'});
+  if (r.status()!==200 || action.action_id!==original.action_id || action.effect_hash!==original.effect_hash || action.status!=='SUCCEEDED' || action.receipt?.executed_cents!==100000) throw new Error('Original recovery mismatch');
+  await page.screenshot({path:`output/playwright/zhiyu-20261006/${label}-recovered.png`,fullPage:true});
+  return {label,reload_read_and_recovery_ms:Date.now()-t,recovery_http_ms:httpMs,recovery_visible_ms:Date.now()-recoveryStart,action_id:action.action_id,effect_hash:action.effect_hash,receipt:action.receipt};
+}
+)(page);
+```
+### Page
+- Page URL: http://127.0.0.1:19175/zhiyu.html
+- Page Title: 知余 · 模拟资金助手
+### Events
+- New console entries: .playwright-cli\console-2026-10-06T06-52-45-084Z.log#L2

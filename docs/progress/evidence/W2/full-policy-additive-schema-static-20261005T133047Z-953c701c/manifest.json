@@ -1,0 +1,42 @@
+{
+  "run_id": "20261005T133047Z-953c701c",
+  "task": "W2",
+  "label": "full-policy-additive-schema-static",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/db/full_models.py",
+    "apps/api/alembic/versions/0009_full_policy_lifecycle.py",
+    "apps/api/app/tests/test_full_policy_schema.py",
+    "apps/api/app/tests/test_full_delivery_schema.py",
+    "apps/api/app/tests/test_scenario_service_steps.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "python",
+    "-m",
+    "ruff",
+    "check",
+    "apps/api/app/db/full_models.py",
+    "apps/api/alembic/versions/0009_full_policy_lifecycle.py",
+    "apps/api/app/tests/test_full_policy_schema.py",
+    "apps/api/app/tests/test_full_delivery_schema.py",
+    "apps/api/app/tests/test_scenario_service_steps.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T13:30:47.889472+00:00",
+  "finished_at": "2026-10-05T13:30:48.230521+00:00",
+  "wall_seconds": 0.341049,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "8d03f9d58df92af56f5664fb1e98c40f5cedea8d8495f9a95f6639024bd86197",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

@@ -1,0 +1,6 @@
+apps\api\app\services\full_payment_permissions.py:93: error: Incompatible types in assignment (expression has type "str", variable has type "Literal['full-payment-relation-v1']")  [assignment]
+apps\api\app\services\full_payment_permissions.py:377: error: "AuditVerification" has no attribute "complete"  [attr-defined]
+apps\api\app\services\full_payment_permissions.py:496: error: Argument "timezone" to "PaymentRelationScope" has incompatible type "str"; expected "Literal['UTC', 'Asia/Shanghai']"  [arg-type]
+apps\api\app\services\full_payment_permissions.py:983: error: Incompatible types in assignment (expression has type "PaymentPreparedLookup | None", variable has type "PaymentPreparedLookup")  [assignment]
+apps\api\app\services\full_payment_permissions.py:983: error: Argument 1 to "get" of "Session" has incompatible type "type[EvidenceItem]"; expected "type[PaymentPreparedLookup] | Mapper[PaymentPreparedLookup]"  [arg-type]
+Found 5 errors in 1 file (checked 3 source files)

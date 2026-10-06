@@ -1,0 +1,13 @@
+$ vitest run "src/App.recovery-observation.test.tsx" "src/components/FullRecoveryExecutionHost.test.tsx"
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/components/FullRecoveryExecutionHost.test.tsx (3 tests) 208ms
+ ✓ src/App.recovery-observation.test.tsx (2 tests) 749ms
+   ✓ 未决观察跨页阻挡其它变更，原观察 GET 在页面门之外仍可达  494ms
+
+ Test Files  2 passed (2)
+      Tests  5 passed (5)
+   Start at  12:49:39
+   Duration  6.25s (transform 2.39s, setup 1.08s, collect 3.73s, tests 957ms, environment 2.05s, prepare 648ms)
+

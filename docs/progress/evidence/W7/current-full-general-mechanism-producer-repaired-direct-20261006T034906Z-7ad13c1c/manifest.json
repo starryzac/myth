@@ -1,0 +1,37 @@
+{
+  "run_id": "20261006T034906Z-7ad13c1c",
+  "task": "W7",
+  "label": "current-full-general-mechanism-producer-repaired-direct",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/domain/full_experiment_asset_selection.py",
+    "apps/api/app/services/full_experiment_asset_selection.py",
+    "apps/api/app/tests/test_full_experiment_asset_selection.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "apps/api/app/tests/test_full_experiment_asset_selection.py",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    ".runtime/pytest-general-mechanism-20261006-0351"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T03:49:09.412230+00:00",
+  "finished_at": "2026-10-06T03:49:15.283770+00:00",
+  "wall_seconds": 5.87154,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "e7b9dd044fa4fb5bb96b364d0e7c3c3c30dd39eceda2ccf478f99e3ae941ae26",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

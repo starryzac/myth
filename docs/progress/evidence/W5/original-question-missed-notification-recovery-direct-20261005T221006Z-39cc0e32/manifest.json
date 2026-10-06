@@ -1,0 +1,34 @@
+{
+  "run_id": "20261005T221006Z-39cc0e32",
+  "task": "W5",
+  "label": "original-question-missed-notification-recovery-direct",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/services/question_intervention_recovery.py",
+    "apps/api/app/workers",
+    "apps/api/app/tests/test_question_intervention_recovery.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "apps/api/app/tests/test_question_intervention_recovery.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T22:10:07.917365+00:00",
+  "finished_at": "2026-10-05T22:10:15.021306+00:00",
+  "wall_seconds": 7.103941,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "fb85b9b54a083df0f8d637ed0e474c849a6736cb98704596c82bb1a4b61ed541",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

@@ -1,0 +1,133 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/full-annual.seasonal.test.ts (2 tests) 459ms
+   ✓ v3改贴旧标签、未采纳原件、金额/用户/原证据/逐阶段floor及到期改写均拒绝  375ms
+ ✓ src/api/full-annual.ended.test.ts (2 tests) 611ms
+   ✓ 结束原件缺失或标签金额owner分母和到期变动不能显示已释放成功  532ms
+ ❯ src/components/FullPolicyFinancialImpactHost.test.tsx (2 tests | 1 failed) 1230ms
+   × 实际后续版本宿主只手动GET当前owner与新history-v2 POST，复用原配置身份 1216ms
+     → Unable to find role="button" and name "计算再次修改影响"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"原编辑器资金差量入口"[39m
+    [36m>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m收起候选资金差量预览[0m
+      [36m</button>[39m
+      [36m<p>[39m
+        [0m此处另行只读计算当前原件上的未来差量。原修改确认仍须原配置预览、hash复核、理由和明确勾选；资金预览本身不确认策略或赋执行权限。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m响应未通过模拟环境校验[0m
+        [0m；当前用户尚未读取。[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"原编辑器资金差量入口"[39m
+    [36m>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m收起候选资金差量预览[0m
+      [36m</button>[39m
+      [36m<p>[39m
+        [0m此处另行只读计算当前原件上的未来差量。原修改确认仍须原配置预览、hash复核、理由和明确勾选；资金预览本身不确认策略或赋执行权限。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m响应未通过模拟环境校验[0m
+        [0m；当前用户尚未读取。[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   ✓ 跨功能写门关闭宿主入口，不发owner或资金预览请求 12ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/FullPolicyFinancialImpactHost.test.tsx > 实际后续版本宿主只手动GET当前owner与新history-v2 POST，复用原配置身份
+TestingLibraryElementError: Unable to find role="button" and name "计算再次修改影响"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"原编辑器资金差量入口"[39m
+    [36m>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m收起候选资金差量预览[0m
+      [36m</button>[39m
+      [36m<p>[39m
+        [0m此处另行只读计算当前原件上的未来差量。原修改确认仍须原配置预览、hash复核、理由和明确勾选；资金预览本身不确认策略或赋执行权限。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m响应未通过模拟环境校验[0m
+        [0m；当前用户尚未读取。[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"原编辑器资金差量入口"[39m
+    [36m>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m收起候选资金差量预览[0m
+      [36m</button>[39m
+      [36m<p>[39m
+        [0m此处另行只读计算当前原件上的未来差量。原修改确认仍须原配置预览、hash复核、理由和明确勾选；资金预览本身不确认策略或赋执行权限。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m响应未通过模拟环境校验[0m
+        [0m；当前用户尚未读取。[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/FullPolicyFinancialImpactHost.test.tsx:21:34
+     19|   render(host()); expect(calls).toHaveLength(0);
+     20|   fireEvent.click(screen.getByRole('button', { name: '打开候选资金差量预览' }));
+     21|   const calculate = await screen.findByRole('button', { name: '计算再次修改影…
+       |                                  ^
+     22|   await waitFor(() => expect(calculate).toBeEnabled()); expect(calls).…
+     23|   expect(screen.queryByRole('button', { name: '计算财务修改影响' })).not.toBeI…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 5 passed (6)
+   Start at  11:24:35
+   Duration  6.72s (transform 1.08s, setup 4.13s, collect 2.24s, tests 2.30s, environment 5.76s, prepare 1.09s)
+
+undefined
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: vitest run src/api/full-annual.ended.test.ts src/api/full-annual.seasonal.test.ts src/components/FullPolicyFinancialImpactHost.test.tsx

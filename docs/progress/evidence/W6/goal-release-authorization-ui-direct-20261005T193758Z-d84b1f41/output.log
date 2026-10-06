@@ -1,0 +1,81 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/api/goal-release-authorizations.test.ts (39 tests | 1 failed) 239ms
+   ✓ 全部真实DTO字段、两源完整模型/原版本/最低保障与原scopeSHA核对，保原HTTP字节 31ms
+   ✓ 范围本金权限不伪造有效授权 5ms
+   ✓ 范围普通再分配不伪造有效授权 5ms
+   ✓ 范围新收入不伪造有效授权 2ms
+   ✓ 范围改历史归属不伪造有效授权 4ms
+   ✓ 范围未知目的不伪造有效授权 3ms
+   ✓ 范围单次大于累计不伪造有效授权 2ms
+   ✓ 范围非整数金额不伪造有效授权 2ms
+   ✓ 范围超精确金额不伪造有效授权 2ms
+   ✓ 范围缺紧急条件不伪造有效授权 2ms
+   ✓ 范围非canonical源顺序不伪造有效授权 3ms
+   ✓ 范围重复源Goal不伪造有效授权 2ms
+   ✓ 范围日期无时区不伪造有效授权 3ms
+   ✓ 范围空期限不伪造有效授权 2ms
+   ✓ 范围重置累计不伪造有效授权 1ms
+   ✓ 预览owner不完整拒绝，不能只信success/flags 3ms
+   ✓ 预览epoch不完整拒绝，不能只信success/flags 2ms
+   ✓ 预览version不完整拒绝，不能只信success/flags 2ms
+   ✓ 预览scopehash不完整拒绝，不能只信success/flags 3ms
+   ✓ 预览model不完整拒绝，不能只信success/flags 8ms
+   ✓ 预览minimum不完整拒绝，不能只信success/flags 3ms
+   ✓ 预览missing-source不完整拒绝，不能只信success/flags 2ms
+   ✓ 预览policyhash不完整拒绝，不能只信success/flags 2ms
+   ✓ 原CURRENT记录可核exactkey而不冒当前银行权限 7ms
+   ✓ 原STALE记录可核exactkey而不冒当前银行权限 8ms
+   ✓ 原UNKNOWN记录可核exactkey而不冒当前银行权限 5ms
+   ✓ 原ARCHIVED记录可核exactkey而不冒当前银行权限 6ms
+   ✓ 原lookupbody伪造拒绝 7ms
+   ✓ 原lookupscope伪造拒绝 7ms
+   ✓ 原lookuprequesthash伪造拒绝 3ms
+   ✓ 原lookupevidencehash伪造拒绝 9ms
+   ✓ 原lookupauthorizationid伪造拒绝 7ms
+   ✓ 原lookupevidenceid伪造拒绝 5ms
+   ✓ 原lookupmoneyverified伪造拒绝 3ms
+   ✓ 原lookupbank伪造拒绝 6ms
+   ✓ 原lookupreplay伪造拒绝 8ms
+   ✓ NOT_FOUND非终局必须null和不可替代；accept/额外amount/恶意key不能提交 6ms
+   ✓ canonical无浮点/孤立代理字符；Python原封套hash与UUID5固定golden一致 4ms
+   × 真实原URL/body：主动源GET+纯preview，不自动confirm；原key GET无body/query，确认无amount/result 50ms
+     → expected { …(3) } to deeply equal { …(3) }
+ ✓ src/features/goal-release-authorization-operation.test.ts (16 tests) 2501ms
+ ✓ src/components/GoalReleaseAuthorizationPanel.test.tsx (7 tests) 2829ms
+   ✓ 初始只GET，明确按钮准备实际来源全部两Goal+原最低保障；checkbox之前无confirm/execute  955ms
+   ✓ 显式接受后发送exact5字段并先持久原scope/body/key；HTTP200仍pending，原GET匹配才解门  355ms
+   ✓ 响应丢失及NOT_FOUND保持原键，不提供重新POST；错误原请求查询不能解除  388ms
+   ✓ HTTP409仍原pending，用户只读核对STALE原记录后不当当前资金授权  376ms
+   ✓ 刷新与来源prop版本变化撤掉旧复核；他族blocked允许只读来源但确认禁用  337ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/api/goal-release-authorizations.test.ts > 真实原URL/body：主动源GET+纯preview，不自动confirm；原key GET无body/query，确认无amount/result
+AssertionError: expected { …(3) } to deeply equal { …(3) }
+
+- Expected
++ Received
+
+  {
+    "body": undefined,
+    "method": "GET",
+-   "path": "/api/v1/goal-release-authorizations/commands/70000000-0000-4000-8000-000000000004/by-key/UNIT_ORIGINAL_RELEASE:1",
++   "path": "/api/v1/goal-release-authorizations/commands/70000000-0000-4000-8000-000000000004/by-key/UNIT_ORIGINAL_RELEASE%3A1",
+  }
+
+ ❯ src/api/goal-release-authorizations.test.ts:36:95
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 61 passed (62)
+   Start at  03:38:01
+   Duration  6.31s (transform 981ms, setup 1.68s, collect 3.09s, tests 5.57s, environment 3.25s, prepare 991ms)
+
+undefined
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: vitest run src/api/goal-release-authorizations.test.ts src/features/goal-release-authorization-operation.test.ts src/components/GoalReleaseAuthorizationPanel.test.tsx

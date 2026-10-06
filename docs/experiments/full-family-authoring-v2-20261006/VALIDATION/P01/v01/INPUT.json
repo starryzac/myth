@@ -1,0 +1,225 @@
+{
+  "family_id": "P01",
+  "initial_state": {
+    "expected_epoch_id": null,
+    "mode": "EXISTING",
+    "seed_version": "mvp-301-v6"
+  },
+  "profile": "FULL",
+  "protocol": "full-family-case-input-v1",
+  "purpose": "DEVELOPMENT",
+  "scenario_id": "P01-v01",
+  "steps": [
+    {
+      "at": "2026-10-04T10:00:02+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "SNAPSHOT",
+      "step_id": "initial-snapshot"
+    },
+    {
+      "at": "2026-10-04T10:00:04+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "DEMO_STATE_READ",
+      "step_id": "epoch-read"
+    },
+    {
+      "at": "2026-10-04T10:00:06+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "LOCAL_USER_LOGIN",
+      "step_id": "local-user-login"
+    },
+    {
+      "at": "2026-10-04T10:00:08+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "external_ref": "mvp-301-v6:account:cash"
+      },
+      "kind": "LOOKUP_ACCOUNT",
+      "step_id": "cash"
+    },
+    {
+      "at": "2026-10-04T10:00:10+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "external_ref": "mvp-301-v6:account:goal"
+      },
+      "kind": "LOOKUP_ACCOUNT",
+      "step_id": "goal-account"
+    },
+    {
+      "at": "2026-10-04T10:00:12+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "configuration": {
+          "extra_buffer_cents": 10000,
+          "horizon_days": 14,
+          "method": {
+            "essential_categories": [
+              "food",
+              "transport",
+              "daily_necessities"
+            ],
+            "exclude_one_off": true,
+            "lookback_days": 60,
+            "name": "rolling_window_quantile",
+            "quantile": 0.9
+          },
+          "name": "作者 living",
+          "type": "living_reserve"
+        },
+        "expected_epoch_id": {
+          "$ref": {
+            "pointer": "/result/epoch_id",
+            "step_id": "epoch-read"
+          }
+        },
+        "idempotency_key": "full804-P01-living-declare"
+      },
+      "kind": "DECLARE_POLICY",
+      "step_id": "living-declare"
+    },
+    {
+      "at": "2026-10-04T10:00:14+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "accepted": true,
+        "proposal_id": {
+          "$ref": {
+            "pointer": "/result/proposal_id",
+            "step_id": "living-declare"
+          }
+        },
+        "reviewed_hash": {
+          "$ref": {
+            "pointer": "/result/configuration_hash",
+            "step_id": "living-declare"
+          }
+        }
+      },
+      "kind": "CONFIRM_POLICY",
+      "step_id": "living-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:16+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "configuration": {
+          "amount_cents": 90000,
+          "name": "作者 emergency",
+          "type": "emergency_buffer"
+        },
+        "expected_epoch_id": {
+          "$ref": {
+            "pointer": "/result/epoch_id",
+            "step_id": "epoch-read"
+          }
+        },
+        "idempotency_key": "full804-P01-emergency-declare"
+      },
+      "kind": "DECLARE_POLICY",
+      "step_id": "emergency-declare"
+    },
+    {
+      "at": "2026-10-04T10:00:18+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "accepted": true,
+        "proposal_id": {
+          "$ref": {
+            "pointer": "/result/proposal_id",
+            "step_id": "emergency-declare"
+          }
+        },
+        "reviewed_hash": {
+          "$ref": {
+            "pointer": "/result/configuration_hash",
+            "step_id": "emergency-declare"
+          }
+        }
+      },
+      "kind": "CONFIRM_POLICY",
+      "step_id": "emergency-confirm"
+    },
+    {
+      "at": "2026-10-04T10:00:20+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "configuration": {
+            "amount_rule": {
+              "amount_cents": 18000,
+              "kind": "exact"
+            },
+            "auto_execute": false,
+            "due_day": 12,
+            "name": "作者 unknown-payee",
+            "payee_id": "author-unknown-payee-no-bank-identity",
+            "prepare_days_before": 2,
+            "single_action_cap_cents": 30000,
+            "source_account_id": {
+              "$ref": {
+                "pointer": "/result/account/id",
+                "step_id": "cash"
+              }
+            },
+            "type": "periodic_transfer",
+            "valid_from": "2026-10-04",
+            "valid_until": "2027-10-04"
+          },
+          "dsl_version": "FULL_V1",
+          "template_name": "PeriodicTransferPolicy"
+        }
+      },
+      "kind": "FULL_POLICY_VALIDATE",
+      "step_id": "unknown-payee-validate"
+    },
+    {
+      "at": "2026-10-04T10:00:22+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {
+        "body": {
+          "accepted": true,
+          "configuration": {
+            "$ref": {
+              "pointer": "/result/normalized_configuration",
+              "step_id": "unknown-payee-validate"
+            }
+          },
+          "idempotency_key": "full804-P01-unknown-payee-full",
+          "reason": "预登记合成 USER 明确复核此完整声明",
+          "reviewed_hash": {
+            "$ref": {
+              "pointer": "/result/configuration_hash",
+              "step_id": "unknown-payee-validate"
+            }
+          },
+          "template_name": "PeriodicTransferPolicy"
+        }
+      },
+      "kind": "FULL_POLICY_CONFIRM",
+      "step_id": "unknown-payee-full"
+    },
+    {
+      "at": "2026-10-04T10:00:24+08:00",
+      "expected_error": null,
+      "fault": "NONE",
+      "inputs": {},
+      "kind": "SNAPSHOT",
+      "step_id": "final"
+    }
+  ]
+}

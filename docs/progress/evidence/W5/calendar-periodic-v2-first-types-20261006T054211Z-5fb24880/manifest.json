@@ -1,0 +1,38 @@
+{
+  "run_id": "20261006T054211Z-5fb24880",
+  "task": "W5",
+  "label": "calendar-periodic-v2-first-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/domain/calendar_periodic_suggestions.py",
+    "apps/api/app/services/calendar_periodic_suggestions.py",
+    "apps/api/app/api/v1/calendar_periodic_suggestions.py",
+    "apps/api/app/tests/test_calendar_periodic_suggestions.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "mypy",
+    "apps/api/app/domain/calendar_periodic_suggestions.py",
+    "apps/api/app/services/calendar_periodic_suggestions.py",
+    "apps/api/app/api/v1/calendar_periodic_suggestions.py",
+    "apps/api/app/tests/test_calendar_periodic_suggestions.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T05:42:13.357999+00:00",
+  "finished_at": "2026-10-06T05:42:37.148448+00:00",
+  "wall_seconds": 23.790449,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/web/src/api/full-policy-dependencies.test.ts"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "a1c37e8208e5360707dee2eef12e878f2453b52d72f8202a04e390bcd3e0a4c1",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

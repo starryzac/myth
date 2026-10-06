@@ -1,0 +1,41 @@
+{
+  "run_id": "20261005T200748Z-5c767fe3",
+  "task": "W5",
+  "label": "question-producer-final-repaired-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/services/question_intervention_producer.py",
+    "apps/api/app/services/full_intervention.py",
+    "apps/api/app/tests/test_question_intervention_producer.py",
+    "apps/api/app/tests/test_intervention_current_observation.py",
+    "apps/api/app/tests/test_question_intervention_producer_api.py"
+  ],
+  "command": [
+    "uv",
+    "--cache-dir",
+    ".uv-cache",
+    "run",
+    "--offline",
+    "mypy",
+    "apps/api/app/services/question_intervention_producer.py",
+    "apps/api/app/services/full_intervention.py",
+    "apps/api/app/tests/test_question_intervention_producer.py",
+    "apps/api/app/tests/test_intervention_current_observation.py",
+    "apps/api/app/tests/test_question_intervention_producer_api.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T20:07:49.946334+00:00",
+  "finished_at": "2026-10-05T20:07:51.708228+00:00",
+  "wall_seconds": 1.761894,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "b333ecda900e7471905f64015015a53263165c888e14e21b66dcf7df3257d726",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

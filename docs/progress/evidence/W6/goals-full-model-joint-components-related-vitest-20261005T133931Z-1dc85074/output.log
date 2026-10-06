@@ -1,0 +1,10 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/pages/GoalsPage.test.tsx (8 tests) 1115ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  21:39:33
+   Duration  3.61s (transform 262ms, setup 423ms, collect 419ms, tests 1.11s, environment 863ms, prepare 286ms)
+

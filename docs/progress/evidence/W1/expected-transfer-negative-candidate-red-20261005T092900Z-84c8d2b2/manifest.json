@@ -1,0 +1,35 @@
+{
+  "run_id": "20261005T092900Z-84c8d2b2",
+  "task": "W1",
+  "label": "expected-transfer-negative-candidate-red",
+  "status": "FAILED",
+  "scope": [
+    "scripts/mvp_native_schema.py",
+    "scripts/mvp_corpus_v2.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "python",
+    "-m",
+    "pytest",
+    ".runtime/W1-expected-transfer-dto-rejection-candidate-20261005T0930Z/test_expected_transfer_dto_rejection.py",
+    "-q"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T09:29:00.948196+00:00",
+  "finished_at": "2026-10-05T09:29:04.084400+00:00",
+  "wall_seconds": 3.136204,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "96fa4e2dbe20ff43f143ca93258b09e64d54ea205402a63cce96d8cee5d3483d",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

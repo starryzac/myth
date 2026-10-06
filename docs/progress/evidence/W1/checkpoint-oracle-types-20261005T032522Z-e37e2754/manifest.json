@@ -1,0 +1,36 @@
+{
+  "run_id": "20261005T032522Z-e37e2754",
+  "task": "W1",
+  "label": "checkpoint-oracle-types",
+  "status": "FAILED",
+  "scope": [
+    "scripts/browser_checkpoint_oracles.py",
+    "scripts/tests/test_browser_checkpoint_oracles.py",
+    "apps/api/app/domain/audit_chain.py",
+    "apps/api/app/services/audit_chain.py",
+    "apps/api/app/db/"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "mypy",
+    "scripts/browser_checkpoint_oracles.py",
+    "scripts/tests/test_browser_checkpoint_oracles.py",
+    "--explicit-package-bases"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T03:25:23.144396+00:00",
+  "finished_at": "2026-10-05T03:25:24.360829+00:00",
+  "wall_seconds": 1.216433,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "00b992e41bd89305987cb0fba6a00781741f002f0f5b6f2ee99b813c3e1c8340",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

@@ -1,0 +1,82 @@
+[
+    {
+        "Id": "sha256:397a614b499f4130b2fc95ddc1a1ac949b019f28bf6b3524e7608c63893374d2",
+        "RepoTags": [
+            "bounded-funds-web:demo-7970d1487f8f4fa29ad09e0ad4a37149"
+        ],
+        "RepoDigests": [
+            "bounded-funds-web@sha256:397a614b499f4130b2fc95ddc1a1ac949b019f28bf6b3524e7608c63893374d2"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-10-05T04:23:19.509768378Z",
+        "Config": {
+            "ExposedPorts": {
+                "80/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NGINX_VERSION=1.31.6",
+                "PKG_RELEASE=1",
+                "DYNPKG_RELEASE=1",
+                "NJS_VERSION=1.0.1",
+                "NJS_RELEASE=1",
+                "ACME_VERSION=0.4.1"
+            ],
+            "Entrypoint": [
+                "/docker-entrypoint.sh"
+            ],
+            "Cmd": [
+                "nginx",
+                "-g",
+                "daemon off;"
+            ],
+            "WorkingDir": "/",
+            "Labels": {
+                "com.docker.compose.project": "bf-demo-7970d1487f8f4fa29ad09e0ad4a37149",
+                "com.docker.compose.service": "web",
+                "com.docker.compose.version": "5.3.0",
+                "io.bounded-funds.pnpm-lock-sha256": "abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83",
+                "io.bounded-funds.purpose": "ISOLATED_SIMULATED_DEMO",
+                "io.bounded-funds.source-digest": "409984d976ec0a1bf0e8698a72dd3337775f40d3d88173cb44eea75f705bb0f5",
+                "maintainer": "NGINX Docker Maintainers <docker-maint@nginx.com>",
+                "org.opencontainers.image.revision": "4ccf84e973978482a1098d18c69fbfc9f011fac6"
+            },
+            "StopSignal": "SIGQUIT",
+            "ArgsEscaped": true
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 26444524,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:74d97c428c51a828f9051a7a40a53ff1fc99e54fc30323ce36760701b0b7f711",
+                "sha256:379f51bf5b58bf458dfe39fe97ba49d63950929004af1808361bfe01ba73d6d0",
+                "sha256:641b74319bab4250ece7d99c1e71fba36e67931d64b62a1d574a56986d45dae0",
+                "sha256:2a7ed9afc1c38e245bbe331a4bbf99010cc9ff2ae546ee9507373a3a2dc80f0c",
+                "sha256:149ab1e5d6caa8add417a7dc26743baa867bf078b3c6aafc96b8197221a87a1c",
+                "sha256:41473198c04ae23f0434ac3a73f8e52549312be4638d2979bc1df9d209bdb9c0",
+                "sha256:c86f6810da0b81ee848c1e6cc4bc22c0b7bd4f553f81ef3a33c41791b90631a2",
+                "sha256:001b5608a9297e16ed0253a4694ca1cc98fa554c7e39c36ca652742cfc294efc",
+                "sha256:ef47cffdd1204b4cde651e400d7e0881417d33a6ca1ddf7ee2eeea4e0efd96e1",
+                "sha256:036967348f442238cba709a3fc59e2eb5591058ad7ec0a5d88f59c40e8081c5c"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-05T04:23:19.632341412Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:397a614b499f4130b2fc95ddc1a1ac949b019f28bf6b3524e7608c63893374d2",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "li5phu4oz6f3hs0exmqq76uvs",
+                    "CreatedAt": "2026-10-05T04:23:19.671732271Z"
+                }
+            ]
+        }
+    }
+]

@@ -1,0 +1,50 @@
+{
+  "run_id": "20261005T121349Z-37119972",
+  "task": "W2",
+  "label": "full-facts-and-annual-readonly-real-pg",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/services/evidence_graph.py",
+    "apps/api/app/api/v1/evidence.py",
+    "apps/api/app/tests/test_full_evidence.py",
+    "apps/api/app/services/full_projection.py",
+    "apps/api/app/api/v1/planning.py",
+    "apps/api/app/tests/test_full_projection_api.py",
+    "apps/api/app/domain/boundary.py",
+    "apps/api/app/domain/boundary_types.py",
+    "apps/api/app/main.py",
+    "apps/api/app/api/dependencies.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "python",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_full_evidence.py",
+    "apps/api/app/tests/test_full_projection_api.py",
+    "-m",
+    "integration",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T12:13:50.244322+00:00",
+  "finished_at": "2026-10-05T12:14:04.211745+00:00",
+  "wall_seconds": 13.967423,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/api/app/tests/test_experiment_error_stack.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "9e7e9d57142fdae3d51d87cfce61c0d97fbc6dfd96171e0c7039daf85dc3a4af",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

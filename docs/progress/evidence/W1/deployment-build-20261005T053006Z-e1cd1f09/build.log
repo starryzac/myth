@@ -1,0 +1,318 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.33kB 0.0s done
+#1 DONE 0.0s
+
+#2 [api internal] load build definition from api.Dockerfile
+#2 transferring dockerfile: 2.16kB done
+#2 WARN: InvalidDefaultArgInFrom: Default value for ARG ${UV_BINARY_IMAGE} results in empty or invalid base image name (line 4)
+#2 WARN: InvalidDefaultArgInFrom: Default value for ARG ${PYTHON_BASE_IMAGE} results in empty or invalid base image name (line 5)
+#2 WARN: InvalidDefaultArgInFrom: Default value for ARG ${PYTHON_BASE_IMAGE} results in empty or invalid base image name (line 20)
+#2 DONE 0.0s
+
+#3 [web internal] load build definition from web.Dockerfile
+#3 transferring dockerfile: 1.60kB done
+#3 WARN: InvalidDefaultArgInFrom: Default value for ARG ${NODE_BASE_IMAGE} results in empty or invalid base image name (line 3)
+#3 WARN: InvalidDefaultArgInFrom: Default value for ARG ${NGINX_BASE_IMAGE} results in empty or invalid base image name (line 19)
+#3 DONE 0.0s
+
+#4 [web internal] load metadata for docker.io/library/nginx@sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2
+#4 ...
+
+#5 [api internal] load metadata for ghcr.io/astral-sh/uv@sha256:8b940d3a9d65bed080436972241af2e21c84b5e8c9193f7014ed71479ee795ff
+#5 DONE 4.5s
+
+#6 [web internal] load metadata for docker.io/library/node@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6
+#6 DONE 4.6s
+
+#7 [api internal] load metadata for docker.io/library/python@sha256:54c85f3c47607a77f32adec749d3c81d1348bf25833671f512b26a9b6d778cb3
+#7 DONE 4.6s
+
+#4 [web internal] load metadata for docker.io/library/nginx@sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2
+#4 DONE 4.6s
+
+#8 [api internal] load .dockerignore
+#8 transferring context: 454B done
+#8 DONE 0.0s
+
+#9 [web build 1/9] FROM docker.io/library/node@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6
+#9 resolve docker.io/library/node@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6 0.0s done
+#9 DONE 0.0s
+
+#10 [api uv_binary 1/1] FROM ghcr.io/astral-sh/uv@sha256:8b940d3a9d65bed080436972241af2e21c84b5e8c9193f7014ed71479ee795ff
+#10 resolve ghcr.io/astral-sh/uv@sha256:8b940d3a9d65bed080436972241af2e21c84b5e8c9193f7014ed71479ee795ff 0.0s done
+#10 DONE 0.0s
+
+#11 [web runtime 1/3] FROM docker.io/library/nginx@sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2
+#11 resolve docker.io/library/nginx@sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2 0.0s done
+#11 DONE 0.0s
+
+#12 [api dependencies 1/7] FROM docker.io/library/python@sha256:54c85f3c47607a77f32adec749d3c81d1348bf25833671f512b26a9b6d778cb3
+#12 resolve docker.io/library/python@sha256:54c85f3c47607a77f32adec749d3c81d1348bf25833671f512b26a9b6d778cb3 0.0s done
+#12 DONE 0.0s
+
+#13 [web internal] load build context
+#13 transferring context: 40.96kB 0.0s done
+#13 DONE 0.0s
+
+#14 [web build 2/9] WORKDIR /workspace
+#14 CACHED
+
+#15 [web build 3/9] RUN node -e "if(process.versions.node.split('.')[0]!=='24')throw Error('Node24 required')" && npm install --global pnpm@11.19.0 --ignore-scripts && test "$(pnpm --version)" = "11.19.0"
+#15 CACHED
+
+#16 [api internal] load build context
+#16 transferring context: 70.59kB 0.0s done
+#16 DONE 0.0s
+
+#17 [web build 4/9] COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+#17 CACHED
+
+#18 [api dependencies 5/7] RUN python -c "import hashlib,pathlib,sys; assert sys.version_info[:2]==(3,12); assert hashlib.sha256(pathlib.Path('uv.lock').read_bytes()).hexdigest()==sys.argv[1]" "b3b1dae5cf20edd6ef96609427aeaf8f7d0108ba3c075158a00d102383e36e4c"
+#18 CACHED
+
+#19 [api runtime 2/8] WORKDIR /workspace
+#19 CACHED
+
+#20 [api dependencies 4/7] COPY pyproject.toml uv.lock ./
+#20 CACHED
+
+#21 [api dependencies 7/7] RUN /opt/bf-venv/bin/python -c "import fastapi,uvicorn,pydantic,sqlalchemy,alembic,psycopg; from zoneinfo import ZoneInfo; assert ZoneInfo('Asia/Shanghai').key=='Asia/Shanghai'"
+#21 CACHED
+
+#22 [api runtime 3/8] COPY --from=dependencies /opt/bf-venv /opt/bf-venv
+#22 CACHED
+
+#23 [api dependencies 3/7] WORKDIR /workspace
+#23 CACHED
+
+#24 [api dependencies 6/7] RUN uv --version && uv sync --frozen --no-dev --no-install-project --no-editable --python /usr/local/bin/python
+#24 CACHED
+
+#25 [api dependencies 2/7] COPY --from=uv_binary /uv /usr/local/bin/uv
+#25 CACHED
+
+#26 [api runtime 4/8] COPY pyproject.toml uv.lock alembic.ini ./
+#26 CACHED
+
+#27 [web build 5/9] COPY apps/web/ ./apps/web/
+#27 DONE 0.0s
+
+#28 [web build 6/9] COPY packages/contracts/ ./packages/contracts/
+#28 DONE 0.0s
+
+#29 [api runtime 5/8] COPY apps/api/ ./apps/api/
+#29 DONE 0.1s
+
+#30 [api runtime 6/8] COPY scripts/scenario_runner_rpc.py scripts/seed_demo.py ./scripts/
+#30 DONE 0.0s
+
+#31 [api runtime 7/8] COPY deploy/initialize_demo.py ./deploy/initialize_demo.py
+#31 DONE 0.0s
+
+#32 [web build 7/9] RUN node -e "const fs=require('node:fs'),crypto=require('node:crypto');if(crypto.createHash('sha256').update(fs.readFileSync('pnpm-lock.yaml')).digest('hex')!==process.argv[1])throw Error('Original lock SHA differs')" "abca500080e1846e41d159c176d8a95902bcce239e3dca94651b40e68a8efc83"
+#32 DONE 0.3s
+
+#33 [api runtime 8/8] RUN python -c "import re,sys; assert re.fullmatch('[0-9a-f]{40}',sys.argv[1]); assert re.fullmatch('[0-9a-f]{64}',sys.argv[2]); from zoneinfo import ZoneInfo; ZoneInfo('Asia/Shanghai')" "4ccf84e973978482a1098d18c69fbfc9f011fac6" "0285e59c277f9eff0d745d273884be133ba09d3434efd530ec38d6fdfd7ce7ec"
+#33 DONE 0.3s
+
+#34 [api] exporting to image
+#34 exporting layers
+#34 exporting layers 0.2s done
+#34 exporting manifest sha256:be341290525f2f900122db662895ae4259beeae8cfcc07bac477af88e5053bcd done
+#34 exporting config sha256:7a4c7f4ee27cf60f4daf040572c6633b9c782f2cbf6426851cdca5636e7c4a56 done
+#34 exporting attestation manifest sha256:0eb96942f5ae66d963bf1d66561bf3f6356b8d3328cccf9fb20d1c315f1f8ab0 0.0s done
+#34 exporting manifest list sha256:860789202f521b1f03679fe0c07bc29b72254e80aaef78493ee901a7156d6316 done
+#34 naming to docker.io/library/bounded-funds-api:demo-852b7cff79ca48c39bc740ca55caa6a5 done
+#34 unpacking to docker.io/library/bounded-funds-api:demo-852b7cff79ca48c39bc740ca55caa6a5 0.1s done
+#34 DONE 0.4s
+
+#35 [api] resolving provenance for metadata file
+#35 DONE 0.0s
+
+#36 [web build 8/9] RUN pnpm install --frozen-lockfile
+#36 0.783 Scope: all 2 workspace projects
+#36 0.857 ? Verifying lockfile against supply-chain policies (429 entries)...
+#36 0.873 Lockfile is up to date, resolution step is skipped
+#36 1.007 Progress: resolved 1, reused 0, downloaded 0, added 0
+#36 1.066 Packages: +358
+#36 1.066 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#36 2.008 Progress: resolved 358, reused 0, downloaded 0, added 0
+#36 4.141 Progress: resolved 358, reused 0, downloaded 1, added 0
+#36 4.145 Packages are hard linked from the content-addressable store to the virtual store.
+#36 4.145   Content-addressable store is at: /workspace/.pnpm-store/v11
+#36 4.145   Virtual store is at:             node_modules/.pnpm
+#36 5.141 Progress: resolved 358, reused 0, downloaded 19, added 19
+#36 5.619 [WARN] Tarball download average speed 38 KiB/s (size 42 KiB) is below 50 KiB/s: https://registry.npmjs.org/@adobe/css-tools/-/css-tools-4.5.0.tgz (GET)
+#36 5.692 [WARN] Tarball download average speed 26 KiB/s (size 35 KiB) is below 50 KiB/s: https://registry.npmjs.org/@tailwindcss/node/-/node-4.1.13.tgz (GET)
+#36 6.141 Progress: resolved 358, reused 0, downloaded 59, added 59
+#36 6.930 [WARN] Tarball download average speed 5 KiB/s (size 6 KiB) is below 50 KiB/s: https://registry.npmjs.org/http-proxy-agent/-/http-proxy-agent-7.0.2.tgz (GET)
+#36 7.141 Progress: resolved 358, reused 0, downloaded 73, added 73
+#36 7.186 [WARN] Tarball download average speed 5 KiB/s (size 14 KiB) is below 50 KiB/s: https://registry.npmjs.org/@eslint/plugin-kit/-/plugin-kit-0.3.5.tgz (GET)
+#36 7.254 [WARN] Tarball download average speed 17 KiB/s (size 19 KiB) is below 50 KiB/s: https://registry.npmjs.org/whatwg-url/-/whatwg-url-14.1.1.tgz (GET)
+#36 7.537 [WARN] Tarball download average speed 7 KiB/s (size 16 KiB) is below 50 KiB/s: https://registry.npmjs.org/espree/-/espree-10.4.0.tgz (GET)
+#36 8.142 Progress: resolved 358, reused 0, downloaded 97, added 97
+#36 8.955 [WARN] Tarball download average speed 22 KiB/s (size 25 KiB) is below 50 KiB/s: https://registry.npmjs.org/@vitest/snapshot/-/snapshot-3.2.4.tgz (GET)
+#36 9.142 Progress: resolved 358, reused 0, downloaded 120, added 120
+#36 9.718 
+#36 9.718    ╭─────────────────────────────────────────╮
+#36 9.718    │                                         │
+#36 9.718    │   Update available! 11.19.0 → 12.9.1.   │
+#36 9.718    │   Changelog: https://pnpm.io/v/12.9.1   │
+#36 9.718    │    To update, run: pnpm add -g pnpm     │
+#36 9.718    │                                         │
+#36 9.718    ╰─────────────────────────────────────────╯
+#36 9.718 
+#36 9.940 [WARN] Tarball download average speed 13 KiB/s (size 30 KiB) is below 50 KiB/s: https://registry.npmjs.org/@vitest/runner/-/runner-3.2.4.tgz (GET)
+#36 9.946 [WARN] Tarball download average speed 26 KiB/s (size 36 KiB) is below 50 KiB/s: https://registry.npmjs.org/lz-string/-/lz-string-1.5.0.tgz (GET)
+#36 10.07 [WARN] Tarball download average speed 31 KiB/s (size 36 KiB) is below 50 KiB/s: https://registry.npmjs.org/@babel/helper-module-transforms/-/helper-module-transforms-7.29.7.tgz (GET)
+#36 10.14 Progress: resolved 358, reused 0, downloaded 136, added 135
+#36 11.14 Progress: resolved 358, reused 0, downloaded 144, added 144
+#36 11.76 [WARN] Tarball download average speed 38 KiB/s (size 111 KiB) is below 50 KiB/s: https://registry.npmjs.org/@babel/generator/-/generator-7.29.8.tgz (GET)
+#36 12.14 Progress: resolved 358, reused 0, downloaded 157, added 157
+#36 13.14 Progress: resolved 358, reused 0, downloaded 168, added 168
+#36 14.14 Progress: resolved 358, reused 0, downloaded 179, added 179
+#36 15.14 Progress: resolved 358, reused 0, downloaded 191, added 191
+#36 15.16 [WARN] Tarball download average speed 47 KiB/s (size 62 KiB) is below 50 KiB/s: https://registry.npmjs.org/tr46/-/tr46-5.1.1.tgz (GET)
+#36 15.42 [WARN] Tarball download average speed 49 KiB/s (size 130 KiB) is below 50 KiB/s: https://registry.npmjs.org/acorn/-/acorn-8.18.0.tgz (GET)
+#36 15.73 [WARN] Tarball download average speed 45 KiB/s (size 72 KiB) is below 50 KiB/s: https://registry.npmjs.org/@typescript-eslint/scope-manager/-/scope-manager-8.44.1.tgz (GET)
+#36 15.90 [WARN] Request took 10423ms: https://registry.npmjs.org/@tailwindcss%2Foxide-freebsd-x64
+#36 16.14 Progress: resolved 358, reused 0, downloaded 205, added 205
+#36 16.76 [WARN] Tarball download average speed 45 KiB/s (size 99 KiB) is below 50 KiB/s: https://registry.npmjs.org/minimatch/-/minimatch-9.0.9.tgz (GET)
+#36 17.14 Progress: resolved 358, reused 0, downloaded 223, added 223
+#36 17.61 [WARN] Request took 11470ms: https://registry.npmjs.org/@tailwindcss%2Foxide-linux-arm64-gnu
+#36 18.10 [WARN] Tarball download average speed 44 KiB/s (size 186 KiB) is below 50 KiB/s: https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.6.3.tgz (GET)
+#36 18.14 Progress: resolved 358, reused 0, downloaded 240, added 240
+#36 19.14 Progress: resolved 358, reused 0, downloaded 260, added 260
+#36 20.15 Progress: resolved 358, reused 0, downloaded 274, added 274
+#36 20.57 [WARN] Tarball download average speed 38 KiB/s (size 460 KiB) is below 50 KiB/s: https://registry.npmjs.org/tar/-/tar-7.5.22.tgz (GET)
+#36 20.59 [WARN] Request took 14130ms: https://registry.npmjs.org/@tailwindcss%2Foxide
+#36 21.14 Progress: resolved 358, reused 0, downloaded 287, added 286
+#36 22.15 Progress: resolved 358, reused 0, downloaded 302, added 302
+#36 22.61 [WARN] Tarball download average speed 48 KiB/s (size 72 KiB) is below 50 KiB/s: https://registry.npmjs.org/glob/-/glob-10.5.0.tgz (GET)
+#36 23.15 Progress: resolved 358, reused 0, downloaded 322, added 322
+#36 23.99 [WARN] Request took 16772ms: https://registry.npmjs.org/@types%2Fnode
+#36 24.05 [WARN] Tarball download average speed 42 KiB/s (size 846 KiB) is below 50 KiB/s: https://registry.npmjs.org/playwright/-/playwright-1.56.0.tgz (GET)
+#36 24.15 Progress: resolved 358, reused 0, downloaded 332, added 332
+#36 24.53 [WARN] Tarball download average speed 43 KiB/s (size 99 KiB) is below 50 KiB/s: https://registry.npmjs.org/path-scurry/-/path-scurry-1.11.1.tgz (GET)
+#36 25.15 Progress: resolved 358, reused 0, downloaded 335, added 335
+#36 26.15 Progress: resolved 358, reused 0, downloaded 338, added 338
+#36 27.15 Progress: resolved 358, reused 0, downloaded 339, added 339
+#36 28.05 [WARN] Tarball download average speed 47 KiB/s (size 97 KiB) is below 50 KiB/s: https://registry.npmjs.org/lru-cache/-/lru-cache-10.2.0.tgz (GET)
+#36 28.09 [WARN] Tarball download average speed 46 KiB/s (size 153 KiB) is below 50 KiB/s: https://registry.npmjs.org/tailwindcss/-/tailwindcss-4.1.13.tgz (GET)
+#36 28.15 Progress: resolved 358, reused 0, downloaded 341, added 341
+#36 28.19 [WARN] Tarball download average speed 49 KiB/s (size 128 KiB) is below 50 KiB/s: https://registry.npmjs.org/uri-js/-/uri-js-4.4.1.tgz (GET)
+#36 28.24 [WARN] Tarball download average speed 43 KiB/s (size 322 KiB) is below 50 KiB/s: https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001814.tgz (GET)
+#36 29.15 Progress: resolved 358, reused 0, downloaded 343, added 343
+#36 29.23 [WARN] Tarball download average speed 45 KiB/s (size 716 KiB) is below 50 KiB/s: https://registry.npmjs.org/tldts/-/tldts-6.1.32.tgz (GET)
+#36 29.78 [WARN] Request took 10475ms: https://registry.npmjs.org/esbuild
+#36 30.15 Progress: resolved 358, reused 0, downloaded 344, added 344
+#36 30.86 [WARN] Request took 12461ms: https://registry.npmjs.org/@types%2Freact
+#36 31.15 Progress: resolved 358, reused 0, downloaded 345, added 345
+#36 31.30 [WARN] Tarball download average speed 44 KiB/s (size 326 KiB) is below 50 KiB/s: https://registry.npmjs.org/vitest/-/vitest-3.2.4.tgz (GET)
+#36 31.36 [WARN] Request took 16445ms: https://registry.npmjs.org/caniuse-lite
+#36 32.15 Progress: resolved 358, reused 0, downloaded 346, added 346
+#36 34.16 [WARN] Tarball download average speed 45 KiB/s (size 681 KiB) is below 50 KiB/s: https://registry.npmjs.org/lru-cache/-/lru-cache-11.5.3.tgz (GET)
+#36 34.19 Progress: resolved 358, reused 0, downloaded 347, added 346
+#36 34.30 [WARN] Tarball download average speed 36 KiB/s (size 351 KiB) is below 50 KiB/s: https://registry.npmjs.org/jsdom/-/jsdom-26.1.0.tgz (GET)
+#36 34.93 [WARN] Tarball download average speed 41 KiB/s (size 442 KiB) is below 50 KiB/s: https://registry.npmjs.org/@redocly/openapi-core/-/openapi-core-1.34.20.tgz (GET)
+#36 35.19 Progress: resolved 358, reused 0, downloaded 349, added 349
+#36 36.23 [WARN] Request took 32387ms: https://registry.npmjs.org/@playwright%2Ftest
+#36 37.77 [WARN] Tarball download average speed 41 KiB/s (size 530 KiB) is below 50 KiB/s: https://registry.npmjs.org/vite/-/vite-7.3.6.tgz (GET)
+#36 37.80 Progress: resolved 358, reused 0, downloaded 350, added 349
+#36 38.30 [WARN] Request took 30585ms: https://registry.npmjs.org/@typescript-eslint%2Futils
+#36 38.39 [WARN] Tarball download average speed 43 KiB/s (size 623 KiB) is below 50 KiB/s: https://registry.npmjs.org/eslint/-/eslint-9.36.0.tgz (GET)
+#36 38.45 [WARN] Request took 30976ms: https://registry.npmjs.org/@typescript-eslint%2Ftype-utils
+#36 38.80 Progress: resolved 358, reused 0, downloaded 351, added 351
+#36 41.08 [WARN] Request took 11123ms: https://registry.npmjs.org/rollup
+#36 44.62 [WARN] Request took 13181ms: https://registry.npmjs.org/tldts-core
+#36 45.10 [WARN] Request took 37560ms: https://registry.npmjs.org/@typescript-eslint%2Ftypes
+#36 45.27 [WARN] Request took 13707ms: https://registry.npmjs.org/tldts
+#36 46.80 [WARN] Tarball download average speed 38 KiB/s (size 1129 KiB) is below 50 KiB/s: https://registry.npmjs.org/react-dom/-/react-dom-19.1.1.tgz (GET)
+#36 46.84 Progress: resolved 358, reused 0, downloaded 352, added 351
+#36 47.84 Progress: resolved 358, reused 0, downloaded 352, added 352
+#36 48.35 [WARN] Request took 30217ms: https://registry.npmjs.org/electron-to-chromium
+#36 49.49 [WARN] Tarball download average speed 46 KiB/s (size 1924 KiB) is below 50 KiB/s: https://registry.npmjs.org/playwright-core/-/playwright-core-1.56.0.tgz (GET)
+#36 49.58 Progress: resolved 358, reused 0, downloaded 353, added 352
+#36 50.13 [WARN] Request took 30608ms: https://registry.npmjs.org/eslint-plugin-react-hooks
+#36 50.58 Progress: resolved 358, reused 0, downloaded 353, added 353
+#36 50.88 [WARN] Request took 20694ms: https://registry.npmjs.org/scheduler
+#36 54.37 [WARN] Request took 24707ms: https://registry.npmjs.org/react
+#36 54.87 [WARN] Request took 25335ms: https://registry.npmjs.org/react-refresh
+#36 54.96 [WARN] Request took 47571ms: https://registry.npmjs.org/@typescript-eslint%2Fscope-manager
+#36 55.08 [WARN] Request took 47257ms: https://registry.npmjs.org/@typescript-eslint%2Fvisitor-keys
+#36 56.07 [WARN] Request took 24940ms: https://registry.npmjs.org/tailwindcss
+#36 56.47 [WARN] Request took 26988ms: https://registry.npmjs.org/react-is
+#36 57.22 [WARN] Request took 49899ms: https://registry.npmjs.org/@typescript-eslint%2Fparser
+#36 57.57 [WARN] Request took 28090ms: https://registry.npmjs.org/react-dom
+#36 60.96 [WARN] GET https://registry.npmjs.org/@csstools%2Fcss-parser-algorithms error (23). Will retry in 10 seconds. 2 retries left.
+#36 60.96 [WARN] GET https://registry.npmjs.org/@esbuild%2Flinux-ppc64 error (23). Will retry in 10 seconds. 2 retries left.
+#36 60.96 [WARN] GET https://registry.npmjs.org/@esbuild%2Fnetbsd-arm64 error (23). Will retry in 10 seconds. 2 retries left.
+#36 60.97 [WARN] GET https://registry.npmjs.org/@eslint-community%2Fregexpp error (23). Will retry in 10 seconds. 2 retries left.
+#36 62.89 [WARN] Request took 55602ms: https://registry.npmjs.org/@typescript-eslint%2Feslint-plugin
+#36 63.97 [WARN] GET https://registry.npmjs.org/@redocly%2Fconfig error (23). Will retry in 10 seconds. 2 retries left.
+#36 64.12 [WARN] Request took 56445ms: https://registry.npmjs.org/@typescript-eslint%2Ftypescript-estree
+#36 65.41 [WARN] GET https://registry.npmjs.org/vite-node/-/vite-node-3.2.4.tgz error (23). Will retry in 10 seconds. 2 retries left.
+#36 65.94 [WARN] GET https://registry.npmjs.org/aria-query/-/aria-query-5.3.0.tgz error (23). Will retry in 10 seconds. 2 retries left.
+#36 67.30 [WARN] Request took 35103ms: https://registry.npmjs.org/typescript
+#36 69.40 [WARN] GET https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.28.2.tgz error (23). Will retry in 10 seconds. 2 retries left.
+#36 69.93 [WARN] GET https://registry.npmjs.org/lightningcss-linux-x64-gnu/-/lightningcss-linux-x64-gnu-1.30.1.tgz error (23). Will retry in 10 seconds. 2 retries left.
+#36 71.45 [WARN] Request took 70539ms: https://registry.npmjs.org/@csstools%2Fcss-parser-algorithms
+#36 71.72 [WARN] Request took 70796ms: https://registry.npmjs.org/@esbuild%2Flinux-ppc64
+#36 76.52 Progress: resolved 358, reused 0, downloaded 354, added 353
+#36 77.52 Progress: resolved 358, reused 0, downloaded 355, added 355
+#36 79.59 [WARN] Request took 50495ms: https://registry.npmjs.org/playwright
+#36 79.74 [WARN] GET https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz error (23). Will retry in 10 seconds. 2 retries left.
+#36 80.32 [WARN] Request took 51232ms: https://registry.npmjs.org/playwright-core
+#36 80.76 [WARN] Request took 13107ms: https://registry.npmjs.org/typescript
+#36 80.77 ✓ Lockfile passes supply-chain policies (429 entries in 1m 19.9s)
+#36 90.02 Progress: resolved 358, reused 0, downloaded 356, added 355
+#36 91.02 Progress: resolved 358, reused 0, downloaded 356, added 356
+#36 116.9 Progress: resolved 358, reused 0, downloaded 357, added 356
+#36 117.4 Progress: resolved 358, reused 0, downloaded 358, added 358, done
+#36 117.6 .../node_modules/@tailwindcss/oxide postinstall$ node ./scripts/install.js
+#36 117.6 .../esbuild@0.28.2/node_modules/esbuild postinstall$ node install.js
+#36 117.7 .../node_modules/@tailwindcss/oxide postinstall: Done
+#36 117.7 .../esbuild@0.28.2/node_modules/esbuild postinstall: Done
+#36 117.8 
+#36 117.8 devDependencies:
+#36 117.8 + openapi-typescript 7.13.0
+#36 117.8 
+#36 117.8 Done in 1m 57.4s using pnpm v11.19.0
+#36 DONE 117.9s
+
+#37 [web build 9/9] RUN pnpm --dir apps/web build
+#37 0.700 $ tsc --noEmit && vite build
+#37 4.019 vite v7.3.6 building client environment for production...
+#37 4.082 transforming...
+#37 4.922 ✓ 93 modules transformed.
+#37 5.070 rendering chunks...
+#37 5.079 computing gzip size...
+#37 5.091 dist/index.html                   0.48 kB │ gzip:   0.34 kB
+#37 5.091 dist/assets/index-BLUVy2UY.css   23.29 kB │ gzip:   5.92 kB
+#37 5.091 dist/assets/index-Dj-7SsYD.js   354.37 kB │ gzip: 108.50 kB
+#37 5.092 ✓ built in 1.04s
+#37 DONE 5.1s
+
+#38 [web runtime 2/3] COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
+#38 CACHED
+
+#39 [web runtime 3/3] COPY --from=build /workspace/apps/web/dist/ /usr/share/nginx/html/
+#39 DONE 0.0s
+
+#40 [web] exporting to image
+#40 exporting layers 0.1s done
+#40 exporting manifest sha256:b9af4d240cec3982bc4eb6d8da2fedef5b93e1a355fe52883f7e4efb894356a8 done
+#40 exporting config sha256:b42835e01978d89526dde7ff6a348a4f83055b6d607538fc2221e316f0ebe528 done
+#40 exporting attestation manifest sha256:45c2dc102896b1fa7c25a2a2ffe1367f5e95dfefcad85bf35591efd5d864db0b 0.0s done
+#40 exporting manifest list sha256:c544007d0cefd27377035feaad5c1a3f67a0fce0b4d5acd8aca7c3bd3b53f68f
+#40 exporting manifest list sha256:c544007d0cefd27377035feaad5c1a3f67a0fce0b4d5acd8aca7c3bd3b53f68f done
+#40 naming to docker.io/library/bounded-funds-web:demo-852b7cff79ca48c39bc740ca55caa6a5 done
+#40 unpacking to docker.io/library/bounded-funds-web:demo-852b7cff79ca48c39bc740ca55caa6a5 0.0s done
+#40 DONE 0.2s
+
+#41 [web] resolving provenance for metadata file
+#41 DONE 0.0s
+ Image bounded-funds-api:demo-852b7cff79ca48c39bc740ca55caa6a5 Building 
+ Image bounded-funds-web:demo-852b7cff79ca48c39bc740ca55caa6a5 Building 
+ Image bounded-funds-web:demo-852b7cff79ca48c39bc740ca55caa6a5 Built 
+ Image bounded-funds-api:demo-852b7cff79ca48c39bc740ca55caa6a5 Built 

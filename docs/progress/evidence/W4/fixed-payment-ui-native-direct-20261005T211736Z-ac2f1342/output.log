@@ -1,0 +1,45 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/full-payment-relations.test.ts (10 tests) 139ms
+ ❯ src/features/fixed-payment-operation.test.ts (8 tests | 1 failed) 2398ms
+   ✓ POST前完整body/key/epoch/scope/hash持久，POST对象不清门，独立GET原件匹配才释放  968ms
+   ✓ 恢复原件不能自动POST，原body破坏保存储且锁写；只持历史不保存cookie/token/新grant 137ms
+   ✓ 损坏原件不删除或换键，storage fail发送前保原请求 152ms
+   ✓ storage set失败保pending不发，原GET核对后删除写失败不解除门 149ms
+   ✓ 完整原START→CONFIRM→PREPARE→ASK同意→执行，每次独立GET前不能推进；UNKNOWN不清身份  300ms
+   ✓ ASK没有原签名USER同意不能execute；AUTO仍必须原GET动作、非当前存储授权 241ms
+   × 同用户另一族或全局inflight阻写，自身原GET不受外部门阻挡 203ms
+     → promise resolved "undefined" instead of rejecting
+   ✓ 同原银行SETTLED但投影回执缺失仅手动原execute恢复，不能换body/key或靠POST恢复 244ms
+ ✓ src/components/FixedPaymentRelationPanel.test.tsx (5 tests) 3605ms
+   ✓ 真实只读reader展示范围与原来源；无USER不可写，不自动发起/确认/execute  1282ms
+   ✓ 用户手动START与关系双复核，POST成功仍待核，原GET后才能继续  509ms
+   ✓ 丢START响应/未找到/外部门仍可原键GET，不自动重试或清空换key  351ms
+   ✓ 周期prepare保原键→实际等级auto=false→ASK仅手动同意→execute与原GETreceipt  820ms
+   ✓ 周期prepare保原键→实际等级auto=true→ASK仅手动同意→execute与原GETreceipt  640ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/fixed-payment-operation.test.ts > 同用户另一族或全局inflight阻写，自身原GET不受外部门阻挡
+AssertionError: promise resolved "undefined" instead of rejecting
+
+- Expected: 
+Error {
+  "message": "rejected promise",
+}
+
++ Received: 
+undefined
+
+ ❯ src/features/fixed-payment-operation.test.ts:18:581
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 22 passed (23)
+   Start at  05:17:38
+   Duration  6.86s (transform 1.39s, setup 1.82s, collect 2.46s, tests 6.14s, environment 3.19s, prepare 1.01s)
+

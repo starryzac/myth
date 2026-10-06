@@ -1,0 +1,26 @@
+import { useQuery } from '@tanstack/react-query';
+import { getDynamicGoalReserve, getOriginalDynamicGoalResponse } from '../api/dynamic-goal-reserve';
+import type { DynamicGoalReserve } from '../api/dynamic-goal-reserve';
+import type { Goal } from '../api/goals';
+import { errorMessage } from '../api/http';
+import { formatMoneyCents } from '../features/money';
+const money = (value: number | null | undefined) => value == null ? 'UNKNOWN · 尚未证明' : `¥${formatMoneyCents(value)}`;
+const states = { COMPUTED: '原服务已计算当前月', EXPIRED: '原策略已到期，金额未证明', INACTIVE: '原策略未生效或停用，金额未证明', UNKNOWN: 'UNKNOWN · 原件不足，金额未证明' };
+const statuses: Record<string, string> = { READY: '当前月节奏已计算', PARTIAL: '安全可用新收入不足，仅条件部分满足', MINIMUM_SHORTFALL: '不可降低的月最低承诺短缺，禁止追加建议', HARD_GUARANTEE_SHORTFALL: '硬最低保证短缺，追加金额未知', DEADLINE_BLOCKED: '到期硬约束阻挡，追加金额未知', OVERDUE_READY: '已逾期，保留实际逾期与条件节奏', COMPLETE: '实际归属已达到目标，未预测完成日期', MONTHLY_MAX_ALREADY_EXCEEDED: '实际本月贡献已超新上限，保留旧贡献不再追加', INACTIVE_POLICY: '原版本未生效或停用，金额未知', EXPIRED_POLICY: '原版本已到期，金额未知', LIQUIDITY_RISK: '原硬保护存在风险，金额未知', INSUFFICIENT_EVIDENCE: '原件不足，金额未知' };
+function Result({ data }: { data: DynamicGoalReserve }) {
+  const reserve = data.reserve;
+  return <><p>{states[data.state]}</p><p className="caption">原读取时点 {data.as_of} · 原策略有效状态 {data.policy_effective_status ?? 'UNKNOWN'} · 目标/贡献/收入和本次365保护在服务自身快照读取；与其他页面报告独立，不组成共同事务快照。</p>
+    {reserve ? <><p>{statuses[reserve.status]} · {reserve.status}</p><p>原当前月 <strong>{reserve.period}</strong> · 原策略版本 <code>{reserve.policy_version_id}</code></p><dl className="full-goal-fields">
+      <div><dt>实际已归属金额</dt><dd>{money(reserve.current_owned_cents)}</dd></div><div><dt>实际本月已贡献</dt><dd>{money(reserve.current_month_contributed_cents)}</dd></div><div><dt>剩余目标</dt><dd>{money(reserve.remaining_goal_cents)}</dd></div><div><dt>实际超额归属</dt><dd>{money(reserve.excess_owned_cents)}</dd></div>
+      <div><dt>原进度</dt><dd>{reserve.progress_basis_points == null ? 'UNKNOWN' : `${(reserve.progress_basis_points / 100).toFixed(2)}%（${reserve.progress_basis_points} basis points）`}</dd></div><div><dt>剩余日历月槽</dt><dd>{reserve.remaining_calendar_month_slots ?? 'UNKNOWN'}</dd></div><div><dt>未截断累计节奏</dt><dd>{money(reserve.uncapped_gross_pace_cents)}</dd></div><div><dt>当前月动态累计目标</dt><dd>{money(reserve.dynamic_month_total_cents)}</dd></div><div><dt>原名义月target</dt><dd>{money(reserve.nominal_month_target_cents)}</dd></div><div><dt>动态与原名义target差额</dt><dd>{money(reserve.pace_delta_from_nominal_cents)}</dd></div>
+      <div><dt>符合当前版本窗口的实际可用收入</dt><dd>{money(reserve.eligible_available_income_cents)}</dd></div><div><dt>本次原365日保护下预算</dt><dd>{money(reserve.independently_protected_budget_cents)}</dd></div><div><dt>当前月希望新增</dt><dd>{money(reserve.desired_additional_cents)}</dd></div><div><dt>条件建议新增</dt><dd>{money(reserve.suggested_additional_cents)}</dd></div><div><dt>月最低承诺短缺</dt><dd>{money(reserve.minimum_shortfall_cents)}</dd></div><div><dt>硬最低保证短缺</dt><dd>{money(reserve.guarantee_shortfall_cents)}</dd></div><div><dt>实际已逾期</dt><dd>{reserve.overdue_days == null ? 'UNKNOWN' : `${reserve.overdue_days}日`}</dd></div><div><dt>截至现在的原延期成本</dt><dd>{money(reserve.deferral_cost_to_date_cents)}</dd></div><div><dt>实际完成日期</dt><dd>未提供，不预测或重建完成历史</dd></div></dl>
+      <p className="notice">动态累计目标包含本月原贡献；原贡献不加回可用资金，新增建议已扣除此贡献。月范围和deadline仍在原目标卡独立读取，不用本报告覆盖原策略或授权。</p><ul>{reserve.reasons.map((reason, index) => <li key={index}>{reason}</li>)}</ul></> : <p className="notice">当前月贡献、可用收入、保护预算及新增建议均尚未证明；没有旧模型/零金额替代。</p>}
+    <p className="notice">保留全部原365日储备，当前预算可能保守；没有释放参与目标重复保护。未来收入计入0，归属资金不是新收入。</p><p>只读preview，不创建行动或执行分配。动态金额尚未接入原nominal执行或联合调度，不能自动采用或当银行授权。</p>
+    {data.source_issues.length > 0 && <ul className="issues" aria-label="动态节奏来源问题">{data.source_issues.map((issue, index) => <li key={index}>{issue.code} · {issue.message}<p>原来源 <code>{issue.source_ref}</code></p></li>)}</ul>}
+    <details><summary>动态节奏原证据与具体限制</summary><p>原输入摘要 <code>{data.input_hash}</code>{reserve && <> · 原节奏输入hash <code>{reserve.input_hash}</code></>}；仅展示服务报告，不是独立银行或历史审计验真。</p><ul>{data.source_evidence_ids.map((id) => <li key={id}><a href={`#evidence/EVIDENCE/${id}`}>{id}</a></li>)}</ul><ul>{data.limitations.map((item, index) => <li key={index}>{item}</li>)}</ul></details>
+    <details><summary>动态节奏原JSON响应</summary><pre className="readonly-raw">{getOriginalDynamicGoalResponse(data) ?? '原响应文本未保留'}</pre></details></>;
+}
+export default function DynamicGoalReservePanel({ goal }: { goal: Pick<Goal, 'id' | 'name' | 'policy_version_id'> }) {
+  const query = useQuery({ queryKey: ['dynamic-goal-reserve', goal.id, goal.policy_version_id], queryFn: () => getDynamicGoalReserve(goal), retry: false, structuralSharing: false });
+  return <section className="readonly-section full-goal-model" aria-label={`目标动态节奏 ${goal.id}`}><h4>当前月动态节奏 · {goal.name}</h4><button type="button" disabled={query.isFetching} onClick={() => void query.refetch()}>只读刷新动态节奏</button>{query.isPending && <p role="status">正在读取原目标贡献、收入与365保护…</p>}{query.isError && <p role="alert">{errorMessage(query.error)}；需重新读取原目标/当前版本，旧报告不作为当前成功。</p>}{query.isFetching && query.data && <p role="status">正在重新读取，下方仍是上次原节奏报告。</p>}{!query.isError && query.data && <Result data={query.data} />}</section>;
+}

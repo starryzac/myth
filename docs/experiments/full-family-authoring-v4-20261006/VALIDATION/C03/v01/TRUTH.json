@@ -1,0 +1,506 @@
+{
+  "adjustable_ranges": {
+    "author_original_sha256": "4bdd2a1f8909f13ad3cfaa6e0878fa6a8a263f07bc785da4ab2055045b019b3a",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "changes": [],
+      "goal_configurations": [],
+      "hard_floor_relaxation_allowed": false,
+      "original_policy_limits": [
+        {
+          "configuration": {
+            "extra_buffer_cents": 10000,
+            "horizon_days": 14,
+            "method": {
+              "essential_categories": [
+                "food",
+                "transport",
+                "daily_necessities"
+              ],
+              "exclude_one_off": true,
+              "lookback_days": 60,
+              "name": "rolling_window_quantile",
+              "quantile": 0.9
+            },
+            "name": "作者 living",
+            "type": "living_reserve"
+          },
+          "dsl_version": "MVP_V1",
+          "role": "living"
+        },
+        {
+          "configuration": {
+            "amount_cents": 90000,
+            "name": "作者 emergency",
+            "type": "emergency_buffer"
+          },
+          "dsl_version": "MVP_V1",
+          "role": "emergency"
+        },
+        {
+          "configuration": {
+            "allow_auto_recovery_without_penalty": true,
+            "allow_early_withdrawal_with_penalty": false,
+            "allowed_asset_classes": [
+              "CASH_MGMT_T1"
+            ],
+            "goal_id": null,
+            "max_auto_managed_cents": 900000,
+            "max_lock_days": 0,
+            "max_principal_risk_level": 0,
+            "max_redemption_delay_days": 1,
+            "name": "作者 asset-base",
+            "scope": "general_idle_funds",
+            "single_action_cap_cents": 300000,
+            "type": "asset_authorization"
+          },
+          "dsl_version": "MVP_V1",
+          "role": "asset-base"
+        },
+        {
+          "configuration": {
+            "allow_auto_recovery_without_penalty": true,
+            "allow_early_withdrawal_with_penalty": false,
+            "allowed_asset_classes": [
+              "CASH_MGMT_T1"
+            ],
+            "goal_id": null,
+            "max_auto_managed_cents": 900000,
+            "max_lock_days": 0,
+            "max_principal_risk_level": 0,
+            "max_redemption_delay_days": 1,
+            "name": "作者 asset",
+            "scope": "general_idle_funds",
+            "single_action_cap_cents": 300000,
+            "type": "asset_authorization",
+            "valid_from": "2026-10-04",
+            "valid_until": "2027-10-04"
+          },
+          "dsl_version": "FULL_V1",
+          "role": "asset",
+          "template_name": "AssetAuthorizationPolicy"
+        },
+        {
+          "configuration": {
+            "allow_auto_recovery_without_penalty": true,
+            "asset_policy_id": {
+              "$ref": {
+                "pointer": "/result/policy_id",
+                "step_id": "asset-base-confirm"
+              }
+            },
+            "goal_id": null,
+            "max_fee_cents": 0,
+            "max_loss_cents": 0,
+            "max_redemption_delay_days": 1,
+            "name": "作者 recover",
+            "scope": "general_idle_funds",
+            "single_action_cap_cents": 300000,
+            "triggers": [
+              "BOUNDARY_SHRINK",
+              "LIQUIDITY_SHORTFALL"
+            ],
+            "type": "recovery",
+            "valid_from": "2026-10-04",
+            "valid_until": "2027-10-04"
+          },
+          "dsl_version": "FULL_V1",
+          "role": "recover",
+          "template_name": "RecoveryPolicy"
+        }
+      ],
+      "reallocation_by_default": false
+    }
+  },
+  "allowed_actions": {
+    "author_original_sha256": "4bdd2a1f8909f13ad3cfaa6e0878fa6a8a263f07bc785da4ab2055045b019b3a",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "all_execution_attempts_retained": [
+        "income",
+        "purchase-execute",
+        "ordinary-debit",
+        "recover-execute",
+        "second-debit"
+      ],
+      "authored_opportunities": [
+        {
+          "at": "2026-10-04T10:00:32+08:00",
+          "expected_error": null,
+          "fault": "NONE",
+          "inputs": {
+            "body": {
+              "expected_epoch_id": {
+                "$ref": {
+                  "pointer": "/result/epoch_id",
+                  "step_id": "epoch-read"
+                }
+              },
+              "expected_full_policy_version_id": {
+                "$ref": {
+                  "pointer": "/result/version_id",
+                  "step_id": "asset-full"
+                }
+              },
+              "expected_goal_policy_version_id": null,
+              "expected_mvp_policy_version_id": {
+                "$ref": {
+                  "pointer": "/result/current_version_id",
+                  "step_id": "asset-base-confirm"
+                }
+              },
+              "full_policy_id": {
+                "$ref": {
+                  "pointer": "/result/policy_id",
+                  "step_id": "asset-full"
+                }
+              },
+              "goal_id": null,
+              "idempotency_key": "full804-C03-purchase-prepare",
+              "mvp_asset_policy_id": {
+                "$ref": {
+                  "pointer": "/result/policy_id",
+                  "step_id": "asset-base-confirm"
+                }
+              },
+              "planning_mode": "PORTFOLIO"
+            }
+          },
+          "kind": "FULL_ASSET_PREPARE",
+          "step_id": "purchase-prepare"
+        },
+        {
+          "at": "2026-10-04T10:00:46+08:00",
+          "expected_error": null,
+          "fault": "NONE",
+          "inputs": {
+            "body": {
+              "expected_epoch_id": {
+                "$ref": {
+                  "pointer": "/result/epoch_id",
+                  "step_id": "epoch-read"
+                }
+              },
+              "expected_version_id": {
+                "$ref": {
+                  "pointer": "/result/version_id",
+                  "step_id": "recover-full"
+                }
+              },
+              "idempotency_key": "full804-C03-recover-prepare",
+              "policy_id": {
+                "$ref": {
+                  "pointer": "/result/policy_id",
+                  "step_id": "recover-full"
+                }
+              },
+              "position_id": {
+                "$ref": {
+                  "pointer": "/result/batches/0/original_action/effect/position_id",
+                  "step_id": "purchase-execute"
+                }
+              }
+            }
+          },
+          "kind": "FULL_RECOVERY_PREPARE",
+          "step_id": "recover-prepare"
+        }
+      ],
+      "common_bank_gate": "Exact current safe effect and resource claims independently checked before bank acceptance",
+      "mechanism_skips_keep_denominator": true,
+      "no_agent_invented_payment": true
+    }
+  },
+  "expected_autonomy": {
+    "author_original_sha256": "4bdd2a1f8909f13ad3cfaa6e0878fa6a8a263f07bc785da4ab2055045b019b3a",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "B0": "Registered manual choice + exact action confirmation; no autonomous recovery",
+      "B1_B2": "GENERAL purchase only; other intents skip with opportunity retained",
+      "B3": "Each economic action exact affirmative per-action confirmation",
+      "B4": "Registered actual source-bound confidence threshold proposal; common bank guard remains",
+      "B5": "Yield-priority without liquidity filter; common bank guard remains",
+      "P": "Deterministic current permissions/safe availability; changed effect/loss/payee/ambiguity ASK; missing sources UNKNOWN",
+      "actual_level_results": null,
+      "case_causal_rule": "TWO_DEBITS_AROUND_ACCEPTED_REDEMPTION"
+    }
+  },
+  "expected_conflicts": {
+    "author_original_sha256": "4bdd2a1f8909f13ad3cfaa6e0878fa6a8a263f07bc785da4ab2055045b019b3a",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "authored_causal_topology": "TWO_DEBITS_AROUND_ACCEPTED_REDEMPTION",
+      "conflict_rules": "Hard obligation/living/emergency/owned goal first; current monthly max and guarantee immutable until new explicit version",
+      "explicit_expected_errors": [],
+      "observed_conflict_set": null,
+      "unknown_not_empty_success": true
+    }
+  },
+  "expected_recovery": {
+    "author_original_sha256": "4bdd2a1f8909f13ad3cfaa6e0878fa6a8a263f07bc785da4ab2055045b019b3a",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "T1": "Before actual settlement cash credit=0; original accepted bank identity survives subsequent revoke",
+      "UNKNOWN": "Retain original logical operation/key; GET original receipt and manual same identity coordination only",
+      "actual_recovery_success": null,
+      "loss": "Original positive fee/loss never AUTO without exact effect confirmation",
+      "original_keys": [
+        {
+          "fault": "NONE",
+          "inputs": {
+            "policy_id": {
+              "$ref": {
+                "pointer": "/result/policy_id",
+                "step_id": "recover-full"
+              }
+            }
+          },
+          "step_id": "recover-plan"
+        },
+        {
+          "fault": "NONE",
+          "inputs": {
+            "body": {
+              "expected_epoch_id": {
+                "$ref": {
+                  "pointer": "/result/epoch_id",
+                  "step_id": "epoch-read"
+                }
+              },
+              "expected_version_id": {
+                "$ref": {
+                  "pointer": "/result/version_id",
+                  "step_id": "recover-full"
+                }
+              },
+              "idempotency_key": "full804-C03-recover-prepare",
+              "policy_id": {
+                "$ref": {
+                  "pointer": "/result/policy_id",
+                  "step_id": "recover-full"
+                }
+              },
+              "position_id": {
+                "$ref": {
+                  "pointer": "/result/batches/0/original_action/effect/position_id",
+                  "step_id": "purchase-execute"
+                }
+              }
+            }
+          },
+          "step_id": "recover-prepare"
+        },
+        {
+          "fault": "NONE",
+          "inputs": {
+            "action_id": {
+              "$ref": {
+                "pointer": "/result/action_id",
+                "step_id": "recover-prepare"
+              }
+            },
+            "body": {
+              "accepted": true,
+              "expected_epoch_id": {
+                "$ref": {
+                  "pointer": "/result/epoch_id",
+                  "step_id": "epoch-read"
+                }
+              },
+              "reviewed_effect_hash": {
+                "$ref": {
+                  "pointer": "/result/effect_hash",
+                  "step_id": "recover-prepare"
+                }
+              }
+            }
+          },
+          "step_id": "recover-confirm"
+        },
+        {
+          "fault": "NONE",
+          "inputs": {
+            "action_id": {
+              "$ref": {
+                "pointer": "/result/action_id",
+                "step_id": "recover-prepare"
+              }
+            },
+            "body": {
+              "expected_epoch_id": {
+                "$ref": {
+                  "pointer": "/result/epoch_id",
+                  "step_id": "epoch-read"
+                }
+              },
+              "reviewed_effect_hash": {
+                "$ref": {
+                  "pointer": "/result/effect_hash",
+                  "step_id": "recover-prepare"
+                }
+              }
+            }
+          },
+          "step_id": "recover-execute"
+        },
+        {
+          "fault": "NONE",
+          "inputs": {
+            "action_id": {
+              "$ref": {
+                "pointer": "/result/action_id",
+                "step_id": "recover-prepare"
+              }
+            }
+          },
+          "step_id": "inflight-query"
+        }
+      ]
+    }
+  },
+  "mandatory_obligations": {
+    "author_original_sha256": "4bdd2a1f8909f13ad3cfaa6e0878fa6a8a263f07bc785da4ab2055045b019b3a",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "authored_configurations": [
+        {
+          "configuration": {
+            "extra_buffer_cents": 10000,
+            "horizon_days": 14,
+            "method": {
+              "essential_categories": [
+                "food",
+                "transport",
+                "daily_necessities"
+              ],
+              "exclude_one_off": true,
+              "lookback_days": 60,
+              "name": "rolling_window_quantile",
+              "quantile": 0.9
+            },
+            "name": "作者 living",
+            "type": "living_reserve"
+          },
+          "dsl_version": "MVP_V1",
+          "role": "living"
+        },
+        {
+          "configuration": {
+            "amount_cents": 90000,
+            "name": "作者 emergency",
+            "type": "emergency_buffer"
+          },
+          "dsl_version": "MVP_V1",
+          "role": "emergency"
+        }
+      ],
+      "bank_opening_and_card_obligations": "FULL_INITIAL_SEED_SNAPSHOT_REQUIRED",
+      "cash_rule": "Only actual SETTLED ECONOMIC cash; no future income or unsettled principal",
+      "protected_goal_owned_rule": "All original goal cash/principal remain owned until exact release grant",
+      "unpaid_rule": "No transaction-label inference of paid; max range conservatively reserved"
+    }
+  },
+  "product_attributes": {
+    "author_original_sha256": "4bdd2a1f8909f13ad3cfaa6e0878fa6a8a263f07bc785da4ab2055045b019b3a",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "authored_allowed_classes": {
+        "asset": {
+          "classes": [
+            "CASH_MGMT_T1"
+          ],
+          "full": {
+            "$ref": {
+              "pointer": "/result/policy_id",
+              "step_id": "asset-full"
+            }
+          },
+          "mvp": {
+            "$ref": {
+              "pointer": "/result/policy_id",
+              "step_id": "asset-base-confirm"
+            }
+          }
+        }
+      },
+      "availability": "Derive from original executed product/position terms and actual settlement; never class alias alone",
+      "early_withdrawal": "Exact original quote integer principal=net+fee+loss; effect-specific ASK",
+      "lookup": "Actual register_current_catalog + immutable version + current source match",
+      "missing_7_90_low_risk_products": "UNKNOWN_NOT_SYNTHESIZED"
+    }
+  },
+  "user_authority": {
+    "author_original_sha256": "4bdd2a1f8909f13ad3cfaa6e0878fa6a8a263f07bc785da4ab2055045b019b3a",
+    "calculated_from_arm_output": false,
+    "provenance": "DETERMINISTIC_AUTHOR_DESCRIPTION",
+    "status": "DEFINED",
+    "value": {
+      "full_planning_confirmation_bank_authority": false,
+      "initial_and_runtime_actor_script": [
+        {
+          "human": false,
+          "phase": "INITIAL_AUTHORIZATION",
+          "review": "EXACT_SERVER_PROPOSAL_HASH",
+          "step_id": "living-confirm"
+        },
+        {
+          "human": false,
+          "phase": "INITIAL_AUTHORIZATION",
+          "review": "EXACT_SERVER_PROPOSAL_HASH",
+          "step_id": "emergency-confirm"
+        },
+        {
+          "human": false,
+          "phase": "INITIAL_AUTHORIZATION",
+          "review": "EXACT_SERVER_PROPOSAL_HASH",
+          "step_id": "asset-base-confirm"
+        },
+        {
+          "human": false,
+          "phase": "INITIAL_AUTHORIZATION",
+          "planning_confirmation_not_bank_grant": true,
+          "review": "EXACT_SERVER_FULL_CONFIGURATION",
+          "step_id": "asset-full"
+        },
+        {
+          "human": false,
+          "phase": "RUNTIME_INTERVENTION",
+          "review": "WHOLE_PORTFOLIO_HASH",
+          "step_id": "purchase-confirm"
+        },
+        {
+          "human": false,
+          "phase": "INITIAL_AUTHORIZATION",
+          "planning_confirmation_not_bank_grant": true,
+          "review": "EXACT_SERVER_FULL_CONFIGURATION",
+          "step_id": "recover-full"
+        },
+        {
+          "human": false,
+          "phase": "RUNTIME_INTERVENTION",
+          "review": "EXACT_RECOVERY_SIGNED_USER",
+          "step_id": "recover-confirm"
+        }
+      ],
+      "old_receipts_authorize_new_operation": false,
+      "permission_check": "Exact then-current owner+epoch+version+type+scope+amount+source+destination+interval",
+      "signed_USER_services": [
+        "recover-confirm"
+      ]
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{"kind":"deck","id":"pr/1a8c5b","name":"Deck"}
+{"kind":"layout","layoutId":"71d525df-2aac-4aaf-8f41-883b50bd6e00","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"9a8c9bda-32aa-491c-bf6a-586e2c54eb51","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/z18zlk","slide":1,"title":"青年金融服务 · 当前功能版 / 模拟","textShapes":8}
+{"kind":"textbox","id":"sh/onm1czm9","slide":1,"text":"青年金融服务 · 当前功能版 / 模拟","textPreview":"青年金融服务 · 当前功能版 / 模拟","textChars":19,"textLines":1,"bbox":[80,37,1120,36]}
+{"kind":"textbox","id":"sh/nmd03u5o","slide":1,"text":"钱途有界","textPreview":"钱途有界","textChars":4,"textLines":1,"bbox":[80,98,1120,72]}
+{"kind":"textbox","id":"sh/ml4jap43","slide":1,"text":"让每笔自主安排\n守住用途、时间与授权","textPreview":"让每笔自主安排 | 守住用途、时间与授权","textChars":18,"textLines":2,"bbox":[80,222,1120,140]}
+{"kind":"textbox","id":"sh/xcfi94n6","slide":1,"text":"事实有来源，候选需复核，动作有边界","textPreview":"事实有来源，候选需复核，动作有边界","textChars":17,"textLines":1,"bbox":[80,426,1100,66]}
+{"kind":"textbox","id":"sh/wb61gzml","slide":1,"text":"确定性引擎计算；自然语言不产生权限","textPreview":"确定性引擎计算；自然语言不产生权限","textChars":17,"textLines":1,"bbox":[80,499,1100,66]}
+{"kind":"textbox","id":"sh/bad07u50","slide":1,"text":"全量验收未完成 · 真人0 · 当前性能未测","textPreview":"全量验收未完成 · 真人0 · 当前性能未测","textChars":22,"textLines":1,"bbox":[80,572,1100,66]}
+{"kind":"textbox","id":"sh/a94jep4f","slide":1,"text":"SOURCE S01 · S04 · S05  |  全部模拟 · WORKING / NOT ACCEPTANCE","textPreview":"SOURCE S01 · S04 · S05  |  全部模拟 · WORKING / NOT ACCEPTANCE","textChars":58,"textLines":1,"bbox":[80,657,1040,26]}
+{"kind":"textbox","id":"sh/5gf2do32","slide":1,"text":"1 / 10","textPreview":"1 / 10","textChars":6,"textLines":1,"bbox":[1134,657,95,26]}
+{"kind":"notes","id":"nt/z18zlk","slide":1,"text":"介绍当前功能交付，不声称正式产品完成或银行合作。\n来源：S01: ../sources.json（精确原件及SHA）\nS04: ../sources.json（精确原件及SHA）\nS05: ../sources.json（精确原件及SHA）\n本页全部为可编辑文字；流程是SOURCE_SCHEMATIC_NOT_NATIVE_SCREENSHOT。效果结果缺失，不含实验柱形。"}
+{"kind":"slide","id":"sl/h53eg9","slide":2,"title":"01 / 用户任务","textShapes":8}
+{"kind":"textbox","id":"sh/bu1k7alk","slide":2,"text":"01 / 用户任务","textPreview":"01 / 用户任务","textChars":9,"textLines":1,"bbox":[80,37,1120,36]}
+{"kind":"textbox","id":"sh/cvalgf25","slide":2,"text":"账户余额不等于可安排资金","textPreview":"账户余额不等于可安排资金","textChars":12,"textLines":1,"bbox":[80,98,1120,72]}
+{"kind":"textbox","id":"sh/dwj29k3a","slide":2,"text":"同一笔钱，同时承担不同截止与用途","textPreview":"同一笔钱，同时承担不同截止与用途","textChars":16,"textLines":1,"bbox":[80,198,1120,140]}
+{"kind":"textbox","id":"sh/yxs3ipkv","slide":2,"text":"房租、账单、生活准备金、应急和未来目标","textPreview":"房租、账单、生活准备金、应急和未来目标","textChars":19,"textLines":1,"bbox":[80,370,1100,66]}
+{"kind":"textbox","id":"sh/zyl4bu1g","slide":2,"text":"未到账工资不扩大今天的自主边界","textPreview":"未到账工资不扩大今天的自主边界","textChars":15,"textLines":1,"bbox":[80,443,1100,66]}
+{"kind":"textbox","id":"sh/0zulkz21","slide":2,"text":"Goal归属与产品本金可用时间必须分别核验","textPreview":"Goal归属与产品本金可用时间必须分别核验","textChars":21,"textLines":1,"bbox":[80,516,1100,66]}
+{"kind":"textbox","id":"sh/l03mdkjm","slide":2,"text":"SOURCE S01 · S02 · S08  |  全部模拟 · WORKING / NOT ACCEPTANCE","textPreview":"SOURCE S01 · S02 · S08  |  全部模拟 · WORKING / NOT ACCEPTANCE","textChars":58,"textLines":1,"bbox":[80,657,1040,26]}
+{"kind":"textbox","id":"sh/m1c3mpk7","slide":2,"text":"2 / 10","textPreview":"2 / 10","textChars":6,"textLines":1,"bbox":[1134,657,95,26]}
+{"kind":"notes","id":"nt/h53eg9","slide":2,"text":"需求来自产品设计；没有真人痛点比例或市场数据。\n来源：S01: ../sources.json（精确原件及SHA）\nS02: ../sources.json（精确原件及SHA）\nS08: ../sources.json（精确原件及SHA）\n本页全部为可编辑文字；流程是SOURCE_SCHEMATIC_NOT_NATIVE_SCREENSHOT。效果结果缺失，不含实验柱形。"}
+{"kind":"slide","id":"sl/nybk73","slide":3,"title":"02 / 自主包络","textShapes":8}
+{"kind":"textbox","id":"sh/q1s7ilwn","slide":3,"text":"02 / 自主包络","textPreview":"02 / 自主包络","textChars":9,"textLines":1,"bbox":[80,37,1120,36]}
+{"kind":"textbox","id":"sh/d436d0fe","slide":3,"text":"五集合共同约束自主动作","textPreview":"五集合共同约束自主动作","textChars":11,"textLines":1,"bbox":[80,98,1120,72]}
+{"kind":"textbox","id":"sh/c3upkvet","slide":3,"text":"财务安全 ∩ 用户授权 ∩ 流动性\n∩ 证据充分 ∩ 支持动作","textPreview":"财务安全 ∩ 用户授权 ∩ 流动性 | ∩ 证据充分 ∩ 支持动作","textChars":31,"textLines":2,"bbox":[80,198,1120,140]}
+{"kind":"textbox","id":"sh/z6lofqx4","slide":3,"text":"AUTO / ASK_ONCE / ADVISE_ONLY / BLOCKED由原引擎确定","textPreview":"AUTO / ASK_ONCE / ADVISE_ONLY / BLOCKED由原引擎确定","textChars":45,"textLines":1,"bbox":[80,370,1100,66]}
+{"kind":"textbox","id":"sh/e5c7m5wz","slide":3,"text":"safe_idle是财务容量，不是自动权限","textPreview":"safe_idle是财务容量，不是自动权限","textChars":21,"textLines":1,"bbox":[80,443,1100,66]}
+{"kind":"textbox","id":"sh/1836h0fa","slide":3,"text":"UNKNOWN和null保持未知；未来收入计入今日额度为0","textPreview":"UNKNOWN和null保持未知；未来收入计入今日额度为0","textChars":29,"textLines":1,"bbox":[80,516,1100,66]}
+{"kind":"textbox","id":"sh/07upovep","slide":3,"text":"SOURCE S01 · S07 · S12  |  全部模拟 · WORKING / NOT ACCEPTANCE","textPreview":"SOURCE S01 · S07 · S12  |  全部模拟 · WORKING / NOT ACCEPTANCE","textChars":58,"textLines":1,"bbox":[80,657,1040,26]}
+{"kind":"textbox","id":"sh/na5ojaxg","slide":3,"text":"3 / 10","textPreview":"3 / 10","textChars":6,"textLines":1,"bbox":[1134,657,95,26]}
+{"kind":"notes","id":"nt/nybk73","slide":3,"text":"公式为设计定义。未对全部现实场景给安全保证，不称性能或效果结果。\n来源：S01: ../sources.json（精确原件及SHA）\nS07: ../sources.json（精确原件及SHA）\nS12: ../sources.json（精确原件及SHA）\n本页全部为可编辑文字；流程是SOURCE_SCHEMATIC_NOT_NATIVE_SCREENSHOT。效果结果缺失，不含实验柱形。"}
+{"kind":"slide","id":"sl/k31yan","slide":4,"title":"03 / 实现机制","textShapes":8}
+{"kind":"textbox","id":"sh/vu5kvy10","slide":4,"text":"03 / 实现机制","textPreview":"03 / 实现机制","textChars":9,"textLines":1,"bbox":[80,37,1120,36]}
+{"kind":"textbox","id":"sh/gvelo32l","slide":4,"text":"从事实到原回执的闭环","textPreview":"从事实到原回执的闭环","textChars":10,"textLines":1,"bbox":[80,98,1120,72]}
+{"kind":"textbox","id":"sh/hwn2x8jq","slide":4,"text":"事实 → 原策略版本 → 边界\n→ 具体效果 → 银行 → 原回执","textPreview":"事实 → 原策略版本 → 边界 | → 具体效果 → 银行 → 原回执","textChars":33,"textLines":2,"bbox":[80,198,1120,140]}
+{"kind":"textbox","id":"sh/6pcjitk3","slide":4,"text":"候选与明确确认分开；具体确认绑定同effect hash","textPreview":"候选与明确确认分开；具体确认绑定同effect hash","textChars":28,"textLines":1,"bbox":[80,370,1100,66]}
+{"kind":"textbox","id":"sh/7qlkry1o","slide":4,"text":"首次银行受理重验当前源与权限","textPreview":"首次银行受理重验当前源与权限","textChars":14,"textLines":1,"bbox":[80,443,1100,66]}
+{"kind":"textbox","id":"sh/8ru1kj29","slide":4,"text":"UNKNOWN保原action/key，查询协调同一经济身份","textPreview":"UNKNOWN保原action/key，查询协调同一经济身份","textChars":30,"textLines":1,"bbox":[80,516,1100,66]}
+{"kind":"textbox","id":"sh/ts32toju","slide":4,"text":"SOURCE S10 · S21 · S22 · S23  |  全部模拟 · WORKING / NOT ACCEPTANCE","textPreview":"SOURCE S10 · S21 · S22 · S23  |  全部模拟 · WORKING / NOT ACCEPTANCE","textChars":64,"textLines":1,"bbox":[80,657,1040,26]}
+{"kind":"textbox","id":"sh/qlg3ud0n","slide":4,"text":"4 / 10","textPreview":"4 / 10","textChars":6,"textLines":1,"bbox":[1134,657,95,26]}
+{"kind":"notes","id":"nt/k31yan","slide":4,"text":"此流程是SOURCE_SCHEMATIC，不是原生截图。银行/app状态分层，不以HTTP200充结算。\n来源：S10: ../sources.json（精确原件及SHA）\nS21: ../sources.json（精确原件及SHA）\nS22: ../sources.json（精确原件及SHA）\nS23: ../sources.json（精确原件及SHA）\n本页全部为可编辑文字；流程是SOURCE_SCHEMATIC_NOT_NATIVE_SCREENSHOT。效果结果缺失，不含实验柱形。"}
+{"kind":"slide","id":"sl/uc6qt2","slide":5,"title":"04 / 当前功能","textShapes":8}
+{"kind":"textbox","id":"sh/7upkrux4","slide":5,"text":"04 / 当前功能","textPreview":"04 / 当前功能","textChars":9,"textLines":1,"bbox":[80,37,1120,36]}
+{"kind":"textbox","id":"sh/svy10zep","slide":5,"text":"策略、目标与资产是可调用模块","textPreview":"策略、目标与资产是可调用模块","textChars":14,"textLines":1,"bbox":[80,98,1120,72]}
+{"kind":"textbox","id":"sh/twr2t4fa","slide":5,"text":"用途归属不因资产放置自动改变","textPreview":"用途归属不因资产放置自动改变","textChars":14,"textLines":1,"bbox":[80,198,1120,140]}
+{"kind":"textbox","id":"sh/i5gjupwn","slide":5,"text":"不可变生命周期 / Goal双hash / 当前期联合规划","textPreview":"不可变生命周期 / Goal双hash / 当前期联合规划","textChars":29,"textLines":1,"bbox":[80,370,1100,66]}
+{"kind":"textbox","id":"sh/j6pknax8","slide":5,"text":"1098年度阶段点，原90日执行视图独立保留","textPreview":"1098年度阶段点，原90日执行视图独立保留","textChars":22,"textLines":1,"bbox":[80,443,1100,66]}
+{"kind":"textbox","id":"sh/k7y1wfet","slide":5,"text":"整组原确认与固定批；UNKNOWN后批停，原批重放不推进","textPreview":"整组原确认与固定批；UNKNOWN后批停，原批重放不推进","textChars":28,"textLines":1,"bbox":[80,516,1100,66]}
+{"kind":"textbox","id":"sh/5872pkfe","slide":5,"text":"SOURCE S10 · S13 · S16 · S17  |  全部模拟 · WORKING / NOT ACCEPTANCE","textPreview":"SOURCE S10 · S13 · S16 · S17  |  全部模拟 · WORKING / NOT ACCEPTANCE","textChars":64,"textLines":1,"bbox":[80,657,1040,26]}
+{"kind":"textbox","id":"sh/210j69w7","slide":5,"text":"5 / 10","textPreview":"5 / 10","textChars":6,"textLines":1,"bbox":[1134,657,95,26]}
+{"kind":"notes","id":"nt/uc6qt2","slide":5,"text":"1098=366日期×3阶段，绝不是天数。未证明全局多期最优/全部期限可买。\n来源：S10: ../sources.json（精确原件及SHA）\nS13: ../sources.json（精确原件及SHA）\nS16: ../sources.json（精确原件及SHA）\nS17: ../sources.json（精确原件及SHA）\n本页全部为可编辑文字；流程是SOURCE_SCHEMATIC_NOT_NATIVE_SCREENSHOT。效果结果缺失，不含实验柱形。"}
+{"kind":"slide","id":"sl/b73btn","slide":6,"title":"05 / 最小介入","textShapes":8}
+{"kind":"textbox","id":"sh/a9s7qlsf","slide":6,"text":"05 / 最小介入","textPreview":"05 / 最小介入","textChars":9,"textLines":1,"bbox":[80,37,1120,36]}
+{"kind":"textbox","id":"sh/xcj610b6","slide":6,"text":"一次一问，回答不是授权","textPreview":"一次一问，回答不是授权","textChars":11,"textLines":1,"bbox":[80,98,1120,72]}
+{"kind":"textbox","id":"sh/cbapsval","slide":6,"text":"只有当前动作语义分歧才询问","textPreview":"只有当前动作语义分歧才询问","textChars":13,"textLines":1,"bbox":[80,198,1120,140]}
+{"kind":"textbox","id":"sh/ze1o3atc","slide":6,"text":"最多128世界完整枚举，缺源世界保留分母","textPreview":"最多128世界完整枚举，缺源世界保留分母","textChars":20,"textLines":1,"bbox":[80,370,1100,66]}
+{"kind":"textbox","id":"sh/yds7u5sr","slide":6,"text":"持久revision与exact by-key原receipt恢复","textPreview":"持久revision与exact by-key原receipt恢复","textChars":33,"textLines":1,"bbox":[80,443,1100,66]}
+{"kind":"textbox","id":"sh/lg3650b2","slide":6,"text":"observe / deliver / ACK / answer / financial confirm各自独立","textPreview":"observe / deliver / ACK / answer / financial confirm各自独立","textChars":56,"textLines":1,"bbox":[80,516,1100,66]}
+{"kind":"textbox","id":"sh/kfapwfah","slide":6,"text":"SOURCE S18 · S19 · S20  |  全部模拟 · WORKING / NOT ACCEPTANCE","textPreview":"SOURCE S18 · S19 · S20  |  全部模拟 · WORKING / NOT ACCEPTANCE","textChars":58,"textLines":1,"bbox":[80,657,1040,26]}
+{"kind":"textbox","id":"sh/fihor6ts","slide":6,"text":"6 / 10","textPreview":"6 / 10","textChars":6,"textLines":1,"bbox":[1134,657,95,26]}
+{"kind":"notes","id":"nt/b73btn","slide":6,"text":"有限世界不是概率；当前proof与旧payload分开，legacy终态不复活。\n来源：S18: ../sources.json（精确原件及SHA）\nS19: ../sources.json（精确原件及SHA）\nS20: ../sources.json（精确原件及SHA）\n本页全部为可编辑文字；流程是SOURCE_SCHEMATIC_NOT_NATIVE_SCREENSHOT。效果结果缺失，不含实验柱形。"}
+{"kind":"slide","id":"sl/giekba","slide":7,"title":"06 / 演示计划","textShapes":8}
+{"kind":"textbox","id":"sh/lsnuhcj2","slide":7,"text":"06 / 演示计划","textPreview":"06 / 演示计划","textChars":9,"textLines":1,"bbox":[80,37,1120,36]}
+{"kind":"textbox","id":"sh/y5cb6x0b","slide":7,"text":"三条黄金链与四分钟镜头","textPreview":"三条黄金链与四分钟镜头","textChars":11,"textLines":1,"bbox":[80,98,1120,72]}
+{"kind":"textbox","id":"sh/z6lcf21w","slide":7,"text":"A 工资安排　B NL目标修改确认\nC 消费收缩与无损/有损恢复","textPreview":"A 工资安排　B NL目标修改确认 | C 消费收缩与无损/有损恢复","textChars":32,"textLines":2,"bbox":[80,198,1120,140]}
+{"kind":"textbox","id":"sh/8vetcrid","slide":7,"text":"主片计划240秒，当前仍NOT_RECORDED","textPreview":"主片计划240秒，当前仍NOT_RECORDED","textChars":24,"textLines":1,"bbox":[80,370,1100,66]}
+{"kind":"textbox","id":"sh/9wnulwjy","slide":7,"text":"B必须真实原话→修订→首次ACTIVE→后续新增收入分配","textPreview":"B必须真实原话→修订→首次ACTIVE→后续新增收入分配","textChars":28,"textLines":1,"bbox":[80,443,1100,66]}
+{"kind":"textbox","id":"sh/mtwbah0n","slide":7,"text":"历史三轮素材只历史；最终当前离线三链待取得","textPreview":"历史三轮素材只历史；最终当前离线三链待取得","textChars":21,"textLines":1,"bbox":[80,516,1100,66]}
+{"kind":"textbox","id":"sh/7u5cjm18","slide":7,"text":"SOURCE S27 · S03 · S04  |  全部模拟 · WORKING / NOT ACCEPTANCE","textPreview":"SOURCE S27 · S03 · S04  |  全部模拟 · WORKING / NOT ACCEPTANCE","textChars":58,"textLines":1,"bbox":[80,657,1040,26]}
+{"kind":"textbox","id":"sh/ozat0n29","slide":7,"text":"7 / 10","textPreview":"7 / 10","textChars":6,"textLines":1,"bbox":[1134,657,95,26]}
+{"kind":"notes","id":"nt/giekba","slide":7,"text":"无假画面/假视频，不将演示模板冒NL链。对应demo-240s-script.md。\n来源：S27: ../sources.json（精确原件及SHA）\nS03: ../sources.json（精确原件及SHA）\nS04: ../sources.json（精确原件及SHA）\n本页全部为可编辑文字；流程是SOURCE_SCHEMATIC_NOT_NATIVE_SCREENSHOT。效果结果缺失，不含实验柱形。"}
+{"kind":"slide","id":"sl/96xn3a","slide":8,"title":"07 / 证据","textShapes":8}
+{"kind":"textbox","id":"sh/1or2dsn6","slide":8,"text":"07 / 证据","textPreview":"07 / 证据","textChars":7,"textLines":1,"bbox":[80,37,1120,36]}
+{"kind":"textbox","id":"sh/e1gj2dov","slide":8,"text":"已有实证与缺失结果一起展示","textPreview":"已有实证与缺失结果一起展示","textChars":13,"textLines":1,"bbox":[80,98,1120,72]}
+{"kind":"textbox","id":"sh/f2pkbi5g","slide":8,"text":"定向链路通过 ≠ 产品效果证明","textPreview":"定向链路通过 ≠ 产品效果证明","textChars":15,"textLines":1,"bbox":[80,198,1120,140]}
+{"kind":"textbox","id":"sh/ori1876x","slide":8,"text":"固定付款原AUTO/ASK：真实2节点通过，相关scope稳定","textPreview":"固定付款原AUTO/ASK：真实2节点通过，相关scope稳定","textChars":31,"textLines":1,"bbox":[80,370,1100,66]}
+{"kind":"textbox","id":"sh/psr2hcni","slide":8,"text":"旧整组资产：诊断通过但相关source改变","textPreview":"旧整组资产：诊断通过但相关source改变","textChars":21,"textLines":1,"bbox":[80,443,1100,66]}
+{"kind":"textbox","id":"sh/2p0j6xor","slide":8,"text":"24×5 / 14指标 / 消融 / 真人研究 / 当前性能：待实验","textPreview":"24×5 / 14指标 / 消融 / 真人研究 / 当前性能：待实验","textChars":34,"textLines":1,"bbox":[80,516,1100,66]}
+{"kind":"textbox","id":"sh/3q9kf25c","slide":8,"text":"SOURCE E01 · E02 · E03 · E04 · S06 · S35  |  全部模拟 · WORKING / NOT ACCEPTANCE","textPreview":"SOURCE E01 · E02 · E03 · E04 · S06 · S35  |  全部模拟 · WORKING / NOT ACCEPTANCE","textChars":76,"textLines":1,"bbox":[80,657,1040,26]}
+{"kind":"textbox","id":"sh/4vy1w36t","slide":8,"text":"8 / 10","textPreview":"8 / 10","textChars":6,"textLines":1,"bbox":[1134,657,95,26]}
+{"kind":"notes","id":"nt/96xn3a","slide":8,"text":"不相加重叠测试、不写提升比例。原GLOBAL批FAILED。W0 n=1混合结果不是当前benchmark。\n来源：E01: ../sources.json（精确原件及SHA）\nE02: ../sources.json（精确原件及SHA）\nE03: ../sources.json（精确原件及SHA）\nE04: ../sources.json（精确原件及SHA）\nS06: ../sources.json（精确原件及SHA）\nS35: ../sources.json（精确原件及SHA）\n本页全部为可编辑文字；流程是SOURCE_SCHEMATIC_NOT_NATIVE_SCREENSHOT。效果结果缺失，不含实验柱形。"}
+{"kind":"slide","id":"sl/dvxizd","slide":9,"title":"08 / 安全与限制","textShapes":8}
+{"kind":"textbox","id":"sh/bqlwzip8","slide":9,"text":"08 / 安全与限制","textPreview":"08 / 安全与限制","textChars":10,"textLines":1,"bbox":[80,37,1120,36]}
+{"kind":"textbox","id":"sh/cbux8nqt","slide":9,"text":"可信的边界与具体失败","textPreview":"可信的边界与具体失败","textChars":10,"textLines":1,"bbox":[80,98,1120,72]}
+{"kind":"textbox","id":"sh/xc3e1s7e","slide":9,"text":"模拟资金，明确未知，保留原件","textPreview":"模拟资金，明确未知，保留原件","textChars":14,"textLines":1,"bbox":[80,198,1120,140]}
+{"kind":"textbox","id":"sh/ydcfax8j","slide":9,"text":"本地USER签名会话不是真人KYC或金融确认","textPreview":"本地USER签名会话不是真人KYC或金融确认","textChars":22,"textLines":1,"bbox":[80,370,1100,66]}
+{"kind":"textbox","id":"sh/zelg32p4","slide":9,"text":"原bank已SETTLED而app无receipt，仍保原键协调","textPreview":"原bank已SETTLED而app无receipt，仍保原键协调","textChars":32,"textLines":1,"bbox":[80,443,1100,66]}
+{"kind":"textbox","id":"sh/kfexc7qp","slide":9,"text":"安全扫描有106项告警；全量/渗透/手机实测均未完成","textPreview":"安全扫描有106项告警；全量/渗透/手机实测均未完成","textChars":26,"textLines":1,"bbox":[80,516,1100,66]}
+{"kind":"textbox","id":"sh/lgny5s7a","slide":9,"text":"SOURCE S25 · S26 · S33 · S34  |  全部模拟 · WORKING / NOT ACCEPTANCE","textPreview":"SOURCE S25 · S26 · S33 · S34  |  全部模拟 · WORKING / NOT ACCEPTANCE","textChars":64,"textLines":1,"bbox":[80,657,1040,26]}
+{"kind":"textbox","id":"sh/ehsfyt8f","slide":9,"text":"9 / 10","textPreview":"9 / 10","textChars":6,"textLines":1,"bbox":[1134,657,95,26]}
+{"kind":"notes","id":"nt/dvxizd","slide":9,"text":"Ruff S规则告警不等于全部可利用漏洞，也不声称安全审计完成。\n来源：S25: ../sources.json（精确原件及SHA）\nS26: ../sources.json（精确原件及SHA）\nS33: ../sources.json（精确原件及SHA）\nS34: ../sources.json（精确原件及SHA）\n本页全部为可编辑文字；流程是SOURCE_SCHEMATIC_NOT_NATIVE_SCREENSHOT。效果结果缺失，不含实验柱形。"}
+{"kind":"slide","id":"sl/f28gl9","slide":10,"title":"09 / 下一步","textShapes":8}
+{"kind":"textbox","id":"sh/8bytcfi9","slide":10,"text":"09 / 下一步","textPreview":"09 / 下一步","textChars":8,"textLines":1,"bbox":[80,37,1120,36]}
+{"kind":"textbox","id":"sh/7apc3aho","slide":10,"text":"以可复核试点验证工行价值","textPreview":"以可复核试点验证工行价值","textChars":12,"textLines":1,"bbox":[80,98,1120,72]}
+{"kind":"textbox","id":"sh/69gbap0j","slide":10,"text":"先验证理解、介入与复核成本\n再评估真实业务准入","textPreview":"先验证理解、介入与复核成本 | 再评估真实业务准入","textChars":23,"textLines":2,"bbox":[80,198,1120,140]}
+{"kind":"textbox","id":"sh/h0ru94z6","slide":10,"text":"同体系闭环为业务假设，无合作或真实收益证据","textPreview":"同体系闭环为业务假设，无合作或真实收益证据","textChars":21,"textLines":1,"bbox":[80,370,1100,66]}
+{"kind":"textbox","id":"sh/gzidgzyl","slide":10,"text":"最终两版软件验收 + 冻结实验 + 真人研究 + 当前录屏","textPreview":"最终两版软件验收 + 冻结实验 + 真人研究 + 当前录屏","textChars":29,"textLines":1,"bbox":[80,443,1100,66]}
+{"kind":"textbox","id":"sh/vypc7uh0","slide":10,"text":"正式21/92；FULL项PENDING；材料结构成品不充内容验收","textPreview":"正式21/92；FULL项PENDING；材料结构成品不充内容验收","textChars":33,"textLines":1,"bbox":[80,516,1100,66]}
+{"kind":"textbox","id":"sh/udgbep0f","slide":10,"text":"SOURCE S01 · S04 · S32 · S38  |  全部模拟 · WORKING / NOT ACCEPTANCE","textPreview":"SOURCE S01 · S04 · S32 · S38  |  全部模拟 · WORKING / NOT ACCEPTANCE","textChars":64,"textLines":1,"bbox":[80,657,1040,26]}
+{"kind":"textbox","id":"sh/x4nux0zm","slide":10,"text":"10 / 10","textPreview":"10 / 10","textChars":7,"textLines":1,"bbox":[1134,657,95,26]}
+{"kind":"notes","id":"nt/f28gl9","slide":10,"text":"可能问答和证据索引附defense.md，效果主张当前不放行。\n来源：S01: ../sources.json（精确原件及SHA）\nS04: ../sources.json（精确原件及SHA）\nS32: ../sources.json（精确原件及SHA）\nS38: ../sources.json（精确原件及SHA）\n本页全部为可编辑文字；流程是SOURCE_SCHEMATIC_NOT_NATIVE_SCREENSHOT。效果结果缺失，不含实验柱形。"}

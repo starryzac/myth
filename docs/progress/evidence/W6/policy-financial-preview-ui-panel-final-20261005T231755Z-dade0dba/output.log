@@ -1,0 +1,317 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+stderr | src/components/FinancialChangeImpactPanel.test.tsx > 无自动POST，手动366日期三阶段/精确负差额与没有授权展示
+RangeError: Maximum call stack size exceeded
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:53)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+An error occurred in the <FinancialChangeImpactPanel> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+stderr | src/components/FinancialChangeImpactPanel.test.tsx > UNKNOWN不产生零差额或候选曲线，展示原值与具体未证明原因
+RangeError: Maximum call stack size exceeded
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:53)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+An error occurred in the <FinancialChangeImpactPanel> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+stderr | src/components/FinancialChangeImpactPanel.test.tsx > 刷新失败隐藏先前成功/金额，不自动重试
+RangeError: Maximum call stack size exceeded
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:53)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+An error occurred in the <FinancialChangeImpactPanel> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+stderr | src/components/FinancialChangeImpactPanel.test.tsx > 其他族门禁止新POST，当前candidate/version变化隐藏旧预览
+RangeError: Maximum call stack size exceeded
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:53)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+    at money (F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web\src\components\FinancialChangeImpactPanel.tsx:9:87)
+An error occurred in the <FinancialChangeImpactPanel> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+ ❯ src/components/FinancialChangeImpactPanel.test.tsx (4 tests | 4 failed) 4266ms
+   × 无自动POST，手动366日期三阶段/精确负差额与没有授权展示 1125ms
+     → Unable to find an element with the text: 已计算条件曲线，候选尚未确认. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+   × UNKNOWN不产生零差额或候选曲线，展示原值与具体未证明原因 1034ms
+     → Unable to find an element with the text: UNKNOWN：候选财务影响尚未证明. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+   × 刷新失败隐藏先前成功/金额，不自动重试 1045ms
+     → Unable to find an element with the text: 已计算条件曲线，候选尚未确认. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+   × 其他族门禁止新POST，当前candidate/version变化隐藏旧预览 1060ms
+     → Unable to find an element with the text: 已计算条件曲线，候选尚未确认. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/FinancialChangeImpactPanel.test.tsx > 无自动POST，手动366日期三阶段/精确负差额与没有授权展示
+TestingLibraryElementError: Unable to find an element with the text: 已计算条件曲线，候选尚未确认. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/FinancialChangeImpactPanel.test.tsx:10:83
+      8| test('无自动POST，手动366日期三阶段/精确负差额与没有授权展示', async () => {
+      9|   const source = await financialPreviewFixture(); const calls = instal…
+     10|   fireEvent.click(screen.getByRole('button', { name: '计算财务修改影响' })); a…
+       |                                                                                   ^
+     11|   expect(within(screen.getByLabelText('查看修改影响日期')).getAllByRole('optio…
+     12|   fireEvent.change(screen.getByLabelText('查看修改影响日期'), { target: { valu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/components/FinancialChangeImpactPanel.test.tsx > UNKNOWN不产生零差额或候选曲线，展示原值与具体未证明原因
+TestingLibraryElementError: Unable to find an element with the text: UNKNOWN：候选财务影响尚未证明. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/FinancialChangeImpactPanel.test.tsx:19:16
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/components/FinancialChangeImpactPanel.test.tsx > 刷新失败隐藏先前成功/金额，不自动重试
+TestingLibraryElementError: Unable to find an element with the text: 已计算条件曲线，候选尚未确认. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/FinancialChangeImpactPanel.test.tsx:23:136
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/components/FinancialChangeImpactPanel.test.tsx > 其他族门禁止新POST，当前candidate/version变化隐藏旧预览
+TestingLibraryElementError: Unable to find an element with the text: 已计算条件曲线，候选尚未确认. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/FinancialChangeImpactPanel.test.tsx:27:143
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 4 unhandled errors during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+RangeError: Maximum call stack size exceeded
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:53
+      7| export type FinancialChangeImpactPanelProps = { policyId: string; user…
+      8| const phases = ['付款前', '付款后', '本金到账后'];
+      9| const money = (cents: number | null | undefined) => cents == null ? '未…
+       |                                                     ^
+     10| export default function FinancialChangeImpactPanel({ policyId, userId,…
+     11|   const binding = JSON.stringify([policyId, userId, expectedVersionId,…
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+
+This error originated in "src/components/FinancialChangeImpactPanel.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "无自动POST，手动366日期三阶段/精确负差额与没有授权展示". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+RangeError: Maximum call stack size exceeded
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:53
+      7| export type FinancialChangeImpactPanelProps = { policyId: string; user…
+      8| const phases = ['付款前', '付款后', '本金到账后'];
+      9| const money = (cents: number | null | undefined) => cents == null ? '未…
+       |                                                     ^
+     10| export default function FinancialChangeImpactPanel({ policyId, userId,…
+     11|   const binding = JSON.stringify([policyId, userId, expectedVersionId,…
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+
+This error originated in "src/components/FinancialChangeImpactPanel.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "UNKNOWN不产生零差额或候选曲线，展示原值与具体未证明原因". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+RangeError: Maximum call stack size exceeded
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:53
+      7| export type FinancialChangeImpactPanelProps = { policyId: string; user…
+      8| const phases = ['付款前', '付款后', '本金到账后'];
+      9| const money = (cents: number | null | undefined) => cents == null ? '未…
+       |                                                     ^
+     10| export default function FinancialChangeImpactPanel({ policyId, userId,…
+     11|   const binding = JSON.stringify([policyId, userId, expectedVersionId,…
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+
+This error originated in "src/components/FinancialChangeImpactPanel.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "刷新失败隐藏先前成功/金额，不自动重试". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+RangeError: Maximum call stack size exceeded
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:53
+      7| export type FinancialChangeImpactPanelProps = { policyId: string; user…
+      8| const phases = ['付款前', '付款后', '本金到账后'];
+      9| const money = (cents: number | null | undefined) => cents == null ? '未…
+       |                                                     ^
+     10| export default function FinancialChangeImpactPanel({ policyId, userId,…
+     11|   const binding = JSON.stringify([policyId, userId, expectedVersionId,…
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+ ❯ money src/components/FinancialChangeImpactPanel.tsx:9:87
+
+This error originated in "src/components/FinancialChangeImpactPanel.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "其他族门禁止新POST，当前candidate/version变化隐藏旧预览". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+     Errors  4 errors
+   Start at  07:17:57
+   Duration  6.88s (transform 350ms, setup 445ms, collect 517ms, tests 4.27s, environment 914ms, prepare 292ms)
+

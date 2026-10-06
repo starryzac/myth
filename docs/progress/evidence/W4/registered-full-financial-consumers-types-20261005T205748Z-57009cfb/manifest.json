@@ -1,0 +1,46 @@
+{
+  "run_id": "20261005T205748Z-57009cfb",
+  "task": "W4",
+  "label": "registered-full-financial-consumers-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/main.py",
+    "apps/api/app/services/execution.py",
+    "apps/api/app/services/execution_bank.py",
+    "apps/api/app/services/full_protection_projection.py",
+    "apps/api/app/services/full_policy_lifecycle.py",
+    "apps/api/app/services/full_policy_action_rechecks.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "mypy",
+    "--strict",
+    "--follow-imports=silent",
+    "apps/api/app/main.py",
+    "apps/api/app/services/execution.py",
+    "apps/api/app/services/execution_bank.py",
+    "apps/api/app/services/full_protection_projection.py",
+    "apps/api/app/services/full_policy_lifecycle.py",
+    "apps/api/app/services/full_policy_action_rechecks.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T20:57:49.749424+00:00",
+  "finished_at": "2026-10-05T20:57:51.949920+00:00",
+  "wall_seconds": 2.200496,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/web/src/pages/InterventionCenterPage.test.tsx",
+    "apps/web/src/pages/InterventionCenterPage.tsx"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "8af553b513d07df2c8128cac8347023aeaac205e4066b917684eddaa116ac3ba",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

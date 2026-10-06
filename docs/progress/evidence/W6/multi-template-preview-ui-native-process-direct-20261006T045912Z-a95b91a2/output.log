@@ -1,0 +1,1067 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/api/full-policy-change-multi.test.ts (22 tests | 3 failed) 1142ms
+   × projected纯域原完整结果可消费但不是金融实测 48ms
+     → 资金响应含无法精确显示的金额
+   ✓ asset纯域原完整结果可消费但不是金融实测 71ms
+   ✓ recovery纯域原完整结果可消费但不是金融实测 68ms
+   × goal纯域原完整结果可消费但不是金融实测 46ms
+     → 资金响应含无法精确显示的金额
+   ✓ 只从原current列表建立来源，实际owner错配留不可用 50ms
+   × 实际POST仅3原字段，无确认/clock/amount/effect/额外GET 74ms
+     → 资金响应含无法精确显示的金额
+   ✓ UNKNOWN原before可保留，null不能伪作零 88ms
+   ✓ owner不得借PROJECTED通过 38ms
+   ✓ epoch不得借PROJECTED通过 41ms
+   ✓ version不得借PROJECTED通过 43ms
+   ✓ source不得借PROJECTED通过 36ms
+   ✓ grant不得借PROJECTED通过 43ms
+   ✓ futureIncome不得借PROJECTED通过 38ms
+   ✓ hash不得借PROJECTED通过 38ms
+   ✓ point不得借PROJECTED通过 35ms
+   ✓ phase不得借PROJECTED通过 38ms
+   ✓ delta不得借PROJECTED通过 50ms
+   ✓ money不得借PROJECTED通过 44ms
+   ✓ count不得借PROJECTED通过 46ms
+   ✓ extraBody不得借PROJECTED通过 34ms
+   ✓ PARTIAL原目录/全仓/Goal分母不缩减，个产品差额真实一致 139ms
+   ✓ 编辑仅原配置字段/type；整数分与实际浮点quantile摘要 29ms
+ ❯ src/components/MultiTemplateFinancialPreviewPanel.test.tsx (3 tests | 2 failed) 2842ms
+   × 无自动请求，手动完整366日期3阶段/负差额/只读无confirm 1342ms
+     → Unable to find an element with the text: /PROJECTED · MVP保护差量/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"多模板财务修改预览"[39m
+      [33mclass[39m=[32m"card"[39m
+    [36m>[39m
+      [36m<h2>[39m
+        [0m多模板财务修改预览[0m
+      [36m</h2>[39m
+      [36m<p>[39m
+        [0m手动选择服务端当前策略并修改配置假设。没有策略确认或资金执行；未来收入计入当前现金和执行均为0。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m读取当前策略来源[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+      [36m<p>[39m
+        [0m当前用户 [0m
+        [0m00000000-0000-0000-0000-000000000384[0m
+        [0m · 当前live模拟期 [0m
+        [0m00000000-0000-0000-0000-000000000385[0m
+        [0m · 列表读取时刻 [0m
+        [0m2026-10-04T02:00:00Z[0m
+        [0m。OPEN状态及完整来源由每次POST服务端重新验证。[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m选择当前策略 [0m
+        [36m<select[39m
+          [33maria-label[39m=[32m"选择当前策略"[39m
+        [36m>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m""[39m
+          [36m>[39m
+            [0m请选择原策略[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"MVP_POLICY:00000000-0000-0000-0000-000000000028"[39m
+          [36m>[39m
+            [0mMVP_POLICY[0m
+            [0m · [0m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0mEmergencyBufferPolicy[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"FULL_POLICY:00000000-0000-0000-0000-000000000002"[39m
+          [36m>[39m
+            [0mFULL_POLICY[0m
+            [0m · [0m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0mAssetAuthorizationPolicy[0m
+          [36m</option>[39m
+        [36m</select>[39m
+      [36m</label>[39m
+      [36m<details>[39m
+        [36m<summary>[39m
+          [0m所有原策略与可用边界（[0m
+          [0m2[0m
+          [0m）[0m
+        [36m</summary>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000028[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000410[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+          [36m</li>[39m
+          [36m<li>[39m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000002[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000003[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原命令链[0m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</details>[39m
+      [36m<p>[39m
+        [0m原[0m
+        [0mEmergencyBufferPolicy[0m
+        [0m · 策略 [0m
+        [0m00000000-0000-0000-0000-000000000028[0m
+        [0m · 当前版本 [0m
+        [0m00000000-0000-0000-0000-000000000410[0m
+        [0m · [0m
+        [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m完整候选配置（仅当前模板字段）[0m
+        [36m<textarea[39m
+          [33maria-label[39m=[32m"完整候选配置（仅当前模板字段）"[39m
+          [33mclass[39m=[32m"readonly-raw"[39m
+          [33mrows[39m=[32m"14"[39m
+        [36m>[39m
+          [0m{"name":null,"valid_from":null,"valid_until":null,"type":"emergency_buffer","amount_cents":3000}[0m
+        [36m</textarea>[39m
+      [36m</label>[39m
+      [36m<p>[39m
+        [0m可编辑原配置字段，不能增加字段或更换type。金额为整数分，日期和额度只是候选规则，不是BANK事实；服务端执行严格Schema与真实引用核对。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m计算多模板只读影响[0m
+      [36m</button>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"多模板财务修改预览"[39m
+      [33mclass[39m=[32m"card"[39m
+    [36m>[39m
+      [36m<h2>[39m
+        [0m多模板财务修改预览[0m
+      [36m</h2>[39m
+      [36m<p>[39m
+        [0m手动选择服务端当前策略并修改配置假设。没有策略确认或资金执行；未来收入计入当前现金和执行均为0。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m读取当前策略来源[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+      [36m<p>[39m
+        [0m当前用户 [0m
+        [0m00000000-0000-0000-0000-000000000384[0m
+        [0m · 当前live模拟期 [0m
+        [0m00000000-0000-0000-0000-000000000385[0m
+        [0m · 列表读取时刻 [0m
+        [0m2026-10-04T02:00:00Z[0m
+        [0m。OPEN状态及完整来源由每次POST服务端重新验证。[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m选择当前策略 [0m
+        [36m<select[39m
+          [33maria-label[39m=[32m"选择当前策略"[39m
+        [36m>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m""[39m
+          [36m>[39m
+            [0m请选择原策略[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"MVP_POLICY:00000000-0000-0000-0000-000000000028"[39m
+          [36m>[39m
+            [0mMVP_POLICY[0m
+            [0m · [0m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0mEmergencyBufferPolicy[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"FULL_POLICY:00000000-0000-0000-0000-000000000002"[39m
+          [36m>[39m
+            [0mFULL_POLICY[0m
+            [0m · [0m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0mAssetAuthorizationPolicy[0m
+          [36m</option>[39m
+        [36m</select>[39m
+      [36m</label>[39m
+      [36m<details>[39m
+        [36m<summary>[39m
+          [0m所有原策略与可用边界（[0m
+          [0m2[0m
+          [0m）[0m
+        [36m</summary>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000028[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000410[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+          [36m</li>[39m
+          [36m<li>[39m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000002[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000003[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原命令链[0m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</details>[39m
+      [36m<p>[39m
+        [0m原[0m
+        [0mEmergencyBufferPolicy[0m
+        [0m · 策略 [0m
+        [0m00000000-0000-0000-0000-000000000028[0m
+        [0m · 当前版本 [0m
+        [0m00000000-0000-0000-0000-000000000410[0m
+        [0m · [0m
+        [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m完整候选配置（仅当前模板字段）[0m
+        [36m<textarea[39m
+          [33maria-label[39m=[32m"完整候选配置（仅当前模板字段）"[39m
+          [33mclass[39m=[32m"readonly-raw"[39m
+          [33mrows[39m=[32m"14"[39m
+        [36m>[39m
+          [0m{"name":null,"valid_from":null,"valid_until":null,"type":"emergency_buffer","amount_cents":3000}[0m
+        [36m</textarea>[39m
+      [36m</label>[39m
+      [36m<p>[39m
+        [0m可编辑原配置字段，不能增加字段或更换type。金额为整数分，日期和额度只是候选规则，不是BANK事实；服务端执行严格Schema与真实引用核对。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m计算多模板只读影响[0m
+      [36m</button>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   × 他族gate只阻POST、自身来源GET可达；编辑后旧预览废弃 1172ms
+     → Unable to find an element with the text: /PROJECTED · MVP保护差量/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"多模板财务修改预览"[39m
+      [33mclass[39m=[32m"card"[39m
+    [36m>[39m
+      [36m<h2>[39m
+        [0m多模板财务修改预览[0m
+      [36m</h2>[39m
+      [36m<p>[39m
+        [0m手动选择服务端当前策略并修改配置假设。没有策略确认或资金执行；未来收入计入当前现金和执行均为0。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m读取当前策略来源[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+      [36m<p>[39m
+        [0m当前用户 [0m
+        [0m00000000-0000-0000-0000-000000000384[0m
+        [0m · 当前live模拟期 [0m
+        [0m00000000-0000-0000-0000-000000000385[0m
+        [0m · 列表读取时刻 [0m
+        [0m2026-10-04T02:00:00Z[0m
+        [0m。OPEN状态及完整来源由每次POST服务端重新验证。[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m选择当前策略 [0m
+        [36m<select[39m
+          [33maria-label[39m=[32m"选择当前策略"[39m
+        [36m>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m""[39m
+          [36m>[39m
+            [0m请选择原策略[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"MVP_POLICY:00000000-0000-0000-0000-000000000028"[39m
+          [36m>[39m
+            [0mMVP_POLICY[0m
+            [0m · [0m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0mEmergencyBufferPolicy[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"FULL_POLICY:00000000-0000-0000-0000-000000000002"[39m
+          [36m>[39m
+            [0mFULL_POLICY[0m
+            [0m · [0m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0mAssetAuthorizationPolicy[0m
+          [36m</option>[39m
+        [36m</select>[39m
+      [36m</label>[39m
+      [36m<details>[39m
+        [36m<summary>[39m
+          [0m所有原策略与可用边界（[0m
+          [0m2[0m
+          [0m）[0m
+        [36m</summary>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000028[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000410[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+          [36m</li>[39m
+          [36m<li>[39m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000002[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000003[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原命令链[0m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</details>[39m
+      [36m<p>[39m
+        [0m原[0m
+        [0mEmergencyBufferPolicy[0m
+        [0m · 策略 [0m
+        [0m00000000-0000-0000-0000-000000000028[0m
+        [0m · 当前版本 [0m
+        [0m00000000-0000-0000-0000-000000000410[0m
+        [0m · [0m
+        [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m完整候选配置（仅当前模板字段）[0m
+        [36m<textarea[39m
+          [33maria-label[39m=[32m"完整候选配置（仅当前模板字段）"[39m
+          [33mclass[39m=[32m"readonly-raw"[39m
+          [33mrows[39m=[32m"14"[39m
+        [36m>[39m
+          [0m{"name":null,"valid_from":null,"valid_until":null,"type":"emergency_buffer","amount_cents":3000}[0m
+        [36m</textarea>[39m
+      [36m</label>[39m
+      [36m<p>[39m
+        [0m可编辑原配置字段，不能增加字段或更换type。金额为整数分，日期和额度只是候选规则，不是BANK事实；服务端执行严格Schema与真实引用核对。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m计算多模板只读影响[0m
+      [36m</button>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"多模板财务修改预览"[39m
+      [33mclass[39m=[32m"card"[39m
+    [36m>[39m
+      [36m<h2>[39m
+        [0m多模板财务修改预览[0m
+      [36m</h2>[39m
+      [36m<p>[39m
+        [0m手动选择服务端当前策略并修改配置假设。没有策略确认或资金执行；未来收入计入当前现金和执行均为0。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m读取当前策略来源[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+      [36m<p>[39m
+        [0m当前用户 [0m
+        [0m00000000-0000-0000-0000-000000000384[0m
+        [0m · 当前live模拟期 [0m
+        [0m00000000-0000-0000-0000-000000000385[0m
+        [0m · 列表读取时刻 [0m
+        [0m2026-10-04T02:00:00Z[0m
+        [0m。OPEN状态及完整来源由每次POST服务端重新验证。[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m选择当前策略 [0m
+        [36m<select[39m
+          [33maria-label[39m=[32m"选择当前策略"[39m
+        [36m>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m""[39m
+          [36m>[39m
+            [0m请选择原策略[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"MVP_POLICY:00000000-0000-0000-0000-000000000028"[39m
+          [36m>[39m
+            [0mMVP_POLICY[0m
+            [0m · [0m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0mEmergencyBufferPolicy[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"FULL_POLICY:00000000-0000-0000-0000-000000000002"[39m
+          [36m>[39m
+            [0mFULL_POLICY[0m
+            [0m · [0m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0mAssetAuthorizationPolicy[0m
+          [36m</option>[39m
+        [36m</select>[39m
+      [36m</label>[39m
+      [36m<details>[39m
+        [36m<summary>[39m
+          [0m所有原策略与可用边界（[0m
+          [0m2[0m
+          [0m）[0m
+        [36m</summary>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000028[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000410[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+          [36m</li>[39m
+          [36m<li>[39m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000002[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000003[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原命令链[0m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</details>[39m
+      [36m<p>[39m
+        [0m原[0m
+        [0mEmergencyBufferPolicy[0m
+        [0m · 策略 [0m
+        [0m00000000-0000-0000-0000-000000000028[0m
+        [0m · 当前版本 [0m
+        [0m00000000-0000-0000-0000-000000000410[0m
+        [0m · [0m
+        [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m完整候选配置（仅当前模板字段）[0m
+        [36m<textarea[39m
+          [33maria-label[39m=[32m"完整候选配置（仅当前模板字段）"[39m
+          [33mclass[39m=[32m"readonly-raw"[39m
+          [33mrows[39m=[32m"14"[39m
+        [36m>[39m
+          [0m{"name":null,"valid_from":null,"valid_until":null,"type":"emergency_buffer","amount_cents":3000}[0m
+        [36m</textarea>[39m
+      [36m</label>[39m
+      [36m<p>[39m
+        [0m可编辑原配置字段，不能增加字段或更换type。金额为整数分，日期和额度只是候选规则，不是BANK事实；服务端执行严格Schema与真实引用核对。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m计算多模板只读影响[0m
+      [36m</button>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   ✓ UNKNOWN保留原1098与真实原因/null，无自动重试  327ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/api/full-policy-change-multi.test.ts > projected纯域原完整结果可消费但不是金融实测
+ FAIL  src/api/full-policy-change-multi.test.ts > goal纯域原完整结果可消费但不是金融实测
+Error: 资金响应含无法精确显示的金额
+ ❯ assertMoneyFields src/features/money.ts:21:13
+     19|   for (const [key, child] of Object.entries(value)) {
+     20|     if (key.endsWith('_cents') && child !== null && !Number.isSafeInte…
+     21|       throw new Error('资金响应含无法精确显示的金额');
+       |             ^
+     22|     }
+     23|     if (key.includes('_cents_by_') && typeof child === 'object' && chi…
+ ❯ assertMoneyFields src/features/money.ts:30:5
+ ❯ parseMultiPreview src/api/full-policy-change-multi.ts:117:3
+ ❯ src/api/full-policy-change-multi.test.ts:7:87
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/api/full-policy-change-multi.test.ts > 实际POST仅3原字段，无确认/clock/amount/effect/额外GET
+Error: 资金响应含无法精确显示的金额
+ ❯ assertMoneyFields src/features/money.ts:21:13
+     19|   for (const [key, child] of Object.entries(value)) {
+     20|     if (key.endsWith('_cents') && child !== null && !Number.isSafeInte…
+     21|       throw new Error('资金响应含无法精确显示的金额');
+       |             ^
+     22|     }
+     23|     if (key.includes('_cents_by_') && typeof child === 'object' && chi…
+ ❯ assertMoneyFields src/features/money.ts:30:5
+ ❯ parseMultiPreview src/api/full-policy-change-multi.ts:117:3
+ ❯ previewMultiTemplate src/api/full-policy-change-multi.ts:149:10
+ ❯ src/api/full-policy-change-multi.test.ts:21:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/components/MultiTemplateFinancialPreviewPanel.test.tsx > 无自动请求，手动完整366日期3阶段/负差额/只读无confirm
+TestingLibraryElementError: Unable to find an element with the text: /PROJECTED · MVP保护差量/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"多模板财务修改预览"[39m
+      [33mclass[39m=[32m"card"[39m
+    [36m>[39m
+      [36m<h2>[39m
+        [0m多模板财务修改预览[0m
+      [36m</h2>[39m
+      [36m<p>[39m
+        [0m手动选择服务端当前策略并修改配置假设。没有策略确认或资金执行；未来收入计入当前现金和执行均为0。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m读取当前策略来源[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+      [36m<p>[39m
+        [0m当前用户 [0m
+        [0m00000000-0000-0000-0000-000000000384[0m
+        [0m · 当前live模拟期 [0m
+        [0m00000000-0000-0000-0000-000000000385[0m
+        [0m · 列表读取时刻 [0m
+        [0m2026-10-04T02:00:00Z[0m
+        [0m。OPEN状态及完整来源由每次POST服务端重新验证。[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m选择当前策略 [0m
+        [36m<select[39m
+          [33maria-label[39m=[32m"选择当前策略"[39m
+        [36m>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m""[39m
+          [36m>[39m
+            [0m请选择原策略[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"MVP_POLICY:00000000-0000-0000-0000-000000000028"[39m
+          [36m>[39m
+            [0mMVP_POLICY[0m
+            [0m · [0m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0mEmergencyBufferPolicy[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"FULL_POLICY:00000000-0000-0000-0000-000000000002"[39m
+          [36m>[39m
+            [0mFULL_POLICY[0m
+            [0m · [0m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0mAssetAuthorizationPolicy[0m
+          [36m</option>[39m
+        [36m</select>[39m
+      [36m</label>[39m
+      [36m<details>[39m
+        [36m<summary>[39m
+          [0m所有原策略与可用边界（[0m
+          [0m2[0m
+          [0m）[0m
+        [36m</summary>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000028[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000410[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+          [36m</li>[39m
+          [36m<li>[39m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000002[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000003[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原命令链[0m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</details>[39m
+      [36m<p>[39m
+        [0m原[0m
+        [0mEmergencyBufferPolicy[0m
+        [0m · 策略 [0m
+        [0m00000000-0000-0000-0000-000000000028[0m
+        [0m · 当前版本 [0m
+        [0m00000000-0000-0000-0000-000000000410[0m
+        [0m · [0m
+        [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m完整候选配置（仅当前模板字段）[0m
+        [36m<textarea[39m
+          [33maria-label[39m=[32m"完整候选配置（仅当前模板字段）"[39m
+          [33mclass[39m=[32m"readonly-raw"[39m
+          [33mrows[39m=[32m"14"[39m
+        [36m>[39m
+          [0m{"name":null,"valid_from":null,"valid_until":null,"type":"emergency_buffer","amount_cents":3000}[0m
+        [36m</textarea>[39m
+      [36m</label>[39m
+      [36m<p>[39m
+        [0m可编辑原配置字段，不能增加字段或更换type。金额为整数分，日期和额度只是候选规则，不是BANK事实；服务端执行严格Schema与真实引用核对。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m计算多模板只读影响[0m
+      [36m</button>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"多模板财务修改预览"[39m
+      [33mclass[39m=[32m"card"[39m
+    [36m>[39m
+      [36m<h2>[39m
+        [0m多模板财务修改预览[0m
+      [36m</h2>[39m
+      [36m<p>[39m
+        [0m手动选择服务端当前策略并修改配置假设。没有策略确认或资金执行；未来收入计入当前现金和执行均为0。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m读取当前策略来源[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+      [36m<p>[39m
+        [0m当前用户 [0m
+        [0m00000000-0000-0000-0000-000000000384[0m
+        [0m · 当前live模拟期 [0m
+        [0m00000000-0000-0000-0000-000000000385[0m
+        [0m · 列表读取时刻 [0m
+        [0m2026-10-04T02:00:00Z[0m
+        [0m。OPEN状态及完整来源由每次POST服务端重新验证。[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m选择当前策略 [0m
+        [36m<select[39m
+          [33maria-label[39m=[32m"选择当前策略"[39m
+        [36m>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m""[39m
+          [36m>[39m
+            [0m请选择原策略[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"MVP_POLICY:00000000-0000-0000-0000-000000000028"[39m
+          [36m>[39m
+            [0mMVP_POLICY[0m
+            [0m · [0m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0mEmergencyBufferPolicy[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"FULL_POLICY:00000000-0000-0000-0000-000000000002"[39m
+          [36m>[39m
+            [0mFULL_POLICY[0m
+            [0m · [0m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0mAssetAuthorizationPolicy[0m
+          [36m</option>[39m
+        [36m</select>[39m
+      [36m</label>[39m
+      [36m<details>[39m
+        [36m<summary>[39m
+          [0m所有原策略与可用边界（[0m
+          [0m2[0m
+          [0m）[0m
+        [36m</summary>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000028[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000410[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+          [36m</li>[39m
+          [36m<li>[39m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000002[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000003[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原命令链[0m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</details>[39m
+      [36m<p>[39m
+        [0m原[0m
+        [0mEmergencyBufferPolicy[0m
+        [0m · 策略 [0m
+        [0m00000000-0000-0000-0000-000000000028[0m
+        [0m · 当前版本 [0m
+        [0m00000000-0000-0000-0000-000000000410[0m
+        [0m · [0m
+        [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m完整候选配置（仅当前模板字段）[0m
+        [36m<textarea[39m
+          [33maria-label[39m=[32m"完整候选配置（仅当前模板字段）"[39m
+          [33mclass[39m=[32m"readonly-raw"[39m
+          [33mrows[39m=[32m"14"[39m
+        [36m>[39m
+          [0m{"name":null,"valid_from":null,"valid_until":null,"type":"emergency_buffer","amount_cents":3000}[0m
+        [36m</textarea>[39m
+      [36m</label>[39m
+      [36m<p>[39m
+        [0m可编辑原配置字段，不能增加字段或更换type。金额为整数分，日期和额度只是候选规则，不是BANK事实；服务端执行严格Schema与真实引用核对。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m计算多模板只读影响[0m
+      [36m</button>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/MultiTemplateFinancialPreviewPanel.test.tsx:11:84
+      9| test('无自动请求，手动完整366日期3阶段/负差额/只读无confirm', async () => {
+     10|   const calls = http(); render(<MultiTemplateFinancialPreviewPanel />)…
+     11|   fireEvent.click(screen.getByRole('button', { name: '计算多模板只读影响' })); …
+       |                                                                                    ^
+     12|   expect(within(screen.getByLabelText('选择预览日期')).getAllByRole('option'…
+     13|   fireEvent.change(screen.getByLabelText('选择预览日期'), { target: { value:…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/components/MultiTemplateFinancialPreviewPanel.test.tsx > 他族gate只阻POST、自身来源GET可达；编辑后旧预览废弃
+TestingLibraryElementError: Unable to find an element with the text: /PROJECTED · MVP保护差量/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"多模板财务修改预览"[39m
+      [33mclass[39m=[32m"card"[39m
+    [36m>[39m
+      [36m<h2>[39m
+        [0m多模板财务修改预览[0m
+      [36m</h2>[39m
+      [36m<p>[39m
+        [0m手动选择服务端当前策略并修改配置假设。没有策略确认或资金执行；未来收入计入当前现金和执行均为0。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m读取当前策略来源[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+      [36m<p>[39m
+        [0m当前用户 [0m
+        [0m00000000-0000-0000-0000-000000000384[0m
+        [0m · 当前live模拟期 [0m
+        [0m00000000-0000-0000-0000-000000000385[0m
+        [0m · 列表读取时刻 [0m
+        [0m2026-10-04T02:00:00Z[0m
+        [0m。OPEN状态及完整来源由每次POST服务端重新验证。[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m选择当前策略 [0m
+        [36m<select[39m
+          [33maria-label[39m=[32m"选择当前策略"[39m
+        [36m>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m""[39m
+          [36m>[39m
+            [0m请选择原策略[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"MVP_POLICY:00000000-0000-0000-0000-000000000028"[39m
+          [36m>[39m
+            [0mMVP_POLICY[0m
+            [0m · [0m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0mEmergencyBufferPolicy[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"FULL_POLICY:00000000-0000-0000-0000-000000000002"[39m
+          [36m>[39m
+            [0mFULL_POLICY[0m
+            [0m · [0m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0mAssetAuthorizationPolicy[0m
+          [36m</option>[39m
+        [36m</select>[39m
+      [36m</label>[39m
+      [36m<details>[39m
+        [36m<summary>[39m
+          [0m所有原策略与可用边界（[0m
+          [0m2[0m
+          [0m）[0m
+        [36m</summary>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000028[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000410[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+          [36m</li>[39m
+          [36m<li>[39m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000002[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000003[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原命令链[0m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</details>[39m
+      [36m<p>[39m
+        [0m原[0m
+        [0mEmergencyBufferPolicy[0m
+        [0m · 策略 [0m
+        [0m00000000-0000-0000-0000-000000000028[0m
+        [0m · 当前版本 [0m
+        [0m00000000-0000-0000-0000-000000000410[0m
+        [0m · [0m
+        [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m完整候选配置（仅当前模板字段）[0m
+        [36m<textarea[39m
+          [33maria-label[39m=[32m"完整候选配置（仅当前模板字段）"[39m
+          [33mclass[39m=[32m"readonly-raw"[39m
+          [33mrows[39m=[32m"14"[39m
+        [36m>[39m
+          [0m{"name":null,"valid_from":null,"valid_until":null,"type":"emergency_buffer","amount_cents":3000}[0m
+        [36m</textarea>[39m
+      [36m</label>[39m
+      [36m<p>[39m
+        [0m可编辑原配置字段，不能增加字段或更换type。金额为整数分，日期和额度只是候选规则，不是BANK事实；服务端执行严格Schema与真实引用核对。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m计算多模板只读影响[0m
+      [36m</button>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"多模板财务修改预览"[39m
+      [33mclass[39m=[32m"card"[39m
+    [36m>[39m
+      [36m<h2>[39m
+        [0m多模板财务修改预览[0m
+      [36m</h2>[39m
+      [36m<p>[39m
+        [0m手动选择服务端当前策略并修改配置假设。没有策略确认或资金执行；未来收入计入当前现金和执行均为0。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m读取当前策略来源[0m
+      [36m</button>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m资金响应含无法精确显示的金额[0m
+      [36m</p>[39m
+      [36m<p>[39m
+        [0m当前用户 [0m
+        [0m00000000-0000-0000-0000-000000000384[0m
+        [0m · 当前live模拟期 [0m
+        [0m00000000-0000-0000-0000-000000000385[0m
+        [0m · 列表读取时刻 [0m
+        [0m2026-10-04T02:00:00Z[0m
+        [0m。OPEN状态及完整来源由每次POST服务端重新验证。[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m选择当前策略 [0m
+        [36m<select[39m
+          [33maria-label[39m=[32m"选择当前策略"[39m
+        [36m>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m""[39m
+          [36m>[39m
+            [0m请选择原策略[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"MVP_POLICY:00000000-0000-0000-0000-000000000028"[39m
+          [36m>[39m
+            [0mMVP_POLICY[0m
+            [0m · [0m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0mEmergencyBufferPolicy[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"FULL_POLICY:00000000-0000-0000-0000-000000000002"[39m
+          [36m>[39m
+            [0mFULL_POLICY[0m
+            [0m · [0m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0mAssetAuthorizationPolicy[0m
+          [36m</option>[39m
+        [36m</select>[39m
+      [36m</label>[39m
+      [36m<details>[39m
+        [36m<summary>[39m
+          [0m所有原策略与可用边界（[0m
+          [0m2[0m
+          [0m）[0m
+        [36m</summary>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [0m纯域projected夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000028[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000410[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+          [36m</li>[39m
+          [36m<li>[39m
+            [0m纯域asset夹具[0m
+            [0m · [0m
+            [0m00000000-0000-0000-0000-000000000002[0m
+            [0m · 版本 [0m
+            [0m00000000-0000-0000-0000-000000000003[0m
+            [0m：[0m
+            [0m当前来源；服务器将再次验证OPEN期和原命令链[0m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</details>[39m
+      [36m<p>[39m
+        [0m原[0m
+        [0mEmergencyBufferPolicy[0m
+        [0m · 策略 [0m
+        [0m00000000-0000-0000-0000-000000000028[0m
+        [0m · 当前版本 [0m
+        [0m00000000-0000-0000-0000-000000000410[0m
+        [0m · [0m
+        [0m当前来源；服务器将再次验证OPEN期和原确认链[0m
+      [36m</p>[39m
+      [36m<label>[39m
+        [0m完整候选配置（仅当前模板字段）[0m
+        [36m<textarea[39m
+          [33maria-label[39m=[32m"完整候选配置（仅当前模板字段）"[39m
+          [33mclass[39m=[32m"readonly-raw"[39m
+          [33mrows[39m=[32m"14"[39m
+        [36m>[39m
+          [0m{"name":null,"valid_from":null,"valid_until":null,"type":"emergency_buffer","amount_cents":3000}[0m
+        [36m</textarea>[39m
+      [36m</label>[39m
+      [36m<p>[39m
+        [0m可编辑原配置字段，不能增加字段或更换type。金额为整数分，日期和额度只是候选规则，不是BANK事实；服务端执行严格Schema与真实引用核对。[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0m计算多模板只读影响[0m
+      [36m</button>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/MultiTemplateFinancialPreviewPanel.test.tsx:18:139
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  5 failed | 20 passed (25)
+   Start at  12:59:15
+   Duration  6.15s (transform 757ms, setup 1.05s, collect 1.89s, tests 3.98s, environment 2.10s, prepare 644ms)
+

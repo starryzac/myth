@@ -1,0 +1,34 @@
+{
+  "run_id": "20261006T023839Z-4d644cee",
+  "task": "W7",
+  "label": "full-existing-mvp-number-direct",
+  "status": "FAILED",
+  "scope": [
+    "scripts/full_experiment_claims.py",
+    "scripts/tests/test_full_experiment_claims.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "scripts/tests/test_full_experiment_claims.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T02:38:40.971981+00:00",
+  "finished_at": "2026-10-06T02:38:43.778801+00:00",
+  "wall_seconds": 2.80682,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "606bf9da5314fd3269306fa6933911a6da27e263d86dac0ae4e8ddefef7bf945",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

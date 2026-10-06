@@ -1,0 +1,7 @@
+BusyBox v1.37.0 (2026-01-10 15:38:28 UTC) multi-call binary.
+
+Usage: nslookup [-type=QUERY_TYPE] [-debug] HOST [DNS_SERVER]
+
+Query DNS about HOST
+
+QUERY_TYPE: soa,ns,a,aaaa,cname,mx,txt,ptr,srv,any

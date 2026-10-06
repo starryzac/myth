@@ -1,0 +1,4 @@
+apps\api\app\tests\test_full_policy_reviewed_change.py:118: error: Argument "reviewed_scope" to "ConfirmReviewedChangeRequest" has incompatible type "str"; expected "Literal['MVP_PROTECTION_WITH_UNCHANGED_FULL_BURDENS', 'INDIVIDUAL_PRODUCT_CAPACITY', 'WHOLE_POSITION_RECOVERY_CANDIDATES', 'CURRENT_JOINT_GOAL_ALLOCATION']"  [arg-type]
+apps\api\app\tests\test_full_policy_reviewed_change.py:443: error: Argument 1 to "_readback" has incompatible type "None"; expected "Engine"  [arg-type]
+apps\api\app\tests\test_full_policy_reviewed_change.py:452: error: Unused "type: ignore" comment  [unused-ignore]
+Found 3 errors in 1 file (checked 5 source files)

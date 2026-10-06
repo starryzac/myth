@@ -1,0 +1,2 @@
+apps\api\app\tests\test_fixed_purchase_clock.py:84: error: Argument 3 to "verify_audit_chain" has incompatible type "datetime"; expected "UUID | None"  [arg-type]
+Found 1 error in 1 file (checked 198 source files)

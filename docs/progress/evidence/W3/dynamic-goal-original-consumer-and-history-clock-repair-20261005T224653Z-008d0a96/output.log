@@ -1,0 +1,63 @@
+...F
+================================== FAILURES ===================================
+_____ test_new_consumer_never_accepts_only_numeric_or_stale_proof[effect] _____
+
+change = 'effect'
+
+    @pytest.mark.parametrize("change", ["cap", "clock", "effect"])
+    def test_new_consumer_never_accepts_only_numeric_or_stale_proof(change: str) -> None:
+        data = fixture()
+        effect, proof = build_full_dynamic_goal_effect(data, UUID(int=200))
+        context = data.context
+        if change == "cap":
+            proof = proof.model_copy(update={"dynamic_cap_cents": 200000})
+        elif change == "clock":
+            context = context.model_copy(
+                update={
+                    "snapshot": context.snapshot.model_copy(
+                        update={"as_of": context.snapshot.as_of + timedelta(seconds=1)}
+                    )
+                }
+            )
+        else:
+            effect = effect.model_copy(update={"amount_cents": 160000})
+>       assert revalidate_execution(effect, context, full_dynamic_goal_proof=proof).status == "BLOCKED"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_dynamic_goal_pipeline_seams.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+effect = ExecutionEffect(simulation=True, operation_id=UUID('00000000-0000-0000-0000-0000000000c8'), user_id=UUID('00000000-000... 12, 0, tzinfo=datetime.timezone.utc), expires_at=datetime.datetime(2026, 10, 5, 12, 15, tzinfo=datetime.timezone.utc))
+context = ExecutionContext(user_id=UUID('00000000-0000-0000-0000-000000000001'), snapshot=BoundarySnapshot(as_of=datetime.dateti...irmation=False, reserved_cash_by_account={}, reserved_goal_cash_by_goal={}, reserved_position_ids=[], source_issues=[])
+confirmation = None
+full_dynamic_goal_proof = FullDynamicGoalProof(protocol='full-dynamic-goal-execution-v1', simulation=True, bank_authority=False, preserves_origi...aaaaaaaaaaaaaaa')], protection_policies=[], protection_inventory_complete=True, protection_issues=[], own_effect=None))
+
+    def revalidate_execution(
+        effect: ExecutionEffect,
+        context: ExecutionContext,
+        *,
+        confirmation: ConfirmationGrant | None = None,
+        full_dynamic_goal_proof: FullDynamicGoalProof | None = None,
+    ) -> ExecutionValidation:
+        """Use context.snapshot.as_of as the supplied execution clock, never system time."""
+>       effect = ExecutionEffect.model_validate(effect.model_dump(warnings=False))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ExecutionEffect
+E         Value error, Cash funding must equal the complete economic amount [type=value_error, input_value={'simulation': True, 'ope...=datetime.timezone.utc)}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/value_error
+
+apps\api\app\domain\execution.py:58: ValidationError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_dynamic_goal_pipeline_seams.py::test_new_consumer_never_accepts_only_numeric_or_stale_proof[effect]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 3 passed, 2 warnings in 7.41s

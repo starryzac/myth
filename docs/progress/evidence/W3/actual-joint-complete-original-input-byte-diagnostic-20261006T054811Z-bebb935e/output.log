@@ -1,0 +1,115 @@
+F
+================================== FAILURES ===================================
+_ test_actual_joint_different_amount_signed_whole_consent_fixed_key_unknown_no_advance _
+
+goal_client = (<starlette.testclient.TestClient object at 0x000002B926E34E30>, Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_d8cfd715556a4a1b86086ec37bf2b69e))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002B926E360C0>
+
+    def test_actual_joint_different_amount_signed_whole_consent_fixed_key_unknown_no_advance(
+        goal_client: tuple[TestClient, Engine], monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        client, engine = goal_client
+        require_original_joint_pipeline_hooks()
+        with Session(engine) as read:
+            epoch = current_audit_epoch(read, DEMO_USER_ID)
+            goal_account = read.scalar(select(Account).where(Account.account_type == "GOAL"))
+            cash = read.scalar(
+                select(Account).where(Account.account_type == "CASH").order_by(Account.id)
+            )
+            assert epoch is not None and goal_account is not None and cash is not None
+            epoch_id, account_id, cash_id = epoch.id, goal_account.id, cash.id
+        goals = [_actual_goal(client, engine, epoch_id, number, account_id) for number in (1, 2)]
+        income = ingest_external_fact(
+            engine,
+            DEMO_USER_ID,
+            ExternalFactRequest(
+                user_id=DEMO_USER_ID,
+                account_id=cash_id,
+                kind="INCOME",
+                amount_cents=600000,
+                occurred_at=NOW,
+                external_ref="joint-actual-new-income",
+                idempotency_key="joint-actual-new-income",
+                counterparty_ref="payroll",
+            ),
+            NOW,
+        )
+        assert income.bank_status == "SETTLED" and income.projection_status == "PROJECTED"
+        config: dict[str, Any] = {
+            "type": "goal_allocation",
+            "goal_ids": goals,
+            "max_single_allocation_cents": 30000,
+        }
+        scope = client.post(
+            "/api/v1/full-policies/confirm",
+            json={
+                "template_name": "GoalAllocationPolicy",
+                "configuration": config,
+                "reviewed_hash": configuration_hash(
+                    canonical_candidate("GoalAllocationPolicy", config)
+                ),
+                "accepted": True,
+                "reason": "完整两目标联合上限三万元分的明确规划范围",
+                "idempotency_key": "joint-actual-scope",
+            },
+        )
+        assert scope.status_code == 200, scope.text
+        original = scope.json()
+        body = {
+            "full_policy_id": original["policy_id"],
+            "expected_full_policy_version_id": original["version_id"],
+            "expected_epoch_id": str(epoch_id),
+            "idempotency_key": "joint-actual-parent",
+        }
+        before = physical_snapshot(engine)
+        preview = client.post(URL + "/preview", json=body)
+        assert preview.status_code == 200, preview.text
+        value = preview.json()
+>       assert value["status"] == "READY_TO_REVIEW", preview.text
+E       AssertionError: {"simulation":true,"bank_authority":false,"grants_authority":false,"preview_only":true,"user_id":"271a9827-f82a-5be6-9e0a-50f721029fb0","epoch_id":"2662cd8f-600c-4785-b0ae-e04a119b32dc","as_of":"2026-10-04T01:00:00Z","request":{"full_policy_id":"a6b3a07e-7b09-51a7-b431-998db5569c89","expected_full_policy_version_id":"88792843-52cd-4ed9-a685-1b0a58513358","expected_epoch_id":"2662cd8f-600c-4785-b0ae-e04a119b32dc","idempotency_key":"joint-actual-parent"},"status":"UNKNOWN","registered_goal_ids":["dc489706-9df2-5c24-8065-76e591b00255","e869919a-7620-5f28-a94a-6052a42a1d30"],"unresolved_original_action_ids":[],"plan":null,"input_hash":"ade8fca55f7da73b3652162f172f284d77b5206837e5f8fc9bf348c1681e3094","reasons":["JOINT_CAPTURE_INCOMPLETE_OR_CAPACITY_EXCEEDED"],"limitations":["Requires durable identities and original typed hooks; preview performs no writes.","Complete monthly scope of 2-8 goals; weekly and multi-period execution unavailable.","Bank accepts only revalidated fixed amounts/sources; UNKNOWN stops the next child."]}
+E       assert 'UNKNOWN' == 'READY_TO_REVIEW'
+E         
+E         - READY_TO_REVIEW
+E         + UNKNOWN
+
+apps\api\app\tests\test_full_joint_goal_execution_integration.py:168: AssertionError
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "71a54ad3-f496-4da6-ae79-119da30ce76c", "method": "POST", "status": 200, "duration_ms": 859.0}
+{"event": "http_request", "request_id": "dc4a4e90-85bd-47d8-a2e3-b34400f8dc8a", "method": "POST", "status": 200, "duration_ms": 110.0}
+{"event": "http_request", "request_id": "e60e387e-cedf-42bc-bf45-82f9fbd4caa3", "method": "POST", "status": 200, "duration_ms": 781.0}
+{"event": "http_request", "request_id": "887b01f1-c6c7-463f-8fe7-45f68a4fc86b", "method": "POST", "status": 200, "duration_ms": 422.0}
+{"event": "http_request", "request_id": "ef8763b6-7ec6-462f-8139-558b1f6114d5", "method": "POST", "status": 200, "duration_ms": 234.0}
+{"event": "http_request", "request_id": "c8c42f07-1cf9-483c-82cd-675dd2933178", "method": "POST", "status": 200, "duration_ms": 47.0}
+{"event": "http_request", "request_id": "3d6c210e-d801-4f97-a68e-d8d4cdf102e0", "method": "POST", "status": 200, "duration_ms": 94.0}
+{"event": "http_request", "request_id": "1e28367a-80e1-423c-b574-11539b1b3dba", "method": "POST", "status": 200, "duration_ms": 437.0}
+{"event": "http_request", "request_id": "1d2a1106-27cf-408a-9751-67218bd82181", "method": "POST", "status": 200, "duration_ms": 532.0}
+{"event": "http_request", "request_id": "225b4874-59b1-4197-b461-926be58a046f", "method": "POST", "status": 200, "duration_ms": 109.0}
+{"event": "http_request", "request_id": "849d1866-c477-4823-9597-b4aea4b69acd", "method": "POST", "status": 200, "duration_ms": 31.0}
+{"event": "http_request", "request_id": "e36e3b45-7661-473f-93b3-ae0322fd1ba8", "method": "POST", "status": 200, "duration_ms": 43468.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:135 {"event": "http_request", "request_id": "71a54ad3-f496-4da6-ae79-119da30ce76c", "method": "POST", "status": 200, "duration_ms": 859.0}
+INFO     bounded_funds.http:main.py:135 {"event": "http_request", "request_id": "dc4a4e90-85bd-47d8-a2e3-b34400f8dc8a", "method": "POST", "status": 200, "duration_ms": 110.0}
+INFO     bounded_funds.http:main.py:135 {"event": "http_request", "request_id": "e60e387e-cedf-42bc-bf45-82f9fbd4caa3", "method": "POST", "status": 200, "duration_ms": 781.0}
+INFO     bounded_funds.http:main.py:135 {"event": "http_request", "request_id": "887b01f1-c6c7-463f-8fe7-45f68a4fc86b", "method": "POST", "status": 200, "duration_ms": 422.0}
+INFO     bounded_funds.http:main.py:135 {"event": "http_request", "request_id": "ef8763b6-7ec6-462f-8139-558b1f6114d5", "method": "POST", "status": 200, "duration_ms": 234.0}
+INFO     bounded_funds.http:main.py:135 {"event": "http_request", "request_id": "c8c42f07-1cf9-483c-82cd-675dd2933178", "method": "POST", "status": 200, "duration_ms": 47.0}
+INFO     bounded_funds.http:main.py:135 {"event": "http_request", "request_id": "3d6c210e-d801-4f97-a68e-d8d4cdf102e0", "method": "POST", "status": 200, "duration_ms": 94.0}
+INFO     bounded_funds.http:main.py:135 {"event": "http_request", "request_id": "1e28367a-80e1-423c-b574-11539b1b3dba", "method": "POST", "status": 200, "duration_ms": 437.0}
+INFO     bounded_funds.http:main.py:135 {"event": "http_request", "request_id": "1d2a1106-27cf-408a-9751-67218bd82181", "method": "POST", "status": 200, "duration_ms": 532.0}
+INFO     bounded_funds.http:main.py:135 {"event": "http_request", "request_id": "225b4874-59b1-4197-b461-926be58a046f", "method": "POST", "status": 200, "duration_ms": 109.0}
+INFO     bounded_funds.http:main.py:135 {"event": "http_request", "request_id": "849d1866-c477-4823-9597-b4aea4b69acd", "method": "POST", "status": 200, "duration_ms": 31.0}
+INFO     bounded_funds.http:main.py:135 {"event": "http_request", "request_id": "e36e3b45-7661-473f-93b3-ae0322fd1ba8", "method": "POST", "status": 200, "duration_ms": 43468.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\config\__init__.py:1345
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\config\__init__.py:1345: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; anyio
+    self._mark_plugins_for_rewrite(hook, disable_autoload)
+
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_joint_goal_execution_integration.py::test_actual_joint_different_amount_signed_whole_consent_fixed_key_unknown_no_advance
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 2 warnings in 57.66s

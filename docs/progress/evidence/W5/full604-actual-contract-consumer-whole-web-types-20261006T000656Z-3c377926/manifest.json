@@ -1,0 +1,32 @@
+{
+  "run_id": "20261006T000656Z-3c377926",
+  "task": "W5",
+  "label": "full604-actual-contract-consumer-whole-web-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/",
+    "packages/contracts/"
+  ],
+  "command": [
+    "node",
+    "apps/web/node_modules/typescript/bin/tsc",
+    "--noEmit",
+    "--project",
+    "apps/web/tsconfig.json"
+  ],
+  "exit_code": 2,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T00:06:57.944492+00:00",
+  "finished_at": "2026-10-06T00:07:14.024337+00:00",
+  "wall_seconds": 16.079845,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "67e145a46bae333e8110bc417824ebf903cc4b382c6d22c30df0724cd5c3bdaf",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

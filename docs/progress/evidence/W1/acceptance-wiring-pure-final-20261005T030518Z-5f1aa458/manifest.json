@@ -1,0 +1,36 @@
+{
+  "run_id": "20261005T030518Z-5f1aa458",
+  "task": "W1",
+  "label": "acceptance-wiring-pure-final",
+  "status": "PASSED",
+  "scope": [
+    "scripts/tasks.py",
+    "scripts/verify_mvp_coverage.py",
+    "apps/api/app/tests/test_task_orchestration.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_task_orchestration.py",
+    "scripts/tests/test_mvp_coverage_scope.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T03:05:18.642532+00:00",
+  "finished_at": "2026-10-05T03:05:20.242751+00:00",
+  "wall_seconds": 1.600219,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "48508dcccebe388e25b4ae1980ad228aaefe498dd824dacdc5054cc349e764cd",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

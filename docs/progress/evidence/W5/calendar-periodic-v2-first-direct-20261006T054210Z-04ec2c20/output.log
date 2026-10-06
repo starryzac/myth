@@ -1,0 +1,1347 @@
+...................FFFFFFFFFFFFEEEEEEEEEEEEEE                            [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_actual_http_query_codec_calls_original_read_service_not_client_facts _
+
+    @pytest.fixture
+    def client() -> TestClient:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:314: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028853844200>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ ERROR at setup of test_http_rejects_facts_time_identity_or_permissions[now] _
+
+    @pytest.fixture
+    def client() -> TestClient:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:314: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856752B70>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ ERROR at setup of test_http_rejects_facts_time_identity_or_permissions[user_id] _
+
+    @pytest.fixture
+    def client() -> TestClient:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:314: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028853868C80>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ ERROR at setup of test_http_rejects_facts_time_identity_or_permissions[epoch_id] _
+
+    @pytest.fixture
+    def client() -> TestClient:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:314: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028853891430>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ ERROR at setup of test_http_rejects_facts_time_identity_or_permissions[facts] _
+
+    @pytest.fixture
+    def client() -> TestClient:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:314: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028853818620>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ ERROR at setup of test_http_rejects_facts_time_identity_or_permissions[coverage] _
+
+    @pytest.fixture
+    def client() -> TestClient:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:314: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028853892FC0>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ ERROR at setup of test_http_rejects_facts_time_identity_or_permissions[amount_cents] _
+
+    @pytest.fixture
+    def client() -> TestClient:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:314: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x00000288538B9A90>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ ERROR at setup of test_http_rejects_facts_time_identity_or_permissions[receipt] _
+
+    @pytest.fixture
+    def client() -> TestClient:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:314: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028853818590>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ ERROR at setup of test_http_rejects_facts_time_identity_or_permissions[auto_confirm] _
+
+    @pytest.fixture
+    def client() -> TestClient:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:314: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x00000288538BA930>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ ERROR at setup of test_http_rejects_facts_time_identity_or_permissions[result] _
+
+    @pytest.fixture
+    def client() -> TestClient:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:314: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x00000288537BF800>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ ERROR at setup of test_http_option_limits_are_actual_server_codec[lookback_days-366] _
+
+    @pytest.fixture
+    def client() -> TestClient:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:314: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x00000288537BDD00>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ ERROR at setup of test_http_option_limits_are_actual_server_codec[minimum_cycles-2] _
+
+    @pytest.fixture
+    def client() -> TestClient:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:314: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856BAA480>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ ERROR at setup of test_http_option_limits_are_actual_server_codec[maximum_day_spread-3] _
+
+    @pytest.fixture
+    def client() -> TestClient:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:314: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856BE9730>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ ERROR at setup of test_http_option_limits_are_actual_server_codec[maximum_cv_bps-1001] _
+
+    @pytest.fixture
+    def client() -> TestClient:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:314: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856BA9910>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+================================== FAILURES ===================================
+_ test_service_original_history_sources_epoch_hash_and_no_writes_fresh_every_read _
+
+    def test_service_original_history_sources_epoch_hash_and_no_writes_fresh_every_read() -> None:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:243: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856B232C0>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ test_bad_originals_coverage_epoch_or_transaction_never_confirmable[coverage] _
+
+fault = 'coverage'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "coverage",
+            "bank",
+            "category",
+            "bill",
+            "foreign_epoch",
+            "closed_epoch",
+            "future_epoch",
+            "dirty",
+            "readwrite",
+            "readcommitted",
+        ],
+    )
+    def test_bad_originals_coverage_epoch_or_transaction_never_confirmable(fault: str) -> None:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856BA96D0>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+__ test_bad_originals_coverage_epoch_or_transaction_never_confirmable[bank] ___
+
+fault = 'bank'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "coverage",
+            "bank",
+            "category",
+            "bill",
+            "foreign_epoch",
+            "closed_epoch",
+            "future_epoch",
+            "dirty",
+            "readwrite",
+            "readcommitted",
+        ],
+    )
+    def test_bad_originals_coverage_epoch_or_transaction_never_confirmable(fault: str) -> None:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856BAABA0>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ test_bad_originals_coverage_epoch_or_transaction_never_confirmable[category] _
+
+fault = 'category'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "coverage",
+            "bank",
+            "category",
+            "bill",
+            "foreign_epoch",
+            "closed_epoch",
+            "future_epoch",
+            "dirty",
+            "readwrite",
+            "readcommitted",
+        ],
+    )
+    def test_bad_originals_coverage_epoch_or_transaction_never_confirmable(fault: str) -> None:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856BE8260>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+__ test_bad_originals_coverage_epoch_or_transaction_never_confirmable[bill] ___
+
+fault = 'bill'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "coverage",
+            "bank",
+            "category",
+            "bill",
+            "foreign_epoch",
+            "closed_epoch",
+            "future_epoch",
+            "dirty",
+            "readwrite",
+            "readcommitted",
+        ],
+    )
+    def test_bad_originals_coverage_epoch_or_transaction_never_confirmable(fault: str) -> None:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856BAB020>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ test_bad_originals_coverage_epoch_or_transaction_never_confirmable[foreign_epoch] _
+
+fault = 'foreign_epoch'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "coverage",
+            "bank",
+            "category",
+            "bill",
+            "foreign_epoch",
+            "closed_epoch",
+            "future_epoch",
+            "dirty",
+            "readwrite",
+            "readcommitted",
+        ],
+    )
+    def test_bad_originals_coverage_epoch_or_transaction_never_confirmable(fault: str) -> None:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856BE8AA0>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ test_bad_originals_coverage_epoch_or_transaction_never_confirmable[closed_epoch] _
+
+fault = 'closed_epoch'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "coverage",
+            "bank",
+            "category",
+            "bill",
+            "foreign_epoch",
+            "closed_epoch",
+            "future_epoch",
+            "dirty",
+            "readwrite",
+            "readcommitted",
+        ],
+    )
+    def test_bad_originals_coverage_epoch_or_transaction_never_confirmable(fault: str) -> None:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856BEA1B0>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ test_bad_originals_coverage_epoch_or_transaction_never_confirmable[future_epoch] _
+
+fault = 'future_epoch'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "coverage",
+            "bank",
+            "category",
+            "bill",
+            "foreign_epoch",
+            "closed_epoch",
+            "future_epoch",
+            "dirty",
+            "readwrite",
+            "readcommitted",
+        ],
+    )
+    def test_bad_originals_coverage_epoch_or_transaction_never_confirmable(fault: str) -> None:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856BAA990>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+__ test_bad_originals_coverage_epoch_or_transaction_never_confirmable[dirty] __
+
+fault = 'dirty'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "coverage",
+            "bank",
+            "category",
+            "bill",
+            "foreign_epoch",
+            "closed_epoch",
+            "future_epoch",
+            "dirty",
+            "readwrite",
+            "readcommitted",
+        ],
+    )
+    def test_bad_originals_coverage_epoch_or_transaction_never_confirmable(fault: str) -> None:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856BE8AD0>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ test_bad_originals_coverage_epoch_or_transaction_never_confirmable[readwrite] _
+
+fault = 'readwrite'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "coverage",
+            "bank",
+            "category",
+            "bill",
+            "foreign_epoch",
+            "closed_epoch",
+            "future_epoch",
+            "dirty",
+            "readwrite",
+            "readcommitted",
+        ],
+    )
+    def test_bad_originals_coverage_epoch_or_transaction_never_confirmable(fault: str) -> None:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856CA45C0>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+_ test_bad_originals_coverage_epoch_or_transaction_never_confirmable[readcommitted] _
+
+fault = 'readcommitted'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "coverage",
+            "bank",
+            "category",
+            "bill",
+            "foreign_epoch",
+            "closed_epoch",
+            "future_epoch",
+            "dirty",
+            "readwrite",
+            "readcommitted",
+        ],
+    )
+    def test_bad_originals_coverage_epoch_or_transaction_never_confirmable(fault: str) -> None:
+>       memory = CalendarMemory()
+                 ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028856B23290>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+____ test_365_window_requires_actual_full_coverage_not_two_observed_months ____
+
+    def test_365_window_requires_actual_full_coverage_not_two_observed_months() -> None:
+>       result = service_result(CalendarMemory(), 365)
+                                ^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_calendar_periodic_suggestions.py:304: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+apps\api\app\tests\test_calendar_periodic_suggestions.py:215: in __init__
+    self.epoch = AuditEpoch(
+<sqlalchemy generated __init__ for class app.db.models.AuditEpoch>:4: in __init__
+    return new_state._initialize_instance(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:597: in _initialize_instance
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\state.py:595: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.db.models.AuditEpoch object at 0x0000028853819F10>
+kwargs = {'id': UUID('00000000-0000-0000-0000-000000000320'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'epoch_number': 1, 'status': 'OPEN', ...}
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'updated_at' is an invalid keyword argument for AuditEpoch
+
+.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2295: TypeError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+ERROR apps/api/app/tests/test_calendar_periodic_suggestions.py::test_actual_http_query_codec_calls_original_read_service_not_client_facts
+ERROR apps/api/app/tests/test_calendar_periodic_suggestions.py::test_http_rejects_facts_time_identity_or_permissions[now]
+ERROR apps/api/app/tests/test_calendar_periodic_suggestions.py::test_http_rejects_facts_time_identity_or_permissions[user_id]
+ERROR apps/api/app/tests/test_calendar_periodic_suggestions.py::test_http_rejects_facts_time_identity_or_permissions[epoch_id]
+ERROR apps/api/app/tests/test_calendar_periodic_suggestions.py::test_http_rejects_facts_time_identity_or_permissions[facts]
+ERROR apps/api/app/tests/test_calendar_periodic_suggestions.py::test_http_rejects_facts_time_identity_or_permissions[coverage]
+ERROR apps/api/app/tests/test_calendar_periodic_suggestions.py::test_http_rejects_facts_time_identity_or_permissions[amount_cents]
+ERROR apps/api/app/tests/test_calendar_periodic_suggestions.py::test_http_rejects_facts_time_identity_or_permissions[receipt]
+ERROR apps/api/app/tests/test_calendar_periodic_suggestions.py::test_http_rejects_facts_time_identity_or_permissions[auto_confirm]
+ERROR apps/api/app/tests/test_calendar_periodic_suggestions.py::test_http_rejects_facts_time_identity_or_permissions[result]
+ERROR apps/api/app/tests/test_calendar_periodic_suggestions.py::test_http_option_limits_are_actual_server_codec[lookback_days-366]
+ERROR apps/api/app/tests/test_calendar_periodic_suggestions.py::test_http_option_limits_are_actual_server_codec[minimum_cycles-2]
+ERROR apps/api/app/tests/test_calendar_periodic_suggestions.py::test_http_option_limits_are_actual_server_codec[maximum_day_spread-3]
+ERROR apps/api/app/tests/test_calendar_periodic_suggestions.py::test_http_option_limits_are_actual_server_codec[maximum_cv_bps-1001]
+FAILED apps/api/app/tests/test_calendar_periodic_suggestions.py::test_service_original_history_sources_epoch_hash_and_no_writes_fresh_every_read
+FAILED apps/api/app/tests/test_calendar_periodic_suggestions.py::test_bad_originals_coverage_epoch_or_transaction_never_confirmable[coverage]
+FAILED apps/api/app/tests/test_calendar_periodic_suggestions.py::test_bad_originals_coverage_epoch_or_transaction_never_confirmable[bank]
+FAILED apps/api/app/tests/test_calendar_periodic_suggestions.py::test_bad_originals_coverage_epoch_or_transaction_never_confirmable[category]
+FAILED apps/api/app/tests/test_calendar_periodic_suggestions.py::test_bad_originals_coverage_epoch_or_transaction_never_confirmable[bill]
+FAILED apps/api/app/tests/test_calendar_periodic_suggestions.py::test_bad_originals_coverage_epoch_or_transaction_never_confirmable[foreign_epoch]
+FAILED apps/api/app/tests/test_calendar_periodic_suggestions.py::test_bad_originals_coverage_epoch_or_transaction_never_confirmable[closed_epoch]
+FAILED apps/api/app/tests/test_calendar_periodic_suggestions.py::test_bad_originals_coverage_epoch_or_transaction_never_confirmable[future_epoch]
+FAILED apps/api/app/tests/test_calendar_periodic_suggestions.py::test_bad_originals_coverage_epoch_or_transaction_never_confirmable[dirty]
+FAILED apps/api/app/tests/test_calendar_periodic_suggestions.py::test_bad_originals_coverage_epoch_or_transaction_never_confirmable[readwrite]
+FAILED apps/api/app/tests/test_calendar_periodic_suggestions.py::test_bad_originals_coverage_epoch_or_transaction_never_confirmable[readcommitted]
+FAILED apps/api/app/tests/test_calendar_periodic_suggestions.py::test_365_window_requires_actual_full_coverage_not_two_observed_months
+12 failed, 19 passed, 3 warnings, 14 errors in 7.16s

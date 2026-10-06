@@ -1,0 +1,37 @@
+{
+  "run_id": "20261006T025805Z-7f607cf5",
+  "task": "W8",
+  "label": "full-native-actual-candidate-collection",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/full_native_operations.py",
+    "apps/api/app/services/full_native_steps.py",
+    "apps/api/app/tests/test_full_native_steps_integration.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "apps/api/app/tests/test_full_native_steps_integration.py",
+    "--collect-only",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T02:58:07.628510+00:00",
+  "finished_at": "2026-10-06T02:58:14.489426+00:00",
+  "wall_seconds": 6.860916,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "a98eab0cb5d3261879b3f6e6966c72a2612b26c71c9216e13db69d249de6c8dd",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

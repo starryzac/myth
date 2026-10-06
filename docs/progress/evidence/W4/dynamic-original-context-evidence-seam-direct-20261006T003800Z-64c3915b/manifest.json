@@ -1,0 +1,39 @@
+{
+  "run_id": "20261006T003800Z-64c3915b",
+  "task": "W4",
+  "label": "dynamic-original-context-evidence-seam-direct",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/full_dynamic_goal_execution.py",
+    "apps/api/app/services/execution",
+    "apps/api/app/tests/test_full_dynamic_goal"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "apps/api/app/tests/test_full_dynamic_goal_context_evidence_seam.py",
+    "apps/api/app/tests/test_full_dynamic_goal_income_original_seam.py",
+    "apps/api/app/tests/test_full_dynamic_goal_execution.py",
+    "apps/api/app/tests/test_execution_context.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T00:38:01.997368+00:00",
+  "finished_at": "2026-10-06T00:39:26.775803+00:00",
+  "wall_seconds": 84.778435,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "636d46d96aacb505c617048875337f41c38b4cbc7be70b8b09d2106f5d42fd37",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

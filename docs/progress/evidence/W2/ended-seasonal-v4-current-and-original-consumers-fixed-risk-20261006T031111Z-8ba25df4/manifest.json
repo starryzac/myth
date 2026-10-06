@@ -1,0 +1,45 @@
+{
+  "run_id": "20261006T031111Z-8ba25df4",
+  "task": "W2",
+  "label": "ended-seasonal-v4-current-and-original-consumers-fixed-risk",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/full_seasonal_current_protection.py",
+    "apps/api/app/domain/full_protection_projection.py",
+    "apps/api/app/domain/full_execution_protection.py",
+    "apps/api/app/domain/full_joint_goal_planning.py",
+    "apps/api/app/services/full_protection_projection.py",
+    "apps/api/app/tests/test_full_seasonal_ended_consumers.py",
+    "apps/api/app/tests/test_full_seasonal_current_protection.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "apps/api/app/tests/test_full_seasonal_ended_consumers.py",
+    "apps/api/app/tests/test_full_seasonal_current_protection.py",
+    "apps/api/app/tests/test_full_seasonal_projection_consumers.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T03:11:13.001443+00:00",
+  "finished_at": "2026-10-06T03:11:25.588329+00:00",
+  "wall_seconds": 12.586886,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/web/src/components/FullPoliciesPanel.tsx",
+    "apps/web/src/components/FullPolicyFinancialImpactHost.tsx"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "44c9e12bb2433a4405341e8bcebcb494f02b708e00e83f10c63386541c2cfcf2",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

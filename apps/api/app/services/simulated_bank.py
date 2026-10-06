@@ -1,5 +1,6 @@
 """Independent simulated bank ledger; application projections are never its balance source."""
 
+from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from typing import Any, Literal
 from uuid import NAMESPACE_URL, UUID, uuid5
@@ -27,6 +28,8 @@ from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, StrictInt
 from sqlalchemy import select
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
+
+FULL_MATURITY_GUARDS_VERSION = "full-maturity-user-guards-v1"
 
 
 class BankRequest(BaseModel):
@@ -126,7 +129,12 @@ def open_simulated_bank(
     return results
 
 
-def ledger_heads(session: Session, user_id: UUID) -> dict[str, SimulatedBankPosting]:
+def ledger_heads(
+    session: Session,
+    user_id: UUID,
+    *,
+    _verified_posting: Callable[[SimulatedBankPosting], None] | None = None,
+) -> dict[str, SimulatedBankPosting]:
     """Verify each economic chain from its independent opening, not an application balance."""
     heads: dict[str, SimulatedBankPosting] = {}
     rows = session.scalars(
@@ -164,6 +172,8 @@ def ledger_heads(session: Session, user_id: UUID) -> dict[str, SimulatedBankPost
             raise _error("A bank ledger economic chain is inconsistent")
         if row.balance_after_cents != row.balance_before_cents + row.delta_cents:
             raise _error("A bank posting violates conservation")
+        if _verified_posting is not None:
+            _verified_posting(row)
         heads[row.ledger_key] = row
     return heads
 
@@ -523,6 +533,16 @@ def process_redemption(engine: Engine, user_id: UUID, action_id: UUID, now: date
                     )
                 except (ValueError, TypeError, OverflowError):
                     contract = False
+            from app.services.full_maturity_execution import (
+                has_maturity_binding,
+                validate_current_maturity_bank_request,
+            )
+
+            maturity_user = has_maturity_binding(session, action)
+            if maturity_user:
+                if not contract:
+                    raise _error("The new USER maturity protocol needs the exact original contract")
+                validate_current_maturity_bank_request(session, action, command, now)
             if (
                 command.user_id != user_id
                 or position is None
@@ -544,7 +564,7 @@ def process_redemption(engine: Engine, user_id: UUID, action_id: UUID, now: date
                 or command.expires_at <= now
                 or command.available_at < command.requested_at
                 or action.status != "SUBMITTED"
-                or action.autonomy_level != "AUTO_EXECUTE"
+                or action.autonomy_level != ("ASK_ONCE" if maturity_user else "AUTO_EXECUTE")
                 or (
                     not contract
                     and (

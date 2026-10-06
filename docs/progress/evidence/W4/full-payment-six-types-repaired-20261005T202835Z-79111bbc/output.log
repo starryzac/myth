@@ -1,0 +1,6 @@
+apps\api\app\tests\test_full_payment_permissions_service.py:27: error: Argument 1 to "execute_full_payment" has incompatible type "None"; expected "Engine"  [arg-type]
+apps\api\app\tests\test_full_payment_permissions_service.py:28: error: Unused "type: ignore" comment  [unused-ignore]
+apps\api\app\tests\test_full_payment_permissions_service.py:52: error: Argument 1 to "_current_payee_sources" has incompatible type "SimpleNamespace"; expected "Session"  [arg-type]
+apps\api\app\tests\test_full_payment_permissions_service.py:57: error: Argument 1 to "_current_payee_sources" has incompatible type "SimpleNamespace"; expected "Session"  [arg-type]
+apps\api\app\tests\test_full_payment_permissions_service.py:72: error: Argument 1 to "_current_payee_sources" has incompatible type "SimpleNamespace"; expected "Session"  [arg-type]
+Found 5 errors in 1 file (checked 6 source files)

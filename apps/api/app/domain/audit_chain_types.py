@@ -25,6 +25,7 @@ EVENT_TYPES = frozenset(
         "POLICY_VERSION_CONFIRMED",
         "POLICY_STATE_CHANGED",
         "GOAL_INITIALIZED",
+        "TRANSACTION_CATEGORY_CONFIRMED",
         "EXTERNAL_BANK_FACT_SETTLED",
         "EXTERNAL_BANK_FACT_PROJECTED",
     }
@@ -190,7 +191,7 @@ class AuditObservation(AuditModel):
 
 class AuditPayloadV1(AuditModel):
     fact_key: Label
-    correlation_kind: Literal["EPOCH", "DECISION_RUN", "POLICY", "GOAL"]
+    correlation_kind: Literal["EPOCH", "DECISION_RUN", "POLICY", "GOAL", "TRANSACTION"]
     references: Annotated[list[AuditReference], Field(max_length=10000)] = Field(
         default_factory=list
     )

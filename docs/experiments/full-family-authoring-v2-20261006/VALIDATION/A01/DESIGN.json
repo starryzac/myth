@@ -1,0 +1,16 @@
+{
+  "author_required_results": null,
+  "author_scope": "SYNTHETIC_ADULT_SIMULATION_NOT_HUMAN_RESEARCH",
+  "category": "AMBIGUITY",
+  "causal_topology": "NULL_DESTINATION_DTO_REJECTION_THEN_EXACT_USER_CHOICE",
+  "criteria": "Eight predeclared truth descriptions plus independent replay, never use P outputs to define correct finance",
+  "family_id": "A01",
+  "family_leakage_policy": "Whole causal family and both original numeric variants stay in same split",
+  "hypothesis": "Observe all seven mechanisms including refused/skipped/unknown opportunities; no asserted success or ranking",
+  "name": "转账目的地歧义先拒后澄清",
+  "protocol": "full-family-author-description-v1",
+  "reviewer": null,
+  "split": "VALIDATION",
+  "status": "AUTHORING_NOT_FROZEN_NOT_RUN",
+  "variant_policy": "v01 base; v02 income/target/fact cents +137, same full causal structure and original keys"
+}

@@ -1,0 +1,13 @@
+# Reserved for a deploy-local context; current Compose uses .. and root .dockerignore.
+# Docker does not automatically apply this file to the repository-root context.
+.env*
+**/.env*
+.git
+.runtime
+.venv
+**/node_modules
+**/__pycache__
+**/*.pyc
+**/*.log
+**/*.tar
+**/*.gz

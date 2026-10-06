@@ -1,0 +1,41 @@
+{
+  "run_id": "20261005T055608Z-ba72bfc6",
+  "task": "W1",
+  "label": "offline-current-image-representation-observe",
+  "status": "PASSED",
+  "scope": [
+    "deploy",
+    "scripts/w1_demo_deployment.py",
+    "scripts/w1_offline_boundary.py",
+    "scripts/demo_container_transport.py",
+    "scripts/demo_offline_network.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "scripts/w1_offline_boundary.py",
+    "--run",
+    "--action",
+    "observe",
+    "--registration",
+    ".runtime/w1-deployment/deploy-20261005T052942Z-852b7cff/manifest.json",
+    "--start",
+    "docs/progress/evidence/W1/deployment-start-20261005T053750Z-06011e24/manifest.json",
+    "--output",
+    "docs/progress/evidence/W1/offline-current-image-observe-native-20261005T0556Z"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T05:56:08.567044+00:00",
+  "finished_at": "2026-10-05T05:56:21.549489+00:00",
+  "wall_seconds": 12.982445,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "b1bd90764ff06066a79178ccadd5791c72a500a2cb95cbd9c09e671801e148af",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

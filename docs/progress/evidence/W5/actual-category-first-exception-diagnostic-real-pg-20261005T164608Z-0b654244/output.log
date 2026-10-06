@@ -1,0 +1,176 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_actual_explicit_categories_restore_patterns_without_changing_bank_facts _
+
+boundary_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_ed2db414837b41a896158e13aeff39e9)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000234322350A0>
+
+    def test_actual_explicit_categories_restore_patterns_without_changing_bank_facts(
+        boundary_engine: Engine,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        def observed_confirm(*args: object, **kwargs: object) -> object:
+            try:
+                return confirm_category(*args, **kwargs)  # type: ignore[arg-type]
+            except PolicyLifecycleError:
+                raise
+            except Exception:
+                # Production preserves its generic HTTP 500. This isolated test logs
+                # the original exception once so a failed real write is diagnosable.
+                print(traceback.format_exc())
+                raise
+    
+        monkeypatch.setattr(category_routes, "confirm_category", observed_confirm)
+        app = create_app()
+        app.dependency_overrides[get_engine] = lambda: boundary_engine
+        app.dependency_overrides[get_now] = lambda: SEED_AS_OF
+        with Session(boundary_engine) as session:
+            identities = list(
+                session.scalars(
+                    select(Transaction.id)
+                    .where(Transaction.user_id == DEMO_USER_ID, Transaction.category == "rent")
+                    .order_by(Transaction.id)
+                )
+            )
+        assert len(identities) == 2
+        before = json.loads(physical_snapshot(boundary_engine))
+        with TestClient(app) as client:
+            initial = client.get("/api/v1/policy-suggestions/periodic")
+            assert initial.status_code == 200
+            assert not initial.json()["history_proof"]["verified"]
+            assert "INVALID_CATEGORY_CONFIRMATION" in initial.json()["history_proof"]["reason_codes"]
+            for identity in identities:
+                path = f"/api/v1/transactions/{identity}"
+                state = physical_snapshot(boundary_engine)
+                reviewed = client.get(path + "/category-review")
+                assert reviewed.status_code == 200, reviewed.text
+                review = reviewed.json()
+                assert review["first_confirmation_supported"] is True
+                assert physical_snapshot(boundary_engine) == state
+                body = {
+                    "category": "rent",
+                    "accepted": True,
+                    "reviewed_transaction_hash": review["reviewed_transaction_hash"],
+                    "reason": "隔离模拟测试明确确认此原租金分类，不是真人研究",
+                    "idempotency_key": f"category:{identity}",
+                    "expected_epoch_id": review["epoch_id"],
+                }
+                assert (
+                    client.post(
+                        path + "/category-confirmation", json=body | {"accepted": 1}
+                    ).status_code
+                    == 422
+                )
+                assert (
+                    client.post(
+                        path + "/category-confirmation",
+                        json=body | {"reviewed_transaction_hash": "f" * 64},
+                    ).status_code
+                    == 409
+                )
+                assert physical_snapshot(boundary_engine) == state
+                confirmed = client.post(path + "/category-confirmation", json=body)
+>               assert confirmed.status_code == 200, confirmed.text
+E               AssertionError: {"error":{"code":"INTERNAL_ERROR","message":"服务暂时不可用","request_id":"7893a3b8-08e2-4eaf-b59b-ddff5afd2e31"}}
+E               assert 500 == 200
+E                +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+apps\api\app\tests\test_transaction_category_integration.py:90: AssertionError
+---------------------------- Captured stdout call -----------------------------
+Traceback (most recent call last):
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _exec_single_context
+    self.dialect.do_execute(
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.RaiseException: AUDIT_PROTOCOL_UNSUPPORTED
+CONTEXT:  PL/pgSQL function audit_event_insert() line 81 at RAISE
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\tests\test_transaction_category_integration.py", line 31, in observed_confirm
+    return confirm_category(*args, **kwargs)  # type: ignore[arg-type]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\transaction_category.py", line 284, in confirm_category
+    _record(
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\audit_recording.py", line 280, in _record
+    append_audit_event(session, intent, observed_at, appended_at)
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\audit_chain.py", line 548, in append_audit_event
+    return _save_event(session, epoch, intent, observed_at, appended_at)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\apps\api\app\services\audit_chain.py", line 212, in _save_event
+    session.flush()
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4536, in flush
+    self._flush(objects)
+  File "<sqlalchemy generated warned() wrapper for sqlalchemy.orm.session.Session._flush>", line 2, in _flush
+    return target(fn, self, objects=objects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\util\deprecations.py", line 281, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4679, in _flush
+    with util.safe_reraise():
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 166, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4640, in _flush
+    flush_context.execute()
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 467, in execute
+    rec.execute(self)
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 643, in execute
+    util.preloaded.orm_persistence._save_obj(
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 92, in _save_obj
+    _emit_insert_statements(
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1052, in _emit_insert_statements
+    result = connection.execute(
+             ^^^^^^^^^^^^^^^^^^^
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1448, in execute
+    return meth(
+           ^^^^^
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 533, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1668, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1822, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1962, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2332, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _exec_single_context
+    self.dialect.do_execute(
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.ProgrammingError: (psycopg.errors.RaiseException) AUDIT_PROTOCOL_UNSUPPORTED
+CONTEXT:  PL/pgSQL function audit_event_insert() line 81 at RAISE
+[SQL: INSERT INTO audit_events (epoch_id, schema_version, canonical_version, canonical_text, sequence_number, event_type, aggregate_type, aggregate_id, correlation_id, causation_id, decision_run_id, action_plan_id, action_receipt_id, idempotency_key, payload_version, payload, previous_hash, event_hash, occurred_at, observed_at, user_id, id, created_at) VALUES (%(epoch_id)s::UUID, %(schema_version)s::VARCHAR, %(canonical_version)s::VARCHAR, %(canonical_text)s::VARCHAR, %(sequence_number)s::INTEGER, %(event_type)s::VARCHAR, %(aggregate_type)s::VARCHAR, %(aggregate_id)s::UUID, %(correlation_id)s::UUID, %(causation_id)s::UUID, %(decision_run_id)s::UUID, %(action_plan_id)s::UUID, %(action_receipt_id)s::UUID, %(idempotency_key)s::VARCHAR, %(payload_version)s::INTEGER, %(payload)s::JSONB, %(previous_hash)s::VARCHAR, %(event_hash)s::VARCHAR, %(occurred_at)s::TIMESTAMP WITH TIME ZONE, %(observed_at)s::TIMESTAMP WITH TIME ZONE, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)]
+[parameters: {'epoch_id': UUID('db2677fe-ac78-4497-bc4c-f88bfd9027bf'), 'schema_version': 'audit-event-v1', 'canonical_version': 'audit-canonical-json-v1', 'canonical_text': '{"action_plan_id":null,"action_receipt_id":null,"aggregate_id":"511771c3-80c0-5e36-b96f-3974dbd6476c","aggregate_type":"TRANSACTION","appended_at":"2 ... (2443 characters truncated) ... fb58862250da5265f6af460831","schema_version":"audit-event-v1","sequence_number":2,"simulation":true,"user_id":"271a9827-f82a-5be6-9e0a-50f721029fb0"}', 'sequence_number': 2, 'event_type': 'TRANSACTION_CATEGORY_CONFIRMED', 'aggregate_type': 'TRANSACTION', 'aggregate_id': UUID('511771c3-80c0-5e36-b96f-3974dbd6476c'), 'correlation_id': UUID('511771c3-80c0-5e36-b96f-3974dbd6476c'), 'causation_id': None, 'decision_run_id': None, 'action_plan_id': None, 'action_receipt_id': None, 'idempotency_key': 'audit:0aa9ae2ee2b23e610052e4d961d652f1022f1f358fa7acf39afc85eb06f95afa', 'payload_version': 1, 'payload': Jsonb({'fact_key': 'CATEGORY_CONFIRMED:1e ... (1876 chars)), 'previous_hash': 'd26ea9ea6e49930ffb9440b2aeb1d290d61223fb58862250da5265f6af460831', 'event_hash': 'be4ae788176a9f5140c22ebde764801fb61a641193f5ba4d6de265aa67139f3a', 'occurred_at': datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc), 'observed_at': datetime.datetime(2026, 10, 3, 16, 0, tzinfo=datetime.timezone.utc), 'user_id': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'id': UUID('ee7dace1-ec73-4045-b87e-2148b994da7f'), 'created_at': datetime.datetime(2026, 10, 5, 16, 46, 18, 387906, tzinfo=datetime.timezone.utc)}]
+(Background on this error at: https://sqlalche.me/e/21/f405)
+
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "9751343f-d3ac-4e03-b72e-226fbf374288", "method": "GET", "status": 200, "duration_ms": 437.0}
+{"event": "http_request", "request_id": "1da5731f-f5c7-434f-8ad8-9d5fce2fe800", "method": "GET", "status": 200, "duration_ms": 16.0}
+{"event": "http_request", "request_id": "ebbfcc85-9316-4127-92ba-ed4a4bd4c8e5", "method": "POST", "status": 422, "duration_ms": 0.0}
+{"event": "http_request", "request_id": "b9809834-8695-430a-8dc9-f5fff0b73c12", "method": "POST", "status": 409, "duration_ms": 94.0}
+{"event": "http_request", "request_id": "7893a3b8-08e2-4eaf-b59b-ddff5afd2e31", "method": "POST", "status": 500, "duration_ms": 188.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:86 {"event": "http_request", "request_id": "9751343f-d3ac-4e03-b72e-226fbf374288", "method": "GET", "status": 200, "duration_ms": 437.0}
+INFO     bounded_funds.http:main.py:86 {"event": "http_request", "request_id": "1da5731f-f5c7-434f-8ad8-9d5fce2fe800", "method": "GET", "status": 200, "duration_ms": 16.0}
+INFO     bounded_funds.http:main.py:86 {"event": "http_request", "request_id": "ebbfcc85-9316-4127-92ba-ed4a4bd4c8e5", "method": "POST", "status": 422, "duration_ms": 0.0}
+INFO     bounded_funds.http:main.py:86 {"event": "http_request", "request_id": "b9809834-8695-430a-8dc9-f5fff0b73c12", "method": "POST", "status": 409, "duration_ms": 94.0}
+INFO     bounded_funds.http:main.py:86 {"event": "http_request", "request_id": "7893a3b8-08e2-4eaf-b59b-ddff5afd2e31", "method": "POST", "status": 500, "duration_ms": 188.0}
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_transaction_category_integration.py::test_actual_explicit_categories_restore_patterns_without_changing_bank_facts
+1 failed, 1 warning in 10.40s

@@ -1,0 +1,5 @@
+apps/web/src/api/full-joint-goal-execution.test.ts(17,816): error TS2493: Tuple type '[]' of length '0' has no element at index '0'.
+apps/web/src/api/full-joint-goal-execution.ts(78,221): error TS18046: 'result.goals' is of type 'unknown'.
+apps/web/src/api/full-joint-goal-execution.ts(78,240): error TS7006: Parameter 'entry' implicitly has an 'any' type.
+apps/web/src/components/FullJointGoalExecutionPanel.test.tsx(9,772): error TS2493: Tuple type '[]' of length '0' has no element at index '1'.
+apps/web/src/components/FullJointGoalExecutionPanel.test.tsx(9,776): error TS2339: Property 'method' does not exist on type 'never'.

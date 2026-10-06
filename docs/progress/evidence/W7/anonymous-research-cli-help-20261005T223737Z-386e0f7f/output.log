@@ -1,0 +1,14 @@
+usage: research_records.py [-h] {init,append,export} ...
+
+Local anonymous study records; no recruitment, bank access or research
+conclusions.
+
+positional arguments:
+  {init,append,export}
+    init                Create an empty owned anonymous study directory
+    append              Append explicit operator-provided anonymous input
+    export              Export all 3 x 6 opportunities; exclude withdrawn
+                        records
+
+options:
+  -h, --help            show this help message and exit

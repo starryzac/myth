@@ -1,0 +1,39 @@
+{
+  "run_id": "20261006T035719Z-51b68cf6",
+  "task": "W4",
+  "label": "maturity-user-integration-candidate-collection",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/full_maturity_execution.py",
+    "apps/api/app/services/full_maturity_execution.py",
+    "apps/api/app/api/v1/full_maturity_execution.py",
+    "apps/api/app/tests/test_full_maturity_execution.py",
+    "apps/api/app/tests/test_full_maturity_execution_api.py",
+    "apps/api/app/tests/test_full_maturity_execution_integration.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_full_maturity_execution_integration.py",
+    "--collect-only",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T03:57:21.101908+00:00",
+  "finished_at": "2026-10-06T03:57:28.055724+00:00",
+  "wall_seconds": 6.953816,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "a7d348835d37241cbd801d3f38eac7d9610f7e773817b8b9fbb408f0a91c507e",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

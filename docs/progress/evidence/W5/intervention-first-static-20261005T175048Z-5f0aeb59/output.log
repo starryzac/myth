@@ -1,0 +1,180 @@
+E501 Line too long (101 > 100)
+   --> apps\api\app\domain\full_intervention.py:166:101
+    |
+164 |         or len({world.world_key for world in result.worlds}) != len(result.worlds)
+165 |         or result.distinct_signatures != sorted({
+166 |             world.outcome.signature for world in result.worlds if world.outcome.signature is not None
+    |                                                                                                     ^
+167 |         })
+168 |     ):
+    |
+
+F401 [*] `app.domain.full_intervention.BoundaryObservationRequest` imported but unused
+  --> apps\api\app\services\full_intervention.py:23:5
+   |
+21 |     PROTOCOL,
+22 |     AcknowledgmentRequest,
+23 |     BoundaryObservationRequest,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+24 |     DeliveryRequest,
+25 |     Hash,
+   |
+help: Remove unused import: `app.domain.full_intervention.BoundaryObservationRequest`
+   |
+22 |     AcknowledgmentRequest,
+   -     BoundaryObservationRequest,
+23 |     DeliveryRequest,
+   |
+
+E501 Line too long (101 > 100)
+   --> apps\api\app\services\full_intervention.py:291:101
+    |
+289 |             or value.source_trace_hash != row.source_trace_hash
+290 |             or value.semantic_key != row.semantic_key or value.created_at != row.created_at
+291 |             or value.session_id != row.session_id or value.question_revision != row.question_revision
+    |                                                                                                     ^
+292 |             or (value.question.question_id if value.question else None) != row.question_id
+293 |             or row.protocol_version != PROTOCOL or row.state not in {
+    |
+
+E501 Line too long (105 > 100)
+   --> apps\api\app\services\full_intervention.py:320:101
+    |
+320 | def _ack_receipt(inbox: InterventionInbox | None, row: InterventionOutbox) -> InterventionReceipt | None:
+    |                                                                                                     ^^^^^
+321 |     if inbox is None:
+322 |         if row.state == "ACKNOWLEDGED":
+    |
+
+E501 Line too long (103 > 100)
+   --> apps\api\app\services\full_intervention.py:390:101
+    |
+390 | def read_intervention(session: Session, user: UUID, identity: UUID, now: datetime) -> InterventionView:
+    |                                                                                                     ^^^
+391 |     _snapshot(session)
+392 |     _owner(session, user)
+    |
+
+E501 Line too long (105 > 100)
+   --> apps\api\app\services\full_intervention.py:396:101
+    |
+396 | def list_interventions(session: Session, user: UUID, now: datetime, limit: int = 50) -> InterventionList:
+    |                                                                                                     ^^^^^
+397 |     _snapshot(session)
+398 |     _owner(session, user)
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\services\full_intervention.py:409:101
+    |
+407 |     views = [_view(session, row, _now(now), questions) for row in rows]
+408 |     return InterventionList(
+409 |         items=views[:limit], actual_message_count=len(views), presentation_truncated=len(views) > limit,
+    |                                                                                                     ^^^^
+410 |     )
+    |
+
+E501 Line too long (110 > 100)
+   --> apps\api\app\services\full_intervention.py:449:101
+    |
+447 |         _epoch(writer, user, body.expected_epoch_id)
+448 |         with _reader(engine) as reader:
+449 |             found = read_intervention_command(reader, user, body.expected_epoch_id, body.idempotency_key, now)
+    |                                                                                                     ^^^^^^^^^^
+450 |             if found.original_receipt is not None:
+451 |                 if found.original_receipt.request_hash != digest or found.original_receipt.kind != "OBSERVE":
+    |
+
+E501 Line too long (109 > 100)
+   --> apps\api\app\services\full_intervention.py:451:101
+    |
+449 |             found = read_intervention_command(reader, user, body.expected_epoch_id, body.idempotency_key, now)
+450 |             if found.original_receipt is not None:
+451 |                 if found.original_receipt.request_hash != digest or found.original_receipt.kind != "OBSERVE":
+    |                                                                                                     ^^^^^^^^^
+452 |                     raise _error("IDEMPOTENCY_CONFLICT", "通知原键不能换请求")
+453 |                 assert found.message is not None
+    |
+
+E501 Line too long (104 > 100)
+   --> apps\api\app\services\full_intervention.py:489:101
+    |
+487 |                 semantic_key=message.semantic_key, session_id=message.session_id,
+488 |                 question_id=message.question.question_id if message.question else None,
+489 |                 question_revision=message.question_revision, payload=payload, payload_hash=payload_hash,
+    |                                                                                                     ^^^^
+490 |                 state="PENDING" if message.requires_user_attention else "RECORDED_ONLY",
+491 |                 available_at=now, updated_at=now,
+    |
+
+E501 Line too long (111 > 100)
+   --> apps\api\app\services\full_intervention.py:510:101
+    |
+508 |     with _reader(engine) as reader:
+509 |         view = read_intervention(reader, user, message.message_id, now)
+510 |     return InterventionCommandResponse(original_receipt=receipt, message=view, replayed_original_receipt=False)
+    |                                                                                                     ^^^^^^^^^^^
+
+E501 Line too long (103 > 100)
+   --> apps\api\app\services\full_intervention.py:513:101
+    |
+513 | def _claim(session: Session, row: InterventionOutbox, now: datetime) -> tuple[InterventionInbox, bool]:
+    |                                                                                                     ^^^
+514 |     inbox = _inbox(session, row)
+515 |     if inbox is not None:
+    |
+
+E501 Line too long (113 > 100)
+   --> apps\api\app\services\full_intervention.py:566:101
+    |
+564 |             raise _error("INTERVENTION_HASH_OR_EPOCH_MISMATCH", "收阅必须绑定原通知hash及周期")
+565 |         with _reader(engine) as reader:
+566 |             existing = read_intervention_command(reader, user, body.expected_epoch_id, body.idempotency_key, now)
+    |                                                                                                     ^^^^^^^^^^^^^
+567 |             if existing.original_receipt is not None:
+568 |                 if existing.original_receipt.request_hash != digest or existing.original_receipt.kind != "ACKNOWLEDGE":
+    |
+
+E501 Line too long (119 > 100)
+   --> apps\api\app\services\full_intervention.py:568:101
+    |
+566 |             existing = read_intervention_command(reader, user, body.expected_epoch_id, body.idempotency_key, now)
+567 |             if existing.original_receipt is not None:
+568 |                 if existing.original_receipt.request_hash != digest or existing.original_receipt.kind != "ACKNOWLEDGE":
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^
+569 |                     raise _error("IDEMPOTENCY_CONFLICT", "收阅原键不能换请求或消息")
+570 |                 assert existing.message is not None
+    |
+
+E501 Line too long (111 > 100)
+   --> apps\api\app\services\full_intervention.py:577:101
+    |
+575 |             # ACK keys use a whole-user namespace, including retained old epochs.
+576 |             if writer.scalar(select(InterventionInbox.id).where(
+577 |                 InterventionInbox.user_id == user, InterventionInbox.acknowledgment_key == body.idempotency_key
+    |                                                                                                     ^^^^^^^^^^^
+578 |             )) is not None:
+579 |                 raise _error("IDEMPOTENCY_CONFLICT", "历史收阅原键不能用于另一个周期")
+    |
+
+E501 Line too long (107 > 100)
+   --> apps\api\app\services\full_intervention.py:589:101
+    |
+587 |             kind="ACKNOWLEDGE", user_id=user, epoch_id=body.expected_epoch_id,
+588 |             idempotency_key=body.idempotency_key, request_hash=digest, original_command=original,
+589 |             message_id=identity, payload_hash=row.payload_hash, recorded_at=now, duplicate_semantics=False,
+    |                                                                                                     ^^^^^^^
+590 |         )
+591 |         inbox.state = "ACKNOWLEDGED"
+    |
+
+E501 Line too long (111 > 100)
+   --> apps\api\app\services\full_intervention.py:601:101
+    |
+599 |     with _reader(engine) as reader:
+600 |         view = read_intervention(reader, user, identity, now)
+601 |     return InterventionCommandResponse(original_receipt=receipt, message=view, replayed_original_receipt=False)
+    |                                                                                                     ^^^^^^^^^^^
+
+Found 17 errors.
+[*] 1 fixable with the `--fix` option.

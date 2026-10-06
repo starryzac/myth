@@ -1,0 +1,35 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_initial_facts_are_first_genesis_before_any_action_and_capture_writes_nothing _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_e88caf963fb5497d8e14ed9ecf96e250)
+
+    @pytest.mark.integration
+    def test_initial_facts_are_first_genesis_before_any_action_and_capture_writes_nothing(
+        demo_engine: Engine,
+    ) -> None:
+        seed_demo(demo_engine, _experiment_seed_extension="MVP503_SECOND_CASH_INITIAL_FACT_V1")
+        before = original_rows(demo_engine)
+        assert len(before) == 24
+        for table in (
+            "action_plans",
+            "action_receipts",
+            "bank_operations",
+            "action_resource_reservations",
+        ):
+            assert before[table] == []
+        with Session(demo_engine) as session:
+            epochs = list(session.scalars(select(AuditEpoch)))
+            assert len(epochs) == 1 and epochs[0].status == "OPEN"
+            epoch_id = str(epochs[0].id)
+        assert len(before["audit_events"]) == 1
+>       assert before["audit_events"][0]["event_type"] == "GENESIS"
+E       AssertionError: assert 'EPOCH_STARTED' == 'GENESIS'
+E         
+E         - GENESIS
+E         + EPOCH_STARTED
+
+apps\api\app\tests\test_mvp_initial_facts.py:42: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_mvp_initial_facts.py::test_initial_facts_are_first_genesis_before_any_action_and_capture_writes_nothing
+1 failed in 6.39s

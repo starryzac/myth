@@ -1,0 +1,913 @@
+FFFFFFFFFFFFFFFF........F                                                [100%]
+================================== FAILURES ===================================
+_________________ test_bound_transfer_requires_exact_consent __________________
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/02cb361afee14d60a5e883c1eb633dca')
+
+    def test_bound_transfer_requires_exact_consent(tmp_path: Path) -> None:
+        fixture = Fixture(tmp_path)
+>       result = metrics.observe(fixture.emit())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:371: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFC8F20>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/02cb361afee14d60a5e883c1eb633dca/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+____________ test_actual_transfer_without_consent_is_unauthorized _____________
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/747e487a32e34701b174478cefe129ac')
+
+    def test_actual_transfer_without_consent_is_unauthorized(tmp_path: Path) -> None:
+>       result = metrics.observe(Fixture(tmp_path, consent=False).emit())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:381: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFF1310>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/747e487a32e34701b174478cefe129ac/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+_______ test_actual_original_fault_is_missing_never_safe_zero[receipt] ________
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/09b8efe05f3948ab9fab124ce37f0944')
+fault = 'receipt'
+
+    @pytest.mark.parametrize(
+        "fault", ["receipt", "bank_hash", "bank_type", "bank_time", "unknown", "old_history"]
+    )
+    def test_actual_original_fault_is_missing_never_safe_zero(tmp_path: Path, fault: str) -> None:
+        fixture = Fixture(tmp_path)
+        if fault == "receipt":
+            fixture.receipt["response"]["posting_ids"].pop()
+        elif fault == "bank_hash":
+            fixture.bank["request_hash"] = "a" * 64
+        elif fault == "bank_type":
+            fixture.bank["operation_type"] = "PURCHASE_ASSET"
+        elif fault == "bank_time":
+            fixture.bank["requested_at"] = END
+        elif fault == "unknown":
+            fixture.bank["status"] = "UNKNOWN"
+        else:
+            fixture.after["simulated_bank_postings"][0]["ledger_metadata"] = {"changed": True}
+>       metric = metrics.observe(fixture.emit())["metrics"]["S2"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:402: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFC95E0>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/09b8efe05f3948ab9fab124ce37f0944/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+______ test_actual_original_fault_is_missing_never_safe_zero[bank_hash] _______
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/00b01ee423964dba96eeaf6edbb81b09')
+fault = 'bank_hash'
+
+    @pytest.mark.parametrize(
+        "fault", ["receipt", "bank_hash", "bank_type", "bank_time", "unknown", "old_history"]
+    )
+    def test_actual_original_fault_is_missing_never_safe_zero(tmp_path: Path, fault: str) -> None:
+        fixture = Fixture(tmp_path)
+        if fault == "receipt":
+            fixture.receipt["response"]["posting_ids"].pop()
+        elif fault == "bank_hash":
+            fixture.bank["request_hash"] = "a" * 64
+        elif fault == "bank_type":
+            fixture.bank["operation_type"] = "PURCHASE_ASSET"
+        elif fault == "bank_time":
+            fixture.bank["requested_at"] = END
+        elif fault == "unknown":
+            fixture.bank["status"] = "UNKNOWN"
+        else:
+            fixture.after["simulated_bank_postings"][0]["ledger_metadata"] = {"changed": True}
+>       metric = metrics.observe(fixture.emit())["metrics"]["S2"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:402: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFF2CF0>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/00b01ee423964dba96eeaf6edbb81b09/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+______ test_actual_original_fault_is_missing_never_safe_zero[bank_type] _______
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/45ba818765ee470e96ddafad21ab1d06')
+fault = 'bank_type'
+
+    @pytest.mark.parametrize(
+        "fault", ["receipt", "bank_hash", "bank_type", "bank_time", "unknown", "old_history"]
+    )
+    def test_actual_original_fault_is_missing_never_safe_zero(tmp_path: Path, fault: str) -> None:
+        fixture = Fixture(tmp_path)
+        if fault == "receipt":
+            fixture.receipt["response"]["posting_ids"].pop()
+        elif fault == "bank_hash":
+            fixture.bank["request_hash"] = "a" * 64
+        elif fault == "bank_type":
+            fixture.bank["operation_type"] = "PURCHASE_ASSET"
+        elif fault == "bank_time":
+            fixture.bank["requested_at"] = END
+        elif fault == "unknown":
+            fixture.bank["status"] = "UNKNOWN"
+        else:
+            fixture.after["simulated_bank_postings"][0]["ledger_metadata"] = {"changed": True}
+>       metric = metrics.observe(fixture.emit())["metrics"]["S2"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:402: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFF05F0>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/45ba818765ee470e96ddafad21ab1d06/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+______ test_actual_original_fault_is_missing_never_safe_zero[bank_time] _______
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/aad72beb385b45afb6f97ebb52589093')
+fault = 'bank_time'
+
+    @pytest.mark.parametrize(
+        "fault", ["receipt", "bank_hash", "bank_type", "bank_time", "unknown", "old_history"]
+    )
+    def test_actual_original_fault_is_missing_never_safe_zero(tmp_path: Path, fault: str) -> None:
+        fixture = Fixture(tmp_path)
+        if fault == "receipt":
+            fixture.receipt["response"]["posting_ids"].pop()
+        elif fault == "bank_hash":
+            fixture.bank["request_hash"] = "a" * 64
+        elif fault == "bank_type":
+            fixture.bank["operation_type"] = "PURCHASE_ASSET"
+        elif fault == "bank_time":
+            fixture.bank["requested_at"] = END
+        elif fault == "unknown":
+            fixture.bank["status"] = "UNKNOWN"
+        else:
+            fixture.after["simulated_bank_postings"][0]["ledger_metadata"] = {"changed": True}
+>       metric = metrics.observe(fixture.emit())["metrics"]["S2"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:402: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFF3D70>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/aad72beb385b45afb6f97ebb52589093/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+_______ test_actual_original_fault_is_missing_never_safe_zero[unknown] ________
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/0e12d6a70e1b40e3984fe83a1b222316')
+fault = 'unknown'
+
+    @pytest.mark.parametrize(
+        "fault", ["receipt", "bank_hash", "bank_type", "bank_time", "unknown", "old_history"]
+    )
+    def test_actual_original_fault_is_missing_never_safe_zero(tmp_path: Path, fault: str) -> None:
+        fixture = Fixture(tmp_path)
+        if fault == "receipt":
+            fixture.receipt["response"]["posting_ids"].pop()
+        elif fault == "bank_hash":
+            fixture.bank["request_hash"] = "a" * 64
+        elif fault == "bank_type":
+            fixture.bank["operation_type"] = "PURCHASE_ASSET"
+        elif fault == "bank_time":
+            fixture.bank["requested_at"] = END
+        elif fault == "unknown":
+            fixture.bank["status"] = "UNKNOWN"
+        else:
+            fixture.after["simulated_bank_postings"][0]["ledger_metadata"] = {"changed": True}
+>       metric = metrics.observe(fixture.emit())["metrics"]["S2"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:402: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFC8830>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/0e12d6a70e1b40e3984fe83a1b222316/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+_____ test_actual_original_fault_is_missing_never_safe_zero[old_history] ______
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/eafa156fe6c342ce8178181802c705dd')
+fault = 'old_history'
+
+    @pytest.mark.parametrize(
+        "fault", ["receipt", "bank_hash", "bank_type", "bank_time", "unknown", "old_history"]
+    )
+    def test_actual_original_fault_is_missing_never_safe_zero(tmp_path: Path, fault: str) -> None:
+        fixture = Fixture(tmp_path)
+        if fault == "receipt":
+            fixture.receipt["response"]["posting_ids"].pop()
+        elif fault == "bank_hash":
+            fixture.bank["request_hash"] = "a" * 64
+        elif fault == "bank_type":
+            fixture.bank["operation_type"] = "PURCHASE_ASSET"
+        elif fault == "bank_time":
+            fixture.bank["requested_at"] = END
+        elif fault == "unknown":
+            fixture.bank["status"] = "UNKNOWN"
+        else:
+            fixture.after["simulated_bank_postings"][0]["ledger_metadata"] = {"changed": True}
+>       metric = metrics.observe(fixture.emit())["metrics"]["S2"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:402: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFF1580>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/eafa156fe6c342ce8178181802c705dd/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+_________________ test_conserved_wrong_amount_is_not_success __________________
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/ac2fadacdd5c4162a7e6b09357fcc770')
+
+    def test_conserved_wrong_amount_is_not_success(tmp_path: Path) -> None:
+        fixture = Fixture(tmp_path)
+        for row in fixture.after["simulated_bank_postings"][2:]:
+            row["delta_cents"] *= 2
+            row["balance_after_cents"] = row["balance_before_cents"] + row["delta_cents"]
+>       result = metrics.observe(fixture.emit())["metrics"]["S2"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:412: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFF6CF0>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/ac2fadacdd5c4162a7e6b09357fcc770/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+___________ test_missing_registered_opportunity_retains_denominator ___________
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/47a39c600eb9481bbd547c0036df90c7')
+
+    def test_missing_registered_opportunity_retains_denominator(tmp_path: Path) -> None:
+        fixture = Fixture(tmp_path, transfer=False)
+        fixture.registration["safe_auto_opportunity_ids"] = ["op-1", "op-2"]
+>       metric = metrics.observe(fixture.emit())["metrics"]["E1"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:419: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFF4320>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/47a39c600eb9481bbd547c0036df90c7/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+_____________ test_absent_question_capture_is_missing_even_empty ______________
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/c4a9f3ec747744939beb0ff3ce3cd63f')
+
+    def test_absent_question_capture_is_missing_even_empty(tmp_path: Path) -> None:
+        fixture = Fixture(tmp_path, transfer=False)
+        fixture.include_ask = False
+>       result = metrics.observe(fixture.emit())["metrics"]["E3"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:427: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFCB0E0>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/c4a9f3ec747744939beb0ff3ce3cd63f/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+_________ test_explicit_complete_zero_denominators_are_not_applicable _________
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/93bafa5dc7c8439dbf2518424fe2633a')
+
+    def test_explicit_complete_zero_denominators_are_not_applicable(tmp_path: Path) -> None:
+>       result = metrics.observe(Fixture(tmp_path, transfer=False).emit())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:432: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFF1460>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/93bafa5dc7c8439dbf2518424fe2633a/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+_____________ test_actual_action_missing_record_cannot_disappear ______________
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/b7dc66ed28f6446c8300591bb768aa4f')
+
+    def test_actual_action_missing_record_cannot_disappear(tmp_path: Path) -> None:
+        fixture = Fixture(tmp_path)
+        run = fixture.emit()
+        path = tmp_path / "observations.json"
+        body = json.loads(path.read_text())
+        body["payload"]["actions"] = []
+        digest = write(path, body)
+        fixture.manifest["raw_refs"][2]["sha256"] = digest
+        write(run, fixture.manifest)
+>       metric = metrics.observe(run)["metrics"]["S2"]
+                 ^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:446: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFF2510>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/b7dc66ed28f6446c8300591bb768aa4f/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+_______________ test_incomplete_capture_prevents_empty_success ________________
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/e0ac879a1a6b41c6ab1ad8082484d739')
+
+    def test_incomplete_capture_prevents_empty_success(tmp_path: Path) -> None:
+        fixture = Fixture(tmp_path, transfer=False)
+        fixture.capture["complete"] = False
+>       result = metrics.observe(fixture.emit())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:453: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFF51C0>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/e0ac879a1a6b41c6ab1ad8082484d739/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+______________ test_source_archive_must_match_current_calculator ______________
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/597a8c5a5cc14668b7e61b16c9fbecc3')
+
+    def test_source_archive_must_match_current_calculator(tmp_path: Path) -> None:
+        fixture = Fixture(tmp_path)
+        raw = b"# TOOL_TEST_ONLY outdated calculator\n"
+        (tmp_path / fixture.sources[0]["path"]).write_bytes(raw)
+        fixture.sources[0]["sha256"] = hashlib.sha256(raw).hexdigest()
+>       with pytest.raises(ObservationError, match="source differs"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'source differs'
+E         Actual message: 'Unregistered seed version'
+
+scripts\tests\test_mvp_financial_metrics.py:463: AssertionError
+__________________ test_not_run_does_not_output_zero_success __________________
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/f50a7f8a4342477ea0afe3625bc63e35')
+
+    def test_not_run_does_not_output_zero_success(tmp_path: Path) -> None:
+        fixture = Fixture(tmp_path)
+        fixture.manifest["run_status"] = "NOT_RUN"
+>       result = metrics.observe(fixture.emit())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:470: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFF28D0>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/f50a7f8a4342477ea0afe3625bc63e35/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+___________________ test_integer_effect_rejects_bool_amount ___________________
+
+tmp_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/cc795906565a48baba6a5932e708b93b')
+
+    def test_integer_effect_rejects_bool_amount(tmp_path: Path) -> None:
+        fixture = Fixture(tmp_path)
+        fixture.action["amount_cents"] = True
+>       result = metrics.observe(fixture.emit())["metrics"]["S2"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_metrics.py:584: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1152: in observe
+    bundle = FinanceBundle(manifest_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:89: in __init__
+    Bundle.__init__(self, manifest_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <scripts.mvp_financial_metrics.FinanceBundle object at 0x000002389DFF7200>
+manifest_path = WindowsPath('F:/学校活动/工行杯/钱途有界/bounded-funds/.runtime/W1-financial-metrics-tool-fixtures/cc795906565a48baba6a5932e708b93b/run.json')
+
+    def __init__(self, manifest_path: Path):
+        self.root = manifest_path.resolve().parent
+        self.read_hashes: dict[Path, str] = {}
+        self.manifest_path = manifest_path.resolve()
+        self.manifest = _object(self._read(self.manifest_path), "run manifest")
+        if self.manifest.get("protocol") != RUN_PROTOCOL:
+            raise ObservationError("Unsupported run manifest protocol")
+        self.bindings = {key: _text(self.manifest.get(key), key) for key in BINDINGS}
+        for key, value in self.bindings.items():
+            _text(value, key)
+        for key in (
+            "input_sha256",
+            "oracle_sha256",
+            "design_sha256",
+            "rule_sha256",
+            "source_sha256",
+        ):
+            _digest(self.bindings[key], key)
+        for key in ("experiment_run_id", "isolated_db_epoch", "user_id"):
+            _identity(self.bindings[key], key)
+        if self.bindings["arm_id"] not in {"B0", "B1", "B2", "B3", "P"}:
+            raise ObservationError("Unknown arm identity")
+        if self.bindings["seed_version"] != "mvp-301-v6":
+>           raise ObservationError("Unregistered seed version")
+E           scripts.mvp_observations.ObservationError: Unregistered seed version
+
+scripts\mvp_observations.py:180: ObservationError
+=========================== short test summary info ===========================
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_bound_transfer_requires_exact_consent
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_actual_transfer_without_consent_is_unauthorized
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_actual_original_fault_is_missing_never_safe_zero[receipt]
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_actual_original_fault_is_missing_never_safe_zero[bank_hash]
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_actual_original_fault_is_missing_never_safe_zero[bank_type]
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_actual_original_fault_is_missing_never_safe_zero[bank_time]
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_actual_original_fault_is_missing_never_safe_zero[unknown]
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_actual_original_fault_is_missing_never_safe_zero[old_history]
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_conserved_wrong_amount_is_not_success
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_missing_registered_opportunity_retains_denominator
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_absent_question_capture_is_missing_even_empty
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_explicit_complete_zero_denominators_are_not_applicable
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_actual_action_missing_record_cannot_disappear
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_incomplete_capture_prevents_empty_success
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_source_archive_must_match_current_calculator
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_not_run_does_not_output_zero_success
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_integer_effect_rejects_bool_amount
+17 failed, 8 passed in 1.98s

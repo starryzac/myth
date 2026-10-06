@@ -1,0 +1,20 @@
+{
+  "changed_initial_paths": [
+    "apps/api/app/services/audit_chain.py",
+    "apps/api/app/services/decision_trace.py",
+    "apps/api/app/services/execution_projection.py",
+    "apps/api/app/services/recovery_receipt_integrity.py",
+    "apps/api/app/services/simulated_bank.py",
+    "apps/api/app/tests/test_decision_trace_audit.py",
+    "apps/api/app/tests/test_task_orchestration.py",
+    "AGENTS.md",
+    "docs/progress/STATUS.md",
+    "docs/progress/HANDOFF.md",
+    "docs/spec/requirements-traceability.md"
+  ],
+  "MVP404_sources_retained": true,
+  "audit_domain_and_codecs_retained": true,
+  "dependencies_retained": true,
+  "original_failure_archives_git_diff": [],
+  "notes": "Comparison is against full initial dirty snapshot; current source files outside manifest are tracked in individual verification runs. Original plans and failures are not rewritten."
+}

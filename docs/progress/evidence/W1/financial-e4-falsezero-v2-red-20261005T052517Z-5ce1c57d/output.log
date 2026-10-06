@@ -1,0 +1,14 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_e4_declared_other_opportunity_is_rejected_instead_of_false_zero_idle[policy] _
+scripts\tests\test_mvp_financial_metrics.py:1320: in test_e4_declared_other_opportunity_is_rejected_instead_of_false_zero_idle
+    with pytest.raises(ObservationError, match="qualifying deployment inventory differs"):
+E   Failed: DID NOT RAISE ObservationError
+_ test_e4_declared_other_opportunity_is_rejected_instead_of_false_zero_idle[product] _
+scripts\tests\test_mvp_financial_metrics.py:1320: in test_e4_declared_other_opportunity_is_rejected_instead_of_false_zero_idle
+    with pytest.raises(ObservationError, match="qualifying deployment inventory differs"):
+E   Failed: DID NOT RAISE ObservationError
+=========================== short test summary info ===========================
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_e4_declared_other_opportunity_is_rejected_instead_of_false_zero_idle[policy]
+FAILED scripts/tests/test_mvp_financial_metrics.py::test_e4_declared_other_opportunity_is_rejected_instead_of_false_zero_idle[product]
+2 failed, 53 deselected in 1.19s

@@ -1,0 +1,38 @@
+{
+  "run_id": "20261006T055254Z-42be1b39",
+  "task": "W6",
+  "label": "calendar-periodic-v2-web-first-direct",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/api/calendar-periodic-suggestions.ts",
+    "apps/web/src/components/CalendarPeriodicSuggestionsPanel.tsx",
+    "apps/web/src/api/calendar-periodic-suggestions.test.ts",
+    "apps/web/src/components/CalendarPeriodicSuggestionsPanel.test.tsx",
+    "apps/web/src/tests/calendar-periodic-fixture.ts",
+    "apps/web/src/tests/calendar-periodic-fixture.json"
+  ],
+  "command": [
+    "node",
+    "apps/web/node_modules/vitest/vitest.mjs",
+    "run",
+    "--root",
+    "apps/web",
+    "src/api/calendar-periodic-suggestions.test.ts",
+    "src/components/CalendarPeriodicSuggestionsPanel.test.tsx"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T05:52:56.984545+00:00",
+  "finished_at": "2026-10-06T05:53:05.639411+00:00",
+  "wall_seconds": 8.654866,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "b3ed320b0d6d21419d945a8a4e7392914a87c32316383816f8b4a5f6f2efecb4",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

@@ -1,0 +1,33 @@
+{
+  "run_id": "20261005T031545Z-6237988f",
+  "task": "W1",
+  "label": "corpus-tool-mypy-final",
+  "status": "FAILED",
+  "scope": [
+    "scripts/mvp_corpus.py",
+    "scripts/tests/test_mvp_corpus.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "mypy",
+    "--explicit-package-bases",
+    "scripts/mvp_corpus.py",
+    "scripts/tests/test_mvp_corpus.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T03:15:45.687333+00:00",
+  "finished_at": "2026-10-05T03:15:46.587585+00:00",
+  "wall_seconds": 0.900252,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "4267d0e1ac7b680fb85a01be6fc7df00db757cb9882f0b348b84dd6bf6517336",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

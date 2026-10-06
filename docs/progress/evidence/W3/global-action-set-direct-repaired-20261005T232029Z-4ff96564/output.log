@@ -1,0 +1,68 @@
+...................................F.......                              [100%]
+================================== FAILURES ===================================
+_ test_read_requires_actual_original_ancestry_not_only_saved_signatures[cycle] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000287281FEE70>
+risk = 'cycle'
+
+    @pytest.mark.parametrize("risk", ["missing-parent", "different-parent-original", "cycle"])
+    def test_read_requires_actual_original_ancestry_not_only_saved_signatures(
+        monkeypatch: pytest.MonkeyPatch, risk: str
+    ) -> None:
+        first = trace_for(fixture())
+        second = trace_for(fixture(200), key="second", previous=first)
+        if risk == "different-parent-original":
+            first = trace_for(fixture(250))
+        elif risk == "cycle":
+            raw = second.model_dump(mode="json")
+            raw["inputs"]["previous_snapshot"] = raw["outcome"]["global_boundary_observation"][
+                "snapshot"
+            ]
+            raw["parent_run_id"] = str(second.run_id)
+            # Even a rehashed cycle must fail the original envelope/bindings, never
+            # become a successful current observation.
+            values = {
+                name: getattr(second, name)
+                for name in (
+                    "run_id",
+                    "user_id",
+                    "phase",
+                    "as_of",
+                    "parent_run_id",
+                    "action_id",
+                    "algorithm_versions",
+                    "inputs",
+                    "sources",
+                    "policies",
+                    "constraints",
+                    "candidates",
+                    "outcome",
+                )
+            }
+            values["parent_run_id"] = second.run_id
+>           second = build_trace(**values)
+                     ^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_boundary.py:532: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fields = {'run_id': UUID('0f5cd746-cf8a-5c02-b7ca-8a64330a38b1'), 'user_id': UUID('00000000-0000-0000-0000-000000000001'), 'phase': 'EVALUATION', 'as_of': datetime.datetime(2026, 10, 4, 8, 0, tzinfo=datetime.timezone.utc), ...}
+
+    def build_trace(**fields: Any) -> DecisionTrace:
+        """Freeze exact supplied facts/results; caller-provided hash fields are rejected."""
+>       content = _TraceContent.model_validate(fields)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for _TraceContent
+E         Value error, Decision trace cannot be its own parent [type=value_error, input_value={'run_id': UUID('0f5cd746...on_status': 'COMPUTED'}}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/value_error
+
+apps\api\app\domain\decision_trace.py:134: ValidationError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_action_set_boundary.py::test_read_requires_actual_original_ancestry_not_only_saved_signatures[cycle]
+1 failed, 42 passed, 1 warning in 41.59s

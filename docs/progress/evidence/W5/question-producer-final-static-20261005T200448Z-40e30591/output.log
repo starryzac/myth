@@ -1,0 +1,38 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> apps\api\app\tests\test_intervention_current_observation.py:3:1
+   |
+ 1 |   """Pure same-semantic current-source risks; fixtures are not observed financial results."""
+ 2 |
+ 3 | / from copy import deepcopy
+ 4 | | from types import SimpleNamespace
+ 5 | | from typing import Any
+ 6 | | from unittest.mock import MagicMock
+ 7 | | from uuid import UUID, uuid5
+ 8 | |
+ 9 | | import pytest
+10 | | from app.domain.decision_trace import build_trace
+11 | | from app.db.full_models import InterventionInbox
+12 | | from app.domain.full_intervention import CONSUMER, InterventionReceipt, command_identity
+13 | | from app.domain.question_workflow import make_revision
+14 | | from app.services import full_intervention as service
+15 | | from app.services import question_intervention_producer as producer
+16 | | from app.services.decision_trace import DecisionTraceResponse
+17 | | from app.services.policy_lifecycle import PolicyLifecycleError
+18 | | from app.services.question_workflow import _response
+19 | | from app.tests.test_execution_domain import NOW, USER
+20 | | from app.tests.test_full_intervention import row
+21 | | from app.tests.test_question_intervention_producer import prepared, response, source
+22 | | from app.tests.test_question_workflow import EPOCH
+23 | | from sqlalchemy.orm import Session
+   | |__________________________________^
+help: Organize imports
+   |
+9  | import pytest
+10 + from app.db.full_models import InterventionInbox
+11 | from app.domain.decision_trace import build_trace
+   - from app.db.full_models import InterventionInbox
+12 | from app.domain.full_intervention import CONSUMER, InterventionReceipt, command_identity
+   |
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.

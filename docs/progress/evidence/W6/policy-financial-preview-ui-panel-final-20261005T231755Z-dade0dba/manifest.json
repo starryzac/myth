@@ -1,0 +1,40 @@
+{
+  "run_id": "20261005T231755Z-dade0dba",
+  "task": "W6",
+  "label": "policy-financial-preview-ui-panel-final",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/api/full-policy-financial-preview.ts",
+    "apps/web/src/api/full-policy-financial-preview.test.ts",
+    "apps/web/src/components/FinancialChangeImpactPanel.tsx",
+    "apps/web/src/components/FinancialChangeImpactPanel.test.tsx",
+    "apps/web/src/tests/financial-preview-fixture.ts"
+  ],
+  "command": [
+    "node",
+    "apps/web/node_modules/vitest/vitest.mjs",
+    "run",
+    "--root",
+    "apps/web",
+    "src/components/FinancialChangeImpactPanel.test.tsx"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T23:17:56.418210+00:00",
+  "finished_at": "2026-10-05T23:18:04.327010+00:00",
+  "wall_seconds": 7.9088,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/api/app/domain/full_action_set_boundary.py",
+    "apps/api/app/services/full_action_set_boundary.py",
+    "apps/api/app/tests/test_full_action_set_boundary_api.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "4ccd13862c127acdc0efab57d15ba414ca6474841aed903f4f6df2b5e85b0c0d",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

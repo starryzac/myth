@@ -1,0 +1,279 @@
+{
+  "actual_arm_runs": [],
+  "actual_outputs": null,
+  "all_step_ids": [
+    "initial",
+    "local-user-login",
+    "cash",
+    "goal-account",
+    "living-declare",
+    "living-confirm",
+    "emergency-declare",
+    "emergency-confirm",
+    "goal-a-base-declare",
+    "goal-a-base-confirm",
+    "goal-a-create",
+    "goal-a-preview",
+    "goal-a-model",
+    "income",
+    "allocation-prepare",
+    "allocation-confirm",
+    "allocation-execute",
+    "asset-base-declare",
+    "asset-base-confirm",
+    "asset-validate",
+    "asset-full",
+    "asset-catalog",
+    "purchase-prepare",
+    "purchase-confirm",
+    "purchase-execute",
+    "goal-source",
+    "final"
+  ],
+  "case_id": "G04-v02",
+  "case_uncovered": [],
+  "formal_frozen_status": "NOT_FROZEN",
+  "independent_truth_review_status": "NOT_REVIEWED",
+  "metric_results": {
+    "A1": null,
+    "A2": null,
+    "A3": null,
+    "A4": null,
+    "A5": null,
+    "A6": null,
+    "E1": null,
+    "E2": null,
+    "E3": null,
+    "E4": null,
+    "E5": null,
+    "E6": null,
+    "E7": null,
+    "E8": null,
+    "F1": null,
+    "F2": null,
+    "F3": null,
+    "F4": null,
+    "F5": null,
+    "S1": null,
+    "S2": null,
+    "S3": null,
+    "S4": null,
+    "S5": null,
+    "S6": null,
+    "S7": null,
+    "S8": null,
+    "S9": null
+  },
+  "missing_native_full_kinds": [],
+  "operation_conditions": [
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "local-user-login"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "cash"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "goal-account"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "living-declare"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "living-confirm"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "emergency-declare"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "emergency-confirm"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "goal-a-base-declare"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "goal-a-base-confirm"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "goal-a-create"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "goal-a-preview"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "goal-a-model"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "income"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "allocation-prepare"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "allocation-confirm"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "allocation-execute"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "asset-base-declare"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "asset-base-confirm"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "asset-validate"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "asset-full"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "asset-catalog"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "purchase-prepare"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "purchase-confirm"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "purchase-execute"
+    },
+    {
+      "condition": "ONLY_ORIGINAL_REQUIRED_INPUTS_VALID_AND_CURRENT",
+      "on_missing": "RETAIN_OPPORTUNITY_MISSING_OR_REFUSED_NEVER_SUBSTITUTE_SUCCESS",
+      "opportunity_denominator_retained": true,
+      "step_id": "goal-source"
+    }
+  ],
+  "original_actor_events": [
+    {
+      "human": false,
+      "phase": "INITIAL_AUTHORIZATION",
+      "review": "EXACT_SERVER_PROPOSAL_HASH",
+      "step_id": "living-confirm"
+    },
+    {
+      "human": false,
+      "phase": "INITIAL_AUTHORIZATION",
+      "review": "EXACT_SERVER_PROPOSAL_HASH",
+      "step_id": "emergency-confirm"
+    },
+    {
+      "human": false,
+      "phase": "INITIAL_AUTHORIZATION",
+      "review": "EXACT_SERVER_PROPOSAL_HASH",
+      "step_id": "goal-a-base-confirm"
+    },
+    {
+      "human": false,
+      "phase": "INITIAL_AUTHORIZATION",
+      "review": "EXACT_FULL_AND_BASE_HASHES",
+      "step_id": "goal-a-model"
+    },
+    {
+      "human": false,
+      "phase": "INITIAL_AUTHORIZATION",
+      "review": "EXACT_SERVER_PROPOSAL_HASH",
+      "step_id": "asset-base-confirm"
+    },
+    {
+      "human": false,
+      "phase": "INITIAL_AUTHORIZATION",
+      "planning_confirmation_not_bank_grant": true,
+      "review": "EXACT_SERVER_FULL_CONFIGURATION",
+      "step_id": "asset-full"
+    },
+    {
+      "human": false,
+      "phase": "RUNTIME_INTERVENTION",
+      "review": "WHOLE_PORTFOLIO_HASH",
+      "step_id": "purchase-confirm"
+    }
+  ],
+  "protocol": "full-authored-opportunity-schedule-v1",
+  "status": "AUTHORING_NOT_FROZEN_NOT_RUN",
+  "unsupported_full_fault_pairs": [],
+  "whole_input_ref": {
+    "bytes": 18885,
+    "path": "DEVELOPMENT/G04/v02/INPUT.json",
+    "sha256": "651bd959dd844aaddab20601694bf3fdd2976db4d1da735ff2ec3f6dc718ef24"
+  },
+  "whole_truth_ref": {
+    "bytes": 15308,
+    "path": "DEVELOPMENT/G04/v02/TRUTH.json",
+    "sha256": "d5012f46a96e99962cc66d7a1cbeca894b431ca92d8c4831f37695a0e31a5cad"
+  },
+  "write_dispatch": "Root native allowlist resolves exact prior originals and validates actual DTO, user/epoch/source anew each call"
+}

@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/onboarding.test.ts (16 tests) 43ms
+ ✓ src/features/onboarding-draft.test.ts (16 tests) 467ms
+ ✓ src/pages/OnboardingPage.test.tsx (13 tests) 2278ms
+   ✓ 真实8步cursor和50/61交易分页；浏览末步不写、不声称完成或授权  542ms
+
+ Test Files  3 passed (3)
+      Tests  45 passed (45)
+   Start at  23:10:51
+   Duration  4.76s (transform 343ms, setup 1.66s, collect 342ms, tests 2.79s, environment 3.52s, prepare 1.02s)
+

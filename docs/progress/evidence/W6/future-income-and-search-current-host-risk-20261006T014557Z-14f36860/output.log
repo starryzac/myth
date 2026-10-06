@@ -1,0 +1,1519 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/pages/AnnualPlanningPage.test.tsx (4 tests | 3 failed) 3280ms
+   ✓ 真实GET消费者显示365未来日加初始日期/三阶段，并区分90参考与无授权年度规划  1225ms
+   × 原件不足保日期与null未知，不画零曲线或隐去来源问题 655ms
+     → Unable to find an element with the text: /未接入已登记来源/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"annual-planning"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"page-intro"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0m看清日期与条件，不提前使用未来资金[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0m年度规划[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m刷新年度规划[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m现金边界未计入未来收入。下方可单独查看和明确确认条件假设，始终不能扩大今天的自主边界。[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"执行参考与年度规划"[39m
+        [33mclass[39m=[32m"annual-summary"[39m
+      [36m>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"card"[39m
+        [36m>[39m
+          [36m<h3>[39m
+            [0m90日财务执行参考[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m证据不足，金额未知[0m
+          [36m</p>[39m
+          [36m<dl[39m
+            [33mclass[39m=[32m"annual-amounts"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m安全闲置[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m未知 · 尚未证明[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m最小余量[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m未知 · 尚未证明[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m资金缺口[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m未知 · 尚未证明[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+          [36m</dl>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m保持原90日财务口径，具体动作仍须原策略、授权与即时资金核验。[0m
+          [36m</p>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"card"[39m
+        [36m>[39m
+          [36m<h3>[39m
+            [0m365日条件规划[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m证据不足，金额未知[0m
+          [36m</p>[39m
+          [36m<dl[39m
+            [33mclass[39m=[32m"annual-amounts"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m规划安全闲置[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m未知 · 尚未证明[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m最小余量[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m未知 · 尚未证明[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m规划缺口[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m未知 · 尚未证明[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+          [36m</dl>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m基于当前核验事实与条件承诺。未来曲线不是已到账现金，年度页面不授予执行权限。[0m
+          [36m</p>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"未来收入与本金"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m未来收入与本金[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0mHTTP夹具：未来收入未接入，不是实测收入预测[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m现金边界未计入未来收入；下方条件假设独立展示，不能当作未来到账承诺。[0m
+        [36m</p>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [0m持仓 [0m
+            [36m<code>[39m
+              [0m10000000-0000-0000-0000-000000000010[0m
+            [36m</code>[39m
+            [0m：缺少已核验本金到账日期，不能推定可用。[0m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"年度日期时间轴"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m年度日期时间轴[0m
+        [36m</h3>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"caption"[39m
+        [36m>[39m
+          [0m今日初始点 + 365个未来日期 · [0m
+          [0mAsia/Shanghai[0m
+          [0m · 服务端查询时点 [0m
+          [0m2026-10-05T12:00:00Z[0m
+        [36m</p>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"notice"[39m
+        [36m>[39m
+          [0m全年余量尚未证明，无法绘制金额曲线。日期仍完整保留，未知值不填零。[0m
+        [36m</p>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m查看规划日期[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m>[39m
+              [0m2026-10-05[0m
+              [0m · [0m
+              [0m今日初始点[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"1"[39m
+            [36m>[39m
+              [0m2026-10-06[0m
+              [0m · [0m
+              [0m第1日[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"2"[39m
+            [36m>[39m
+              [0m2026-10-07[0m
+              [0m · [0m
+              [0m第2日[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"3"[39m
+            [36m>[39m
+              [0m2026-10-08[0m
+              [0m · [0m
+              [0m第3日[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"4"[39m
+            [36m>[39m
+              [0m2026-10-09[0m
+              [0m · [0m
+              [0m第4日[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"5"[39m
+            [36m>[39m
+              [0m2026-10-10[0m
+              [0m · [0m
+              [0m第5日[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"6"[39m
+            [36m>[39m
+              [0m2026-10-11[0m
+              [0m · [0m
+              [0m第6日[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalu...
+   × 错误响应不发布曲线或成功金额 1106ms
+     → Found multiple elements with the role "alert"
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<p[39m
+  [33mrole[39m=[32m"alert"[39m
+[36m>[39m
+  [0m年度规划响应的日期、三阶段、精确金额或只读边界未通过校验[0m
+[36m</p>[39m
+
+Ignored nodes: comments, script, style
+[36m<p[39m
+  [33mrole[39m=[32m"alert"[39m
+[36m>[39m
+  [0m账户事实未通过完整性校验[0m
+  [0m；当前条件规划来源未证明。[0m
+[36m</p>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"annual-planning"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"page-intro"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0m看清日期与条件，不提前使用未来资金[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0m年度规划[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m刷新年度规划[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m现金边界未计入未来收入。下方可单独查看和明确确认条件假设，始终不能扩大今天的自主边界。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m年度规划响应的日期、三阶段、精确金额或只读边界未通过校验[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"完整策略年度保护"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m完整策略年度保护[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m将已确认的一次支出和周期转账上限纳入365日条件规划。尚未绑定历史结清的登记金额保守视为未付；原90日执行参考仍须独立核验。[0m
+        [36m</p>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m刷新完整保护规划[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m完整保护来源不足，全年金额未知[0m
+        [36m</p>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"caption"[39m
+        [36m>[39m
+          [0m只读查询时点 [0m
+          [0m2026-10-05T12:00:00Z[0m
+          [0m · 当前登记义务范围[0m
+          [0m尚未完整证明[0m
+          [0m；不包括完整历史未结清覆盖。[0m
+        [36m</p>[39m
+        [36m<dl[39m
+          [33mclass[39m=[32m"annual-amounts"[39m
+        [36m>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0m完整规划安全闲置[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0m未知 · 尚未证明[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0m完整规划最小余量[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0m未知 · 尚未证明[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0m完整规划缺口[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0m未知 · 尚未证明[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+        [36m</dl>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m查看完整保护日期[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m>[39m
+              [0m2026-10-05[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"1"[39m
+            [36m>[39m
+              [0m2026-10-06[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"2"[39m
+            [36m>[39m
+              [0m2026-10-07[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"3"[39m
+            [36m>[39m
+              [0m2026-10-08[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"4"[39m
+            [36m>[39m
+              [0m2026-10-09[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"5"[39m
+            [36m>[39m
+              [0m2026-10-10[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"6"[39m
+            [36m>[39m
+              [0m2026-10-11[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"7"[39m
+            [36m>[39m
+              [0m2026-10-12[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"8"[39m
+            [36m>[39m
+              [0m2026-10-13[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"9"[39m
+            [36m>[39m
+              [0m2026-10-14[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"10"[39m
+            [36m>[39m
+              [0m2026-10-15[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"11"[39m
+            [36m>[39m
+              [0m2026-10-16[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"12"[39m
+            [36m>[39m
+              [0m2026-10-17[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"13"[39m
+            [36m>[39m
+              [0m2026-10-18[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"14"[39m
+            [36m>[39m
+              [0m2026-10-19[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"15"[39m
+            [36m>[39m
+              [0m2026-10-20[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"16"[39m
+            [36m>[39m
+              [0m2026-10-21[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"17"[39m
+            [36m>[39m
+              [0m2026-10-22[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"18"[39m
+            [36m>[39m
+              [0m2026-10-23[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"19"[39m
+            [36m>[39m
+              [0m2026-10-24[0m
+              [0m · [0m
+              ...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"annual-planning"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"page-intro"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0m看清日期与条件，不提前使用未来资金[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0m年度规划[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m刷新年度规划[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m现金边界未计入未来收入。下方可单独查看和明确确认条件假设，始终不能扩大今天的自主边界。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m年度规划响应的日期、三阶段、精确金额或只读边界未通过校验[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"完整策略年度保护"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m完整策略年度保护[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m将已确认的一次支出和周期转账上限纳入365日条件规划。尚未绑定历史结清的登记金额保守视为未付；原90日执行参考仍须独立核验。[0m
+        [36m</p>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m刷新完整保护规划[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m完整保护来源不足，全年金额未知[0m
+        [36m</p>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"caption"[39m
+        [36m>[39m
+          [0m只读查询时点 [0m
+          [0m2026-10-05T12:00:00Z[0m
+          [0m · 当前登记义务范围[0m
+          [0m尚未完整证明[0m
+          [0m；不包括完整历史未结清覆盖。[0m
+        [36m</p>[39m
+        [36m<dl[39m
+          [33mclass[39m=[32m"annual-amounts"[39m
+        [36m>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0m完整规划安全闲置[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0m未知 · 尚未证明[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0m完整规划最小余量[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0m未知 · 尚未证明[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0m完整规划缺口[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0m未知 · 尚未证明[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+        [36m</dl>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m查看完整保护日期[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m>[39m
+              [0m2026-10-05[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"1"[39m
+            [36m>[39m
+              [0m2026-10-06[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"2"[39m
+            [36m>[39m
+              [0m2026-10-07[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"3"[39m
+            [36m>[39m
+              [0m2026-10-08[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"4"[39m
+            [36m>[39m
+              [0m2026-10-09[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"5"[39m
+            [36m>[39m
+              [0m2026-10-10[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"6"[39m
+            [36m>[39m
+              [0m2026-10-11[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"7"[39m
+            [36m>[39m
+              [0m2026-10-12[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"8"[39m
+            [36m>[39m
+              [0m2026-10-13[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"9"[39m
+            [36m>[39m
+              [0m2026-10-14[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"10"[39m
+            [36m>[39m
+              [0m2026-10-15[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"11"[39m
+            [36m>[39m
+              [0m2026-10-16[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"12"[39m
+            [36m>[39m
+              [0m2026-10-17[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"13"[39m
+            [36m>[39m
+              [0m2026-10-18[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"14"[39m
+            [36m>[39m
+              [0m2026-10-19[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"15"[39m
+            [36m>[39m
+              [0m2026-10-20[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"16"[39m
+            [36m>[39m
+              [0m2026-10-21[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"17"[39m
+            [36m>[39m
+              [0m2026-10-22[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"18"[39m
+            [36m>[39m
+              [0m2026-10-23[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"19"[39m
+            [36m>[39m
+              [0m2026-10-24[0m
+              [0m · [0m
+              ...
+   × 旧90/365区域与FULL保护独立GET；FULL篡改不会掩盖已核对旧视图或发起资金请求 291ms
+     → expected [ '/api/v1/accounts/summary', …(3) ] to deeply equal [ '/api/v1/planning/annual', …(1) ]
+ ✓ src/App.future-income-host.test.tsx (2 tests) 4525ms
+   ✓ 声明响应未知及列表失败仍可跨页GET原键，原body/hash保留并阻止reset  3699ms
+   ✓ 候选原GET已匹配仍保留复核门，明确关闭本地工作区后解除而不发任何写入  824ms
+ ✓ src/App.recovery-host.test.tsx (3 tests) 5104ms
+   ✓ pending原安全恢复准备在当前列表失败时仍独立GET，NOT_FOUND保留完整原件并阻挡reset  3568ms
+   ✓ prepare已独立核对但固定PLANNED尚未终局，跨页门保留且原GET仍可达  896ms
+   ✓ 键盘跳过导航不改变当前路由，实际路由变化聚焦当前内容  638ms
+ ✓ src/pages/DecisionTracePage.test.tsx (10 tests) 2261ms
+   ✓ 八层历史详情、当前来源另注、声明转义且理由定位展开第30条并保持同run  811ms
+   ✓ 刷新read_at后原响应仍保留原始数字词法，不被query结构共享丢失  306ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/pages/AnnualPlanningPage.test.tsx > 原件不足保日期与null未知，不画零曲线或隐去来源问题
+TestingLibraryElementError: Unable to find an element with the text: /未接入已登记来源/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"annual-planning"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"page-intro"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0m看清日期与条件，不提前使用未来资金[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0m年度规划[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m刷新年度规划[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m现金边界未计入未来收入。下方可单独查看和明确确认条件假设，始终不能扩大今天的自主边界。[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"执行参考与年度规划"[39m
+        [33mclass[39m=[32m"annual-summary"[39m
+      [36m>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"card"[39m
+        [36m>[39m
+          [36m<h3>[39m
+            [0m90日财务执行参考[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m证据不足，金额未知[0m
+          [36m</p>[39m
+          [36m<dl[39m
+            [33mclass[39m=[32m"annual-amounts"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m安全闲置[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m未知 · 尚未证明[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m最小余量[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m未知 · 尚未证明[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m资金缺口[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m未知 · 尚未证明[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+          [36m</dl>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m保持原90日财务口径，具体动作仍须原策略、授权与即时资金核验。[0m
+          [36m</p>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"card"[39m
+        [36m>[39m
+          [36m<h3>[39m
+            [0m365日条件规划[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m证据不足，金额未知[0m
+          [36m</p>[39m
+          [36m<dl[39m
+            [33mclass[39m=[32m"annual-amounts"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m规划安全闲置[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m未知 · 尚未证明[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m最小余量[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m未知 · 尚未证明[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m规划缺口[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m未知 · 尚未证明[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+          [36m</dl>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"caption"[39m
+          [36m>[39m
+            [0m基于当前核验事实与条件承诺。未来曲线不是已到账现金，年度页面不授予执行权限。[0m
+          [36m</p>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"未来收入与本金"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m未来收入与本金[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0mHTTP夹具：未来收入未接入，不是实测收入预测[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m现金边界未计入未来收入；下方条件假设独立展示，不能当作未来到账承诺。[0m
+        [36m</p>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [0m持仓 [0m
+            [36m<code>[39m
+              [0m10000000-0000-0000-0000-000000000010[0m
+            [36m</code>[39m
+            [0m：缺少已核验本金到账日期，不能推定可用。[0m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"年度日期时间轴"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m年度日期时间轴[0m
+        [36m</h3>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"caption"[39m
+        [36m>[39m
+          [0m今日初始点 + 365个未来日期 · [0m
+          [0mAsia/Shanghai[0m
+          [0m · 服务端查询时点 [0m
+          [0m2026-10-05T12:00:00Z[0m
+        [36m</p>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"notice"[39m
+        [36m>[39m
+          [0m全年余量尚未证明，无法绘制金额曲线。日期仍完整保留，未知值不填零。[0m
+        [36m</p>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m查看规划日期[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m>[39m
+              [0m2026-10-05[0m
+              [0m · [0m
+              [0m今日初始点[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"1"[39m
+            [36m>[39m
+              [0m2026-10-06[0m
+              [0m · [0m
+              [0m第1日[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"2"[39m
+            [36m>[39m
+              [0m2026-10-07[0m
+              [0m · [0m
+              [0m第2日[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"3"[39m
+            [36m>[39m
+              [0m2026-10-08[0m
+              [0m · [0m
+              [0m第3日[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"4"[39m
+            [36m>[39m
+              [0m2026-10-09[0m
+              [0m · [0m
+              [0m第4日[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"5"[39m
+            [36m>[39m
+              [0m2026-10-10[0m
+              [0m · [0m
+              [0m第5日[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"6"[39m
+            [36m>[39m
+              [0m2026-10-11[0m
+              [0m · [0m
+              [0m第6日[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalu...
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/pages/AnnualPlanningPage.test.tsx:26:239
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/pages/AnnualPlanningPage.test.tsx > 错误响应不发布曲线或成功金额
+TestingLibraryElementError: Found multiple elements with the role "alert"
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<p[39m
+  [33mrole[39m=[32m"alert"[39m
+[36m>[39m
+  [0m年度规划响应的日期、三阶段、精确金额或只读边界未通过校验[0m
+[36m</p>[39m
+
+Ignored nodes: comments, script, style
+[36m<p[39m
+  [33mrole[39m=[32m"alert"[39m
+[36m>[39m
+  [0m账户事实未通过完整性校验[0m
+  [0m；当前条件规划来源未证明。[0m
+[36m</p>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"annual-planning"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"page-intro"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0m看清日期与条件，不提前使用未来资金[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0m年度规划[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m刷新年度规划[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m现金边界未计入未来收入。下方可单独查看和明确确认条件假设，始终不能扩大今天的自主边界。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m年度规划响应的日期、三阶段、精确金额或只读边界未通过校验[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"完整策略年度保护"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m完整策略年度保护[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m将已确认的一次支出和周期转账上限纳入365日条件规划。尚未绑定历史结清的登记金额保守视为未付；原90日执行参考仍须独立核验。[0m
+        [36m</p>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m刷新完整保护规划[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m完整保护来源不足，全年金额未知[0m
+        [36m</p>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"caption"[39m
+        [36m>[39m
+          [0m只读查询时点 [0m
+          [0m2026-10-05T12:00:00Z[0m
+          [0m · 当前登记义务范围[0m
+          [0m尚未完整证明[0m
+          [0m；不包括完整历史未结清覆盖。[0m
+        [36m</p>[39m
+        [36m<dl[39m
+          [33mclass[39m=[32m"annual-amounts"[39m
+        [36m>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0m完整规划安全闲置[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0m未知 · 尚未证明[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0m完整规划最小余量[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0m未知 · 尚未证明[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0m完整规划缺口[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0m未知 · 尚未证明[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+        [36m</dl>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m查看完整保护日期[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m>[39m
+              [0m2026-10-05[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"1"[39m
+            [36m>[39m
+              [0m2026-10-06[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"2"[39m
+            [36m>[39m
+              [0m2026-10-07[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"3"[39m
+            [36m>[39m
+              [0m2026-10-08[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"4"[39m
+            [36m>[39m
+              [0m2026-10-09[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"5"[39m
+            [36m>[39m
+              [0m2026-10-10[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"6"[39m
+            [36m>[39m
+              [0m2026-10-11[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"7"[39m
+            [36m>[39m
+              [0m2026-10-12[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"8"[39m
+            [36m>[39m
+              [0m2026-10-13[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"9"[39m
+            [36m>[39m
+              [0m2026-10-14[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"10"[39m
+            [36m>[39m
+              [0m2026-10-15[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"11"[39m
+            [36m>[39m
+              [0m2026-10-16[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"12"[39m
+            [36m>[39m
+              [0m2026-10-17[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"13"[39m
+            [36m>[39m
+              [0m2026-10-18[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"14"[39m
+            [36m>[39m
+              [0m2026-10-19[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"15"[39m
+            [36m>[39m
+              [0m2026-10-20[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"16"[39m
+            [36m>[39m
+              [0m2026-10-21[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"17"[39m
+            [36m>[39m
+              [0m2026-10-22[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"18"[39m
+            [36m>[39m
+              [0m2026-10-23[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"19"[39m
+            [36m>[39m
+              [0m2026-10-24[0m
+              [0m · [0m
+              ...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"annual-planning"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"page-intro"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0m看清日期与条件，不提前使用未来资金[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0m年度规划[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m刷新年度规划[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"simulation-note"[39m
+      [36m>[39m
+        [0m现金边界未计入未来收入。下方可单独查看和明确确认条件假设，始终不能扩大今天的自主边界。[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0m年度规划响应的日期、三阶段、精确金额或只读边界未通过校验[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"完整策略年度保护"[39m
+        [33mclass[39m=[32m"card readonly-section"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0m完整策略年度保护[0m
+        [36m</h3>[39m
+        [36m<p>[39m
+          [0m将已确认的一次支出和周期转账上限纳入365日条件规划。尚未绑定历史结清的登记金额保守视为未付；原90日执行参考仍须独立核验。[0m
+        [36m</p>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m刷新完整保护规划[0m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0m完整保护来源不足，全年金额未知[0m
+        [36m</p>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"caption"[39m
+        [36m>[39m
+          [0m只读查询时点 [0m
+          [0m2026-10-05T12:00:00Z[0m
+          [0m · 当前登记义务范围[0m
+          [0m尚未完整证明[0m
+          [0m；不包括完整历史未结清覆盖。[0m
+        [36m</p>[39m
+        [36m<dl[39m
+          [33mclass[39m=[32m"annual-amounts"[39m
+        [36m>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0m完整规划安全闲置[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0m未知 · 尚未证明[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0m完整规划最小余量[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0m未知 · 尚未证明[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0m完整规划缺口[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0m未知 · 尚未证明[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+        [36m</dl>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"field"[39m
+        [36m>[39m
+          [0m查看完整保护日期[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m>[39m
+              [0m2026-10-05[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"1"[39m
+            [36m>[39m
+              [0m2026-10-06[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"2"[39m
+            [36m>[39m
+              [0m2026-10-07[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"3"[39m
+            [36m>[39m
+              [0m2026-10-08[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"4"[39m
+            [36m>[39m
+              [0m2026-10-09[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"5"[39m
+            [36m>[39m
+              [0m2026-10-10[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"6"[39m
+            [36m>[39m
+              [0m2026-10-11[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"7"[39m
+            [36m>[39m
+              [0m2026-10-12[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"8"[39m
+            [36m>[39m
+              [0m2026-10-13[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"9"[39m
+            [36m>[39m
+              [0m2026-10-14[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"10"[39m
+            [36m>[39m
+              [0m2026-10-15[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"11"[39m
+            [36m>[39m
+              [0m2026-10-16[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"12"[39m
+            [36m>[39m
+              [0m2026-10-17[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"13"[39m
+            [36m>[39m
+              [0m2026-10-18[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"14"[39m
+            [36m>[39m
+              [0m2026-10-19[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"15"[39m
+            [36m>[39m
+              [0m2026-10-20[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"16"[39m
+            [36m>[39m
+              [0m2026-10-21[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"17"[39m
+            [36m>[39m
+              [0m2026-10-22[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"18"[39m
+            [36m>[39m
+              [0m2026-10-23[0m
+              [0m · [0m
+              [0m未知[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"19"[39m
+            [36m>[39m
+              [0m2026-10-24[0m
+              [0m · [0m
+              ...
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/pages/AnnualPlanningPage.test.tsx:29:197
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/pages/AnnualPlanningPage.test.tsx > 旧90/365区域与FULL保护独立GET；FULL篡改不会掩盖已核对旧视图或发起资金请求
+AssertionError: expected [ '/api/v1/accounts/summary', …(3) ] to deeply equal [ '/api/v1/planning/annual', …(1) ]
+
+- Expected
++ Received
+
+  [
++   "/api/v1/accounts/summary",
++   "/api/v1/demo/state",
+    "/api/v1/planning/annual",
+    "/api/v1/planning/full-annual",
+  ]
+
+ ❯ src/pages/AnnualPlanningPage.test.tsx:35:535
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  3 failed | 16 passed (19)
+   Start at  09:46:06
+   Duration  47.54s (transform 4.97s, setup 49.09s, collect 14.44s, tests 15.17s, environment 100.04s, prepare 5.08s)
+
+undefined
+F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: vitest run src/App.future-income-host.test.tsx src/App.recovery-host.test.tsx src/pages/AnnualPlanningPage.test.tsx src/pages/DecisionTracePage.test.tsx --config vitest.config.ts

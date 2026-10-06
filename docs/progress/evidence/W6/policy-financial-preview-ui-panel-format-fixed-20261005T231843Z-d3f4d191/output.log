@@ -1,0 +1,37 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ❯ src/components/FinancialChangeImpactPanel.test.tsx (4 tests | 1 failed) 528ms
+   × 无自动POST，手动366日期三阶段/精确负差额与没有授权展示 295ms
+     → expected [ <dd></dd>, <dd></dd>, …(1) ] to have a length of 2 but got 3
+   ✓ UNKNOWN不产生零差额或候选曲线，展示原值与具体未证明原因 73ms
+   ✓ 刷新失败隐藏先前成功/金额，不自动重试 93ms
+   ✓ 其他族门禁止新POST，当前candidate/version变化隐藏旧预览 65ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/FinancialChangeImpactPanel.test.tsx > 无自动POST，手动366日期三阶段/精确负差额与没有授权展示
+AssertionError: expected [ <dd></dd>, <dd></dd>, …(1) ] to have a length of 2 but got 3
+
+- Expected
++ Received
+
+- 2
++ 3
+
+ ❯ src/components/FinancialChangeImpactPanel.test.tsx:11:136
+      9|   const source = await financialPreviewFixture(); const calls = instal…
+     10|   fireEvent.click(screen.getByRole('button', { name: '计算财务修改影响' })); a…
+     11|   expect(within(screen.getByLabelText('查看修改影响日期')).getAllByRole('optio…
+       |                                                                                                                                        ^
+     12|   fireEvent.change(screen.getByLabelText('查看修改影响日期'), { target: { valu…
+     13|   expect(within(screen.getByRole('article', { name: '修改影响付款后' })).getB…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  07:18:45
+   Duration  3.04s (transform 313ms, setup 423ms, collect 438ms, tests 528ms, environment 914ms, prepare 281ms)
+

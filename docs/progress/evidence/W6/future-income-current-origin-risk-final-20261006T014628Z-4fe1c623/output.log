@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/future-income-planning.test.ts (22 tests) 93ms
+ ✓ src/components/FutureIncomePlanningPanel.test.tsx (7 tests) 3397ms
+   ✓ 手动读真实路径、完整365且UNKNOWN为null，没有输入未来金额或自动金融执行  632ms
+   ✓ 候选POST→独立GET→明确复核→确认POST→独立GET，绝不因HTTP直接解除门  1007ms
+   ✓ 响应丢失/NOT_FOUND留固定body/key，不自动重发，手动同请求只沿原键  771ms
+   ✓ 来源刷新废弃已复核状态；候选过确认窗只保原件而不确认  431ms
+
+ Test Files  2 passed (2)
+      Tests  29 passed (29)
+   Start at  09:46:31
+   Duration  19.02s (transform 770ms, setup 24.75s, collect 1.79s, tests 3.49s, environment 2.95s, prepare 721ms)
+

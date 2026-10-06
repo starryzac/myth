@@ -1,0 +1,7 @@
+apps\api\app\domain\full_action_set_boundary.py:428: error: Incompatible types in assignment (expression has type "dict[str, Any] | None", variable has type "dict[str, Any]")  [assignment]
+apps\api\app\services\full_action_set_boundary.py:143: error: Need type annotation for "versions" (hint: "versions: dict[<type>, <type>] = ...")  [var-annotated]
+apps\api\app\services\full_action_set_boundary.py:437: error: Incompatible types in assignment (expression has type "TracePolicy | None", variable has type "TraceEvidence")  [assignment]
+apps\api\app\services\full_action_set_boundary.py:444: error: "TraceEvidence" has no attribute "configuration"  [attr-defined]
+apps\api\app\services\full_action_set_boundary.py:445: error: "TraceEvidence" has no attribute "configuration_hash"  [attr-defined]
+apps\api\app\services\full_action_set_boundary.py:446: error: "TraceEvidence" has no attribute "configuration_integrity"  [attr-defined]
+Found 6 errors in 2 files (checked 5 source files)

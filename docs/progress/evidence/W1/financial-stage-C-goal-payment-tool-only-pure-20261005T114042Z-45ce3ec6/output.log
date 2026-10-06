@@ -1,0 +1,79 @@
+........F................F                                               [100%]
+================================== FAILURES ===================================
+___ test_goal_source_identity_and_exact_authority_are_required[old_version] ___
+
+mutation = 'old_version'
+
+    @pytest.mark.parametrize("mutation", ["goal_owner", "destination", "missing_month", "old_version",
+                                         "future_confirmation", "changed_confirmation", "fragment"])
+    def test_goal_source_identity_and_exact_authority_are_required(mutation: str) -> None:
+        fixture, value = goal_actual()
+        if mutation == "goal_owner":
+            value["before"]["tables"]["goals"][0]["policy_id"] = str(UUID(int=899))
+        elif mutation == "destination":
+            value["effect"]["destination_account_id"] = str(UUID(int=899))
+        elif mutation == "missing_month":
+            fixture.tables["evidence_items"] = [row for row in fixture.tables["evidence_items"]
+                                                if row["source_type"] != "SIMULATED_GOAL_MONTH_CONTRIBUTION"]
+            value["before"] = fixture.facts()
+        elif mutation == "old_version":
+            version = copy.deepcopy(fixture.tables["policy_versions"][0])
+            version["id"] = str(UUID(int=899))
+            version["version_number"] = 2
+            fixture.tables["policy_versions"].append(version)
+            value["before"] = fixture.facts()
+>           assert metrics._permission(value)["authorized"] is False
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts\tests\test_mvp_financial_permissions_v2.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1094: in _permission
+    active, version = _current_version(facts, identity, at)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:470: in _current_version
+    _check(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False
+message = 'Candidate replacement is not an exact original formal confirmation'
+
+    def _check(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ObservationError(message)
+E           scripts.mvp_observations.ObservationError: Candidate replacement is not an exact original formal confirmation
+
+scripts\mvp_financial_metrics.py:61: ObservationError
+_______________ test_own_reserved_income_must_match_exact_uses ________________
+
+    def test_own_reserved_income_must_match_exact_uses() -> None:
+        fixture, value = goal_actual(amount=5000)
+        reserve(fixture, value)
+        value["effect"]["income_uses"][0]["amount_cents"] += 1
+        with pytest.raises(Missing, match="original income reservation"):
+>           metrics._permission(value)
+
+scripts\tests\test_mvp_financial_permissions_v2.py:221: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\mvp_financial_metrics.py:1216: in _permission
+    automatic = _goal_allocation_permission(actual, selected)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:722: in _goal_allocation_permission
+    and _eligible_income_uses(actual, version)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\mvp_financial_metrics.py:657: in _eligible_income_uses
+    _check(len(own) == 1 and digest_value(own[0]["uses"]) == digest_value(uses),
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False
+message = "This action's original income reservation differs from its exact effect"
+
+    def _check(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ObservationError(message)
+E           scripts.mvp_observations.ObservationError: This action's original income reservation differs from its exact effect
+
+scripts\mvp_financial_metrics.py:61: ObservationError
+=========================== short test summary info ===========================
+FAILED scripts/tests/test_mvp_financial_permissions_v2.py::test_goal_source_identity_and_exact_authority_are_required[old_version]
+FAILED scripts/tests/test_mvp_financial_permissions_v2.py::test_own_reserved_income_must_match_exact_uses
+2 failed, 24 passed in 0.91s

@@ -1,0 +1,35 @@
+{
+  "run_id": "20261006T034115Z-ef29f063",
+  "task": "W7",
+  "label": "current-full-general-mechanism-producer-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/api/app/domain/full_experiment_asset_selection.py",
+    "apps/api/app/services/full_experiment_asset_selection.py",
+    "apps/api/app/tests/test_full_experiment_asset_selection.py"
+  ],
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "mypy",
+    "--strict",
+    "apps/api/app/domain/full_experiment_asset_selection.py",
+    "apps/api/app/services/full_experiment_asset_selection.py",
+    "apps/api/app/tests/test_full_experiment_asset_selection.py"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T03:41:17.119477+00:00",
+  "finished_at": "2026-10-06T03:41:18.735963+00:00",
+  "wall_seconds": 1.616486,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "f6971e4e02c73ff39673b4f64b5af87102ee7cfd52a7def5edc5220b94276546",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

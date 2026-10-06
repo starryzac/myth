@@ -1,0 +1,346 @@
+.......F....FFFFFFF....F.                                                [100%]
+================================== FAILURES ===================================
+___ test_goal_parameters_use_original_hypothesis_engine_and_keep_ownership ____
+
+    def test_goal_parameters_use_original_hypothesis_engine_and_keep_ownership() -> None:
+        original, hypothesis = goal_case()
+        before = original.model_dump(mode="json")
+        version, candidate, result = goal_curve(
+            USER,
+            original.snapshot,
+            original.versions,
+            original.positions,
+            original.products,
+            hypothesis,
+        )
+        base = compute_boundary(
+            original.snapshot, original.versions, original.positions, original.products
+        )
+>       assert result.safe_idle_cents is not None and base.safe_idle_cents is not None
+E       AssertionError: assert (None is not None)
+E        +  where None = BoundaryResult(algorithm_version='strict-cash-boundary-v1', status='INSUFFICIENT_EVIDENCE', financial_only=True, safe_..._POLICY_CHANGE:00000000-0000-0000-0000-000000000046:7f75092d9d771f973216f21bf73a77b60e1622a2614066985685420082baea39']).safe_idle_cents
+
+apps\api\app\tests\test_scenario_risk_review.py:243: AssertionError
+_ test_product_minimum_is_consumed_and_loss_bound_does_not_claim_real_charge __
+
+    def test_product_minimum_is_consumed_and_loss_bound_does_not_claim_real_charge() -> None:
+        data = product_input(products=[product_input().products[0]], cash=31, cap=31)
+        higher = product_sensitivity(data, product_hypothesis(data, minimum_purchase_cents=32))
+>       assert higher.before.total_purchase_cents == 31 and higher.after.total_purchase_cents == 0
+E       AssertionError: assert (0 == 31)
+E        +  where 0 = FullAssetPlanningResult(algorithm_version='finite-integer-original-product-portfolio-v1', policy_id=UUID('00000000-000...1, funds_use_date=datetime.date(2027, 1, 2), ladder_status='NOT_REQUESTED', reasons=['EXACT_REGISTERED_FINITE_DOMAIN']).total_purchase_cents
+E        +    where FullAssetPlanningResult(algorithm_version='finite-integer-original-product-portfolio-v1', policy_id=UUID('00000000-000...1, funds_use_date=datetime.date(2027, 1, 2), ladder_status='NOT_REQUESTED', reasons=['EXACT_REGISTERED_FINITE_DOMAIN']) = ProductSensitivity(original_product=AssetProductTerms(product_id=UUID('00000000-0000-0000-0000-00000000000a'), product...imizer=False, full_protection_consumed_by_optimizer=False, original_positions_unchanged=True, quotation_verified=False).before
+
+apps\api\app\tests\test_scenario_risk_review.py:310: AssertionError
+_ test_real_json_uuid_http_reaches_original_engine_and_replays_without_writes _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017D9554DFA0>
+
+    def test_real_json_uuid_http_reaches_original_engine_and_replays_without_writes(
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+>       data = captured()
+               ^^^^^^^^^^
+
+apps\api\app\tests\test_scenario_risk_review.py:399: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def captured() -> service.Captured:
+        original, projection = bill_case()
+        zone = original.snapshot.timezone
+        first = original.snapshot.as_of.date()
+        rows = (
+            projection.full_annual_projection.calculation_trace
+            if projection.full_annual_projection
+            else []
+        )
+        audit = __import__(
+            "app.services.dashboard_types", fromlist=["DashboardAuditCard"]
+>       ).DashboardAuditCard(epoch_id=EPOCH, epoch_status="OPEN", status="VALID", complete=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 2 validation errors for DashboardAuditCard
+E       anchored_run_statuses
+E         Field required [type=missing, input_value={'epoch_id': UUID('000000...ALID', 'complete': True}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+E       epoch_status
+E         Extra inputs are not permitted [type=extra_forbidden, input_value='OPEN', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_scenario_risk_review.py:328: ValidationError
+_ test_client_results_bank_identity_and_clock_are_not_request_fields[result-100000] _
+
+field = 'result', value = 100000
+
+    @pytest.mark.parametrize(
+        "field,value",
+        [
+            ("result", 100000),
+            ("clock", "2029-01-01"),
+            ("user_id", str(USER)),
+            ("receipt", {}),
+            ("authority", True),
+        ],
+    )
+    def test_client_results_bank_identity_and_clock_are_not_request_fields(
+        field: str, value: Any
+    ) -> None:
+>       data = captured()
+               ^^^^^^^^^^
+
+apps\api\app\tests\test_scenario_risk_review.py:441: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def captured() -> service.Captured:
+        original, projection = bill_case()
+        zone = original.snapshot.timezone
+        first = original.snapshot.as_of.date()
+        rows = (
+            projection.full_annual_projection.calculation_trace
+            if projection.full_annual_projection
+            else []
+        )
+        audit = __import__(
+            "app.services.dashboard_types", fromlist=["DashboardAuditCard"]
+>       ).DashboardAuditCard(epoch_id=EPOCH, epoch_status="OPEN", status="VALID", complete=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 2 validation errors for DashboardAuditCard
+E       anchored_run_statuses
+E         Field required [type=missing, input_value={'epoch_id': UUID('000000...ALID', 'complete': True}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+E       epoch_status
+E         Extra inputs are not permitted [type=extra_forbidden, input_value='OPEN', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_scenario_risk_review.py:328: ValidationError
+_ test_client_results_bank_identity_and_clock_are_not_request_fields[clock-2029-01-01] _
+
+field = 'clock', value = '2029-01-01'
+
+    @pytest.mark.parametrize(
+        "field,value",
+        [
+            ("result", 100000),
+            ("clock", "2029-01-01"),
+            ("user_id", str(USER)),
+            ("receipt", {}),
+            ("authority", True),
+        ],
+    )
+    def test_client_results_bank_identity_and_clock_are_not_request_fields(
+        field: str, value: Any
+    ) -> None:
+>       data = captured()
+               ^^^^^^^^^^
+
+apps\api\app\tests\test_scenario_risk_review.py:441: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def captured() -> service.Captured:
+        original, projection = bill_case()
+        zone = original.snapshot.timezone
+        first = original.snapshot.as_of.date()
+        rows = (
+            projection.full_annual_projection.calculation_trace
+            if projection.full_annual_projection
+            else []
+        )
+        audit = __import__(
+            "app.services.dashboard_types", fromlist=["DashboardAuditCard"]
+>       ).DashboardAuditCard(epoch_id=EPOCH, epoch_status="OPEN", status="VALID", complete=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 2 validation errors for DashboardAuditCard
+E       anchored_run_statuses
+E         Field required [type=missing, input_value={'epoch_id': UUID('000000...ALID', 'complete': True}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+E       epoch_status
+E         Extra inputs are not permitted [type=extra_forbidden, input_value='OPEN', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_scenario_risk_review.py:328: ValidationError
+_ test_client_results_bank_identity_and_clock_are_not_request_fields[user_id-00000000-0000-0000-0000-000000000001] _
+
+field = 'user_id', value = '00000000-0000-0000-0000-000000000001'
+
+    @pytest.mark.parametrize(
+        "field,value",
+        [
+            ("result", 100000),
+            ("clock", "2029-01-01"),
+            ("user_id", str(USER)),
+            ("receipt", {}),
+            ("authority", True),
+        ],
+    )
+    def test_client_results_bank_identity_and_clock_are_not_request_fields(
+        field: str, value: Any
+    ) -> None:
+>       data = captured()
+               ^^^^^^^^^^
+
+apps\api\app\tests\test_scenario_risk_review.py:441: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def captured() -> service.Captured:
+        original, projection = bill_case()
+        zone = original.snapshot.timezone
+        first = original.snapshot.as_of.date()
+        rows = (
+            projection.full_annual_projection.calculation_trace
+            if projection.full_annual_projection
+            else []
+        )
+        audit = __import__(
+            "app.services.dashboard_types", fromlist=["DashboardAuditCard"]
+>       ).DashboardAuditCard(epoch_id=EPOCH, epoch_status="OPEN", status="VALID", complete=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 2 validation errors for DashboardAuditCard
+E       anchored_run_statuses
+E         Field required [type=missing, input_value={'epoch_id': UUID('000000...ALID', 'complete': True}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+E       epoch_status
+E         Extra inputs are not permitted [type=extra_forbidden, input_value='OPEN', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_scenario_risk_review.py:328: ValidationError
+_ test_client_results_bank_identity_and_clock_are_not_request_fields[receipt-value3] _
+
+field = 'receipt', value = {}
+
+    @pytest.mark.parametrize(
+        "field,value",
+        [
+            ("result", 100000),
+            ("clock", "2029-01-01"),
+            ("user_id", str(USER)),
+            ("receipt", {}),
+            ("authority", True),
+        ],
+    )
+    def test_client_results_bank_identity_and_clock_are_not_request_fields(
+        field: str, value: Any
+    ) -> None:
+>       data = captured()
+               ^^^^^^^^^^
+
+apps\api\app\tests\test_scenario_risk_review.py:441: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def captured() -> service.Captured:
+        original, projection = bill_case()
+        zone = original.snapshot.timezone
+        first = original.snapshot.as_of.date()
+        rows = (
+            projection.full_annual_projection.calculation_trace
+            if projection.full_annual_projection
+            else []
+        )
+        audit = __import__(
+            "app.services.dashboard_types", fromlist=["DashboardAuditCard"]
+>       ).DashboardAuditCard(epoch_id=EPOCH, epoch_status="OPEN", status="VALID", complete=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 2 validation errors for DashboardAuditCard
+E       anchored_run_statuses
+E         Field required [type=missing, input_value={'epoch_id': UUID('000000...ALID', 'complete': True}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+E       epoch_status
+E         Extra inputs are not permitted [type=extra_forbidden, input_value='OPEN', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_scenario_risk_review.py:328: ValidationError
+_ test_client_results_bank_identity_and_clock_are_not_request_fields[authority-True] _
+
+field = 'authority', value = True
+
+    @pytest.mark.parametrize(
+        "field,value",
+        [
+            ("result", 100000),
+            ("clock", "2029-01-01"),
+            ("user_id", str(USER)),
+            ("receipt", {}),
+            ("authority", True),
+        ],
+    )
+    def test_client_results_bank_identity_and_clock_are_not_request_fields(
+        field: str, value: Any
+    ) -> None:
+>       data = captured()
+               ^^^^^^^^^^
+
+apps\api\app\tests\test_scenario_risk_review.py:441: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def captured() -> service.Captured:
+        original, projection = bill_case()
+        zone = original.snapshot.timezone
+        first = original.snapshot.as_of.date()
+        rows = (
+            projection.full_annual_projection.calculation_trace
+            if projection.full_annual_projection
+            else []
+        )
+        audit = __import__(
+            "app.services.dashboard_types", fromlist=["DashboardAuditCard"]
+>       ).DashboardAuditCard(epoch_id=EPOCH, epoch_status="OPEN", status="VALID", complete=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 2 validation errors for DashboardAuditCard
+E       anchored_run_statuses
+E         Field required [type=missing, input_value={'epoch_id': UUID('000000...ALID', 'complete': True}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+E       epoch_status
+E         Extra inputs are not permitted [type=extra_forbidden, input_value='OPEN', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_scenario_risk_review.py:328: ValidationError
+_________ test_stale_actual_source_rejected_before_hypothesis_engine __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017D955CBA70>
+
+    def test_stale_actual_source_rejected_before_hypothesis_engine(
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+>       data = captured()
+               ^^^^^^^^^^
+
+apps\api\app\tests\test_scenario_risk_review.py:464: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def captured() -> service.Captured:
+        original, projection = bill_case()
+        zone = original.snapshot.timezone
+        first = original.snapshot.as_of.date()
+        rows = (
+            projection.full_annual_projection.calculation_trace
+            if projection.full_annual_projection
+            else []
+        )
+        audit = __import__(
+            "app.services.dashboard_types", fromlist=["DashboardAuditCard"]
+>       ).DashboardAuditCard(epoch_id=EPOCH, epoch_status="OPEN", status="VALID", complete=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 2 validation errors for DashboardAuditCard
+E       anchored_run_statuses
+E         Field required [type=missing, input_value={'epoch_id': UUID('000000...ALID', 'complete': True}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+E       epoch_status
+E         Extra inputs are not permitted [type=extra_forbidden, input_value='OPEN', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_scenario_risk_review.py:328: ValidationError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_scenario_risk_review.py::test_goal_parameters_use_original_hypothesis_engine_and_keep_ownership
+FAILED apps/api/app/tests/test_scenario_risk_review.py::test_product_minimum_is_consumed_and_loss_bound_does_not_claim_real_charge
+FAILED apps/api/app/tests/test_scenario_risk_review.py::test_real_json_uuid_http_reaches_original_engine_and_replays_without_writes
+FAILED apps/api/app/tests/test_scenario_risk_review.py::test_client_results_bank_identity_and_clock_are_not_request_fields[result-100000]
+FAILED apps/api/app/tests/test_scenario_risk_review.py::test_client_results_bank_identity_and_clock_are_not_request_fields[clock-2029-01-01]
+FAILED apps/api/app/tests/test_scenario_risk_review.py::test_client_results_bank_identity_and_clock_are_not_request_fields[user_id-00000000-0000-0000-0000-000000000001]
+FAILED apps/api/app/tests/test_scenario_risk_review.py::test_client_results_bank_identity_and_clock_are_not_request_fields[receipt-value3]
+FAILED apps/api/app/tests/test_scenario_risk_review.py::test_client_results_bank_identity_and_clock_are_not_request_fields[authority-True]
+FAILED apps/api/app/tests/test_scenario_risk_review.py::test_stale_actual_source_rejected_before_hypothesis_engine
+9 failed, 16 passed, 1 warning in 7.03s

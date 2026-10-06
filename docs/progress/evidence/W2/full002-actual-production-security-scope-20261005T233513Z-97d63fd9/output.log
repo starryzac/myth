@@ -1,0 +1,2020 @@
+run_id=20261005T233514Z-c0db0a3a
++ uv run --frozen python scripts/security_check.py
+[
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 31
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\api\\errors.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 31
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 31,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 346
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\asset_allocation.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 346
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 346,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 165
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\asset_exposure.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 165
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 165,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 180
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\asset_exposure.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 180
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 180,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 543
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\audit_chain.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 543
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 543,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 800
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\audit_chain.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 800
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 800,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 801
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\audit_chain.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 801
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 801,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 1169
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\audit_chain.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 1169
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 1169,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 2379
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\audit_chain.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 2379
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 2379,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 2392
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\audit_chain.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 2392
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 2392,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 27,
+      "row": 450
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\boundary.py",
+    "fix": null,
+    "location": {
+      "column": 21,
+      "row": 450
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 450,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 145
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\external_bank_fact.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 145
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 145,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 159
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\finite_uncertainty.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 159
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 159,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 168
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\finite_uncertainty.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 168
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 168,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 171
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\finite_uncertainty.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 171
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 171,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 365
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\full_action_set_boundary.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 365
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 365,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 362
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\full_asset_execution.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 362
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 362,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 186
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\full_policy_change_impact.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 186
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 186,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 280
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\full_policy_change_impact.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 280
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 280,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 281
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\full_policy_change_impact.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 281
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 281,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 371
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\full_policy_change_impact.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 371
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 371,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 276
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\full_recovery_execution.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 276
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 276,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 411
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\goal_release_provenance.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 411
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 411,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 234
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\income_ledger.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 234
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 234,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 447
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\pattern_suggestions.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 447
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 447,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 270
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\domain\\scenario_simulation.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 270
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 270,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 175
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\main.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 175
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 175,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 160
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\autonomy.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 160
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 160,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 163
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\autonomy.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 163
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 163,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 185
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\autonomy.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 185
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 185,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 308
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\autonomy.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 308
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 308,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 416
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\autonomy.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 416
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 416,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 238
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\command_delivery.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 238
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 238,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 83
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\decision_recording.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 83
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 83,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 295
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\decision_recording.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 295
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 295,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 916
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\demo_console.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 916
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 916,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 1018
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\demo_console.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 1018
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 1018,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 27,
+      "row": 1048
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\demo_console.py",
+    "fix": null,
+    "location": {
+      "column": 21,
+      "row": 1048
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 1048,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 31,
+      "row": 1121
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\demo_console.py",
+    "fix": null,
+    "location": {
+      "column": 25,
+      "row": 1121
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 1121,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 419
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 419
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 419,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 556
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 556
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 556,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 740
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 740
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 740,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 782
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 782
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 782,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 848
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 848
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 848,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 509
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_bank.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 509
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 509,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 516
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_bank.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 516
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 516,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 528
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_bank.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 528
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 528,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 686
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_bank.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 686
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 686,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 693
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_bank.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 693
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 693,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 737
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_bank.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 737
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 737,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 161
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_planning.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 161
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 161,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 195
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_planning.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 195
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 195,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 197
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_planning.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 197
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 197,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 267
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_planning.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 267
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 267,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 299
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_planning.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 299
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 299,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 130
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_projection.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 130
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 130,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 448
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_projection.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 448
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 448,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 567
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_projection.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 567
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 567,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 717
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_projection.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 717
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 717,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 403
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_sources.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 403
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 403,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 457
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\execution_sources.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 457
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 457,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 661
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\experiment_arms.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 661
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 661,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 73
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\external_bank_facts.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 73
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 73,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 275
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\external_bank_facts.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 275
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 275,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 736
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\external_bank_facts.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 736
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 736,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 841
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\external_bank_facts.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 841
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 841,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 91
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_action_set_boundary.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 91
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 91,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 161
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_action_set_boundary.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 161
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 161,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 349
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_asset_execution_dispatch.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 349
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 349,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 636
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_asset_execution_dispatch.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 636
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 636,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 27,
+      "row": 256
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_goal_conflicts.py",
+    "fix": null,
+    "location": {
+      "column": 21,
+      "row": 256
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 256,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 27,
+      "row": 261
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_goal_conflicts.py",
+    "fix": null,
+    "location": {
+      "column": 21,
+      "row": 261
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 261,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 1184
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_goal_release_execution.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 1184
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 1184,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 1206
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_goal_release_execution.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 1206
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 1206,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S110",
+    "end_location": {
+      "column": 21,
+      "row": 1341
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_goal_release_execution.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 1340
+    },
+    "message": "`try`-`except`-`pass` detected, consider logging the exception",
+    "name": "try-except-pass",
+    "noqa_row": 1340,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/try-except-pass"
+  },
+  {
+    "cell": null,
+    "code": "S110",
+    "end_location": {
+      "column": 21,
+      "row": 1359
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_goal_release_execution.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 1358
+    },
+    "message": "`try`-`except`-`pass` detected, consider logging the exception",
+    "name": "try-except-pass",
+    "noqa_row": 1358,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/try-except-pass"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 66
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_goal_release_reader.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 66
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 66,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 91
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_goal_release_reader.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 91
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 91,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 730
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_intervention.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 730
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 730,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 939
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_intervention.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 939
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 939,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 655
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_payment_permissions.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 655
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 655,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 924
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_payment_permissions.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 924
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 924,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 1018
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_payment_permissions.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 1018
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 1018,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 136
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_policy_change_impact.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 136
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 136,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 1280
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\full_policy_lifecycle.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 1280
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 1280,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 238
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\income_ledger.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 238
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 238,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 96
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\living_reserve.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 96
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 96,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 438
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\policy_compilation.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 438
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 438,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 234
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\policy_discovery.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 234
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 234,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 301
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\policy_discovery.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 301
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 301,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 621
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\policy_lifecycle.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 621
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 621,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 207
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\policy_suggestions.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 207
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 207,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 376
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\policy_suggestions.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 376
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 376,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 11,
+      "row": 264
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\question_intervention_producer.py",
+    "fix": null,
+    "location": {
+      "column": 5,
+      "row": 264
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 264,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 166
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\question_workflow.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 166
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 166,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 167
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\question_workflow.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 167
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 167,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 438
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\question_workflow.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 438
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 438,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 262
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\recovery.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 262
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 262,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 31,
+      "row": 394
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\recovery.py",
+    "fix": null,
+    "location": {
+      "column": 25,
+      "row": 394
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 394,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 408
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\recovery.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 408
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 408,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 23,
+      "row": 457
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\recovery.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 457
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 457,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 517
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\recovery.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 517
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 517,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 276
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\recovery_projection.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 276
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 276,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 766
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\scenario_runner.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 766
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 766,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 19,
+      "row": 815
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\scenario_runner.py",
+    "fix": null,
+    "location": {
+      "column": 13,
+      "row": 815
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 815,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  },
+  {
+    "cell": null,
+    "code": "S101",
+    "end_location": {
+      "column": 15,
+      "row": 271
+    },
+    "filename": "F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\apps\\api\\app\\services\\transaction_category.py",
+    "fix": null,
+    "location": {
+      "column": 9,
+      "row": 271
+    },
+    "message": "Use of `assert` detected",
+    "name": "assert",
+    "noqa_row": 271,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/assert"
+  }
+]
+{"protocol": "bounded-funds-security-command-v1", "exit_code": 1, "scope": "RUFF_S_STATIC_PRODUCTION_API_ONLY", "dependency_vulnerability_scan": "NOT_RUN", "penetration_test": "NOT_RUN", "financial_risk_integration": "NOT_RUN_BY_THIS_COMMAND", "task_closed": false}
+QUALITY_CHILD_EXIT=1

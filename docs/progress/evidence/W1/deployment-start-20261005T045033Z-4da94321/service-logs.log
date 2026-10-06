@@ -1,0 +1,160 @@
+web-1   | 2026-10-05T04:50:55.805312907Z /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+web-1   | 2026-10-05T04:50:55.805340849Z /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+api-1   | 2026-10-05T04:50:52.946108165Z INFO:     Started server process [1]
+init-1  | 2026-10-05T04:50:49.487822751Z {
+api-1   | 2026-10-05T04:50:52.946140253Z INFO:     Waiting for application startup.
+web-1   | 2026-10-05T04:50:55.806106782Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+init-1  | 2026-10-05T04:50:49.487851503Z   "status": "FRESH_DEMO_INITIALIZED",
+init-1  | 2026-10-05T04:50:49.487853826Z   "database": "bf_test_f3f9703e75684a62888f73804e02d1db",
+init-1  | 2026-10-05T04:50:49.487855259Z   "seed_called": true,
+api-1   | 2026-10-05T04:50:52.948334427Z INFO:     Application startup complete.
+web-1   | 2026-10-05T04:50:55.811012475Z 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+api-1   | 2026-10-05T04:50:52.948543495Z INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+init-1  | 2026-10-05T04:50:49.487856379Z   "summary": {
+api-1   | 2026-10-05T04:50:55.536677629Z {"event": "http_request", "request_id": "a14b26f2-1c65-4a69-9e23-4f113e842e36", "method": "GET", "status": 200, "duration_ms": 80.257}
+init-1  | 2026-10-05T04:50:49.487857499Z     "simulation": true,
+api-1   | 2026-10-05T04:50:55.536727951Z INFO:     127.0.0.1:52780 - "GET /api/v1/health HTTP/1.1" 200 OK
+api-1   | 2026-10-05T04:51:00.841164781Z {"event": "http_request", "request_id": "59429f2e-019d-427a-8720-f80a905d464b", "method": "GET", "status": 200, "duration_ms": 1.075}
+web-1   | 2026-10-05T04:50:55.821045224Z 10-listen-on-ipv6-by-default.sh: info: /etc/nginx/conf.d/default.conf differs from the packaged version
+web-1   | 2026-10-05T04:50:55.821202641Z /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+web-1   | 2026-10-05T04:50:55.821513015Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+web-1   | 2026-10-05T04:50:55.824375228Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+init-1  | 2026-10-05T04:50:49.487858681Z     "summary_version": "seed-summary-v3",
+web-1   | 2026-10-05T04:50:55.825823051Z /docker-entrypoint.sh: Configuration complete; ready for start up
+init-1  | 2026-10-05T04:50:49.487859788Z     "seed_version": "mvp-301-v6",
+init-1  | 2026-10-05T04:50:49.487860837Z     "user_id": "271a9827-f82a-5be6-9e0a-50f721029fb0",
+init-1  | 2026-10-05T04:50:49.487861951Z     "as_of": "2026-10-03T16:00:00Z",
+api-1   | 2026-10-05T04:51:00.841185394Z INFO:     172.22.0.3:52224 - "GET /api/v1/health HTTP/1.1" 200 OK
+init-1  | 2026-10-05T04:50:49.487863058Z     "period_start": "2026-08-05",
+init-1  | 2026-10-05T04:50:49.487864123Z     "period_end": "2026-10-03",
+web-1   | 2026-10-05T04:50:55.833624866Z 2026/10/05 04:50:55 [notice] 1#1: using the "epoll" event method
+web-1   | 2026-10-05T04:50:55.833650056Z 2026/10/05 04:50:55 [notice] 1#1: nginx/1.31.6
+web-1   | 2026-10-05T04:50:55.833651845Z 2026/10/05 04:50:55 [notice] 1#1: built by gcc 15.2.0 (Alpine 15.2.0) 
+init-1  | 2026-10-05T04:50:49.487865198Z     "days": 60,
+api-1   | 2026-10-05T04:51:00.847693665Z {"event": "http_request", "request_id": "99709f12-bc43-45ac-97b9-309861c3f232", "method": "GET", "status": 200, "duration_ms": 1.057}
+init-1  | 2026-10-05T04:50:49.487866220Z     "counts": {
+init-1  | 2026-10-05T04:50:49.487867372Z       "accounts": 5,
+api-1   | 2026-10-05T04:51:00.847716225Z INFO:     127.0.0.1:32790 - "GET /api/v1/health HTTP/1.1" 200 OK
+init-1  | 2026-10-05T04:50:49.487868488Z       "action_plans": 0,
+init-1  | 2026-10-05T04:50:49.487869515Z       "action_receipts": 0,
+web-1   | 2026-10-05T04:50:55.833653112Z 2026/10/05 04:50:55 [notice] 1#1: OS: Linux 6.18.33.2-microsoft-standard-WSL2
+init-1  | 2026-10-05T04:50:49.487870606Z       "action_resource_reservations": 0,
+init-1  | 2026-10-05T04:50:49.487871661Z       "asset_positions": 3,
+web-1   | 2026-10-05T04:50:55.833654295Z 2026/10/05 04:50:55 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+web-1   | 2026-10-05T04:50:55.833888936Z 2026/10/05 04:50:55 [notice] 1#1: start worker processes
+web-1   | 2026-10-05T04:50:55.834023438Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 29
+init-1  | 2026-10-05T04:50:49.487872649Z       "asset_products": 6,
+web-1   | 2026-10-05T04:50:55.834211008Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 30
+init-1  | 2026-10-05T04:50:49.487873686Z       "bank_operations": 0,
+web-1   | 2026-10-05T04:50:55.834337288Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 31
+init-1  | 2026-10-05T04:50:49.487875114Z       "credit_card_bills": 3,
+web-1   | 2026-10-05T04:50:55.834494419Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 32
+web-1   | 2026-10-05T04:50:55.834550795Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 33
+web-1   | 2026-10-05T04:50:55.834734938Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 34
+init-1  | 2026-10-05T04:50:49.487876257Z       "decision_constraints": 0,
+web-1   | 2026-10-05T04:50:55.834917357Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 35
+init-1  | 2026-10-05T04:50:49.487877269Z       "decision_runs": 0,
+init-1  | 2026-10-05T04:50:49.487878276Z       "evidence_items": 256,
+web-1   | 2026-10-05T04:50:55.835147709Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 36
+api-1   | 2026-10-05T04:51:05.897951006Z {"event": "http_request", "request_id": "34280090-626b-409d-99ed-10b990cef36b", "method": "GET", "status": 200, "duration_ms": 0.929}
+web-1   | 2026-10-05T04:50:55.835281776Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 37
+web-1   | 2026-10-05T04:50:55.835633886Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 38
+web-1   | 2026-10-05T04:50:55.835858073Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 39
+web-1   | 2026-10-05T04:50:55.836111864Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 40
+init-1  | 2026-10-05T04:50:49.487879278Z       "external_bank_facts": 0,
+api-1   | 2026-10-05T04:51:05.897989511Z INFO:     172.22.0.3:52226 - "GET /api/v1/health HTTP/1.1" 200 OK
+init-1  | 2026-10-05T04:50:49.487880312Z       "goals": 0,
+web-1   | 2026-10-05T04:50:55.836413048Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 41
+init-1  | 2026-10-05T04:50:49.487881325Z       "policies": 0,
+api-1   | 2026-10-05T04:51:06.143415081Z {"event": "http_request", "request_id": "befe4564-b8b2-488c-8d73-c49e8a8ea67f", "method": "GET", "status": 200, "duration_ms": 0.854}
+api-1   | 2026-10-05T04:51:06.143476047Z INFO:     127.0.0.1:32802 - "GET /api/v1/health HTTP/1.1" 200 OK
+init-1  | 2026-10-05T04:50:49.487882312Z       "policy_proposals": 0,
+init-1  | 2026-10-05T04:50:49.487883346Z       "policy_versions": 0,
+web-1   | 2026-10-05T04:50:55.836856077Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 42
+init-1  | 2026-10-05T04:50:49.487884380Z       "simulated_bank_postings": 17,
+web-1   | 2026-10-05T04:50:55.837196673Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 43
+init-1  | 2026-10-05T04:50:49.487885487Z       "simulated_bank_redemptions": 0,
+init-1  | 2026-10-05T04:50:49.487886499Z       "transactions": 129,
+web-1   | 2026-10-05T04:50:55.837652383Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 44
+init-1  | 2026-10-05T04:50:49.487887513Z       "users": 1
+init-1  | 2026-10-05T04:50:49.487888513Z     },
+web-1   | 2026-10-05T04:50:55.837981986Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 45
+init-1  | 2026-10-05T04:50:49.487889501Z     "cash_balance_cents": 3462400,
+web-1   | 2026-10-05T04:50:55.838482523Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 46
+init-1  | 2026-10-05T04:50:49.487890633Z     "asset_principal_cents": 500000,
+init-1  | 2026-10-05T04:50:49.487891692Z     "asset_yield_cents": 0,
+web-1   | 2026-10-05T04:50:55.838890127Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 47
+init-1  | 2026-10-05T04:50:49.487892726Z     "total_asset_cents": 3962400,
+init-1  | 2026-10-05T04:50:49.487893742Z     "credit_card_unpaid_cents": 145000,
+init-1  | 2026-10-05T04:50:49.487894867Z     "dataset_sha256": "ce8a096b4819903180e2f3d291daf7a17f4f2d270e525f07faad200ec89b8228"
+init-1  | 2026-10-05T04:50:49.487899378Z   }
+web-1   | 2026-10-05T04:50:55.839230144Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 48
+init-1  | 2026-10-05T04:50:49.487900501Z }
+web-1   | 2026-10-05T04:50:55.839782183Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 49
+web-1   | 2026-10-05T04:50:55.840094899Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 50
+web-1   | 2026-10-05T04:50:55.840522781Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 51
+web-1   | 2026-10-05T04:50:55.841021807Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 52
+web-1   | 2026-10-05T04:50:55.841364314Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 53
+web-1   | 2026-10-05T04:50:55.841785939Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 54
+web-1   | 2026-10-05T04:50:55.842277807Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 55
+web-1   | 2026-10-05T04:50:55.842732030Z 2026/10/05 04:50:55 [notice] 1#1: start worker process 56
+web-1   | 2026-10-05T04:51:00.841548749Z 127.0.0.1 - - [05/Oct/2026:04:51:00 +0000] "GET /api/v1/health HTTP/1.1" 200 63 "-" "Wget" "-"
+web-1   | 2026-10-05T04:51:05.898392275Z 127.0.0.1 - - [05/Oct/2026:04:51:05 +0000] "GET /api/v1/health HTTP/1.1" 200 63 "-" "Wget" "-"
+db-1    | 2026-10-05T04:50:36.425979807Z The files belonging to this database system will be owned by user "postgres".
+db-1    | 2026-10-05T04:50:36.426020974Z This user must also own the server process.
+db-1    | 2026-10-05T04:50:36.426023652Z 
+db-1    | 2026-10-05T04:50:36.426025074Z The database cluster will be initialized with locale "en_US.utf8".
+db-1    | 2026-10-05T04:50:36.426026506Z The default database encoding has accordingly been set to "UTF8".
+db-1    | 2026-10-05T04:50:36.426027680Z The default text search configuration will be set to "english".
+db-1    | 2026-10-05T04:50:36.426028961Z 
+db-1    | 2026-10-05T04:50:36.426030055Z Data page checksums are disabled.
+db-1    | 2026-10-05T04:50:36.426031090Z 
+db-1    | 2026-10-05T04:50:36.426032061Z fixing permissions on existing directory /var/lib/postgresql/data ... ok
+db-1    | 2026-10-05T04:50:36.428263316Z creating subdirectories ... ok
+db-1    | 2026-10-05T04:50:36.428273534Z selecting dynamic shared memory implementation ... posix
+db-1    | 2026-10-05T04:50:36.440582249Z selecting default max_connections ... 100
+db-1    | 2026-10-05T04:50:36.455309221Z selecting default shared_buffers ... 128MB
+db-1    | 2026-10-05T04:50:36.455861048Z selecting default time zone ... UTC
+db-1    | 2026-10-05T04:50:36.457700911Z creating configuration files ... ok
+db-1    | 2026-10-05T04:50:36.556585004Z running bootstrap script ... ok
+db-1    | 2026-10-05T04:50:36.728816097Z sh: locale: not found
+db-1    | 2026-10-05T04:50:36.728888040Z 2026-10-05 04:50:36.728 UTC [35] WARNING:  no usable system locales were found
+db-1    | 2026-10-05T04:50:37.103350797Z performing post-bootstrap initialization ... ok
+db-1    | 2026-10-05T04:50:37.232711571Z syncing data to disk ... ok
+db-1    | 2026-10-05T04:50:37.232744584Z 
+db-1    | 2026-10-05T04:50:37.232746535Z 
+db-1    | 2026-10-05T04:50:37.232747737Z Success. You can now start the database server using:
+db-1    | 2026-10-05T04:50:37.232748891Z 
+db-1    | 2026-10-05T04:50:37.232749928Z     pg_ctl -D /var/lib/postgresql/data -l logfile start
+db-1    | 2026-10-05T04:50:37.232744309Z initdb: warning: enabling "trust" authentication for local connections
+db-1    | 2026-10-05T04:50:37.232750972Z 
+db-1    | 2026-10-05T04:50:37.232757588Z initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+db-1    | 2026-10-05T04:50:37.267330827Z waiting for server to start....2026-10-05 04:50:37.267 UTC [41] LOG:  starting PostgreSQL 16.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+db-1    | 2026-10-05T04:50:37.268580007Z 2026-10-05 04:50:37.268 UTC [41] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+db-1    | 2026-10-05T04:50:37.272393096Z 2026-10-05 04:50:37.272 UTC [44] LOG:  database system was shut down at 2026-10-05 04:50:37 UTC
+db-1    | 2026-10-05T04:50:37.276398917Z 2026-10-05 04:50:37.276 UTC [41] LOG:  database system is ready to accept connections
+db-1    | 2026-10-05T04:50:37.351379115Z  done
+db-1    | 2026-10-05T04:50:37.351399703Z server started
+db-1    | 2026-10-05T04:50:37.397686020Z CREATE DATABASE
+db-1    | 2026-10-05T04:50:37.398055647Z 
+db-1    | 2026-10-05T04:50:37.398135876Z 
+db-1    | 2026-10-05T04:50:37.398138602Z /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+db-1    | 2026-10-05T04:50:37.398139951Z 
+db-1    | 2026-10-05T04:50:37.398915232Z waiting for server to shut down....2026-10-05 04:50:37.398 UTC [41] LOG:  received fast shutdown request
+db-1    | 2026-10-05T04:50:37.400658827Z 2026-10-05 04:50:37.400 UTC [41] LOG:  aborting any active transactions
+db-1    | 2026-10-05T04:50:37.402424809Z 2026-10-05 04:50:37.402 UTC [41] LOG:  background worker "logical replication launcher" (PID 47) exited with exit code 1
+db-1    | 2026-10-05T04:50:37.402720780Z 2026-10-05 04:50:37.402 UTC [42] LOG:  shutting down
+db-1    | 2026-10-05T04:50:37.404012822Z 2026-10-05 04:50:37.403 UTC [42] LOG:  checkpoint starting: shutdown immediate
+db-1    | 2026-10-05T04:50:37.454515794Z 2026-10-05 04:50:37.454 UTC [42] LOG:  checkpoint complete: wrote 926 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.010 s, sync=0.038 s, total=0.052 s; sync files=301, longest=0.004 s, average=0.001 s; distance=4283 kB, estimate=4283 kB; lsn=0/1925D80, redo lsn=0/1925D80
+db-1    | 2026-10-05T04:50:37.459286343Z 2026-10-05 04:50:37.459 UTC [41] LOG:  database system is shut down
+db-1    | 2026-10-05T04:50:37.499207602Z  done
+db-1    | 2026-10-05T04:50:37.499230770Z server stopped
+db-1    | 2026-10-05T04:50:37.500177558Z 
+db-1    | 2026-10-05T04:50:37.500189049Z PostgreSQL init process complete; ready for start up.
+db-1    | 2026-10-05T04:50:37.500191030Z 
+db-1    | 2026-10-05T04:50:37.519299339Z 2026-10-05 04:50:37.519 UTC [1] LOG:  starting PostgreSQL 16.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+db-1    | 2026-10-05T04:50:37.519432068Z 2026-10-05 04:50:37.519 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 54329
+db-1    | 2026-10-05T04:50:37.519444708Z 2026-10-05 04:50:37.519 UTC [1] LOG:  listening on IPv6 address "::", port 54329
+db-1    | 2026-10-05T04:50:37.522049020Z 2026-10-05 04:50:37.521 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.54329"
+db-1    | 2026-10-05T04:50:37.525798156Z 2026-10-05 04:50:37.525 UTC [57] LOG:  database system was shut down at 2026-10-05 04:50:37 UTC
+db-1    | 2026-10-05T04:50:37.529850909Z 2026-10-05 04:50:37.529 UTC [1] LOG:  database system is ready to accept connections

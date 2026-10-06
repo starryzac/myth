@@ -1,0 +1,1263 @@
+{
+  "protocol": "full-calendar-periodic-discovery-v2",
+  "simulation": true,
+  "user_id": "00000000-0000-0000-0000-000000000001",
+  "epoch_id": "00000000-0000-0000-0000-000000000320",
+  "as_of": "2026-10-03T16:00:00Z",
+  "parameters": {
+    "lookback_days": 95,
+    "minimum_cycles": 3,
+    "maximum_day_spread": 2,
+    "maximum_cv_bps": 1000
+  },
+  "history_start": "2026-07-01",
+  "history_end": "2026-10-03",
+  "history_proof": {
+    "verified": true,
+    "period_start": "2026-07-01",
+    "period_end": "2026-10-03",
+    "account_ids": [
+      "00000000-0000-0000-0000-000000000002",
+      "00000000-0000-0000-0000-000000000003"
+    ],
+    "evidence_ids": [
+      "00000000-0000-0000-0000-00000000006e",
+      "00000000-0000-0000-0000-00000000006f",
+      "00000000-0000-0000-0000-000000000070",
+      "00000000-0000-0000-0000-000000000071",
+      "00000000-0000-0000-0000-000000000072",
+      "00000000-0000-0000-0000-000000000073",
+      "00000000-0000-0000-0000-00000000008c",
+      "00000000-0000-0000-0000-0000000003e7"
+    ],
+    "reason_codes": []
+  },
+  "patterns": [
+    {
+      "pattern_id": "46def90836bcccd4b57c70562b61139210b8a6f991d07bbed7b96488a543b292",
+      "kind": "CREDIT_CARD_BILL",
+      "account_id": "00000000-0000-0000-0000-000000000003",
+      "payee_ref": "credit-card:00000000-0000-0000-0000-000000000003",
+      "status": "INSUFFICIENT_HISTORY",
+      "reason_codes": [
+        "INSUFFICIENT_CYCLES"
+      ],
+      "schedule": {
+        "cadence": "MONTHLY_DATE",
+        "due_day": 20,
+        "weekday": null,
+        "days_before_month_end": null,
+        "day_spread": 0,
+        "observed_cycle_keys": [
+          "2026-08",
+          "2026-09"
+        ],
+        "next_occurrence": null,
+        "next_occurrence_is_hypothesis": true
+      },
+      "sample_count": 2,
+      "cycle_count": 2,
+      "samples": [
+        {
+          "occurred_on": "2026-08-20",
+          "amount_cents": 12000,
+          "original": {
+            "kind": "CREDIT_CARD_BILL",
+            "account_id": "00000000-0000-0000-0000-000000000003",
+            "payee_ref": "credit-card:00000000-0000-0000-0000-000000000003",
+            "occurred_on": "2026-08-20",
+            "amount_cents": 12000,
+            "source": {
+              "fact_type": "credit_card_bills",
+              "fact_id": "00000000-0000-0000-0000-00000000001e",
+              "account_id": "00000000-0000-0000-0000-000000000003",
+              "source_ref": "fixture:130",
+              "evidence_id": "00000000-0000-0000-0000-000000000082",
+              "evidence_hash": "5ee5b83266d1616cdc7da7e4726d0e199aae2dd3b5b94d0a12ee05a16d2f78b1",
+              "evidence_source_type": "SIMULATED_CREDIT_CARD_BILL",
+              "evidence_source_ref": "fixture:130",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "total_cents": 12000,
+                "paid_cents": 0,
+                "statement_date": "2026-08-01",
+                "due_date": "2026-08-20",
+                "status": "UNPAID",
+                "minimum_due_cents": 1200
+              }
+            },
+            "supporting_sources": []
+          }
+        },
+        {
+          "occurred_on": "2026-09-20",
+          "amount_cents": 13500,
+          "original": {
+            "kind": "CREDIT_CARD_BILL",
+            "account_id": "00000000-0000-0000-0000-000000000003",
+            "payee_ref": "credit-card:00000000-0000-0000-0000-000000000003",
+            "occurred_on": "2026-09-20",
+            "amount_cents": 13500,
+            "source": {
+              "fact_type": "credit_card_bills",
+              "fact_id": "00000000-0000-0000-0000-00000000001f",
+              "account_id": "00000000-0000-0000-0000-000000000003",
+              "source_ref": "fixture:131",
+              "evidence_id": "00000000-0000-0000-0000-000000000083",
+              "evidence_hash": "f1284f3de9b677bc418f7a5e201ecf7bf37b023d477b7a6c8e6fa7f295f6028d",
+              "evidence_source_type": "SIMULATED_CREDIT_CARD_BILL",
+              "evidence_source_ref": "fixture:131",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "total_cents": 13500,
+                "paid_cents": 0,
+                "statement_date": "2026-09-01",
+                "due_date": "2026-09-20",
+                "status": "UNPAID",
+                "minimum_due_cents": 1350
+              }
+            },
+            "supporting_sources": []
+          }
+        }
+      ],
+      "amount_min_cents": 12000,
+      "amount_max_cents": 13500,
+      "mean_fraction_cents": "12750",
+      "variance_fraction_cents_squared": "562500",
+      "cv_squared_fraction": "1/289",
+      "template_name": null,
+      "candidate_configuration": null,
+      "candidate_configuration_hash": null,
+      "candidate_support": "NOT_READY",
+      "source_scope": "OBSERVED_BILLS_ONLY",
+      "advice_only": true,
+      "requires_confirmation": true,
+      "auto_execute": false,
+      "bank_authority": false,
+      "future_obligation_guaranteed": false
+    },
+    {
+      "pattern_id": "f3d2468e5042fff4d372993c0e4263f3ae216d5f2a7410c40742c411042189c8",
+      "kind": "CREDIT_CARD_BILL",
+      "account_id": "00000000-0000-0000-0000-000000000003",
+      "payee_ref": "credit-card:00000000-0000-0000-0000-000000000003",
+      "status": "INSUFFICIENT_HISTORY",
+      "reason_codes": [
+        "INSUFFICIENT_CYCLES"
+      ],
+      "schedule": {
+        "cadence": "MONTH_END",
+        "due_day": null,
+        "weekday": null,
+        "days_before_month_end": 10,
+        "day_spread": 1,
+        "observed_cycle_keys": [
+          "2026-08",
+          "2026-09"
+        ],
+        "next_occurrence": null,
+        "next_occurrence_is_hypothesis": true
+      },
+      "sample_count": 2,
+      "cycle_count": 2,
+      "samples": [
+        {
+          "occurred_on": "2026-08-20",
+          "amount_cents": 12000,
+          "original": {
+            "kind": "CREDIT_CARD_BILL",
+            "account_id": "00000000-0000-0000-0000-000000000003",
+            "payee_ref": "credit-card:00000000-0000-0000-0000-000000000003",
+            "occurred_on": "2026-08-20",
+            "amount_cents": 12000,
+            "source": {
+              "fact_type": "credit_card_bills",
+              "fact_id": "00000000-0000-0000-0000-00000000001e",
+              "account_id": "00000000-0000-0000-0000-000000000003",
+              "source_ref": "fixture:130",
+              "evidence_id": "00000000-0000-0000-0000-000000000082",
+              "evidence_hash": "5ee5b83266d1616cdc7da7e4726d0e199aae2dd3b5b94d0a12ee05a16d2f78b1",
+              "evidence_source_type": "SIMULATED_CREDIT_CARD_BILL",
+              "evidence_source_ref": "fixture:130",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "total_cents": 12000,
+                "paid_cents": 0,
+                "statement_date": "2026-08-01",
+                "due_date": "2026-08-20",
+                "status": "UNPAID",
+                "minimum_due_cents": 1200
+              }
+            },
+            "supporting_sources": []
+          }
+        },
+        {
+          "occurred_on": "2026-09-20",
+          "amount_cents": 13500,
+          "original": {
+            "kind": "CREDIT_CARD_BILL",
+            "account_id": "00000000-0000-0000-0000-000000000003",
+            "payee_ref": "credit-card:00000000-0000-0000-0000-000000000003",
+            "occurred_on": "2026-09-20",
+            "amount_cents": 13500,
+            "source": {
+              "fact_type": "credit_card_bills",
+              "fact_id": "00000000-0000-0000-0000-00000000001f",
+              "account_id": "00000000-0000-0000-0000-000000000003",
+              "source_ref": "fixture:131",
+              "evidence_id": "00000000-0000-0000-0000-000000000083",
+              "evidence_hash": "f1284f3de9b677bc418f7a5e201ecf7bf37b023d477b7a6c8e6fa7f295f6028d",
+              "evidence_source_type": "SIMULATED_CREDIT_CARD_BILL",
+              "evidence_source_ref": "fixture:131",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "total_cents": 13500,
+                "paid_cents": 0,
+                "statement_date": "2026-09-01",
+                "due_date": "2026-09-20",
+                "status": "UNPAID",
+                "minimum_due_cents": 1350
+              }
+            },
+            "supporting_sources": []
+          }
+        }
+      ],
+      "amount_min_cents": 12000,
+      "amount_max_cents": 13500,
+      "mean_fraction_cents": "12750",
+      "variance_fraction_cents_squared": "562500",
+      "cv_squared_fraction": "1/289",
+      "template_name": null,
+      "candidate_configuration": null,
+      "candidate_configuration_hash": null,
+      "candidate_support": "NOT_READY",
+      "source_scope": "OBSERVED_BILLS_ONLY",
+      "advice_only": true,
+      "requires_confirmation": true,
+      "auto_execute": false,
+      "bank_authority": false,
+      "future_obligation_guaranteed": false
+    },
+    {
+      "pattern_id": "3af770dc131dca6e11a6b1fb0d99c8b7467a48663124902c664cd98c6f2b884d",
+      "kind": "CREDIT_CARD_BILL",
+      "account_id": "00000000-0000-0000-0000-000000000003",
+      "payee_ref": "credit-card:00000000-0000-0000-0000-000000000003",
+      "status": "INSUFFICIENT_HISTORY",
+      "reason_codes": [
+        "DATE_SPREAD_EXCEEDED",
+        "INSUFFICIENT_CYCLES",
+        "NONCONSECUTIVE_CYCLES"
+      ],
+      "schedule": {
+        "cadence": "WEEKLY",
+        "due_day": null,
+        "weekday": 3,
+        "days_before_month_end": null,
+        "day_spread": 3,
+        "observed_cycle_keys": [
+          "2026-08-17",
+          "2026-09-14"
+        ],
+        "next_occurrence": null,
+        "next_occurrence_is_hypothesis": true
+      },
+      "sample_count": 2,
+      "cycle_count": 2,
+      "samples": [
+        {
+          "occurred_on": "2026-08-20",
+          "amount_cents": 12000,
+          "original": {
+            "kind": "CREDIT_CARD_BILL",
+            "account_id": "00000000-0000-0000-0000-000000000003",
+            "payee_ref": "credit-card:00000000-0000-0000-0000-000000000003",
+            "occurred_on": "2026-08-20",
+            "amount_cents": 12000,
+            "source": {
+              "fact_type": "credit_card_bills",
+              "fact_id": "00000000-0000-0000-0000-00000000001e",
+              "account_id": "00000000-0000-0000-0000-000000000003",
+              "source_ref": "fixture:130",
+              "evidence_id": "00000000-0000-0000-0000-000000000082",
+              "evidence_hash": "5ee5b83266d1616cdc7da7e4726d0e199aae2dd3b5b94d0a12ee05a16d2f78b1",
+              "evidence_source_type": "SIMULATED_CREDIT_CARD_BILL",
+              "evidence_source_ref": "fixture:130",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "total_cents": 12000,
+                "paid_cents": 0,
+                "statement_date": "2026-08-01",
+                "due_date": "2026-08-20",
+                "status": "UNPAID",
+                "minimum_due_cents": 1200
+              }
+            },
+            "supporting_sources": []
+          }
+        },
+        {
+          "occurred_on": "2026-09-20",
+          "amount_cents": 13500,
+          "original": {
+            "kind": "CREDIT_CARD_BILL",
+            "account_id": "00000000-0000-0000-0000-000000000003",
+            "payee_ref": "credit-card:00000000-0000-0000-0000-000000000003",
+            "occurred_on": "2026-09-20",
+            "amount_cents": 13500,
+            "source": {
+              "fact_type": "credit_card_bills",
+              "fact_id": "00000000-0000-0000-0000-00000000001f",
+              "account_id": "00000000-0000-0000-0000-000000000003",
+              "source_ref": "fixture:131",
+              "evidence_id": "00000000-0000-0000-0000-000000000083",
+              "evidence_hash": "f1284f3de9b677bc418f7a5e201ecf7bf37b023d477b7a6c8e6fa7f295f6028d",
+              "evidence_source_type": "SIMULATED_CREDIT_CARD_BILL",
+              "evidence_source_ref": "fixture:131",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "total_cents": 13500,
+                "paid_cents": 0,
+                "statement_date": "2026-09-01",
+                "due_date": "2026-09-20",
+                "status": "UNPAID",
+                "minimum_due_cents": 1350
+              }
+            },
+            "supporting_sources": []
+          }
+        }
+      ],
+      "amount_min_cents": 12000,
+      "amount_max_cents": 13500,
+      "mean_fraction_cents": "12750",
+      "variance_fraction_cents_squared": "562500",
+      "cv_squared_fraction": "1/289",
+      "template_name": null,
+      "candidate_configuration": null,
+      "candidate_configuration_hash": null,
+      "candidate_support": "NOT_READY",
+      "source_scope": "OBSERVED_BILLS_ONLY",
+      "advice_only": true,
+      "requires_confirmation": true,
+      "auto_execute": false,
+      "bank_authority": false,
+      "future_obligation_guaranteed": false
+    },
+    {
+      "pattern_id": "3575e3f10a4f310f473283d9d8dafbc28d3666abf87d75f526296ee80b893bfe",
+      "kind": "FIXED_TRANSFER",
+      "account_id": "00000000-0000-0000-0000-000000000002",
+      "payee_ref": "actual-fixture-payee:transfer",
+      "status": "READY_DISCOVERY",
+      "reason_codes": [],
+      "schedule": {
+        "cadence": "MONTHLY_DATE",
+        "due_day": 31,
+        "weekday": null,
+        "days_before_month_end": null,
+        "day_spread": 1,
+        "observed_cycle_keys": [
+          "2026-07",
+          "2026-08",
+          "2026-09"
+        ],
+        "next_occurrence": "2026-10-31",
+        "next_occurrence_is_hypothesis": true
+      },
+      "sample_count": 3,
+      "cycle_count": 3,
+      "samples": [
+        {
+          "occurred_on": "2026-07-31",
+          "amount_cents": 10001,
+          "original": {
+            "kind": "FIXED_TRANSFER",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:transfer",
+            "occurred_on": "2026-07-31",
+            "amount_cents": 10001,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-00000000000a",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "bank-history:10",
+              "evidence_id": "00000000-0000-0000-0000-00000000006e",
+              "evidence_hash": "7fc5d315d5bb0b4a0067738f134685d4d7a601a7894a20299b8172d75bc5ead6",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:110",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-00000000000a",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 10001,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-07-31T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:transfer"
+              }
+            },
+            "supporting_sources": []
+          }
+        },
+        {
+          "occurred_on": "2026-08-31",
+          "amount_cents": 10001,
+          "original": {
+            "kind": "FIXED_TRANSFER",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:transfer",
+            "occurred_on": "2026-08-31",
+            "amount_cents": 10001,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-00000000000b",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "bank-history:11",
+              "evidence_id": "00000000-0000-0000-0000-00000000006f",
+              "evidence_hash": "573ec7300f5d3ff2e105dc7d2deab1081a38b514bb386e82be36c6e3760c5583",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:111",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-00000000000b",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 10001,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-08-31T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:transfer"
+              }
+            },
+            "supporting_sources": []
+          }
+        },
+        {
+          "occurred_on": "2026-09-30",
+          "amount_cents": 10001,
+          "original": {
+            "kind": "FIXED_TRANSFER",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:transfer",
+            "occurred_on": "2026-09-30",
+            "amount_cents": 10001,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-000000000028",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "synthetic-native-shape:40",
+              "evidence_id": "00000000-0000-0000-0000-00000000008c",
+              "evidence_hash": "34e29490357eb19023d20011e3fe705a35fb846d949a027f702ae7482a7b4b2d",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:140",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-000000000028",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 10001,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-09-30T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:transfer"
+              }
+            },
+            "supporting_sources": []
+          }
+        }
+      ],
+      "amount_min_cents": 10001,
+      "amount_max_cents": 10001,
+      "mean_fraction_cents": "10001",
+      "variance_fraction_cents_squared": "0",
+      "cv_squared_fraction": "0",
+      "template_name": "PeriodicTransferPolicy",
+      "candidate_configuration": {
+        "name": "银行原历史周期候选（需用户确认）",
+        "valid_from": null,
+        "valid_until": null,
+        "type": "periodic_transfer",
+        "source_account_id": "00000000-0000-0000-0000-000000000002",
+        "payee_id": "actual-fixture-payee:transfer",
+        "amount_rule": {
+          "kind": "range",
+          "min_cents": 10001,
+          "max_cents": 10001
+        },
+        "due_day": 31,
+        "prepare_days_before": 0,
+        "single_action_cap_cents": 10001,
+        "auto_execute": false
+      },
+      "candidate_configuration_hash": "a4e46a013c43a8178935952d307e8bba234ba2ae88af05bd8d017688fda3378e",
+      "candidate_support": "AVAILABLE_FOR_USER_REVIEW",
+      "source_scope": "COVERED_TRANSACTIONS",
+      "advice_only": true,
+      "requires_confirmation": true,
+      "auto_execute": false,
+      "bank_authority": false,
+      "future_obligation_guaranteed": false
+    },
+    {
+      "pattern_id": "7f8852c7fba2bf9bd904b994e5afe1e275b3b412792f0a13da91379297f6f515",
+      "kind": "FIXED_TRANSFER",
+      "account_id": "00000000-0000-0000-0000-000000000002",
+      "payee_ref": "actual-fixture-payee:transfer",
+      "status": "READY_DISCOVERY",
+      "reason_codes": [],
+      "schedule": {
+        "cadence": "MONTH_END",
+        "due_day": null,
+        "weekday": null,
+        "days_before_month_end": 0,
+        "day_spread": 0,
+        "observed_cycle_keys": [
+          "2026-07",
+          "2026-08",
+          "2026-09"
+        ],
+        "next_occurrence": "2026-10-31",
+        "next_occurrence_is_hypothesis": true
+      },
+      "sample_count": 3,
+      "cycle_count": 3,
+      "samples": [
+        {
+          "occurred_on": "2026-07-31",
+          "amount_cents": 10001,
+          "original": {
+            "kind": "FIXED_TRANSFER",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:transfer",
+            "occurred_on": "2026-07-31",
+            "amount_cents": 10001,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-00000000000a",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "bank-history:10",
+              "evidence_id": "00000000-0000-0000-0000-00000000006e",
+              "evidence_hash": "7fc5d315d5bb0b4a0067738f134685d4d7a601a7894a20299b8172d75bc5ead6",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:110",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-00000000000a",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 10001,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-07-31T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:transfer"
+              }
+            },
+            "supporting_sources": []
+          }
+        },
+        {
+          "occurred_on": "2026-08-31",
+          "amount_cents": 10001,
+          "original": {
+            "kind": "FIXED_TRANSFER",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:transfer",
+            "occurred_on": "2026-08-31",
+            "amount_cents": 10001,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-00000000000b",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "bank-history:11",
+              "evidence_id": "00000000-0000-0000-0000-00000000006f",
+              "evidence_hash": "573ec7300f5d3ff2e105dc7d2deab1081a38b514bb386e82be36c6e3760c5583",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:111",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-00000000000b",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 10001,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-08-31T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:transfer"
+              }
+            },
+            "supporting_sources": []
+          }
+        },
+        {
+          "occurred_on": "2026-09-30",
+          "amount_cents": 10001,
+          "original": {
+            "kind": "FIXED_TRANSFER",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:transfer",
+            "occurred_on": "2026-09-30",
+            "amount_cents": 10001,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-000000000028",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "synthetic-native-shape:40",
+              "evidence_id": "00000000-0000-0000-0000-00000000008c",
+              "evidence_hash": "34e29490357eb19023d20011e3fe705a35fb846d949a027f702ae7482a7b4b2d",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:140",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-000000000028",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 10001,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-09-30T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:transfer"
+              }
+            },
+            "supporting_sources": []
+          }
+        }
+      ],
+      "amount_min_cents": 10001,
+      "amount_max_cents": 10001,
+      "mean_fraction_cents": "10001",
+      "variance_fraction_cents_squared": "0",
+      "cv_squared_fraction": "0",
+      "template_name": "PeriodicTransferPolicy",
+      "candidate_configuration": {
+        "name": "银行原历史周期候选（需用户确认）",
+        "valid_from": null,
+        "valid_until": null,
+        "type": "periodic_transfer",
+        "source_account_id": "00000000-0000-0000-0000-000000000002",
+        "payee_id": "actual-fixture-payee:transfer",
+        "amount_rule": {
+          "kind": "range",
+          "min_cents": 10001,
+          "max_cents": 10001
+        },
+        "due_day": 31,
+        "prepare_days_before": 0,
+        "single_action_cap_cents": 10001,
+        "auto_execute": false
+      },
+      "candidate_configuration_hash": "a4e46a013c43a8178935952d307e8bba234ba2ae88af05bd8d017688fda3378e",
+      "candidate_support": "AVAILABLE_FOR_USER_REVIEW",
+      "source_scope": "COVERED_TRANSACTIONS",
+      "advice_only": true,
+      "requires_confirmation": true,
+      "auto_execute": false,
+      "bank_authority": false,
+      "future_obligation_guaranteed": false
+    },
+    {
+      "pattern_id": "00e54fb08c5f21070437680ef9cc88938bb9672ae8a9ccf549f3cd0fae473107",
+      "kind": "FIXED_TRANSFER",
+      "account_id": "00000000-0000-0000-0000-000000000002",
+      "payee_ref": "actual-fixture-payee:transfer",
+      "status": "UNSTABLE",
+      "reason_codes": [
+        "DATE_SPREAD_EXCEEDED",
+        "NONCONSECUTIVE_CYCLES"
+      ],
+      "schedule": {
+        "cadence": "WEEKLY",
+        "due_day": null,
+        "weekday": 2,
+        "days_before_month_end": null,
+        "day_spread": 4,
+        "observed_cycle_keys": [
+          "2026-07-27",
+          "2026-08-31",
+          "2026-09-28"
+        ],
+        "next_occurrence": null,
+        "next_occurrence_is_hypothesis": true
+      },
+      "sample_count": 3,
+      "cycle_count": 3,
+      "samples": [
+        {
+          "occurred_on": "2026-07-31",
+          "amount_cents": 10001,
+          "original": {
+            "kind": "FIXED_TRANSFER",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:transfer",
+            "occurred_on": "2026-07-31",
+            "amount_cents": 10001,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-00000000000a",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "bank-history:10",
+              "evidence_id": "00000000-0000-0000-0000-00000000006e",
+              "evidence_hash": "7fc5d315d5bb0b4a0067738f134685d4d7a601a7894a20299b8172d75bc5ead6",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:110",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-00000000000a",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 10001,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-07-31T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:transfer"
+              }
+            },
+            "supporting_sources": []
+          }
+        },
+        {
+          "occurred_on": "2026-08-31",
+          "amount_cents": 10001,
+          "original": {
+            "kind": "FIXED_TRANSFER",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:transfer",
+            "occurred_on": "2026-08-31",
+            "amount_cents": 10001,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-00000000000b",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "bank-history:11",
+              "evidence_id": "00000000-0000-0000-0000-00000000006f",
+              "evidence_hash": "573ec7300f5d3ff2e105dc7d2deab1081a38b514bb386e82be36c6e3760c5583",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:111",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-00000000000b",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 10001,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-08-31T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:transfer"
+              }
+            },
+            "supporting_sources": []
+          }
+        },
+        {
+          "occurred_on": "2026-09-30",
+          "amount_cents": 10001,
+          "original": {
+            "kind": "FIXED_TRANSFER",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:transfer",
+            "occurred_on": "2026-09-30",
+            "amount_cents": 10001,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-000000000028",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "synthetic-native-shape:40",
+              "evidence_id": "00000000-0000-0000-0000-00000000008c",
+              "evidence_hash": "34e29490357eb19023d20011e3fe705a35fb846d949a027f702ae7482a7b4b2d",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:140",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-000000000028",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 10001,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-09-30T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:transfer"
+              }
+            },
+            "supporting_sources": []
+          }
+        }
+      ],
+      "amount_min_cents": 10001,
+      "amount_max_cents": 10001,
+      "mean_fraction_cents": "10001",
+      "variance_fraction_cents_squared": "0",
+      "cv_squared_fraction": "0",
+      "template_name": null,
+      "candidate_configuration": null,
+      "candidate_configuration_hash": null,
+      "candidate_support": "NOT_READY",
+      "source_scope": "COVERED_TRANSACTIONS",
+      "advice_only": true,
+      "requires_confirmation": true,
+      "auto_execute": false,
+      "bank_authority": false,
+      "future_obligation_guaranteed": false
+    },
+    {
+      "pattern_id": "ac8811d194b0f0ad3023707af8368bc6df6ee309bcc6e2958f66a24d3d8fe058",
+      "kind": "RENT",
+      "account_id": "00000000-0000-0000-0000-000000000002",
+      "payee_ref": "actual-fixture-payee:rent",
+      "status": "INSUFFICIENT_HISTORY",
+      "reason_codes": [
+        "INSUFFICIENT_CYCLES"
+      ],
+      "schedule": {
+        "cadence": "MONTHLY_DATE",
+        "due_day": 28,
+        "weekday": null,
+        "days_before_month_end": null,
+        "day_spread": 0,
+        "observed_cycle_keys": [
+          "2026-08",
+          "2026-09"
+        ],
+        "next_occurrence": null,
+        "next_occurrence_is_hypothesis": true
+      },
+      "sample_count": 2,
+      "cycle_count": 2,
+      "samples": [
+        {
+          "occurred_on": "2026-08-28",
+          "amount_cents": 18000,
+          "original": {
+            "kind": "RENT",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:rent",
+            "occurred_on": "2026-08-28",
+            "amount_cents": 18000,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-00000000000c",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "bank-history:12",
+              "evidence_id": "00000000-0000-0000-0000-000000000070",
+              "evidence_hash": "2db3c3a172b301a282c35e3fc97e1276fd7108ddd41f0c79d12b0bc847ef36b8",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:112",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-00000000000c",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 18000,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-08-28T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:rent"
+              }
+            },
+            "supporting_sources": [
+              {
+                "fact_type": "evidence_items",
+                "fact_id": "00000000-0000-0000-0000-0000000000d4",
+                "account_id": null,
+                "source_ref": "fixture:212",
+                "evidence_id": "00000000-0000-0000-0000-0000000000d4",
+                "evidence_hash": "2d9ed9e3f6b81d7d6c56a8d2bb5235a11b445d5fa8e592996ff51c8fb8868002",
+                "evidence_source_type": "SIMULATED_USER_CATEGORY_CONFIRMATION",
+                "evidence_source_ref": "fixture:212",
+                "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+                "fact": {
+                  "simulation": true,
+                  "transaction_id": "00000000-0000-0000-0000-00000000000c",
+                  "category": "rent",
+                  "confirmed": true,
+                  "actor": "synthetic_fixture_actor"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "occurred_on": "2026-09-28",
+          "amount_cents": 18000,
+          "original": {
+            "kind": "RENT",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:rent",
+            "occurred_on": "2026-09-28",
+            "amount_cents": 18000,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-00000000000d",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "bank-history:13",
+              "evidence_id": "00000000-0000-0000-0000-000000000071",
+              "evidence_hash": "4799e88b04eba652d32bd8cfa2a32a04324e80a8bcc13343849553aa3beec280",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:113",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-00000000000d",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 18000,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-09-28T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:rent"
+              }
+            },
+            "supporting_sources": [
+              {
+                "fact_type": "evidence_items",
+                "fact_id": "00000000-0000-0000-0000-0000000000d5",
+                "account_id": null,
+                "source_ref": "fixture:213",
+                "evidence_id": "00000000-0000-0000-0000-0000000000d5",
+                "evidence_hash": "f4fd6619b357da6535c1e2d37f962fd3d4cba723f90d647180d8a1c5d0592d12",
+                "evidence_source_type": "SIMULATED_USER_CATEGORY_CONFIRMATION",
+                "evidence_source_ref": "fixture:213",
+                "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+                "fact": {
+                  "simulation": true,
+                  "transaction_id": "00000000-0000-0000-0000-00000000000d",
+                  "category": "rent",
+                  "confirmed": true,
+                  "actor": "synthetic_fixture_actor"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "amount_min_cents": 18000,
+      "amount_max_cents": 18000,
+      "mean_fraction_cents": "18000",
+      "variance_fraction_cents_squared": "0",
+      "cv_squared_fraction": "0",
+      "template_name": null,
+      "candidate_configuration": null,
+      "candidate_configuration_hash": null,
+      "candidate_support": "NOT_READY",
+      "source_scope": "COVERED_TRANSACTIONS",
+      "advice_only": true,
+      "requires_confirmation": true,
+      "auto_execute": false,
+      "bank_authority": false,
+      "future_obligation_guaranteed": false
+    },
+    {
+      "pattern_id": "83a1a89c5f9d37520dc2244ee5bd671f1d8bf8e6339a4b3f005200a75a4d220f",
+      "kind": "RENT",
+      "account_id": "00000000-0000-0000-0000-000000000002",
+      "payee_ref": "actual-fixture-payee:rent",
+      "status": "INSUFFICIENT_HISTORY",
+      "reason_codes": [
+        "INSUFFICIENT_CYCLES"
+      ],
+      "schedule": {
+        "cadence": "MONTH_END",
+        "due_day": null,
+        "weekday": null,
+        "days_before_month_end": 2,
+        "day_spread": 1,
+        "observed_cycle_keys": [
+          "2026-08",
+          "2026-09"
+        ],
+        "next_occurrence": null,
+        "next_occurrence_is_hypothesis": true
+      },
+      "sample_count": 2,
+      "cycle_count": 2,
+      "samples": [
+        {
+          "occurred_on": "2026-08-28",
+          "amount_cents": 18000,
+          "original": {
+            "kind": "RENT",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:rent",
+            "occurred_on": "2026-08-28",
+            "amount_cents": 18000,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-00000000000c",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "bank-history:12",
+              "evidence_id": "00000000-0000-0000-0000-000000000070",
+              "evidence_hash": "2db3c3a172b301a282c35e3fc97e1276fd7108ddd41f0c79d12b0bc847ef36b8",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:112",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-00000000000c",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 18000,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-08-28T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:rent"
+              }
+            },
+            "supporting_sources": [
+              {
+                "fact_type": "evidence_items",
+                "fact_id": "00000000-0000-0000-0000-0000000000d4",
+                "account_id": null,
+                "source_ref": "fixture:212",
+                "evidence_id": "00000000-0000-0000-0000-0000000000d4",
+                "evidence_hash": "2d9ed9e3f6b81d7d6c56a8d2bb5235a11b445d5fa8e592996ff51c8fb8868002",
+                "evidence_source_type": "SIMULATED_USER_CATEGORY_CONFIRMATION",
+                "evidence_source_ref": "fixture:212",
+                "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+                "fact": {
+                  "simulation": true,
+                  "transaction_id": "00000000-0000-0000-0000-00000000000c",
+                  "category": "rent",
+                  "confirmed": true,
+                  "actor": "synthetic_fixture_actor"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "occurred_on": "2026-09-28",
+          "amount_cents": 18000,
+          "original": {
+            "kind": "RENT",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:rent",
+            "occurred_on": "2026-09-28",
+            "amount_cents": 18000,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-00000000000d",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "bank-history:13",
+              "evidence_id": "00000000-0000-0000-0000-000000000071",
+              "evidence_hash": "4799e88b04eba652d32bd8cfa2a32a04324e80a8bcc13343849553aa3beec280",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:113",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-00000000000d",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 18000,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-09-28T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:rent"
+              }
+            },
+            "supporting_sources": [
+              {
+                "fact_type": "evidence_items",
+                "fact_id": "00000000-0000-0000-0000-0000000000d5",
+                "account_id": null,
+                "source_ref": "fixture:213",
+                "evidence_id": "00000000-0000-0000-0000-0000000000d5",
+                "evidence_hash": "f4fd6619b357da6535c1e2d37f962fd3d4cba723f90d647180d8a1c5d0592d12",
+                "evidence_source_type": "SIMULATED_USER_CATEGORY_CONFIRMATION",
+                "evidence_source_ref": "fixture:213",
+                "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+                "fact": {
+                  "simulation": true,
+                  "transaction_id": "00000000-0000-0000-0000-00000000000d",
+                  "category": "rent",
+                  "confirmed": true,
+                  "actor": "synthetic_fixture_actor"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "amount_min_cents": 18000,
+      "amount_max_cents": 18000,
+      "mean_fraction_cents": "18000",
+      "variance_fraction_cents_squared": "0",
+      "cv_squared_fraction": "0",
+      "template_name": null,
+      "candidate_configuration": null,
+      "candidate_configuration_hash": null,
+      "candidate_support": "NOT_READY",
+      "source_scope": "COVERED_TRANSACTIONS",
+      "advice_only": true,
+      "requires_confirmation": true,
+      "auto_execute": false,
+      "bank_authority": false,
+      "future_obligation_guaranteed": false
+    },
+    {
+      "pattern_id": "9cda8fc3338c02d25aeca769371b645f51235e634ff314f0c2e610fd047f60af",
+      "kind": "RENT",
+      "account_id": "00000000-0000-0000-0000-000000000002",
+      "payee_ref": "actual-fixture-payee:rent",
+      "status": "INSUFFICIENT_HISTORY",
+      "reason_codes": [
+        "DATE_SPREAD_EXCEEDED",
+        "INSUFFICIENT_CYCLES",
+        "NONCONSECUTIVE_CYCLES"
+      ],
+      "schedule": {
+        "cadence": "WEEKLY",
+        "due_day": null,
+        "weekday": 4,
+        "days_before_month_end": null,
+        "day_spread": 3,
+        "observed_cycle_keys": [
+          "2026-08-24",
+          "2026-09-28"
+        ],
+        "next_occurrence": null,
+        "next_occurrence_is_hypothesis": true
+      },
+      "sample_count": 2,
+      "cycle_count": 2,
+      "samples": [
+        {
+          "occurred_on": "2026-08-28",
+          "amount_cents": 18000,
+          "original": {
+            "kind": "RENT",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:rent",
+            "occurred_on": "2026-08-28",
+            "amount_cents": 18000,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-00000000000c",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "bank-history:12",
+              "evidence_id": "00000000-0000-0000-0000-000000000070",
+              "evidence_hash": "2db3c3a172b301a282c35e3fc97e1276fd7108ddd41f0c79d12b0bc847ef36b8",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:112",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-00000000000c",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 18000,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-08-28T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:rent"
+              }
+            },
+            "supporting_sources": [
+              {
+                "fact_type": "evidence_items",
+                "fact_id": "00000000-0000-0000-0000-0000000000d4",
+                "account_id": null,
+                "source_ref": "fixture:212",
+                "evidence_id": "00000000-0000-0000-0000-0000000000d4",
+                "evidence_hash": "2d9ed9e3f6b81d7d6c56a8d2bb5235a11b445d5fa8e592996ff51c8fb8868002",
+                "evidence_source_type": "SIMULATED_USER_CATEGORY_CONFIRMATION",
+                "evidence_source_ref": "fixture:212",
+                "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+                "fact": {
+                  "simulation": true,
+                  "transaction_id": "00000000-0000-0000-0000-00000000000c",
+                  "category": "rent",
+                  "confirmed": true,
+                  "actor": "synthetic_fixture_actor"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "occurred_on": "2026-09-28",
+          "amount_cents": 18000,
+          "original": {
+            "kind": "RENT",
+            "account_id": "00000000-0000-0000-0000-000000000002",
+            "payee_ref": "actual-fixture-payee:rent",
+            "occurred_on": "2026-09-28",
+            "amount_cents": 18000,
+            "source": {
+              "fact_type": "transactions",
+              "fact_id": "00000000-0000-0000-0000-00000000000d",
+              "account_id": "00000000-0000-0000-0000-000000000002",
+              "source_ref": "bank-history:13",
+              "evidence_id": "00000000-0000-0000-0000-000000000071",
+              "evidence_hash": "4799e88b04eba652d32bd8cfa2a32a04324e80a8bcc13343849553aa3beec280",
+              "evidence_source_type": "SIMULATED_BANK_TRANSACTION",
+              "evidence_source_ref": "fixture:113",
+              "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+              "fact": {
+                "transaction_id": "00000000-0000-0000-0000-00000000000d",
+                "account_id": "00000000-0000-0000-0000-000000000002",
+                "direction": "DEBIT",
+                "amount_cents": 18000,
+                "balance_after_cents": 100000,
+                "occurred_at": "2026-09-28T00:00:00+00:00",
+                "counterparty_ref": "actual-fixture-payee:rent"
+              }
+            },
+            "supporting_sources": [
+              {
+                "fact_type": "evidence_items",
+                "fact_id": "00000000-0000-0000-0000-0000000000d5",
+                "account_id": null,
+                "source_ref": "fixture:213",
+                "evidence_id": "00000000-0000-0000-0000-0000000000d5",
+                "evidence_hash": "f4fd6619b357da6535c1e2d37f962fd3d4cba723f90d647180d8a1c5d0592d12",
+                "evidence_source_type": "SIMULATED_USER_CATEGORY_CONFIRMATION",
+                "evidence_source_ref": "fixture:213",
+                "evidence_observed_at": "2026-10-03T16:00:00+00:00",
+                "fact": {
+                  "simulation": true,
+                  "transaction_id": "00000000-0000-0000-0000-00000000000d",
+                  "category": "rent",
+                  "confirmed": true,
+                  "actor": "synthetic_fixture_actor"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "amount_min_cents": 18000,
+      "amount_max_cents": 18000,
+      "mean_fraction_cents": "18000",
+      "variance_fraction_cents_squared": "0",
+      "cv_squared_fraction": "0",
+      "template_name": null,
+      "candidate_configuration": null,
+      "candidate_configuration_hash": null,
+      "candidate_support": "NOT_READY",
+      "source_scope": "COVERED_TRANSACTIONS",
+      "advice_only": true,
+      "requires_confirmation": true,
+      "auto_execute": false,
+      "bank_authority": false,
+      "future_obligation_guaranteed": false
+    }
+  ],
+  "source_issues": [],
+  "excluded_transaction_count": 2,
+  "source_evidence_ids": [
+    "00000000-0000-0000-0000-00000000006e",
+    "00000000-0000-0000-0000-00000000006f",
+    "00000000-0000-0000-0000-000000000070",
+    "00000000-0000-0000-0000-000000000071",
+    "00000000-0000-0000-0000-000000000072",
+    "00000000-0000-0000-0000-000000000073",
+    "00000000-0000-0000-0000-000000000082",
+    "00000000-0000-0000-0000-000000000083",
+    "00000000-0000-0000-0000-00000000008c",
+    "00000000-0000-0000-0000-0000000000d4",
+    "00000000-0000-0000-0000-0000000000d5",
+    "00000000-0000-0000-0000-0000000003e7"
+  ],
+  "source_digest": "f2263f1adb4e67815178ad536cfcadad20ff2fe7a9a7f4a6df3f091cf4c3c57b",
+  "source_scope": "TRANSACTION_COVERAGE_WITH_OBSERVED_BILLS_ONLY",
+  "writes_performed": false,
+  "grants_authority": false,
+  "bank_authority": false,
+  "hard_protection_changed": false,
+  "future_obligation_created": false,
+  "audit_chain_verified": false,
+  "limitations": [
+    "DISCOVERY_IS_NOT_USER_CONFIRMATION_OR_BANK_AUTHORITY",
+    "BILL_SEQUENCE_IS_OBSERVED_ONLY_WITHOUT_EXTERNAL_BILL_COVERAGE",
+    "WEEKLY_AND_NONZERO_MONTH_END_OFFSET_HAVE_NO_CURRENT_POLICY_DSL",
+    "NO_HOLIDAY_SHIFT_INFERENCE_OR_MERCHANT_NAME_INFERENCE",
+    "HISTORY_PROOF_IS_NOT_FULL_AUDIT_OR_INDEPENDENT_ECONOMIC_VERIFICATION",
+    "NO_REAL_HUMAN_OR_BANK_STUDY_RESULTS"
+  ]
+}

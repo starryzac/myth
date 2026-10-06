@@ -1,0 +1,3 @@
+apps\api\app\tests\test_full_dynamic_goal_reserve.py:141: error: Unsupported operand types for > ("int" and "None")  [operator]
+apps\api\app\tests\test_full_dynamic_goal_reserve.py:141: note: Left operand is of type "int | None"
+Found 1 error in 1 file (checked 5 source files)

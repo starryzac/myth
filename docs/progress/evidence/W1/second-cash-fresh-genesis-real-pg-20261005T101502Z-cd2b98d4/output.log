@@ -1,0 +1,37 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_fresh_second_cash_has_original_zero_bank_scope_and_actual_conserved_transfer _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_6df3388ea32f48c19bc6226bc60132b6)
+
+    @pytest.mark.integration
+    def test_fresh_second_cash_has_original_zero_bank_scope_and_actual_conserved_transfer(
+        demo_engine: Engine,
+    ) -> None:
+        summary = seed.seed_demo(
+            demo_engine, _experiment_seed_extension="MVP503_SECOND_CASH_INITIAL_FACT_V1"
+        )
+        assert summary.seed_version == "mvp-301-v6" and summary.summary_version == "seed-summary-v3"
+        assert summary.counts["accounts"] == 6 and summary.counts["policies"] == 0
+        assert summary.counts["action_plans"] == summary.counts["action_receipts"] == 0
+>       assert summary.counts["simulated_bank_postings"] == 8
+E       assert 18 == 8
+
+apps\api\app\tests\test_demo_seed_second_cash.py:65: AssertionError
+_ test_original_default_seed_and_epoch_cannot_be_replaced_by_private_initial_extension _
+
+demo_engine = Engine(postgresql+psycopg://bounded:***@127.0.0.1:54329/bf_test_8f70a38b6ae64ef38ea03db7472955a6)
+
+    @pytest.mark.integration
+    def test_original_default_seed_and_epoch_cannot_be_replaced_by_private_initial_extension(
+        demo_engine: Engine,
+    ) -> None:
+        original = seed.seed_demo(demo_engine)
+>       assert original.counts["accounts"] == 5 and original.counts["simulated_bank_postings"] == 7
+E       assert (5 == 5 and 17 == 7)
+
+apps\api\app\tests\test_demo_seed_second_cash.py:177: AssertionError
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_demo_seed_second_cash.py::test_fresh_second_cash_has_original_zero_bank_scope_and_actual_conserved_transfer
+FAILED apps/api/app/tests/test_demo_seed_second_cash.py::test_original_default_seed_and_epoch_cannot_be_replaced_by_private_initial_extension
+2 failed, 10 deselected in 7.82s

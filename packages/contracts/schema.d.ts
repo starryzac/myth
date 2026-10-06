@@ -276,6 +276,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/policy-templates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Policy Templates */
+        get: operations["list_policy_templates"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/policy-templates/{template_name}/schema": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Policy Template Schema */
+        get: operations["get_policy_template_schema"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/policy-templates/validate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Validate Policy Template Candidate */
+        post: operations["validate_policy_template_candidate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/policy-suggestions/calendar-periodic": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Discover Calendar Periodic */
+        get: operations["suggest_calendar_periodic_policies"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/living-reserve/estimate": {
         parameters: {
             query?: never;
@@ -337,6 +405,2386 @@ export interface paths {
         };
         /** Read Allocation */
         get: operations["preview_goal_allocation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goals/{goal_id}/full-model": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Model */
+        get: operations["read_full_goal_model"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goals/{goal_id}/full-model/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview Model */
+        post: operations["preview_full_goal_model"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goals/{goal_id}/full-model/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm Model */
+        post: operations["confirm_full_goal_model"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/planning/full-current-goal-allocation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Full Current Joint Goal Allocation */
+        get: operations["read_full_current_joint_goal_allocation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/joint-goal-actions/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_registered_joint_goal_fixed_plan"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/joint-goal-actions/by-key/{idempotency_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** By Key */
+        get: operations["lookup_original_joint_goal_plan_key"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/joint-goal-actions/{plan_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Original */
+        get: operations["read_original_joint_goal_plan"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/joint-goal-actions/prepare": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Prepare */
+        post: operations["prepare_registered_joint_goal_plan"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/joint-goal-actions/{plan_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm */
+        post: operations["confirm_original_whole_joint_goal_plan"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/joint-goal-actions/{plan_id}/execute-child": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Execute Child */
+        post: operations["execute_or_recover_fixed_original_joint_goal_child"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goals/{goal_id}/full-model/commands/by-key/{idempotency_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Lookup Original */
+        get: operations["lookup_original_full_goal_confirmation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/planning/full-goal-adjustments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read */
+        get: operations["read_current_goal_adjustment_originals"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/planning/full-goal-adjustments/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_selected_minimum_or_deadline_adjustments"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/planning/full-goal-conflicts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read */
+        get: operations["read_actual_full_goal_conflicts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/planning/full-goal-repairs/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_actual_full_goal_repairs"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goal-reallocation/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview Current Reallocation */
+        post: operations["preview_full_goal_emergency_reallocation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goal-release-authorizations/policies/{policy_id}/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_goal_release_authorization_scope"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goal-release-authorizations/policies/{policy_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm */
+        post: operations["confirm_dedicated_goal_release_authorization"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goal-release-authorizations/commands/{epoch_id}/by-key/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read */
+        get: operations["read_original_goal_release_authorization_by_key"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goal-cash-releases/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_actual_dedicated_goal_cash_release"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goal-cash-releases/prepare": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Prepare */
+        post: operations["prepare_dedicated_goal_cash_release"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goal-cash-releases/actions/{action_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read */
+        get: operations["read_original_goal_cash_release"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goal-cash-releases/actions/{action_id}/execute": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Execute */
+        post: operations["execute_original_goal_cash_release"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goal-cash-releases/commands/{epoch_id}/by-key/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Lookup */
+        get: operations["read_original_goal_cash_release_by_key"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/goals/{goal_id}/dynamic-reserve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Reserve */
+        get: operations["read_dynamic_goal_reserve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/dynamic-goal-actions/by-key/{idempotency_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** By Key */
+        get: operations["lookup_original_dynamic_goal_execution_key"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/dynamic-goal-actions/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_actual_dynamic_goal_execution_range"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/dynamic-goal-actions/prepare": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Prepare */
+        post: operations["prepare_original_dynamic_goal_allocation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-recovery-actions/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_original_full_recovery_execution"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-recovery-actions/prepare": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Prepare */
+        post: operations["prepare_original_full_recovery_execution"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-recovery-actions/by-key/{idempotency_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** By Key */
+        get: operations["lookup_original_full_recovery_execution"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-recovery-actions/actions/{action_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm */
+        post: operations["confirm_user_original_full_recovery_execution"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-recovery-actions/actions/{action_id}/execute": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Execute */
+        post: operations["execute_original_full_recovery_execution"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-recovery-next-actions/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_server_selected_next_whole_recovery"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-recovery-next-actions/prepare": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Prepare */
+        post: operations["prepare_server_selected_next_whole_recovery"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-recovery-next-actions/by-key/{idempotency_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** By Key */
+        get: operations["lookup_original_next_whole_recovery_root_key"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-maturity-actions/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_user_whole_maturity"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-maturity-actions/prepare": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Prepare */
+        post: operations["prepare_user_whole_maturity"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-maturity-actions/by-key/{idempotency_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** By Key */
+        get: operations["lookup_user_whole_maturity_original_key"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-maturity-actions/actions/{action_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm */
+        post: operations["confirm_user_whole_maturity"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-maturity-actions/actions/{action_id}/execute": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Execute */
+        post: operations["execute_user_whole_maturity_original_key"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/decision-search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Decision Search */
+        get: operations["search_decision_originals"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/seasonal-reserve-adoptions/{policy_id}/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_original_seasonal_adoption"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/seasonal-reserve-adoptions/{policy_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm */
+        post: operations["confirm_user_seasonal_adoption"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/seasonal-reserve-adoptions/commands/{epoch_id}/by-key/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Lookup */
+        get: operations["read_original_seasonal_adoption_command"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/seasonal-reserve-adoptions/{policy_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Current */
+        get: operations["read_current_seasonal_adoption"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/planning/future-income/sources": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Sources */
+        get: operations["read_original_future_income_sources"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/planning/future-income": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Current */
+        get: operations["read_conditional_future_income_planning"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/planning/future-income/candidates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Candidate */
+        post: operations["create_original_future_income_candidate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/planning/future-income/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm */
+        post: operations["confirm_original_future_income_assumption"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/planning/future-income/commands/{epoch_id}/by-key/{idempotency_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Lookup */
+        get: operations["lookup_original_future_income_command"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/action-set/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Current */
+        get: operations["read_actual_current_policy_action_set"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/action-set/observe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Observe */
+        post: operations["observe_actual_global_policy_action_set"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/action-set/observations/{run_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Original */
+        get: operations["read_original_global_policy_action_observation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/full-action-set/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Current */
+        get: operations["read_actual_current_full_policy_action_set"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/full-action-set/observe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Observe */
+        post: operations["observe_actual_global_full_policy_action_set"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/full-action-set/observations/{run_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Original */
+        get: operations["read_original_global_full_policy_action_observation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/actual-action-set/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Current */
+        get: operations["read_actual_physical_source_policy_action_set_v2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/actual-action-set/observe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Observe */
+        post: operations["observe_actual_physical_source_policy_action_set_v2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/actual-action-set/observations/{run_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Original */
+        get: operations["read_original_actual_physical_policy_action_observation_v2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/periodic-action-producers/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Current */
+        get: operations["read_current_actual_periodic_payment_producers_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/composed-action-set/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Current */
+        get: operations["read_current_composed_actual_action_set_v3"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/recovery-composed-action-set/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Current */
+        get: operations["read_current_recovery_composed_actual_action_set_v4"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/recovery-composed-action-set/observe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Observe */
+        post: operations["record_original_recovery_composed_action_set_v4"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/recovery-composed-action-set/observations/{run_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Original */
+        get: operations["read_original_recovery_composed_observation_v4"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary/registered-action-set/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Current */
+        get: operations["read_current_registered_action_set_v5"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Declarations */
+        get: operations["list_full_policy_declarations"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm Declaration */
+        post: operations["confirm_full_policy_declaration"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/time-refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Time Refresh */
+        post: operations["refresh_full_policy_declarations"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/commands/by-key/{idempotency_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Command By Key */
+        get: operations["lookup_full_policy_command_by_key"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/{policy_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Declaration */
+        get: operations["read_full_policy_declaration"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/{policy_id}/versions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Versions */
+        get: operations["list_full_policy_versions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/{policy_id}/commands": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Commands */
+        get: operations["list_full_policy_commands"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/{policy_id}/change": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Change Declaration */
+        post: operations["change_full_policy_declaration"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/{policy_id}/resume": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resume Declaration */
+        post: operations["resume_full_policy_declaration"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/{policy_id}/suspend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Suspend Declaration */
+        post: operations["suspend_full_policy_declaration"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/{policy_id}/revoke": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Revoke Declaration */
+        post: operations["revoke_full_policy_declaration"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/{policy_id}/change-preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview Declaration */
+        post: operations["preview_full_policy_declaration_change"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/{policy_id}/financial-change-preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview Financial Change */
+        post: operations["preview_full_policy_financial_change"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/{policy_id}/financial-change-preview-history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_full_policy_history_financial_change"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/policy-financial-previews/{source_kind}/{policy_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_multi_template_policy_financial_change"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policy-compilations/grammar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Grammar */
+        get: operations["full_policy_grammar"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policy-compilations/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_full_natural_policy_candidate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policy-dependencies/{policy_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Dependencies */
+        get: operations["read_current_full_policy_dependencies"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/{policy_id}/asset-allocation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Allocation */
+        get: operations["read_full_asset_allocation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-asset-executions/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_api_v1_full_asset_executions_preview_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-asset-executions/prepare": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Prepare */
+        post: operations["prepare_original_full_asset_portfolio"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-asset-executions/portfolios/{portfolio_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read */
+        get: operations["read_original_full_asset_portfolio"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-asset-executions/commands/{epoch_id}/by-key/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** By Key */
+        get: operations["lookup_original_full_asset_portfolio"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-asset-executions/portfolios/{portfolio_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm */
+        post: operations["confirm_original_whole_asset_portfolio"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-asset-executions/portfolios/{portfolio_id}/execute-next": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Execute Next */
+        post: operations["execute_next_original_asset_portfolio_batch"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-payment-relations/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_full_payment_relation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-payment-relations/start": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start */
+        post: operations["start_user_full_payment_relation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-payment-relations/starts/{start_command_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm */
+        post: operations["confirm_user_full_payment_relation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-payment-relations/commands/{epoch_id}/by-key/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Lookup */
+        get: operations["read_original_full_payment_command"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-payment-relations/authorizations/{authorization_id}/prepare": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Prepare */
+        post: operations["prepare_full_recurring_payment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-payment-relations/authorizations/{authorization_id}/prepared/by-key/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Lookup Prepare */
+        get: operations["read_original_full_payment_prepare"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-payment-relations/actions/{action_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Action */
+        get: operations["read_original_full_recurring_payment"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-payment-relations/actions/{action_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm Action */
+        post: operations["confirm_user_full_recurring_payment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-payment-relations/actions/{action_id}/execute": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Execute */
+        post: operations["execute_full_recurring_payment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-payment-relations/actions/{action_id}/user-consent": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Consent */
+        get: operations["read_signed_original_full_payment_action_consent"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-policies/{policy_id}/recovery-planning": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Planning */
+        get: operations["read_full_recovery_planning"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/full-maturity-replanning/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_current_maturity_replanning"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/reconciliation/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Current Reconciliation */
+        get: operations["read_full_current_reconciliation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/planning/full-annual": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Full Annual */
+        get: operations["full_annual_protection"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/autonomy-envelope/assess": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Assess */
+        post: operations["assess_autonomy_envelope_intent"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/autonomy-envelope/actions/{action_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Assess Action */
+        get: operations["assess_autonomy_envelope_action"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary-differences/compare": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Compare */
+        post: operations["compare_original_boundary_runs"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/boundary-events/observe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Observe */
+        post: operations["observe_original_action_boundary"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/finite-planning/analyze": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Analyze */
+        post: operations["analyze_original_finite_planning"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/local-actor/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Login */
+        post: operations["login_api_v1_local_actor_login_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/local-actor/session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Session */
+        get: operations["read_session_api_v1_local_actor_session_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/local-actor/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Logout */
+        post: operations["logout_api_v1_local_actor_logout_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/finite-planning/sessions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start */
+        post: operations["start_original_question_session"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/finite-planning/sessions/commands/{epoch_id}/by-start-key/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Start Command */
+        get: operations["read_original_question_start_by_key"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/finite-planning/sessions/{session_id}/commands/by-key/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Command */
+        get: operations["read_original_question_command_by_key"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/finite-planning/sessions/{session_id}/close": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Close */
+        post: operations["close_original_question_session"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/finite-planning/sessions/{session_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read */
+        get: operations["read_original_question_session"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/finite-planning/sessions/{session_id}/answers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Answer */
+        post: operations["answer_original_pending_question"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/finite-planning/sessions/{session_id}/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Refresh */
+        post: operations["refresh_original_question_session"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/interventions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Messages */
+        get: operations["list_original_interventions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/interventions/observe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Observe */
+        post: operations["observe_original_intervention"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/interventions/commands/{epoch_id}/by-key/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Command */
+        get: operations["read_original_intervention_command"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/interventions/{message_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read */
+        get: operations["read_original_intervention"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/interventions/{message_id}/deliveries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Deliver */
+        post: operations["claim_original_intervention_once"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/interventions/{message_id}/acknowledgements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Acknowledge */
+        post: operations["acknowledge_original_intervention"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/scenario-simulation/context": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Context */
+        get: operations["read_scenario_simulation_context"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/scenario-simulation/compare": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Compare */
+        post: operations["compare_readonly_scenario"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/scenario-risk-review/context": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Context */
+        get: operations["read_scenario_risk_review_context"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/scenario-risk-review/compare": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Compare */
+        post: operations["compare_scenario_risk_review"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/catalog/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Catalog */
+        get: operations["read_product_catalog"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/catalog/products/versions/{version_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Original */
+        get: operations["read_product_catalog_original"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/catalog/products/register-current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Register Actual */
+        post: operations["register_actual_current_product_catalog"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/policy-declarations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Declare */
+        post: operations["declare_user_policy"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/policy-declarations/{epoch_id}/by-key/{idempotency_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Lookup */
+        get: operations["lookup_user_policy_declaration"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/policy-suggestions/periodic": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Periodic */
+        get: operations["suggest_periodic_policies"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/policy-suggestions/seasonal": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Seasonal */
+        get: operations["suggest_seasonal_reserve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/transactions/{transaction_id}/category-review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Review */
+        get: operations["review_original_transaction_category"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/transactions/{transaction_id}/category-confirmation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm */
+        post: operations["confirm_original_transaction_category"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/transactions/{transaction_id}/category-confirmations/{epoch_id}/by-key/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Lookup */
+        get: operations["read_original_category_command"];
         put?: never;
         post?: never;
         delete?: never;
@@ -668,6 +3116,176 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/evidence/declarations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Declare Fact */
+        post: operations["declare_fact_api_v1_evidence_declarations_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/evidence/facts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Facts */
+        get: operations["get_facts_api_v1_evidence_facts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/evidence/graph/{kind}/{identity}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Graph */
+        get: operations["get_graph_api_v1_evidence_graph__kind___identity__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/evidence/full-graph/{kind}/{identity}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Full Evidence Graph */
+        get: operations["get_full_evidence_graph_api_v1_evidence_full_graph__kind___identity__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/planning/annual": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Annual Planning */
+        get: operations["read_annual_planning"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/planning/current-goal-allocation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Current Joint Goal Allocation */
+        get: operations["read_current_joint_goal_allocation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/delivery": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Commands */
+        get: operations["list_command_deliveries"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/delivery/{outbox_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Command */
+        get: operations["get_command_delivery"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/delivery/actions/{action_id}/enqueue": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Enqueue Original */
+        post: operations["enqueue_original_action"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/delivery/{outbox_id}/deliver": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Deliver Original */
+        post: operations["deliver_original_command"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/dashboard": {
         parameters: {
             query?: never;
@@ -679,6 +3297,108 @@ export interface paths {
         get: operations["dashboard_summary"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/demo/presets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Presets */
+        get: operations["demo_presets"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/demo/state": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** State */
+        get: operations["demo_state"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/demo/templates/{kind}/prepare": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Template */
+        post: operations["prepare_demo_template"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/demo/events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Event */
+        post: operations["run_demo_event"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/demo/commands/{command_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Command */
+        get: operations["demo_command"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/demo/reset": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reset */
+        post: operations["reset_demo"];
         delete?: never;
         options?: never;
         head?: never;
@@ -706,6 +3426,19 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AccountChoice */
+        AccountChoice: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "account";
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+        };
         /** AccountFactsCard */
         AccountFactsCard: {
             /**
@@ -781,6 +3514,23 @@ export interface components {
              * Format: date-time
              */
             observed_at: string;
+        };
+        /** AcknowledgmentRequest */
+        AcknowledgmentRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Reviewed Payload Hash */
+            reviewed_payload_hash: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Acknowledged
+             * @constant
+             */
+            acknowledged: true;
         };
         /** ActionReceiptResponse */
         ActionReceiptResponse: {
@@ -867,6 +3617,639 @@ export interface components {
             /** Bank Status */
             bank_status?: string | null;
             receipt?: components["schemas"]["ActionReceiptResponse"] | null;
+        };
+        /** ActionSetInput */
+        ActionSetInput: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Original Inventory */
+            original_inventory: {
+                [key: string]: {
+                    [key: string]: unknown;
+                }[];
+            };
+            /** Inventory Reasons */
+            inventory_reasons: string[];
+            /** Expected Candidate Keys */
+            expected_candidate_keys: string[];
+            /** Candidates */
+            candidates: components["schemas"]["CandidateInput"][];
+            /** Financial Input Hash */
+            financial_input_hash: string;
+            /** Financial Basis */
+            financial_basis: {
+                [key: string]: unknown;
+            };
+            /** Audit Verified */
+            audit_verified: boolean;
+            /** Source Reasons */
+            source_reasons: string[];
+            /** Unsupported Producers */
+            unsupported_producers: string[];
+        };
+        /** ActionSetSnapshot */
+        ActionSetSnapshot: {
+            /**
+             * Algorithm Version
+             * @default full-policy-action-set-boundary-v1
+             * @constant
+             */
+            algorithm_version: "full-policy-action-set-boundary-v1";
+            /**
+             * Scope
+             * @default POLICY_BACKED_SERVER_PRODUCERS_V1
+             * @constant
+             */
+            scope: "POLICY_BACKED_SERVER_PRODUCERS_V1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Write
+             * @default false
+             * @constant
+             */
+            financial_write: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "COMPLETE" | "UNKNOWN";
+            /** Global Action Set Complete */
+            global_action_set_complete: boolean;
+            /**
+             * Arbitrary Manual Intents Covered
+             * @default false
+             * @constant
+             */
+            arbitrary_manual_intents_covered: false;
+            /** Original Inventory Hash */
+            original_inventory_hash: string;
+            /** Financial Input Hash */
+            financial_input_hash: string;
+            /** Input Hash */
+            input_hash: string;
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /** Action Set Signature */
+            action_set_signature: string | null;
+            /** Expected Candidate Keys */
+            expected_candidate_keys: string[];
+            /** Candidates */
+            candidates: components["schemas"]["CandidateView"][];
+            /** Unsupported Producers */
+            unsupported_producers: string[];
+            /** Reasons */
+            reasons: string[];
+        };
+        /** ActualActionSetInput */
+        ActualActionSetInput: {
+            /**
+             * Protocol
+             * @default actual-action-set-input-v2
+             * @constant
+             */
+            protocol: "actual-action-set-input-v2";
+            base: components["schemas"]["ActionSetInput"];
+            /** Table Coverage */
+            table_coverage: components["schemas"]["ActualTableCoverage"][];
+            /** Dynamic Goals */
+            dynamic_goals: components["schemas"]["DynamicGoalProducerInput"][];
+            /** Assets */
+            assets: components["schemas"]["AssetProducerInput"][];
+        };
+        /** ActualActionSetSnapshot */
+        ActualActionSetSnapshot: {
+            /**
+             * Algorithm Version
+             * @default full-policy-action-set-boundary-actual-v2
+             * @constant
+             */
+            algorithm_version: "full-policy-action-set-boundary-actual-v2";
+            /**
+             * Scope
+             * @default POLICY_BACKED_ACTUAL_SERVER_PRODUCERS_V2
+             * @constant
+             */
+            scope: "POLICY_BACKED_ACTUAL_SERVER_PRODUCERS_V2";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Write
+             * @default false
+             * @constant
+             */
+            financial_write: false;
+            /**
+             * Arbitrary Manual Intents Covered
+             * @default false
+             * @constant
+             */
+            arbitrary_manual_intents_covered: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "COMPLETE" | "UNKNOWN";
+            /** Global Action Set Complete */
+            global_action_set_complete: boolean;
+            /** Original Inventory Hash */
+            original_inventory_hash: string;
+            /** Financial Input Hash */
+            financial_input_hash: string;
+            /** Input Hash */
+            input_hash: string;
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /** Action Set Signature */
+            action_set_signature: string | null;
+            /** Expected Candidate Keys */
+            expected_candidate_keys: string[];
+            /** Candidates */
+            candidates: components["schemas"]["CandidateView"][];
+            /** Dynamic Candidate Keys */
+            dynamic_candidate_keys: string[];
+            /** Asset Candidate Keys */
+            asset_candidate_keys: string[];
+            /** Table Coverage */
+            table_coverage: components["schemas"]["ActualTableCoverage"][];
+            /** Unsupported Producers */
+            unsupported_producers: string[];
+            /** Reasons */
+            reasons: string[];
+        };
+        /** ActualGlobalBoundaryObservation */
+        ActualGlobalBoundaryObservation: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Write
+             * @default false
+             * @constant
+             */
+            financial_write: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Observation Run Id
+             * Format: uuid
+             */
+            observation_run_id: string;
+            /** Previous Observation Run Id */
+            previous_observation_run_id: string | null;
+            original_request: components["schemas"]["GlobalBoundaryObserveRequest"];
+            /** Request Hash */
+            request_hash: string;
+            snapshot: components["schemas"]["ActualActionSetSnapshot"];
+            /** Kind */
+            kind: ("BoundaryCrossed" | "BoundaryObserved") | null;
+            /** Semantic Key */
+            semantic_key: string | null;
+            /** Requires User Attention */
+            requires_user_attention: boolean;
+            /** Previous Snapshot Hash */
+            previous_snapshot_hash: string | null;
+            /** Previous Action Set Signature */
+            previous_action_set_signature: string | null;
+            /** Global Action Set Complete */
+            global_action_set_complete: boolean;
+            /**
+             * Idempotent Replay
+             * @default false
+             */
+            idempotent_replay: boolean;
+            /**
+             * Notification Support
+             * @default ROOT_ACTUAL_V2_SOURCE_BRANCH_REQUIRED
+             * @constant
+             */
+            notification_support: "ROOT_ACTUAL_V2_SOURCE_BRANCH_REQUIRED";
+        };
+        /** ActualTableCoverage */
+        ActualTableCoverage: {
+            /** Table */
+            table: string;
+            /** Actual Count */
+            actual_count: number | null;
+            /** Captured Count */
+            captured_count: number;
+            /** Complete */
+            complete: boolean;
+            /** Rows Hash */
+            rows_hash: string;
+        };
+        /** AdjustableGoalOriginal */
+        AdjustableGoalOriginal: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Current Version Id
+             * Format: uuid
+             */
+            current_version_id: string;
+            /** Monthly Min Cents */
+            monthly_min_cents: number;
+            /** Monthly Target Cents */
+            monthly_target_cents: number;
+            /** Monthly Max Cents */
+            monthly_max_cents: number;
+            /** Minimum Guarantee Cents */
+            minimum_guarantee_cents: number;
+            /**
+             * Deadline
+             * Format: date
+             */
+            deadline: string;
+            /** Allow Partial */
+            allow_partial: boolean;
+            /** Allow Deferral */
+            allow_deferral: boolean;
+            /** Current Owned Cents */
+            current_owned_cents: number;
+            /** Current Month Contributed Cents */
+            current_month_contributed_cents: number;
+            /** Valid Until Exclusive */
+            valid_until_exclusive: string | null;
+            original_model: components["schemas"]["FullGoalModelResponse"];
+        };
+        /** AdjustmentOutcome */
+        AdjustmentOutcome: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Current Version Id
+             * Format: uuid
+             */
+            current_version_id: string;
+            /**
+             * Field
+             * @enum {string}
+             */
+            field: "monthly_min_cents" | "deadline";
+            /** Original Value */
+            original_value: number | string;
+            /** Proposed Value */
+            proposed_value: number | string | null;
+            /** Reason */
+            reason: string;
+            candidate: components["schemas"]["GoalRepairCandidate"] | null;
+            hypothetical_allocation?: components["schemas"]["MultiGoalAllocationResult"] | null;
+            /**
+             * Monthly Min Is Soft
+             * @default true
+             * @constant
+             */
+            monthly_min_is_soft: true;
+            /**
+             * Existing Financial Permission
+             * @default false
+             * @constant
+             */
+            existing_financial_permission: false;
+        };
+        /** AllocationGoal */
+        AllocationGoal: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Effective Policy Version Id
+             * Format: uuid
+             */
+            effective_policy_version_id: string;
+            /**
+             * Policy Status
+             * @enum {string}
+             */
+            policy_status: "ACTIVE" | "CONFIRMED" | "SUSPENDED" | "REVOKED" | "EXPIRED";
+            /** Target Cents */
+            target_cents: number;
+            /** Current Owned Cents */
+            current_owned_cents: number;
+            /** Current Month Contributed Cents */
+            current_month_contributed_cents: number;
+            /** Monthly Min Cents */
+            monthly_min_cents: number;
+            /** Monthly Target Cents */
+            monthly_target_cents: number;
+            /** Monthly Max Cents */
+            monthly_max_cents: number;
+            /**
+             * Minimum Guarantee Cents
+             * @default 0
+             */
+            minimum_guarantee_cents: number;
+            /**
+             * Importance
+             * @default 50
+             */
+            importance: number;
+            /**
+             * Deadline
+             * Format: date
+             */
+            deadline: string;
+            /**
+             * Allow Partial
+             * @default false
+             */
+            allow_partial: boolean;
+            /**
+             * Allow Deferral
+             * @default false
+             */
+            allow_deferral: boolean;
+            /**
+             * Deferral Cost Cents Per Day
+             * @default 0
+             */
+            deferral_cost_cents_per_day: number;
+            /**
+             * Confirmed At
+             * Format: date-time
+             */
+            confirmed_at: string;
+            /**
+             * Valid From
+             * Format: date-time
+             */
+            valid_from: string;
+            /** Valid Until */
+            valid_until?: string | null;
+            /** Negotiable Fields */
+            negotiable_fields?: ("monthly_min_cents" | "monthly_max_cents" | "deadline")[];
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceReference"][];
+        };
+        /** AllocationIncomeLot */
+        AllocationIncomeLot: {
+            /**
+             * Fragment Id
+             * Format: uuid
+             */
+            fragment_id: string;
+            /**
+             * Origin Transaction Id
+             * Format: uuid
+             */
+            origin_transaction_id: string;
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Received Cents */
+            received_cents: number;
+            /** Available Cents */
+            available_cents: number;
+            /**
+             * Occurred At
+             * Format: date-time
+             */
+            occurred_at: string;
+            /**
+             * Observed At
+             * Format: date-time
+             */
+            observed_at: string;
+            /** Owner Goal Id */
+            owner_goal_id?: null;
+            /**
+             * Bank Evidence Id
+             * Format: uuid
+             */
+            bank_evidence_id: string;
+            /** Bank Evidence Hash */
+            bank_evidence_hash: string;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceReference"][];
+        };
+        /** AnnualDailyCheckpoint */
+        AnnualDailyCheckpoint: {
+            /** Day */
+            day: number;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "PROVEN" | "NOT_PROVEN";
+            before_payment: components["schemas"]["BoundaryPoint"] | null;
+            after_payment: components["schemas"]["BoundaryPoint"] | null;
+            after_principal: components["schemas"]["BoundaryPoint"] | null;
+            /** Minimum Intraday Margin Cents */
+            minimum_intraday_margin_cents: number | null;
+        };
+        /** AnnualProjectionResponse */
+        AnnualProjectionResponse: {
+            /**
+             * Schema Version
+             * @default annual-planning-v1
+             * @constant
+             */
+            schema_version: "annual-planning-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Timezone
+             * @enum {string}
+             */
+            timezone: "Asia/Shanghai" | "UTC";
+            /**
+             * Horizon Days
+             * @default 365
+             * @constant
+             */
+            horizon_days: 365;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Projection Basis
+             * @default CURRENT_VERIFIED_FACTS_CONDITIONAL_COMMITMENTS
+             * @constant
+             */
+            projection_basis: "CURRENT_VERIFIED_FACTS_CONDITIONAL_COMMITMENTS";
+            /**
+             * Future Points Are Settled Cash
+             * @default false
+             * @constant
+             */
+            future_points_are_settled_cash: false;
+            /**
+             * Execution View Horizon Days
+             * @default 90
+             * @constant
+             */
+            execution_view_horizon_days: 90;
+            execution_view: components["schemas"]["BoundaryResult"];
+            annual_projection: components["schemas"]["BoundaryResult"];
+            initial_checkpoint: components["schemas"]["AnnualDailyCheckpoint"];
+            /** Daily Checkpoints */
+            daily_checkpoints: components["schemas"]["AnnualDailyCheckpoint"][];
+            future_income: components["schemas"]["FutureIncomeProjection"];
+            /** Unavailable Principal */
+            unavailable_principal: components["schemas"]["UnavailablePrincipal"][];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Input Digest */
+            input_digest: string;
+            /** Source Issues */
+            source_issues: components["schemas"]["BoundarySourceIssue"][];
+            audit: components["schemas"]["DashboardAuditCard"];
+        };
+        /** AnswerPartition */
+        AnswerPartition: {
+            /** Choice Key */
+            choice_key: string;
+            /** World Keys */
+            world_keys: string[];
+            /** Signatures */
+            signatures: string[];
+            /** Residual Signature Count */
+            residual_signature_count: number;
         };
         /** AssessActionRequest */
         AssessActionRequest: {
@@ -970,6 +4353,55 @@ export interface components {
             /** Reasons */
             reasons?: string[];
         };
+        /**
+         * AssetAuthorizationPolicy
+         * @description FULL-only product vocabulary; no change to MVP authorization or execution.
+         */
+        AssetAuthorizationPolicy: {
+            /** Name */
+            name?: string | null;
+            /** Valid From */
+            valid_from?: string | null;
+            /** Valid Until */
+            valid_until?: string | null;
+            /**
+             * Type
+             * @constant
+             */
+            type: "asset_authorization";
+            /**
+             * Scope
+             * @enum {string}
+             */
+            scope: "general_idle_funds" | "goal";
+            /** Goal Id */
+            goal_id?: string | null;
+            /** Allowed Asset Classes */
+            allowed_asset_classes: ("CASH" | "CASH_MGMT_T0" | "CASH_MGMT_T1" | "FIXED_DEPOSIT_7D" | "FIXED_DEPOSIT_30D" | "FIXED_DEPOSIT_90D" | "LOW_RISK_TERM")[];
+            /** Max Auto Managed Cents */
+            max_auto_managed_cents: number;
+            /** Single Action Cap Cents */
+            single_action_cap_cents: number;
+            /** Max Redemption Delay Days */
+            max_redemption_delay_days: number;
+            /** Max Lock Days */
+            max_lock_days: number;
+            /**
+             * Max Principal Risk Level
+             * @default 0
+             */
+            max_principal_risk_level: number;
+            /**
+             * Allow Auto Recovery Without Penalty
+             * @default false
+             */
+            allow_auto_recovery_without_penalty: boolean;
+            /**
+             * Allow Early Withdrawal With Penalty
+             * @default false
+             */
+            allow_early_withdrawal_with_penalty: boolean;
+        };
         /** AssetCandidate */
         AssetCandidate: {
             /**
@@ -1009,6 +4441,136 @@ export interface components {
             account_id: string;
             /** Amount Cents */
             amount_cents: number;
+        };
+        /** AssetExposure */
+        AssetExposure: {
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Scope
+             * @enum {string}
+             */
+            scope: "general_idle_funds" | "goal";
+            /** Goal Id */
+            goal_id?: string | null;
+            /** Managed Principal Cents */
+            managed_principal_cents: number;
+            /** Pending Purchase Cents */
+            pending_purchase_cents: number;
+            /** Reserved Cash By Account */
+            reserved_cash_by_account?: {
+                [key: string]: number;
+            };
+            /** Reserved Goal Cash By Goal */
+            reserved_goal_cash_by_goal?: {
+                [key: string]: number;
+            };
+            /** Counted Position Ids */
+            counted_position_ids?: string[];
+            /** Counted Action Ids */
+            counted_action_ids?: string[];
+            /** Excluded Manual Position Ids */
+            excluded_manual_position_ids?: string[];
+            /** Evidence Ids */
+            evidence_ids?: string[];
+        };
+        /** AssetProducerInput */
+        AssetProducerInput: {
+            /** Candidate Key */
+            candidate_key: string;
+            /**
+             * Full Policy Id
+             * Format: uuid
+             */
+            full_policy_id: string;
+            request?: components["schemas"]["FullAssetPrepareRequest"] | null;
+            original_policy?: components["schemas"]["FullPolicyView"] | null;
+            actual_preview?: components["schemas"]["FullAssetExecutionPreview"] | null;
+            planning_input?: components["schemas"]["FullAssetPlanningInput"] | null;
+            execution_basis?: components["schemas"]["FullAssetExecutionBasis"] | null;
+            authority?: components["schemas"]["AuthorityAssessment"] | null;
+            /** Missing Reasons */
+            missing_reasons?: string[];
+        };
+        /** AssetProductTerms */
+        AssetProductTerms: {
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Product Code */
+            product_code: string;
+            /** Version Number */
+            version_number: number;
+            /** Asset Class */
+            asset_class: string;
+            /** Risk Level */
+            risk_level: number;
+            /** Principal Fluctuation */
+            principal_fluctuation: boolean;
+            /** Minimum Purchase Cents */
+            minimum_purchase_cents: number;
+            /** Lock Days */
+            lock_days: number;
+            /** Redemption Delay Days */
+            redemption_delay_days: number;
+            /** Annual Yield Bps */
+            annual_yield_bps: number;
+            /** Early Withdrawal Loss Bps */
+            early_withdrawal_loss_bps: number;
+            /** Auto Purchase Allowed */
+            auto_purchase_allowed: boolean;
+            /** Auto Redeem Allowed */
+            auto_redeem_allowed: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Effective From
+             * Format: date-time
+             */
+            effective_from: string;
+            /** Effective Until */
+            effective_until?: string | null;
+            /** Maturity Rule */
+            maturity_rule: {
+                [key: string]: unknown;
+            };
+            /** Terms Digest */
+            terms_digest: string;
+        };
+        /** AttemptView */
+        AttemptView: {
+            /**
+             * Attempt Id
+             * Format: uuid
+             */
+            attempt_id: string;
+            /** Attempt Number */
+            attempt_number: number;
+            /** State */
+            state: string;
+            /**
+             * Started At
+             * Format: date-time
+             */
+            started_at: string;
+            /** Finished At */
+            finished_at: string | null;
+            /** Source Action Status */
+            source_action_status: string | null;
+            /** Result */
+            result: {
+                [key: string]: unknown;
+            } | null;
+            /** Error */
+            error: string | null;
         };
         /** AuditAnchor */
         AuditAnchor: {
@@ -1475,7 +5037,7 @@ export interface components {
              * Correlation Kind
              * @enum {string}
              */
-            correlation_kind: "EPOCH" | "DECISION_RUN" | "POLICY" | "GOAL";
+            correlation_kind: "EPOCH" | "DECISION_RUN" | "POLICY" | "GOAL" | "TRANSACTION";
             /** References */
             references?: components["schemas"]["AuditReference"][];
             /** Anchors */
@@ -1600,6 +5162,26 @@ export interface components {
              */
             errors_truncated: boolean;
         };
+        /**
+         * AuthorityAssessment
+         * @description Adapter verdict backed by formal policy or exact user/account relationship evidence.
+         *
+         *     AUTHORIZED is not a continuing policy grant: user-initiated transfers still require
+         *     one-shot consent. OUTSIDE_AUTHORITY without an effect is only policy-change advice.
+         */
+        AuthorityAssessment: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "AUTHORIZED" | "OUTSIDE_AUTHORITY" | "STALE_VERSION" | "MISSING_EVIDENCE";
+            /** Policy Version Ids */
+            policy_version_ids?: string[];
+            /** Evidence Ids */
+            evidence_ids?: string[];
+            /** Reasons */
+            reasons?: string[];
+        };
         /** AutonomyDecision */
         AutonomyDecision: {
             /** Algorithm Version */
@@ -1655,6 +5237,48 @@ export interface components {
                 [key: string]: string | null;
             };
         };
+        /**
+         * AutonomyFacts
+         * @description Trusted internal facts, including actual execution-time financial validation.
+         *
+         *     source_context_hash binds all verified bank/context facts, owner and supplied clock;
+         *     it excludes the user amount preference and generated action identity. No public API
+         *     may accept these facts, a caller-supplied authorization flag, or candidate worlds.
+         */
+        AutonomyFacts: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Action Type */
+            action_type: string;
+            /**
+             * Initiation
+             * @enum {string}
+             */
+            initiation: "USER_EXPLICIT" | "CONFIRMED_POLICY" | "AGENT_GENERATED";
+            authority: components["schemas"]["AuthorityAssessment"];
+            effect?: components["schemas"]["ExecutionEffect"] | null;
+            validation?: components["schemas"]["ExecutionValidation"] | null;
+            payee?: components["schemas"]["PayeeAssessment"];
+            /** Source Evidence Ids */
+            source_evidence_ids?: string[];
+            /** Source Issues */
+            source_issues?: components["schemas"]["SourceIssue"][];
+            /** Hard Block Reasons */
+            hard_block_reasons?: string[];
+            /** Confirmation Reasons */
+            confirmation_reasons?: string[];
+            confirmation?: components["schemas"]["ConfirmationGrant"] | null;
+            /** Source Context Hash */
+            source_context_hash?: string | null;
+        };
         /** AutonomyResponse */
         AutonomyResponse: {
             /**
@@ -1687,6 +5311,29 @@ export interface components {
             source_evidence_ids?: string[];
             /** Input Digest */
             input_digest: string;
+        };
+        /** BankCommand */
+        BankCommand: {
+            effect: components["schemas"]["ExecutionEffect"];
+            /** Effect Hash */
+            effect_hash: string;
+        };
+        /** BankHeadReference */
+        BankHeadReference: {
+            /**
+             * Posting Id
+             * Format: uuid
+             */
+            posting_id: string;
+            /** Ledger Key */
+            ledger_key: string;
+            /** Sequence Number */
+            sequence_number: number;
+            /**
+             * Occurred At
+             * Format: date-time
+             */
+            occurred_at: string;
         };
         /** BillFact */
         BillFact: {
@@ -1721,6 +5368,23 @@ export interface components {
              * @enum {string}
              */
             status: "UNPAID" | "PARTIALLY_PAID" | "PAID" | "OVERDUE";
+        };
+        /** BillHypothesis */
+        BillHypothesis: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "BILL";
+            /**
+             * Bill Id
+             * Format: uuid
+             */
+            bill_id: string;
+            /** Remaining Due Cents */
+            remaining_due_cents: number;
+            /** Due Offset Days */
+            due_offset_days: number;
         };
         /** BillReference */
         BillReference: {
@@ -1785,6 +5449,213 @@ export interface components {
             /** Available Cents */
             available_cents?: number | null;
         };
+        /** BoundaryDifference */
+        BoundaryDifference: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECOMPUTED" | "UNKNOWN";
+            /**
+             * Scope
+             * @default FINANCIAL_SAFE_IDLE_FUNDS_ORIGINAL_MVP
+             * @constant
+             */
+            scope: "FINANCIAL_SAFE_IDLE_FUNDS_ORIGINAL_MVP";
+            /**
+             * Financial Only
+             * @default true
+             * @constant
+             */
+            financial_only: true;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+            /**
+             * Evaluation Only
+             * @default true
+             * @constant
+             */
+            evaluation_only: true;
+            /**
+             * Before Run Id
+             * Format: uuid
+             */
+            before_run_id: string;
+            /**
+             * After Run Id
+             * Format: uuid
+             */
+            after_run_id: string;
+            /** Before Trace Hash */
+            before_trace_hash: string | null;
+            /** After Trace Hash */
+            after_trace_hash: string | null;
+            /** Before As Of */
+            before_as_of: string | null;
+            /** After As Of */
+            after_as_of: string | null;
+            /** Before Safe Idle Cents */
+            before_safe_idle_cents: number | null;
+            /** After Safe Idle Cents */
+            after_safe_idle_cents: number | null;
+            /** Delta Cents */
+            delta_cents: number | null;
+            /** Before Boundary Hash */
+            before_boundary_hash: string | null;
+            /** After Boundary Hash */
+            after_boundary_hash: string | null;
+            /** Changes */
+            changes: components["schemas"]["BoundaryFactChange"][];
+            /** Before Source Refs */
+            before_source_refs: [
+                string,
+                string
+            ][];
+            /** After Source Refs */
+            after_source_refs: [
+                string,
+                string
+            ][];
+            /**
+             * Attribution
+             * @enum {string}
+             */
+            attribution: "UNCHANGED" | "SINGLE_CHANGED_COMPONENT" | "JOINT_CHANGES_NOT_INDIVIDUALLY_ATTRIBUTED" | "UNKNOWN";
+            /** Reasons */
+            reasons: string[];
+            /** Explanation */
+            explanation: string;
+            /**
+             * Autonomy Action Set Difference
+             * @default NOT_EVALUATED
+             * @constant
+             */
+            autonomy_action_set_difference: "NOT_EVALUATED";
+        };
+        /** BoundaryDifferenceRequest */
+        BoundaryDifferenceRequest: {
+            /**
+             * Before Run Id
+             * Format: uuid
+             */
+            before_run_id: string;
+            /**
+             * After Run Id
+             * Format: uuid
+             */
+            after_run_id: string;
+            /**
+             * Boundary Field
+             * @default execution_boundary
+             * @enum {string}
+             */
+            boundary_field: "execution_boundary" | "autonomy_boundary" | "recovery_boundary" | "asset_boundary" | "goal_boundary" | "maturity_boundary" | "bank_projection_context";
+        };
+        /** BoundaryFactChange */
+        BoundaryFactChange: {
+            /** Component */
+            component: string;
+            /** Before Value */
+            before_value: unknown;
+            /** After Value */
+            after_value: unknown;
+            /** Before Value Hash */
+            before_value_hash: string;
+            /** After Value Hash */
+            after_value_hash: string;
+            /** Before Paths */
+            before_paths: string[];
+            /** After Paths */
+            after_paths: string[];
+        };
+        /** BoundaryObservationResponse */
+        BoundaryObservationResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Action Scope
+             * @default ORIGINAL_SINGLE_ACTION_COMPARISON
+             * @constant
+             */
+            action_scope: "ORIGINAL_SINGLE_ACTION_COMPARISON";
+            /**
+             * Global Action Set Complete
+             * @default false
+             * @constant
+             */
+            global_action_set_complete: false;
+            /**
+             * Question Delivery
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            question_delivery: "NOT_IMPLEMENTED";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Observation Run Id
+             * Format: uuid
+             */
+            observation_run_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "BoundaryCrossed" | "BoundaryObserved";
+            /**
+             * Before Run Id
+             * Format: uuid
+             */
+            before_run_id: string;
+            /**
+             * After Run Id
+             * Format: uuid
+             */
+            after_run_id: string;
+            /** Before Trace Hash */
+            before_trace_hash: string;
+            /** After Trace Hash */
+            after_trace_hash: string;
+            /** Before Action Signature */
+            before_action_signature: string;
+            /** After Action Signature */
+            after_action_signature: string;
+            /**
+             * Recorded At
+             * Format: date-time
+             */
+            recorded_at: string;
+            /** Idempotent Replay */
+            idempotent_replay: boolean;
+        };
         /** BoundaryPoint */
         BoundaryPoint: {
             /** Day */
@@ -1812,6 +5683,39 @@ export interface components {
             /** Principal Position Ids */
             principal_position_ids: string[];
         };
+        /** BoundaryPolicyVersion */
+        BoundaryPolicyVersion: {
+            /** Evidence Ids */
+            evidence_ids?: string[];
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Version Id
+             * Format: uuid
+             */
+            version_id: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+            /** Content Hash */
+            content_hash: string;
+            /**
+             * Confirmed At
+             * Format: date-time
+             */
+            confirmed_at: string;
+            /**
+             * Valid From
+             * Format: date-time
+             */
+            valid_from: string;
+            /** Valid Until */
+            valid_until?: string | null;
+        };
         /** BoundaryPosition */
         BoundaryPosition: {
             /** Evidence Ids */
@@ -1834,6 +5738,26 @@ export interface components {
             principal_available_at?: string | null;
             /** Availability Evidence Ids */
             availability_evidence_ids?: string[];
+        };
+        /** BoundaryProduct */
+        BoundaryProduct: {
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Version Number */
+            version_number: number;
+            /** Asset Class */
+            asset_class: string;
+            /**
+             * Minimum Purchase Cents
+             * @default 0
+             */
+            minimum_purchase_cents: number;
+            fixed_return?: components["schemas"]["FixedReturnTerms"] | null;
+            /** Terms Digest */
+            terms_digest: string;
         };
         /** BoundaryResponse */
         BoundaryResponse: {
@@ -1914,9 +5838,8 @@ export interface components {
             /**
              * Horizon Days
              * @default 90
-             * @constant
              */
-            horizon_days: 90;
+            horizon_days: number;
             /** Cash Accounts */
             cash_accounts: components["schemas"]["CashFact"][];
             /** Bills */
@@ -1947,6 +5870,370 @@ export interface components {
             source_ref: string;
             /** Message */
             message: string;
+        };
+        /** CalendarPeriodicParameters */
+        CalendarPeriodicParameters: {
+            /**
+             * Lookback Days
+             * @default 365
+             */
+            lookback_days: number;
+            /**
+             * Minimum Cycles
+             * @default 3
+             */
+            minimum_cycles: number;
+            /**
+             * Maximum Day Spread
+             * @default 2
+             */
+            maximum_day_spread: number;
+            /**
+             * Maximum Cv Bps
+             * @default 1000
+             */
+            maximum_cv_bps: number;
+        };
+        /** CalendarPeriodicPattern */
+        CalendarPeriodicPattern: {
+            /** Pattern Id */
+            pattern_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "FIXED_TRANSFER" | "RENT" | "CREDIT_CARD_BILL";
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Payee Ref */
+            payee_ref: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY_DISCOVERY" | "INSUFFICIENT_HISTORY" | "UNSTABLE" | "UNKNOWN";
+            /** Reason Codes */
+            reason_codes: string[];
+            schedule: components["schemas"]["CalendarSchedule"];
+            /** Sample Count */
+            sample_count: number;
+            /** Cycle Count */
+            cycle_count: number;
+            /** Samples */
+            samples: components["schemas"]["CalendarSample"][];
+            /** Amount Min Cents */
+            amount_min_cents: number;
+            /** Amount Max Cents */
+            amount_max_cents: number;
+            /** Mean Fraction Cents */
+            mean_fraction_cents: string;
+            /** Variance Fraction Cents Squared */
+            variance_fraction_cents_squared: string;
+            /** Cv Squared Fraction */
+            cv_squared_fraction: string | null;
+            /** Template Name */
+            template_name: ("RecurringObligationPolicy" | "LivingReservePolicy" | "EmergencyBufferPolicy" | "DatedExpensePolicy" | "LongTermGoalPolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy") | null;
+            /** Candidate Configuration */
+            candidate_configuration: {
+                [key: string]: unknown;
+            } | null;
+            /** Candidate Configuration Hash */
+            candidate_configuration_hash: string | null;
+            /**
+             * Candidate Support
+             * @enum {string}
+             */
+            candidate_support: "AVAILABLE_FOR_USER_REVIEW" | "NOT_READY" | "DSL_UNSUPPORTED";
+            /**
+             * Source Scope
+             * @enum {string}
+             */
+            source_scope: "COVERED_TRANSACTIONS" | "OBSERVED_BILLS_ONLY";
+            /**
+             * Advice Only
+             * @default true
+             * @constant
+             */
+            advice_only: true;
+            /**
+             * Requires Confirmation
+             * @default true
+             * @constant
+             */
+            requires_confirmation: true;
+            /**
+             * Auto Execute
+             * @default false
+             * @constant
+             */
+            auto_execute: false;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Future Obligation Guaranteed
+             * @default false
+             * @constant
+             */
+            future_obligation_guaranteed: false;
+        };
+        /** CalendarPeriodicSuggestions */
+        CalendarPeriodicSuggestions: {
+            /**
+             * Protocol
+             * @default full-calendar-periodic-discovery-v2
+             * @constant
+             */
+            protocol: "full-calendar-periodic-discovery-v2";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            parameters: components["schemas"]["CalendarPeriodicParameters"];
+            /**
+             * History Start
+             * Format: date
+             */
+            history_start: string;
+            /**
+             * History End
+             * Format: date
+             */
+            history_end: string;
+            history_proof: components["schemas"]["HistoryProof"];
+            /** Patterns */
+            patterns: components["schemas"]["CalendarPeriodicPattern"][];
+            /** Source Issues */
+            source_issues: components["schemas"]["ReserveSourceIssue"][];
+            /** Excluded Transaction Count */
+            excluded_transaction_count: number;
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Source Digest */
+            source_digest: string;
+            /**
+             * Source Scope
+             * @default TRANSACTION_COVERAGE_WITH_OBSERVED_BILLS_ONLY
+             * @constant
+             */
+            source_scope: "TRANSACTION_COVERAGE_WITH_OBSERVED_BILLS_ONLY";
+            /**
+             * Writes Performed
+             * @default false
+             * @constant
+             */
+            writes_performed: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Hard Protection Changed
+             * @default false
+             * @constant
+             */
+            hard_protection_changed: false;
+            /**
+             * Future Obligation Created
+             * @default false
+             * @constant
+             */
+            future_obligation_created: false;
+            /**
+             * Audit Chain Verified
+             * @default false
+             * @constant
+             */
+            audit_chain_verified: false;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** CalendarSample */
+        CalendarSample: {
+            /**
+             * Occurred On
+             * Format: date
+             */
+            occurred_on: string;
+            /** Amount Cents */
+            amount_cents: number;
+            original: components["schemas"]["PeriodicFact"];
+        };
+        /** CalendarSchedule */
+        CalendarSchedule: {
+            /**
+             * Cadence
+             * @enum {string}
+             */
+            cadence: "MONTHLY_DATE" | "MONTH_END" | "WEEKLY";
+            /** Due Day */
+            due_day: number | null;
+            /** Weekday */
+            weekday: number | null;
+            /** Days Before Month End */
+            days_before_month_end: number | null;
+            /** Day Spread */
+            day_spread: number;
+            /** Observed Cycle Keys */
+            observed_cycle_keys: string[];
+            /** Next Occurrence */
+            next_occurrence: string | null;
+            /**
+             * Next Occurrence Is Hypothesis
+             * @default true
+             * @constant
+             */
+            next_occurrence_is_hypothesis: true;
+        };
+        /** CandidateCurve */
+        CandidateCurve: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY" | "LIQUIDITY_RISK";
+            /** Minimum Margin Cents */
+            minimum_margin_cents: number;
+            /** Safe Idle Cents */
+            safe_idle_cents: number;
+            /** Max Allocatable By Product */
+            max_allocatable_by_product: {
+                [key: string]: number;
+            };
+            /** Calculation Trace */
+            calculation_trace: components["schemas"]["BoundaryPoint"][];
+            /** Source Account Limitations */
+            source_account_limitations: string[];
+            /** Curve Hash */
+            curve_hash: string;
+            /**
+             * Financial Capacity Is Authority
+             * @default false
+             * @constant
+             */
+            financial_capacity_is_authority: false;
+        };
+        /** CandidateDifference */
+        CandidateDifference: {
+            /** Field */
+            field: string;
+            /** Before */
+            before: unknown;
+            /** After */
+            after: unknown;
+            /** Explanation */
+            explanation: string;
+        };
+        /** CandidateInput */
+        CandidateInput: {
+            /** Candidate Key */
+            candidate_key: string;
+            facts?: components["schemas"]["AutonomyFacts"] | null;
+            execution_context?: components["schemas"]["ExecutionContext"] | null;
+            /**
+             * Excluded By Current Policy
+             * @default false
+             */
+            excluded_by_current_policy: boolean;
+            /** Missing Reasons */
+            missing_reasons?: string[];
+            full_protection?: components["schemas"]["FullExecutionProtectionResult"] | null;
+            /** Full Sources */
+            full_sources?: components["schemas"]["FullProtectionPolicySource"][];
+            /** Full Source Issues */
+            full_source_issues?: string[];
+            full_account_debit_bounds?: components["schemas"]["FullAccountDebitBoundsProof"] | null;
+        };
+        /** CandidateValidationRequest */
+        CandidateValidationRequest: {
+            /**
+             * Template Name
+             * @enum {string}
+             */
+            template_name: "RecurringObligationPolicy" | "LivingReservePolicy" | "EmergencyBufferPolicy" | "DatedExpensePolicy" | "LongTermGoalPolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy";
+            /**
+             * Dsl Version
+             * @default FULL_V1
+             * @enum {string}
+             */
+            dsl_version: "MVP_V1" | "FULL_V1";
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+        };
+        /** CandidateView */
+        CandidateView: {
+            /** Candidate Key */
+            candidate_key: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "INCLUDED" | "EXCLUDED" | "UNKNOWN";
+            /** Action Type */
+            action_type: string | null;
+            /** Amount Cents */
+            amount_cents: number | null;
+            /** Autonomy Level */
+            autonomy_level: string | null;
+            /** Signature */
+            signature: string | null;
+            /** Reasons */
+            reasons: string[];
+        };
+        /** CashAssumption */
+        CashAssumption: {
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Delta Cents */
+            delta_cents: number;
+        };
+        /** CashChoice */
+        CashChoice: {
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Balance Cents */
+            balance_cents: number;
+            /** Evidence Ids */
+            evidence_ids: string[];
         };
         /** CashFact */
         CashFact: {
@@ -1979,6 +6266,322 @@ export interface components {
             account_id: string;
             /** Amount Cents */
             amount_cents: number;
+        };
+        /** CatalogProductBinding */
+        CatalogProductBinding: {
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /**
+             * Catalogue Version Id
+             * Format: uuid
+             */
+            catalogue_version_id: string;
+            /** Product Record Hash */
+            product_record_hash: string;
+            /** Terms Digest */
+            terms_digest: string;
+        };
+        /** CatalogReadResponse */
+        CatalogReadResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "REGISTERED" | "UNKNOWN";
+            /** Versions */
+            versions: components["schemas"]["CatalogVersionView"][];
+            /** Unregistered Product Ids */
+            unregistered_product_ids: string[];
+            /** Issues */
+            issues: string[];
+            /** Complete Within Registered Capacity */
+            complete_within_registered_capacity: boolean;
+        };
+        /** CatalogRegistrationResponse */
+        CatalogRegistrationResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Dedicated Audit Event Recorded
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event_recorded: false;
+            /** Registered Ids */
+            registered_ids: string[];
+            /** Reused Ids */
+            reused_ids: string[];
+        };
+        /** CatalogVersionView */
+        CatalogVersionView: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Product Code */
+            product_code: string;
+            /** Version Number */
+            version_number: number;
+            /** Original Product */
+            original_product: {
+                [key: string]: unknown;
+            };
+            /** Product Hash */
+            product_hash: string;
+            /** Terms Digest */
+            terms_digest: string;
+            /**
+             * Observed At
+             * Format: date-time
+             */
+            observed_at: string;
+            /**
+             * Effective From
+             * Format: date-time
+             */
+            effective_from: string;
+            /** Effective Until */
+            effective_until: string | null;
+            /**
+             * Immutable Original Verified
+             * @default true
+             * @constant
+             */
+            immutable_original_verified: true;
+            /** Current Source Matched */
+            current_source_matched: boolean;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Legacy Decisions Bound To This Catalogue
+             * @default false
+             * @constant
+             */
+            legacy_decisions_bound_to_this_catalogue: false;
+        };
+        /** CategoryCommandResponse */
+        CategoryCommandResponse: {
+            /**
+             * Protocol
+             * @default transaction-category-command-result-v1
+             * @constant
+             */
+            protocol: "transaction-category-command-result-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Transaction Id
+             * Format: uuid
+             */
+            transaction_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Original Command */
+            original_command: {
+                [key: string]: unknown;
+            } | null;
+            /** Request Hash */
+            request_hash: string | null;
+            /** Original Receipt */
+            original_receipt: {
+                [key: string]: unknown;
+            } | null;
+            /** Evidence Id */
+            evidence_id: string | null;
+            /** Audit Event Id */
+            audit_event_id: string | null;
+            /** Audit Event Hash */
+            audit_event_hash: string | null;
+            /** Replayed Original */
+            replayed_original: boolean;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Bank Facts Changed
+             * @default false
+             * @constant
+             */
+            bank_facts_changed: false;
+            /**
+             * Replacement Allowed
+             * @default false
+             * @constant
+             */
+            replacement_allowed: false;
+        };
+        /** CategoryConfirmationRequest */
+        CategoryConfirmationRequest: {
+            /**
+             * Category
+             * @enum {string}
+             */
+            category: "food" | "transport" | "daily_necessities" | "rent" | "utilities" | "education" | "healthcare" | "other";
+            /**
+             * Accepted
+             * @constant
+             */
+            accepted: true;
+            /** Reviewed Transaction Hash */
+            reviewed_transaction_hash: string;
+            /** Reason */
+            reason: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+        };
+        /** CategoryReviewResponse */
+        CategoryReviewResponse: {
+            /**
+             * Protocol
+             * @default transaction-category-review-v1
+             * @constant
+             */
+            protocol: "transaction-category-review-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Transaction Id
+             * Format: uuid
+             */
+            transaction_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Transaction */
+            transaction: {
+                [key: string]: unknown;
+            };
+            /** Bank Fact */
+            bank_fact: {
+                [key: string]: unknown;
+            };
+            /** Reviewed Transaction Hash */
+            reviewed_transaction_hash: string;
+            /** First Confirmation Supported */
+            first_confirmation_supported: boolean;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Bank Facts Changed
+             * @default false
+             * @constant
+             */
+            bank_facts_changed: false;
+        };
+        /** ChangedParameter */
+        ChangedParameter: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "CASH_BALANCE_DELTA" | "EMERGENCY_AMOUNT" | "PRODUCT_OCCUPANCY";
+            /**
+             * Entity Id
+             * Format: uuid
+             */
+            entity_id: string;
+            /** Original */
+            original: {
+                [key: string]: unknown;
+            };
+            /** Hypothetical */
+            hypothetical: {
+                [key: string]: unknown;
+            };
+            /**
+             * Source Is Hypothetical
+             * @default true
+             * @constant
+             */
+            source_is_hypothetical: true;
         };
         /** CompilationIssue */
         CompilationIssue: {
@@ -2063,6 +6666,221 @@ export interface components {
                 [key: string]: unknown;
             };
         };
+        /** ComposedActionSetSnapshot */
+        ComposedActionSetSnapshot: {
+            /**
+             * Algorithm Version
+             * @default full-policy-action-set-boundary-composed-v3
+             * @constant
+             */
+            algorithm_version: "full-policy-action-set-boundary-composed-v3";
+            /**
+             * Scope
+             * @default POLICY_BACKED_ACTUAL_SERVER_PRODUCERS_COMPOSED_V3
+             * @constant
+             */
+            scope: "POLICY_BACKED_ACTUAL_SERVER_PRODUCERS_COMPOSED_V3";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Write
+             * @default false
+             * @constant
+             */
+            financial_write: false;
+            /**
+             * Arbitrary Manual Intents Covered
+             * @default false
+             * @constant
+             */
+            arbitrary_manual_intents_covered: false;
+            /**
+             * Notification Support
+             * @default NOT_IMPLEMENTED_FOR_COMPOSED_V3
+             * @constant
+             */
+            notification_support: "NOT_IMPLEMENTED_FOR_COMPOSED_V3";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "COMPLETE" | "UNKNOWN";
+            /** Global Action Set Complete */
+            global_action_set_complete: boolean;
+            original_actual_snapshot: components["schemas"]["ActualActionSetSnapshot"];
+            periodic_family: components["schemas"]["PeriodicActionSetResult"];
+            /** Original Inventory Hash */
+            original_inventory_hash: string;
+            /** Financial Input Hash */
+            financial_input_hash: string;
+            /** Input Hash */
+            input_hash: string;
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /** Action Set Signature */
+            action_set_signature: string | null;
+            /** Expected Candidate Keys */
+            expected_candidate_keys: string[];
+            /** Candidates */
+            candidates: components["schemas"]["CandidateView"][];
+            /** Replaced Original Candidate Keys */
+            replaced_original_candidate_keys: string[];
+            /** Unsupported Producers */
+            unsupported_producers: string[];
+            /** Reasons */
+            reasons: string[];
+        };
+        /** ConditionalGoalAdjustmentPlan */
+        ConditionalGoalAdjustmentPlan: {
+            /**
+             * Protocol
+             * @default full-goal-conditional-adjustments-v1
+             * @constant
+             */
+            protocol: "full-goal-conditional-adjustments-v1";
+            /** Original Input Hash */
+            original_input_hash: string;
+            /** Selection Hash */
+            selection_hash: string;
+            actual_selection: components["schemas"]["GoalAdjustmentRequest"];
+            original_baseline_repair: components["schemas"]["MinimalGoalRepair"];
+            original_allocation: components["schemas"]["MultiGoalAllocationResult"];
+            hard_repair: components["schemas"]["MinimalGoalRepair"];
+            /** Outcomes */
+            outcomes: components["schemas"]["AdjustmentOutcome"][];
+            /** Soft Preference Candidates */
+            soft_preference_candidates: components["schemas"]["GoalRepairCandidate"][];
+            /** Evaluated Subset Count */
+            evaluated_subset_count: number;
+            /**
+             * Subset Limit
+             * @default 256
+             * @constant
+             */
+            subset_limit: 256;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "PROPOSAL" | "SOFT_PREFERENCE_PREVIEW" | "NOT_NEEDED" | "NO_PERMITTED_REPAIR" | "BASE_INFEASIBLE" | "UNKNOWN";
+            /**
+             * Minimality Scope
+             * @default CURRENT_PERIOD_SELECTED_HARD_DEADLINE_CRITICAL_SUBSETS
+             * @constant
+             */
+            minimality_scope: "CURRENT_PERIOD_SELECTED_HARD_DEADLINE_CRITICAL_SUBSETS";
+            /**
+             * Selection Source
+             * @default USER_CURRENT_READONLY_PREVIEW_REQUEST
+             * @constant
+             */
+            selection_source: "USER_CURRENT_READONLY_PREVIEW_REQUEST";
+            /**
+             * Identity Refs Are Financial Permissions
+             * @default false
+             * @constant
+             */
+            identity_refs_are_financial_permissions: false;
+            /**
+             * Original Hard Protection Unchanged
+             * @default true
+             * @constant
+             */
+            original_hard_protection_unchanged: true;
+            /**
+             * Minimum Guarantees Unchanged
+             * @default true
+             * @constant
+             */
+            minimum_guarantees_unchanged: true;
+            /**
+             * Original Ownership And Income Unchanged
+             * @default true
+             * @constant
+             */
+            original_ownership_and_income_unchanged: true;
+            /**
+             * Original Allow Deferral Unchanged
+             * @default true
+             * @constant
+             */
+            original_allow_deferral_unchanged: true;
+            /**
+             * Future Income Used Cents
+             * @default 0
+             * @constant
+             */
+            future_income_used_cents: 0;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Requires New Version Confirmation
+             * @default true
+             * @constant
+             */
+            requires_new_version_confirmation: true;
+        };
+        /** ConditionalIncomeDay */
+        ConditionalIncomeDay: {
+            /** Day */
+            day: number;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Conditional Income Cents */
+            conditional_income_cents: number | null;
+            /** Candidate Ids */
+            candidate_ids: string[];
+            /**
+             * Is Settled Cash
+             * @default false
+             * @constant
+             */
+            is_settled_cash: false;
+            /**
+             * Availability Within Day Known
+             * @default false
+             * @constant
+             */
+            availability_within_day_known: false;
+        };
         /** ConfirmActionRequest */
         ConfirmActionRequest: {
             /** Effect Hash */
@@ -2070,12 +6888,66 @@ export interface components {
             /** Accepted */
             accepted: boolean;
         };
+        /**
+         * ConfirmationGrant
+         * @description A verified one-shot confirmation fact; its provenance is checked by the adapter.
+         */
+        ConfirmationGrant: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Operation Id
+             * Format: uuid
+             */
+            operation_id: string;
+            /** Effect Hash */
+            effect_hash: string;
+            /**
+             * Evidence Id
+             * Format: uuid
+             */
+            evidence_id: string;
+            /**
+             * Confirmed At
+             * Format: date-time
+             */
+            confirmed_at: string;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+        };
         /** ConfirmationRequest */
         ConfirmationRequest: {
             /** Accepted */
             accepted: boolean;
             /** Reviewed Hash */
             reviewed_hash: string;
+        };
+        /** ConflictRemovalCheck */
+        ConflictRemovalCheck: {
+            /** Removed Constraint Id */
+            removed_constraint_id: string;
+            /**
+             * Remaining Feasible
+             * @default true
+             * @constant
+             */
+            remaining_feasible: true;
+            /**
+             * Counterfactual Only
+             * @default true
+             * @constant
+             */
+            counterfactual_only: true;
+            /** Witness Amounts Cents */
+            witness_amounts_cents: {
+                [key: string]: number;
+            };
         };
         /** CoverageGap */
         CoverageGap: {
@@ -2104,6 +6976,143 @@ export interface components {
              * Format: uuid
              */
             account_id: string;
+        };
+        /** CurrentMaturityPolicy */
+        CurrentMaturityPolicy: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Version Id
+             * Format: uuid
+             */
+            version_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "MVP" | "FULL";
+            /** Configuration Hash */
+            configuration_hash: string;
+            /**
+             * Scope
+             * @enum {string}
+             */
+            scope: "general_idle_funds" | "goal";
+            /** Goal Id */
+            goal_id: string | null;
+            /** Effective Status */
+            effective_status: string;
+            /** Current Confirmation Verified */
+            current_confirmation_verified: boolean;
+            /** Current Bank Authority Verified */
+            current_bank_authority_verified: boolean;
+            /** Original Configuration */
+            original_configuration: {
+                [key: string]: unknown;
+            };
+        };
+        /** CurrentPurchaseIntent */
+        CurrentPurchaseIntent: {
+            /**
+             * Endpoint
+             * @default /api/v1/actions/prepare
+             * @constant
+             */
+            endpoint: "/api/v1/actions/prepare";
+            /** Request */
+            request: {
+                [key: string]: unknown;
+            };
+            /** Request Hash */
+            request_hash: string;
+            /**
+             * Current Policy Version Id
+             * Format: uuid
+             */
+            current_policy_version_id: string;
+            /**
+             * Reviewed Product Id
+             * Format: uuid
+             */
+            reviewed_product_id: string;
+            /** Reviewed Product Version Number */
+            reviewed_product_version_number: number;
+            /** Reviewed Terms Digest */
+            reviewed_terms_digest: string;
+            /** Current Selection Hash */
+            current_selection_hash: string;
+            /** Binding Hash */
+            binding_hash: string;
+            /**
+             * Submit Intent Only
+             * @default true
+             * @constant
+             */
+            submit_intent_only: true;
+            /**
+             * Prepare Recomputes And May Differ
+             * @default true
+             * @constant
+             */
+            prepare_recomputes_and_may_differ: true;
+            /**
+             * Must Review New Prepared Effect
+             * @default true
+             * @constant
+             */
+            must_review_new_prepared_effect: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+        };
+        /**
+         * CurrentQuestionObservation
+         * @description Original new observation, distinct from the immutable historical payload source.
+         */
+        CurrentQuestionObservation: {
+            /**
+             * Observation Run Id
+             * Format: uuid
+             */
+            observation_run_id: string;
+            /** Observation Trace Hash */
+            observation_trace_hash: string;
+            original_receipt: components["schemas"]["InterventionReceipt"];
+            /**
+             * Session Id
+             * Format: uuid
+             */
+            session_id: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Source Run Id
+             * Format: uuid
+             */
+            source_run_id: string;
+            /** Source Trace Hash */
+            source_trace_hash: string;
+            /** Semantic Key */
+            semantic_key: string;
+            current_question: components["schemas"]["PendingPlanningQuestion"];
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+            /**
+             * Execution Eligible
+             * @default false
+             * @constant
+             */
+            execution_eligible: false;
         };
         /** DailyReserveAmount */
         DailyReserveAmount: {
@@ -2176,6 +7185,241 @@ export interface components {
             audit: components["schemas"]["DashboardAuditCard"];
             /** Source Evidence Ids */
             source_evidence_ids: string[];
+        };
+        /** DeadlineRange */
+        DeadlineRange: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            field: "deadline";
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /**
+             * Lower Date
+             * Format: date
+             */
+            lower_date: string;
+            /**
+             * Upper Date
+             * Format: date
+             */
+            upper_date: string;
+        };
+        /** DecisionSearchInventory */
+        DecisionSearchInventory: {
+            /** Actual Owned Decision Count */
+            actual_owned_decision_count: number;
+            /** Known Decision Count */
+            known_decision_count: number;
+            /** Selected Scope Count */
+            selected_scope_count: number;
+            /** Captured Scope Count */
+            captured_scope_count: number;
+            /** Source Bytes */
+            source_bytes: number;
+            /** Action Link Count */
+            action_link_count: number;
+            /** Captured Action Link Count */
+            captured_action_link_count: number;
+            /** Audit Link Count */
+            audit_link_count: number;
+            /** Captured Audit Link Count */
+            captured_audit_link_count: number;
+            /** Verified Typed Count */
+            verified_typed_count: number;
+            /** Unverifiable Count */
+            unverifiable_count: number;
+            /** Returned Count */
+            returned_count: number;
+            /**
+             * Row Limit
+             * @default 1024
+             * @constant
+             */
+            row_limit: 1024;
+            /**
+             * Byte Limit
+             * @default 67108864
+             * @constant
+             */
+            byte_limit: 67108864;
+        };
+        /** DecisionSearchItem */
+        DecisionSearchItem: {
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Trigger Type */
+            trigger_type: string;
+            /** Record Status */
+            record_status: string;
+            /** Action Ids */
+            action_ids: string[];
+            /** Epoch Ids */
+            epoch_ids: string[];
+            /** Phase */
+            phase: string | null;
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /** Trace Hash */
+            trace_hash: string | null;
+            /**
+             * Completeness
+             * @enum {string}
+             */
+            completeness: "COMPLETE" | "LEGACY_PARTIAL" | "UNSUPPORTED_VERSION" | "INVALID";
+            /**
+             * Match State
+             * @enum {string}
+             */
+            match_state: "MATCHED" | "UNVERIFIABLE";
+            /** References */
+            references: components["schemas"]["SearchReference"][];
+            /** Issues */
+            issues: string[];
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Success Inferred
+             * @default false
+             * @constant
+             */
+            financial_success_inferred: false;
+        };
+        /** DecisionSearchQuery */
+        DecisionSearchQuery: {
+            /** Action Id */
+            action_id?: string | null;
+            /** Action Key */
+            action_key?: string | null;
+            /** Policy Version Id */
+            policy_version_id?: string | null;
+            /** Epoch Id */
+            epoch_id?: string | null;
+            /**
+             * Limit
+             * @default 20
+             */
+            limit: number;
+            /**
+             * Offset
+             * @default 0
+             */
+            offset: number;
+        };
+        /** DecisionSearchResponse */
+        DecisionSearchResponse: {
+            /**
+             * Schema Version
+             * @default full-decision-search-v1
+             * @constant
+             */
+            schema_version: "full-decision-search-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Read At
+             * Format: date-time
+             */
+            read_at: string;
+            /**
+             * Business Known At
+             * Format: date-time
+             */
+            business_known_at: string;
+            query: components["schemas"]["DecisionSearchQuery"];
+            /** Resolved Action Id */
+            resolved_action_id: string | null;
+            /**
+             * Version Family
+             * @enum {string}
+             */
+            version_family: "NONE" | "MVP" | "FULL_UNSUPPORTED";
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "SEARCHED" | "UNKNOWN";
+            /**
+             * Scope
+             * @default CURRENT_PERSISTED_DECISION_ROWS
+             * @constant
+             */
+            scope: "CURRENT_PERSISTED_DECISION_ROWS";
+            inventory: components["schemas"]["DecisionSearchInventory"];
+            /** Source Hash */
+            source_hash: string | null;
+            /** Verified Match Count */
+            verified_match_count: number;
+            /** Total Match Count */
+            total_match_count: number | null;
+            /** Items */
+            items: components["schemas"]["DecisionSearchItem"][];
+            /** Next Offset */
+            next_offset: number | null;
+            /** Issues */
+            issues: string[];
+            /** Unsupported Families */
+            unsupported_families: string[];
+            /**
+             * Absence Is Final
+             * @default false
+             * @constant
+             */
+            absence_is_final: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Success Inferred
+             * @default false
+             * @constant
+             */
+            financial_success_inferred: false;
+            /**
+             * Archived Records Searched
+             * @default false
+             * @constant
+             */
+            archived_records_searched: false;
+            /**
+             * Audit Chain Verified
+             * @default false
+             * @constant
+             */
+            audit_chain_verified: false;
         };
         /** DecisionTrace */
         DecisionTrace: {
@@ -2342,6 +7586,490 @@ export interface components {
             /** Action Id */
             action_id?: string | null;
         };
+        /** DeclarationRequest */
+        DeclarationRequest: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "EXPENSE" | "GOAL_PREFERENCE" | "NOTE";
+            /** Source Ref */
+            source_ref: string;
+            /** Content */
+            content: {
+                [key: string]: unknown;
+            };
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Valid From */
+            valid_from?: string | null;
+            /** Valid To */
+            valid_to?: string | null;
+            /** Supersedes Id */
+            supersedes_id?: string | null;
+        };
+        /** DeclarationResponse */
+        DeclarationResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            evidence: components["schemas"]["FactView"];
+            /** Request Hash */
+            request_hash: string;
+            /**
+             * Observed At From Server
+             * @default true
+             * @constant
+             */
+            observed_at_from_server: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Bank Verified
+             * @default false
+             * @constant
+             */
+            bank_verified: false;
+            /**
+             * Declaration Audit Event Recorded
+             * @default false
+             * @constant
+             */
+            declaration_audit_event_recorded: false;
+        };
+        /** DeliveryList */
+        DeliveryList: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /** Items */
+            items: components["schemas"]["DeliveryView"][];
+            /**
+             * Economic Verified
+             * @default false
+             * @constant
+             */
+            economic_verified: false;
+        };
+        /** DeliveryRequest */
+        DeliveryRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Reviewed Payload Hash */
+            reviewed_payload_hash: string;
+        };
+        /** DeliveryView */
+        DeliveryView: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Outbox Id
+             * Format: uuid
+             */
+            outbox_id: string;
+            /**
+             * Root Id
+             * Format: uuid
+             */
+            root_id: string;
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Payload Hash */
+            payload_hash: string;
+            /** Outbox State */
+            outbox_state: string;
+            /** Inbox State */
+            inbox_state: string | null;
+            /** Source Action Status */
+            source_action_status: string;
+            /** Bank Status */
+            bank_status: string | null;
+            /** Current Action Available */
+            current_action_available: boolean;
+            /** Blocking Reason */
+            blocking_reason: string | null;
+            /** Service Receipt Verified */
+            service_receipt_verified: boolean;
+            /**
+             * Economic Verified
+             * @default false
+             * @constant
+             */
+            economic_verified: false;
+            /** Attempts */
+            attempts: components["schemas"]["AttemptView"][];
+            /** Last Error */
+            last_error: string | null;
+            /**
+             * Busy
+             * @default false
+             */
+            busy: boolean;
+        };
+        /** DemoCommandView */
+        DemoCommandView: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Preset Version
+             * @default demo-console-v1
+             * @constant
+             */
+            preset_version: "demo-console-v1";
+            /**
+             * Command Id
+             * Format: uuid
+             */
+            command_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Event Kind
+             * @enum {string}
+             */
+            event_kind: "SALARY_RECEIVED" | "CREATE_CAR_GOAL" | "LARGE_CONSUMPTION" | "AUTO_REDEEM" | "FIXED_EARLY_WITHDRAWAL" | "CHANGE_RENT";
+            /**
+             * Admitted At
+             * Format: date-time
+             */
+            admitted_at: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "WAITING_TEMPLATE" | "WAITING_ACTION_CONFIRMATION" | "WAITING_POLICY_CHANGE" | "UNKNOWN" | "COMPLETED" | "BLOCKED" | "PENDING";
+            /** Message */
+            message: string;
+            /** Proposal Ids */
+            proposal_ids?: string[];
+            /** Goal Id */
+            goal_id?: string | null;
+            fact?: components["schemas"]["ExternalFactResult"] | null;
+            /** Actions */
+            actions?: components["schemas"]["ActionResponse"][];
+            recovery?: components["schemas"]["RecoveryRunResponse"] | null;
+            policy_change?: components["schemas"]["DemoPolicyChange"] | null;
+        };
+        /** DemoEventPreset */
+        DemoEventPreset: {
+            /** Event Kind */
+            event_kind: ("SALARY_RECEIVED" | "CREATE_CAR_GOAL" | "LARGE_CONSUMPTION" | "AUTO_REDEEM" | "FIXED_EARLY_WITHDRAWAL" | "CHANGE_RENT") | "RESET";
+            /** Title */
+            title: string;
+            /** Description */
+            description: string;
+            /** Required Templates */
+            required_templates?: ("CAR_GOAL" | "LIQUID_ASSET" | "FIXED_ASSET" | "RENT")[];
+            /** Amount Cents */
+            amount_cents?: number | null;
+        };
+        /** DemoEventRequest */
+        DemoEventRequest: {
+            /**
+             * Event Kind
+             * @enum {string}
+             */
+            event_kind: "SALARY_RECEIVED" | "CREATE_CAR_GOAL" | "LARGE_CONSUMPTION" | "AUTO_REDEEM" | "FIXED_EARLY_WITHDRAWAL" | "CHANGE_RENT";
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+        };
+        /** DemoPolicyChange */
+        DemoPolicyChange: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+            /** Reviewed Hash */
+            reviewed_hash: string;
+            /** Reason */
+            reason: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** DemoPresets */
+        DemoPresets: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Preset Version
+             * @default demo-console-v1
+             * @constant
+             */
+            preset_version: "demo-console-v1";
+            /** Templates */
+            templates: components["schemas"]["DemoTemplateView"][];
+            /** Events */
+            events: components["schemas"]["DemoEventPreset"][];
+        };
+        /** DemoResetRequest */
+        DemoResetRequest: {
+            /** Reset Key */
+            reset_key: string;
+            /** Expected Epoch Id */
+            expected_epoch_id: string | null;
+            /** Accepted */
+            accepted: boolean;
+        };
+        /** DemoResetResponse */
+        DemoResetResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /** Reset Key */
+            reset_key: string;
+            /**
+             * Reset Epoch Id
+             * Format: uuid
+             */
+            reset_epoch_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Seed Summary */
+            seed_summary: {
+                [key: string]: unknown;
+            };
+        };
+        /** DemoState */
+        DemoState: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Preset Version
+             * @default demo-console-v1
+             * @constant
+             */
+            preset_version: "demo-console-v1";
+            /** Epoch Id */
+            epoch_id: string | null;
+            /** Available */
+            available: boolean;
+            /** Reason */
+            reason?: string | null;
+            /** Templates */
+            templates: components["schemas"]["DemoTemplateView"][];
+            /** Commands */
+            commands: components["schemas"]["DemoCommandView"][];
+        };
+        /** DemoTemplateRequest */
+        DemoTemplateRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+        };
+        /** DemoTemplateView */
+        DemoTemplateView: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "CAR_GOAL" | "LIQUID_ASSET" | "FIXED_ASSET" | "RENT";
+            /** Title */
+            title: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+            /** Configuration Hash */
+            configuration_hash: string;
+            /** Proposal Id */
+            proposal_id?: string | null;
+            /** Evidence Id */
+            evidence_id?: string | null;
+            /** Confirmed Policy Id */
+            confirmed_policy_id?: string | null;
+            /**
+             * Status
+             * @default NOT_PREPARED
+             */
+            status: string;
+        };
+        /** DependencyCycle */
+        DependencyCycle: {
+            /** Policy Ids */
+            policy_ids: string[];
+            /** Example Path */
+            example_path: string[];
+            /**
+             * Meaning
+             * @default DECLARED_DEPENDENCY_CYCLE_REQUIRES_REVIEW
+             * @constant
+             */
+            meaning: "DECLARED_DEPENDENCY_CYCLE_REQUIRES_REVIEW";
+            /**
+             * Financial Infeasibility Proven
+             * @default false
+             * @constant
+             */
+            financial_infeasibility_proven: false;
+        };
+        /** DependencyEdge */
+        DependencyEdge: {
+            /**
+             * Source Policy Id
+             * Format: uuid
+             */
+            source_policy_id: string;
+            /** Role */
+            role: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "GOAL" | "ACCOUNT" | "EVIDENCE" | "MVP_POLICY" | "FULL_POLICY";
+            /**
+             * Target Id
+             * Format: uuid
+             */
+            target_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "UNCHANGED" | "CHANGED" | "ADDED" | "UNAVAILABLE";
+            /** Original Binding Hash */
+            original_binding_hash: string | null;
+            /** Current Binding Hash */
+            current_binding_hash: string | null;
+            /** Original Reference */
+            original_reference: {
+                [key: string]: unknown;
+            } | null;
+            /** Current Reference */
+            current_reference: {
+                [key: string]: unknown;
+            } | null;
+            /** Current Target Status */
+            current_target_status: string | null;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+        };
+        /** DependencyPolicyOriginal */
+        DependencyPolicyOriginal: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Version Id
+             * Format: uuid
+             */
+            version_id: string;
+            /** Configuration Hash */
+            configuration_hash: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+            /** Name */
+            name: string;
+            /**
+             * Template Name
+             * @enum {string}
+             */
+            template_name: "RecurringObligationPolicy" | "LivingReservePolicy" | "EmergencyBufferPolicy" | "DatedExpensePolicy" | "LongTermGoalPolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy";
+            /** Effective Status */
+            effective_status: string;
+            /** Reference Validation */
+            reference_validation: string;
+            /** Planning Confirmation Valid */
+            planning_confirmation_valid: boolean;
+            /** Recorded References */
+            recorded_references: {
+                [key: string]: unknown;
+            }[];
+            /** Current References */
+            current_references: {
+                [key: string]: unknown;
+            }[] | null;
+            /** Reference Effective Statuses */
+            reference_effective_statuses?: {
+                [key: string]: string;
+            };
+            /** Source Issues */
+            source_issues?: string[];
+        };
         /**
          * DiscoveryRequest
          * @description Discovery uses the trusted server snapshot; clients cannot inject facts or time.
@@ -2384,6 +8112,372 @@ export interface components {
             /** Source Ref */
             source_ref: string;
         };
+        /** DynamicGoalProducerInput */
+        DynamicGoalProducerInput: {
+            /** Candidate Key */
+            candidate_key: string;
+            /** Model Evidence Ids */
+            model_evidence_ids: string[];
+            data?: components["schemas"]["FullDynamicGoalInput"] | null;
+            authority?: components["schemas"]["AuthorityAssessment"] | null;
+            /**
+             * Excluded By Current Policy
+             * @default false
+             */
+            excluded_by_current_policy: boolean;
+            /** Missing Reasons */
+            missing_reasons?: string[];
+        };
+        /** DynamicGoalReserveResponse */
+        DynamicGoalReserveResponse: {
+            /**
+             * Schema Version
+             * @default verified-dynamic-goal-reserve-v1
+             * @constant
+             */
+            schema_version: "verified-dynamic-goal-reserve-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Policy Effective Status */
+            policy_effective_status: string | null;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "COMPUTED" | "EXPIRED" | "INACTIVE" | "UNKNOWN";
+            reserve: components["schemas"]["DynamicGoalReserveResult"] | null;
+            /**
+             * Protection Scope
+             * @default ALL_ORIGINAL_365_DAY_RESERVES_RETAINED
+             * @constant
+             */
+            protection_scope: "ALL_ORIGINAL_365_DAY_RESERVES_RETAINED";
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Source Issues */
+            source_issues: components["schemas"]["BoundarySourceIssue"][];
+            /** Input Hash */
+            input_hash: string;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** DynamicGoalReserveResult */
+        DynamicGoalReserveResult: {
+            /**
+             * Algorithm Version
+             * @default remaining-month-gross-pacing-v1
+             * @constant
+             */
+            algorithm_version: "remaining-month-gross-pacing-v1";
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Policy Version Id
+             * Format: uuid
+             */
+            policy_version_id: string;
+            /** Period */
+            period: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY" | "PARTIAL" | "MINIMUM_SHORTFALL" | "HARD_GUARANTEE_SHORTFALL" | "DEADLINE_BLOCKED" | "OVERDUE_READY" | "COMPLETE" | "MONTHLY_MAX_ALREADY_EXCEEDED" | "INACTIVE_POLICY" | "EXPIRED_POLICY" | "LIQUIDITY_RISK" | "INSUFFICIENT_EVIDENCE";
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Preview Only
+             * @default true
+             * @constant
+             */
+            preview_only: true;
+            /**
+             * Future Income Included Cents
+             * @default 0
+             * @constant
+             */
+            future_income_included_cents: 0;
+            /** Input Hash */
+            input_hash: string;
+            /** Current Owned Cents */
+            current_owned_cents?: number | null;
+            /** Current Month Contributed Cents */
+            current_month_contributed_cents?: number | null;
+            /** Remaining Goal Cents */
+            remaining_goal_cents?: number | null;
+            /** Excess Owned Cents */
+            excess_owned_cents?: number | null;
+            /** Progress Basis Points */
+            progress_basis_points?: number | null;
+            /** Remaining Calendar Month Slots */
+            remaining_calendar_month_slots?: number | null;
+            /** Uncapped Gross Pace Cents */
+            uncapped_gross_pace_cents?: number | null;
+            /** Dynamic Month Total Cents */
+            dynamic_month_total_cents?: number | null;
+            /** Nominal Month Target Cents */
+            nominal_month_target_cents?: number | null;
+            /** Pace Delta From Nominal Cents */
+            pace_delta_from_nominal_cents?: number | null;
+            /** Eligible Available Income Cents */
+            eligible_available_income_cents?: number | null;
+            /** Independently Protected Budget Cents */
+            independently_protected_budget_cents?: number | null;
+            /** Desired Additional Cents */
+            desired_additional_cents?: number | null;
+            /** Suggested Additional Cents */
+            suggested_additional_cents?: number | null;
+            /** Minimum Shortfall Cents */
+            minimum_shortfall_cents?: number | null;
+            /** Guarantee Shortfall Cents */
+            guarantee_shortfall_cents?: number | null;
+            /** Overdue Days */
+            overdue_days?: number | null;
+            /** Deferral Cost To Date Cents */
+            deferral_cost_to_date_cents?: number | null;
+            /** Actual Completion Date */
+            actual_completion_date?: null;
+            /** Reasons */
+            reasons: string[];
+        };
+        /** EmergencyAssumption */
+        EmergencyAssumption: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Amount Cents */
+            amount_cents: number;
+        };
+        /** EmergencyChoice */
+        EmergencyChoice: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Version Id
+             * Format: uuid
+             */
+            version_id: string;
+            /** Configuration Hash */
+            configuration_hash: string;
+            /** Amount Cents */
+            amount_cents: number;
+            /** Evidence Ids */
+            evidence_ids: string[];
+        };
+        /** EmergencyRepairMath */
+        EmergencyRepairMath: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "COMPUTED" | "UNKNOWN";
+            /** Cash Cents */
+            cash_cents: number | null;
+            /** Locked Goal Cash Cents */
+            locked_goal_cash_cents: number | null;
+            /** Reserved Cash Cents */
+            reserved_cash_cents: number | null;
+            /** Unowned Unreserved Cash Cents */
+            unowned_unreserved_cash_cents: number | null;
+            /** Required By Condition */
+            required_by_condition: {
+                [key: string]: number;
+            } | null;
+            /** Shortfall By Condition */
+            shortfall_by_condition: {
+                [key: string]: number;
+            } | null;
+            /** Minimum Repair Cents */
+            minimum_repair_cents: number | null;
+            /** Source Cash Releasable Above Minimum Cents */
+            source_cash_releasable_above_minimum_cents: number | null;
+            /** Unique Minimum For Registered Current Scope */
+            unique_minimum_for_registered_current_scope: boolean;
+            /**
+             * Principal Release Cents
+             * @default 0
+             * @constant
+             */
+            principal_release_cents: 0;
+            /**
+             * Future Income Used Cents
+             * @default 0
+             * @constant
+             */
+            future_income_used_cents: 0;
+        };
+        /** EmptyDeliveryRequest */
+        EmptyDeliveryRequest: Record<string, never>;
+        /** EnvelopeEvaluation */
+        EnvelopeEvaluation: {
+            /**
+             * Algorithm Version
+             * @default five-set-original-evaluation-v1
+             * @constant
+             */
+            algorithm_version: "five-set-original-evaluation-v1";
+            /**
+             * Evaluation Only
+             * @default true
+             * @constant
+             */
+            evaluation_only: true;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+            /** Sets */
+            sets: components["schemas"]["EnvelopeSet"][];
+            /**
+             * Intersection
+             * @enum {string}
+             */
+            intersection: "IN" | "OUT" | "UNKNOWN";
+            /** Execution Eligible */
+            execution_eligible: boolean;
+            /** Automatic Execution Allowed */
+            automatic_execution_allowed: boolean;
+            original_decision: components["schemas"]["AutonomyDecision"] | null;
+            /** Facts Hash */
+            facts_hash: string;
+        };
+        /** EnvelopeRequest */
+        EnvelopeRequest: {
+            /** Intent */
+            intent: components["schemas"]["TransferIntent"] | components["schemas"]["PaymentIntent"] | components["schemas"]["GoalIntent"] | components["schemas"]["PurchaseIntent"] | components["schemas"]["RedeemIntent"] | components["schemas"]["FullTemplateIntent"];
+        };
+        /** EnvelopeResponse */
+        EnvelopeResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Evaluation Only
+             * @default true
+             * @constant
+             */
+            evaluation_only: true;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Action Id */
+            action_id: string | null;
+            /** Action Type */
+            action_type: string;
+            effect: components["schemas"]["ExecutionEffect"] | null;
+            /** Amount Cents */
+            amount_cents: number | null;
+            assessment: components["schemas"]["EnvelopeEvaluation"];
+            /** Sources */
+            sources: components["schemas"]["EnvelopeSource"][];
+            audit: components["schemas"]["DashboardAuditCard"];
+        };
+        /** EnvelopeSet */
+        EnvelopeSet: {
+            /**
+             * Name
+             * @enum {string}
+             */
+            name: "FinanciallySafeSet" | "UserAuthorizedSet" | "LiquidityCompatibleSet" | "EvidenceSufficientSet" | "SupportedActionSet";
+            /**
+             * Membership
+             * @enum {string}
+             */
+            membership: "IN" | "OUT" | "UNKNOWN";
+            /** Reasons */
+            reasons: string[];
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** Policy Version Ids */
+            policy_version_ids: string[];
+            /** Source Context Hash */
+            source_context_hash: string | null;
+            /** Effect Hash */
+            effect_hash: string | null;
+        };
+        /** EnvelopeSource */
+        EnvelopeSource: {
+            /**
+             * Evidence Id
+             * Format: uuid
+             */
+            evidence_id: string;
+            /** Content Hash */
+            content_hash: string;
+            /** Source Type */
+            source_type: string;
+            /** Source Ref */
+            source_ref: string;
+            /** Evidence Level */
+            evidence_level: string;
+            /** Status */
+            status: string;
+            /**
+             * Observed At
+             * Format: date-time
+             */
+            observed_at: string;
+        };
         /** ErrorDetail */
         ErrorDetail: {
             /** Code */
@@ -2396,6 +8490,16 @@ export interface components {
         /** ErrorEnvelope */
         ErrorEnvelope: {
             error: components["schemas"]["ErrorDetail"];
+        };
+        /** ExactAmount */
+        ExactAmount: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "exact";
+            /** Amount Cents */
+            amount_cents: number;
         };
         /** ExcludedReserveTransaction */
         ExcludedReserveTransaction: {
@@ -2421,6 +8525,44 @@ export interface components {
         };
         /** ExecuteActionRequest */
         ExecuteActionRequest: Record<string, never>;
+        /** ExecutionContext */
+        ExecutionContext: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            snapshot: components["schemas"]["BoundarySnapshot"];
+            /** Versions */
+            versions: components["schemas"]["BoundaryPolicyVersion"][];
+            /** Positions */
+            positions: components["schemas"]["BoundaryPosition"][];
+            /** Boundary Products */
+            boundary_products: components["schemas"]["BoundaryProduct"][];
+            /** Products */
+            products?: components["schemas"]["AssetProductTerms"][];
+            /** Lots */
+            lots?: components["schemas"]["IncomeLot"][];
+            exposure?: components["schemas"]["AssetExposure"] | null;
+            redemption_quote?: components["schemas"]["RecoveryQuote"] | null;
+            /**
+             * Requires Confirmation
+             * @default false
+             */
+            requires_confirmation: boolean;
+            /** Reserved Cash By Account */
+            reserved_cash_by_account?: {
+                [key: string]: number;
+            };
+            /** Reserved Goal Cash By Goal */
+            reserved_goal_cash_by_goal?: {
+                [key: string]: number;
+            };
+            /** Reserved Position Ids */
+            reserved_position_ids?: string[];
+            /** Source Issues */
+            source_issues?: components["schemas"]["SourceIssue"][];
+        };
         /**
          * ExecutionEffect
          * @description An agreed economic command; no query clock or mutable financial snapshot hash.
@@ -2454,7 +8596,7 @@ export interface components {
             /** Cash Uses */
             cash_uses?: components["schemas"]["CashUse"][];
             /** Income Uses */
-            income_uses?: components["schemas"]["IncomeUse"][];
+            income_uses?: components["schemas"]["app__domain__income_ledger__IncomeUse"][];
             /** Destination Account Id */
             destination_account_id?: string | null;
             /** Goal Id */
@@ -2549,6 +8691,130 @@ export interface components {
             /** Reasons */
             reasons?: string[];
         };
+        /** ExistingGoalVersionPreview */
+        ExistingGoalVersionPreview: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Current Version Id
+             * Format: uuid
+             */
+            current_version_id: string;
+            /** Original Full Configuration */
+            original_full_configuration: {
+                [key: string]: unknown;
+            };
+            /** Original Full Configuration Hash */
+            original_full_configuration_hash: string;
+            /** Original Monthly Max Cents */
+            original_monthly_max_cents: number;
+            /** Proposed Monthly Max Cents */
+            proposed_monthly_max_cents: number;
+            /** Preview Endpoint */
+            preview_endpoint: string;
+            /** Preview Request */
+            preview_request: {
+                [key: string]: unknown;
+            };
+            actual_existing_preview: components["schemas"]["FullGoalPreviewResponse"];
+            /** Confirmation Endpoint */
+            confirmation_endpoint: string;
+            /** Confirmation Bindings */
+            confirmation_bindings: {
+                [key: string]: unknown;
+            };
+            /** Missing Explicit User Fields */
+            missing_explicit_user_fields: ("accepted" | "reason" | "idempotency_key")[];
+            /**
+             * Ready To Submit Confirmation
+             * @default false
+             * @constant
+             */
+            ready_to_submit_confirmation: false;
+            /**
+             * Current Execution Permission Changed
+             * @default false
+             * @constant
+             */
+            current_execution_permission_changed: false;
+        };
+        /** ExternalFactResult */
+        ExternalFactResult: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * External Fact Id
+             * Format: uuid
+             */
+            external_fact_id: string;
+            /**
+             * Bank Status
+             * @enum {string}
+             */
+            bank_status: "ACCEPTED" | "SETTLED" | "UNKNOWN" | "REJECTED";
+            /**
+             * Projection Status
+             * @enum {string}
+             */
+            projection_status: "PENDING" | "UNKNOWN" | "PROJECTED";
+            /**
+             * Economic Posting Ids
+             * @default []
+             */
+            economic_posting_ids: string[];
+            /** Transaction Id */
+            transaction_id?: string | null;
+            /** Projection Error */
+            projection_error?: string | null;
+        };
+        /** FactView */
+        FactView: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Evidence Level */
+            evidence_level: string;
+            /** Source Type */
+            source_type: string;
+            /** Source Ref */
+            source_ref: string;
+            /** Content */
+            content: {
+                [key: string]: unknown;
+            };
+            /** Content Hash */
+            content_hash: string;
+            /**
+             * Valid From
+             * Format: date-time
+             */
+            valid_from: string;
+            /** Valid To */
+            valid_to: string | null;
+            /**
+             * Observed At
+             * Format: date-time
+             */
+            observed_at: string;
+            /** Supersedes Id */
+            supersedes_id: string | null;
+            /** Status */
+            status: string;
+        };
         /** FinancialBoundaryCard */
         FinancialBoundaryCard: {
             /**
@@ -2607,6 +8873,6600 @@ export interface components {
             calculation_notes: string[];
             /** Issues */
             issues?: components["schemas"]["BoundarySourceIssue"][];
+        };
+        /** FiniteChoice */
+        FiniteChoice: {
+            /** Key */
+            key: string;
+            /** Value */
+            value: components["schemas"]["MoneyChoice"] | components["schemas"]["AccountChoice"] | components["schemas"]["IntentChoice"];
+        };
+        /** FinitePlanningRequest */
+        FinitePlanningRequest: {
+            /**
+             * Base Action Id
+             * Format: uuid
+             */
+            base_action_id: string;
+            /** Variables */
+            variables: components["schemas"]["FinitePlanningVariable"][];
+        };
+        /** FinitePlanningResponse */
+        FinitePlanningResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Base Action Id
+             * Format: uuid
+             */
+            base_action_id: string;
+            /**
+             * Original Run Id
+             * Format: uuid
+             */
+            original_run_id: string;
+            /** Original Trace Hash */
+            original_trace_hash: string;
+            /** Request Hash */
+            request_hash: string;
+            /** Current Source Context Hash */
+            current_source_context_hash: string;
+            base_decision: components["schemas"]["AutonomyDecision"];
+            audit: components["schemas"]["DashboardAuditCard"];
+            /** Sources */
+            sources: components["schemas"]["EnvelopeSource"][];
+            /** Declarations */
+            declarations: components["schemas"]["VariableProvenance"][];
+            result: components["schemas"]["FinitePlanningResult"];
+        };
+        /** FinitePlanningResult */
+        FinitePlanningResult: {
+            /**
+             * Algorithm Version
+             * @default full-finite-planning-minimax-v1
+             * @constant
+             */
+            algorithm_version: "full-finite-planning-minimax-v1";
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+            /**
+             * Execution Eligible
+             * @default false
+             * @constant
+             */
+            execution_eligible: false;
+            /**
+             * Probability Model
+             * @default NONE
+             * @constant
+             */
+            probability_model: "NONE";
+            /**
+             * Answer State Machine
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            answer_state_machine: "NOT_IMPLEMENTED";
+            /**
+             * Restart Deduplication
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            restart_deduplication: "NOT_IMPLEMENTED";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "STABLE" | "DIVERGENT" | "ALL_WORLDS_BLOCKED" | "UNKNOWN" | "CAPACITY_EXCEEDED";
+            /** Complete Within Declared Domain */
+            complete_within_declared_domain: boolean;
+            /** Expected World Count */
+            expected_world_count: number;
+            /** Evaluated World Count */
+            evaluated_world_count: number;
+            /** Known World Count */
+            known_world_count: number;
+            /** Unknown Or Unsupported World Count */
+            unknown_or_unsupported_world_count: number;
+            /** Stable */
+            stable: boolean | null;
+            /** Should Ask */
+            should_ask: boolean | null;
+            /** Worlds */
+            worlds: components["schemas"]["PlanningWorld"][];
+            /** Distinct Signatures */
+            distinct_signatures: string[];
+            question: components["schemas"]["MinimaxCandidate"] | null;
+            /** Minimax Candidates */
+            minimax_candidates: components["schemas"]["MinimaxCandidate"][];
+            /** Full Confirmation Baseline Question Count */
+            full_confirmation_baseline_question_count: number;
+            /** Affected Action Types */
+            affected_action_types: string[];
+            /** Explanation */
+            explanation: string;
+            /** Reasons */
+            reasons: string[];
+        };
+        /** FinitePlanningVariable */
+        FinitePlanningVariable: {
+            /** Variable Id */
+            variable_id: string;
+            /**
+             * Field
+             * @enum {string}
+             */
+            field: "ACTION_INTENT" | "TRANSFER_AMOUNT" | "TRANSFER_SOURCE" | "TRANSFER_DESTINATION";
+            /** Choices */
+            choices: components["schemas"]["FiniteChoice"][];
+            /**
+             * Completeness
+             * @default COMPLETE
+             * @enum {string}
+             */
+            completeness: "COMPLETE" | "INCOMPLETE";
+            /**
+             * Source
+             * @default USER_REQUEST
+             * @enum {string}
+             */
+            source: "USER_REQUEST" | "REGISTERED_EVIDENCE";
+            /** Evidence Id */
+            evidence_id?: string | null;
+            /**
+             * Impact Scope
+             * @default ORIGINAL_MVP_PLANNING_REQUEST
+             * @constant
+             */
+            impact_scope: "ORIGINAL_MVP_PLANNING_REQUEST";
+        };
+        /** FixedReturnTerms */
+        FixedReturnTerms: {
+            /** Term Days */
+            term_days: number;
+            /** Settlement Delay Days */
+            settlement_delay_days: number;
+            /**
+             * Principal Return Bps
+             * @default 10000
+             * @constant
+             */
+            principal_return_bps: 10000;
+            /**
+             * Rollover
+             * @default false
+             * @constant
+             */
+            rollover: false;
+        };
+        /** FullAccountDailyDebitBound */
+        FullAccountDailyDebitBound: {
+            /** Day */
+            day: number;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Registered Outflow Cents */
+            registered_outflow_cents: number;
+            /** Cumulative Registered Outflows Cents */
+            cumulative_registered_outflows_cents: number;
+            /** Account Cash Lower Bound Cents */
+            account_cash_lower_bound_cents: number;
+        };
+        /** FullAccountDebitBound */
+        FullAccountDebitBound: {
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "PASSED" | "BLOCKED" | "UNKNOWN";
+            /** Actual Projected Cash Cents */
+            actual_projected_cash_cents: number | null;
+            /** Goal Owned Cash Cents */
+            goal_owned_cash_cents: number | null;
+            /** Other Claims Cents */
+            other_claims_cents: number | null;
+            /** Initial Free Cash Cents */
+            initial_free_cash_cents: number | null;
+            /** Maximum Cumulative Registered Outflows Cents */
+            maximum_cumulative_registered_outflows_cents: number | null;
+            /** Minimum Account Cash Lower Bound Cents */
+            minimum_account_cash_lower_bound_cents: number | null;
+            /** Daily Bounds */
+            daily_bounds: components["schemas"]["FullAccountDailyDebitBound"][];
+            /** Reasons */
+            reasons: string[];
+        };
+        /** FullAccountDebitBoundsProof */
+        FullAccountDebitBoundsProof: {
+            /**
+             * Protocol
+             * @default full-registered-account-debit-bounds-v1
+             * @constant
+             */
+            protocol: "full-registered-account-debit-bounds-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Basis
+             * @default ALL_REGISTERED_OUTFLOWS_ASSIGNED_TO_EACH_SOURCE_UPPER_BOUND
+             * @constant
+             */
+            basis: "ALL_REGISTERED_OUTFLOWS_ASSIGNED_TO_EACH_SOURCE_UPPER_BOUND";
+            /**
+             * Account Allocation Is Exact
+             * @default false
+             * @constant
+             */
+            account_allocation_is_exact: false;
+            /**
+             * Future Income Credited Cents
+             * @default 0
+             * @constant
+             */
+            future_income_credited_cents: 0;
+            /**
+             * Future Principal Credited Cents
+             * @default 0
+             * @constant
+             */
+            future_principal_credited_cents: 0;
+            /**
+             * Borrowed Other Account Cash Cents
+             * @default 0
+             * @constant
+             */
+            borrowed_other_account_cash_cents: 0;
+            /**
+             * Scope
+             * @default REGISTERED_CURRENT_SCOPE_365_DAYS_ONLY
+             * @constant
+             */
+            scope: "REGISTERED_CURRENT_SCOPE_365_DAYS_ONLY";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Timezone
+             * @enum {string}
+             */
+            timezone: "UTC" | "Asia/Shanghai";
+            /** Original Effect Hash */
+            original_effect_hash: string;
+            /** Context Hash */
+            context_hash: string;
+            /** Validation Hash */
+            validation_hash: string;
+            /** Projected Snapshot Hash */
+            projected_snapshot_hash: string | null;
+            /** Projection Input Hash */
+            projection_input_hash: string;
+            /** Projection Result Hash */
+            projection_result_hash: string;
+            /** Original Annual Boundary Hash */
+            original_annual_boundary_hash: string;
+            /** Full Annual Boundary Hash */
+            full_annual_boundary_hash: string | null;
+            /**
+             * Expected Day Count
+             * @default 366
+             * @constant
+             */
+            expected_day_count: 366;
+            /**
+             * Expected Phase Count
+             * @default 1098
+             * @constant
+             */
+            expected_phase_count: 1098;
+            /** Observed Original Phase Count */
+            observed_original_phase_count: number;
+            /** Observed Full Phase Count */
+            observed_full_phase_count: number;
+            /** Registered Source Account Ids */
+            registered_source_account_ids: string[];
+            /** Original Source Check Count */
+            original_source_check_count: number;
+            /** Registered Full Policy Version Ids */
+            registered_full_policy_version_ids: string[];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Maximum Cumulative Registered Outflows Cents */
+            maximum_cumulative_registered_outflows_cents: number | null;
+            /** Accounts */
+            accounts: components["schemas"]["FullAccountDebitBound"][];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "PASSED" | "BLOCKED" | "UNKNOWN";
+            /** Reasons */
+            reasons: string[];
+            /** Proof Hash */
+            proof_hash: string;
+        };
+        /** FullActionSetSnapshot */
+        FullActionSetSnapshot: {
+            /**
+             * Algorithm Version
+             * @default full-policy-action-set-boundary-full-v1
+             * @constant
+             */
+            algorithm_version: "full-policy-action-set-boundary-full-v1";
+            /**
+             * Scope
+             * @default POLICY_BACKED_FULL_SERVER_PRODUCERS_V1
+             * @constant
+             */
+            scope: "POLICY_BACKED_FULL_SERVER_PRODUCERS_V1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Write
+             * @default false
+             * @constant
+             */
+            financial_write: false;
+            /**
+             * Arbitrary Manual Intents Covered
+             * @default false
+             * @constant
+             */
+            arbitrary_manual_intents_covered: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "COMPLETE" | "UNKNOWN";
+            /** Global Action Set Complete */
+            global_action_set_complete: boolean;
+            /** Original Inventory Hash */
+            original_inventory_hash: string;
+            /** Financial Input Hash */
+            financial_input_hash: string;
+            /** Input Hash */
+            input_hash: string;
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /** Action Set Signature */
+            action_set_signature: string | null;
+            /** Expected Candidate Keys */
+            expected_candidate_keys: string[];
+            /** Candidates */
+            candidates: components["schemas"]["CandidateView"][];
+            /** Dynamic Candidate Keys */
+            dynamic_candidate_keys: string[];
+            /** Unsupported Producers */
+            unsupported_producers: string[];
+            /** Reasons */
+            reasons: string[];
+        };
+        /** FullAnnualProtectionResponse */
+        FullAnnualProtectionResponse: {
+            /**
+             * Schema Version
+             * @default full-annual-protection-v1
+             * @constant
+             */
+            schema_version: "full-annual-protection-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            /**
+             * Horizon Days
+             * @default 365
+             * @constant
+             */
+            horizon_days: 365;
+            projection: components["schemas"]["FullProtectionProjectionResult"];
+            initial_checkpoint: components["schemas"]["AnnualDailyCheckpoint"];
+            /** Daily Checkpoints */
+            daily_checkpoints: components["schemas"]["AnnualDailyCheckpoint"][];
+            /** Full Policy Sources */
+            full_policy_sources: components["schemas"]["FullProtectionPolicySource"][];
+            future_income: components["schemas"]["FutureIncomeProjection"];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Source Issues */
+            source_issues: components["schemas"]["BoundarySourceIssue"][];
+            /** Input Digest */
+            input_digest: string;
+            audit: components["schemas"]["DashboardAuditCard"];
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullAssetAllocationResponse */
+        FullAssetAllocationResponse: {
+            /**
+             * Schema Version
+             * @default verified-full-asset-planning-v1
+             * @constant
+             */
+            schema_version: "verified-full-asset-planning-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            /**
+             * Protection Scope
+             * @default ORIGINAL_VERIFIED_365_DAY_CURVE
+             * @constant
+             */
+            protection_scope: "ORIGINAL_VERIFIED_365_DAY_CURVE";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "COMPUTED" | "UNKNOWN";
+            planning_constraints: components["schemas"]["FullAssetPlanOptions"];
+            allocation: components["schemas"]["FullAssetPlanningResult"] | null;
+            catalogue: components["schemas"]["VerifiedCatalogProducts"];
+            /** Unavailable Asset Classes */
+            unavailable_asset_classes: string[];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Source Issues */
+            source_issues: components["schemas"]["BoundarySourceIssue"][];
+            /** Input Hash */
+            input_hash: string;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullAssetBatch */
+        FullAssetBatch: {
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Product Code */
+            product_code: string;
+            /** Version Number */
+            version_number: number;
+            /** Terms Digest */
+            terms_digest: string;
+            /** Amount Cents */
+            amount_cents: number;
+            /** Net Simulated Yield Cents */
+            net_simulated_yield_cents: number;
+            /**
+             * Purchase At
+             * Format: date-time
+             */
+            purchase_at: string;
+            /**
+             * Principal Available At
+             * Format: date-time
+             */
+            principal_available_at: string;
+            exit_plan: components["schemas"]["PlannedExit"];
+            /** Cash Uses */
+            cash_uses: components["schemas"]["AssetCashUse"][];
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+        };
+        /** FullAssetBatchView */
+        FullAssetBatchView: {
+            /** Batch Number */
+            batch_number: number;
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /** Bank Idempotency Key */
+            bank_idempotency_key: string;
+            original_action: components["schemas"]["ActionResponse"] | null;
+            /** Original Request Hash */
+            original_request_hash: string | null;
+            /** Original Trace Verified */
+            original_trace_verified: boolean;
+            /** Current Action Missing */
+            current_action_missing: boolean;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+        };
+        /** FullAssetCandidate */
+        FullAssetCandidate: {
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Product Code */
+            product_code: string;
+            /** Version Number */
+            version_number: number;
+            /** Catalog Asset Class */
+            catalog_asset_class: string;
+            /** Planning Asset Class */
+            planning_asset_class: string | null;
+            /** Terms Digest */
+            terms_digest: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "FEASIBLE" | "REJECTED" | "RETAIN_CASH";
+            /**
+             * Bank Auto Eligible
+             * @default false
+             * @constant
+             */
+            bank_auto_eligible: false;
+            /** Financial Cap Cents */
+            financial_cap_cents?: number | null;
+            /** Maximum Batch Cents */
+            maximum_batch_cents?: number | null;
+            exit_plan?: components["schemas"]["PlannedExit"] | null;
+            /** Reasons */
+            reasons: string[];
+        };
+        /** FullAssetCatalogueReference */
+        FullAssetCatalogueReference: {
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /**
+             * Catalogue Version Id
+             * Format: uuid
+             */
+            catalogue_version_id: string;
+            /** Product Record Hash */
+            product_record_hash: string;
+            /** Terms Digest */
+            terms_digest: string;
+        };
+        /** FullAssetConfirmRequest */
+        FullAssetConfirmRequest: {
+            /** Accepted */
+            accepted: boolean;
+            /** Reviewed Portfolio Hash */
+            reviewed_portfolio_hash: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** FullAssetConsentView */
+        FullAssetConsentView: {
+            /**
+             * Consent Id
+             * Format: uuid
+             */
+            consent_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Portfolio Id
+             * Format: uuid
+             */
+            portfolio_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            original_request: components["schemas"]["FullAssetConfirmRequest"];
+            /** Request Hash */
+            request_hash: string;
+            /** Portfolio Hash */
+            portfolio_hash: string;
+            /**
+             * Evidence Id
+             * Format: uuid
+             */
+            evidence_id: string;
+            /** Evidence Hash */
+            evidence_hash: string;
+            /** Original Evidence */
+            original_evidence: {
+                [key: string]: unknown;
+            };
+            /**
+             * Current Evidence Status
+             * @enum {string}
+             */
+            current_evidence_status: "CURRENT_EVIDENCE_MATCHED" | "RETAINED_ORIGINAL_CURRENT_EVIDENCE_MISSING";
+            /** Current Evidence Verified */
+            current_evidence_verified: boolean;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Current Authority Assessed
+             * @default false
+             * @constant
+             */
+            current_authority_assessed: false;
+        };
+        /** FullAssetExecuteRequest */
+        FullAssetExecuteRequest: {
+            /** Accepted */
+            accepted: boolean;
+            /** Reviewed Portfolio Hash */
+            reviewed_portfolio_hash: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Expected Batch Number */
+            expected_batch_number: number;
+            /**
+             * Expected Action Id
+             * Format: uuid
+             */
+            expected_action_id: string;
+        };
+        /** FullAssetExecutionBasis */
+        FullAssetExecutionBasis: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            full_policy_configuration: components["schemas"]["AssetAuthorizationPolicy"];
+            /** Full Policy Content Hash */
+            full_policy_content_hash: string;
+            /** Full Planning Confirmation Valid */
+            full_planning_confirmation_valid: boolean;
+            /** Original Planning Response Hash */
+            original_planning_response_hash: string;
+            planning: components["schemas"]["FullAssetPlanningResult"];
+            context: components["schemas"]["ExecutionContext"];
+            /** Catalogue */
+            catalogue: components["schemas"]["FullAssetCatalogueReference"][];
+            /** Position Accounts */
+            position_accounts: {
+                [key: string]: string;
+            };
+            /** Batch Income Uses */
+            batch_income_uses: components["schemas"]["app__domain__income_ledger__IncomeUse"][][];
+            /** Full Protection Sources */
+            full_protection_sources: components["schemas"]["FullProtectionPolicySource"][];
+            /** Full Protection Inventory Complete */
+            full_protection_inventory_complete: boolean;
+            /** Full Source Issues */
+            full_source_issues: string[];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+        };
+        /** FullAssetExecutionBatch */
+        FullAssetExecutionBatch: {
+            /** Batch Number */
+            batch_number: number;
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /** Bank Idempotency Key */
+            bank_idempotency_key: string;
+            catalogue: components["schemas"]["FullAssetCatalogueReference"];
+            command: components["schemas"]["BankCommand"];
+        };
+        /** FullAssetExecutionLookup */
+        FullAssetExecutionLookup: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            /** Command Kind */
+            command_kind: ("PREPARE" | "CONFIRM") | null;
+            /** Original Request */
+            original_request: components["schemas"]["FullAssetPrepareRequest"] | components["schemas"]["FullAssetConfirmRequest"] | null;
+            /** Request Hash */
+            request_hash: string | null;
+            original: components["schemas"]["FullAssetExecutionResponse"] | null;
+            /**
+             * Not Found Is Final
+             * @default false
+             * @constant
+             */
+            not_found_is_final: false;
+            /**
+             * Replacement Allowed
+             * @default false
+             * @constant
+             */
+            replacement_allowed: false;
+        };
+        /** FullAssetExecutionPreview */
+        FullAssetExecutionPreview: {
+            /**
+             * Schema Version
+             * @default full-asset-execution-preview-v1
+             * @constant
+             */
+            schema_version: "full-asset-execution-preview-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            original_request: components["schemas"]["FullAssetPrepareRequest"];
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "READY_TO_REVIEW" | "BLOCKED" | "UNKNOWN";
+            original_full_planning: components["schemas"]["FullAssetAllocationResponse"];
+            original_full_protection: components["schemas"]["FullAnnualProtectionResponse"];
+            portfolio: components["schemas"]["FullAssetFrozenPortfolio"] | null;
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Funds Reserved
+             * @default false
+             * @constant
+             */
+            funds_reserved: false;
+            /**
+             * Persisted
+             * @default false
+             * @constant
+             */
+            persisted: false;
+            /**
+             * Financial Experiment Verified
+             * @default false
+             * @constant
+             */
+            financial_experiment_verified: false;
+            /**
+             * Execution Support
+             * @default DURABLE_ORIGINAL_PURCHASE_CONSUMER_REQUIRES_SHARED_GUARDS
+             * @constant
+             */
+            execution_support: "DURABLE_ORIGINAL_PURCHASE_CONSUMER_REQUIRES_SHARED_GUARDS";
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullAssetExecutionResponse */
+        FullAssetExecutionResponse: {
+            /**
+             * Schema Version
+             * @default full-asset-execution-v1
+             * @constant
+             */
+            schema_version: "full-asset-execution-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            original_portfolio: components["schemas"]["FullAssetFrozenPortfolio"];
+            /** Original Request Hash */
+            original_request_hash: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "PREPARED_UNRESERVED" | "CONFIRMED_UNRESERVED" | "PARTIALLY_SETTLED" | "SERVICE_RECEIPTS_VERIFIED" | "UNRESOLVED" | "STOPPED" | "RETAINED_HISTORY";
+            /** Original Consent Id */
+            original_consent_id: string | null;
+            /** Original Consent Evidence Id */
+            original_consent_evidence_id: string | null;
+            original_consent: components["schemas"]["FullAssetConsentView"] | null;
+            /** Original Consent Verified */
+            original_consent_verified: boolean;
+            /**
+             * Original Consent Evidence Status
+             * @enum {string}
+             */
+            original_consent_evidence_status: "CURRENT_EVIDENCE_MATCHED" | "RETAINED_ORIGINAL_CURRENT_EVIDENCE_MISSING" | "NOT_RECORDED";
+            /** Current Epoch Open */
+            current_epoch_open: boolean;
+            /** Batches */
+            batches: components["schemas"]["FullAssetBatchView"][];
+            /** All Original Service Receipts Verified */
+            all_original_service_receipts_verified: boolean;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Funds Reserved
+             * @default false
+             * @constant
+             */
+            funds_reserved: false;
+            /**
+             * Reservation Scope
+             * @default WHOLE_UNRESERVED_CHILD_CLAIMS_USE_ORIGINAL_PIPELINE
+             * @constant
+             */
+            reservation_scope: "WHOLE_UNRESERVED_CHILD_CLAIMS_USE_ORIGINAL_PIPELINE";
+            /**
+             * Cross Operation Atomicity
+             * @default NOT_AVAILABLE
+             * @constant
+             */
+            cross_operation_atomicity: "NOT_AVAILABLE";
+            /**
+             * Current Authority Assessed
+             * @default false
+             * @constant
+             */
+            current_authority_assessed: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Economic Experiment Verified
+             * @default false
+             * @constant
+             */
+            economic_experiment_verified: false;
+        };
+        /** FullAssetFrozenPortfolio */
+        FullAssetFrozenPortfolio: {
+            /**
+             * Protocol
+             * @default full-asset-execution-portfolio-v1
+             * @constant
+             */
+            protocol: "full-asset-execution-portfolio-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Portfolio Id
+             * Format: uuid
+             */
+            portfolio_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Prepared At
+             * Format: date-time
+             */
+            prepared_at: string;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            original_request: components["schemas"]["FullAssetPrepareRequest"];
+            /** Client Request Hash */
+            client_request_hash: string;
+            /** Full Policy Content Hash */
+            full_policy_content_hash: string;
+            /** Original Mvp Configuration Hash */
+            original_mvp_configuration_hash: string;
+            /** Original Planning Response Hash */
+            original_planning_response_hash: string;
+            /** Original Planning Input Hash */
+            original_planning_input_hash: string;
+            full_configuration: components["schemas"]["AssetAuthorizationPolicy"];
+            /** Total Purchase Cents */
+            total_purchase_cents: number;
+            /** Batches */
+            batches: components["schemas"]["FullAssetExecutionBatch"][];
+            combined_original_boundary: components["schemas"]["BoundaryResult"];
+            /** Combined Full Protection Hash */
+            combined_full_protection_hash: string;
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Portfolio Hash */
+            portfolio_hash: string;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Funds Reserved
+             * @default false
+             * @constant
+             */
+            funds_reserved: false;
+            /**
+             * Cross Operation Atomicity
+             * @default NOT_AVAILABLE
+             * @constant
+             */
+            cross_operation_atomicity: "NOT_AVAILABLE";
+            /**
+             * Financial Experiment Verified
+             * @default false
+             * @constant
+             */
+            financial_experiment_verified: false;
+        };
+        /** FullAssetPlanOptions */
+        FullAssetPlanOptions: {
+            /**
+             * Comparison Days
+             * @default 90
+             */
+            comparison_days: number;
+            /**
+             * Max Components
+             * @default 3
+             */
+            max_components: number;
+            /** Max Turnover Cents */
+            max_turnover_cents?: number | null;
+            /** Funds Use Date */
+            funds_use_date?: string | null;
+            /**
+             * Mode
+             * @default PORTFOLIO
+             * @enum {string}
+             */
+            mode: "PORTFOLIO" | "FIXED_LADDER";
+        };
+        /** FullAssetPlanningInput */
+        FullAssetPlanningInput: {
+            snapshot: components["schemas"]["BoundarySnapshot"];
+            /** Boundary Versions */
+            boundary_versions: components["schemas"]["BoundaryPolicyVersion"][];
+            /** Positions */
+            positions: components["schemas"]["BoundaryPosition"][];
+            /** Boundary Products */
+            boundary_products: components["schemas"]["BoundaryProduct"][];
+            /** Products */
+            products: components["schemas"]["AssetProductTerms"][];
+            exposure: components["schemas"]["AssetExposure"];
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Policy Version Id
+             * Format: uuid
+             */
+            policy_version_id: string;
+            configuration: components["schemas"]["AssetAuthorizationPolicy"];
+            /** Planning Confirmation Valid */
+            planning_confirmation_valid: boolean;
+            /**
+             * Confirmed At
+             * Format: date-time
+             */
+            confirmed_at: string;
+            /**
+             * Valid From
+             * Format: date-time
+             */
+            valid_from: string;
+            /** Valid Until */
+            valid_until?: string | null;
+            /** Goal Deadline */
+            goal_deadline?: string | null;
+            /** Goal Policy Version Id */
+            goal_policy_version_id?: string | null;
+            /**
+             * Goal Reference Verified
+             * @default false
+             */
+            goal_reference_verified: boolean;
+            options?: components["schemas"]["FullAssetPlanOptions"];
+            /**
+             * Search Node Budget
+             * @default 100000
+             */
+            search_node_budget: number;
+        };
+        /** FullAssetPlanningResult */
+        FullAssetPlanningResult: {
+            /**
+             * Algorithm Version
+             * @default finite-integer-original-product-portfolio-v1
+             * @constant
+             */
+            algorithm_version: "finite-integer-original-product-portfolio-v1";
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Policy Version Id
+             * Format: uuid
+             */
+            policy_version_id: string;
+            /**
+             * Scope
+             * @enum {string}
+             */
+            scope: "general_idle_funds" | "goal";
+            /** Goal Id */
+            goal_id: string | null;
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            /**
+             * Future Income Included Cents
+             * @default 0
+             * @constant
+             */
+            future_income_included_cents: 0;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "OPTIMAL" | "NO_PURCHASE" | "UNKNOWN" | "INACTIVE_POLICY" | "INSUFFICIENT_EVIDENCE" | "LIQUIDITY_RISK";
+            /** Input Hash */
+            input_hash: string;
+            baseline_boundary: components["schemas"]["BoundaryResult"];
+            projected_boundary?: components["schemas"]["BoundaryResult"] | null;
+            /** Candidates */
+            candidates?: components["schemas"]["FullAssetCandidate"][];
+            /** Batches */
+            batches?: components["schemas"]["FullAssetBatch"][];
+            /** Total Purchase Cents */
+            total_purchase_cents?: number | null;
+            /** Retained Scope Cash Cents */
+            retained_scope_cash_cents?: number | null;
+            /** Net Simulated Yield Cents */
+            net_simulated_yield_cents?: number | null;
+            /** Purchase Count */
+            purchase_count?: number | null;
+            /**
+             * Search Nodes
+             * @default 0
+             */
+            search_nodes: number;
+            /** Funds Use Date */
+            funds_use_date?: string | null;
+            /**
+             * Ladder Status
+             * @default NOT_REQUESTED
+             * @enum {string}
+             */
+            ladder_status: "NOT_REQUESTED" | "MATCHED_MULTI_MATURITY" | "SINGLE_MATURITY_AVAILABLE" | "NO_VALID_FIXED_BATCHES";
+            /** Reasons */
+            reasons: string[];
+        };
+        /** FullAssetPrepareRequest */
+        FullAssetPrepareRequest: {
+            /**
+             * Full Policy Id
+             * Format: uuid
+             */
+            full_policy_id: string;
+            /**
+             * Expected Full Policy Version Id
+             * Format: uuid
+             */
+            expected_full_policy_version_id: string;
+            /**
+             * Mvp Asset Policy Id
+             * Format: uuid
+             */
+            mvp_asset_policy_id: string;
+            /**
+             * Expected Mvp Policy Version Id
+             * Format: uuid
+             */
+            expected_mvp_policy_version_id: string;
+            /** Goal Id */
+            goal_id?: string | null;
+            /** Expected Goal Policy Version Id */
+            expected_goal_policy_version_id?: string | null;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Planning Mode
+             * @default PORTFOLIO
+             * @enum {string}
+             */
+            planning_mode: "PORTFOLIO" | "FIXED_LADDER";
+        };
+        /** FullCandidateEnvelope */
+        FullCandidateEnvelope: {
+            /**
+             * Template Name
+             * @enum {string}
+             */
+            template_name: "RecurringObligationPolicy" | "LivingReservePolicy" | "EmergencyBufferPolicy" | "DatedExpensePolicy" | "LongTermGoalPolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy";
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+        };
+        /** FullChangePreview */
+        FullChangePreview: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event: false;
+            /**
+             * Preview Only
+             * @default true
+             * @constant
+             */
+            preview_only: true;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Before Configuration */
+            before_configuration: {
+                [key: string]: unknown;
+            };
+            /** After Configuration */
+            after_configuration: {
+                [key: string]: unknown;
+            };
+            /** Configuration Hash */
+            configuration_hash: string;
+            /** Changed Fields */
+            changed_fields: string[];
+            current_financial_boundary: components["schemas"]["FinancialBoundaryCard"];
+            /** Current Fact Digest */
+            current_fact_digest: string;
+            /** Reference Snapshots */
+            reference_snapshots: {
+                [key: string]: unknown;
+            }[];
+            /** Relevant Goal Ids */
+            relevant_goal_ids: string[];
+            /** Relevant Position Ids */
+            relevant_position_ids: string[];
+            /** Relevant Current Action Ids */
+            relevant_current_action_ids: string[];
+            /**
+             * Candidate Financial Status
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            candidate_financial_status: "NOT_IMPLEMENTED";
+            /** Delta Safe Idle Cents */
+            delta_safe_idle_cents?: null;
+            /** Delta Goal Allocation Cents */
+            delta_goal_allocation_cents?: null;
+            /** Delta Position Principal Cents */
+            delta_position_principal_cents?: null;
+            /**
+             * Future Action Impact
+             * @default NOT_IMPLEMENTED_NO_FULL_EXECUTION_ADAPTER
+             * @constant
+             */
+            future_action_impact: "NOT_IMPLEMENTED_NO_FULL_EXECUTION_ADAPTER";
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullChangeRequest */
+        FullChangeRequest: {
+            /** Accepted */
+            accepted: boolean;
+            /** Reviewed Hash */
+            reviewed_hash: string;
+            /** Reason */
+            reason: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+        };
+        /** FullCommandList */
+        FullCommandList: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event: false;
+            /** Items */
+            items: components["schemas"]["FullCommandView"][];
+        };
+        /** FullCommandLookup */
+        FullCommandLookup: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event: false;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "NOT_FOUND" | "RECORDED";
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Original Request */
+            original_request: {
+                [key: string]: unknown;
+            } | null;
+            /** Request Hash */
+            request_hash: string | null;
+            command: components["schemas"]["FullCommandView"] | null;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Not Found Is Final
+             * @default false
+             * @constant
+             */
+            not_found_is_final: false;
+        };
+        /** FullCommandView */
+        FullCommandView: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event: false;
+            /**
+             * Command Id
+             * Format: uuid
+             */
+            command_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Version Id
+             * Format: uuid
+             */
+            version_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "CREATE" | "CHANGE" | "SUSPEND" | "REVOKE" | "RESUME" | "REFRESH_TIME";
+            /** Command Number */
+            command_number: number;
+            /** Previous Hash */
+            previous_hash: string | null;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Request Hash */
+            request_hash: string;
+            /** Previous Status */
+            previous_status: string | null;
+            /**
+             * Resulting Status
+             * @enum {string}
+             */
+            resulting_status: "ACTIVE" | "CONFIRMED" | "SUSPENDED" | "EXPIRED" | "REVOKED";
+            /** Result */
+            result: {
+                [key: string]: unknown;
+            };
+            /** Result Hash */
+            result_hash: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** FullCompilationIssue */
+        FullCompilationIssue: {
+            /** Code */
+            code: string;
+            /** Field */
+            field: string;
+            /** Message */
+            message: string;
+            /**
+             * Source Fragment
+             * @default
+             */
+            source_fragment: string;
+        };
+        /** FullCompilationRequest */
+        FullCompilationRequest: {
+            /** Text */
+            text: string;
+            /**
+             * Engine
+             * @default rules
+             * @enum {string}
+             */
+            engine: "rules" | "llm";
+            comparison_candidate?: components["schemas"]["FullCandidateEnvelope"] | null;
+        };
+        /** FullCompilationResponse */
+        FullCompilationResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Reference Date
+             * Format: date
+             */
+            reference_date: string;
+            /** Timezone */
+            timezone: string;
+            /**
+             * Compiler Version
+             * @default full-offline-candidate-rules-v1
+             */
+            compiler_version: string;
+            compilation: components["schemas"]["FullCompilationResult"];
+            /**
+             * Comparison Source
+             * @enum {string}
+             */
+            comparison_source: "NONE" | "USER_PROVIDED_CANDIDATE_NOT_CURRENT_VERSION";
+            /**
+             * Confirmation Record Created
+             * @default false
+             * @constant
+             */
+            confirmation_record_created: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+        };
+        /** FullCompilationResult */
+        FullCompilationResult: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Compiler Version
+             * @default full-offline-candidate-rules-v1
+             */
+            compiler_version: string;
+            /**
+             * Dsl Version
+             * @default FULL_V1
+             * @constant
+             */
+            dsl_version: "FULL_V1";
+            /**
+             * Engine
+             * @default rules
+             * @enum {string}
+             */
+            engine: "rules" | "llm";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY_FOR_REVIEW" | "MISSING" | "AMBIGUOUS" | "UNKNOWN" | "REVIEW_REQUIRED";
+            /** Template Name */
+            template_name: ("RecurringObligationPolicy" | "LivingReservePolicy" | "EmergencyBufferPolicy" | "DatedExpensePolicy" | "LongTermGoalPolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy") | null;
+            /** Original Text Sha256 */
+            original_text_sha256: string;
+            /** Redacted Source Text */
+            redacted_source_text: string;
+            /** Draft */
+            draft: {
+                [key: string]: unknown;
+            };
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            } | null;
+            /** Configuration Hash */
+            configuration_hash: string | null;
+            /** Source Fragments */
+            source_fragments?: components["schemas"]["SourceFragment"][];
+            /** Issues */
+            issues?: components["schemas"]["FullCompilationIssue"][];
+            /** Defaulted Fields */
+            defaulted_fields?: string[];
+            /** Differences */
+            differences?: components["schemas"]["CandidateDifference"][];
+            /** Summary */
+            summary: string;
+            /**
+             * Evidence Level
+             * @default USER_DECLARED
+             * @enum {string}
+             */
+            evidence_level: "USER_DECLARED" | "MODEL_INFERRED";
+            /**
+             * Requires Confirmation
+             * @default true
+             * @constant
+             */
+            requires_confirmation: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Policy Created
+             * @default false
+             * @constant
+             */
+            policy_created: false;
+            /**
+             * Reference Validation
+             * @default NOT_SERVER_VERIFIED
+             * @constant
+             */
+            reference_validation: "NOT_SERVER_VERIFIED";
+            /**
+             * Manual Review Required
+             * @default true
+             */
+            manual_review_required: boolean;
+            /** Privacy Redactions */
+            privacy_redactions?: {
+                [key: string]: number;
+            };
+        };
+        /** FullCreateRequest */
+        FullCreateRequest: {
+            /** Accepted */
+            accepted: boolean;
+            /** Reviewed Hash */
+            reviewed_hash: string;
+            /** Reason */
+            reason: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Template Name
+             * @enum {string}
+             */
+            template_name: "RecurringObligationPolicy" | "LivingReservePolicy" | "EmergencyBufferPolicy" | "DatedExpensePolicy" | "LongTermGoalPolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy";
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+        };
+        /**
+         * FullDynamicGoalInput
+         * @description Private actual-source input; never accepted by an HTTP request.
+         */
+        FullDynamicGoalInput: {
+            context: components["schemas"]["ExecutionContext"];
+            request: components["schemas"]["FullDynamicGoalPrepareRequest"];
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Model Original */
+            model_original: {
+                [key: string]: unknown;
+            };
+            /**
+             * Model Evidence Id
+             * Format: uuid
+             */
+            model_evidence_id: string;
+            /** Model Evidence Hash */
+            model_evidence_hash: string;
+            income: components["schemas"]["IncomeLedger"];
+            /**
+             * Income Evidence Id
+             * Format: uuid
+             */
+            income_evidence_id: string;
+            /** Income Evidence Hash */
+            income_evidence_hash: string;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceReference"][];
+            /** Protection Policies */
+            protection_policies: components["schemas"]["FullProtectionPolicySource"][];
+            /**
+             * Protection Inventory Complete
+             * @constant
+             */
+            protection_inventory_complete: true;
+            /** Protection Issues */
+            protection_issues?: string[];
+            own_effect?: components["schemas"]["ExecutionEffect"] | null;
+        };
+        /**
+         * FullDynamicGoalLookup
+         * @description Original-key recovery; recorded consent is never current authority.
+         */
+        FullDynamicGoalLookup: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Current Authority
+             * @default false
+             * @constant
+             */
+            current_authority: false;
+            /**
+             * Not Found Is Final
+             * @default false
+             * @constant
+             */
+            not_found_is_final: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "NOT_FOUND" | "RECORDED";
+            original_request?: components["schemas"]["FullDynamicGoalPrepareRequest"] | null;
+            /** Original Action Request */
+            original_action_request?: {
+                [key: string]: unknown;
+            } | null;
+            /** Client Request Hash */
+            client_request_hash?: string | null;
+            /** Server Request Hash */
+            server_request_hash?: string | null;
+            /**
+             * Epoch State
+             * @default MISSING
+             * @enum {string}
+             */
+            epoch_state: "OPEN" | "SEALED" | "MISSING";
+            /**
+             * Historical
+             * @default false
+             */
+            historical: boolean;
+            action?: components["schemas"]["ActionResponse"] | null;
+            confirmation?: components["schemas"]["ConfirmationGrant"] | null;
+            /**
+             * Confirmation Status
+             * @default ABSENT
+             * @enum {string}
+             */
+            confirmation_status: "ABSENT" | "VERIFIED_AT_CONFIRMATION" | "MISSING";
+            /** Confirmation Verified At */
+            confirmation_verified_at?: string | null;
+            /**
+             * Confirmation Is Current Authority
+             * @default false
+             * @constant
+             */
+            confirmation_is_current_authority: false;
+        };
+        /** FullDynamicGoalPrepareRequest */
+        FullDynamicGoalPrepareRequest: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Expected Policy Version Id
+             * Format: uuid
+             */
+            expected_policy_version_id: string;
+            /**
+             * Expected Model Evidence Id
+             * Format: uuid
+             */
+            expected_model_evidence_id: string;
+            /** Expected Model Evidence Hash */
+            expected_model_evidence_hash: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** FullDynamicGoalPreview */
+        FullDynamicGoalPreview: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Preview Only
+             * @default true
+             * @constant
+             */
+            preview_only: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            request: components["schemas"]["FullDynamicGoalPrepareRequest"];
+            proof: components["schemas"]["FullDynamicGoalProof"];
+            /**
+             * Execution Pipeline
+             * @default ORIGINAL_ALLOCATE_GOAL_REQUIRES_INSTALLED_TYPED_HOOK
+             * @constant
+             */
+            execution_pipeline: "ORIGINAL_ALLOCATE_GOAL_REQUIRES_INSTALLED_TYPED_HOOK";
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullDynamicGoalProof */
+        FullDynamicGoalProof: {
+            /**
+             * Protocol
+             * @default full-dynamic-goal-execution-v1
+             * @constant
+             */
+            protocol: "full-dynamic-goal-execution-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Preserves Original Permission Checks
+             * @default true
+             * @constant
+             */
+            preserves_original_permission_checks: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Policy Version Id
+             * Format: uuid
+             */
+            policy_version_id: string;
+            /**
+             * Model Evidence Id
+             * Format: uuid
+             */
+            model_evidence_id: string;
+            /** Model Evidence Hash */
+            model_evidence_hash: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "VERIFIED_RANGE" | "BLOCKED" | "UNKNOWN";
+            /** Minimum Cents */
+            minimum_cents: number | null;
+            /** Dynamic Cap Cents */
+            dynamic_cap_cents: number | null;
+            /** Remaining Max Cents */
+            remaining_max_cents: number | null;
+            /** Nominal Remaining Target Cents */
+            nominal_remaining_target_cents: number | null;
+            /** Context Hash */
+            context_hash: string;
+            /** Input Hash */
+            input_hash: string;
+            /** Full Projection Input Hash */
+            full_projection_input_hash: string | null;
+            /** Effect Hash */
+            effect_hash: string | null;
+            /** Proof Hash */
+            proof_hash: string;
+            reserve: components["schemas"]["DynamicGoalReserveResult"] | null;
+            /** Reasons */
+            reasons: string[];
+        };
+        /** FullEvidenceGraph */
+        FullEvidenceGraph: {
+            /**
+             * Protocol
+             * @default persisted-full-evidence-graph-v2
+             * @constant
+             */
+            protocol: "persisted-full-evidence-graph-v2";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Read Only
+             * @default true
+             * @constant
+             */
+            read_only: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Known At
+             * Format: date-time
+             */
+            known_at: string;
+            /** Root */
+            root: string;
+            /** Requested Root Kind */
+            requested_root_kind: ("ACCOUNT" | "TRANSACTION" | "BILL" | "GOAL" | "POSITION" | "BANK_OPERATION" | "BANK_REDEMPTION" | "POSTING" | "EXTERNAL_FACT" | "AUDIT_EPOCH" | "AUDIT_EVENT" | "AUDIT_SNAPSHOT" | "FULL_POLICY" | "FULL_POLICY_VERSION" | "FULL_POLICY_COMMAND" | "EVIDENCE" | "PROPOSAL" | "POLICY" | "POLICY_VERSION" | "DECISION" | "ACTION" | "RECEIPT" | "PRODUCT" | "PRODUCT_CATALOGUE" | "USER" | "CONSTRAINT" | "RESOURCE_CLAIM" | "COMMAND_OUTBOX" | "COMMAND_INBOX" | "COMMAND_ATTEMPT" | "INTERVENTION_OUTBOX" | "INTERVENTION_INBOX" | "ASSET_PORTFOLIO" | "ASSET_BATCH" | "ASSET_CONSENT") | "FULL_GOAL_MODEL";
+            /** Inventory */
+            inventory: components["schemas"]["GraphInventory"][];
+            /** Complete Registered Inventory */
+            complete_registered_inventory: boolean;
+            /** Expected Node Count */
+            expected_node_count: number;
+            /** Displayed Node Count */
+            displayed_node_count: number;
+            /** Expected Edge Count */
+            expected_edge_count: number;
+            /** Nodes */
+            nodes: components["schemas"]["GraphNode"][];
+            /** Edges */
+            edges: components["schemas"]["GraphReference"][];
+            /** Issues */
+            issues: components["schemas"]["GraphIssue"][];
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "REFERENCES_RESOLVED" | "UNKNOWN";
+            audit_proof: components["schemas"]["GraphProof"];
+            bank_proof: components["schemas"]["GraphProof"];
+            /**
+             * Financial Success Inferred
+             * @default false
+             * @constant
+             */
+            financial_success_inferred: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Performs Repair
+             * @default false
+             * @constant
+             */
+            performs_repair: false;
+            /** Input Hash */
+            input_hash: string;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullExecutionProtectionResult */
+        FullExecutionProtectionResult: {
+            /**
+             * Protocol
+             * @default full-execution-protection-v1
+             * @constant
+             */
+            protocol: "full-execution-protection-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /** Original Effect Hash */
+            original_effect_hash: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "NO_ADDITIONAL_POLICY" | "PASSED" | "BLOCKED" | "UNKNOWN";
+            /** Minimum Projected Margin Cents */
+            minimum_projected_margin_cents?: number | null;
+            /** Projection Input Hash */
+            projection_input_hash?: string | null;
+            /** Current Policy Version Ids */
+            current_policy_version_ids: string[];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Reasons */
+            reasons: string[];
+            /** Result Hash */
+            result_hash: string;
+        };
+        /** FullGlobalBoundaryObservation */
+        FullGlobalBoundaryObservation: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Write
+             * @default false
+             * @constant
+             */
+            financial_write: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Observation Run Id
+             * Format: uuid
+             */
+            observation_run_id: string;
+            /** Previous Observation Run Id */
+            previous_observation_run_id: string | null;
+            original_request: components["schemas"]["GlobalBoundaryObserveRequest"];
+            /** Request Hash */
+            request_hash: string;
+            snapshot: components["schemas"]["FullActionSetSnapshot"];
+            /** Kind */
+            kind: ("BoundaryCrossed" | "BoundaryObserved") | null;
+            /** Semantic Key */
+            semantic_key: string | null;
+            /** Requires User Attention */
+            requires_user_attention: boolean;
+            /** Previous Snapshot Hash */
+            previous_snapshot_hash: string | null;
+            /** Previous Action Set Signature */
+            previous_action_set_signature: string | null;
+            /** Global Action Set Complete */
+            global_action_set_complete: boolean;
+            /**
+             * Idempotent Replay
+             * @default false
+             */
+            idempotent_replay: boolean;
+            /**
+             * Question Delivery
+             * @default ROOT_GLOBAL_INTERVENTION_BRANCH_REQUIRED
+             * @constant
+             */
+            question_delivery: "ROOT_GLOBAL_INTERVENTION_BRANCH_REQUIRED";
+        };
+        /** FullGoalCommandLookup */
+        FullGoalCommandLookup: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "NOT_FOUND" | "RECORDED";
+            record?: components["schemas"]["FullGoalOriginalRecord"] | null;
+            /**
+             * Not Found Is Final
+             * @default false
+             * @constant
+             */
+            not_found_is_final: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event: false;
+        };
+        /** FullGoalConfirmationRequest */
+        FullGoalConfirmationRequest: {
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Reviewed Full Hash */
+            reviewed_full_hash: string;
+            /** Reviewed Base Hash */
+            reviewed_base_hash: string;
+            /** Accepted */
+            accepted: boolean;
+            /** Reason */
+            reason: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** FullGoalConfirmationResponse */
+        FullGoalConfirmationResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            lifecycle: components["schemas"]["LifecycleResult"];
+            /**
+             * Evidence Id
+             * Format: uuid
+             */
+            evidence_id: string;
+            /** Evidence Hash */
+            evidence_hash: string;
+            /** Full Configuration */
+            full_configuration: {
+                [key: string]: unknown;
+            };
+            /** Full Configuration Hash */
+            full_configuration_hash: string;
+            /** Base Configuration Hash */
+            base_configuration_hash: string;
+            /**
+             * Confirmed At
+             * Format: date-time
+             */
+            confirmed_at: string;
+            /** Idempotent Replay */
+            idempotent_replay: boolean;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event: false;
+        };
+        /** FullGoalConflictResponse */
+        FullGoalConflictResponse: {
+            /**
+             * Protocol
+             * @default full-goal-conflict-read-v1
+             * @constant
+             */
+            protocol: "full-goal-conflict-read-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Epoch Id */
+            epoch_id: string | null;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "COMPUTED" | "UNKNOWN";
+            /** Registered Goal Count */
+            registered_goal_count: number;
+            /** Included Goal Ids */
+            included_goal_ids: string[];
+            /** Uncovered Goal Ids */
+            uncovered_goal_ids: string[];
+            /** Current Input Hash */
+            current_input_hash: string | null;
+            /** Review State Hash */
+            review_state_hash: string | null;
+            /** Planning Source Digest */
+            planning_source_digest: string;
+            /** Full Binding Hash */
+            full_binding_hash: string | null;
+            explanation: components["schemas"]["GoalConflictExplanation"] | null;
+            current_permission_repair: components["schemas"]["MinimalGoalRepair"] | null;
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            /** Limits */
+            limits: string[];
+        };
+        /** FullGoalModelResponse */
+        FullGoalModelResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Base Policy Version Id
+             * Format: uuid
+             */
+            base_policy_version_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "VERIFIED" | "MODEL_MISSING";
+            /** Policy Effective Status */
+            policy_effective_status?: ("ACTIVE" | "CONFIRMED") | null;
+            /** Evidence Id */
+            evidence_id?: string | null;
+            /** Evidence Hash */
+            evidence_hash?: string | null;
+            /** Full Configuration */
+            full_configuration?: {
+                [key: string]: unknown;
+            } | null;
+            /** Full Configuration Hash */
+            full_configuration_hash?: string | null;
+            /** Base Configuration Hash */
+            base_configuration_hash?: string | null;
+            /** Confirmed At */
+            confirmed_at?: string | null;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event: false;
+        };
+        /** FullGoalOriginalRecord */
+        FullGoalOriginalRecord: {
+            original_request: components["schemas"]["FullGoalOriginalRequest"];
+            /** Request Hash */
+            request_hash: string;
+            receipt: components["schemas"]["FullGoalConfirmationResponse"];
+            /**
+             * Original Verified
+             * @default true
+             * @constant
+             */
+            original_verified: true;
+            /**
+             * Audit Chain Verified
+             * @default true
+             * @constant
+             */
+            audit_chain_verified: true;
+            /**
+             * Configuration Is Server Canonical
+             * @default true
+             * @constant
+             */
+            configuration_is_server_canonical: true;
+            /**
+             * Epoch Archive Verified
+             * @default false
+             * @constant
+             */
+            epoch_archive_verified: false;
+        };
+        /** FullGoalOriginalRequest */
+        FullGoalOriginalRequest: {
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+            /** Reviewed Full Hash */
+            reviewed_full_hash: string;
+            /** Reviewed Base Hash */
+            reviewed_base_hash: string;
+            /**
+             * Accepted
+             * @default true
+             * @constant
+             */
+            accepted: true;
+            /** Reason */
+            reason: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** FullGoalPreviewRequest */
+        FullGoalPreviewRequest: {
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+        };
+        /** FullGoalPreviewResponse */
+        FullGoalPreviewResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Preview Only
+             * @default true
+             * @constant
+             */
+            preview_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Full Configuration */
+            full_configuration: {
+                [key: string]: unknown;
+            };
+            /** Full Configuration Hash */
+            full_configuration_hash: string;
+            /** Base Configuration */
+            base_configuration: {
+                [key: string]: unknown;
+            };
+            /** Base Configuration Hash */
+            base_configuration_hash: string;
+            base_policy_impact: components["schemas"]["PolicyChangePreviewResponse"];
+            /**
+             * Extra Fields In Base Impact
+             * @default false
+             * @constant
+             */
+            extra_fields_in_base_impact: false;
+            /** Notes */
+            notes: string[];
+        };
+        /** FullGoalReallocationPreview */
+        FullGoalReallocationPreview: {
+            /**
+             * Schema Version
+             * @default full-goal-reallocation-preview-v1
+             * @constant
+             */
+            schema_version: "full-goal-reallocation-preview-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Read Only
+             * @default true
+             * @constant
+             */
+            read_only: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Financial Grant Created
+             * @default false
+             * @constant
+             */
+            financial_grant_created: false;
+            /**
+             * Original Goal Bridge Cross Enabled
+             * @default false
+             * @constant
+             */
+            original_goal_bridge_cross_enabled: false;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            original_request: components["schemas"]["ReallocationPreviewRequest"];
+            policy: components["schemas"]["FullPolicyView"];
+            goal_model: components["schemas"]["FullGoalModelResponse"] | null;
+            goal_ownership: components["schemas"]["ReconciliationGoal"] | null;
+            original_current_protection_point: components["schemas"]["BoundaryPoint"] | null;
+            decision: components["schemas"]["ReallocationDecision"];
+            /** Reconciliation Input Hash */
+            reconciliation_input_hash: string;
+            /** Full Protection Input Hash */
+            full_protection_input_hash: string;
+            /** Source Binding Hash */
+            source_binding_hash: string;
+            /** Source Issues */
+            source_issues: components["schemas"]["SourceIssue"][];
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullGoalRepairResponse */
+        FullGoalRepairResponse: {
+            /**
+             * Protocol
+             * @default full-goal-repair-preview-v1
+             * @constant
+             */
+            protocol: "full-goal-repair-preview-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            original_conflicts: components["schemas"]["FullGoalConflictResponse"];
+            proposal: components["schemas"]["PlanningGoalRepair"] | null;
+            /** Version Previews */
+            version_previews: components["schemas"]["ExistingGoalVersionPreview"][];
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "PROPOSAL" | "NOT_NEEDED" | "NO_PERMITTED_REPAIR" | "BASE_INFEASIBLE" | "UNKNOWN";
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Writes Performed
+             * @default false
+             * @constant
+             */
+            writes_performed: false;
+            /**
+             * Confirmation Is Separate
+             * @default true
+             * @constant
+             */
+            confirmation_is_separate: true;
+            /**
+             * Multi Version Atomic Confirmation Supported
+             * @default false
+             * @constant
+             */
+            multi_version_atomic_confirmation_supported: false;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullGrammarResponse */
+        FullGrammarResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Compiler Version
+             * @default full-offline-candidate-rules-v1
+             */
+            compiler_version: string;
+            /** Examples */
+            examples: {
+                [key: string]: string;
+            };
+            /**
+             * Original Examples Are Synthetic
+             * @default true
+             * @constant
+             */
+            original_examples_are_synthetic: true;
+            /**
+             * Supported Scope
+             * @default 十二模板的有限受控中文句式；金额需明确元/分/万元，日期需YYYY-MM-DD，引用需明确UUID或收款人符号；列表用顿号。未解释、相对日期或缺字段保持UNKNOWN/MISSING。
+             */
+            supported_scope: string;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+        };
+        /** FullJointBinding */
+        FullJointBinding: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "VERIFIED" | "UNKNOWN";
+            /** Original Point Count */
+            original_point_count: number;
+            /** Full Point Count */
+            full_point_count: number;
+            /** Bound Point Count */
+            bound_point_count: number;
+            /** Original Input Hash */
+            original_input_hash: string;
+            /** Full Projection Input Hash */
+            full_projection_input_hash: string;
+            /** Verified Source Refs */
+            verified_source_refs: components["schemas"]["SourceReference"][];
+            /** Reasons */
+            reasons: string[];
+            /** Binding Hash */
+            binding_hash: string;
+            candidate: components["schemas"]["MultiGoalAllocationInput"];
+        };
+        /** FullJointChildView */
+        FullJointChildView: {
+            /** Child Number */
+            child_number: number;
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /** Bank Idempotency Key */
+            bank_idempotency_key: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "MISSING" | "PLANNED_UNRESERVED" | "AUTHORIZED" | "SUBMITTED" | "UNKNOWN" | "ORIGINAL_RECEIPT_VERIFIED" | "STOPPED";
+            original_action: components["schemas"]["ActionResponse"] | null;
+            /** Original Request Hash */
+            original_request_hash: string | null;
+        };
+        /** FullJointConsentView */
+        FullJointConsentView: {
+            /**
+             * Consent Id
+             * Format: uuid
+             */
+            consent_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Plan Id
+             * Format: uuid
+             */
+            plan_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            original_request: components["schemas"]["FullJointGoalConfirmRequest"];
+            /** Request Hash */
+            request_hash: string;
+            /** Original Evidence */
+            original_evidence: {
+                [key: string]: unknown;
+            };
+            /**
+             * Evidence Id
+             * Format: uuid
+             */
+            evidence_id: string;
+            /** Evidence Hash */
+            evidence_hash: string;
+            /** Current Evidence Verified */
+            current_evidence_verified: boolean;
+            /**
+             * Current Evidence Status
+             * @enum {string}
+             */
+            current_evidence_status: "CURRENT_EVIDENCE_MATCHED" | "RETAINED_ORIGINAL_CURRENT_EVIDENCE_MISSING";
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+        };
+        /** FullJointFrozenPlan */
+        FullJointFrozenPlan: {
+            /**
+             * Protocol
+             * @default registered-joint-goal-execution-v2
+             * @constant
+             */
+            protocol: "registered-joint-goal-execution-v2";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Funds Reserved
+             * @default false
+             * @constant
+             */
+            funds_reserved: false;
+            /**
+             * Execution Mode
+             * @default USER_ASK_FIXED_ORDER
+             * @constant
+             */
+            execution_mode: "USER_ASK_FIXED_ORDER";
+            /**
+             * Cross Operation Atomicity
+             * @default NOT_AVAILABLE
+             * @constant
+             */
+            cross_operation_atomicity: "NOT_AVAILABLE";
+            /**
+             * Plan Id
+             * Format: uuid
+             */
+            plan_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Prepared At
+             * Format: date-time
+             */
+            prepared_at: string;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            inputs: components["schemas"]["FullJointGoalExecutionInput"];
+            allocation_input: components["schemas"]["MultiGoalAllocationInput"];
+            allocation: components["schemas"]["MultiGoalAllocationResult"];
+            /** Full Binding Hash */
+            full_binding_hash: string;
+            /** Total Allocation Cents */
+            total_allocation_cents: number;
+            /** Children */
+            children: components["schemas"]["FullJointGoalChild"][];
+            /** Plan Hash */
+            plan_hash: string;
+        };
+        /** FullJointGoalChild */
+        FullJointGoalChild: {
+            /** Child Number */
+            child_number: number;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /** Bank Idempotency Key */
+            bank_idempotency_key: string;
+            command: components["schemas"]["BankCommand"];
+            /**
+             * Original Model Evidence Id
+             * Format: uuid
+             */
+            original_model_evidence_id: string;
+            /** Original Model Evidence Hash */
+            original_model_evidence_hash: string;
+            /** Range Proof Hash */
+            range_proof_hash: string;
+        };
+        /** FullJointGoalConfirmRequest */
+        FullJointGoalConfirmRequest: {
+            /** Accepted */
+            accepted: boolean;
+            /** Reviewed Plan Hash */
+            reviewed_plan_hash: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** FullJointGoalExecuteRequest */
+        FullJointGoalExecuteRequest: {
+            /** Accepted */
+            accepted: boolean;
+            /** Reviewed Plan Hash */
+            reviewed_plan_hash: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Expected Child Number */
+            expected_child_number: number;
+            /**
+             * Expected Action Id
+             * Format: uuid
+             */
+            expected_action_id: string;
+        };
+        /**
+         * FullJointGoalExecutionInput
+         * @description Private, complete captured originals; never an HTTP request.
+         */
+        FullJointGoalExecutionInput: {
+            /**
+             * Protocol
+             * @default joint-goal-execution-input-v2
+             * @constant
+             */
+            protocol: "joint-goal-execution-input-v2";
+            request: components["schemas"]["FullJointGoalPrepareRequest"];
+            scope: components["schemas"]["FullPolicyView"];
+            joint: components["schemas"]["JointActionSetInput"];
+        };
+        /** FullJointGoalExecutionResponse */
+        FullJointGoalExecutionResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Current Authority Assessed
+             * @default false
+             * @constant
+             */
+            current_authority_assessed: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Economic Experiment Verified
+             * @default false
+             * @constant
+             */
+            economic_experiment_verified: false;
+            /**
+             * Funds Reserved
+             * @default false
+             * @constant
+             */
+            funds_reserved: false;
+            /**
+             * Reservation Scope
+             * @default WHOLE_UNRESERVED_CHILDREN_USE_ORIGINAL_CLAIMS
+             * @constant
+             */
+            reservation_scope: "WHOLE_UNRESERVED_CHILDREN_USE_ORIGINAL_CLAIMS";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            original_plan: components["schemas"]["FullJointFrozenPlan"];
+            /** Original Request Hash */
+            original_request_hash: string;
+            original_consent: components["schemas"]["FullJointConsentView"] | null;
+            /** Children */
+            children: components["schemas"]["FullJointChildView"][];
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "PARTIALLY_PREPARED" | "PREPARED_UNRESERVED" | "CONFIRMED_UNRESERVED" | "PARTIALLY_SETTLED" | "UNRESOLVED" | "ORIGINAL_SERVICE_RECEIPTS_VERIFIED" | "STOPPED" | "RETAINED_HISTORY";
+        };
+        /** FullJointGoalLookup */
+        FullJointGoalLookup: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            /** Command Kind */
+            command_kind: ("PREPARE" | "CONFIRM") | null;
+            /** Original Request */
+            original_request: components["schemas"]["FullJointGoalPrepareRequest"] | components["schemas"]["FullJointGoalConfirmRequest"] | null;
+            /** Original Request Hash */
+            original_request_hash: string | null;
+            original: components["schemas"]["FullJointGoalExecutionResponse"] | null;
+            /**
+             * Not Found Is Final
+             * @default false
+             * @constant
+             */
+            not_found_is_final: false;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+        };
+        /** FullJointGoalPrepareRequest */
+        FullJointGoalPrepareRequest: {
+            /**
+             * Full Policy Id
+             * Format: uuid
+             */
+            full_policy_id: string;
+            /**
+             * Expected Full Policy Version Id
+             * Format: uuid
+             */
+            expected_full_policy_version_id: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** FullJointGoalPreview */
+        FullJointGoalPreview: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Preview Only
+             * @default true
+             * @constant
+             */
+            preview_only: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            request: components["schemas"]["FullJointGoalPrepareRequest"];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY_TO_REVIEW" | "BLOCKED" | "UNKNOWN";
+            /** Registered Goal Ids */
+            registered_goal_ids: string[];
+            /** Unresolved Original Action Ids */
+            unresolved_original_action_ids: string[];
+            plan: components["schemas"]["FullJointFrozenPlan"] | null;
+            /** Input Hash */
+            input_hash: string;
+            /** Reasons */
+            reasons: string[];
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullJointPlanningResponse */
+        FullJointPlanningResponse: {
+            /**
+             * Schema Version
+             * @default full-current-joint-goal-planning-v1
+             * @constant
+             */
+            schema_version: "full-current-joint-goal-planning-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            /**
+             * Funds Scope
+             * @default ACTUAL_CURRENT_UNASSIGNED_INCOME_ONLY
+             * @constant
+             */
+            funds_scope: "ACTUAL_CURRENT_UNASSIGNED_INCOME_ONLY";
+            /**
+             * Planning Scope
+             * @default CURRENT_PERIOD_WITH_ALL_365_DAY_ORIGINAL_AND_FULL_PROTECTION
+             * @constant
+             */
+            planning_scope: "CURRENT_PERIOD_WITH_ALL_365_DAY_ORIGINAL_AND_FULL_PROTECTION";
+            original_joint: components["schemas"]["JointPlanningResponse"];
+            full_protection: components["schemas"]["FullAnnualProtectionResponse"];
+            binding: components["schemas"]["FullJointBinding"] | null;
+            allocation: components["schemas"]["MultiGoalAllocationResult"] | null;
+            conflict: components["schemas"]["MinimalGoalConflict"] | null;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "COMPUTED" | "UNKNOWN";
+            /** Reasons */
+            reasons: string[];
+            /** Input Hash */
+            input_hash: string;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullLifecycleResult */
+        FullLifecycleResult: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Version Id
+             * Format: uuid
+             */
+            version_id: string;
+            /**
+             * Command Id
+             * Format: uuid
+             */
+            command_id: string;
+            /**
+             * Command Number
+             * @default 1
+             */
+            command_number: number;
+            /** Previous Command Hash */
+            previous_command_hash?: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ACTIVE" | "CONFIRMED" | "SUSPENDED" | "EXPIRED" | "REVOKED";
+            /** Configuration Hash */
+            configuration_hash: string;
+            /** Invalidated Action Ids */
+            invalidated_action_ids?: string[];
+            /** Inflight Action Ids */
+            inflight_action_ids?: string[];
+            /**
+             * Action Dependencies Supported
+             * @default false
+             * @constant
+             */
+            action_dependencies_supported: false;
+            /**
+             * Requires Recompute
+             * @default true
+             * @constant
+             */
+            requires_recompute: true;
+        };
+        /** FullMaturityAction */
+        FullMaturityAction: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            original_request: components["schemas"]["FullMaturityRequest"];
+            /** Original Action Request */
+            original_action_request: {
+                [key: string]: unknown;
+            };
+            /** Client Request Hash */
+            client_request_hash: string;
+            /** Server Request Hash */
+            server_request_hash: string;
+            /** Reviewed Command Hash */
+            reviewed_command_hash: string;
+            /** Bank Key */
+            bank_key: string;
+            /**
+             * Autonomy Level
+             * @default ASK_ONCE
+             * @constant
+             */
+            autonomy_level: "ASK_ONCE";
+            /** Status */
+            status: string;
+            command: components["schemas"]["MaturityContractCommand"];
+            original_consent: components["schemas"]["FullMaturityConsent"] | null;
+            /** Original Event */
+            original_event: {
+                [key: string]: unknown;
+            };
+            /**
+             * Economic Verified
+             * @default false
+             * @constant
+             */
+            economic_verified: false;
+            /** Service Receipt Verified */
+            service_receipt_verified: boolean;
+            /**
+             * Epoch State
+             * @enum {string}
+             */
+            epoch_state: "OPEN" | "SEALED" | "MISSING";
+            /** Historical */
+            historical: boolean;
+        };
+        /** FullMaturityConfirmation */
+        FullMaturityConfirmation: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Reviewed Command Hash */
+            reviewed_command_hash: string;
+            /** Accepted */
+            accepted: boolean;
+        };
+        /** FullMaturityConsent */
+        FullMaturityConsent: {
+            /**
+             * Protocol
+             * @default full-maturity-user-execution-v1
+             * @constant
+             */
+            protocol: "full-maturity-user-execution-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /** Reviewed Command Hash */
+            reviewed_command_hash: string;
+            original_confirmation: components["schemas"]["FullMaturityConfirmation"];
+            principal_at_confirmation: components["schemas"]["LocalActorPrincipal"];
+            /**
+             * Confirmed At
+             * Format: date-time
+             */
+            confirmed_at: string;
+        };
+        /** FullMaturityExecuteRequest */
+        FullMaturityExecuteRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Reviewed Command Hash */
+            reviewed_command_hash: string;
+        };
+        /** FullMaturityLookup */
+        FullMaturityLookup: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Not Found Is Final
+             * @default false
+             * @constant
+             */
+            not_found_is_final: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            action?: components["schemas"]["FullMaturityAction"] | null;
+        };
+        /** FullMaturityPreview */
+        FullMaturityPreview: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Read Only
+             * @default true
+             * @constant
+             */
+            read_only: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            original_request: components["schemas"]["FullMaturityRequest"];
+            proof: components["schemas"]["FullMaturityProof"];
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullMaturityProof */
+        FullMaturityProof: {
+            /**
+             * Protocol
+             * @default full-maturity-user-execution-v1
+             * @constant
+             */
+            protocol: "full-maturity-user-execution-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Bank Receipt Proven
+             * @default false
+             * @constant
+             */
+            bank_receipt_proven: false;
+            /**
+             * Projected Cash Is Current Cash
+             * @default false
+             * @constant
+             */
+            projected_cash_is_current_cash: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "VERIFIED_SCOPE" | "BLOCKED" | "UNKNOWN";
+            /** Reasons */
+            reasons: string[];
+            command: components["schemas"]["MaturityContractCommand"] | null;
+            /** Candidate Denominator */
+            candidate_denominator: number;
+            /** Input Hash */
+            input_hash: string;
+            /** Command Hash */
+            command_hash: string | null;
+            /** Conditional Protection Hash */
+            conditional_protection_hash: string | null;
+            /** Remaining Negative Checkpoints */
+            remaining_negative_checkpoints: number | null;
+            /** Proof Hash */
+            proof_hash: string;
+        };
+        /** FullMaturityRequest */
+        FullMaturityRequest: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** FullPolicyChangeFinancialPreview */
+        FullPolicyChangeFinancialPreview: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Hypothetical
+             * @default true
+             * @constant
+             */
+            hypothetical: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Configuration Hash */
+            configuration_hash: string;
+            /** Current Configuration Hash */
+            current_configuration_hash: string;
+            /** Before Configuration */
+            before_configuration: {
+                [key: string]: unknown;
+            };
+            /** After Configuration */
+            after_configuration: {
+                [key: string]: unknown;
+            };
+            /** Changed Fields */
+            changed_fields: string[];
+            /** Current Fact Digest */
+            current_fact_digest: string;
+            /** Reference Snapshots */
+            reference_snapshots: {
+                [key: string]: unknown;
+            }[];
+            financial_impact: components["schemas"]["FullPolicyFinancialImpact"];
+            /** Original Action Ids */
+            original_action_ids?: string[];
+            /** Original Position Ids */
+            original_position_ids?: string[];
+            /**
+             * Action Impact
+             * @default ORIGINAL_ACTIONS_UNCHANGED_REQUIRES_FRESH_RECOMPUTATION_AFTER_CONFIRMATION
+             */
+            action_impact: string;
+        };
+        /** FullPolicyDependencyReview */
+        FullPolicyDependencyReview: {
+            /**
+             * Protocol
+             * @default full-policy-dependency-review-v1
+             * @constant
+             */
+            protocol: "full-policy-dependency-review-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Selected Policy Id
+             * Format: uuid
+             */
+            selected_policy_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "COMPLETE_CURRENT_DECLARATION_GRAPH" | "UNKNOWN";
+            /** Review Required */
+            review_required: boolean;
+            /** Current Policy Count */
+            current_policy_count: number;
+            /** Current Policy Ids */
+            current_policy_ids: string[];
+            /** Captured Policy Count */
+            captured_policy_count: number;
+            /** Archived Policy Count */
+            archived_policy_count: number;
+            /** Policies */
+            policies: components["schemas"]["DependencyPolicyOriginal"][];
+            /** Edges */
+            edges: components["schemas"]["DependencyEdge"][];
+            /** Cyclic Components */
+            cyclic_components: components["schemas"]["DependencyCycle"][];
+            /** Reasons */
+            reasons: string[];
+            /** Input Hash */
+            input_hash: string;
+            /** Review Hash */
+            review_hash: string;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Writes Policy Or Finance
+             * @default false
+             * @constant
+             */
+            writes_policy_or_finance: false;
+            /**
+             * All Template Action Rechecks Supported
+             * @default false
+             * @constant
+             */
+            all_template_action_rechecks_supported: false;
+            /**
+             * Position And Boundary Recovery Verified
+             * @default false
+             * @constant
+             */
+            position_and_boundary_recovery_verified: false;
+            /**
+             * Financial Conflict Solver Applied
+             * @default false
+             * @constant
+             */
+            financial_conflict_solver_applied: false;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullPolicyFinancialImpact */
+        FullPolicyFinancialImpact: {
+            /**
+             * Protocol
+             * @default full-policy-financial-impact-v1
+             * @constant
+             */
+            protocol: "full-policy-financial-impact-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Hypothetical
+             * @default true
+             * @constant
+             */
+            hypothetical: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Writes Policy Or Bank
+             * @default false
+             * @constant
+             */
+            writes_policy_or_bank: false;
+            /**
+             * Future Income Cents
+             * @default 0
+             * @constant
+             */
+            future_income_cents: 0;
+            /**
+             * Horizon Days
+             * @default 365
+             * @constant
+             */
+            horizon_days: 365;
+            /**
+             * Initial Day And 365 Future Days
+             * @default true
+             * @constant
+             */
+            initial_day_and_365_future_days: true;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "PROJECTED" | "UNKNOWN";
+            /**
+             * Basis
+             * @default FUTURE_ONLY_CONSERVATIVE_UNPAID_REPLACEMENT
+             * @constant
+             */
+            basis: "FUTURE_ONLY_CONSERVATIVE_UNPAID_REPLACEMENT";
+            before: components["schemas"]["BoundaryResult"] | null;
+            after: components["schemas"]["CandidateCurve"] | null;
+            /** Delta Safe Idle Cents */
+            delta_safe_idle_cents?: number | null;
+            /** Delta Minimum Margin Cents */
+            delta_minimum_margin_cents?: number | null;
+            /** Delta Max Allocatable By Product */
+            delta_max_allocatable_by_product?: {
+                [key: string]: number;
+            } | null;
+            /** Goals */
+            goals?: components["schemas"]["GoalPreviewImpact"][];
+            /** Positions */
+            positions?: components["schemas"]["PositionPreviewImpact"][];
+            /** Candidate Commitments */
+            candidate_commitments?: components["schemas"]["HypotheticalCommitment"][];
+            /** Retained Original Occurrence Ids */
+            retained_original_occurrence_ids?: string[];
+            /** Reasons */
+            reasons?: string[];
+            /** Input Hash */
+            input_hash: string;
+            /** Limitations */
+            limitations?: string[];
+        };
+        /** FullPolicyHistoryChangeFinancialPreview */
+        FullPolicyHistoryChangeFinancialPreview: {
+            /**
+             * Protocol
+             * @default full-policy-change-history-preview-v2
+             * @constant
+             */
+            protocol: "full-policy-change-history-preview-v2";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Hypothetical
+             * @default true
+             * @constant
+             */
+            hypothetical: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Configuration Hash */
+            configuration_hash: string;
+            /** Current Configuration Hash */
+            current_configuration_hash: string;
+            /** Before Configuration */
+            before_configuration: {
+                [key: string]: unknown;
+            };
+            /** After Configuration */
+            after_configuration: {
+                [key: string]: unknown;
+            };
+            /** Changed Fields */
+            changed_fields: string[];
+            /** Current Fact Digest */
+            current_fact_digest: string;
+            /** Reference Snapshots */
+            reference_snapshots: {
+                [key: string]: unknown;
+            }[];
+            financial_impact: components["schemas"]["FullPolicyHistoryFinancialImpact"];
+            /** Original Action Ids */
+            original_action_ids?: string[];
+            /** Original Position Ids */
+            original_position_ids?: string[];
+            /**
+             * Action Impact
+             * @default ORIGINAL_ACTIONS_UNCHANGED_REQUIRES_FRESH_RECOMPUTATION_AFTER_CONFIRMATION
+             */
+            action_impact: string;
+        };
+        /** FullPolicyHistoryFinancialImpact */
+        FullPolicyHistoryFinancialImpact: {
+            /**
+             * Protocol
+             * @default full-policy-financial-impact-history-v2
+             * @constant
+             */
+            protocol: "full-policy-financial-impact-history-v2";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Hypothetical
+             * @default true
+             * @constant
+             */
+            hypothetical: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Writes Policy Or Bank
+             * @default false
+             * @constant
+             */
+            writes_policy_or_bank: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Future Income Cents
+             * @default 0
+             * @constant
+             */
+            future_income_cents: 0;
+            /**
+             * Horizon Days
+             * @default 365
+             * @constant
+             */
+            horizon_days: 365;
+            /**
+             * Initial Day And 365 Future Days
+             * @default true
+             * @constant
+             */
+            initial_day_and_365_future_days: true;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "PROJECTED" | "UNKNOWN";
+            /**
+             * Basis
+             * @default VERIFIED_FUTURE_DATED_HISTORY_CONSERVATIVE_REPLACEMENT
+             * @constant
+             */
+            basis: "VERIFIED_FUTURE_DATED_HISTORY_CONSERVATIVE_REPLACEMENT";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            history_proof: components["schemas"]["FutureDatedHistoryProof"] | null;
+            before: components["schemas"]["BoundaryResult"] | null;
+            after: components["schemas"]["CandidateCurve"] | null;
+            /** Delta Safe Idle Cents */
+            delta_safe_idle_cents?: number | null;
+            /** Delta Minimum Margin Cents */
+            delta_minimum_margin_cents?: number | null;
+            /** Delta Max Allocatable By Product */
+            delta_max_allocatable_by_product?: {
+                [key: string]: number;
+            } | null;
+            /** Goals */
+            goals?: components["schemas"]["GoalPreviewImpact"][];
+            /** Positions */
+            positions?: components["schemas"]["PositionPreviewImpact"][];
+            /** Candidate Commitments */
+            candidate_commitments?: components["schemas"]["HypotheticalCommitment"][];
+            /** Retained Original Occurrence Ids */
+            retained_original_occurrence_ids?: string[];
+            /** Reasons */
+            reasons?: string[];
+            /** Input Hash */
+            input_hash: string;
+            /** Limitations */
+            limitations?: string[];
+        };
+        /** FullPolicyHypothesis */
+        FullPolicyHypothesis: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "FULL_POLICY";
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+        };
+        /** FullPolicyList */
+        FullPolicyList: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event: false;
+            /** Items */
+            items: components["schemas"]["FullPolicyView"][];
+        };
+        /** FullPolicyProjectionState */
+        FullPolicyProjectionState: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Version Id
+             * Format: uuid
+             */
+            version_id: string;
+            /**
+             * Template Name
+             * @enum {string}
+             */
+            template_name: "DatedExpensePolicy" | "PeriodicTransferPolicy" | "SeasonalReservePolicy";
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "INCLUDED" | "OUTSIDE_HORIZON" | "INACTIVE" | "ADVICE_ONLY" | "UNKNOWN";
+            /** Reasons */
+            reasons: string[];
+        };
+        /** FullPolicyView */
+        FullPolicyView: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event: false;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Template Name
+             * @enum {string}
+             */
+            template_name: "RecurringObligationPolicy" | "LivingReservePolicy" | "EmergencyBufferPolicy" | "DatedExpensePolicy" | "LongTermGoalPolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy";
+            /** Name */
+            name: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ACTIVE" | "CONFIRMED" | "SUSPENDED" | "EXPIRED" | "REVOKED";
+            /** Effective Status */
+            effective_status: string;
+            /** Planning Confirmation Valid */
+            planning_confirmation_valid: boolean;
+            /**
+             * Reference Validation
+             * @enum {string}
+             */
+            reference_validation: "CURRENT" | "CHANGED_OR_UNAVAILABLE" | "ARCHIVED";
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            current_version: components["schemas"]["FullVersionView"];
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** FullPreviewRequest */
+        FullPreviewRequest: {
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+        };
+        /** FullProtectedReference */
+        FullProtectedReference: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Version Id
+             * Format: uuid
+             */
+            version_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "MVP_POLICY" | "FULL_POLICY";
+            /** Content Hash */
+            content_hash: string;
+            /** Current Confirmed */
+            current_confirmed: boolean;
+            /** Evidence Ids */
+            evidence_ids: string[];
+        };
+        /** FullProtectionOccurrence */
+        FullProtectionOccurrence: {
+            /** Occurrence Id */
+            occurrence_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Policy Version Id
+             * Format: uuid
+             */
+            policy_version_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "DATED_EXPENSE" | "PERIODIC_TRANSFER";
+            /**
+             * Earliest Due Date
+             * Format: date
+             */
+            earliest_due_date: string;
+            /**
+             * Latest Due Date
+             * Format: date
+             */
+            latest_due_date: string;
+            /**
+             * Hypothetical Payment Date
+             * Format: date
+             */
+            hypothetical_payment_date: string;
+            /**
+             * Prepare Start Date
+             * Format: date
+             */
+            prepare_start_date: string;
+            /**
+             * Protection Starts Today
+             * @default true
+             * @constant
+             */
+            protection_starts_today: true;
+            /** Conservative Unpaid Cents */
+            conservative_unpaid_cents: number;
+            /**
+             * Amount Basis
+             * @enum {string}
+             */
+            amount_basis: "REGISTERED_MAX" | "REGISTERED_EXACT";
+            /** Original Paid Cents */
+            original_paid_cents?: null;
+            /**
+             * Settlement Status
+             * @default UNSUPPORTED_CONSERVATIVE_UNPAID
+             * @constant
+             */
+            settlement_status: "UNSUPPORTED_CONSERVATIVE_UNPAID";
+            /** Source Account Id */
+            source_account_id: string | null;
+            /** Payee Id */
+            payee_id: string | null;
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** Overdue */
+            overdue: boolean;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+        };
+        /** FullProtectionPolicySource */
+        FullProtectionPolicySource: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Version Id
+             * Format: uuid
+             */
+            version_id: string;
+            /**
+             * Version Number
+             * @default 1
+             */
+            version_number: number;
+            /**
+             * Template Name
+             * @enum {string}
+             */
+            template_name: "DatedExpensePolicy" | "PeriodicTransferPolicy" | "SeasonalReservePolicy";
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+            /** Content Hash */
+            content_hash: string;
+            /** Confirmation */
+            confirmation: {
+                [key: string]: unknown;
+            };
+            /** Reference Snapshots */
+            reference_snapshots?: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Confirmed At
+             * Format: date-time
+             */
+            confirmed_at: string;
+            /**
+             * Valid From
+             * Format: date-time
+             */
+            valid_from: string;
+            /** Valid Until */
+            valid_until?: string | null;
+            /** Effective Status */
+            effective_status: string;
+            /** Planning Confirmation Valid */
+            planning_confirmation_valid: boolean;
+            /** References Current */
+            references_current: boolean;
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** Protected References */
+            protected_references?: components["schemas"]["FullProtectedReference"][];
+        };
+        /** FullProtectionProjectionInput */
+        FullProtectionProjectionInput: {
+            snapshot: components["schemas"]["BoundarySnapshot"];
+            /** Boundary Versions */
+            boundary_versions: components["schemas"]["BoundaryPolicyVersion"][];
+            /** Positions */
+            positions: components["schemas"]["BoundaryPosition"][];
+            /** Boundary Products */
+            boundary_products: components["schemas"]["BoundaryProduct"][];
+            /** Policies */
+            policies: components["schemas"]["FullProtectionPolicySource"][];
+            /** Reserved Cash By Account */
+            reserved_cash_by_account?: {
+                [key: string]: number;
+            };
+            /**
+             * Full Source Inventory Complete
+             * @default true
+             */
+            full_source_inventory_complete: boolean;
+            /** Full Source Issues */
+            full_source_issues?: string[];
+        };
+        /** FullProtectionProjectionResult */
+        FullProtectionProjectionResult: {
+            /**
+             * Algorithm Version
+             * @default registered-full-protection-v1
+             * @enum {string}
+             */
+            algorithm_version: "registered-full-protection-v1" | "registered-full-protection-future-dated-history-v2" | "registered-full-protection-adopted-seasonal-v3" | "registered-full-protection-ended-seasonal-v4";
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            /**
+             * Basis
+             * @default REGISTERED_UPPER_BOUND_UNPAID_CONDITIONAL_CASH
+             * @constant
+             */
+            basis: "REGISTERED_UPPER_BOUND_UNPAID_CONDITIONAL_CASH";
+            original_execution_view: components["schemas"]["BoundaryResult"];
+            original_annual_projection: components["schemas"]["BoundaryResult"];
+            full_annual_projection: components["schemas"]["BoundaryResult"] | null;
+            /** Occurrences */
+            occurrences: components["schemas"]["FullProtectionOccurrence"][];
+            /** Policy States */
+            policy_states: components["schemas"]["FullPolicyProjectionState"][];
+            /** Source Account Checks */
+            source_account_checks: components["schemas"]["FullSourceAccountCheck"][];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY" | "LIQUIDITY_RISK" | "UNKNOWN";
+            /** Full Obligations Complete Within Registered Current Scope */
+            full_obligations_complete_within_registered_current_scope: boolean;
+            /**
+             * Historical Full Settlement Complete
+             * @default false
+             * @constant
+             */
+            historical_full_settlement_complete: false;
+            /** Seasonal Adopted Adjustment Cents */
+            seasonal_adopted_adjustment_cents?: number | null;
+            /**
+             * Seasonal Status
+             * @enum {string}
+             */
+            seasonal_status: "NO_SEASONAL_POLICY" | "ADVICE_ONLY_NO_ADOPTED_AMOUNT" | "ADOPTED_PROTECTED" | "ADOPTED_FLOOR_RELEASED" | "ADOPTED_AMOUNT_UNKNOWN";
+            /**
+             * Future Income In Current Cash Cents
+             * @default 0
+             * @constant
+             */
+            future_income_in_current_cash_cents: 0;
+            /**
+             * Future Income In Original Execution Cents
+             * @default 0
+             * @constant
+             */
+            future_income_in_original_execution_cents: 0;
+            /**
+             * Future Income Status
+             * @default NO_REGISTERED_PLANNING_INCOME_SOURCE
+             * @constant
+             */
+            future_income_status: "NO_REGISTERED_PLANNING_INCOME_SOURCE";
+            /** Reasons */
+            reasons: string[];
+            /** Input Hash */
+            input_hash: string;
+        };
+        /** FullReconciliationReport */
+        FullReconciliationReport: {
+            /**
+             * Schema Version
+             * @default full-reconciliation-v1
+             * @constant
+             */
+            schema_version: "full-reconciliation-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Read Only
+             * @default true
+             * @constant
+             */
+            read_only: true;
+            /**
+             * Bank Truth
+             * @default INDEPENDENT_SIMULATED_BANK_LEDGER
+             * @constant
+             */
+            bank_truth: "INDEPENDENT_SIMULATED_BANK_LEDGER";
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Executes Funds
+             * @default false
+             * @constant
+             */
+            executes_funds: false;
+            /**
+             * Repairs Performed
+             * @default false
+             * @constant
+             */
+            repairs_performed: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Economic Verified
+             * @default false
+             * @constant
+             */
+            economic_verified: false;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "MATCHED" | "MANUAL_REVIEW_REQUIRED" | "UNKNOWN";
+            /** Manual Review Required */
+            manual_review_required: boolean;
+            /** Bank Ledger Verified */
+            bank_ledger_verified: boolean;
+            /** Current Application Projection Matched */
+            current_application_projection_matched: boolean;
+            /** Pending Application Projection Explained */
+            pending_application_projection_explained: boolean;
+            audit: components["schemas"]["AuditVerification"];
+            /** Inventory */
+            inventory: components["schemas"]["ReconciliationInventory"][];
+            /** Account Cash */
+            account_cash: components["schemas"]["ReconciliationAmount"][];
+            /** Position Principals */
+            position_principals: components["schemas"]["ReconciliationAmount"][];
+            /** Goal Ownership */
+            goal_ownership: components["schemas"]["ReconciliationGoal"][];
+            /** Actions */
+            actions: components["schemas"]["ReconciliationAction"][];
+            /** Bank Postings */
+            bank_postings: components["schemas"]["ReconciliationPosting"][];
+            /** Issues */
+            issues: components["schemas"]["ReconciliationIssue"][];
+            /** Uncovered */
+            uncovered: components["schemas"]["ReconciliationIssue"][];
+            /** Input Hash */
+            input_hash: string;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullRecoveryCandidate */
+        FullRecoveryCandidate: {
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /** Goal Id */
+            goal_id: string | null;
+            /**
+             * Destination Account Id
+             * Format: uuid
+             */
+            destination_account_id: string;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Product Version Number */
+            product_version_number: number;
+            /** Terms Digest */
+            terms_digest: string;
+            /**
+             * Catalogue Version Id
+             * Format: uuid
+             */
+            catalogue_version_id: string;
+            /** Product Record Hash */
+            product_record_hash: string;
+            /** Original Policy Version Id */
+            original_policy_version_id: string | null;
+            /** Principal Cents */
+            principal_cents: number;
+            original_quote: components["schemas"]["RecoveryQuote"] | null;
+            /**
+             * Quote Source
+             * @enum {string}
+             */
+            quote_source: "BANK_CONFIRMED" | "DERIVED_ORIGINAL_TERMS" | "MISSING";
+            /** Independent Loss Cents */
+            independent_loss_cents: number | null;
+            /** Fee Cents */
+            fee_cents: number | null;
+            /** Net Cents */
+            net_cents: number | null;
+            /** Earliest Conditional Cash At */
+            earliest_conditional_cash_at: string | null;
+            /** Liquidity Rank */
+            liquidity_rank: number | null;
+            /** On Time */
+            on_time: boolean | null;
+            /** Within Full Planning Limits */
+            within_full_planning_limits: boolean;
+            /** Lossless Eligible */
+            lossless_eligible: boolean;
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "ASK_ONCE" | "BLOCKED" | "UNKNOWN" | "EXCLUDED_SCOPE";
+            /** Reasons */
+            reasons: string[];
+            conditional_impact_boundary?: components["schemas"]["BoundaryResult"] | null;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+        };
+        /** FullRecoveryConfirmation */
+        FullRecoveryConfirmation: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Reviewed Effect Hash */
+            reviewed_effect_hash: string;
+            /** Accepted */
+            accepted: boolean;
+        };
+        /** FullRecoveryExecuteRequest */
+        FullRecoveryExecuteRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Reviewed Effect Hash */
+            reviewed_effect_hash: string;
+        };
+        /** FullRecoveryExecutionLookup */
+        FullRecoveryExecutionLookup: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Current Authority
+             * @default false
+             * @constant
+             */
+            current_authority: false;
+            /**
+             * Not Found Is Final
+             * @default false
+             * @constant
+             */
+            not_found_is_final: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            original_request?: components["schemas"]["FullRecoveryPrepareRequest"] | null;
+            /** Original Action Request */
+            original_action_request?: {
+                [key: string]: unknown;
+            } | null;
+            /** Client Request Hash */
+            client_request_hash?: string | null;
+            /** Server Request Hash */
+            server_request_hash?: string | null;
+            action?: components["schemas"]["ActionResponse"] | null;
+            /**
+             * Epoch State
+             * @default MISSING
+             * @enum {string}
+             */
+            epoch_state: "OPEN" | "SEALED" | "MISSING";
+            original_consent?: components["schemas"]["FullRecoveryUserConsent"] | null;
+            /**
+             * Consent Is Current Authority
+             * @default false
+             * @constant
+             */
+            consent_is_current_authority: false;
+        };
+        /** FullRecoveryExecutionPreview */
+        FullRecoveryExecutionPreview: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Preview Only
+             * @default true
+             * @constant
+             */
+            preview_only: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            original_request: components["schemas"]["FullRecoveryPrepareRequest"];
+            proof: components["schemas"]["FullRecoveryExecutionProof"];
+            execution_effect?: components["schemas"]["ExecutionEffect"] | null;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullRecoveryExecutionProof */
+        FullRecoveryExecutionProof: {
+            /**
+             * Protocol
+             * @default full-recovery-execution-v1
+             * @constant
+             */
+            protocol: "full-recovery-execution-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Preserves Original Permission Checks
+             * @default true
+             * @constant
+             */
+            preserves_original_permission_checks: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Full Policy Version Id
+             * Format: uuid
+             */
+            full_policy_version_id: string;
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "VERIFIED_SCOPE" | "BLOCKED" | "UNKNOWN";
+            candidate: components["schemas"]["FullRecoveryCandidate"];
+            /** Deadline At */
+            deadline_at: string | null;
+            /** Input Hash */
+            input_hash: string;
+            /** Effect Hash */
+            effect_hash: string | null;
+            /** Reasons */
+            reasons: string[];
+            /** Proof Hash */
+            proof_hash: string;
+        };
+        /** FullRecoveryNextLookup */
+        FullRecoveryNextLookup: {
+            /**
+             * Protocol
+             * @default full-recovery-next-whole-v2
+             * @constant
+             */
+            protocol: "full-recovery-next-whole-v2";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Current Authority
+             * @default false
+             * @constant
+             */
+            current_authority: false;
+            /**
+             * Not Found Is Final
+             * @default false
+             * @constant
+             */
+            not_found_is_final: false;
+            /**
+             * Automatically Advances
+             * @default false
+             * @constant
+             */
+            automatically_advances: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            /**
+             * Request Binding Kind
+             * @default PROJECTION_OF_VERIFIED_V1_ORIGINAL_AND_EXACT_ROOT_KEY
+             * @constant
+             */
+            request_binding_kind: "PROJECTION_OF_VERIFIED_V1_ORIGINAL_AND_EXACT_ROOT_KEY";
+            /**
+             * Original V2 Request Separately Recorded
+             * @default false
+             * @constant
+             */
+            original_v2_request_separately_recorded: false;
+            bound_request?: components["schemas"]["FullRecoveryNextRequest"] | null;
+            /** Bound Request Hash */
+            bound_request_hash?: string | null;
+            original_v1_lookup: components["schemas"]["FullRecoveryExecutionLookup"];
+        };
+        /** FullRecoveryNextPreview */
+        FullRecoveryNextPreview: {
+            /**
+             * Protocol
+             * @default full-recovery-next-whole-v2
+             * @constant
+             */
+            protocol: "full-recovery-next-whole-v2";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Read Only
+             * @default true
+             * @constant
+             */
+            read_only: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Atomic Combination
+             * @default false
+             * @constant
+             */
+            atomic_combination: false;
+            /**
+             * Automatically Advances
+             * @default false
+             * @constant
+             */
+            automatically_advances: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            request: components["schemas"]["FullRecoveryNextRequest"];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY_TO_PREPARE" | "BLOCKED" | "UNKNOWN" | "NO_ELIGIBLE_NEXT_POSITION" | "ORIGINAL_ACTION_RETAINED";
+            planning?: components["schemas"]["FullRecoveryPlanningResponse"] | null;
+            selection?: components["schemas"]["FullRecoveryNextSelection"] | null;
+            original_v1_preview?: components["schemas"]["FullRecoveryExecutionPreview"] | null;
+            existing: components["schemas"]["FullRecoveryNextLookup"];
+            /** Input Hash */
+            input_hash: string;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullRecoveryNextRequest */
+        FullRecoveryNextRequest: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** FullRecoveryNextSelection */
+        FullRecoveryNextSelection: {
+            /**
+             * Protocol
+             * @default full-recovery-next-whole-v2
+             * @constant
+             */
+            protocol: "full-recovery-next-whole-v2";
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Atomic Combination
+             * @default false
+             * @constant
+             */
+            atomic_combination: false;
+            /** Current Candidate Denominator */
+            current_candidate_denominator: number;
+            /** Current Selected Denominator */
+            current_selected_denominator: number;
+            /** Eligibility */
+            eligibility: components["schemas"]["NextWholeEligibility"][];
+            next_v1_request: components["schemas"]["FullRecoveryPrepareRequest"] | null;
+            /** Reasons */
+            reasons: string[];
+        };
+        /** FullRecoveryPlanningResponse */
+        FullRecoveryPlanningResponse: {
+            /**
+             * Schema Version
+             * @default verified-full-recovery-planning-v1
+             * @constant
+             */
+            schema_version: "verified-full-recovery-planning-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            /**
+             * Protection Scope
+             * @default ORIGINAL_VERIFIED_365_DAY_CURVE
+             * @constant
+             */
+            protection_scope: "ORIGINAL_VERIFIED_365_DAY_CURVE";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "COMPUTED" | "UNKNOWN";
+            plan: components["schemas"]["FullRecoveryPlanningResult"] | null;
+            catalogue: components["schemas"]["CatalogReadResponse"];
+            /** Catalogue Bindings */
+            catalogue_bindings: components["schemas"]["CatalogProductBinding"][];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Source Issues */
+            source_issues: components["schemas"]["BoundarySourceIssue"][];
+            /** Input Hash */
+            input_hash: string;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** FullRecoveryPlanningResult */
+        FullRecoveryPlanningResult: {
+            /**
+             * Algorithm Version
+             * @default full-whole-position-recovery-v1
+             * @constant
+             */
+            algorithm_version: "full-whole-position-recovery-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Policy Version Id
+             * Format: uuid
+             */
+            policy_version_id: string;
+            /**
+             * Linked Asset Policy Id
+             * Format: uuid
+             */
+            linked_asset_policy_id: string;
+            /**
+             * Linked Asset Policy Version Id
+             * Format: uuid
+             */
+            linked_asset_policy_version_id: string;
+            /** Linked Asset Configuration Hash */
+            linked_asset_configuration_hash: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "NO_RECOVERY_NEEDED" | "NOT_TRIGGERED" | "CONDITIONAL_RECOVERY_PLAN" | "LIQUIDITY_RISK" | "UNKNOWN" | "INACTIVE_POLICY";
+            /**
+             * Scope
+             * @enum {string}
+             */
+            scope: "general_idle_funds" | "goal";
+            /** Goal Id */
+            goal_id: string | null;
+            actual_boundary: components["schemas"]["BoundaryResult"];
+            lossless_conditional_boundary: components["schemas"]["BoundaryResult"] | null;
+            /** Deadline At */
+            deadline_at: string | null;
+            /** Actual Scope Cash Cents */
+            actual_scope_cash_cents: number | null;
+            /** Required Recovery Cents */
+            required_recovery_cents: number | null;
+            /** Conditional On Time Recovery Cents */
+            conditional_on_time_recovery_cents: number | null;
+            /** Lossless Steps */
+            lossless_steps: components["schemas"]["FullRecoveryCandidate"][];
+            /** Candidates */
+            candidates: components["schemas"]["FullRecoveryCandidate"][];
+            /** Uncovered Checkpoints */
+            uncovered_checkpoints: components["schemas"]["BoundaryPoint"][];
+            first_sustained_safe_point: components["schemas"]["BoundaryPoint"] | null;
+            /** Observed Triggers */
+            observed_triggers: ("BOUNDARY_SHRINK" | "AUTHORIZATION_REVOKED" | "POLICY_EXPIRED" | "LIQUIDITY_SHORTFALL")[];
+            /** Reasons */
+            reasons: string[];
+            /** Input Hash */
+            input_hash: string;
+        };
+        /** FullRecoveryPrepareRequest */
+        FullRecoveryPrepareRequest: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** FullRecoveryUserConsent */
+        FullRecoveryUserConsent: {
+            /**
+             * Protocol
+             * @default full-recovery-execution-v1
+             * @constant
+             */
+            protocol: "full-recovery-execution-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /** Original Effect Hash */
+            original_effect_hash: string;
+            /**
+             * Original Confirmation Evidence Id
+             * Format: uuid
+             */
+            original_confirmation_evidence_id: string;
+            principal_at_confirmation: components["schemas"]["LocalActorPrincipal"];
+            /**
+             * Confirmed At
+             * Format: date-time
+             */
+            confirmed_at: string;
+        };
+        /** FullRefreshRequest */
+        FullRefreshRequest: Record<string, never>;
+        /** FullRefreshResult */
+        FullRefreshResult: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event: false;
+            /** Results */
+            results: components["schemas"]["FullLifecycleResult"][];
+        };
+        /** FullResumeRequest */
+        FullResumeRequest: {
+            /** Accepted */
+            accepted: boolean;
+            /** Reviewed Hash */
+            reviewed_hash: string;
+            /** Reason */
+            reason: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+        };
+        /** FullSourceAccountCheck */
+        FullSourceAccountCheck: {
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Actual Cash Cents */
+            actual_cash_cents: number;
+            /** Goal Owned Cash Cents */
+            goal_owned_cash_cents: number;
+            /** Reserved Cash Cents */
+            reserved_cash_cents: number;
+            /** Registered Periodic Required Cents */
+            registered_periodic_required_cents: number;
+            /** Remaining Current Cash Cents */
+            remaining_current_cash_cents: number;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "CURRENT_SOURCE_SUFFICIENT" | "SOURCE_LIQUIDITY_RISK";
+            /**
+             * Future Account Debits Complete
+             * @default false
+             * @constant
+             */
+            future_account_debits_complete: false;
+        };
+        /** FullStateRequest */
+        FullStateRequest: {
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Reason */
+            reason: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** FullTemplateIntent */
+        FullTemplateIntent: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "full_template";
+            /**
+             * Template Name
+             * @enum {string}
+             */
+            template_name: "DatedExpensePolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy";
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+        };
+        /** FullVersionList */
+        FullVersionList: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event: false;
+            /** Items */
+            items: components["schemas"]["FullVersionView"][];
+        };
+        /** FullVersionView */
+        FullVersionView: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event: false;
+            /**
+             * Version Id
+             * Format: uuid
+             */
+            version_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /** Version Number */
+            version_number: number;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+            /** Content Hash */
+            content_hash: string;
+            /** Previous Hash */
+            previous_hash: string | null;
+            /** Summary */
+            summary: string;
+            /** Confirmation */
+            confirmation: {
+                [key: string]: unknown;
+            };
+            /**
+             * Confirmed At
+             * Format: date-time
+             */
+            confirmed_at: string;
+            /**
+             * Valid From
+             * Format: date-time
+             */
+            valid_from: string;
+            /** Valid Until */
+            valid_until: string | null;
+            /** Change Reason */
+            change_reason: string;
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** Impact Analysis */
+            impact_analysis: {
+                [key: string]: unknown;
+            };
+            /**
+             * Confirmation Evidence Status
+             * @enum {string}
+             */
+            confirmation_evidence_status: "CURRENT_EVIDENCE_MATCHED" | "RETAINED_IN_VERSION_CURRENT_EVIDENCE_MISSING";
+        };
+        /** FutureDatedHistoryProof */
+        FutureDatedHistoryProof: {
+            /**
+             * Protocol
+             * @default full-future-dated-history-v1
+             * @constant
+             */
+            protocol: "full-future-dated-history-v1";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "VERIFIED_FUTURE_DATED_HISTORY" | "UNKNOWN";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Current Version Id
+             * Format: uuid
+             */
+            current_version_id: string;
+            /** Current Content Hash */
+            current_content_hash: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Timezone */
+            timezone: string;
+            /**
+             * Today
+             * Format: date
+             */
+            today: string;
+            /** Actual Version Count */
+            actual_version_count: number | null;
+            /** Captured Version Count */
+            captured_version_count: number;
+            /** Actual Command Count */
+            actual_command_count: number | null;
+            /** Captured Command Count */
+            captured_command_count: number;
+            /** Expected Evidence Count */
+            expected_evidence_count: number | null;
+            /** Captured Evidence Count */
+            captured_evidence_count: number;
+            /** Policy Original */
+            policy_original: {
+                [key: string]: unknown;
+            } | null;
+            /** User Original */
+            user_original: {
+                [key: string]: unknown;
+            } | null;
+            /** Epoch Original */
+            epoch_original: {
+                [key: string]: unknown;
+            } | null;
+            /** Versions */
+            versions: {
+                [key: string]: unknown;
+            }[];
+            /** Commands */
+            commands: {
+                [key: string]: unknown;
+            }[];
+            /** Evidence Originals */
+            evidence_originals: {
+                [key: string]: unknown;
+            }[];
+            /** Source Digest */
+            source_digest: string;
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Unpaid Amount Proven
+             * @default false
+             * @constant
+             */
+            unpaid_amount_proven: false;
+            /**
+             * Settlement Proven
+             * @default false
+             * @constant
+             */
+            settlement_proven: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+        };
+        /** FutureIncomeAssumption */
+        FutureIncomeAssumption: {
+            /**
+             * Protocol
+             * @default future-income-monthly-assumption-v1
+             * @constant
+             */
+            protocol: "future-income-monthly-assumption-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Origin Transaction Id
+             * Format: uuid
+             */
+            origin_transaction_id: string;
+            /**
+             * Source Account Id
+             * Format: uuid
+             */
+            source_account_id: string;
+            /** Origin Hash */
+            origin_hash: string;
+            /**
+             * Original Bank Evidence Id
+             * Format: uuid
+             */
+            original_bank_evidence_id: string;
+            /** Original Bank Evidence Hash */
+            original_bank_evidence_hash: string;
+            /** Conditional Amount Cents */
+            conditional_amount_cents: number;
+            /**
+             * Timezone
+             * @enum {string}
+             */
+            timezone: "Asia/Shanghai" | "UTC";
+            /** Monthly Local Day */
+            monthly_local_day: number;
+            /**
+             * Valid From
+             * Format: date
+             */
+            valid_from: string;
+            /**
+             * Valid Until
+             * Format: date
+             */
+            valid_until: string;
+            /**
+             * Basis
+             * @default USER_DECLARED_HYPOTHETICAL_MONTHLY_REPETITION
+             * @constant
+             */
+            basis: "USER_DECLARED_HYPOTHETICAL_MONTHLY_REPETITION";
+            /**
+             * Short Month Rule
+             * @default CLAMP_TO_LAST_CALENDAR_DAY
+             * @constant
+             */
+            short_month_rule: "CLAMP_TO_LAST_CALENDAR_DAY";
+            /**
+             * Arrival Time Within Day Known
+             * @default false
+             * @constant
+             */
+            arrival_time_within_day_known: false;
+            /**
+             * Income Is Settled Cash
+             * @default false
+             * @constant
+             */
+            income_is_settled_cash: false;
+            /**
+             * Included In Current Cash Cents
+             * @default 0
+             * @constant
+             */
+            included_in_current_cash_cents: 0;
+            /**
+             * Included In Execution Cents
+             * @default 0
+             * @constant
+             */
+            included_in_execution_cents: 0;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+        };
+        /** FutureIncomeCandidate */
+        FutureIncomeCandidate: {
+            /**
+             * Candidate Id
+             * Format: uuid
+             */
+            candidate_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Admitted At
+             * Format: date-time
+             */
+            admitted_at: string;
+            /**
+             * Confirmation Deadline
+             * Format: date-time
+             */
+            confirmation_deadline: string;
+            source: components["schemas"]["PlanningIncomeSource"];
+            assumption: components["schemas"]["FutureIncomeAssumption"];
+            /** Candidate Hash */
+            candidate_hash: string;
+            original_request: components["schemas"]["FutureIncomeCandidateRequest"];
+            /** Request Hash */
+            request_hash: string;
+            /** Original Evidence */
+            original_evidence: {
+                [key: string]: unknown;
+            };
+            /** Evidence Hash */
+            evidence_hash: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "REQUIRES_EXPLICIT_CONFIRMATION" | "EXPIRED" | "USER_CONFIRMED" | "UNKNOWN";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+        };
+        /** FutureIncomeCandidateRequest */
+        FutureIncomeCandidateRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /**
+             * Origin Transaction Id
+             * Format: uuid
+             */
+            origin_transaction_id: string;
+            /** Expected Origin Hash */
+            expected_origin_hash: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** FutureIncomeCommandLookup */
+        FutureIncomeCommandLookup: {
+            /**
+             * Protocol
+             * @default future-income-command-lookup-v1
+             * @constant
+             */
+            protocol: "future-income-command-lookup-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            /** Command Kind */
+            command_kind: ("CANDIDATE" | "CONFIRM") | null;
+            /** Original Request */
+            original_request: components["schemas"]["FutureIncomeCandidateRequest"] | components["schemas"]["FutureIncomeConfirmationRequest"] | null;
+            /** Request Hash */
+            request_hash: string | null;
+            candidate: components["schemas"]["FutureIncomeCandidate"] | null;
+            confirmation: components["schemas"]["FutureIncomeConfirmation"] | null;
+            /**
+             * Not Found Is Final
+             * @default false
+             * @constant
+             */
+            not_found_is_final: false;
+            /**
+             * Replacement Allowed
+             * @default false
+             * @constant
+             */
+            replacement_allowed: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+        };
+        /** FutureIncomeConfirmation */
+        FutureIncomeConfirmation: {
+            /**
+             * Confirmation Id
+             * Format: uuid
+             */
+            confirmation_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Candidate Id
+             * Format: uuid
+             */
+            candidate_id: string;
+            /** Candidate Hash */
+            candidate_hash: string;
+            /**
+             * Confirmed At
+             * Format: date-time
+             */
+            confirmed_at: string;
+            original_request: components["schemas"]["FutureIncomeConfirmationRequest"];
+            /** Request Hash */
+            request_hash: string;
+            /** Original Evidence */
+            original_evidence: {
+                [key: string]: unknown;
+            };
+            /** Evidence Hash */
+            evidence_hash: string;
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Confirms Financial Action
+             * @default false
+             * @constant
+             */
+            confirms_financial_action: false;
+            /**
+             * Dedicated Audit Event Recorded
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event_recorded: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+        };
+        /** FutureIncomeConfirmationRequest */
+        FutureIncomeConfirmationRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /**
+             * Candidate Id
+             * Format: uuid
+             */
+            candidate_id: string;
+            /** Reviewed Candidate Hash */
+            reviewed_candidate_hash: string;
+            /** Accepted */
+            accepted: boolean;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** FutureIncomePlanState */
+        FutureIncomePlanState: {
+            /**
+             * Candidate Id
+             * Format: uuid
+             */
+            candidate_id: string;
+            /** Confirmation Id */
+            confirmation_id: string | null;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "USER_CONFIRMED_CONDITION" | "REQUIRES_EXPLICIT_CONFIRMATION" | "EXPIRED" | "UNKNOWN" | "CONFLICTED";
+            candidate: components["schemas"]["FutureIncomeCandidate"] | null;
+            confirmation: components["schemas"]["FutureIncomeConfirmation"] | null;
+            /** Original Metadata */
+            original_metadata: {
+                [key: string]: unknown;
+            }[];
+            /** Issues */
+            issues: string[];
+        };
+        /** FutureIncomePlanningResponse */
+        FutureIncomePlanningResponse: {
+            /**
+             * Protocol
+             * @default future-income-conditional-planning-v1
+             * @constant
+             */
+            protocol: "future-income-conditional-planning-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Epoch Id */
+            epoch_id: string | null;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Timezone
+             * @enum {string}
+             */
+            timezone: "Asia/Shanghai" | "UTC";
+            /**
+             * Horizon Days
+             * @default 365
+             * @constant
+             */
+            horizon_days: 365;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "CONDITIONAL_PLANNING" | "NO_CONFIRMED_REGISTERED_SOURCE" | "UNKNOWN";
+            sources: components["schemas"]["FutureIncomeSourceInventory"];
+            /** Plans */
+            plans: components["schemas"]["FutureIncomePlanState"][];
+            /** Total Conditional Income Cents */
+            total_conditional_income_cents: number | null;
+            /** Daily Schedule */
+            daily_schedule: components["schemas"]["ConditionalIncomeDay"][];
+            /** Input Hash */
+            input_hash: string;
+            /** Issues */
+            issues: string[];
+            /**
+             * Included In Current Cash Cents
+             * @default 0
+             * @constant
+             */
+            included_in_current_cash_cents: 0;
+            /**
+             * Included In Execution Cents
+             * @default 0
+             * @constant
+             */
+            included_in_execution_cents: 0;
+            /**
+             * Writes Financial Facts
+             * @default false
+             * @constant
+             */
+            writes_financial_facts: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Bank Promises Future Payment
+             * @default false
+             * @constant
+             */
+            bank_promises_future_payment: false;
+            /**
+             * Original Execution View Changed
+             * @default false
+             * @constant
+             */
+            original_execution_view_changed: false;
+        };
+        /** FutureIncomeProjection */
+        FutureIncomeProjection: {
+            /**
+             * Status
+             * @default NOT_IMPLEMENTED_NO_REGISTERED_SOURCE
+             * @constant
+             */
+            status: "NOT_IMPLEMENTED_NO_REGISTERED_SOURCE";
+            /**
+             * Included In Execution Cents
+             * @default 0
+             * @constant
+             */
+            included_in_execution_cents: 0;
+            /**
+             * Included In Planning Cents
+             * @default 0
+             * @constant
+             */
+            included_in_planning_cents: 0;
+            /**
+             * Reason
+             * @default 未来收入尚无已登记来源适配器；当前曲线不包含未来收入预测。
+             */
+            reason: string;
+        };
+        /** FutureIncomeSourceInventory */
+        FutureIncomeSourceInventory: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Epoch Id */
+            epoch_id: string | null;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Timezone
+             * @enum {string}
+             */
+            timezone: "Asia/Shanghai" | "UTC";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "VERIFIED_ORIGINAL_INCOME_SOURCES" | "UNKNOWN";
+            /** Original Origin Count */
+            original_origin_count: number | null;
+            /** Captured Origin Count */
+            captured_origin_count: number;
+            /** Complete */
+            complete: boolean;
+            /** Sources */
+            sources: components["schemas"]["PlanningIncomeSource"][];
+            /** Issues */
+            issues: string[];
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Included In Current Cash Cents
+             * @default 0
+             * @constant
+             */
+            included_in_current_cash_cents: 0;
+            /**
+             * Included In Execution Cents
+             * @default 0
+             * @constant
+             */
+            included_in_execution_cents: 0;
+        };
+        /** GlobalBoundaryObservation */
+        GlobalBoundaryObservation: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Write
+             * @default false
+             * @constant
+             */
+            financial_write: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Observation Run Id
+             * Format: uuid
+             */
+            observation_run_id: string;
+            /** Previous Observation Run Id */
+            previous_observation_run_id: string | null;
+            original_request: components["schemas"]["GlobalBoundaryObserveRequest"];
+            /** Request Hash */
+            request_hash: string;
+            snapshot: components["schemas"]["ActionSetSnapshot"];
+            /** Kind */
+            kind: ("BoundaryCrossed" | "BoundaryObserved") | null;
+            /** Semantic Key */
+            semantic_key: string | null;
+            /** Requires User Attention */
+            requires_user_attention: boolean;
+            /** Previous Snapshot Hash */
+            previous_snapshot_hash: string | null;
+            /** Previous Action Set Signature */
+            previous_action_set_signature: string | null;
+            /** Global Action Set Complete */
+            global_action_set_complete: boolean;
+            /**
+             * Idempotent Replay
+             * @default false
+             */
+            idempotent_replay: boolean;
+            /**
+             * Question Delivery
+             * @default ROOT_GLOBAL_INTERVENTION_BRANCH_REQUIRED
+             * @constant
+             */
+            question_delivery: "ROOT_GLOBAL_INTERVENTION_BRANCH_REQUIRED";
+        };
+        /** GlobalBoundaryObservationRequest */
+        GlobalBoundaryObservationRequest: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "GLOBAL_ACTION_SET_BOUNDARY";
+            /**
+             * Observation Run Id
+             * Format: uuid
+             */
+            observation_run_id: string;
+            /** Reviewed Source Trace Hash */
+            reviewed_source_trace_hash: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Intervention Policy Id */
+            intervention_policy_id?: string | null;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** GlobalBoundaryObserveRequest */
+        GlobalBoundaryObserveRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Previous Observation Run Id */
+            previous_observation_run_id?: string | null;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** GoalAdjustmentPreviewResponse */
+        GoalAdjustmentPreviewResponse: {
+            /**
+             * Protocol
+             * @default full-goal-adjustment-preview-v1
+             * @constant
+             */
+            protocol: "full-goal-adjustment-preview-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            original: components["schemas"]["GoalAdjustmentReadResponse"];
+            proposal: components["schemas"]["ConditionalGoalAdjustmentPlan"] | null;
+            /** Version Previews */
+            version_previews: components["schemas"]["GoalAdjustmentVersionPreview"][];
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "PROPOSAL" | "SOFT_PREFERENCE_PREVIEW" | "NOT_NEEDED" | "NO_PERMITTED_REPAIR" | "BASE_INFEASIBLE" | "UNKNOWN";
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Writes Performed
+             * @default false
+             * @constant
+             */
+            writes_performed: false;
+            /**
+             * Confirmation Is Separate
+             * @default true
+             * @constant
+             */
+            confirmation_is_separate: true;
+            /**
+             * Multi Version Atomic Confirmation Supported
+             * @default false
+             * @constant
+             */
+            multi_version_atomic_confirmation_supported: false;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** GoalAdjustmentReadResponse */
+        GoalAdjustmentReadResponse: {
+            /**
+             * Protocol
+             * @default full-goal-adjustment-read-v1
+             * @constant
+             */
+            protocol: "full-goal-adjustment-read-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "COMPUTED" | "UNKNOWN";
+            original_conflicts: components["schemas"]["FullGoalConflictResponse"];
+            /** Goals */
+            goals: components["schemas"]["AdjustableGoalOriginal"][];
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Writes Performed
+             * @default false
+             * @constant
+             */
+            writes_performed: false;
+        };
+        /** GoalAdjustmentRequest */
+        GoalAdjustmentRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Reviewed State Hash */
+            reviewed_state_hash: string;
+            /** Adjustments */
+            adjustments: (components["schemas"]["MonthlyMinimumRange"] | components["schemas"]["DeadlineRange"])[];
+        };
+        /** GoalAdjustmentVersionPreview */
+        GoalAdjustmentVersionPreview: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Current Version Id
+             * Format: uuid
+             */
+            current_version_id: string;
+            /**
+             * Field
+             * @enum {string}
+             */
+            field: "monthly_min_cents" | "deadline";
+            /**
+             * Scope
+             * @enum {string}
+             */
+            scope: "SOFT_PREFERENCE_ONLY" | "CURRENT_PERIOD_HARD_DEADLINE_REPAIR";
+            /** Original Value */
+            original_value: number | string;
+            /** Proposed Value */
+            proposed_value: number | string;
+            /** Original Full Configuration */
+            original_full_configuration: {
+                [key: string]: unknown;
+            };
+            /** Original Full Configuration Hash */
+            original_full_configuration_hash: string;
+            actual_existing_preview: components["schemas"]["FullGoalPreviewResponse"];
+            /** Preview Endpoint */
+            preview_endpoint: string;
+            /** Preview Request */
+            preview_request: {
+                [key: string]: unknown;
+            };
+            /** Confirmation Endpoint */
+            confirmation_endpoint: string;
+            /** Confirmation Bindings */
+            confirmation_bindings: {
+                [key: string]: unknown;
+            };
+            /** Missing Explicit User Fields */
+            missing_explicit_user_fields: ("accepted" | "reason" | "idempotency_key")[];
+            /**
+             * Ready To Submit Confirmation
+             * @default false
+             * @constant
+             */
+            ready_to_submit_confirmation: false;
+            /**
+             * Current Execution Permission Changed
+             * @default false
+             * @constant
+             */
+            current_execution_permission_changed: false;
+        };
+        /** GoalAllocation */
+        GoalAllocation: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Effective Policy Version Id
+             * Format: uuid
+             */
+            effective_policy_version_id: string;
+            /** Amount Cents */
+            amount_cents: number | null;
+            /** Minimum Shortfall Cents */
+            minimum_shortfall_cents: number | null;
+            /** Projected Owned Cents */
+            projected_owned_cents: number | null;
+            /** Completion Date */
+            completion_date: string | null;
+            /** Delay Lower Bound Days */
+            delay_lower_bound_days: number | null;
+            /** Delay Censored */
+            delay_censored: boolean;
+            /** Deferral Cost Lower Bound Cents */
+            deferral_cost_lower_bound_cents: number | null;
         };
         /** GoalAllocationResponse */
         GoalAllocationResponse: {
@@ -2695,6 +15555,335 @@ export interface components {
             allocation_hash: string;
             /** Reasons */
             reasons?: string[];
+        };
+        /** GoalAllocationSourceSlice */
+        GoalAllocationSourceSlice: {
+            /**
+             * Allocation Action Id
+             * Format: uuid
+             */
+            allocation_action_id: string;
+            /**
+             * Original Policy Version Id
+             * Format: uuid
+             */
+            original_policy_version_id: string;
+            /**
+             * Fragment Id
+             * Format: uuid
+             */
+            fragment_id: string;
+            /**
+             * Origin Transaction Id
+             * Format: uuid
+             */
+            origin_transaction_id: string;
+            /**
+             * Income Location Account Id
+             * Format: uuid
+             */
+            income_location_account_id: string;
+            /** Original Allocated Cents */
+            original_allocated_cents: number;
+            /** Cash Remaining Cents */
+            cash_remaining_cents: number | null;
+            /** Allocation Effect Hash */
+            allocation_effect_hash: string;
+            /** Allocation Bank Request Hash */
+            allocation_bank_request_hash: string;
+            /** Allocation Action Request Hash */
+            allocation_action_request_hash: string;
+            /** Original Refs */
+            original_refs: components["schemas"]["OriginalRowReference"][];
+        };
+        /** GoalCashSourceProof */
+        GoalCashSourceProof: {
+            /**
+             * Schema Version
+             * @default goal-cash-source-proof-v1
+             * @constant
+             */
+            schema_version: "goal-cash-source-proof-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Goal Account Id
+             * Format: uuid
+             */
+            goal_account_id: string;
+            /**
+             * Goal Policy Version Id
+             * Format: uuid
+             */
+            goal_policy_version_id: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "VERIFIED_CASH_ONLY" | "UNKNOWN";
+            /** Original Goal Cash Cents */
+            original_goal_cash_cents: number | null;
+            /** Original Goal Principal Cents */
+            original_goal_principal_cents: number | null;
+            /** Exactly Attributed Goal Cash Cents */
+            exactly_attributed_goal_cash_cents: number | null;
+            /** Sources */
+            sources: components["schemas"]["GoalIncomeSource"][];
+            /** Original Allocation Slices */
+            original_allocation_slices: components["schemas"]["GoalAllocationSourceSlice"][];
+            /** Complete Original Income Fragment Count */
+            complete_original_income_fragment_count: number | null;
+            /** Complete Original Bank Operation Count */
+            complete_original_bank_operation_count: number | null;
+            /** Captured Original Bank Operation Count */
+            captured_original_bank_operation_count: number;
+            /** Original Operation Refs */
+            original_operation_refs: components["schemas"]["OriginalRowReference"][];
+            /** Original Goal Cash Posting Refs */
+            original_goal_cash_posting_refs: components["schemas"]["OriginalRowReference"][];
+            /** Source Binding Hash */
+            source_binding_hash: string;
+            /** Reconciliation Input Hash */
+            reconciliation_input_hash: string;
+            /** Income Evidence Id */
+            income_evidence_id: string | null;
+            /** Income Evidence Hash */
+            income_evidence_hash: string | null;
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Read Only
+             * @default true
+             * @constant
+             */
+            read_only: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Principal Change Cents
+             * @default 0
+             * @constant
+             */
+            principal_change_cents: 0;
+            /**
+             * Other Goal Change Cents
+             * @default 0
+             * @constant
+             */
+            other_goal_change_cents: 0;
+            /**
+             * Available Income Increase Cents
+             * @default 0
+             * @constant
+             */
+            available_income_increase_cents: 0;
+            /**
+             * Assigned Income Decrease Cents
+             * @default 0
+             * @constant
+             */
+            assigned_income_decrease_cents: 0;
+            /**
+             * Funds Released
+             * @default false
+             * @constant
+             */
+            funds_released: false;
+            /**
+             * Minimum Guarantee Or Grant Verified
+             * @default false
+             * @constant
+             */
+            minimum_guarantee_or_grant_verified: false;
+            /**
+             * Usage Ledger Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            usage_ledger_support: "NOT_IMPLEMENTED";
+        };
+        /** GoalConflictExplanation */
+        GoalConflictExplanation: {
+            /**
+             * Protocol
+             * @default full-goal-minimal-conflict-v1
+             * @constant
+             */
+            protocol: "full-goal-minimal-conflict-v1";
+            /** Original Input Hash */
+            original_input_hash: string;
+            /** Registered Input Goal Ids */
+            registered_input_goal_ids: string[];
+            conflict: components["schemas"]["MinimalGoalConflict"];
+            /** Constraints */
+            constraints: components["schemas"]["GoalConstraintExplanation"][];
+            /** Goals Outside This Minimal Set */
+            goals_outside_this_minimal_set: string[];
+            /**
+             * All Other Goal Constraints Proven Compatible
+             * @default false
+             * @constant
+             */
+            all_other_goal_constraints_proven_compatible: false;
+            /**
+             * Minimality
+             * @default DELETION_MINIMAL_NOT_MINIMUM_CARDINALITY
+             * @constant
+             */
+            minimality: "DELETION_MINIMAL_NOT_MINIMUM_CARDINALITY";
+            /**
+             * Removal Witness Scope
+             * @default THIS_MINIMAL_SET_MINUS_ONE
+             * @constant
+             */
+            removal_witness_scope: "THIS_MINIMAL_SET_MINUS_ONE";
+            /** Immutable Financial Point Count */
+            immutable_financial_point_count: number;
+            /** Immutable Base Blocks */
+            immutable_base_blocks: components["schemas"]["ImmutableBaseBlock"][];
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+        };
+        /** GoalConstraintExplanation */
+        GoalConstraintExplanation: {
+            /** Constraint Id */
+            constraint_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "MINIMUM_GUARANTEE" | "DEADLINE_COMPLETION" | "MONTHLY_MAX";
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Current Version Id
+             * Format: uuid
+             */
+            current_version_id: string;
+            /** Original Parameter Cents */
+            original_parameter_cents: number | null;
+            /** Current Owned Cents */
+            current_owned_cents: number;
+            /** Current Month Contributed Cents */
+            current_month_contributed_cents: number;
+            /** Required New Cents */
+            required_new_cents: number | null;
+            /** Allowed New Cents */
+            allowed_new_cents: number | null;
+            /** Deadline */
+            deadline: string | null;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceReference"][];
+        };
+        /** GoalHypothesis */
+        GoalHypothesis: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "GOAL";
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Monthly Min Cents */
+            monthly_min_cents: number;
+            /** Monthly Target Cents */
+            monthly_target_cents: number;
+            /** Monthly Max Cents */
+            monthly_max_cents: number;
+            /** Deadline Offset Days */
+            deadline_offset_days: number;
+        };
+        /** GoalIncomeSource */
+        GoalIncomeSource: {
+            /**
+             * Fragment Id
+             * Format: uuid
+             */
+            fragment_id: string;
+            /**
+             * Origin Transaction Id
+             * Format: uuid
+             */
+            origin_transaction_id: string;
+            /**
+             * Income Location Account Id
+             * Format: uuid
+             */
+            income_location_account_id: string;
+            /**
+             * Origin Account Id
+             * Format: uuid
+             */
+            origin_account_id: string;
+            /**
+             * Origin Bank Evidence Id
+             * Format: uuid
+             */
+            origin_bank_evidence_id: string;
+            /** Origin Bank Evidence Hash */
+            origin_bank_evidence_hash: string;
+            /** Original Assigned Cents */
+            original_assigned_cents: number;
+            /** Verified All Goal Allocation Cents */
+            verified_all_goal_allocation_cents: number;
+            /** Source Goal Allocation Cents */
+            source_goal_allocation_cents: number;
+            /** Other Goal Allocation Cents */
+            other_goal_allocation_cents: number;
+            /** Source Goal Cash Remaining Cents */
+            source_goal_cash_remaining_cents: number | null;
+            /** Original Available Cents */
+            original_available_cents: number;
+            /** Original Reserved Cents */
+            original_reserved_cents: number;
+            /** Original Spent Cents */
+            original_spent_cents: number;
+            /** Source Allocation Action Ids */
+            source_allocation_action_ids: string[];
+            /** Source Original Refs */
+            source_original_refs: components["schemas"]["OriginalRowReference"][];
         };
         /** GoalIntent */
         GoalIntent: {
@@ -2802,6 +15991,1063 @@ export interface components {
             /** Evidence Ids */
             evidence_ids: string[];
         };
+        /** GoalPreviewImpact */
+        GoalPreviewImpact: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Current Owned Cash Cents */
+            current_owned_cash_cents: number;
+            /** Current Owned Principal Cents */
+            current_owned_principal_cents: number;
+            /**
+             * Current Allocation Delta Cents
+             * @default 0
+             * @constant
+             */
+            current_allocation_delta_cents: 0;
+            /**
+             * Current Principal Delta Cents
+             * @default 0
+             * @constant
+             */
+            current_principal_delta_cents: 0;
+            /** Future Allocation Cents */
+            future_allocation_cents?: null;
+            /**
+             * Future Allocation Status
+             * @default UNKNOWN_NO_CANDIDATE_GOAL_SOLVER
+             * @constant
+             */
+            future_allocation_status: "UNKNOWN_NO_CANDIDATE_GOAL_SOLVER";
+            /** Original Evidence Ids */
+            original_evidence_ids: string[];
+        };
+        /** GoalReleaseActionResponse */
+        GoalReleaseActionResponse: {
+            /**
+             * Schema Version
+             * @default goal-release-action-v1
+             * @constant
+             */
+            schema_version: "goal-release-action-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /** Original Action Status */
+            original_action_status: string;
+            original_command: components["schemas"]["GoalReleaseBankCommand"];
+            /** Original Request Hash */
+            original_request_hash: string;
+            original_prepare_request: components["schemas"]["GoalReleasePrepareRequest"];
+            /**
+             * Decision Run Id
+             * Format: uuid
+             */
+            decision_run_id: string;
+            /** Action Confirmation Evidence Id */
+            action_confirmation_evidence_id: string | null;
+            /** Action Confirmation Verified */
+            action_confirmation_verified: boolean;
+            /** Bank Operation Id */
+            bank_operation_id: string | null;
+            /** Original Bank Status */
+            original_bank_status: string | null;
+            /** Bank Settlement Legs Verified */
+            bank_settlement_legs_verified: boolean;
+            /** Receipt Id */
+            receipt_id: string | null;
+            /** Service Receipt Verified */
+            service_receipt_verified: boolean;
+            /** Original Receipt */
+            original_receipt: {
+                [key: string]: unknown;
+            } | null;
+            /** Unresolved */
+            unresolved: boolean;
+            /**
+             * Read Only Response
+             * @default true
+             * @constant
+             */
+            read_only_response: true;
+            /**
+             * Current Authority Assessed
+             * @default false
+             * @constant
+             */
+            current_authority_assessed: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Economic Experiment Verified
+             * @default false
+             * @constant
+             */
+            economic_experiment_verified: false;
+            /**
+             * Grants New Authority
+             * @default false
+             * @constant
+             */
+            grants_new_authority: false;
+        };
+        /** GoalReleaseAuthorization */
+        GoalReleaseAuthorization: {
+            /**
+             * Protocol
+             * @default full-goal-release-authorization-v1
+             * @constant
+             */
+            protocol: "full-goal-release-authorization-v1";
+            /**
+             * Authorization Id
+             * Format: uuid
+             */
+            authorization_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Policy Version Id
+             * Format: uuid
+             */
+            policy_version_id: string;
+            scope: components["schemas"]["GoalReleaseScope"];
+            /** Scope Hash */
+            scope_hash: string;
+            /** Accepted */
+            accepted: boolean;
+            /** Idempotency Key */
+            idempotency_key: string;
+            original_request: components["schemas"]["ReleaseAuthorizationConfirmation"];
+            /** Request Hash */
+            request_hash: string;
+            /**
+             * Confirmed At
+             * Format: date-time
+             */
+            confirmed_at: string;
+            /**
+             * Valid Until
+             * Format: date-time
+             */
+            valid_until: string;
+            /**
+             * Permission Kind
+             * @default EMERGENCY_GOAL_CASH_RELEASE
+             * @constant
+             */
+            permission_kind: "EMERGENCY_GOAL_CASH_RELEASE";
+        };
+        /** GoalReleaseBankCommand */
+        GoalReleaseBankCommand: {
+            /**
+             * Protocol
+             * @default full-goal-release-bank-v1
+             * @constant
+             */
+            protocol: "full-goal-release-bank-v1";
+            effect: components["schemas"]["GoalReleaseEffect"];
+            /** Effect Hash */
+            effect_hash: string;
+        };
+        /** GoalReleaseBinding */
+        GoalReleaseBinding: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Original Policy Id
+             * Format: uuid
+             */
+            original_policy_id: string;
+            /**
+             * Original Policy Version Id
+             * Format: uuid
+             */
+            original_policy_version_id: string;
+            /**
+             * Full Model Evidence Id
+             * Format: uuid
+             */
+            full_model_evidence_id: string;
+            /** Full Model Evidence Hash */
+            full_model_evidence_hash: string;
+            /** Full Configuration Hash */
+            full_configuration_hash: string;
+            /** Minimum Guarantee Cents */
+            minimum_guarantee_cents: number;
+        };
+        /** GoalReleaseCandidate */
+        GoalReleaseCandidate: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            original_request: components["schemas"]["GoalReleasePrepareRequest"];
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "READY" | "BLOCKED" | "UNKNOWN";
+            /** Amount Cents */
+            amount_cents: number | null;
+            actual_preview: components["schemas"]["FullGoalReallocationPreview"];
+            actual_inventory: components["schemas"]["GoalReleaseInventory"];
+            original_authorization: components["schemas"]["ReleaseAuthorizationResponse"] | null;
+            protection: components["schemas"]["GoalReleaseProtectionCheck"] | null;
+            /** Selected Release Uses */
+            selected_release_uses: components["schemas"]["GoalReleaseUse"][];
+            /** Reasons */
+            reasons: string[];
+            /** Input Hash */
+            input_hash: string;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Creates New Income
+             * @default false
+             * @constant
+             */
+            creates_new_income: false;
+        };
+        /** GoalReleaseEffect */
+        GoalReleaseEffect: {
+            /**
+             * Protocol
+             * @default full-goal-release-effect-v1
+             * @constant
+             */
+            protocol: "full-goal-release-effect-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Action Type
+             * @default RELEASE_GOAL
+             * @constant
+             */
+            action_type: "RELEASE_GOAL";
+            /**
+             * Operation Id
+             * Format: uuid
+             */
+            operation_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Business Key */
+            business_key: string;
+            /** Bank Idempotency Key */
+            bank_idempotency_key: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Policy Version Id
+             * Format: uuid
+             */
+            policy_version_id: string;
+            /** Policy Configuration Hash */
+            policy_configuration_hash: string;
+            /**
+             * Authorization Id
+             * Format: uuid
+             */
+            authorization_id: string;
+            /**
+             * Authorization Evidence Id
+             * Format: uuid
+             */
+            authorization_evidence_id: string;
+            /** Authorization Evidence Hash */
+            authorization_evidence_hash: string;
+            /** Authorization Scope Hash */
+            authorization_scope_hash: string;
+            /** Authorization Request Hash */
+            authorization_request_hash: string;
+            /**
+             * Source Goal Id
+             * Format: uuid
+             */
+            source_goal_id: string;
+            /**
+             * Original Goal Policy Id
+             * Format: uuid
+             */
+            original_goal_policy_id: string;
+            /**
+             * Original Goal Policy Version Id
+             * Format: uuid
+             */
+            original_goal_policy_version_id: string;
+            /**
+             * Full Model Evidence Id
+             * Format: uuid
+             */
+            full_model_evidence_id: string;
+            /** Full Model Evidence Hash */
+            full_model_evidence_hash: string;
+            /** Full Configuration Hash */
+            full_configuration_hash: string;
+            /** Minimum Guarantee Cents */
+            minimum_guarantee_cents: number;
+            /**
+             * Source Account Id
+             * Format: uuid
+             */
+            source_account_id: string;
+            /**
+             * Destination Account Id
+             * Format: uuid
+             */
+            destination_account_id: string;
+            /**
+             * Destination Scope
+             * @default PROTECTED_CASH
+             * @constant
+             */
+            destination_scope: "PROTECTED_CASH";
+            /** Amount Cents */
+            amount_cents: number;
+            /** Emergency Conditions */
+            emergency_conditions: ("HARD_OBLIGATION_SHORTFALL" | "LIVING_RESERVE_SHORTFALL" | "EMERGENCY_BUFFER_SHORTFALL")[];
+            /** Release Uses */
+            release_uses: components["schemas"]["GoalReleaseUse"][];
+            /** Source Provenance Hash */
+            source_provenance_hash: string;
+            /** Financial Input Hash */
+            financial_input_hash: string;
+            /**
+             * Valid From
+             * Format: date-time
+             */
+            valid_from: string;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            /**
+             * Cumulative Scope
+             * @default POLICY_ID_ALL_VERSIONS
+             * @constant
+             */
+            cumulative_scope: "POLICY_ID_ALL_VERSIONS";
+            /**
+             * Fee Cents
+             * @default 0
+             */
+            fee_cents: number;
+            /**
+             * Loss Cents
+             * @default 0
+             */
+            loss_cents: number;
+            /**
+             * Principal Change Cents
+             * @default 0
+             */
+            principal_change_cents: number;
+            /**
+             * Other Goal Change Cents
+             * @default 0
+             */
+            other_goal_change_cents: number;
+            /**
+             * Available Income Increase Cents
+             * @default 0
+             */
+            available_income_increase_cents: number;
+            /**
+             * Assigned Income Decrease Cents
+             * @default 0
+             */
+            assigned_income_decrease_cents: number;
+        };
+        /** GoalReleaseExecuteRequest */
+        GoalReleaseExecuteRequest: {
+            /** Accepted */
+            accepted: boolean;
+            /** Reviewed Effect Hash */
+            reviewed_effect_hash: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+        };
+        /** GoalReleaseInventory */
+        GoalReleaseInventory: {
+            /**
+             * Schema Version
+             * @default goal-release-inventory-v1
+             * @constant
+             */
+            schema_version: "goal-release-inventory-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Goal Policy Version Id
+             * Format: uuid
+             */
+            goal_policy_version_id: string;
+            /**
+             * Full Policy Id
+             * Format: uuid
+             */
+            full_policy_id: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "VERIFIED" | "UNKNOWN";
+            original_basis: components["schemas"]["GoalCashSourceProof"];
+            residual: components["schemas"]["GoalReleaseResidualResult"];
+            /** Release Uses Available */
+            release_uses_available: components["schemas"]["GoalReleaseUse"][];
+            policy_usage: components["schemas"]["GoalReleasePolicyUsage"];
+            /** Inventory */
+            inventory: components["schemas"]["ReleaseInventoryTable"][];
+            /** Release Originals */
+            release_originals: components["schemas"]["GoalReleaseSettlementOriginal"][];
+            /** Financial Truth Verified */
+            financial_truth_verified: boolean;
+            /** Application Projection Matched */
+            application_projection_matched: boolean;
+            /** Source Binding Hash */
+            source_binding_hash: string;
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Funds Released
+             * @default false
+             * @constant
+             */
+            funds_released: false;
+            /**
+             * Creates New Income
+             * @default false
+             * @constant
+             */
+            creates_new_income: false;
+            /**
+             * Changes Original Assigned Income
+             * @default false
+             * @constant
+             */
+            changes_original_assigned_income: false;
+        };
+        /** GoalReleaseLookup */
+        GoalReleaseLookup: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            original: components["schemas"]["GoalReleaseActionResponse"] | null;
+            /**
+             * Not Found Is Final
+             * @default false
+             * @constant
+             */
+            not_found_is_final: false;
+            /**
+             * Replacement Allowed
+             * @default false
+             * @constant
+             */
+            replacement_allowed: false;
+        };
+        /** GoalReleasePolicyUsage */
+        GoalReleasePolicyUsage: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "VERIFIED" | "UNKNOWN";
+            /** Settled Cents */
+            settled_cents: number | null;
+            /** Accepted Reserved Cents */
+            accepted_reserved_cents: number | null;
+            /** Cap Occupied Cents */
+            cap_occupied_cents: number | null;
+            /** Actual Operation Count */
+            actual_operation_count: number | null;
+            /** Captured Operation Count */
+            captured_operation_count: number;
+            /** Pending Operation Ids */
+            pending_operation_ids: string[];
+            /** Accepted Operation Ids */
+            accepted_operation_ids: string[];
+            /** Reasons */
+            reasons: string[];
+            /** Source Binding Hash */
+            source_binding_hash: string;
+            /**
+             * Cumulative Scope
+             * @default POLICY_ID_ALL_VERSIONS
+             * @constant
+             */
+            cumulative_scope: "POLICY_ID_ALL_VERSIONS";
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Service Receipt Or Economic Success Claimed
+             * @default false
+             * @constant
+             */
+            service_receipt_or_economic_success_claimed: false;
+        };
+        /** GoalReleasePostingOriginal */
+        GoalReleasePostingOriginal: {
+            /**
+             * Posting Id
+             * Format: uuid
+             */
+            posting_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Operation Id
+             * Format: uuid
+             */
+            operation_id: string;
+            /** Ledger Key */
+            ledger_key: string;
+            /** Ledger Dimension */
+            ledger_dimension: string;
+            /** Ledger Metadata */
+            ledger_metadata: {
+                [key: string]: unknown;
+            };
+            /** Leg Ref */
+            leg_ref: string;
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Position Id */
+            position_id?: null;
+            /** Redemption Id */
+            redemption_id?: null;
+            /** External Fact Id */
+            external_fact_id?: null;
+            /**
+             * Previous Posting Id
+             * Format: uuid
+             */
+            previous_posting_id: string;
+            /** Sequence Number */
+            sequence_number: number;
+            /** Entry Kind */
+            entry_kind: string;
+            /** Balance Before Cents */
+            balance_before_cents: number;
+            /** Delta Cents */
+            delta_cents: number;
+            /** Balance After Cents */
+            balance_after_cents: number;
+            /**
+             * Occurred At
+             * Format: date-time
+             */
+            occurred_at: string;
+            /** Original Row Hash */
+            original_row_hash: string;
+        };
+        /** GoalReleasePrepareRequest */
+        GoalReleasePrepareRequest: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Source Goal Id
+             * Format: uuid
+             */
+            source_goal_id: string;
+            /**
+             * Expected Policy Version Id
+             * Format: uuid
+             */
+            expected_policy_version_id: string;
+            /**
+             * Expected Goal Policy Version Id
+             * Format: uuid
+             */
+            expected_goal_policy_version_id: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /**
+             * Authorization Epoch Id
+             * Format: uuid
+             */
+            authorization_epoch_id: string;
+            /** Authorization Idempotency Key */
+            authorization_idempotency_key: string;
+            /**
+             * Destination Account Id
+             * Format: uuid
+             */
+            destination_account_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** GoalReleaseProtectionCheck */
+        GoalReleaseProtectionCheck: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "VERIFIED_NONWORSENING" | "UNKNOWN" | "BLOCKED";
+            /** Actual Before Input Hash */
+            actual_before_input_hash: string | null;
+            /** Hypothetical After Input Hash */
+            hypothetical_after_input_hash: string | null;
+            /** Compared Point Count */
+            compared_point_count: number;
+            /**
+             * Expected Point Count
+             * @default 1098
+             * @constant
+             */
+            expected_point_count: 1098;
+            /** Reasons */
+            reasons: string[];
+            /** Source Hash */
+            source_hash: string;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Hypothetical Is Bank Fact
+             * @default false
+             * @constant
+             */
+            hypothetical_is_bank_fact: false;
+        };
+        /** GoalReleaseResidual */
+        GoalReleaseResidual: {
+            /**
+             * Allocation Action Id
+             * Format: uuid
+             */
+            allocation_action_id: string;
+            /**
+             * Fragment Id
+             * Format: uuid
+             */
+            fragment_id: string;
+            /** Original Allocated Cents */
+            original_allocated_cents: number;
+            /** Bank Released Cents */
+            bank_released_cents: number | null;
+            /** Cash Remaining Cents */
+            cash_remaining_cents: number | null;
+        };
+        /** GoalReleaseResidualResult */
+        GoalReleaseResidualResult: {
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "VERIFIED" | "UNKNOWN";
+            /** Remaining */
+            remaining: components["schemas"]["GoalReleaseResidual"][];
+            /** Current Goal Cash Cents */
+            current_goal_cash_cents: number | null;
+            /** Exactly Attributed Goal Cash Cents */
+            exactly_attributed_goal_cash_cents: number | null;
+            /** Bank Released Cents */
+            bank_released_cents: number | null;
+            /** Original Assigned Unchanged */
+            original_assigned_unchanged: boolean;
+            /** Reasons */
+            reasons: string[];
+            /** Source Binding Hash */
+            source_binding_hash: string;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Funds Released
+             * @default false
+             * @constant
+             */
+            funds_released: false;
+            /**
+             * Available Income Increase Cents
+             * @default 0
+             * @constant
+             */
+            available_income_increase_cents: 0;
+            /**
+             * Assigned Income Decrease Cents
+             * @default 0
+             * @constant
+             */
+            assigned_income_decrease_cents: 0;
+        };
+        /** GoalReleaseScope */
+        GoalReleaseScope: {
+            /**
+             * Protocol
+             * @default full-goal-release-authorization-v1
+             * @constant
+             */
+            protocol: "full-goal-release-authorization-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Policy Version Id
+             * Format: uuid
+             */
+            policy_version_id: string;
+            /** Policy Configuration Hash */
+            policy_configuration_hash: string;
+            /** Source Goals */
+            source_goals: components["schemas"]["GoalReleaseBinding"][];
+            /** Emergency Conditions */
+            emergency_conditions: ("HARD_OBLIGATION_SHORTFALL" | "LIVING_RESERVE_SHORTFALL" | "EMERGENCY_BUFFER_SHORTFALL")[];
+            /**
+             * Destination Scope
+             * @default PROTECTED_CASH
+             * @constant
+             */
+            destination_scope: "PROTECTED_CASH";
+            /** Single Action Cap Cents */
+            single_action_cap_cents: number;
+            /** Total Cap Cents */
+            total_cap_cents: number;
+            /**
+             * Valid From
+             * Format: date-time
+             */
+            valid_from: string;
+            /**
+             * Valid Until
+             * Format: date-time
+             */
+            valid_until: string;
+            /**
+             * Principal Release Allowed
+             * @default false
+             * @constant
+             */
+            principal_release_allowed: false;
+            /**
+             * Ordinary Goal Redistribution Allowed
+             * @default false
+             * @constant
+             */
+            ordinary_goal_redistribution_allowed: false;
+            /**
+             * Creates New Income
+             * @default false
+             * @constant
+             */
+            creates_new_income: false;
+            /**
+             * Changes Original Assigned Income
+             * @default false
+             * @constant
+             */
+            changes_original_assigned_income: false;
+            /**
+             * Cumulative Scope
+             * @default POLICY_ID_ALL_VERSIONS
+             * @constant
+             */
+            cumulative_scope: "POLICY_ID_ALL_VERSIONS";
+            /**
+             * Overrides Default Lock Only For Listed Emergencies
+             * @default true
+             * @constant
+             */
+            overrides_default_lock_only_for_listed_emergencies: true;
+        };
+        /** GoalReleaseSettlementOriginal */
+        GoalReleaseSettlementOriginal: {
+            command: components["schemas"]["GoalReleaseBankCommand"];
+            /**
+             * Bank Operation Id
+             * Format: uuid
+             */
+            bank_operation_id: string;
+            /**
+             * Action Plan Id
+             * Format: uuid
+             */
+            action_plan_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Operation Type
+             * @default RELEASE_GOAL
+             * @constant
+             */
+            operation_type: "RELEASE_GOAL";
+            /** Request Hash */
+            request_hash: string;
+            /** Business Key */
+            business_key: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ACCEPTED" | "UNKNOWN" | "SETTLED" | "REJECTED";
+            /**
+             * Requested At
+             * Format: date-time
+             */
+            requested_at: string;
+            /**
+             * Available At
+             * Format: date-time
+             */
+            available_at: string;
+            /** Settled At */
+            settled_at: string | null;
+            /** Postings */
+            postings: components["schemas"]["GoalReleasePostingOriginal"][];
+            /** Original Bank Row Hash */
+            original_bank_row_hash: string;
+        };
+        /** GoalReleaseUse */
+        GoalReleaseUse: {
+            /**
+             * Allocation Action Id
+             * Format: uuid
+             */
+            allocation_action_id: string;
+            /**
+             * Original Policy Version Id
+             * Format: uuid
+             */
+            original_policy_version_id: string;
+            /**
+             * Fragment Id
+             * Format: uuid
+             */
+            fragment_id: string;
+            /**
+             * Origin Transaction Id
+             * Format: uuid
+             */
+            origin_transaction_id: string;
+            /**
+             * Income Location Account Id
+             * Format: uuid
+             */
+            income_location_account_id: string;
+            /** Allocation Effect Hash */
+            allocation_effect_hash: string;
+            /** Allocation Bank Request Hash */
+            allocation_bank_request_hash: string;
+            /** Allocation Action Request Hash */
+            allocation_action_request_hash: string;
+            /** Amount Cents */
+            amount_cents: number;
+        };
+        /** GoalRepairCandidate */
+        GoalRepairCandidate: {
+            /**
+             * Candidate Id
+             * Format: uuid
+             */
+            candidate_id: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Source Policy Version Id
+             * Format: uuid
+             */
+            source_policy_version_id: string;
+            /** Monthly Min Cents */
+            monthly_min_cents?: number | null;
+            /** Monthly Max Cents */
+            monthly_max_cents?: number | null;
+            /** Deadline */
+            deadline?: string | null;
+            permission_ref: components["schemas"]["SourceReference"];
+        };
+        /** GoalRepairPreviewBody */
+        GoalRepairPreviewBody: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Reviewed State Hash */
+            reviewed_state_hash: string;
+            /** Adjustments */
+            adjustments: components["schemas"]["MonthlyMaxPlanningAdjustment"][];
+        };
+        /** GoalRepairPreviewRequest */
+        GoalRepairPreviewRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Reviewed State Hash */
+            reviewed_state_hash: string;
+            /** Adjustments */
+            adjustments: components["schemas"]["MonthlyMaxPlanningAdjustment"][];
+        };
         /** GoalResponse */
         GoalResponse: {
             /**
@@ -2861,6 +17107,142 @@ export interface components {
             /** Asset Policy Id */
             asset_policy_id: string | null;
         };
+        /** GraphInventory */
+        GraphInventory: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "ACCOUNT" | "TRANSACTION" | "BILL" | "GOAL" | "POSITION" | "BANK_OPERATION" | "BANK_REDEMPTION" | "POSTING" | "EXTERNAL_FACT" | "AUDIT_EPOCH" | "AUDIT_EVENT" | "AUDIT_SNAPSHOT" | "FULL_POLICY" | "FULL_POLICY_VERSION" | "FULL_POLICY_COMMAND" | "EVIDENCE" | "PROPOSAL" | "POLICY" | "POLICY_VERSION" | "DECISION" | "ACTION" | "RECEIPT" | "PRODUCT" | "PRODUCT_CATALOGUE" | "USER" | "CONSTRAINT" | "RESOURCE_CLAIM" | "COMMAND_OUTBOX" | "COMMAND_INBOX" | "COMMAND_ATTEMPT" | "INTERVENTION_OUTBOX" | "INTERVENTION_INBOX" | "ASSET_PORTFOLIO" | "ASSET_BATCH" | "ASSET_CONSENT";
+            /** Table */
+            table: string;
+            /**
+             * Owner Scope
+             * @enum {string}
+             */
+            owner_scope: "CURRENT_USER" | "SHARED_PRODUCT_CATALOGUE";
+            /** Actual Owned Count */
+            actual_owned_count: number;
+            /** Known Count */
+            known_count: number;
+            /** Captured Count */
+            captured_count: number;
+            /** Complete */
+            complete: boolean;
+            /** Captured Rows Hash */
+            captured_rows_hash: string;
+        };
+        /** GraphIssue */
+        GraphIssue: {
+            /** Code */
+            code: string;
+            /** Reference */
+            reference: string;
+            /** Detail */
+            detail: string;
+        };
+        /** GraphNode */
+        GraphNode: {
+            /** Key */
+            key: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "ACCOUNT" | "TRANSACTION" | "BILL" | "GOAL" | "POSITION" | "BANK_OPERATION" | "BANK_REDEMPTION" | "POSTING" | "EXTERNAL_FACT" | "AUDIT_EPOCH" | "AUDIT_EVENT" | "AUDIT_SNAPSHOT" | "FULL_POLICY" | "FULL_POLICY_VERSION" | "FULL_POLICY_COMMAND" | "EVIDENCE" | "PROPOSAL" | "POLICY" | "POLICY_VERSION" | "DECISION" | "ACTION" | "RECEIPT" | "PRODUCT" | "PRODUCT_CATALOGUE" | "USER" | "CONSTRAINT" | "RESOURCE_CLAIM" | "COMMAND_OUTBOX" | "COMMAND_INBOX" | "COMMAND_ATTEMPT" | "INTERVENTION_OUTBOX" | "INTERVENTION_INBOX" | "ASSET_PORTFOLIO" | "ASSET_BATCH" | "ASSET_CONSENT";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Owner Scope
+             * @enum {string}
+             */
+            owner_scope: "CURRENT_USER" | "SHARED_PRODUCT_CATALOGUE";
+            /**
+             * Known At
+             * Format: date-time
+             */
+            known_at: string;
+            /** Original */
+            original: {
+                [key: string]: unknown;
+            } | null;
+            /** Row Hash */
+            row_hash: string | null;
+            /** Source Classification */
+            source_classification: string | null;
+            proof: components["schemas"]["GraphProof"];
+            /**
+             * Historical Mutable State Reconstructed
+             * @default false
+             * @constant
+             */
+            historical_mutable_state_reconstructed: false;
+            /**
+             * Execution Authority
+             * @default false
+             * @constant
+             */
+            execution_authority: false;
+        };
+        /** GraphProof */
+        GraphProof: {
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "VERIFIED" | "UNKNOWN" | "NOT_APPLICABLE" | "NOT_CHECKED";
+            /** Check */
+            check: string;
+            /** Original Refs */
+            original_refs?: string[];
+            /** Detail */
+            detail: string;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+        };
+        /** GraphReference */
+        GraphReference: {
+            /** From Key */
+            from_key: string;
+            /** To Key */
+            to_key: string;
+            /** Relation */
+            relation: string;
+            /** Pointer */
+            pointer: string;
+        };
+        /** HardProtectionPoint */
+        HardProtectionPoint: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Cash Cents */
+            cash_cents: number;
+            /** Obligation Floor Cents */
+            obligation_floor_cents: number;
+            /** Living Floor Cents */
+            living_floor_cents: number;
+            /** Emergency Floor Cents */
+            emergency_floor_cents: number;
+            /** Owned Goal Cash Cents */
+            owned_goal_cash_cents: number;
+            /**
+             * Other Protection Floor Cents
+             * @default 0
+             */
+            other_protection_floor_cents: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceReference"][];
+        };
         /** HeadResponse */
         HeadResponse: {
             /**
@@ -2902,8 +17284,84 @@ export interface components {
              */
             simulation: true;
         };
-        /** IncomeUse */
-        IncomeUse: {
+        /** HistoryProof */
+        HistoryProof: {
+            /** Verified */
+            verified: boolean;
+            /** Period Start */
+            period_start?: string | null;
+            /** Period End */
+            period_end?: string | null;
+            /** Account Ids */
+            account_ids: string[];
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** Reason Codes */
+            reason_codes: string[];
+        };
+        /** HypotheticalCommitment */
+        HypotheticalCommitment: {
+            /** Identity */
+            identity: string;
+            /** Original Occurrence Id */
+            original_occurrence_id: string | null;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Source Kind
+             * @enum {string}
+             */
+            source_kind: "RETAINED_ORIGINAL" | "UNCONFIRMED_CANDIDATE";
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "DATED_EXPENSE" | "PERIODIC_TRANSFER";
+            /**
+             * Due Date
+             * Format: date
+             */
+            due_date: string;
+            /** Amount Cents */
+            amount_cents: number;
+            /** Source Account Id */
+            source_account_id: string | null;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+        };
+        /** ImmutableBaseBlock */
+        ImmutableBaseBlock: {
+            /** Point Index */
+            point_index: number;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Cash Cents */
+            cash_cents: number;
+            /** Protected Cents */
+            protected_cents: number;
+            /** Shortfall Cents */
+            shortfall_cents: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceReference"][];
+            /**
+             * Adjustable
+             * @default false
+             * @constant
+             */
+            adjustable: false;
+        };
+        /** IncomeFragment */
+        IncomeFragment: {
             /**
              * Fragment Id
              * Format: uuid
@@ -2919,8 +17377,187 @@ export interface components {
              * Format: uuid
              */
             account_id: string;
+            /**
+             * Spent Cents
+             * @default 0
+             */
+            spent_cents: number;
+            /**
+             * Assigned Cents
+             * @default 0
+             */
+            assigned_cents: number;
+            /**
+             * Reserved Cents
+             * @default 0
+             */
+            reserved_cents: number;
+            /**
+             * Legacy Reserved Cents
+             * @default 0
+             */
+            legacy_reserved_cents: number;
+            /**
+             * Available Cents
+             * @default 0
+             */
+            available_cents: number;
+        };
+        /** IncomeLedger */
+        IncomeLedger: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Protocol
+             * @default new-funds-ledger-v2
+             * @constant
+             */
+            protocol: "new-funds-ledger-v2";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Complete
+             * @default true
+             * @constant
+             */
+            complete: true;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Scope Account Ids */
+            scope_account_ids: string[];
+            /** Origins */
+            origins: components["schemas"]["IncomeOrigin"][];
+            /** Fragments */
+            fragments: components["schemas"]["IncomeFragment"][];
+            /**
+             * Reservations
+             * @default []
+             */
+            reservations: components["schemas"]["IncomeReservation"][];
+        };
+        /** IncomeLot */
+        IncomeLot: {
+            /**
+             * Origin Transaction Id
+             * Format: uuid
+             */
+            origin_transaction_id: string;
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Fragment Id */
+            fragment_id?: string | null;
             /** Amount Cents */
             amount_cents: number;
+            /** Available Cents */
+            available_cents: number;
+            /**
+             * Occurred At
+             * Format: date-time
+             */
+            occurred_at: string;
+            /**
+             * Observed At
+             * Format: date-time
+             */
+            observed_at: string;
+            /**
+             * Direction
+             * @default CREDIT
+             * @constant
+             */
+            direction: "CREDIT";
+            /**
+             * Source Kind
+             * @default BANK_CONFIRMED
+             * @constant
+             */
+            source_kind: "BANK_CONFIRMED";
+            /**
+             * Economic Role
+             * @default INCOME
+             * @constant
+             */
+            economic_role: "INCOME";
+            /** Evidence Ids */
+            evidence_ids?: string[];
+        };
+        /** IncomeOrigin */
+        IncomeOrigin: {
+            /**
+             * Origin Transaction Id
+             * Format: uuid
+             */
+            origin_transaction_id: string;
+            /**
+             * Origin Account Id
+             * Format: uuid
+             */
+            origin_account_id: string;
+            /** Amount Cents */
+            amount_cents: number;
+            /**
+             * Occurred At
+             * Format: date-time
+             */
+            occurred_at: string;
+            /**
+             * Observed At
+             * Format: date-time
+             */
+            observed_at: string;
+            /**
+             * Bank Evidence Id
+             * Format: uuid
+             */
+            bank_evidence_id: string;
+            /** Bank Evidence Hash */
+            bank_evidence_hash: string;
+        };
+        /** IncomeReservation */
+        IncomeReservation: {
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /**
+             * Operation
+             * @enum {string}
+             */
+            operation: "TRANSFER_INTERNAL" | "ALLOCATE_GOAL" | "SPEND";
+            /** Destination Account Id */
+            destination_account_id?: string | null;
+            /** Uses */
+            uses: components["schemas"]["app__domain__income_ledger__IncomeUse"][];
+            /**
+             * State
+             * @default RESERVED
+             * @enum {string}
+             */
+            state: "RESERVED" | "COMMITTED" | "RELEASED";
+        };
+        /** IntentChoice */
+        IntentChoice: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "intent";
+            /** Intent */
+            intent: components["schemas"]["TransferIntent"] | components["schemas"]["PaymentIntent"] | components["schemas"]["GoalIntent"] | components["schemas"]["PurchaseIntent"] | components["schemas"]["RedeemIntent"];
         };
         /** InterventionCard */
         InterventionCard: {
@@ -2935,6 +17572,621 @@ export interface components {
             complete: boolean;
             /** Reason Codes */
             reason_codes: string[];
+        };
+        /** InterventionCommandLookup */
+        InterventionCommandLookup: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            original_receipt: components["schemas"]["InterventionReceipt"] | null;
+            message: components["schemas"]["InterventionView"] | null;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+            /**
+             * Replacement Allowed
+             * @default false
+             * @constant
+             */
+            replacement_allowed: false;
+        };
+        /** InterventionCommandResponse */
+        InterventionCommandResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            original_receipt: components["schemas"]["InterventionReceipt"];
+            message: components["schemas"]["InterventionView"];
+            /** Replayed Original Receipt */
+            replayed_original_receipt: boolean;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+            /**
+             * Execution Eligible
+             * @default false
+             * @constant
+             */
+            execution_eligible: false;
+        };
+        /** InterventionDeliveryResponse */
+        InterventionDeliveryResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            message: components["schemas"]["InterventionView"];
+            /**
+             * Inbox Id
+             * Format: uuid
+             */
+            inbox_id: string;
+            /**
+             * Original Received At
+             * Format: date-time
+             */
+            original_received_at: string;
+            /** Present Once */
+            present_once: boolean;
+            /**
+             * Actual Human View Verified
+             * @default false
+             * @constant
+             */
+            actual_human_view_verified: false;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+            /**
+             * Answers Question
+             * @default false
+             * @constant
+             */
+            answers_question: false;
+        };
+        /**
+         * InterventionInboxClaim
+         * @description Actual retained claim identity; it does not prove a delivery response or human view.
+         */
+        InterventionInboxClaim: {
+            /**
+             * Inbox Id
+             * Format: uuid
+             */
+            inbox_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Message Id
+             * Format: uuid
+             */
+            message_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Consumer Ref
+             * @default intervention-center-v1
+             * @constant
+             */
+            consumer_ref: "intervention-center-v1";
+            /** Payload Hash */
+            payload_hash: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "RECEIVED" | "ACKNOWLEDGED" | "INVALIDATED";
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Received At
+             * Format: date-time
+             */
+            received_at: string;
+            /**
+             * Actual Human View Verified
+             * @default false
+             * @constant
+             */
+            actual_human_view_verified: false;
+        };
+        /** InterventionList */
+        InterventionList: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /** Items */
+            items: components["schemas"]["InterventionView"][];
+            /** Actual Message Count */
+            actual_message_count: number;
+            /**
+             * Complete Inventory
+             * @default true
+             * @constant
+             */
+            complete_inventory: true;
+            /** Presentation Truncated */
+            presentation_truncated: boolean;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+        };
+        /** InterventionMessage */
+        InterventionMessage: {
+            /**
+             * Protocol
+             * @default full-intervention-message-v1
+             * @constant
+             */
+            protocol: "full-intervention-message-v1";
+            /**
+             * Message Id
+             * Format: uuid
+             */
+            message_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Source Kind
+             * @enum {string}
+             */
+            source_kind: "QUESTION" | "SINGLE_ACTION_BOUNDARY" | "GLOBAL_ACTION_SET_BOUNDARY";
+            /**
+             * Source Run Id
+             * Format: uuid
+             */
+            source_run_id: string;
+            /** Source Trace Hash */
+            source_trace_hash: string;
+            /** Semantic Key */
+            semantic_key: string;
+            /**
+             * Creation Command Run Id
+             * Format: uuid
+             */
+            creation_command_run_id: string;
+            /** Session Id */
+            session_id: string | null;
+            /** Question Revision */
+            question_revision: number | null;
+            question: components["schemas"]["PendingPlanningQuestion"] | null;
+            /** Boundary Observation */
+            boundary_observation: {
+                [key: string]: unknown;
+            } | null;
+            /** Intervention Policy Binding */
+            intervention_policy_binding: {
+                [key: string]: unknown;
+            } | null;
+            /** Requires User Attention */
+            requires_user_attention: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Answers Question
+             * @default false
+             * @constant
+             */
+            answers_question: false;
+            /**
+             * Execution Eligible
+             * @default false
+             * @constant
+             */
+            execution_eligible: false;
+            /**
+             * Global Action Set Complete
+             * @default false
+             */
+            global_action_set_complete: boolean;
+        };
+        /** InterventionReceipt */
+        InterventionReceipt: {
+            /**
+             * Protocol
+             * @default full-intervention-command-v1
+             * @constant
+             */
+            protocol: "full-intervention-command-v1";
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "OBSERVE" | "ACKNOWLEDGE";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Request Hash */
+            request_hash: string;
+            /** Original Command */
+            original_command: {
+                [key: string]: unknown;
+            };
+            /**
+             * Message Id
+             * Format: uuid
+             */
+            message_id: string;
+            /** Payload Hash */
+            payload_hash: string;
+            /**
+             * Recorded At
+             * Format: date-time
+             */
+            recorded_at: string;
+            /** Duplicate Semantics */
+            duplicate_semantics: boolean;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+            /**
+             * Execution Eligible
+             * @default false
+             * @constant
+             */
+            execution_eligible: false;
+        };
+        /** InterventionView */
+        InterventionView: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            original_message: components["schemas"]["InterventionMessage"];
+            /** Payload Hash */
+            payload_hash: string;
+            /**
+             * Stored State
+             * @enum {string}
+             */
+            stored_state: "PENDING" | "ACKNOWLEDGED" | "INVALIDATED" | "RECORDED_ONLY" | "DEFERRED";
+            /** Effective State */
+            effective_state: ("PENDING" | "ACKNOWLEDGED" | "INVALIDATED" | "RECORDED_ONLY" | "DEFERRED") | ("UNKNOWN" | "ARCHIVED");
+            /**
+             * Source Status
+             * @enum {string}
+             */
+            source_status: "CURRENT" | "STALE" | "UNKNOWN" | "ARCHIVED";
+            /**
+             * Available At
+             * Format: date-time
+             */
+            available_at: string;
+            /** Pending */
+            pending: boolean;
+            /** Previously Claimed */
+            previously_claimed: boolean;
+            original_inbox_claim: components["schemas"]["InterventionInboxClaim"] | null;
+            current_question: components["schemas"]["PendingPlanningQuestion"] | null;
+            original_acknowledgment: components["schemas"]["InterventionReceipt"] | null;
+            current_question_observation?: components["schemas"]["CurrentQuestionObservation"] | null;
+            /**
+             * Current Source Binding
+             * @default UNVERIFIED
+             * @enum {string}
+             */
+            current_source_binding: "ORIGINAL_MESSAGE" | "CURRENT_OBSERVATION" | "LEGACY_TERMINAL_SOURCE" | "UNVERIFIED";
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+            /**
+             * Answers Question
+             * @default false
+             * @constant
+             */
+            answers_question: false;
+            /**
+             * Execution Eligible
+             * @default false
+             * @constant
+             */
+            execution_eligible: false;
+            /**
+             * Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event: false;
+            /**
+             * Global Boundary Subscription
+             * @default NOT_IMPLEMENTED
+             * @enum {string}
+             */
+            global_boundary_subscription: "NOT_IMPLEMENTED" | "EXPLICIT_OBSERVATION_ONLY";
+        };
+        /** JointActionSetInput */
+        JointActionSetInput: {
+            /**
+             * Protocol
+             * @default joint-action-set-input-v1
+             * @constant
+             */
+            protocol: "joint-action-set-input-v1";
+            original_actual_input: components["schemas"]["ActualActionSetInput"];
+            /** Expected Goal Ids */
+            expected_goal_ids: string[];
+            /** Original Action Ids */
+            original_action_ids: string[];
+            /** Original Commands */
+            original_commands: components["schemas"]["JointOriginalCommand"][];
+            original_joint_input?: components["schemas"]["MultiGoalAllocationInput"] | null;
+            actual_planning?: components["schemas"]["FullJointPlanningResponse"] | null;
+            protection_inputs?: components["schemas"]["FullProtectionProjectionInput"] | null;
+            /** Verified Source Refs */
+            verified_source_refs?: components["schemas"]["SourceReference"][];
+            /** Source Reasons */
+            source_reasons?: string[];
+        };
+        /** JointActionSetResult */
+        JointActionSetResult: {
+            /**
+             * Algorithm Version
+             * @default full-policy-joint-action-producers-v1
+             * @constant
+             */
+            algorithm_version: "full-policy-joint-action-producers-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Write
+             * @default false
+             * @constant
+             */
+            financial_write: false;
+            /**
+             * Full Global Adapter Installed
+             * @default false
+             * @constant
+             */
+            full_global_adapter_installed: false;
+            /**
+             * Current Joint Execution
+             * @default EXACT_EXISTING_EFFECT_ONLY
+             * @constant
+             */
+            current_joint_execution: "EXACT_EXISTING_EFFECT_ONLY";
+            /**
+             * Different Allocation Execution
+             * @default NOT_IMPLEMENTED_FOR_DIFFERENT_ALLOCATION
+             * @constant
+             */
+            different_allocation_execution: "NOT_IMPLEMENTED_FOR_DIFFERENT_ALLOCATION";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "COMPLETE_REGISTERED_JOINT_FAMILY" | "UNKNOWN";
+            /** Joint Family Complete */
+            joint_family_complete: boolean;
+            /** Original Actual Input Hash */
+            original_actual_input_hash: string;
+            /** Expected Goal Ids */
+            expected_goal_ids: string[];
+            /** Original Action Ids */
+            original_action_ids: string[];
+            /** Unresolved Original Action Ids */
+            unresolved_original_action_ids: string[];
+            /** Expected Candidate Keys */
+            expected_candidate_keys: string[];
+            /** Results */
+            results: components["schemas"]["JointProducerResult"][];
+            /** Handled Unsupported Codes */
+            handled_unsupported_codes: string[];
+            /** Original Actual Reasons */
+            original_actual_reasons: string[];
+            /** Remaining Unsupported Producers */
+            remaining_unsupported_producers: string[];
+            /** Reasons */
+            reasons: string[];
+            /** Input Hash */
+            input_hash: string;
+            /** Result Hash */
+            result_hash: string;
+        };
+        /** JointOriginalCommand */
+        JointOriginalCommand: {
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            prepare_trace?: components["schemas"]["DecisionTrace"] | null;
+            /** Missing Reasons */
+            missing_reasons?: string[];
+        };
+        /** JointPlanningResponse */
+        JointPlanningResponse: {
+            /**
+             * Schema Version
+             * @default verified-joint-goal-planning-v1
+             * @constant
+             */
+            schema_version: "verified-joint-goal-planning-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Funds Scope
+             * @default ACTUAL_CURRENT_UNASSIGNED_INCOME_ONLY
+             * @constant
+             */
+            funds_scope: "ACTUAL_CURRENT_UNASSIGNED_INCOME_ONLY";
+            /**
+             * Protection Scope
+             * @default ALL_ORIGINAL_365_DAY_RESERVES_RETAINED
+             * @constant
+             */
+            protection_scope: "ALL_ORIGINAL_365_DAY_RESERVES_RETAINED";
+            /**
+             * Full Model Rules Have Dedicated Audit Event
+             * @default false
+             * @constant
+             */
+            full_model_rules_have_dedicated_audit_event: false;
+            /** Independent Bank Projection Matched */
+            independent_bank_projection_matched: boolean;
+            /** Registered Goal Count */
+            registered_goal_count: number;
+            /** Included Goal Ids */
+            included_goal_ids: string[];
+            /** Uncovered Goal Ids */
+            uncovered_goal_ids: string[];
+            allocation: components["schemas"]["MultiGoalAllocationResult"] | null;
+            conflict: components["schemas"]["MinimalGoalConflict"] | null;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "COMPUTED" | "UNKNOWN";
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Source Issues */
+            source_issues: components["schemas"]["BoundarySourceIssue"][];
+            /** Input Hash */
+            input_hash: string;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** JointProducerResult */
+        JointProducerResult: {
+            /** Candidate Key */
+            candidate_key: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            view: components["schemas"]["CandidateView"];
+            /** Shadow Original Candidate Key */
+            shadow_original_candidate_key?: string | null;
         };
         /** LifecycleResult */
         LifecycleResult: {
@@ -3054,6 +18306,83 @@ export interface components {
             /** Estimation Input Digest */
             estimation_input_digest: string;
         };
+        /** LocalActorPrincipal */
+        LocalActorPrincipal: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Role
+             * @enum {string}
+             */
+            role: "USER" | "AGENT" | "REVIEWER" | "SYSTEM" | "DEMO_ADMIN";
+            /**
+             * Session Id
+             * Format: uuid
+             */
+            session_id: string;
+            /**
+             * Issued At
+             * Format: date-time
+             */
+            issued_at: string;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            /**
+             * Authentication Source
+             * @default LOCAL_SIGNED_SESSION
+             * @constant
+             */
+            authentication_source: "LOCAL_SIGNED_SESSION";
+            /**
+             * Authenticated
+             * @default true
+             * @constant
+             */
+            authenticated: true;
+            /**
+             * Human Identity Verified
+             * @default false
+             * @constant
+             */
+            human_identity_verified: false;
+        };
+        /** LocalLoginRequest */
+        LocalLoginRequest: {
+            /** Username */
+            username: string;
+            /** Secret */
+            secret: string;
+        };
+        /** LocalLogoutRequest */
+        LocalLogoutRequest: Record<string, never>;
+        /** LocalSessionResponse */
+        LocalSessionResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            principal: components["schemas"]["LocalActorPrincipal"];
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Confirms Financial Action
+             * @default false
+             * @constant
+             */
+            confirms_financial_action: false;
+        };
         /** LotAllocation */
         LotAllocation: {
             /**
@@ -3116,6 +18445,699 @@ export interface components {
             /** Pending Purchase Cents */
             pending_purchase_cents: number;
         };
+        /** MaturityContractCommand */
+        MaturityContractCommand: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /**
+             * Position Account Id
+             * Format: uuid
+             */
+            position_account_id: string;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Goal Id */
+            goal_id: string | null;
+            /**
+             * Original Policy Version Id
+             * Format: uuid
+             */
+            original_policy_version_id: string;
+            /**
+             * Destination Account Id
+             * Format: uuid
+             */
+            destination_account_id: string;
+            /** Principal Cents */
+            principal_cents: number;
+            /**
+             * Requested At
+             * Format: date-time
+             */
+            requested_at: string;
+            /**
+             * Available At
+             * Format: date-time
+             */
+            available_at: string;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            /**
+             * Kind
+             * @default MATURE
+             * @constant
+             */
+            kind: "MATURE";
+        };
+        /** MaturityDecision */
+        MaturityDecision: {
+            /**
+             * Algorithm Version
+             * @default current-maturity-scope-replanning-v1
+             * @constant
+             */
+            algorithm_version: "current-maturity-scope-replanning-v1";
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "ORIGINAL_RETURN_NOT_RECEIVED" | "UNKNOWN" | "BLOCKED" | "RETAIN_CASH" | "PREPARE_CURRENT_INTENT" | "PLANNING_ONLY";
+            /** Received Principal Cents */
+            received_principal_cents: number | null;
+            candidate: components["schemas"]["CurrentPurchaseIntent"] | null;
+            /** Reasons */
+            reasons: string[];
+            /** Input Hash */
+            input_hash: string;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Executes Funds
+             * @default false
+             * @constant
+             */
+            executes_funds: false;
+            /**
+             * Enqueues Action
+             * @default false
+             * @constant
+             */
+            enqueues_action: false;
+            /**
+             * Event Is Exclusive Funding Reservation
+             * @default false
+             * @constant
+             */
+            event_is_exclusive_funding_reservation: false;
+            /**
+             * Automatic Rollover
+             * @default false
+             * @constant
+             */
+            automatic_rollover: false;
+            /**
+             * Future Income Added Cents
+             * @default 0
+             * @constant
+             */
+            future_income_added_cents: 0;
+        };
+        /** MaturityReplanningRequest */
+        MaturityReplanningRequest: {
+            /**
+             * Maturity Action Id
+             * Format: uuid
+             */
+            maturity_action_id: string;
+            /**
+             * Current Asset Policy Id
+             * Format: uuid
+             */
+            current_asset_policy_id: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+        };
+        /** MaturityReplanningResponse */
+        MaturityReplanningResponse: {
+            /**
+             * Schema Version
+             * @default verified-current-maturity-replanning-v1
+             * @constant
+             */
+            schema_version: "verified-current-maturity-replanning-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Read Only
+             * @default true
+             * @constant
+             */
+            read_only: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Executes Funds
+             * @default false
+             * @constant
+             */
+            executes_funds: false;
+            /**
+             * Writes Facts
+             * @default false
+             * @constant
+             */
+            writes_facts: false;
+            /**
+             * Dedicated Decision Recorded
+             * @default false
+             * @constant
+             */
+            dedicated_decision_recorded: false;
+            /**
+             * Current Prepare Consumes Reviewed Decision Hash
+             * @default false
+             * @constant
+             */
+            current_prepare_consumes_reviewed_decision_hash: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            original_request: components["schemas"]["MaturityReplanningRequest"];
+            event: components["schemas"]["OriginalMaturityEvent"];
+            current_policy: components["schemas"]["CurrentMaturityPolicy"];
+            decision: components["schemas"]["MaturityDecision"];
+            legacy_allocation: components["schemas"]["AssetAllocationResult"] | null;
+            full_allocation: components["schemas"]["FullAssetPlanningResult"] | null;
+            catalogue: components["schemas"]["VerifiedCatalogProducts"] | null;
+            audit: components["schemas"]["DashboardAuditCard"];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Source Issues */
+            source_issues: components["schemas"]["BoundarySourceIssue"][];
+            /** Engine Hash */
+            engine_hash: string;
+            /** Engine Files */
+            engine_files: {
+                [key: string]: string;
+            };
+            /** Source Hash */
+            source_hash: string;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** MinimalGoalConflict */
+        MinimalGoalConflict: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "MINIMAL_CONFLICT" | "NO_CONFLICT" | "BASE_INFEASIBLE" | "UNKNOWN";
+            /**
+             * Scope
+             * @default GOAL_POLICIES_WITH_IMMUTABLE_FINANCIAL_BASE
+             * @constant
+             */
+            scope: "GOAL_POLICIES_WITH_IMMUTABLE_FINANCIAL_BASE";
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /** Input Hash */
+            input_hash: string;
+            /** Constraint Ids */
+            constraint_ids: string[];
+            /** Deletion Checks */
+            deletion_checks: components["schemas"]["ConflictRemovalCheck"][];
+            /** Reasons */
+            reasons: string[];
+        };
+        /** MinimalGoalRepair */
+        MinimalGoalRepair: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "PROPOSAL" | "NOT_NEEDED" | "NO_PERMITTED_REPAIR" | "BASE_INFEASIBLE" | "UNKNOWN";
+            /** Original Input Hash */
+            original_input_hash: string;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Requires New Version Confirmation
+             * @default true
+             * @constant
+             */
+            requires_new_version_confirmation: true;
+            /** Candidates */
+            candidates: components["schemas"]["GoalRepairCandidate"][];
+            /** Unaffected Goal Ids */
+            unaffected_goal_ids: string[];
+            /** Changed Policy Count */
+            changed_policy_count: number | null;
+            /** Parameter Deviation Numerator */
+            parameter_deviation_numerator: number | null;
+            /** Parameter Deviation Denominator */
+            parameter_deviation_denominator: number | null;
+            /** Priority Loss Cents */
+            priority_loss_cents: number | null;
+            hypothetical_allocation: components["schemas"]["MultiGoalAllocationResult"] | null;
+            /** Reasons */
+            reasons: string[];
+        };
+        /** MinimaxCandidate */
+        MinimaxCandidate: {
+            /** Variable Id */
+            variable_id: string;
+            /**
+             * Field
+             * @enum {string}
+             */
+            field: "ACTION_INTENT" | "TRANSFER_AMOUNT" | "TRANSFER_SOURCE" | "TRANSFER_DESTINATION";
+            /** Worst Residual Signature Count */
+            worst_residual_signature_count: number;
+            /** Partitions */
+            partitions: components["schemas"]["AnswerPartition"][];
+        };
+        /** MoneyChoice */
+        MoneyChoice: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "money";
+            /** Amount Cents */
+            amount_cents: number;
+        };
+        /** MonthlyMaxPlanningAdjustment */
+        MonthlyMaxPlanningAdjustment: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Minimum New Monthly Max Cents */
+            minimum_new_monthly_max_cents: number;
+            /** Maximum New Monthly Max Cents */
+            maximum_new_monthly_max_cents: number;
+        };
+        /** MonthlyMinimumRange */
+        MonthlyMinimumRange: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            field: "monthly_min_cents";
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Lower Cents */
+            lower_cents: number;
+            /** Upper Cents */
+            upper_cents: number;
+        };
+        /** MultiGoalAllocationInput */
+        MultiGoalAllocationInput: {
+            /**
+             * Schema Version
+             * @default multi-goal-current-period-v1
+             * @constant
+             */
+            schema_version: "multi-goal-current-period-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Timezone
+             * @enum {string}
+             */
+            timezone: "Asia/Shanghai" | "UTC";
+            /** Income Lots */
+            income_lots: components["schemas"]["AllocationIncomeLot"][];
+            /** Hard Protection Points */
+            hard_protection_points: components["schemas"]["HardProtectionPoint"][];
+            /** Goals */
+            goals: components["schemas"]["AllocationGoal"][];
+            /** Source Issues */
+            source_issues?: string[];
+            /**
+             * Solver Node Budget
+             * @default 200000
+             */
+            solver_node_budget: number;
+        };
+        /** MultiGoalAllocationResult */
+        MultiGoalAllocationResult: {
+            /**
+             * Algorithm Version
+             * @default critical-flow-lexicographic-v1
+             * @constant
+             */
+            algorithm_version: "critical-flow-lexicographic-v1";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "OPTIMAL" | "INFEASIBLE" | "UNKNOWN";
+            /**
+             * Purpose
+             * @default CURRENT_PERIOD_PLANNING_ONLY
+             * @constant
+             */
+            purpose: "CURRENT_PERIOD_PLANNING_ONLY";
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /** Input Hash */
+            input_hash: string;
+            /** Objective Vector */
+            objective_vector: [
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+                number
+            ] | null;
+            /** Budget Cents */
+            budget_cents: number;
+            /** Goals */
+            goals: components["schemas"]["GoalAllocation"][];
+            /** Income Uses */
+            income_uses: components["schemas"]["app__domain__multi_goal_allocation__IncomeUse"][];
+            /** Visited Nodes */
+            visited_nodes: number;
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Delay Scope
+             * @default ACTIVE_INCOMPLETE_GOALS_CURRENT_DECISION_LOWER_BOUND
+             * @constant
+             */
+            delay_scope: "ACTIVE_INCOMPLETE_GOALS_CURRENT_DECISION_LOWER_BOUND";
+        };
+        /** MultiTemplateFinancialImpact */
+        MultiTemplateFinancialImpact: {
+            /**
+             * Protocol
+             * @default full-policy-multi-template-impact-v3
+             * @constant
+             */
+            protocol: "full-policy-multi-template-impact-v3";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Hypothetical
+             * @default true
+             * @constant
+             */
+            hypothetical: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Writes Policy Or Bank
+             * @default false
+             * @constant
+             */
+            writes_policy_or_bank: false;
+            /**
+             * Future Income In Current Cash Cents
+             * @default 0
+             * @constant
+             */
+            future_income_in_current_cash_cents: 0;
+            /**
+             * Future Income In Execution Cents
+             * @default 0
+             * @constant
+             */
+            future_income_in_execution_cents: 0;
+            /**
+             * Horizon Days
+             * @default 365
+             * @constant
+             */
+            horizon_days: 365;
+            /**
+             * Phase Denominator
+             * @default 1098
+             * @constant
+             */
+            phase_denominator: 1098;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "PROJECTED" | "PARTIAL" | "UNKNOWN";
+            /**
+             * Scope
+             * @enum {string}
+             */
+            scope: "MVP_PROTECTION_WITH_UNCHANGED_FULL_BURDENS" | "INDIVIDUAL_PRODUCT_CAPACITY" | "WHOLE_POSITION_RECOVERY_CANDIDATES" | "CURRENT_JOINT_GOAL_ALLOCATION" | "UNSUPPORTED";
+            /**
+             * Template Name
+             * @enum {string}
+             */
+            template_name: "RecurringObligationPolicy" | "LivingReservePolicy" | "EmergencyBufferPolicy" | "DatedExpensePolicy" | "LongTermGoalPolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy";
+            before: components["schemas"]["BoundaryResult"] | null;
+            after: components["schemas"]["BoundaryResult"] | null;
+            /** Delta Safe Idle Cents */
+            delta_safe_idle_cents?: number | null;
+            /** Delta Minimum Margin Cents */
+            delta_minimum_margin_cents?: number | null;
+            /** Delta Product Financial Capacity Cents */
+            delta_product_financial_capacity_cents?: {
+                [key: string]: number;
+            } | null;
+            /** Product Capacities */
+            product_capacities?: components["schemas"]["ProductCapacityChange"][];
+            /** Recovery Candidates */
+            recovery_candidates?: components["schemas"]["RecoveryCandidateChange"][];
+            goal_allocation_before?: components["schemas"]["MultiGoalAllocationResult"] | null;
+            goal_allocation_after?: components["schemas"]["MultiGoalAllocationResult"] | null;
+            /** Goal Allocation Delta Cents */
+            goal_allocation_delta_cents?: {
+                [key: string]: number | null;
+            } | null;
+            /**
+             * Current Owned Cash Delta Cents
+             * @default 0
+             * @constant
+             */
+            current_owned_cash_delta_cents: 0;
+            /**
+             * Current Position Principal Delta Cents
+             * @default 0
+             * @constant
+             */
+            current_position_principal_delta_cents: 0;
+            /**
+             * Future Action Delta
+             * @default UNKNOWN_REQUIRES_FRESH_EXECUTION_RECOMPUTATION
+             * @constant
+             */
+            future_action_delta: "UNKNOWN_REQUIRES_FRESH_EXECUTION_RECOMPUTATION";
+            /** Reasons */
+            reasons?: string[];
+            /** Limitations */
+            limitations?: string[];
+            /** Input Hash */
+            input_hash: string;
+        };
+        /** MultiTemplatePreviewRequest */
+        MultiTemplatePreviewRequest: {
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+        };
+        /** MultiTemplatePreviewResponse */
+        MultiTemplatePreviewResponse: {
+            /**
+             * Protocol
+             * @default full-policy-multi-template-change-v3
+             * @constant
+             */
+            protocol: "full-policy-multi-template-change-v3";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Hypothetical
+             * @default true
+             * @constant
+             */
+            hypothetical: true;
+            /**
+             * Preview Only
+             * @default true
+             * @constant
+             */
+            preview_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Writes Policy Or Bank
+             * @default false
+             * @constant
+             */
+            writes_policy_or_bank: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Source Kind
+             * @enum {string}
+             */
+            source_kind: "MVP_POLICY" | "FULL_POLICY";
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /**
+             * Template Name
+             * @enum {string}
+             */
+            template_name: "RecurringObligationPolicy" | "LivingReservePolicy" | "EmergencyBufferPolicy" | "DatedExpensePolicy" | "LongTermGoalPolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy";
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Current Configuration Hash */
+            current_configuration_hash: string;
+            /** Candidate Configuration Hash */
+            candidate_configuration_hash: string;
+            /** Before Configuration */
+            before_configuration: {
+                [key: string]: unknown;
+            };
+            /** After Configuration */
+            after_configuration: {
+                [key: string]: unknown;
+            };
+            /** Changed Fields */
+            changed_fields: string[];
+            /** Current Fact Digest */
+            current_fact_digest: string;
+            /** Source Counts */
+            source_counts: {
+                [key: string]: number;
+            };
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Source Originals */
+            source_originals: {
+                [key: string]: unknown;
+            };
+            financial_impact: components["schemas"]["MultiTemplateFinancialImpact"];
+            /** Original Action Ids */
+            original_action_ids: string[];
+            /** Original Position Ids */
+            original_position_ids: string[];
+            /** Limitations */
+            limitations?: string[];
+        };
         /** NextObligations */
         NextObligations: {
             /**
@@ -3141,6 +19163,20 @@ export interface components {
             items: components["schemas"]["ObligationOccurrence"][];
             /** Items Complete */
             items_complete: boolean;
+        };
+        /** NextWholeEligibility */
+        NextWholeEligibility: {
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /** Selected By Original Plan */
+            selected_by_original_plan: boolean;
+            /** Eligible For V1 Preview */
+            eligible_for_v1_preview: boolean;
+            /** Reasons */
+            reasons: string[];
         };
         /** ObligationOccurrence */
         ObligationOccurrence: {
@@ -3215,6 +19251,347 @@ export interface components {
             /** Evidence Ids */
             evidence_ids: string[];
         };
+        /** OriginalMaturityEvent */
+        OriginalMaturityEvent: {
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /**
+             * Original Product Id
+             * Format: uuid
+             */
+            original_product_id: string;
+            /** Original Policy Version Id */
+            original_policy_version_id: string | null;
+            /** Goal Id */
+            goal_id: string | null;
+            /** Destination Account Id */
+            destination_account_id: string | null;
+            /** Original Action Status */
+            original_action_status: string;
+            /** Bank Operation Id */
+            bank_operation_id: string | null;
+            /** Original Bank Status */
+            original_bank_status: string | null;
+            /** Original Receipt Id */
+            original_receipt_id: string | null;
+            /** Principal Cents */
+            principal_cents: number;
+            /** Settled At */
+            settled_at: string | null;
+            /**
+             * Proof Status
+             * @enum {string}
+             */
+            proof_status: "VERIFIED" | "NOT_RECEIVED" | "UNKNOWN" | "INVALID";
+            /** Service Receipt Verified */
+            service_receipt_verified: boolean;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Economic Verified
+             * @default false
+             * @constant
+             */
+            economic_verified: false;
+            /**
+             * Absence Is Final
+             * @default false
+             * @constant
+             */
+            absence_is_final: false;
+            /** Originals Hash */
+            originals_hash: string;
+            /** Originals */
+            originals: {
+                [key: string]: unknown;
+            };
+            /** Issues */
+            issues: string[];
+        };
+        /** OriginalRowReference */
+        OriginalRowReference: {
+            /** Table */
+            table: string;
+            /**
+             * Row Id
+             * Format: uuid
+             */
+            row_id: string;
+            /** Row Hash */
+            row_hash: string;
+        };
+        /** PayeeAssessment */
+        PayeeAssessment: {
+            /**
+             * Status
+             * @default NOT_APPLICABLE
+             * @enum {string}
+             */
+            status: "NOT_APPLICABLE" | "EXISTING_CONFIRMED" | "USER_INITIATED_NEW" | "AGENT_NEW" | "MISSING_IDENTITY" | "UNSUPPORTED";
+            /** Evidence Ids */
+            evidence_ids?: string[];
+        };
+        /** PaymentActionBinding */
+        PaymentActionBinding: {
+            /**
+             * Protocol
+             * @default full-payment-action-binding-v1
+             * @constant
+             */
+            protocol: "full-payment-action-binding-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /**
+             * Authorization Id
+             * Format: uuid
+             */
+            authorization_id: string;
+            /**
+             * Authorization Evidence Id
+             * Format: uuid
+             */
+            authorization_evidence_id: string;
+            /** Authorization Evidence Hash */
+            authorization_evidence_hash: string;
+            scope: components["schemas"]["PaymentRelationScope"];
+            /** Scope Hash */
+            scope_hash: string;
+            /** Period */
+            period: string;
+            original_prepare_request: components["schemas"]["PaymentPrepareRequest"];
+            /** Original Effect Hash */
+            original_effect_hash: string;
+            /**
+             * Recorded At
+             * Format: date-time
+             */
+            recorded_at: string;
+        };
+        /** PaymentActionConfirmation */
+        PaymentActionConfirmation: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Reviewed Effect Hash */
+            reviewed_effect_hash: string;
+            /** Accepted */
+            accepted: boolean;
+        };
+        /** PaymentCommandLookup */
+        PaymentCommandLookup: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            original: components["schemas"]["PaymentCommandReceipt"] | null;
+            /**
+             * Replacement Allowed
+             * @default false
+             * @constant
+             */
+            replacement_allowed: false;
+        };
+        /** PaymentCommandOriginal */
+        PaymentCommandOriginal: {
+            /**
+             * Protocol
+             * @default full-payment-relation-v1
+             * @constant
+             */
+            protocol: "full-payment-relation-v1";
+            /**
+             * Command Id
+             * Format: uuid
+             */
+            command_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "START" | "CONFIRM";
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Start Command Id */
+            start_command_id: string | null;
+            /** Original Request */
+            original_request: {
+                [key: string]: unknown;
+            };
+            /** Request Hash */
+            request_hash: string;
+            principal_at_command: components["schemas"]["LocalActorPrincipal"];
+            scope: components["schemas"]["PaymentRelationScope"];
+            /** Scope Hash */
+            scope_hash: string;
+            /**
+             * Recorded At
+             * Format: date-time
+             */
+            recorded_at: string;
+            /**
+             * Creates Original Mvp Permission
+             * @default false
+             * @constant
+             */
+            creates_original_mvp_permission: false;
+            /**
+             * Transfers Funds
+             * @default false
+             * @constant
+             */
+            transfers_funds: false;
+        };
+        /** PaymentCommandReceipt */
+        PaymentCommandReceipt: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            original: components["schemas"]["PaymentCommandOriginal"];
+            /**
+             * Evidence Id
+             * Format: uuid
+             */
+            evidence_id: string;
+            /** Evidence Hash */
+            evidence_hash: string;
+            /** Trace Hash */
+            trace_hash: string;
+            /** Idempotent Replay */
+            idempotent_replay: boolean;
+            /**
+             * Current Scope Status
+             * @enum {string}
+             */
+            current_scope_status: "CURRENT" | "STALE" | "UNKNOWN";
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Economic Effect Verified
+             * @default false
+             * @constant
+             */
+            economic_effect_verified: false;
+            /**
+             * Transfers Funds
+             * @default false
+             * @constant
+             */
+            transfers_funds: false;
+        };
+        /** PaymentConfirmRequest */
+        PaymentConfirmRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Reviewed Scope Hash */
+            reviewed_scope_hash: string;
+            /** Accepted */
+            accepted: boolean;
+            /** Reason */
+            reason: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** PaymentConsentLookup */
+        PaymentConsentLookup: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            original: components["schemas"]["PaymentUserActionConsent"] | null;
+            original_request: components["schemas"]["PaymentActionConfirmation"] | null;
+            /**
+             * Replacement Allowed
+             * @default false
+             * @constant
+             */
+            replacement_allowed: false;
+        };
+        /** PaymentExecuteRequest */
+        PaymentExecuteRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+        };
         /** PaymentIntent */
         PaymentIntent: {
             /**
@@ -3231,6 +19608,271 @@ export interface components {
             period?: string | null;
             /** Bill Id */
             bill_id?: string | null;
+        };
+        /** PaymentPrepareRequest */
+        PaymentPrepareRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Period */
+            period: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** PaymentPreparedLookup */
+        PaymentPreparedLookup: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Authorization Id
+             * Format: uuid
+             */
+            authorization_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            original_binding: components["schemas"]["PaymentActionBinding"] | null;
+            original_action: components["schemas"]["ActionResponse"] | null;
+            /**
+             * Replacement Allowed
+             * @default false
+             * @constant
+             */
+            replacement_allowed: false;
+        };
+        /** PaymentRelationScope */
+        PaymentRelationScope: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Full Policy Id
+             * Format: uuid
+             */
+            full_policy_id: string;
+            /**
+             * Full Version Id
+             * Format: uuid
+             */
+            full_version_id: string;
+            /** Full Configuration Hash */
+            full_configuration_hash: string;
+            /**
+             * Original Policy Id
+             * Format: uuid
+             */
+            original_policy_id: string;
+            /**
+             * Original Version Id
+             * Format: uuid
+             */
+            original_version_id: string;
+            /** Original Configuration Hash */
+            original_configuration_hash: string;
+            /** Payee Id */
+            payee_id: string;
+            /**
+             * Payee Evidence Id
+             * Format: uuid
+             */
+            payee_evidence_id: string;
+            /** Payee Evidence Hash */
+            payee_evidence_hash: string;
+            /**
+             * Source Account Id
+             * Format: uuid
+             */
+            source_account_id: string;
+            /** Source Account Identity Hash */
+            source_account_identity_hash: string;
+            /** Amount Rule */
+            amount_rule: components["schemas"]["ExactAmount"] | components["schemas"]["RangeAmount"];
+            /** Due Day */
+            due_day: number;
+            /** Single Action Cap Cents */
+            single_action_cap_cents: number;
+            /** Auto Execute */
+            auto_execute: boolean;
+            /**
+             * Timezone
+             * @enum {string}
+             */
+            timezone: "UTC" | "Asia/Shanghai";
+            /**
+             * Valid From
+             * Format: date-time
+             */
+            valid_from: string;
+            /**
+             * Valid Until
+             * Format: date-time
+             */
+            valid_until: string;
+            /**
+             * Full Planning Bank Authority
+             * @default false
+             * @constant
+             */
+            full_planning_bank_authority: false;
+            /**
+             * Creates Original Mvp Permission
+             * @default false
+             * @constant
+             */
+            creates_original_mvp_permission: false;
+        };
+        /** PaymentScopePreview */
+        PaymentScopePreview: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            scope: components["schemas"]["PaymentRelationScope"];
+            /** Scope Hash */
+            scope_hash: string;
+            /**
+             * Preview Only
+             * @default true
+             * @constant
+             */
+            preview_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Original Mvp Permission Reused
+             * @default true
+             * @constant
+             */
+            original_mvp_permission_reused: true;
+        };
+        /** PaymentScopeRequest */
+        PaymentScopeRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /**
+             * Full Policy Id
+             * Format: uuid
+             */
+            full_policy_id: string;
+            /**
+             * Expected Full Version Id
+             * Format: uuid
+             */
+            expected_full_version_id: string;
+            /**
+             * Original Policy Id
+             * Format: uuid
+             */
+            original_policy_id: string;
+            /**
+             * Expected Original Version Id
+             * Format: uuid
+             */
+            expected_original_version_id: string;
+        };
+        /** PaymentStartRequest */
+        PaymentStartRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /**
+             * Full Policy Id
+             * Format: uuid
+             */
+            full_policy_id: string;
+            /**
+             * Expected Full Version Id
+             * Format: uuid
+             */
+            expected_full_version_id: string;
+            /**
+             * Original Policy Id
+             * Format: uuid
+             */
+            original_policy_id: string;
+            /**
+             * Expected Original Version Id
+             * Format: uuid
+             */
+            expected_original_version_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** PaymentUserActionConsent */
+        PaymentUserActionConsent: {
+            /**
+             * Protocol
+             * @default full-payment-user-action-consent-v1
+             * @constant
+             */
+            protocol: "full-payment-user-action-consent-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /** Original Effect Hash */
+            original_effect_hash: string;
+            /**
+             * Original Confirmation Evidence Id
+             * Format: uuid
+             */
+            original_confirmation_evidence_id: string;
+            principal_at_confirmation: components["schemas"]["LocalActorPrincipal"];
+            /**
+             * Confirmed At
+             * Format: date-time
+             */
+            confirmed_at: string;
+            /**
+             * Accepted
+             * @default true
+             * @constant
+             */
+            accepted: true;
         };
         /** PendingActionItem */
         PendingActionItem: {
@@ -3297,6 +19939,290 @@ export interface components {
             /** Has More */
             has_more: boolean;
         };
+        /** PendingPlanningQuestion */
+        PendingPlanningQuestion: {
+            /**
+             * Question Id
+             * Format: uuid
+             */
+            question_id: string;
+            /** Variable Id */
+            variable_id: string;
+            /** Choices */
+            choices: components["schemas"]["FiniteChoice"][];
+            /** Worst Residual Signature Count */
+            worst_residual_signature_count: number;
+            /** Affected Action Types */
+            affected_action_types: string[];
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+        };
+        /** PeriodicActionSetResult */
+        PeriodicActionSetResult: {
+            /**
+             * Algorithm Version
+             * @default full-policy-periodic-action-producers-v1
+             * @constant
+             */
+            algorithm_version: "full-policy-periodic-action-producers-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Write
+             * @default false
+             * @constant
+             */
+            financial_write: false;
+            /**
+             * Full Global Adapter Installed
+             * @default false
+             * @constant
+             */
+            full_global_adapter_installed: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "COMPLETE_REGISTERED_PERIODIC_FAMILY" | "UNKNOWN";
+            /** Periodic Family Complete */
+            periodic_family_complete: boolean;
+            /** Original Actual Input Hash */
+            original_actual_input_hash: string;
+            /** Input Hash */
+            input_hash: string;
+            /** Result Hash */
+            result_hash: string;
+            /** Expected Full Policy Ids */
+            expected_full_policy_ids: string[];
+            /** Relation Source Count */
+            relation_source_count: number;
+            /** Relation Source Ids */
+            relation_source_ids: string[];
+            /** Results */
+            results: components["schemas"]["PeriodicProducerResult"][];
+            /** Handled Unsupported Codes */
+            handled_unsupported_codes: string[];
+            /** Original Actual Reasons */
+            original_actual_reasons: string[];
+            /** Remaining Unsupported Producers */
+            remaining_unsupported_producers: string[];
+            /** Reasons */
+            reasons: string[];
+        };
+        /** PeriodicFact */
+        PeriodicFact: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "FIXED_TRANSFER" | "RENT" | "CREDIT_CARD_BILL";
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Payee Ref */
+            payee_ref: string;
+            /**
+             * Occurred On
+             * Format: date
+             */
+            occurred_on: string;
+            /** Amount Cents */
+            amount_cents: number;
+            source: components["schemas"]["SuggestionSource"];
+            /** Supporting Sources */
+            supporting_sources?: components["schemas"]["SuggestionSource"][];
+        };
+        /** PeriodicPattern */
+        PeriodicPattern: {
+            /** Pattern Id */
+            pattern_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "FIXED_TRANSFER" | "RENT" | "CREDIT_CARD_BILL";
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Payee Ref */
+            payee_ref: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY" | "INSUFFICIENT_HISTORY" | "UNSTABLE" | "UNKNOWN";
+            /** Reason Codes */
+            reason_codes: string[];
+            /** Cycle Count */
+            cycle_count: number;
+            /** Sample Count */
+            sample_count: number;
+            /** Months */
+            months: string[];
+            /** Day Spread */
+            day_spread: number;
+            /** Suggested Due Day */
+            suggested_due_day: number | null;
+            /** Amount Min Cents */
+            amount_min_cents: number;
+            /** Amount Max Cents */
+            amount_max_cents: number;
+            /** Mean Fraction Cents */
+            mean_fraction_cents: string;
+            /** Variance Fraction Cents Squared */
+            variance_fraction_cents_squared: string;
+            /** Cv Squared Fraction */
+            cv_squared_fraction: string | null;
+            /** Template Name */
+            template_name: ("RecurringObligationPolicy" | "LivingReservePolicy" | "EmergencyBufferPolicy" | "DatedExpensePolicy" | "LongTermGoalPolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy") | null;
+            /** Candidate Configuration */
+            candidate_configuration: {
+                [key: string]: unknown;
+            } | null;
+            /** Candidate Configuration Hash */
+            candidate_configuration_hash: string | null;
+            /** Sources */
+            sources: components["schemas"]["SuggestionSource"][];
+            /**
+             * Advice Only
+             * @default true
+             * @constant
+             */
+            advice_only: true;
+            /**
+             * Requires Confirmation
+             * @default true
+             * @constant
+             */
+            requires_confirmation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Future Obligation Guaranteed
+             * @default false
+             * @constant
+             */
+            future_obligation_guaranteed: false;
+        };
+        /** PeriodicProducerResult */
+        PeriodicProducerResult: {
+            /** Candidate Key */
+            candidate_key: string;
+            /**
+             * Full Policy Id
+             * Format: uuid
+             */
+            full_policy_id: string;
+            view: components["schemas"]["CandidateView"];
+            /** Shadow Original Candidate Key */
+            shadow_original_candidate_key: string | null;
+            /** Current Confirmation Evidence Ids */
+            current_confirmation_evidence_ids: string[];
+            /** Original Command Ids */
+            original_command_ids: string[];
+            /** Unresolved Original Action Ids */
+            unresolved_original_action_ids: string[];
+        };
+        /** PeriodicSuggestions */
+        PeriodicSuggestions: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Rule Version
+             * @default full-monthly-pattern-variance-v1
+             */
+            rule_version: string;
+            /**
+             * History Start
+             * Format: date
+             */
+            history_start: string;
+            /**
+             * History End
+             * Format: date
+             */
+            history_end: string;
+            history_proof: components["schemas"]["HistoryProof"];
+            /** Patterns */
+            patterns: components["schemas"]["PeriodicPattern"][];
+            /** Source Issues */
+            source_issues: components["schemas"]["ReserveSourceIssue"][];
+            /** Excluded Transaction Count */
+            excluded_transaction_count: number;
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Source Digest */
+            source_digest: string;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Hard Protection Changed
+             * @default false
+             * @constant
+             */
+            hard_protection_changed: false;
+        };
         /** PlannedExit */
         PlannedExit: {
             /**
@@ -3317,6 +20243,160 @@ export interface components {
             liquidity_days: number;
             /** Terms Digest */
             terms_digest: string;
+        };
+        /** PlanningEngineOutcome */
+        PlanningEngineOutcome: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "KNOWN" | "UNKNOWN" | "UNSUPPORTED";
+            decision?: components["schemas"]["AutonomyDecision"] | null;
+            effect?: components["schemas"]["ExecutionEffect"] | null;
+            validation?: components["schemas"]["ExecutionValidation"] | null;
+            /** Signature */
+            signature?: string | null;
+            /** Source Context Hash */
+            source_context_hash?: string | null;
+            /** Source Evidence Ids */
+            source_evidence_ids?: string[];
+            /** Reasons */
+            reasons?: string[];
+        };
+        /** PlanningGoalRepair */
+        PlanningGoalRepair: {
+            /**
+             * Protocol
+             * @default full-goal-user-selected-repair-v1
+             * @constant
+             */
+            protocol: "full-goal-user-selected-repair-v1";
+            /** Original Input Hash */
+            original_input_hash: string;
+            /** Search Input Hash */
+            search_input_hash: string;
+            /** Selection Hash */
+            selection_hash: string;
+            actual_preview_selection: components["schemas"]["GoalRepairPreviewRequest"];
+            /**
+             * Selection Source
+             * @default USER_CURRENT_READONLY_PREVIEW_REQUEST
+             * @constant
+             */
+            selection_source: "USER_CURRENT_READONLY_PREVIEW_REQUEST";
+            /**
+             * Selected Ranges Are Existing Financial Permissions
+             * @default false
+             * @constant
+             */
+            selected_ranges_are_existing_financial_permissions: false;
+            /**
+             * Source Refs Are Current Version Identity Only
+             * @default true
+             * @constant
+             */
+            source_refs_are_current_version_identity_only: true;
+            /** Candidates */
+            candidates: components["schemas"]["GoalRepairCandidate"][];
+            /** Range Outcomes */
+            range_outcomes: components["schemas"]["RepairRangeOutcome"][];
+            repair: components["schemas"]["MinimalGoalRepair"];
+            /**
+             * Minimality Scope
+             * @default EXACT_INTEGER_CURRENT_PERIOD_WITH_SELECTED_MAX_RANGES
+             * @constant
+             */
+            minimality_scope: "EXACT_INTEGER_CURRENT_PERIOD_WITH_SELECTED_MAX_RANGES";
+            /**
+             * Original Execution Caps Unchanged
+             * @default true
+             * @constant
+             */
+            original_execution_caps_unchanged: true;
+            /**
+             * Original Hard Protection Unchanged
+             * @default true
+             * @constant
+             */
+            original_hard_protection_unchanged: true;
+            /**
+             * Future Income Used Cents
+             * @default 0
+             * @constant
+             */
+            future_income_used_cents: 0;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Requires New Version Confirmation
+             * @default true
+             * @constant
+             */
+            requires_new_version_confirmation: true;
+        };
+        /** PlanningIncomeSource */
+        PlanningIncomeSource: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            origin: components["schemas"]["IncomeOrigin"];
+            /** Origin Hash */
+            origin_hash: string;
+            /**
+             * Ledger Evidence Id
+             * Format: uuid
+             */
+            ledger_evidence_id: string;
+            /** Ledger Evidence Hash */
+            ledger_evidence_hash: string;
+            /**
+             * Qualification
+             * @default COMPLETE_ORIGINAL_INCOME_LEDGER
+             * @constant
+             */
+            qualification: "COMPLETE_ORIGINAL_INCOME_LEDGER";
+            /**
+             * Implies Recurring Salary
+             * @default false
+             * @constant
+             */
+            implies_recurring_salary: false;
+            /**
+             * Bank Promises Future Payment
+             * @default false
+             * @constant
+             */
+            bank_promises_future_payment: false;
+        };
+        /** PlanningWorld */
+        PlanningWorld: {
+            /** World Key */
+            world_key: string;
+            /** Assignments */
+            assignments: {
+                [key: string]: string;
+            };
+            /** Intent */
+            intent: (components["schemas"]["TransferIntent"] | components["schemas"]["PaymentIntent"] | components["schemas"]["GoalIntent"] | components["schemas"]["PurchaseIntent"] | components["schemas"]["RedeemIntent"]) | null;
+            outcome: components["schemas"]["PlanningEngineOutcome"];
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Execution Eligible
+             * @default false
+             * @constant
+             */
+            execution_eligible: false;
         };
         /** PolicyChangePreviewRequest */
         PolicyChangePreviewRequest: {
@@ -3542,6 +20622,38 @@ export interface components {
             /** Items */
             items: components["schemas"]["PositionView"][];
         };
+        /** PositionPreviewImpact */
+        PositionPreviewImpact: {
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /** Goal Id */
+            goal_id: string | null;
+            /** Original Recorded Principal Cents */
+            original_recorded_principal_cents: number;
+            /** Current Outstanding Principal Cents */
+            current_outstanding_principal_cents: number;
+            /**
+             * Current Principal Delta Cents
+             * @default 0
+             * @constant
+             */
+            current_principal_delta_cents: 0;
+            /** Original Status */
+            original_status: string;
+            /** Original Principal Available At */
+            original_principal_available_at: string | null;
+            /** Original Evidence Ids */
+            original_evidence_ids: string[];
+            /**
+             * Future Disposition Status
+             * @default UNKNOWN_NO_CANDIDATE_ACTION_GENERATION
+             * @constant
+             */
+            future_disposition_status: "UNKNOWN_NO_CANDIDATE_ACTION_GENERATION";
+        };
         /** PositionView */
         PositionView: {
             /**
@@ -3586,6 +20698,109 @@ export interface components {
             /** Intent */
             intent: components["schemas"]["TransferIntent"] | components["schemas"]["PaymentIntent"] | components["schemas"]["GoalIntent"] | components["schemas"]["PurchaseIntent"] | components["schemas"]["RedeemIntent"];
         };
+        /** ProductAssumption */
+        ProductAssumption: {
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Expected Version Number */
+            expected_version_number: number;
+            /** Term Days */
+            term_days: number;
+            /** Settlement Delay Days */
+            settlement_delay_days: number;
+        };
+        /** ProductCapacityChange */
+        ProductCapacityChange: {
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Product Version */
+            product_version: number;
+            /** Terms Digest */
+            terms_digest: string;
+            /** Before Capacity Cents */
+            before_capacity_cents: number | null;
+            /** After Capacity Cents */
+            after_capacity_cents: number | null;
+            /** Delta Cents */
+            delta_cents: number | null;
+            /** Before Reasons */
+            before_reasons: string[];
+            /** After Reasons */
+            after_reasons: string[];
+            /**
+             * Individual Capacity Not Portfolio Sum
+             * @default true
+             * @constant
+             */
+            individual_capacity_not_portfolio_sum: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+        };
+        /** ProductChoice */
+        ProductChoice: {
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Version Number */
+            version_number: number;
+            /** Asset Class */
+            asset_class: string;
+            /** Minimum Purchase Cents */
+            minimum_purchase_cents: number;
+            /** Terms Digest */
+            terms_digest: string;
+            /** Term Days */
+            term_days: number;
+            /** Settlement Delay Days */
+            settlement_delay_days: number;
+        };
+        /** ProductHypothesis */
+        ProductHypothesis: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "PRODUCT";
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Expected Version Number */
+            expected_version_number: number;
+            /**
+             * Asset Policy Id
+             * Format: uuid
+             */
+            asset_policy_id: string;
+            /**
+             * Expected Policy Version Id
+             * Format: uuid
+             */
+            expected_policy_version_id: string;
+            /** Risk Level */
+            risk_level: number;
+            /** Lock Days */
+            lock_days: number;
+            /** Redemption Delay Days */
+            redemption_delay_days: number;
+            /** Minimum Purchase Cents */
+            minimum_purchase_cents: number;
+            /** Early Withdrawal Loss Bps */
+            early_withdrawal_loss_bps: number;
+        };
         /** ProductList */
         ProductList: {
             /**
@@ -3596,6 +20811,55 @@ export interface components {
             simulation: true;
             /** Items */
             items: components["schemas"]["ProductView"][];
+        };
+        /** ProductSensitivity */
+        ProductSensitivity: {
+            original_product: components["schemas"]["AssetProductTerms"];
+            hypothetical_product: components["schemas"]["AssetProductTerms"];
+            before: components["schemas"]["FullAssetPlanningResult"];
+            after: components["schemas"]["FullAssetPlanningResult"];
+            /** Original Selected Principal Cents */
+            original_selected_principal_cents: number;
+            /** Hypothetical Selected Principal Cents */
+            hypothetical_selected_principal_cents: number;
+            /** Original Early Loss Upper Bound Cents */
+            original_early_loss_upper_bound_cents: number;
+            /** Hypothetical Early Loss Upper Bound Cents */
+            hypothetical_early_loss_upper_bound_cents: number;
+            /**
+             * Loss Basis
+             * @default CEILING_SELECTED_PRINCIPAL_TIMES_DECLARED_BPS
+             * @constant
+             */
+            loss_basis: "CEILING_SELECTED_PRINCIPAL_TIMES_DECLARED_BPS";
+            /** Actual Fee Cents */
+            actual_fee_cents?: null;
+            /** Actual Loss Cents */
+            actual_loss_cents?: null;
+            /**
+             * Early Loss Consumed By Optimizer
+             * @default false
+             * @constant
+             */
+            early_loss_consumed_by_optimizer: false;
+            /**
+             * Full Protection Consumed By Optimizer
+             * @default false
+             * @constant
+             */
+            full_protection_consumed_by_optimizer: false;
+            /**
+             * Original Positions Unchanged
+             * @default true
+             * @constant
+             */
+            original_positions_unchanged: true;
+            /**
+             * Quotation Verified
+             * @default false
+             * @constant
+             */
+            quotation_verified: false;
         };
         /** ProductView */
         ProductView: {
@@ -3687,6 +20951,40 @@ export interface components {
             /** Compilation Id */
             compilation_id?: string | null;
         };
+        /** PublicWindow */
+        PublicWindow: {
+            /** Window Id */
+            window_id: string;
+            /** Year */
+            year: number;
+            /** Holiday Code */
+            holiday_code: string;
+            /**
+             * Start
+             * Format: date
+             */
+            start: string;
+            /**
+             * End
+             * Format: date
+             */
+            end: string;
+            /** Notice Reference */
+            notice_reference: string;
+            /**
+             * Notice Date
+             * Format: date
+             */
+            notice_date: string;
+            /** Source Url */
+            source_url: string;
+            /**
+             * Source Verification
+             * @default OFFICIAL_NOTICE_MANUAL_EXTRACTION
+             * @constant
+             */
+            source_verification: "OFFICIAL_NOTICE_MANUAL_EXTRACTION";
+        };
         /** PurchaseIntent */
         PurchaseIntent: {
             /**
@@ -3699,6 +20997,613 @@ export interface components {
              * Format: uuid
              */
             policy_id: string;
+        };
+        /** QuestionAnswerRequest */
+        QuestionAnswerRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Expected Revision */
+            expected_revision: number;
+            /**
+             * Question Id
+             * Format: uuid
+             */
+            question_id: string;
+            /** Choice Key */
+            choice_key: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** QuestionCloseRequest */
+        QuestionCloseRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** QuestionCommandLookupResponse */
+        QuestionCommandLookupResponse: {
+            /**
+             * Protocol
+             * @default full-question-command-lookup-v1
+             * @constant
+             */
+            protocol: "full-question-command-lookup-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Session Id */
+            session_id: string | null;
+            /** Original Command */
+            original_command: {
+                [key: string]: unknown;
+            } | null;
+            /** Request Hash */
+            request_hash: string | null;
+            original_receipt: components["schemas"]["QuestionRevision"] | null;
+            current_revision: components["schemas"]["QuestionRevision"] | null;
+            original_start_request: components["schemas"]["QuestionStartRequest"] | null;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+            /**
+             * Execution Eligible
+             * @default false
+             * @constant
+             */
+            execution_eligible: false;
+            /**
+             * Replacement Allowed
+             * @default false
+             * @constant
+             */
+            replacement_allowed: false;
+            /**
+             * Client Match Required
+             * @default true
+             * @constant
+             */
+            client_match_required: true;
+        };
+        /** QuestionObservationRequest */
+        QuestionObservationRequest: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "QUESTION";
+            /**
+             * Session Id
+             * Format: uuid
+             */
+            session_id: string;
+            /** Expected Revision */
+            expected_revision: number;
+            /**
+             * Expected Run Id
+             * Format: uuid
+             */
+            expected_run_id: string;
+            /** Reviewed Source Trace Hash */
+            reviewed_source_trace_hash: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Intervention Policy Id */
+            intervention_policy_id?: string | null;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** QuestionRefreshRequest */
+        QuestionRefreshRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** QuestionRevision */
+        QuestionRevision: {
+            /**
+             * Protocol
+             * @default full-one-question-v1
+             * @constant
+             */
+            protocol: "full-one-question-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Session Id
+             * Format: uuid
+             */
+            session_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /** Previous Run Id */
+            previous_run_id: string | null;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Base Action Id
+             * Format: uuid
+             */
+            base_action_id: string;
+            /** Variables */
+            variables: components["schemas"]["FinitePlanningVariable"][];
+            /** Answers */
+            answers: {
+                [key: string]: string;
+            };
+            evaluation: components["schemas"]["FinitePlanningResult"];
+            pending_question: components["schemas"]["PendingPlanningQuestion"] | null;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "PENDING_ANSWER" | "READY_FOR_REVIEW" | "ALL_WORLDS_BLOCKED" | "UNKNOWN" | "CLOSED";
+            /**
+             * Command Kind
+             * @enum {string}
+             */
+            command_kind: "START" | "ANSWER" | "REBASE" | "REFRESH" | "CLOSE";
+            /** Command Key */
+            command_key: string;
+            /** Command Hash */
+            command_hash: string;
+            /** Source Fingerprint */
+            source_fingerprint: string;
+            /** Answer Applied */
+            answer_applied: boolean;
+            /**
+             * Old Candidates Execution Eligible
+             * @default false
+             * @constant
+             */
+            old_candidates_execution_eligible: false;
+            /**
+             * Inherited Confirmation
+             * @default false
+             * @constant
+             */
+            inherited_confirmation: false;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+            /**
+             * Execution Eligible
+             * @default false
+             * @constant
+             */
+            execution_eligible: false;
+        };
+        /** QuestionStartRequest */
+        QuestionStartRequest: {
+            /**
+             * Base Action Id
+             * Format: uuid
+             */
+            base_action_id: string;
+            /** Variables */
+            variables: components["schemas"]["FinitePlanningVariable"][];
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** QuestionWorkflowResponse */
+        QuestionWorkflowResponse: {
+            /**
+             * Protocol
+             * @default full-one-question-v1
+             * @constant
+             */
+            protocol: "full-one-question-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+            /**
+             * Execution Eligible
+             * @default false
+             * @constant
+             */
+            execution_eligible: false;
+            original_receipt: components["schemas"]["QuestionRevision"];
+            current_revision: components["schemas"]["QuestionRevision"];
+            /**
+             * Effective State
+             * @enum {string}
+             */
+            effective_state: "PENDING_ANSWER" | "READY_FOR_REVIEW" | "ALL_WORLDS_BLOCKED" | "UNKNOWN" | "STALE_RECOMPUTATION_REQUIRED" | "ARCHIVED" | "CLOSED";
+            pending_question: components["schemas"]["PendingPlanningQuestion"] | null;
+            /** Replayed Original Receipt */
+            replayed_original_receipt: boolean;
+            /** Current Source Fingerprint */
+            current_source_fingerprint: string | null;
+            /** Fresh Evaluation At */
+            fresh_evaluation_at: string | null;
+            /**
+             * Persisted Workflow
+             * @default true
+             * @constant
+             */
+            persisted_workflow: true;
+            /**
+             * Legacy Analyzer Flags Apply Only To Stateless Analysis
+             * @default true
+             * @constant
+             */
+            legacy_analyzer_flags_apply_only_to_stateless_analysis: true;
+            /**
+             * Current Old Candidates Eligible
+             * @default false
+             * @constant
+             */
+            current_old_candidates_eligible: false;
+            /**
+             * Old Confirmation Inherited
+             * @default false
+             * @constant
+             */
+            old_confirmation_inherited: false;
+            /**
+             * Bank Submission Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            bank_submission_support: "NOT_IMPLEMENTED";
+        };
+        /** RangeAmount */
+        RangeAmount: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "range";
+            /** Min Cents */
+            min_cents: number;
+            /** Max Cents */
+            max_cents: number;
+        };
+        /** ReallocationDecision */
+        ReallocationDecision: {
+            /**
+             * Algorithm Version
+             * @default current-core-cash-ownership-repair-v1
+             * @constant
+             */
+            algorithm_version: "current-core-cash-ownership-repair-v1";
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "NO_EMERGENCY" | "BLOCKED" | "UNKNOWN";
+            math: components["schemas"]["EmergencyRepairMath"];
+            /** Triggered Conditions */
+            triggered_conditions: ("HARD_OBLIGATION_SHORTFALL" | "LIVING_RESERVE_SHORTFALL" | "EMERGENCY_BUFFER_SHORTFALL")[];
+            /** Candidate Amount Cents */
+            candidate_amount_cents?: null;
+            /** Cumulative Used Cents */
+            cumulative_used_cents: number | null;
+            /** Cumulative Remaining Cents */
+            cumulative_remaining_cents: number | null;
+            /**
+             * Source Goal Id
+             * Format: uuid
+             */
+            source_goal_id: string;
+            /**
+             * Destination Scope
+             * @default PROTECTED_CASH
+             * @constant
+             */
+            destination_scope: "PROTECTED_CASH";
+            /**
+             * Planning Only
+             * @default true
+             * @constant
+             */
+            planning_only: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Dedicated Confirmation Required
+             * @default true
+             * @constant
+             */
+            dedicated_confirmation_required: true;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            /**
+             * Preserves Principal Placement
+             * @default true
+             * @constant
+             */
+            preserves_principal_placement: true;
+            /**
+             * Repairs Performed
+             * @default false
+             * @constant
+             */
+            repairs_performed: false;
+            /** Reasons */
+            reasons: string[];
+            /** Input Hash */
+            input_hash: string;
+        };
+        /** ReallocationPreviewRequest */
+        ReallocationPreviewRequest: {
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Source Goal Id
+             * Format: uuid
+             */
+            source_goal_id: string;
+            /**
+             * Expected Policy Version Id
+             * Format: uuid
+             */
+            expected_policy_version_id: string;
+            /**
+             * Expected Goal Policy Version Id
+             * Format: uuid
+             */
+            expected_goal_policy_version_id: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+        };
+        /** ReconciliationAction */
+        ReconciliationAction: {
+            /**
+             * Action Id
+             * Format: uuid
+             */
+            action_id: string;
+            /** Action Type */
+            action_type: string;
+            /** Original Action Status */
+            original_action_status: string;
+            /** Original Idempotency Key */
+            original_idempotency_key: string;
+            /** Original Request Hash */
+            original_request_hash: string;
+            /** Effect Hash */
+            effect_hash: string | null;
+            /** Expected Amount Cents */
+            expected_amount_cents: number;
+            /** Expected Fee Cents */
+            expected_fee_cents: number | null;
+            /** Expected Loss Cents */
+            expected_loss_cents: number | null;
+            /** Actual Executed Cents */
+            actual_executed_cents: number | null;
+            /** Actual Fee Cents */
+            actual_fee_cents: number | null;
+            /** Actual Loss Cents */
+            actual_loss_cents: number | null;
+            /** Bank Operation Ids */
+            bank_operation_ids: string[];
+            /** Bank Statuses */
+            bank_statuses: string[];
+            /** Bank Request Hashes */
+            bank_request_hashes: string[];
+            /** Posting Ids */
+            posting_ids: string[];
+            /** Receipt Ids */
+            receipt_ids: string[];
+            /** Receipt Statuses */
+            receipt_statuses: string[];
+            /** Complete Settlement Legs Verified */
+            complete_settlement_legs_verified: boolean;
+            /** Service Receipt Verified */
+            service_receipt_verified: boolean;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "SERVICE_RECEIPT_VERIFIED" | "BANK_SETTLED_APPLICATION_UNRESOLVED" | "PENDING_BANK" | "PREPARED_NO_BANK_OBSERVED" | "NO_EFFECT_OBSERVED_NOT_FINAL" | "BANK_REJECTION_VERIFIED" | "UNKNOWN" | "MANUAL_REVIEW_REQUIRED";
+            /** Read Original Action Path */
+            read_original_action_path: string;
+            /**
+             * Query Original Key Only
+             * @default true
+             * @constant
+             */
+            query_original_key_only: true;
+            /**
+             * Retry Or Repair Performed
+             * @default false
+             * @constant
+             */
+            retry_or_repair_performed: false;
+            /** Issues */
+            issues: components["schemas"]["ReconciliationIssue"][];
+        };
+        /** ReconciliationAmount */
+        ReconciliationAmount: {
+            /**
+             * Entity Id
+             * Format: uuid
+             */
+            entity_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "ACCOUNT_CASH" | "POSITION_PRINCIPAL" | "GOAL_CASH" | "GOAL_PRINCIPAL";
+            /** Application Cents */
+            application_cents: number | null;
+            /** Bank Cents */
+            bank_cents: number | null;
+            /** Difference Cents */
+            difference_cents: number | null;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "MATCHED" | "DIFFERENCE" | "MISSING";
+            bank_head: components["schemas"]["BankHeadReference"] | null;
+        };
+        /** ReconciliationGoal */
+        ReconciliationGoal: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Account Id */
+            account_id: string | null;
+            /** Allocated Cents */
+            allocated_cents: number;
+            /** Position Ids */
+            position_ids: string[];
+            /** Ownership Evidence Id */
+            ownership_evidence_id: string | null;
+            /** Ownership Evidence Hash */
+            ownership_evidence_hash: string | null;
+            /** Current Ownership Proof Verified */
+            current_ownership_proof_verified: boolean;
+            cash: components["schemas"]["ReconciliationAmount"];
+            principal: components["schemas"]["ReconciliationAmount"];
+        };
+        /** ReconciliationInventory */
+        ReconciliationInventory: {
+            /** Table */
+            table: string;
+            /** Actual Count */
+            actual_count: number;
+            /** Captured Count */
+            captured_count: number;
+            /** Complete */
+            complete: boolean;
+        };
+        /** ReconciliationIssue */
+        ReconciliationIssue: {
+            /** Code */
+            code: string;
+            /** Source Ref */
+            source_ref: string;
+            /** Message */
+            message: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "DIFFERENCE" | "INTEGRITY" | "MISSING" | "UNSUPPORTED" | "PENDING";
+        };
+        /** ReconciliationPosting */
+        ReconciliationPosting: {
+            /**
+             * Posting Id
+             * Format: uuid
+             */
+            posting_id: string;
+            /** Operation Id */
+            operation_id: string | null;
+            /** Redemption Id */
+            redemption_id: string | null;
+            /** Ledger Key */
+            ledger_key: string;
+            /** Ledger Dimension */
+            ledger_dimension: string;
+            /** Leg Ref */
+            leg_ref: string | null;
+            /** Sequence Number */
+            sequence_number: number;
+            /** Balance Before Cents */
+            balance_before_cents: number;
+            /** Delta Cents */
+            delta_cents: number;
+            /** Balance After Cents */
+            balance_after_cents: number;
+            /**
+             * Occurred At
+             * Format: date-time
+             */
+            occurred_at: string;
         };
         /** RecoveryAction */
         RecoveryAction: {
@@ -3768,6 +21673,91 @@ export interface components {
             /** Request Hash */
             request_hash: string;
         };
+        /** RecoveryActionSetResult */
+        RecoveryActionSetResult: {
+            /**
+             * Algorithm Version
+             * @default full-policy-recovery-action-producers-v1
+             * @constant
+             */
+            algorithm_version: "full-policy-recovery-action-producers-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Write
+             * @default false
+             * @constant
+             */
+            financial_write: false;
+            /**
+             * Full Global Adapter Installed
+             * @default false
+             * @constant
+             */
+            full_global_adapter_installed: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "COMPLETE_REGISTERED_RECOVERY_FAMILY" | "UNKNOWN";
+            /** Recovery Family Complete */
+            recovery_family_complete: boolean;
+            /** Original Actual Input Hash */
+            original_actual_input_hash: string;
+            /** Input Hash */
+            input_hash: string;
+            /** Result Hash */
+            result_hash: string;
+            /** Expected Full Policy Ids */
+            expected_full_policy_ids: string[];
+            /** Original Position Ids */
+            original_position_ids: string[];
+            /** Original Action Ids */
+            original_action_ids: string[];
+            /** Unresolved Original Action Ids */
+            unresolved_original_action_ids: string[];
+            /** Results */
+            results: components["schemas"]["RecoveryProducerResult"][];
+            /** Handled Unsupported Codes */
+            handled_unsupported_codes: string[];
+            /** Original Actual Reasons */
+            original_actual_reasons: string[];
+            /** Remaining Unsupported Producers */
+            remaining_unsupported_producers: string[];
+            /** Reasons */
+            reasons: string[];
+        };
         /** RecoveryActionStatus */
         RecoveryActionStatus: {
             /**
@@ -3805,6 +21795,202 @@ export interface components {
             reasons?: string[];
             action?: components["schemas"]["RecoveryAction"] | null;
             projected_boundary?: components["schemas"]["BoundaryResult"] | null;
+        };
+        /** RecoveryCandidateChange */
+        RecoveryCandidateChange: {
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /** Before */
+            before: {
+                [key: string]: unknown;
+            };
+            /** After */
+            after: {
+                [key: string]: unknown;
+            };
+            /** Conditional On Time Net Delta Cents */
+            conditional_on_time_net_delta_cents: number | null;
+            /**
+             * Conditional Cash Not Current Cash
+             * @default true
+             * @constant
+             */
+            conditional_cash_not_current_cash: true;
+            /**
+             * Conditional Boundary Scope
+             * @default ORIGINAL_MVP_ONLY_NOT_FULL_RECOVERY_CURVE
+             * @constant
+             */
+            conditional_boundary_scope: "ORIGINAL_MVP_ONLY_NOT_FULL_RECOVERY_CURVE";
+        };
+        /** RecoveryComposedActionSetSnapshot */
+        RecoveryComposedActionSetSnapshot: {
+            /**
+             * Algorithm Version
+             * @default full-policy-action-set-boundary-recovery-composed-v4
+             * @constant
+             */
+            algorithm_version: "full-policy-action-set-boundary-recovery-composed-v4";
+            /**
+             * Scope
+             * @default POLICY_BACKED_ACTUAL_SERVER_PRODUCERS_RECOVERY_COMPOSED_V4
+             * @constant
+             */
+            scope: "POLICY_BACKED_ACTUAL_SERVER_PRODUCERS_RECOVERY_COMPOSED_V4";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Write
+             * @default false
+             * @constant
+             */
+            financial_write: false;
+            /**
+             * Arbitrary Manual Intents Covered
+             * @default false
+             * @constant
+             */
+            arbitrary_manual_intents_covered: false;
+            /**
+             * Notification Support
+             * @default NOT_IMPLEMENTED_FOR_RECOVERY_COMPOSED_V4
+             * @constant
+             */
+            notification_support: "NOT_IMPLEMENTED_FOR_RECOVERY_COMPOSED_V4";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "COMPLETE" | "UNKNOWN";
+            /** Global Action Set Complete */
+            global_action_set_complete: boolean;
+            original_composed_snapshot: components["schemas"]["ComposedActionSetSnapshot"];
+            recovery_family: components["schemas"]["RecoveryActionSetResult"];
+            /** Original Inventory Hash */
+            original_inventory_hash: string;
+            /** Financial Input Hash */
+            financial_input_hash: string;
+            /** Input Hash */
+            input_hash: string;
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /** Action Set Signature */
+            action_set_signature: string | null;
+            /** Expected Candidate Keys */
+            expected_candidate_keys: string[];
+            /** Candidates */
+            candidates: components["schemas"]["CandidateView"][];
+            /** Replaced Original Candidate Keys */
+            replaced_original_candidate_keys: string[];
+            /** Unsupported Producers */
+            unsupported_producers: string[];
+            /** Reasons */
+            reasons: string[];
+        };
+        /** RecoveryComposedGlobalObservation */
+        RecoveryComposedGlobalObservation: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Write
+             * @default false
+             * @constant
+             */
+            financial_write: false;
+            /**
+             * Notification Support
+             * @default NOT_IMPLEMENTED_FOR_RECOVERY_COMPOSED_V4
+             * @constant
+             */
+            notification_support: "NOT_IMPLEMENTED_FOR_RECOVERY_COMPOSED_V4";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Observation Run Id
+             * Format: uuid
+             */
+            observation_run_id: string;
+            /** Previous Observation Run Id */
+            previous_observation_run_id: string | null;
+            original_request: components["schemas"]["GlobalBoundaryObserveRequest"];
+            /** Request Hash */
+            request_hash: string;
+            snapshot: components["schemas"]["RecoveryComposedActionSetSnapshot"];
+            /** Kind */
+            kind: ("BoundaryCrossed" | "BoundaryObserved") | null;
+            /** Semantic Key */
+            semantic_key: string | null;
+            /** Requires User Attention */
+            requires_user_attention: boolean;
+            /** Previous Snapshot Hash */
+            previous_snapshot_hash: string | null;
+            /** Previous Action Set Signature */
+            previous_action_set_signature: string | null;
+            /** Global Action Set Complete */
+            global_action_set_complete: boolean;
+            /**
+             * Idempotent Replay
+             * @default false
+             */
+            idempotent_replay: boolean;
         };
         /** RecoveryNotification */
         RecoveryNotification: {
@@ -3885,6 +22071,35 @@ export interface components {
             input_digest: string;
             /** Source Issues */
             source_issues: components["schemas"]["BoundarySourceIssue"][];
+        };
+        /** RecoveryProducerResult */
+        RecoveryProducerResult: {
+            /** Candidate Key */
+            candidate_key: string;
+            /**
+             * Full Policy Id
+             * Format: uuid
+             */
+            full_policy_id: string;
+            /** Full Policy Version Id */
+            full_policy_version_id: string | null;
+            view: components["schemas"]["CandidateView"];
+            /** Selected Position Ids */
+            selected_position_ids: string[];
+            /** Unsupported Position Ids */
+            unsupported_position_ids: string[];
+            /** Authority Excluded Position Ids */
+            authority_excluded_position_ids?: string[];
+            /** Unresolved Original Action Ids */
+            unresolved_original_action_ids: string[];
+            /** Shadow Original Candidate Key */
+            shadow_original_candidate_key?: string | null;
+            /**
+             * Requires New Exact User Confirmation
+             * @default true
+             * @constant
+             */
+            requires_new_exact_user_confirmation: true;
         };
         /** RecoveryProposalItem */
         RecoveryProposalItem: {
@@ -4034,6 +22249,396 @@ export interface components {
              */
             position_id: string;
         };
+        /** RegisterCatalogRequest */
+        RegisterCatalogRequest: Record<string, never>;
+        /** RegisteredActionSetSnapshot */
+        RegisteredActionSetSnapshot: {
+            /**
+             * Algorithm Version
+             * @default full-policy-registered-action-set-boundary-v5
+             * @constant
+             */
+            algorithm_version: "full-policy-registered-action-set-boundary-v5";
+            /**
+             * Scope
+             * @default POLICY_BACKED_ACTUAL_REGISTERED_SERVER_PRODUCERS_V5
+             * @constant
+             */
+            scope: "POLICY_BACKED_ACTUAL_REGISTERED_SERVER_PRODUCERS_V5";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Write
+             * @default false
+             * @constant
+             */
+            financial_write: false;
+            /**
+             * Arbitrary Manual Intents Covered
+             * @default false
+             * @constant
+             */
+            arbitrary_manual_intents_covered: false;
+            /**
+             * Notification Support
+             * @default NOT_IMPLEMENTED_FOR_REGISTERED_V5
+             * @constant
+             */
+            notification_support: "NOT_IMPLEMENTED_FOR_REGISTERED_V5";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "COMPLETE" | "UNKNOWN";
+            /** Global Action Set Complete */
+            global_action_set_complete: boolean;
+            original_recovery_composed_snapshot: components["schemas"]["RecoveryComposedActionSetSnapshot"];
+            release_family: components["schemas"]["ReleaseActionSetResult"];
+            joint_family: components["schemas"]["JointActionSetResult"];
+            /** Original Inventory Hash */
+            original_inventory_hash: string;
+            /** Financial Input Hash */
+            financial_input_hash: string;
+            /** Input Hash */
+            input_hash: string;
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /** Action Set Signature */
+            action_set_signature: string | null;
+            /** Expected Candidate Keys */
+            expected_candidate_keys: string[];
+            /** Candidates */
+            candidates: components["schemas"]["CandidateView"][];
+            /** Replaced Original Candidate Keys */
+            replaced_original_candidate_keys: string[];
+            /** Unsupported Producers */
+            unsupported_producers: string[];
+            /** Reasons */
+            reasons: string[];
+        };
+        /** ReleaseActionSetResult */
+        ReleaseActionSetResult: {
+            /**
+             * Algorithm Version
+             * @default full-policy-release-action-producers-v1
+             * @constant
+             */
+            algorithm_version: "full-policy-release-action-producers-v1";
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Financial Write
+             * @default false
+             * @constant
+             */
+            financial_write: false;
+            /**
+             * Full Global Adapter Installed
+             * @default false
+             * @constant
+             */
+            full_global_adapter_installed: false;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "COMPLETE_REGISTERED_RELEASE_FAMILY" | "UNKNOWN";
+            /** Release Family Complete */
+            release_family_complete: boolean;
+            /** Original Actual Input Hash */
+            original_actual_input_hash: string;
+            /** Input Hash */
+            input_hash: string;
+            /** Result Hash */
+            result_hash: string;
+            /** Expected Full Policy Ids */
+            expected_full_policy_ids: string[];
+            /** Original Authorization Source Ids */
+            original_authorization_source_ids: string[];
+            /** Original Action Ids */
+            original_action_ids: string[];
+            /** Unresolved Original Action Ids */
+            unresolved_original_action_ids: string[];
+            /** Expected Candidate Keys */
+            expected_candidate_keys: string[];
+            /** Results */
+            results: components["schemas"]["ReleaseProducerResult"][];
+            /** Handled Unsupported Codes */
+            handled_unsupported_codes: string[];
+            /** Original Actual Reasons */
+            original_actual_reasons: string[];
+            /** Remaining Unsupported Producers */
+            remaining_unsupported_producers: string[];
+            /** Reasons */
+            reasons: string[];
+        };
+        /** ReleaseAuthorizationConfirmation */
+        ReleaseAuthorizationConfirmation: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /**
+             * Expected Policy Version Id
+             * Format: uuid
+             */
+            expected_policy_version_id: string;
+            /** Reviewed Scope Hash */
+            reviewed_scope_hash: string;
+            /** Accepted */
+            accepted: boolean;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** ReleaseAuthorizationLookup */
+        ReleaseAuthorizationLookup: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            original: components["schemas"]["ReleaseAuthorizationResponse"] | null;
+            /**
+             * Replacement Allowed
+             * @default false
+             * @constant
+             */
+            replacement_allowed: false;
+        };
+        /** ReleaseAuthorizationPreview */
+        ReleaseAuthorizationPreview: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            scope: components["schemas"]["GoalReleaseScope"];
+            /** Scope Hash */
+            scope_hash: string;
+            /**
+             * Financial Permission Recorded
+             * @default false
+             * @constant
+             */
+            financial_permission_recorded: false;
+            /**
+             * Current Financial Amount Verified
+             * @default false
+             * @constant
+             */
+            current_financial_amount_verified: false;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+        };
+        /** ReleaseAuthorizationPreviewRequest */
+        ReleaseAuthorizationPreviewRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /**
+             * Expected Policy Version Id
+             * Format: uuid
+             */
+            expected_policy_version_id: string;
+        };
+        /** ReleaseAuthorizationResponse */
+        ReleaseAuthorizationResponse: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            original_authorization: components["schemas"]["GoalReleaseAuthorization"];
+            /**
+             * Evidence Id
+             * Format: uuid
+             */
+            evidence_id: string;
+            /** Evidence Hash */
+            evidence_hash: string;
+            /** Original Trace Hash */
+            original_trace_hash: string;
+            /** Idempotent Replay */
+            idempotent_replay: boolean;
+            /**
+             * Current Scope Status
+             * @enum {string}
+             */
+            current_scope_status: "CURRENT" | "STALE" | "UNKNOWN" | "ARCHIVED";
+            /**
+             * Current Financial Amount Verified
+             * @default false
+             * @constant
+             */
+            current_financial_amount_verified: false;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            /**
+             * Submits Bank Operation
+             * @default false
+             * @constant
+             */
+            submits_bank_operation: false;
+        };
+        /** ReleaseInventoryTable */
+        ReleaseInventoryTable: {
+            /** Table */
+            table: string;
+            /** Actual Count */
+            actual_count: number | null;
+            /** Captured Count */
+            captured_count: number;
+            /** Complete */
+            complete: boolean;
+            /** Original Refs */
+            original_refs: components["schemas"]["OriginalRowReference"][];
+        };
+        /** ReleaseProducerResult */
+        ReleaseProducerResult: {
+            /** Candidate Key */
+            candidate_key: string;
+            /**
+             * Full Policy Id
+             * Format: uuid
+             */
+            full_policy_id: string;
+            /**
+             * Source Goal Id
+             * Format: uuid
+             */
+            source_goal_id: string;
+            /**
+             * Destination Account Id
+             * Format: uuid
+             */
+            destination_account_id: string;
+            view: components["schemas"]["CandidateView"];
+            /** Unresolved Original Action Ids */
+            unresolved_original_action_ids: string[];
+            /**
+             * Requires New Exact User Confirmation
+             * @default true
+             * @constant
+             */
+            requires_new_exact_user_confirmation: true;
+            /** Shadow Original Candidate Key */
+            shadow_original_candidate_key?: null;
+        };
+        /** RepairRangeOutcome */
+        RepairRangeOutcome: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Current Version Id
+             * Format: uuid
+             */
+            current_version_id: string;
+            /** Original Monthly Max Cents */
+            original_monthly_max_cents: number;
+            /** Proposed Monthly Max Cents */
+            proposed_monthly_max_cents: number | null;
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "MINIMUM_CRITICAL_CAP_WITHIN_SELECTED_RANGE" | "CURRENT_CAP_IS_NOT_A_HARD_CONFLICT" | "SELECTED_RANGE_CANNOT_RESTORE_CAP_FEASIBILITY" | "GOAL_NOT_CURRENTLY_AUTHORIZED";
+        };
         /** ReserveEstimationResponse */
         ReserveEstimationResponse: {
             /**
@@ -4090,6 +22695,203 @@ export interface components {
             /** Amount Cents */
             amount_cents: number;
         };
+        /** RiskFullPolicyChoice */
+        RiskFullPolicyChoice: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Read Only
+             * @default true
+             * @constant
+             */
+            read_only: true;
+            /**
+             * Hypothetical Only
+             * @default true
+             * @constant
+             */
+            hypothetical_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Executes Funds
+             * @default false
+             * @constant
+             */
+            executes_funds: false;
+            /**
+             * Writes Facts
+             * @default false
+             * @constant
+             */
+            writes_facts: false;
+            /**
+             * Changes Bank Originals
+             * @default false
+             * @constant
+             */
+            changes_bank_originals: false;
+            /**
+             * Resets History
+             * @default false
+             * @constant
+             */
+            resets_history: false;
+            /**
+             * Receipt Verified
+             * @default false
+             * @constant
+             */
+            receipt_verified: false;
+            /**
+             * Economic Verified
+             * @default false
+             * @constant
+             */
+            economic_verified: false;
+            /**
+             * Future Income In Current Cash Cents
+             * @default 0
+             * @constant
+             */
+            future_income_in_current_cash_cents: 0;
+            /**
+             * Future Income In Execution Cents
+             * @default 0
+             * @constant
+             */
+            future_income_in_execution_cents: 0;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Version Id
+             * Format: uuid
+             */
+            version_id: string;
+            /** Template Name */
+            template_name: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+            /** Configuration Hash */
+            configuration_hash: string;
+            /** Effective Status */
+            effective_status: string;
+            /** Planning Confirmation Valid */
+            planning_confirmation_valid: boolean;
+        };
+        /** RiskGoalChoice */
+        RiskGoalChoice: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Read Only
+             * @default true
+             * @constant
+             */
+            read_only: true;
+            /**
+             * Hypothetical Only
+             * @default true
+             * @constant
+             */
+            hypothetical_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Executes Funds
+             * @default false
+             * @constant
+             */
+            executes_funds: false;
+            /**
+             * Writes Facts
+             * @default false
+             * @constant
+             */
+            writes_facts: false;
+            /**
+             * Changes Bank Originals
+             * @default false
+             * @constant
+             */
+            changes_bank_originals: false;
+            /**
+             * Resets History
+             * @default false
+             * @constant
+             */
+            resets_history: false;
+            /**
+             * Receipt Verified
+             * @default false
+             * @constant
+             */
+            receipt_verified: false;
+            /**
+             * Economic Verified
+             * @default false
+             * @constant
+             */
+            economic_verified: false;
+            /**
+             * Future Income In Current Cash Cents
+             * @default 0
+             * @constant
+             */
+            future_income_in_current_cash_cents: 0;
+            /**
+             * Future Income In Execution Cents
+             * @default 0
+             * @constant
+             */
+            future_income_in_execution_cents: 0;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Ownership Original */
+            ownership_original: {
+                [key: string]: unknown;
+            };
+            source_version: components["schemas"]["BoundaryPolicyVersion"];
+            full_model: components["schemas"]["FullGoalModelResponse"] | null;
+            /** Full Model Issue */
+            full_model_issue: string | null;
+        };
         /** SaveAssessmentRequest */
         SaveAssessmentRequest: {
             /** Idempotency Key */
@@ -4098,6 +22900,1145 @@ export interface components {
             intent: components["schemas"]["TransferIntent"] | components["schemas"]["PaymentIntent"] | components["schemas"]["GoalIntent"] | components["schemas"]["PurchaseIntent"] | components["schemas"]["RedeemIntent"];
             /** Amount Options Cents */
             amount_options_cents?: number[] | null;
+        };
+        /** ScenarioCompareRequest */
+        ScenarioCompareRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Expected Source Hash */
+            expected_source_hash: string;
+            /** Expected Engine Hash */
+            expected_engine_hash: string;
+            /**
+             * Horizon Days
+             * @default 90
+             * @enum {integer}
+             */
+            horizon_days: 90 | 365;
+            cash_change?: components["schemas"]["CashAssumption"] | null;
+            emergency_change?: components["schemas"]["EmergencyAssumption"] | null;
+            product_change?: components["schemas"]["ProductAssumption"] | null;
+        };
+        /** ScenarioComparison */
+        ScenarioComparison: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Read Only
+             * @default true
+             * @constant
+             */
+            read_only: true;
+            /**
+             * Hypothetical Only
+             * @default true
+             * @constant
+             */
+            hypothetical_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Executes Funds
+             * @default false
+             * @constant
+             */
+            executes_funds: false;
+            /**
+             * Writes Facts
+             * @default false
+             * @constant
+             */
+            writes_facts: false;
+            /**
+             * Resets History
+             * @default false
+             * @constant
+             */
+            resets_history: false;
+            /**
+             * Receipt Verified
+             * @default false
+             * @constant
+             */
+            receipt_verified: false;
+            /**
+             * Economic Verified
+             * @default false
+             * @constant
+             */
+            economic_verified: false;
+            /**
+             * Future Income Included Cents
+             * @default 0
+             * @constant
+             */
+            future_income_included_cents: 0;
+            /**
+             * Execution
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution: "NOT_IMPLEMENTED";
+            /**
+             * Schema Version
+             * @default counterfactual-comparison-v1
+             * @constant
+             */
+            schema_version: "counterfactual-comparison-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Timezone
+             * @enum {string}
+             */
+            timezone: "Asia/Shanghai" | "UTC";
+            /**
+             * Local Date
+             * Format: date
+             */
+            local_date: string;
+            /**
+             * Horizon Days
+             * @enum {integer}
+             */
+            horizon_days: 90 | 365;
+            /** Source Hash */
+            source_hash: string;
+            /** Engine Hash */
+            engine_hash: string;
+            original_request: components["schemas"]["ScenarioCompareRequest"];
+            /** Request Hash */
+            request_hash: string;
+            /** Scenario Hash */
+            scenario_hash: string;
+            baseline: components["schemas"]["BoundaryResult"];
+            hypothetical: components["schemas"]["BoundaryResult"];
+            /** Delta Safe Idle Cents */
+            delta_safe_idle_cents: number | null;
+            /** Changed Parameters */
+            changed_parameters: components["schemas"]["ChangedParameter"][];
+            /** Limitations */
+            limitations: string[];
+        };
+        /** ScenarioContext */
+        ScenarioContext: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Read Only
+             * @default true
+             * @constant
+             */
+            read_only: true;
+            /**
+             * Hypothetical Only
+             * @default true
+             * @constant
+             */
+            hypothetical_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Executes Funds
+             * @default false
+             * @constant
+             */
+            executes_funds: false;
+            /**
+             * Writes Facts
+             * @default false
+             * @constant
+             */
+            writes_facts: false;
+            /**
+             * Resets History
+             * @default false
+             * @constant
+             */
+            resets_history: false;
+            /**
+             * Receipt Verified
+             * @default false
+             * @constant
+             */
+            receipt_verified: false;
+            /**
+             * Economic Verified
+             * @default false
+             * @constant
+             */
+            economic_verified: false;
+            /**
+             * Future Income Included Cents
+             * @default 0
+             * @constant
+             */
+            future_income_included_cents: 0;
+            /**
+             * Execution
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution: "NOT_IMPLEMENTED";
+            /**
+             * Schema Version
+             * @default counterfactual-context-v1
+             * @constant
+             */
+            schema_version: "counterfactual-context-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Timezone
+             * @enum {string}
+             */
+            timezone: "Asia/Shanghai" | "UTC";
+            /** Source Hash */
+            source_hash: string;
+            /** Engine Hash */
+            engine_hash: string;
+            /** Engine Files */
+            engine_files: {
+                [key: string]: string;
+            };
+            /** Cash Choices */
+            cash_choices: components["schemas"]["CashChoice"][];
+            /** Emergency Choices */
+            emergency_choices: components["schemas"]["EmergencyChoice"][];
+            /** Product Choices */
+            product_choices: components["schemas"]["ProductChoice"][];
+            baseline_90: components["schemas"]["BoundaryResult"];
+            baseline_365: components["schemas"]["BoundaryResult"];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Source Issues */
+            source_issues: components["schemas"]["BoundarySourceIssue"][];
+            audit: components["schemas"]["DashboardAuditCard"];
+            /** Limitations */
+            limitations: string[];
+        };
+        /** ScenarioRiskComparison */
+        ScenarioRiskComparison: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Read Only
+             * @default true
+             * @constant
+             */
+            read_only: true;
+            /**
+             * Hypothetical Only
+             * @default true
+             * @constant
+             */
+            hypothetical_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Executes Funds
+             * @default false
+             * @constant
+             */
+            executes_funds: false;
+            /**
+             * Writes Facts
+             * @default false
+             * @constant
+             */
+            writes_facts: false;
+            /**
+             * Changes Bank Originals
+             * @default false
+             * @constant
+             */
+            changes_bank_originals: false;
+            /**
+             * Resets History
+             * @default false
+             * @constant
+             */
+            resets_history: false;
+            /**
+             * Receipt Verified
+             * @default false
+             * @constant
+             */
+            receipt_verified: false;
+            /**
+             * Economic Verified
+             * @default false
+             * @constant
+             */
+            economic_verified: false;
+            /**
+             * Future Income In Current Cash Cents
+             * @default 0
+             * @constant
+             */
+            future_income_in_current_cash_cents: 0;
+            /**
+             * Future Income In Execution Cents
+             * @default 0
+             * @constant
+             */
+            future_income_in_execution_cents: 0;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            /**
+             * Protocol
+             * @default scenario-risk-comparison-v1
+             * @constant
+             */
+            protocol: "scenario-risk-comparison-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /** Source Hash */
+            source_hash: string;
+            /** Engine Hash */
+            engine_hash: string;
+            original_request: components["schemas"]["ScenarioRiskRequest"];
+            /** Request Hash */
+            request_hash: string;
+            /** Comparison Hash */
+            comparison_hash: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "PROJECTED" | "UNKNOWN";
+            /**
+             * Family
+             * @enum {string}
+             */
+            family: "BILL" | "GOAL" | "FULL_POLICY" | "PRODUCT";
+            /** Original Selected */
+            original_selected: {
+                [key: string]: unknown;
+            };
+            /** Hypothetical Selected */
+            hypothetical_selected: {
+                [key: string]: unknown;
+            };
+            baseline_full: components["schemas"]["ScenarioRiskCurve"] | null;
+            hypothetical_full: components["schemas"]["ScenarioRiskCurve"] | null;
+            /** Delta Safe Idle Cents */
+            delta_safe_idle_cents: number | null;
+            full_policy_preview?: components["schemas"]["FullPolicyChangeFinancialPreview"] | null;
+            product_preview?: components["schemas"]["ProductSensitivity"] | null;
+            /** Reasons */
+            reasons: string[];
+            /** Limitations */
+            limitations?: string[];
+        };
+        /** ScenarioRiskContext */
+        ScenarioRiskContext: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Read Only
+             * @default true
+             * @constant
+             */
+            read_only: true;
+            /**
+             * Hypothetical Only
+             * @default true
+             * @constant
+             */
+            hypothetical_only: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Executes Funds
+             * @default false
+             * @constant
+             */
+            executes_funds: false;
+            /**
+             * Writes Facts
+             * @default false
+             * @constant
+             */
+            writes_facts: false;
+            /**
+             * Changes Bank Originals
+             * @default false
+             * @constant
+             */
+            changes_bank_originals: false;
+            /**
+             * Resets History
+             * @default false
+             * @constant
+             */
+            resets_history: false;
+            /**
+             * Receipt Verified
+             * @default false
+             * @constant
+             */
+            receipt_verified: false;
+            /**
+             * Economic Verified
+             * @default false
+             * @constant
+             */
+            economic_verified: false;
+            /**
+             * Future Income In Current Cash Cents
+             * @default 0
+             * @constant
+             */
+            future_income_in_current_cash_cents: 0;
+            /**
+             * Future Income In Execution Cents
+             * @default 0
+             * @constant
+             */
+            future_income_in_execution_cents: 0;
+            /**
+             * Execution Support
+             * @default NOT_IMPLEMENTED
+             * @constant
+             */
+            execution_support: "NOT_IMPLEMENTED";
+            /**
+             * Protocol
+             * @default scenario-risk-context-v1
+             * @constant
+             */
+            protocol: "scenario-risk-context-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Timezone
+             * @enum {string}
+             */
+            timezone: "Asia/Shanghai" | "UTC";
+            /** Local Date */
+            local_date: string;
+            /** Source Hash */
+            source_hash: string;
+            /** Engine Hash */
+            engine_hash: string;
+            /** Engine Files */
+            engine_files: {
+                [key: string]: string;
+            };
+            /** Bills */
+            bills: components["schemas"]["BillFact"][];
+            /** Goals */
+            goals: components["schemas"]["RiskGoalChoice"][];
+            /** Full Policies */
+            full_policies: components["schemas"]["RiskFullPolicyChoice"][];
+            /** Products */
+            products: components["schemas"]["AssetProductTerms"][];
+            /**
+             * Catalogue Status
+             * @enum {string}
+             */
+            catalogue_status: "VERIFIED" | "UNKNOWN";
+            baseline_full: components["schemas"]["ScenarioRiskCurve"] | null;
+            original_full_protection: components["schemas"]["FullAnnualProtectionResponse"];
+            /** Source Issues */
+            source_issues: components["schemas"]["BoundarySourceIssue"][];
+            /** Inventory Counts */
+            inventory_counts: {
+                [key: string]: number;
+            };
+            /** Limitations */
+            limitations?: string[];
+        };
+        /** ScenarioRiskCurve */
+        ScenarioRiskCurve: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY" | "LIQUIDITY_RISK";
+            /** Safe Idle Cents */
+            safe_idle_cents: number;
+            /** Minimum Margin Cents */
+            minimum_margin_cents: number;
+            /** Calculation Trace */
+            calculation_trace: components["schemas"]["BoundaryPoint"][];
+            /** Curve Hash */
+            curve_hash: string;
+            /**
+             * Financial Capacity Is Authority
+             * @default false
+             * @constant
+             */
+            financial_capacity_is_authority: false;
+            /**
+             * Per Account Future Debit Allocation Verified
+             * @default false
+             * @constant
+             */
+            per_account_future_debit_allocation_verified: false;
+        };
+        /** ScenarioRiskRequest */
+        ScenarioRiskRequest: {
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Expected Source Hash */
+            expected_source_hash: string;
+            /** Expected Engine Hash */
+            expected_engine_hash: string;
+            /** Hypothesis */
+            hypothesis: components["schemas"]["BillHypothesis"] | components["schemas"]["GoalHypothesis"] | components["schemas"]["FullPolicyHypothesis"] | components["schemas"]["ProductHypothesis"];
+        };
+        /** SearchReference */
+        SearchReference: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "ACTION" | "MVP_POLICY_VERSION" | "AUDIT_EPOCH";
+            /**
+             * Identity
+             * Format: uuid
+             */
+            identity: string;
+            /** Pointer */
+            pointer: string;
+            /**
+             * Relation
+             * @enum {string}
+             */
+            relation: "PERSISTED_FOREIGN_KEY" | "VERIFIED_TYPED_CAPTURE" | "PERSISTED_AUDIT_LINK";
+        };
+        /** SeasonalAdoptionConfirmRequest */
+        SeasonalAdoptionConfirmRequest: {
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Window Id */
+            window_id: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Reviewed Hash */
+            reviewed_hash: string;
+            /** Accepted */
+            accepted: boolean;
+            /** Reason */
+            reason: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** SeasonalAdoptionLookup */
+        SeasonalAdoptionLookup: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RECORDED" | "NOT_FOUND_NOT_FINAL";
+            original_receipt: components["schemas"]["SeasonalAdoptionReceipt"] | null;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+        };
+        /** SeasonalAdoptionOriginal */
+        SeasonalAdoptionOriginal: {
+            /**
+             * Protocol
+             * @default full-seasonal-adoption-v1
+             * @constant
+             */
+            protocol: "full-seasonal-adoption-v1";
+            /**
+             * Command Id
+             * Format: uuid
+             */
+            command_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            original_request: components["schemas"]["SeasonalAdoptionConfirmRequest"];
+            /** Request Hash */
+            request_hash: string;
+            /** Reviewed Hash */
+            reviewed_hash: string;
+            /** Source Binding Hash */
+            source_binding_hash: string;
+            principal_at_command: components["schemas"]["LocalActorPrincipal"];
+            /**
+             * Recorded At
+             * Format: date-time
+             */
+            recorded_at: string;
+            scope: components["schemas"]["SeasonalAdoptionScope"];
+            /**
+             * Future Income In Current Cash Cents
+             * @default 0
+             * @constant
+             */
+            future_income_in_current_cash_cents: 0;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Financial Execution Performed
+             * @default false
+             * @constant
+             */
+            financial_execution_performed: false;
+        };
+        /** SeasonalAdoptionPreview */
+        SeasonalAdoptionPreview: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "REVIEW_REQUIRED" | "UNKNOWN";
+            scope: components["schemas"]["SeasonalAdoptionScope"] | null;
+            /** Reviewed Hash */
+            reviewed_hash: string | null;
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Hard Protection Changed
+             * @default false
+             * @constant
+             */
+            hard_protection_changed: false;
+        };
+        /** SeasonalAdoptionPreviewRequest */
+        SeasonalAdoptionPreviewRequest: {
+            /**
+             * Expected Version Id
+             * Format: uuid
+             */
+            expected_version_id: string;
+            /** Window Id */
+            window_id: string;
+        };
+        /** SeasonalAdoptionProof */
+        SeasonalAdoptionProof: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Protocol
+             * @default full-seasonal-adoption-v1
+             * @constant
+             */
+            protocol: "full-seasonal-adoption-v1";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "VERIFIED" | "ADVICE_ONLY" | "UNKNOWN";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            original?: components["schemas"]["SeasonalAdoptionOriginal"] | null;
+            /** Evidence Id */
+            evidence_id?: string | null;
+            /** Evidence Hash */
+            evidence_hash?: string | null;
+            /** Trace Hash */
+            trace_hash?: string | null;
+            current_scope?: components["schemas"]["SeasonalAdoptionScope"] | null;
+            /** Actual Adoption Count */
+            actual_adoption_count: number;
+            /** Retained Command Ids */
+            retained_command_ids: string[];
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Financial Execution Performed
+             * @default false
+             * @constant
+             */
+            financial_execution_performed: false;
+        };
+        /** SeasonalAdoptionReceipt */
+        SeasonalAdoptionReceipt: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            original: components["schemas"]["SeasonalAdoptionOriginal"];
+            /**
+             * Evidence Id
+             * Format: uuid
+             */
+            evidence_id: string;
+            /** Evidence Hash */
+            evidence_hash: string;
+            /** Trace Hash */
+            trace_hash: string;
+            /** Idempotent Replay */
+            idempotent_replay: boolean;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Financial Execution Performed
+             * @default false
+             * @constant
+             */
+            financial_execution_performed: false;
+        };
+        /** SeasonalAdoptionScope */
+        SeasonalAdoptionScope: {
+            /**
+             * Protocol
+             * @default full-seasonal-adoption-v1
+             * @constant
+             */
+            protocol: "full-seasonal-adoption-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Policy Id
+             * Format: uuid
+             */
+            policy_id: string;
+            /**
+             * Version Id
+             * Format: uuid
+             */
+            version_id: string;
+            /** Configuration Hash */
+            configuration_hash: string;
+            /**
+             * Evaluated At
+             * Format: date-time
+             */
+            evaluated_at: string;
+            /**
+             * Timezone
+             * @default Asia/Shanghai
+             * @constant
+             */
+            timezone: "Asia/Shanghai";
+            /** Window Id */
+            window_id: string;
+            /** Holiday Code */
+            holiday_code: string;
+            /**
+             * Official Start
+             * Format: date
+             */
+            official_start: string;
+            /**
+             * Official End
+             * Format: date
+             */
+            official_end: string;
+            /**
+             * Protection Start
+             * Format: date
+             */
+            protection_start: string;
+            /**
+             * Protection End
+             * Format: date
+             */
+            protection_end: string;
+            /** Adopted Adjustment Cents */
+            adopted_adjustment_cents: number;
+            /** Required Adjustment Cents */
+            required_adjustment_cents: number;
+            /** Cap Limited */
+            cap_limited: boolean;
+            /** Full Policy Original */
+            full_policy_original: {
+                [key: string]: unknown;
+            };
+            /** Suggestion Original */
+            suggestion_original: {
+                [key: string]: unknown;
+            };
+            /** Source Evidence Originals */
+            source_evidence_originals: {
+                [key: string]: unknown;
+            }[];
+            parameters: components["schemas"]["SeasonalParameters"];
+            /**
+             * Future Income In Current Cash Cents
+             * @default 0
+             * @constant
+             */
+            future_income_in_current_cash_cents: 0;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Payment Or Settlement Proven
+             * @default false
+             * @constant
+             */
+            payment_or_settlement_proven: false;
+        };
+        /** SeasonalComparison */
+        SeasonalComparison: {
+            window: components["schemas"]["PublicWindow"];
+            /**
+             * Baseline Start
+             * Format: date
+             */
+            baseline_start: string;
+            /**
+             * Baseline End
+             * Format: date
+             */
+            baseline_end: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "VERIFIED" | "MISSING";
+            /** Reason Codes */
+            reason_codes: string[];
+            /** Holiday Total Cents */
+            holiday_total_cents: number | null;
+            /** Baseline Total Cents */
+            baseline_total_cents: number | null;
+            /** Positive Excess Fraction Cents Per Day */
+            positive_excess_fraction_cents_per_day: string | null;
+            /** Scaled Excess Cents */
+            scaled_excess_cents: number | null;
+            /** Transaction Ids */
+            transaction_ids: string[];
+        };
+        /** SeasonalParameters */
+        SeasonalParameters: {
+            /** Window Id */
+            window_id: string;
+            /**
+             * Lookback Days
+             * @default 1096
+             */
+            lookback_days: number;
+            /**
+             * Minimum Historical Windows
+             * @default 2
+             */
+            minimum_historical_windows: number;
+            /**
+             * Quantile Bps
+             * @default 8000
+             */
+            quantile_bps: number;
+            /** Essential Categories */
+            essential_categories?: string[];
+            /**
+             * Adjustment Cap Cents
+             * @default 500000
+             */
+            adjustment_cap_cents: number;
+        };
+        /** SeasonalSuggestion */
+        SeasonalSuggestion: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READY" | "UNKNOWN" | "INSUFFICIENT_HISTORY";
+            /** Reason Codes */
+            reason_codes: string[];
+            target: components["schemas"]["PublicWindow"] | null;
+            /** Effective Window Start */
+            effective_window_start: string | null;
+            /** Effective Window End */
+            effective_window_end: string | null;
+            /** Window Count */
+            window_count: number;
+            /** Required Window Count */
+            required_window_count: number;
+            /** Comparisons */
+            comparisons: components["schemas"]["SeasonalComparison"][];
+            /** Quantile Fraction */
+            quantile_fraction: string;
+            /** Rank */
+            rank: number | null;
+            /** Required Adjustment Cents */
+            required_adjustment_cents: number | null;
+            /** Proposed Adjustment Cents */
+            proposed_adjustment_cents: number | null;
+            /** Cap Limited */
+            cap_limited: boolean | null;
+            /** Candidate Configuration */
+            candidate_configuration: {
+                [key: string]: unknown;
+            } | null;
+            /** Candidate Configuration Hash */
+            candidate_configuration_hash: string | null;
+            /**
+             * Advice Only
+             * @default true
+             * @constant
+             */
+            advice_only: true;
+            /**
+             * Requires Confirmation
+             * @default true
+             * @constant
+             */
+            requires_confirmation: true;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Hard Protection Changed
+             * @default false
+             * @constant
+             */
+            hard_protection_changed: false;
+        };
+        /** SeasonalSuggestions */
+        SeasonalSuggestions: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Rule Version
+             * @default full-same-festival-excess-nearest-rank-v1
+             */
+            rule_version: string;
+            /** Public Windows */
+            public_windows: components["schemas"]["PublicWindow"][];
+            /** Calendar Extraction Hash */
+            calendar_extraction_hash: string;
+            /**
+             * Calendar Verified On
+             * @default 2026-10-05
+             * @constant
+             */
+            calendar_verified_on: "2026-10-05";
+            history_proof: components["schemas"]["HistoryProof"];
+            suggestion: components["schemas"]["SeasonalSuggestion"];
+            /** Sources */
+            sources: components["schemas"]["SuggestionSource"][];
+            /** Source Issues */
+            source_issues: components["schemas"]["ReserveSourceIssue"][];
+            /** Source Evidence Ids */
+            source_evidence_ids: string[];
+            /** Source Digest */
+            source_digest: string;
+            /**
+             * Bank Authority
+             * @default false
+             * @constant
+             */
+            bank_authority: false;
+            /**
+             * Hard Protection Changed
+             * @default false
+             * @constant
+             */
+            hard_protection_changed: false;
         };
         /** SettlementFact */
         SettlementFact: {
@@ -4120,6 +24061,19 @@ export interface components {
             /** Final Total Cents */
             final_total_cents?: number | null;
         };
+        /** SourceFragment */
+        SourceFragment: {
+            /** Field */
+            field: string;
+            /** Start */
+            start: number;
+            /** End */
+            end: number;
+            /** Redacted Text */
+            redacted_text: string;
+            /** Original Fragment Sha256 */
+            original_fragment_sha256: string;
+        };
         /** SourceIssue */
         SourceIssue: {
             /** Code */
@@ -4129,6 +24083,21 @@ export interface components {
             /** Entity Id */
             entity_id?: string | null;
         };
+        /** SourceReference */
+        SourceReference: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Evidence Id
+             * Format: uuid
+             */
+            evidence_id: string;
+            /** Content Hash */
+            content_hash: string;
+        };
         /** StateChangeRequest */
         StateChangeRequest: {
             /**
@@ -4136,6 +24105,105 @@ export interface components {
              * Format: uuid
              */
             expected_version_id: string;
+        };
+        /** SuggestionSource */
+        SuggestionSource: {
+            /** Fact Type */
+            fact_type: string;
+            /**
+             * Fact Id
+             * Format: uuid
+             */
+            fact_id: string;
+            /** Account Id */
+            account_id?: string | null;
+            /** Source Ref */
+            source_ref: string;
+            /**
+             * Evidence Id
+             * Format: uuid
+             */
+            evidence_id: string;
+            /** Evidence Hash */
+            evidence_hash: string;
+            /** Evidence Source Type */
+            evidence_source_type: string;
+            /** Evidence Source Ref */
+            evidence_source_ref: string;
+            /** Evidence Observed At */
+            evidence_observed_at: string;
+            /** Fact */
+            fact: {
+                [key: string]: unknown;
+            };
+        };
+        /** TemplateCatalog */
+        TemplateCatalog: {
+            /** Templates */
+            templates: components["schemas"]["TemplateDescriptor"][];
+            /**
+             * Candidate Only
+             * @default true
+             * @constant
+             */
+            candidate_only: true;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+        };
+        /** TemplateDescriptor */
+        TemplateDescriptor: {
+            /**
+             * Template Name
+             * @enum {string}
+             */
+            template_name: "RecurringObligationPolicy" | "LivingReservePolicy" | "EmergencyBufferPolicy" | "DatedExpensePolicy" | "LongTermGoalPolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy";
+            /** Full Configuration Type */
+            full_configuration_type: string;
+            /** Mvp Configuration Type */
+            mvp_configuration_type: string | null;
+            /** Available Versions */
+            available_versions: ("MVP_V1" | "FULL_V1")[];
+        };
+        /** TemplateSchemaResponse */
+        TemplateSchemaResponse: {
+            /**
+             * Template Name
+             * @enum {string}
+             */
+            template_name: "RecurringObligationPolicy" | "LivingReservePolicy" | "EmergencyBufferPolicy" | "DatedExpensePolicy" | "LongTermGoalPolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy";
+            /**
+             * Dsl Version
+             * @enum {string}
+             */
+            dsl_version: "MVP_V1" | "FULL_V1";
+            /** Json Schema */
+            json_schema: {
+                [key: string]: unknown;
+            };
+            /** Schema Sha256 */
+            schema_sha256: string;
+            /**
+             * Cross Field Validation Required
+             * @default true
+             * @constant
+             */
+            cross_field_validation_required: true;
+            /**
+             * Candidate Only
+             * @default true
+             * @constant
+             */
+            candidate_only: true;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
         };
         /** TraceActionLink */
         TraceActionLink: {
@@ -4466,6 +24534,224 @@ export interface components {
             /** Amount Cents */
             amount_cents: number;
         };
+        /** UnavailablePrincipal */
+        UnavailablePrincipal: {
+            /**
+             * Position Id
+             * Format: uuid
+             */
+            position_id: string;
+            /**
+             * Reason
+             * @default NO_VERIFIED_RETURN_DATE
+             * @constant
+             */
+            reason: "NO_VERIFIED_RETURN_DATE";
+        };
+        /** UserDeclarationLookup */
+        UserDeclarationLookup: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "NOT_FOUND" | "RECORDED";
+            /**
+             * Not Found Is Final
+             * @default false
+             * @constant
+             */
+            not_found_is_final: false;
+            record: components["schemas"]["UserDeclarationRecord"] | null;
+        };
+        /** UserDeclarationRecord */
+        UserDeclarationRecord: {
+            /**
+             * Simulation
+             * @default true
+             * @constant
+             */
+            simulation: true;
+            /**
+             * Protocol
+             * @default user-policy-declaration-v1
+             * @constant
+             */
+            protocol: "user-policy-declaration-v1";
+            /**
+             * Grants Authority
+             * @default false
+             * @constant
+             */
+            grants_authority: false;
+            /**
+             * Dedicated Audit Event Recorded
+             * @default false
+             * @constant
+             */
+            dedicated_audit_event_recorded: false;
+            /**
+             * Receipt Is Current Authority
+             * @default false
+             * @constant
+             */
+            receipt_is_current_authority: false;
+            /**
+             * Status
+             * @default PROPOSED
+             * @constant
+             */
+            status: "PROPOSED";
+            /** Current Proposal Status */
+            current_proposal_status: string;
+            /**
+             * Proposal Id
+             * Format: uuid
+             */
+            proposal_id: string;
+            /**
+             * Evidence Id
+             * Format: uuid
+             */
+            evidence_id: string;
+            /**
+             * Epoch Id
+             * Format: uuid
+             */
+            epoch_id: string;
+            /**
+             * Admitted At
+             * Format: date-time
+             */
+            admitted_at: string;
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+            /** Configuration Hash */
+            configuration_hash: string;
+            /** Original Request */
+            original_request: {
+                [key: string]: unknown;
+            };
+            /** Request Hash */
+            request_hash: string;
+        };
+        /** UserDeclarationRequest */
+        UserDeclarationRequest: {
+            /** Configuration */
+            configuration: {
+                [key: string]: unknown;
+            };
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Source Proposal Id */
+            source_proposal_id?: string | null;
+        };
+        /** ValidatedCandidate */
+        ValidatedCandidate: {
+            /**
+             * Template Name
+             * @enum {string}
+             */
+            template_name: "RecurringObligationPolicy" | "LivingReservePolicy" | "EmergencyBufferPolicy" | "DatedExpensePolicy" | "LongTermGoalPolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy";
+            /**
+             * Dsl Version
+             * @enum {string}
+             */
+            dsl_version: "MVP_V1" | "FULL_V1";
+            /** Normalized Configuration */
+            normalized_configuration: {
+                [key: string]: unknown;
+            };
+            /** Configuration Hash */
+            configuration_hash: string;
+            /**
+             * Candidate Only
+             * @default true
+             * @constant
+             */
+            candidate_only: true;
+            /**
+             * Authority Granted
+             * @default false
+             * @constant
+             */
+            authority_granted: false;
+            /**
+             * Reference Validation Pending
+             * @default true
+             * @constant
+             */
+            reference_validation_pending: true;
+        };
+        /** VariableProvenance */
+        VariableProvenance: {
+            /** Variable Id */
+            variable_id: string;
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "USER_REQUEST" | "REGISTERED_EVIDENCE";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "READ_ONLY_USER_REQUEST" | "VERIFIED_DECLARATION" | "MISSING_OR_INVALID";
+            /** Source Ref */
+            source_ref: string;
+            /** Evidence Id */
+            evidence_id: string | null;
+            /** Original Content Hash */
+            original_content_hash: string | null;
+            /** Original Evidence Level */
+            original_evidence_level: string | null;
+            /**
+             * Bank Fact
+             * @default false
+             * @constant
+             */
+            bank_fact: false;
+            /**
+             * Authorization
+             * @default false
+             * @constant
+             */
+            authorization: false;
+            /** Reasons */
+            reasons: string[];
+        };
+        /** VerifiedCatalogProducts */
+        VerifiedCatalogProducts: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "VERIFIED" | "UNKNOWN";
+            /** Products */
+            products: components["schemas"]["AssetProductTerms"][];
+            /** Bindings */
+            bindings: components["schemas"]["CatalogProductBinding"][];
+            /** Issues */
+            issues: string[];
+        };
         /** VerifyRequest */
         VerifyRequest: {
             /** Epoch Id */
@@ -4477,6 +24763,93 @@ export interface components {
              * @enum {string}
              */
             mode: "PREFIX" | "EXACT";
+        };
+        /** BoundaryObservationRequest */
+        app__domain__full_intervention__BoundaryObservationRequest: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "SINGLE_ACTION_BOUNDARY";
+            /**
+             * Observation Run Id
+             * Format: uuid
+             */
+            observation_run_id: string;
+            /** Reviewed Source Trace Hash */
+            reviewed_source_trace_hash: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
+            /** Intervention Policy Id */
+            intervention_policy_id?: string | null;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** IncomeUse */
+        app__domain__income_ledger__IncomeUse: {
+            /**
+             * Fragment Id
+             * Format: uuid
+             */
+            fragment_id: string;
+            /**
+             * Origin Transaction Id
+             * Format: uuid
+             */
+            origin_transaction_id: string;
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Amount Cents */
+            amount_cents: number;
+        };
+        /** IncomeUse */
+        app__domain__multi_goal_allocation__IncomeUse: {
+            /**
+             * Fragment Id
+             * Format: uuid
+             */
+            fragment_id: string;
+            /**
+             * Origin Transaction Id
+             * Format: uuid
+             */
+            origin_transaction_id: string;
+            /**
+             * Source Account Id
+             * Format: uuid
+             */
+            source_account_id: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Amount Cents */
+            amount_cents: number;
+        };
+        /** BoundaryObservationRequest */
+        app__services__boundary_action_events__BoundaryObservationRequest: {
+            /**
+             * Before Run Id
+             * Format: uuid
+             */
+            before_run_id: string;
+            /**
+             * After Run Id
+             * Format: uuid
+             */
+            after_run_id: string;
+            /**
+             * Expected Epoch Id
+             * Format: uuid
+             */
+            expected_epoch_id: string;
         };
     };
     responses: never;
@@ -5409,6 +25782,180 @@ export interface operations {
             };
         };
     };
+    list_policy_templates: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TemplateCatalog"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    get_policy_template_schema: {
+        parameters: {
+            query?: {
+                dsl_version?: "MVP_V1" | "FULL_V1";
+            };
+            header?: never;
+            path: {
+                template_name: "RecurringObligationPolicy" | "LivingReservePolicy" | "EmergencyBufferPolicy" | "DatedExpensePolicy" | "LongTermGoalPolicy" | "PeriodicTransferPolicy" | "AssetAuthorizationPolicy" | "RecoveryPolicy" | "GoalAllocationPolicy" | "CrossGoalReallocationPolicy" | "SeasonalReservePolicy" | "InterventionPolicy";
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TemplateSchemaResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    validate_policy_template_candidate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CandidateValidationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidatedCandidate"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    suggest_calendar_periodic_policies: {
+        parameters: {
+            query?: {
+                lookback_days?: number;
+                minimum_cycles?: number;
+                maximum_day_spread?: number;
+                maximum_cv_bps?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CalendarPeriodicSuggestions"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
     estimate_living_reserve: {
         parameters: {
             query?: {
@@ -5662,6 +26209,8439 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_full_goal_model: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                goal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullGoalModelResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_full_goal_model: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                goal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullGoalPreviewRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullGoalPreviewResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    confirm_full_goal_model: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                goal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullGoalConfirmationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullGoalConfirmationResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_full_current_joint_goal_allocation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullJointPlanningResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_registered_joint_goal_fixed_plan: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullJointGoalPrepareRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullJointGoalPreview"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    lookup_original_joint_goal_plan_key: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                idempotency_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullJointGoalLookup"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_joint_goal_plan: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullJointGoalExecutionResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    prepare_registered_joint_goal_plan: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullJointGoalPrepareRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullJointGoalExecutionResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    confirm_original_whole_joint_goal_plan: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullJointGoalConfirmRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullJointGoalExecutionResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    execute_or_recover_fixed_original_joint_goal_child: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullJointGoalExecuteRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullJointGoalExecutionResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    lookup_original_full_goal_confirmation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                goal_id: string;
+                idempotency_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullGoalCommandLookup"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_current_goal_adjustment_originals: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GoalAdjustmentReadResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_selected_minimum_or_deadline_adjustments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GoalAdjustmentRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GoalAdjustmentPreviewResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_actual_full_goal_conflicts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullGoalConflictResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_actual_full_goal_repairs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GoalRepairPreviewBody"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullGoalRepairResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_full_goal_emergency_reallocation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReallocationPreviewRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullGoalReallocationPreview"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_goal_release_authorization_scope: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReleaseAuthorizationPreviewRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReleaseAuthorizationPreview"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    confirm_dedicated_goal_release_authorization: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReleaseAuthorizationConfirmation"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReleaseAuthorizationResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_goal_release_authorization_by_key: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                epoch_id: string;
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReleaseAuthorizationLookup"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_actual_dedicated_goal_cash_release: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GoalReleasePrepareRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GoalReleaseCandidate"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    prepare_dedicated_goal_cash_release: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GoalReleasePrepareRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GoalReleaseActionResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_goal_cash_release: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GoalReleaseActionResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    execute_original_goal_cash_release: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GoalReleaseExecuteRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GoalReleaseActionResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_goal_cash_release_by_key: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                epoch_id: string;
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GoalReleaseLookup"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_dynamic_goal_reserve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                goal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DynamicGoalReserveResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    lookup_original_dynamic_goal_execution_key: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                idempotency_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullDynamicGoalLookup"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_actual_dynamic_goal_execution_range: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullDynamicGoalPrepareRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullDynamicGoalPreview"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    prepare_original_dynamic_goal_allocation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullDynamicGoalPrepareRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_original_full_recovery_execution: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullRecoveryPrepareRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullRecoveryExecutionPreview"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    prepare_original_full_recovery_execution: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullRecoveryPrepareRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    lookup_original_full_recovery_execution: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                idempotency_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullRecoveryExecutionLookup"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    confirm_user_original_full_recovery_execution: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullRecoveryConfirmation"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    execute_original_full_recovery_execution: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullRecoveryExecuteRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_server_selected_next_whole_recovery: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullRecoveryNextRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullRecoveryNextPreview"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    prepare_server_selected_next_whole_recovery: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullRecoveryNextRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    lookup_original_next_whole_recovery_root_key: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                idempotency_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullRecoveryNextLookup"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_user_whole_maturity: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullMaturityRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullMaturityPreview"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    prepare_user_whole_maturity: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullMaturityRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullMaturityAction"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    lookup_user_whole_maturity_original_key: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                idempotency_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullMaturityLookup"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    confirm_user_whole_maturity: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullMaturityConfirmation"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullMaturityAction"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    execute_user_whole_maturity_original_key: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullMaturityExecuteRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullMaturityAction"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    search_decision_originals: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DecisionSearchResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_original_seasonal_adoption: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SeasonalAdoptionPreviewRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SeasonalAdoptionPreview"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    confirm_user_seasonal_adoption: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SeasonalAdoptionConfirmRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SeasonalAdoptionReceipt"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_seasonal_adoption_command: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                epoch_id: string;
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SeasonalAdoptionLookup"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_current_seasonal_adoption: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SeasonalAdoptionProof"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_future_income_sources: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FutureIncomeSourceInventory"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_conditional_future_income_planning: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FutureIncomePlanningResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    create_original_future_income_candidate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FutureIncomeCandidateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FutureIncomeCandidate"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    confirm_original_future_income_assumption: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FutureIncomeConfirmationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FutureIncomeConfirmation"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    lookup_original_future_income_command: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                epoch_id: string;
+                idempotency_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FutureIncomeCommandLookup"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_actual_current_policy_action_set: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionSetSnapshot"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    observe_actual_global_policy_action_set: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GlobalBoundaryObserveRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GlobalBoundaryObservation"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_global_policy_action_observation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GlobalBoundaryObservation"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_actual_current_full_policy_action_set: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullActionSetSnapshot"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    observe_actual_global_full_policy_action_set: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GlobalBoundaryObserveRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullGlobalBoundaryObservation"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_global_full_policy_action_observation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullGlobalBoundaryObservation"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_actual_physical_source_policy_action_set_v2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActualActionSetSnapshot"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    observe_actual_physical_source_policy_action_set_v2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GlobalBoundaryObserveRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActualGlobalBoundaryObservation"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_actual_physical_policy_action_observation_v2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActualGlobalBoundaryObservation"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_current_actual_periodic_payment_producers_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PeriodicActionSetResult"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_current_composed_actual_action_set_v3: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComposedActionSetSnapshot"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_current_recovery_composed_actual_action_set_v4: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecoveryComposedActionSetSnapshot"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    record_original_recovery_composed_action_set_v4: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GlobalBoundaryObserveRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecoveryComposedGlobalObservation"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_recovery_composed_observation_v4: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecoveryComposedGlobalObservation"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_current_registered_action_set_v5: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RegisteredActionSetSnapshot"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    list_full_policy_declarations: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullPolicyList"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    confirm_full_policy_declaration: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullCreateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullLifecycleResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    refresh_full_policy_declarations: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullRefreshRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullRefreshResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    lookup_full_policy_command_by_key: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                idempotency_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullCommandLookup"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_full_policy_declaration: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullPolicyView"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    list_full_policy_versions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullVersionList"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    list_full_policy_commands: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullCommandList"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    change_full_policy_declaration: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullChangeRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullLifecycleResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    resume_full_policy_declaration: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullResumeRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullLifecycleResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    suspend_full_policy_declaration: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullStateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullLifecycleResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    revoke_full_policy_declaration: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullStateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullLifecycleResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_full_policy_declaration_change: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullPreviewRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullChangePreview"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_full_policy_financial_change: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullPreviewRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullPolicyChangeFinancialPreview"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_full_policy_history_financial_change: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullPreviewRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullPolicyHistoryChangeFinancialPreview"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_multi_template_policy_financial_change: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                source_kind: "MVP_POLICY" | "FULL_POLICY";
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MultiTemplatePreviewRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MultiTemplatePreviewResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    full_policy_grammar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullGrammarResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_full_natural_policy_candidate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullCompilationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullCompilationResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_current_full_policy_dependencies: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullPolicyDependencyReview"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_full_asset_allocation: {
+        parameters: {
+            query?: {
+                planning_comparison_days?: number;
+                planning_max_components?: number;
+                planning_max_turnover_cents?: number | null;
+                planning_funds_use_date?: string | null;
+                planning_mode?: "PORTFOLIO" | "FIXED_LADDER";
+            };
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullAssetAllocationResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_api_v1_full_asset_executions_preview_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullAssetPrepareRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullAssetExecutionPreview"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    prepare_original_full_asset_portfolio: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullAssetPrepareRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullAssetExecutionResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_full_asset_portfolio: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                portfolio_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullAssetExecutionResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    lookup_original_full_asset_portfolio: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                epoch_id: string;
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullAssetExecutionLookup"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    confirm_original_whole_asset_portfolio: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                portfolio_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullAssetConfirmRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullAssetExecutionResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    execute_next_original_asset_portfolio_batch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                portfolio_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FullAssetExecuteRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullAssetExecutionResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_full_payment_relation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PaymentScopeRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentScopePreview"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    start_user_full_payment_relation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PaymentStartRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentCommandReceipt"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    confirm_user_full_payment_relation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                start_command_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PaymentConfirmRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentCommandReceipt"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_full_payment_command: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                epoch_id: string;
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentCommandLookup"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    prepare_full_recurring_payment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                authorization_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PaymentPrepareRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_full_payment_prepare: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                authorization_id: string;
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentPreparedLookup"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_full_recurring_payment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    confirm_user_full_recurring_payment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PaymentActionConfirmation"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    execute_full_recurring_payment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PaymentExecuteRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_signed_original_full_payment_action_consent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentConsentLookup"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_full_recovery_planning: {
+        parameters: {
+            query?: {
+                planning_deadline_at?: string | null;
+            };
+            header?: never;
+            path: {
+                policy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullRecoveryPlanningResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    preview_current_maturity_replanning: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaturityReplanningRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaturityReplanningResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_full_current_reconciliation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullReconciliationReport"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    full_annual_protection: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullAnnualProtectionResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    assess_autonomy_envelope_intent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnvelopeRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EnvelopeResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    assess_autonomy_envelope_action: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EnvelopeResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    compare_original_boundary_runs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BoundaryDifferenceRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BoundaryDifference"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    observe_original_action_boundary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["app__services__boundary_action_events__BoundaryObservationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BoundaryObservationResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    analyze_original_finite_planning: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinitePlanningRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FinitePlanningResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    login_api_v1_local_actor_login_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LocalLoginRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LocalSessionResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_session_api_v1_local_actor_session_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LocalSessionResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    logout_api_v1_local_actor_logout_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LocalLogoutRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: boolean;
+                    };
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    start_original_question_session: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QuestionStartRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QuestionWorkflowResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_question_start_by_key: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                epoch_id: string;
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QuestionCommandLookupResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_question_command_by_key: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QuestionCommandLookupResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    close_original_question_session: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QuestionCloseRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QuestionWorkflowResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_question_session: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QuestionWorkflowResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    answer_original_pending_question: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QuestionAnswerRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QuestionWorkflowResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    refresh_original_question_session: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QuestionRefreshRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QuestionWorkflowResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    list_original_interventions: {
+        parameters: {
+            query?: {
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterventionList"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    observe_original_intervention: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QuestionObservationRequest"] | components["schemas"]["app__domain__full_intervention__BoundaryObservationRequest"] | components["schemas"]["GlobalBoundaryObservationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterventionCommandResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_intervention_command: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                epoch_id: string;
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterventionCommandLookup"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_intervention: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                message_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterventionView"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    claim_original_intervention_once: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                message_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeliveryRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterventionDeliveryResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    acknowledge_original_intervention: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                message_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AcknowledgmentRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterventionCommandResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_scenario_simulation_context: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioContext"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    compare_readonly_scenario: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScenarioCompareRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioComparison"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_scenario_risk_review_context: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioRiskContext"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    compare_scenario_risk_review: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScenarioRiskRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioRiskComparison"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_product_catalog: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CatalogReadResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_product_catalog_original: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                version_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CatalogVersionView"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    register_actual_current_product_catalog: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RegisterCatalogRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CatalogRegistrationResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    declare_user_policy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserDeclarationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserDeclarationRecord"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    lookup_user_policy_declaration: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                epoch_id: string;
+                idempotency_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserDeclarationLookup"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    suggest_periodic_policies: {
+        parameters: {
+            query?: {
+                lookback_days?: number;
+                minimum_cycles?: number;
+                maximum_day_spread?: number;
+                maximum_cv_bps?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PeriodicSuggestions"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    suggest_seasonal_reserve: {
+        parameters: {
+            query: {
+                window_id: string;
+                lookback_days?: number;
+                minimum_historical_windows?: number;
+                quantile_bps?: number;
+                essential_categories?: string[];
+                adjustment_cap_cents?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SeasonalSuggestions"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    review_original_transaction_category: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                transaction_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CategoryReviewResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    confirm_original_transaction_category: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                transaction_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CategoryConfirmationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CategoryCommandResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_original_category_command: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                transaction_id: string;
+                epoch_id: string;
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CategoryCommandResponse"];
                 };
             };
             /** @description Unprocessable Entity */
@@ -6751,6 +35731,533 @@ export interface operations {
             };
         };
     };
+    declare_fact_api_v1_evidence_declarations_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeclarationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeclarationResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    get_facts_api_v1_evidence_facts_get: {
+        parameters: {
+            query?: {
+                valid_at?: string | null;
+                known_at?: string | null;
+                source_type?: string | null;
+                source_ref?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    get_graph_api_v1_evidence_graph__kind___identity__get: {
+        parameters: {
+            query?: {
+                known_at?: string | null;
+            };
+            header?: never;
+            path: {
+                kind: "EVIDENCE" | "PROPOSAL" | "POLICY" | "POLICY_VERSION" | "DECISION" | "ACTION" | "RECEIPT";
+                identity: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    get_full_evidence_graph_api_v1_evidence_full_graph__kind___identity__get: {
+        parameters: {
+            query?: {
+                known_at?: string | null;
+            };
+            header?: never;
+            path: {
+                kind: ("ACCOUNT" | "TRANSACTION" | "BILL" | "GOAL" | "POSITION" | "BANK_OPERATION" | "BANK_REDEMPTION" | "POSTING" | "EXTERNAL_FACT" | "AUDIT_EPOCH" | "AUDIT_EVENT" | "AUDIT_SNAPSHOT" | "FULL_POLICY" | "FULL_POLICY_VERSION" | "FULL_POLICY_COMMAND" | "EVIDENCE" | "PROPOSAL" | "POLICY" | "POLICY_VERSION" | "DECISION" | "ACTION" | "RECEIPT" | "PRODUCT" | "PRODUCT_CATALOGUE" | "USER" | "CONSTRAINT" | "RESOURCE_CLAIM" | "COMMAND_OUTBOX" | "COMMAND_INBOX" | "COMMAND_ATTEMPT" | "INTERVENTION_OUTBOX" | "INTERVENTION_INBOX" | "ASSET_PORTFOLIO" | "ASSET_BATCH" | "ASSET_CONSENT") | "FULL_GOAL_MODEL";
+                identity: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullEvidenceGraph"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_annual_planning: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnnualProjectionResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    read_current_joint_goal_allocation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JointPlanningResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    list_command_deliveries: {
+        parameters: {
+            query?: {
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryList"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    get_command_delivery: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                outbox_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryView"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    enqueue_original_action: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EmptyDeliveryRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryView"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    deliver_original_command: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                outbox_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EmptyDeliveryRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryView"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
     dashboard_summary: {
         parameters: {
             query?: {
@@ -6770,6 +36277,358 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DashboardResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    demo_presets: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DemoPresets"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    demo_state: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DemoState"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    prepare_demo_template: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                kind: "CAR_GOAL" | "LIQUID_ASSET" | "FIXED_ASSET" | "RENT";
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DemoTemplateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DemoTemplateView"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    run_demo_event: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DemoEventRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DemoCommandView"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    demo_command: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                command_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DemoCommandView"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    reset_demo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DemoResetRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DemoResetResponse"];
                 };
             };
             /** @description Not Found */

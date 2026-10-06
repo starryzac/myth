@@ -1,0 +1,267 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.1.1, pluggy-1.6.0 -- F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Scripts\python.exe
+hypothesis profile 'default'
+rootdir: F:\学校活动\工行杯\钱途有界\bounded-funds
+configfile: pyproject.toml
+plugins: anyio-4.15.1, hypothesis-6.168.3, cov-7.1.0
+collecting ... collected 6 items
+
+apps/api/app/tests/test_fixed_purchase_clock.py::test_fixed_purchase_later_request_honors_original_bound_and_retains_original_plan FAILED [ 16%]
+apps/api/app/tests/test_fixed_purchase_clock.py::test_fixed_purchase_after_bound_refuses_before_independent_bank_effect PASSED [ 33%]
+apps/api/app/tests/test_demo_console.py::test_console_rejects_another_policy_action_using_its_reserved_stage_key FAILED [ 50%]
+apps/api/app/tests/test_demo_console.py::test_salary_without_goal_preserves_blocked_status_across_post_get_and_state FAILED [ 66%]
+apps/api/app/tests/test_demo_console.py::test_salary_after_actual_monthly_target_has_no_fake_goal_action_or_permanent_pending FAILED [ 83%]
+apps/api/app/tests/test_simulated_redemption_quote.py::test_superseded_original_price_is_refused_atomically_without_same_id_insert FAILED [100%]
+
+================================== FAILURES ===================================
+_ test_fixed_purchase_later_request_honors_original_bound_and_retains_original_plan _
+apps\api\app\tests\test_fixed_purchase_clock.py:60: in test_fixed_purchase_later_request_honors_original_bound_and_retains_original_plan
+    purchased = execute_action(demo_engine, DEMO_USER_ID, prepared.action_id, later)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution.py:329: in execute_action
+    return _execute_action(engine, user_id, action_id, now)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution.py:467: in _execute_action
+    receipt = project_execution(session, operation, now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution_projection.py:849: in project_execution
+    return _project_execution(session, operation, now)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps\api\app\services\execution_projection.py:900: in _project_execution
+    _purchase(session, action, effect, operation, rows, transactions, now)
+apps\api\app\services\execution_projection.py:583: in _purchase
+    raise _error("Actual contractual maturity exceeds the immutable purchase bound")
+E   app.services.policy_lifecycle.PolicyLifecycleError: Actual contractual maturity exceeds the immutable purchase bound
+___ test_console_rejects_another_policy_action_using_its_reserved_stage_key ___
+apps\api\app\tests\test_demo_console.py:312: in test_console_rejects_another_policy_action_using_its_reserved_stage_key
+    assert response.status_code == 200, response.text
+E   AssertionError: {"error":{"code":"EXECUTION_NOT_READY","message":"资产申购尚不可执行：SOURCE_EVIDENCE_INCOMPLETE","request_id":"dda2d9dd-bf20-4988-b588-efa75e871b08"}}
+E   assert 409 == 200
+E    +  where 409 = <Response [409 Conflict]>.status_code
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "d942c101-1478-4d42-a4f9-68edeba54ff4", "method": "POST", "status": 200, "duration_ms": 390.0}
+{"event": "http_request", "request_id": "5f352c93-a7ec-415e-a785-938f32a1d947", "method": "POST", "status": 200, "duration_ms": 94.0}
+{"event": "http_request", "request_id": "9a1c392c-1d9b-41d2-a9f5-b401df004191", "method": "POST", "status": 200, "duration_ms": 94.0}
+{"event": "http_request", "request_id": "0758e248-0a88-4135-b44f-42a4a33c5f63", "method": "POST", "status": 200, "duration_ms": 94.0}
+{"event": "http_request", "request_id": "73f8deaf-856a-4d9d-94a2-71595d3aa107", "method": "POST", "status": 200, "duration_ms": 125.0}
+{"event": "http_request", "request_id": "1eaa17e3-bced-499b-9b10-a3152a301c3a", "method": "POST", "status": 200, "duration_ms": 78.0}
+{"event": "http_request", "request_id": "fbdcfa02-2cda-4547-88ff-5a4376d13383", "method": "POST", "status": 200, "duration_ms": 47.0}
+{"event": "http_request", "request_id": "ea65a7ac-f665-4606-bc3e-7da5a672da73", "method": "GET", "status": 200, "duration_ms": 62.0}
+{"event": "http_request", "request_id": "dda2d9dd-bf20-4988-b588-efa75e871b08", "method": "POST", "status": 409, "duration_ms": 250.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "d942c101-1478-4d42-a4f9-68edeba54ff4", "method": "POST", "status": 200, "duration_ms": 390.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "5f352c93-a7ec-415e-a785-938f32a1d947", "method": "POST", "status": 200, "duration_ms": 94.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "9a1c392c-1d9b-41d2-a9f5-b401df004191", "method": "POST", "status": 200, "duration_ms": 94.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "0758e248-0a88-4135-b44f-42a4a33c5f63", "method": "POST", "status": 200, "duration_ms": 94.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "73f8deaf-856a-4d9d-94a2-71595d3aa107", "method": "POST", "status": 200, "duration_ms": 125.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "1eaa17e3-bced-499b-9b10-a3152a301c3a", "method": "POST", "status": 200, "duration_ms": 78.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "fbdcfa02-2cda-4547-88ff-5a4376d13383", "method": "POST", "status": 200, "duration_ms": 47.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "ea65a7ac-f665-4606-bc3e-7da5a672da73", "method": "GET", "status": 200, "duration_ms": 62.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "dda2d9dd-bf20-4988-b588-efa75e871b08", "method": "POST", "status": 409, "duration_ms": 250.0}
+_ test_salary_without_goal_preserves_blocked_status_across_post_get_and_state _
+apps\api\app\tests\test_demo_console.py:339: in test_salary_without_goal_preserves_blocked_status_across_post_get_and_state
+    assert command.json() == blocked
+E   AssertionError: assert {'simulation': True, 'preset_version': 'demo-console-v1', 'command_id': '87524ad0-47e5-5a29-9515-41e5b828b423', 'epoch_id': '0eab0bd3-9dbb-419b-b9e1-1429b29eac99', 'event_kind': 'SALARY_RECEIVED', 'admitted_at': '2026-10-04T01:00:04Z', 'status': 'PENDING', 'message': '原事件尚待继续', 'proposal_ids': ['1b818931-bb9f-55da-9324-4e9743b18048', 'bbe8b215-f442-5e55-8bfe-b2f35ed817c5'], 'goal_id': None, 'fact': None, 'actions': [], 'recovery': None, 'policy_change': None} == {'simulation': True, 'preset_version': 'demo-console-v1', 'command_id': '87524ad0-47e5-5a29-9515-41e5b828b423', 'epoch_id': '0eab0bd3-9dbb-419b-b9e1-1429b29eac99', 'event_kind': 'SALARY_RECEIVED', 'admitted_at': '2026-10-04T01:00:04Z', 'status': 'BLOCKED', 'message': '请先建立已确认的零归属目标', 'proposal_ids': ['1b818931-bb9f-55da-9324-4e9743b18048', 'bbe8b215-f442-5e55-8bfe-b2f35ed817c5'], 'goal_id': None, 'fact': None, 'actions': [], 'recovery': None, 'policy_change': None}
+E     
+E     Common items:
+E     {'actions': [],
+E      'admitted_at': '2026-10-04T01:00:04Z',
+E      'command_id': '87524ad0-47e5-5a29-9515-41e5b828b423',
+E      'epoch_id': '0eab0bd3-9dbb-419b-b9e1-1429b29eac99',
+E      'event_kind': 'SALARY_RECEIVED',
+E      'fact': None,
+E      'goal_id': None,
+E      'policy_change': None,
+E      'preset_version': 'demo-console-v1',
+E      'proposal_ids': ['1b818931-bb9f-55da-9324-4e9743b18048',
+E                       'bbe8b215-f442-5e55-8bfe-b2f35ed817c5'],
+E      'recovery': None,
+E      'simulation': True}
+E     Differing items:
+E     {'status': 'PENDING'} != {'status': 'BLOCKED'}
+E     {'message': '原事件尚待继续'} != {'message': '请先建立已确认的零归属目标'}
+E     
+E     Full diff:
+E       {
+E           'simulation': True,
+E           'preset_version': 'demo-console-v1',
+E           'command_id': '87524ad0-47e5-5a29-9515-41e5b828b423',
+E           'epoch_id': '0eab0bd3-9dbb-419b-b9e1-1429b29eac99',
+E           'event_kind': 'SALARY_RECEIVED',
+E           'admitted_at': '2026-10-04T01:00:04Z',
+E     -     'status': 'BLOCKED',
+E     ?                ^^^^^
+E     +     'status': 'PENDING',
+E     ?                ^ + +++
+E     -     'message': '请先建立已确认的零归属目标',
+E     +     'message': '原事件尚待继续',
+E           'proposal_ids': [
+E               '1b818931-bb9f-55da-9324-4e9743b18048',
+E               'bbe8b215-f442-5e55-8bfe-b2f35ed817c5',
+E           ],
+E           'goal_id': None,
+E           'fact': None,
+E           'actions': [],
+E           'recovery': None,
+E           'policy_change': None,
+E       }
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "e97483d9-efbd-45b2-99dd-79bbdb995988", "method": "POST", "status": 200, "duration_ms": 500.0}
+{"event": "http_request", "request_id": "5defc639-44ec-4623-bb7e-de9cfdf812da", "method": "POST", "status": 200, "duration_ms": 94.0}
+{"event": "http_request", "request_id": "93add4fd-7a1c-40ac-bd8b-f190f123e1de", "method": "POST", "status": 200, "duration_ms": 109.0}
+{"event": "http_request", "request_id": "bf769a37-b99a-41aa-9f34-590839354c34", "method": "POST", "status": 200, "duration_ms": 125.0}
+{"event": "http_request", "request_id": "e408498c-2502-44cd-8938-0cf9c80e7aba", "method": "POST", "status": 200, "duration_ms": 282.0}
+{"event": "http_request", "request_id": "37072eb8-3053-4bd4-bcc3-16842c89e0bc", "method": "GET", "status": 200, "duration_ms": 157.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "e97483d9-efbd-45b2-99dd-79bbdb995988", "method": "POST", "status": 200, "duration_ms": 500.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "5defc639-44ec-4623-bb7e-de9cfdf812da", "method": "POST", "status": 200, "duration_ms": 94.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "93add4fd-7a1c-40ac-bd8b-f190f123e1de", "method": "POST", "status": 200, "duration_ms": 109.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "bf769a37-b99a-41aa-9f34-590839354c34", "method": "POST", "status": 200, "duration_ms": 125.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "e408498c-2502-44cd-8938-0cf9c80e7aba", "method": "POST", "status": 200, "duration_ms": 282.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "37072eb8-3053-4bd4-bcc3-16842c89e0bc", "method": "GET", "status": 200, "duration_ms": 157.0}
+_ test_salary_after_actual_monthly_target_has_no_fake_goal_action_or_permanent_pending _
+apps\api\app\tests\test_demo_console.py:409: in test_salary_after_actual_monthly_target_has_no_fake_goal_action_or_permanent_pending
+    assert executed.status_code == 200, executed.text
+E   AssertionError: {"error":{"code":"VALIDATION_ERROR","message":"请求字段无效，请检查格式与范围","request_id":"37494925-bf46-42ac-a944-59a8cb28b60d"}}
+E   assert 422 == 200
+E    +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+---------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "request_id": "cc17c2b1-0fec-4413-b703-b7fd0fa6f05f", "method": "POST", "status": 200, "duration_ms": 250.0}
+{"event": "http_request", "request_id": "b63dbf4c-57bc-431b-a6d3-cf32365a6916", "method": "POST", "status": 200, "duration_ms": 78.0}
+{"event": "http_request", "request_id": "83f1e3d6-c423-4374-b4b6-7a72ecf78b08", "method": "POST", "status": 200, "duration_ms": 78.0}
+{"event": "http_request", "request_id": "673e9922-93d2-4301-ad40-ce35d646ad94", "method": "POST", "status": 200, "duration_ms": 62.0}
+{"event": "http_request", "request_id": "7108ba9f-adea-4043-9853-6d22146d0429", "method": "POST", "status": 200, "duration_ms": 1094.0}
+{"event": "http_request", "request_id": "45b3dc86-ad76-437b-8118-b8922a099ba3", "method": "POST", "status": 200, "duration_ms": 5390.0}
+{"event": "http_request", "request_id": "37494925-bf46-42ac-a944-59a8cb28b60d", "method": "POST", "status": 422, "duration_ms": 16.0}
+------------------------------ Captured log call ------------------------------
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "cc17c2b1-0fec-4413-b703-b7fd0fa6f05f", "method": "POST", "status": 200, "duration_ms": 250.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "b63dbf4c-57bc-431b-a6d3-cf32365a6916", "method": "POST", "status": 200, "duration_ms": 78.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "83f1e3d6-c423-4374-b4b6-7a72ecf78b08", "method": "POST", "status": 200, "duration_ms": 78.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "673e9922-93d2-4301-ad40-ce35d646ad94", "method": "POST", "status": 200, "duration_ms": 62.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "7108ba9f-adea-4043-9853-6d22146d0429", "method": "POST", "status": 200, "duration_ms": 1094.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "45b3dc86-ad76-437b-8118-b8922a099ba3", "method": "POST", "status": 200, "duration_ms": 5390.0}
+INFO     bounded_funds.http:main.py:65 {"event": "http_request", "request_id": "37494925-bf46-42ac-a944-59a8cb28b60d", "method": "POST", "status": 422, "duration_ms": 16.0}
+_ test_superseded_original_price_is_refused_atomically_without_same_id_insert _
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1943: in _exec_single_context
+    self.dialect.do_execute(
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+.venv\Lib\site-packages\psycopg\cursor.py:117: in execute
+    raise ex.with_traceback(None)
+E   psycopg.errors.UniqueViolation: duplicate key value violates unique constraint "pk_evidence_items"
+E   DETAIL:  Key (id)=(255117f1-cdb8-54de-9cf3-89e8ac7ae60d) already exists.
+
+The above exception was the direct cause of the following exception:
+apps\api\app\tests\test_simulated_redemption_quote.py:351: in test_superseded_original_price_is_refused_atomically_without_same_id_insert
+    issue_fixed_early_quote(
+apps\api\app\services\simulated_redemption_quote.py:166: in issue_fixed_early_quote
+    session.flush()
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4536: in flush
+    self._flush(objects)
+<sqlalchemy generated warned() wrapper for sqlalchemy.orm.session.Session._flush>:2: in _flush
+    return target(fn, self, objects=objects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\util\deprecations.py:281: in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4679: in _flush
+    with util.safe_reraise():
+.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv\Lib\site-packages\sqlalchemy\orm\session.py:4640: in _flush
+    flush_context.execute()
+.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py:467: in execute
+    rec.execute(self)
+.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py:643: in execute
+    util.preloaded.orm_persistence._save_obj(
+.venv\Lib\site-packages\sqlalchemy\orm\persistence.py:92: in _save_obj
+    _emit_insert_statements(
+.venv\Lib\site-packages\sqlalchemy\orm\persistence.py:1052: in _emit_insert_statements
+    result = connection.execute(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1448: in execute
+    return meth(
+.venv\Lib\site-packages\sqlalchemy\sql\elements.py:533: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1668: in _execute_clauseelement
+    ret = self._execute_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1822: in _execute_context
+    return self._exec_single_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1962: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:2332: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1943: in _exec_single_context
+    self.dialect.do_execute(
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+.venv\Lib\site-packages\psycopg\cursor.py:117: in execute
+    raise ex.with_traceback(None)
+E   sqlalchemy.exc.IntegrityError: (psycopg.errors.UniqueViolation) duplicate key value violates unique constraint "pk_evidence_items"
+E   DETAIL:  Key (id)=(255117f1-cdb8-54de-9cf3-89e8ac7ae60d) already exists.
+E   [SQL: INSERT INTO evidence_items (evidence_level, source_type, source_ref, content, content_hash, valid_from, valid_to, observed_at, supersedes_id, status, user_id, id, created_at) VALUES (%(evidence_level)s::VARCHAR, %(source_type)s::VARCHAR, %(source_ref)s::VARCHAR, %(content)s::JSONB, %(content_hash)s::VARCHAR, %(valid_from)s::TIMESTAMP WITH TIME ZONE, %(valid_to)s::TIMESTAMP WITH TIME ZONE, %(observed_at)s::TIMESTAMP WITH TIME ZONE, %(supersedes_id)s::UUID, %(status)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)]
+E   [parameters: {'evidence_level': 'BANK_CONFIRMED', 'source_type': 'SIMULATED_REDEMPTION_QUOTE', 'source_ref': 'simulated-fixed-early-price-v1:dc3e02ed-bc5f-5a4e-9af3-54623b60a144', 'content': Jsonb({'simulation': True, 'protocol': 'r ... (946 chars)), 'content_hash': '0e16f658da891f34052ef8940e35d931f3a24613f04fa08cecea8a892e4056cc', 'valid_from': datetime.datetime(2026, 10, 4, 1, 0, 5, tzinfo=datetime.timezone.utc), 'valid_to': datetime.datetime(2026, 10, 4, 1, 15, 5, tzinfo=datetime.timezone.utc), 'observed_at': datetime.datetime(2026, 10, 4, 1, 0, 5, tzinfo=datetime.timezone.utc), 'supersedes_id': None, 'status': 'VALID', 'user_id': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'id': UUID('255117f1-cdb8-54de-9cf3-89e8ac7ae60d'), 'created_at': datetime.datetime(2026, 10, 4, 1, 0, 5, tzinfo=datetime.timezone.utc)}]
+E   (Background on this error at: https://sqlalche.me/e/21/gkpj)
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_fixed_purchase_clock.py::test_fixed_purchase_later_request_honors_original_bound_and_retains_original_plan - app.services.policy_lifecycle.PolicyLifecycleError: Actual contractual maturity exceeds the immutable purchase bound
+FAILED apps/api/app/tests/test_demo_console.py::test_console_rejects_another_policy_action_using_its_reserved_stage_key - AssertionError: {"error":{"code":"EXECUTION_NOT_READY","message":"资产申购尚不可执行：SOURCE_EVIDENCE_INCOMPLETE","request_id":"dda2d9dd-bf20-4988-b588-efa75e871b08"}}
+assert 409 == 200
+ +  where 409 = <Response [409 Conflict]>.status_code
+FAILED apps/api/app/tests/test_demo_console.py::test_salary_without_goal_preserves_blocked_status_across_post_get_and_state - AssertionError: assert {'simulation': True, 'preset_version': 'demo-console-v1', 'command_id': '87524ad0-47e5-5a29-9515-41e5b828b423', 'epoch_id': '0eab0bd3-9dbb-419b-b9e1-1429b29eac99', 'event_kind': 'SALARY_RECEIVED', 'admitted_at': '2026-10-04T01:00:04Z', 'status': 'PENDING', 'message': '原事件尚待继续', 'proposal_ids': ['1b818931-bb9f-55da-9324-4e9743b18048', 'bbe8b215-f442-5e55-8bfe-b2f35ed817c5'], 'goal_id': None, 'fact': None, 'actions': [], 'recovery': None, 'policy_change': None} == {'simulation': True, 'preset_version': 'demo-console-v1', 'command_id': '87524ad0-47e5-5a29-9515-41e5b828b423', 'epoch_id': '0eab0bd3-9dbb-419b-b9e1-1429b29eac99', 'event_kind': 'SALARY_RECEIVED', 'admitted_at': '2026-10-04T01:00:04Z', 'status': 'BLOCKED', 'message': '请先建立已确认的零归属目标', 'proposal_ids': ['1b818931-bb9f-55da-9324-4e9743b18048', 'bbe8b215-f442-5e55-8bfe-b2f35ed817c5'], 'goal_id': None, 'fact': None, 'actions': [], 'recovery': None, 'policy_change': None}
+  
+  Common items:
+  {'actions': [],
+   'admitted_at': '2026-10-04T01:00:04Z',
+   'command_id': '87524ad0-47e5-5a29-9515-41e5b828b423',
+   'epoch_id': '0eab0bd3-9dbb-419b-b9e1-1429b29eac99',
+   'event_kind': 'SALARY_RECEIVED',
+   'fact': None,
+   'goal_id': None,
+   'policy_change': None,
+   'preset_version': 'demo-console-v1',
+   'proposal_ids': ['1b818931-bb9f-55da-9324-4e9743b18048',
+                    'bbe8b215-f442-5e55-8bfe-b2f35ed817c5'],
+   'recovery': None,
+   'simulation': True}
+  Differing items:
+  {'status': 'PENDING'} != {'status': 'BLOCKED'}
+  {'message': '原事件尚待继续'} != {'message': '请先建立已确认的零归属目标'}
+  
+  Full diff:
+    {
+        'simulation': True,
+        'preset_version': 'demo-console-v1',
+        'command_id': '87524ad0-47e5-5a29-9515-41e5b828b423',
+        'epoch_id': '0eab0bd3-9dbb-419b-b9e1-1429b29eac99',
+        'event_kind': 'SALARY_RECEIVED',
+        'admitted_at': '2026-10-04T01:00:04Z',
+  -     'status': 'BLOCKED',
+  ?                ^^^^^
+  +     'status': 'PENDING',
+  ?                ^ + +++
+  -     'message': '请先建立已确认的零归属目标',
+  +     'message': '原事件尚待继续',
+        'proposal_ids': [
+            '1b818931-bb9f-55da-9324-4e9743b18048',
+            'bbe8b215-f442-5e55-8bfe-b2f35ed817c5',
+        ],
+        'goal_id': None,
+        'fact': None,
+        'actions': [],
+        'recovery': None,
+        'policy_change': None,
+    }
+FAILED apps/api/app/tests/test_demo_console.py::test_salary_after_actual_monthly_target_has_no_fake_goal_action_or_permanent_pending - AssertionError: {"error":{"code":"VALIDATION_ERROR","message":"请求字段无效，请检查格式与范围","request_id":"37494925-bf46-42ac-a944-59a8cb28b60d"}}
+assert 422 == 200
+ +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+FAILED apps/api/app/tests/test_simulated_redemption_quote.py::test_superseded_original_price_is_refused_atomically_without_same_id_insert - sqlalchemy.exc.IntegrityError: (psycopg.errors.UniqueViolation) duplicate key value violates unique constraint "pk_evidence_items"
+DETAIL:  Key (id)=(255117f1-cdb8-54de-9cf3-89e8ac7ae60d) already exists.
+[SQL: INSERT INTO evidence_items (evidence_level, source_type, source_ref, content, content_hash, valid_from, valid_to, observed_at, supersedes_id, status, user_id, id, created_at) VALUES (%(evidence_level)s::VARCHAR, %(source_type)s::VARCHAR, %(source_ref)s::VARCHAR, %(content)s::JSONB, %(content_hash)s::VARCHAR, %(valid_from)s::TIMESTAMP WITH TIME ZONE, %(valid_to)s::TIMESTAMP WITH TIME ZONE, %(observed_at)s::TIMESTAMP WITH TIME ZONE, %(supersedes_id)s::UUID, %(status)s::VARCHAR, %(user_id)s::UUID, %(id)s::UUID, %(created_at)s::TIMESTAMP WITH TIME ZONE)]
+[parameters: {'evidence_level': 'BANK_CONFIRMED', 'source_type': 'SIMULATED_REDEMPTION_QUOTE', 'source_ref': 'simulated-fixed-early-price-v1:dc3e02ed-bc5f-5a4e-9af3-54623b60a144', 'content': Jsonb({'simulation': True, 'protocol': 'r ... (946 chars)), 'content_hash': '0e16f658da891f34052ef8940e35d931f3a24613f04fa08cecea8a892e4056cc', 'valid_from': datetime.datetime(2026, 10, 4, 1, 0, 5, tzinfo=datetime.timezone.utc), 'valid_to': datetime.datetime(2026, 10, 4, 1, 15, 5, tzinfo=datetime.timezone.utc), 'observed_at': datetime.datetime(2026, 10, 4, 1, 0, 5, tzinfo=datetime.timezone.utc), 'supersedes_id': None, 'status': 'VALID', 'user_id': UUID('271a9827-f82a-5be6-9e0a-50f721029fb0'), 'id': UUID('255117f1-cdb8-54de-9cf3-89e8ac7ae60d'), 'created_at': datetime.datetime(2026, 10, 4, 1, 0, 5, tzinfo=datetime.timezone.utc)}]
+(Background on this error at: https://sqlalche.me/e/21/gkpj)
+============= 5 failed, 1 passed, 1 warning in 101.16s (0:01:41) ==============

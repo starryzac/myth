@@ -1,0 +1,11 @@
+apps/api/app/tests/test_mvp_coverage_tool.py::test_exact_thresholds_and_independent_core_file_gate
+apps/api/app/tests/test_mvp_coverage_tool.py::test_missing_production_file_and_excluded_line_cannot_shrink_denominator
+apps/api/app/tests/test_mvp_coverage_tool.py::test_coverage_counts_are_not_rounded_percent_or_unchecked_summary
+apps/api/app/tests/test_mvp_coverage_tool.py::test_reuse_invalid_and_settings_limits_never_count_as_actual_generated_samples
+apps/api/app/tests/test_mvp_coverage_tool.py::test_duplicate_runs_and_unknown_tool_properties_cannot_inflate_acceptance
+apps/api/app/tests/test_mvp_coverage_tool.py::test_failed_calls_and_unsupported_local_statistics_version_are_rejected
+apps/api/app/tests/test_mvp_coverage_tool.py::test_registered_scope_contains_original_core_and_actual_financial_properties
+apps/api/app/tests/test_mvp_coverage_tool.py::test_independent_coverage_config_retains_namespace_and_all_non_test_lines
+
+============================ Hypothesis Statistics ============================
+8 tests collected in 0.21s

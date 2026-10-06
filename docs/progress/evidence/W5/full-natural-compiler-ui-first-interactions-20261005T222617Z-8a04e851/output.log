@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/full-policy-compilation.test.ts (8 tests) 37ms
+ ✓ src/components/FullPolicyCompilerPanel.test.tsx (10 tests) 1450ms
+   ✓ 手动编辑→原严格validate→手动回调完整normalized/hash，不POST确认  311ms
+
+ Test Files  2 passed (2)
+      Tests  18 passed (18)
+   Start at  06:26:19
+   Duration  4.38s (transform 479ms, setup 1.17s, collect 770ms, tests 1.49s, environment 2.26s, prepare 612ms)
+

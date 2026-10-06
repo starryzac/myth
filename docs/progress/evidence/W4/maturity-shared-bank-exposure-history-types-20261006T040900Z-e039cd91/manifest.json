@@ -1,0 +1,45 @@
+{
+  "run_id": "20261006T040900Z-e039cd91",
+  "task": "W4",
+  "label": "maturity-shared-bank-exposure-history-types",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/services/simulated_bank.py",
+    "apps/api/app/services/asset_exposure_import.py",
+    "apps/api/app/services/decision_recording.py",
+    "apps/api/app/services/decision_trace.py",
+    "apps/api/app/domain/audit_chain.py",
+    "apps/api/app/main.py",
+    "apps/api/app/api/dependencies.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "mypy",
+    "--strict",
+    "--follow-imports=silent",
+    "apps/api/app/services/simulated_bank.py",
+    "apps/api/app/services/asset_exposure_import.py",
+    "apps/api/app/services/decision_recording.py",
+    "apps/api/app/services/decision_trace.py",
+    "apps/api/app/domain/audit_chain.py",
+    "apps/api/app/main.py",
+    "apps/api/app/api/dependencies.py"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T04:09:02.175087+00:00",
+  "finished_at": "2026-10-06T04:09:30.992168+00:00",
+  "wall_seconds": 28.817081,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "e2702f9afc4c0f80ff1e8624f77af7a7d2689ca184512114aae5967a76229ba8",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

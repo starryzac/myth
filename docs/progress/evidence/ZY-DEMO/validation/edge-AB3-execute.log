@@ -1,0 +1,26 @@
+### Result
+{"label":"AB3","http_ms":15941,"visible_ms":37278,"action_id":"d1b9da6d-8588-4298-9d48-11bdab57c13a","effect_hash":"9c2d95b11e089f5b7fbdb9b98d0fe298b694d943f676cda88c63a452b9f1d2af","status":"SUCCEEDED","bank_status":"SETTLED","receipt":{"simulation":true,"receipt_id":"a9dde84e-b495-5faa-ae48-2d9d7bfa4f3c","action_id":"d1b9da6d-8588-4298-9d48-11bdab57c13a","bank_operation_id":"d1b9da6d-8588-4298-9d48-11bdab57c13a","status":"SUCCEEDED","executed_cents":100000,"fee_cents":0,"loss_cents":0,"posting_ids":["0083fa54-558b-5aae-8af2-f4688e941288","20ccc320-d452-5e09-af4f-0811b281991f","35b1d053-54e9-506a-acb9-c8771fbb4288","b2ff9360-b45d-5e9c-b0ec-b3b980587cca","e58d60b6-0672-5426-b711-751637337e39"],"occurred_at":"2026-10-06T07:24:11.937749Z","reconciled_at":"2026-10-06T07:24:11.937749Z"}}
+### Ran Playwright code
+```js
+await (async (page) => {
+  const port=new URL(page.url()).port;
+  const label={19175:'C1',19176:'AB2',19177:'C2',19178:'AB3'}[port];
+  if (!label) throw new Error('Unregistered acceptance URL');
+  await page.getByRole('checkbox',{name:'我已复核固定金额、来源、目标、费用和权限，接受此原操作。',exact:true}).check();
+  const response=page.waitForResponse(r=>r.url().includes('/api/v1/zhiyu/actions/') && r.url().endsWith('/execute') && r.request().method()==='POST');
+  const t=Date.now(); await page.getByRole('button',{name:'执行这个原操作',exact:true}).click();
+  const r=await response; const action=await r.json(); const httpMs=Date.now()-t;
+  await page.waitForFunction(()=>document.querySelectorAll('[role="status"]').length===0);
+  if (r.status()!==200) throw new Error('Execution did not return actual state');
+  if (label.startsWith('C')) {
+    if (action.status!=='UNKNOWN' || action.receipt!==null || action.bank_status!=='SETTLED') throw new Error('Injected loss did not preserve UNKNOWN');
+    await page.getByRole('region',{name:'待核实原操作',exact:true}).waitFor();
+  } else {
+    if (action.status!=='SUCCEEDED' || action.receipt?.executed_cents!==100000) throw new Error('Missing actual success receipt');
+    await page.getByText('实际执行 ¥1,000.00，回执已保存。目标进度与边界已重新读取。',{exact:true}).waitFor();
+  }
+  await page.screenshot({path:`output/playwright/zhiyu-20261006/${label}-${label.startsWith('C')?'unknown':'success'}.png`,fullPage:true});
+  return {label,http_ms:httpMs,visible_ms:Date.now()-t,action_id:action.action_id,effect_hash:action.effect_hash,status:action.status,bank_status:action.bank_status,receipt:action.receipt};
+}
+)(page);
+```

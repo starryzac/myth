@@ -1,0 +1,42 @@
+{
+  "run_id": "20261006T001643Z-7a3c4ba0",
+  "task": "W3",
+  "label": "asset-family-final-direct",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/full_action_set_asset_producers.py",
+    "apps/api/app/services/full_action_set_asset_producers.py",
+    "apps/api/app/tests/test_full_action_set_asset_producers.py",
+    "apps/api/app/tests/test_full_action_set_asset_producers_integration.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "apps/api/app/tests/test_full_action_set_asset_producers.py"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T00:16:44.964463+00:00",
+  "finished_at": "2026-10-06T00:19:34.603987+00:00",
+  "wall_seconds": 169.639524,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/api/app/tests/test_full_action_set_boundary_integration.py",
+    "apps/api/app/tests/test_full_evidence_graph.py",
+    "apps/api/app/tests/test_full_evidence_graph_api.py",
+    "apps/api/app/tests/test_full_evidence_graph_integration.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "e1113eb18bb6384b148ddcd06210ea3cad9ddad2f4169e74aed75356907542e3",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

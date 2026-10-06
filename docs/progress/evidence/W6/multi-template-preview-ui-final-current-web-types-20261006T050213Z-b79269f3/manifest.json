@@ -1,0 +1,35 @@
+{
+  "run_id": "20261006T050213Z-b79269f3",
+  "task": "W6",
+  "label": "multi-template-preview-ui-final-current-web-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/web",
+    "packages/contracts"
+  ],
+  "command": [
+    "node",
+    "apps/web/node_modules/typescript/bin/tsc",
+    "--noEmit",
+    "-p",
+    "apps/web/tsconfig.json"
+  ],
+  "exit_code": 2,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T05:02:15.815073+00:00",
+  "finished_at": "2026-10-06T05:02:48.843286+00:00",
+  "wall_seconds": 33.028213,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "apps/api/app/domain/full_joint_goal_execution_trace.py",
+    "apps/api/app/tests/test_full_joint_goal_execution_api.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "dec569cb6af831323b1ffd8d21bd645960ea4e73421744fdfecb9e50da62ca1e",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

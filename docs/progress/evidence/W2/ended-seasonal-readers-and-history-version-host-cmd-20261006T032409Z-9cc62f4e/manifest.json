@@ -1,0 +1,42 @@
+{
+  "run_id": "20261006T032409Z-9cc62f4e",
+  "task": "W2",
+  "label": "ended-seasonal-readers-and-history-version-host-cmd",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/api/full-annual.ts",
+    "apps/web/src/api/full-annual.ended.test.ts",
+    "apps/web/src/api/full-annual.seasonal.test.ts",
+    "apps/web/src/components/FullPolicyFinancialImpactHost.tsx",
+    "apps/web/src/components/FullPolicyFinancialImpactHost.test.tsx",
+    "apps/web/src/components/FullPoliciesPanel.tsx",
+    "apps/web/src/components/FullAnnualProtectionPanel.tsx",
+    "apps/web/src/tests/full-ended-seasonal-annual-fixture.json"
+  ],
+  "command": [
+    "pnpm.cmd",
+    "--filter",
+    "@bounded-funds/web",
+    "exec",
+    "vitest",
+    "run",
+    "src/api/full-annual.ended.test.ts",
+    "src/api/full-annual.seasonal.test.ts",
+    "src/components/FullPolicyFinancialImpactHost.test.tsx"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-06T03:24:11.556452+00:00",
+  "finished_at": "2026-10-06T03:24:12.797649+00:00",
+  "wall_seconds": 1.241197,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "0f6edf13fbd4d13bed9d5eb28e2c56dfbc9d9c815b656ca507e8fd01bd4194de",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

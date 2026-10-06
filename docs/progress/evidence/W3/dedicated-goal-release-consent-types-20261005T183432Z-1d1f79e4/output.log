@@ -1,0 +1,5 @@
+apps\api\app\domain\full_goal_release_authorization.py:35: error: Incompatible types in assignment (expression has type "str", variable has type "Literal['full-goal-release-authorization-v1']")  [assignment]
+apps\api\app\domain\full_goal_release_authorization.py:92: error: Incompatible types in assignment (expression has type "str", variable has type "Literal['full-goal-release-authorization-v1']")  [assignment]
+apps\api\app\services\full_goal_release_authorization.py:101: error: "AuditVerification" has no attribute "complete"  [attr-defined]
+apps\api\app\services\full_goal_release_authorization.py:127: error: Argument 1 to "UUID" has incompatible type "UUID"; expected "str | None"  [arg-type]
+Found 4 errors in 2 files (checked 3 source files)

@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/api/delivery.test.ts (7 tests) 13ms
+ ✓ src/pages/DeliveryPage.test.tsx (5 tests) 558ms
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  21:13:38
+   Duration  3.30s (transform 334ms, setup 1.04s, collect 567ms, tests 571ms, environment 2.27s, prepare 666ms)
+

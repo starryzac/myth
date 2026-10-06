@@ -1,0 +1,126 @@
+FF..........FF                                                           [100%]
+================================== FAILURES ===================================
+_____ test_exact_missing_destination_is_pending_original_rejection[False] _____
+
+native = <candidate_native_transfer_negative.NativeAdapter object at 0x00000209BBBBBFB0>
+missing = False
+
+    @pytest.mark.parametrize("missing", [False, True])
+    def test_exact_missing_destination_is_pending_original_rejection(native: Any, missing: bool) -> None:
+        data = scenario(missing=missing)
+>       proof = native.validate_execution(NATIVE.canonical(data), "DEVELOPMENT")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\test_expected_transfer_dto_rejection.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\mvp_native_schema.py:381: in validate_execution
+    unresolved = validate_json_schema(values, schema, schema.get("$defs", {}))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\mvp_native_schema.py:196: in validate_json_schema
+    count += validate_json_schema(item, properties[key], definitions, path + "." + key)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\mvp_native_schema.py:157: in validate_json_schema
+    require(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, reason = 'No exact original DTO variant: inputs.intent'
+
+    def require(value: bool, reason: str) -> None:
+        if not value:
+>           raise ValueError(reason)
+E           ValueError: No exact original DTO variant: inputs.intent
+
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\mvp_native_schema.py:44: ValueError
+_____ test_exact_missing_destination_is_pending_original_rejection[True] ______
+
+native = <candidate_native_transfer_negative.NativeAdapter object at 0x00000209BDFCF920>
+missing = True
+
+    @pytest.mark.parametrize("missing", [False, True])
+    def test_exact_missing_destination_is_pending_original_rejection(native: Any, missing: bool) -> None:
+        data = scenario(missing=missing)
+>       proof = native.validate_execution(NATIVE.canonical(data), "DEVELOPMENT")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\test_expected_transfer_dto_rejection.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\mvp_native_schema.py:381: in validate_execution
+    unresolved = validate_json_schema(values, schema, schema.get("$defs", {}))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\mvp_native_schema.py:196: in validate_json_schema
+    count += validate_json_schema(item, properties[key], definitions, path + "." + key)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\mvp_native_schema.py:157: in validate_json_schema
+    require(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, reason = 'No exact original DTO variant: inputs.intent'
+
+    def require(value: bool, reason: str) -> None:
+        if not value:
+>           raise ValueError(reason)
+E           ValueError: No exact original DTO variant: inputs.intent
+
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\mvp_native_schema.py:44: ValueError
+__________ test_valid_transfer_does_not_receive_negative_input_label __________
+
+native = <candidate_native_transfer_negative.NativeAdapter object at 0x00000209BDFCD0D0>
+
+    def test_valid_transfer_does_not_receive_negative_input_label(native: Any) -> None:
+        data = scenario()
+        data["steps"][0]["inputs"]["intent"]["destination_account_id"] = str(UUID(int=2))
+        proof = native.validate_execution(NATIVE.canonical(data), "DEVELOPMENT")
+        assert proof["status"] == "NATIVE_SCHEMA_VALID"
+>       assert proof["expected_dto_rejections"] == []
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'expected_dto_rejections'
+
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\test_expected_transfer_dto_rejection.py:86: KeyError
+_________ test_original_backward_source_reference_remains_unresolved __________
+
+native = <candidate_native_transfer_negative.NativeAdapter object at 0x00000209BDFCF230>
+
+    def test_original_backward_source_reference_remains_unresolved(native: Any) -> None:
+        data = scenario()
+        data["steps"].insert(0, {"step_id": "source", "kind": "LOOKUP_ACCOUNT", "at": "2026-10-05T00:00:00Z", "inputs": {"external_ref": "TOOL_ONLY_cash"}})
+        reference = {"$ref": {"step_id": "source", "pointer": "/result/account/id"}}
+        data["steps"][1]["inputs"]["intent"]["source_account_id"] = reference
+>       proof = native.validate_execution(NATIVE.canonical(data), "DEVELOPMENT")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\test_expected_transfer_dto_rejection.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\mvp_native_schema.py:381: in validate_execution
+    unresolved = validate_json_schema(values, schema, schema.get("$defs", {}))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\mvp_native_schema.py:196: in validate_json_schema
+    count += validate_json_schema(item, properties[key], definitions, path + "." + key)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\mvp_native_schema.py:157: in validate_json_schema
+    require(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, reason = 'No exact original DTO variant: inputs.intent'
+
+    def require(value: bool, reason: str) -> None:
+        if not value:
+>           raise ValueError(reason)
+E           ValueError: No exact original DTO variant: inputs.intent
+
+.runtime\W1-expected-transfer-dto-rejection-candidate-20261005T0930Z\mvp_native_schema.py:44: ValueError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED .runtime/W1-expected-transfer-dto-rejection-candidate-20261005T0930Z/test_expected_transfer_dto_rejection.py::test_exact_missing_destination_is_pending_original_rejection[False]
+FAILED .runtime/W1-expected-transfer-dto-rejection-candidate-20261005T0930Z/test_expected_transfer_dto_rejection.py::test_exact_missing_destination_is_pending_original_rejection[True]
+FAILED .runtime/W1-expected-transfer-dto-rejection-candidate-20261005T0930Z/test_expected_transfer_dto_rejection.py::test_valid_transfer_does_not_receive_negative_input_label
+FAILED .runtime/W1-expected-transfer-dto-rejection-candidate-20261005T0930Z/test_expected_transfer_dto_rejection.py::test_original_backward_source_reference_remains_unresolved
+4 failed, 10 passed, 2 warnings in 2.02s

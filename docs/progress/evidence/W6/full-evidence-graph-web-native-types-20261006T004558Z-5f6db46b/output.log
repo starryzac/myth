@@ -1,0 +1,4 @@
+$ tsc --noEmit
+src/components/FullEvidenceGraphPanel.tsx(17,6): error TS18048: 'node.proof.original_refs' is possibly 'undefined'.
+src/components/FullEvidenceGraphPanel.tsx(17,85): error TS18048: 'node.proof.original_refs' is possibly 'undefined'.
+[ELIFECYCLE] Command failed with exit code 2.

@@ -1,0 +1,38 @@
+{
+  "run_id": "20261005T183749Z-db1cd38a",
+  "task": "W6",
+  "label": "intervention-and-simulator-root-nav-direct",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/App.tsx",
+    "apps/web/src/App.test.tsx"
+  ],
+  "command": [
+    "cmd.exe",
+    "/d",
+    "/s",
+    "/c",
+    "pnpm",
+    "--dir",
+    "apps/web",
+    "exec",
+    "vitest",
+    "run",
+    "src/App.test.tsx"
+  ],
+  "exit_code": 1,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T18:37:50.621758+00:00",
+  "finished_at": "2026-10-05T18:37:51.766273+00:00",
+  "wall_seconds": 1.144515,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "776a577528c410c916ac3773d61d750b15497a9613892ac240c5c006d344b767",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

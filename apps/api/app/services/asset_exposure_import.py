@@ -30,6 +30,8 @@ from app.services.simulated_bank import validate_bank_projection
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+FULL_MATURITY_GUARDS_VERSION = "full-maturity-user-guards-v1"
+
 
 def _scope(session: Session, context: BoundaryContext, version_id: UUID | None) -> str:
     if version_id is None:
@@ -173,7 +175,10 @@ def load_all_asset_exposure(
         if not is_v3 and (
             resource_reservations
             or any(row.legacy_redemption_id is None for row in bank_operations)
-            or any("execution" in row.request for row in actions)
+            or any(
+                "execution" in row.request or "goal_release_execution" in row.request
+                for row in actions
+            )
         ):
             raise ValueError("Generic execution requires complete independent exposure v3")
         if not is_v4 and (
@@ -297,6 +302,22 @@ def load_all_asset_exposure(
             if configuration_hash(action.request) != action.request_hash:
                 raise ValueError("Action request hash mismatch")
             state = declaration.get("state")
+            if "goal_release_execution" in action.request:
+                from app.services.full_goal_release_execution import validate_goal_release_exposure
+
+                validate_goal_release_exposure(
+                    action,
+                    declaration,
+                    receipts,
+                    bank_operations,
+                    resource_reservations,
+                    bank_postings,
+                    epoch,
+                    session=session,
+                )
+                # This new protocol has no resource/income reservation or asset
+                # principal. Exact pending and settled facts are checked above.
+                continue
             if "execution" in action.request:
                 from app.services.execution_exposure import validate_execution_declaration
 
@@ -342,6 +363,26 @@ def load_all_asset_exposure(
                 if state != "MATERIALIZED":
                     continue
             if action.action_type in {"ASSET_REDEEM", "ASSET_MATURITY"}:
+                from app.services.full_maturity_execution import (
+                    has_maturity_binding,
+                    validate_maturity_exposure_original,
+                )
+
+                if has_maturity_binding(session, action):
+                    if not is_v2:
+                        raise ValueError("USER maturity needs original complete bank exposure v2")
+                    if validate_maturity_exposure_original(
+                        session,
+                        action,
+                        declaration,
+                        bank_requests,
+                        receipts,
+                        bank_operations,
+                        resource_reservations,
+                        bank_postings,
+                        epoch,
+                    ):
+                        continue
                 if not is_v2:
                     raise ValueError("Recovery requires complete independent bank exposure v2")
                 requests = [row for row in bank_requests if row.action_plan_id == action.id]

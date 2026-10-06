@@ -1,0 +1,2 @@
+apps\api\app\tests\test_full_joint_goal_archive.py:211: error: Incompatible types in assignment (expression has type "dict[str, bool] | dict[str, int]", variable has type "dict[str, int]")  [assignment]
+Found 1 error in 1 file (checked 2 source files)

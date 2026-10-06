@@ -1,0 +1,22 @@
+
+ RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds/apps/web
+
+ ✓ src/App.cash-release.test.tsx (2 tests) 935ms
+   ✓ 原现金回拨跨页挡新写和reset，列表外GET保留NOT_FOUND并完整原回执才解门  685ms
+ ✓ src/pages/GoalsPage.test.tsx (15 tests) 3752ms
+   ✓ 原授权目标不在当前列表时仍可GET原epoch键，撤销后原记录匹配才解门  494ms
+   ✓ 完整保护联合规划惰性GET仍可越过写门，刷新重取且不授予执行  702ms
+   ✓ UNKNOWN保留原身份，重建页面必须GET原件后只恢复同action，不生成新prepare键  427ms
+ ✓ src/App.test.tsx (23 tests) 5315ms
+   ✓ 引导、目标及问答原请求刷新恢复后阻挡其他资金写入，自身只读核对入口保持可达  914ms
+   ✓ 问答原键待核对阻挡其他族写入，自身原键GET和资金总览仍可达  536ms
+   ✓ 分类原请求阻挡问答与资金写入，自己的原键GET完整匹配才解门  384ms
+   ✓ 十五个页面导航实际切换，介入与场景模拟可达并保留原演示入口  792ms
+   ✓ 通知原请求待核对阻挡其他变更，自身GET与只读模拟器保持可达  412ms
+   ✓ 专用授权原确认跨页暂停其他写入，列表外原键只读核对仍可达  340ms
+
+ Test Files  3 passed (3)
+      Tests  40 passed (40)
+   Start at  04:19:38
+   Duration  11.93s (transform 3.95s, setup 1.58s, collect 11.35s, tests 10.00s, environment 3.40s, prepare 1.02s)
+

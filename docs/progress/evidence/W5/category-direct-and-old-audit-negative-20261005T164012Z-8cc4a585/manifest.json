@@ -1,0 +1,42 @@
+{
+  "run_id": "20261005T164012Z-8cc4a585",
+  "task": "W5",
+  "label": "category-direct-and-old-audit-negative",
+  "status": "PASSED",
+  "scope": [
+    "apps/api/app/domain/transaction_category.py",
+    "apps/api/app/services/transaction_category.py",
+    "apps/api/app/api/v1/transaction_category.py",
+    "apps/api/app/domain/audit_chain.py",
+    "apps/api/app/domain/audit_chain_types.py",
+    "apps/api/app/tests/test_transaction_category.py"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "python",
+    "-m",
+    "pytest",
+    "apps/api/app/tests/test_transaction_category.py",
+    "apps/api/app/tests/test_audit_chain_domain.py::test_unknown_trace_algorithm_and_subject_budget_are_never_passes",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T16:40:13.828078+00:00",
+  "finished_at": "2026-10-05T16:40:16.317481+00:00",
+  "wall_seconds": 2.489403,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "69893a6353263f3b30bfdd668cbf3f41a8d7da0ce4735dc46e0b1240dc67862b",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

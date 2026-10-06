@@ -1,0 +1,40 @@
+{
+  "run_id": "20261005T155554Z-88978d2f",
+  "task": "W6",
+  "label": "full-goal-root-integration-web-types",
+  "status": "FAILED",
+  "scope": [
+    "apps/web/src/App.tsx",
+    "apps/web/src/App.test.tsx",
+    "apps/web/src/pages/GoalsPage.tsx",
+    "apps/web/src/pages/GoalsPage.test.tsx",
+    "apps/web/src/pages/OnboardingPage.tsx"
+  ],
+  "command": [
+    "cmd.exe",
+    "/d",
+    "/s",
+    "/c",
+    "pnpm",
+    "--dir",
+    "apps/web",
+    "exec",
+    "tsc",
+    "--noEmit"
+  ],
+  "exit_code": 2,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T15:55:55.488826+00:00",
+  "finished_at": "2026-10-05T15:56:08.766970+00:00",
+  "wall_seconds": 13.278144,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [],
+  "scoped_source_changes": [],
+  "all_source_stable": true,
+  "scoped_source_stable": true,
+  "log_sha256": "7f930a82eca5fa8aef48d9a8229a1fffea7fe9f5995ceab0f245a68b26bd8aae",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

@@ -1,0 +1,48 @@
+{
+  "run_id": "20261005T095310Z-7be4b41e",
+  "task": "W1",
+  "label": "native-readonly-dag-installed-pure",
+  "status": "PASSED",
+  "scope": [
+    "scripts/mvp_native_schema.py",
+    "scripts/mvp_corpus_v2.py",
+    "scripts/mvp_readonly_oracle_dag.py",
+    "scripts/tests/test_mvp_"
+  ],
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "python",
+    "-m",
+    "pytest",
+    "scripts/tests/test_mvp_corpus.py",
+    "scripts/tests/test_mvp_corpus_v2.py",
+    "scripts/tests/test_mvp_native_expected_dto_rejection.py",
+    "scripts/tests/test_mvp_corpus_readonly_dag.py",
+    "scripts/tests/test_mvp_readonly_oracle_dag.py",
+    "scripts/tests/test_mvp_frozen_runtime.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "git_head": "4ccf84e973978482a1098d18c69fbfc9f011fac6",
+  "started_at": "2026-10-05T09:53:10.894147+00:00",
+  "finished_at": "2026-10-05T09:54:00.246341+00:00",
+  "wall_seconds": 49.352194,
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "source_changes": [
+    "scripts/mvp_arm_executor.py",
+    "scripts/tests/test_w1_media_decode.py",
+    "scripts/w1_media_decode.py"
+  ],
+  "scoped_source_changes": [],
+  "all_source_stable": false,
+  "scoped_source_stable": true,
+  "log_sha256": "5bb6718a0c557fadd9120d7138fcf0c1146841c67983b6f5733f7793e9588d7e",
+  "coverage_boundary": "Only this actual command; not a full-version acceptance."
+}

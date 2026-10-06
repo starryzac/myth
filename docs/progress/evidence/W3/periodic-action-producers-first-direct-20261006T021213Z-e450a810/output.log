@@ -1,0 +1,2788 @@
+FFFFFFFFFFFFFFFFFF                                                       [100%]
+================================== FAILURES ===================================
+______ test_exact_300_payment_and_no_grant_replaces_only_original_scope _______
+
+    def test_exact_300_payment_and_no_grant_replaces_only_original_scope() -> None:
+>       data = fixture()
+               ^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:478: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_____________ test_ask_does_not_inherit_prior_action_confirmation _____________
+
+    def test_ask_does_not_inherit_prior_action_confirmation() -> None:
+>       data = fixture(auto=False)
+               ^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:495: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = False, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+____ test_actual_complete_empty_relations_excluded_but_false_empty_unknown ____
+
+    def test_actual_complete_empty_relations_excluded_but_false_empty_unknown() -> None:
+>       result = derive_periodic_payment_producers(fixture(confirmed=False))
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:517: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = False
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_ test_original_denominators_and_inflight_are_never_silent_exclusions[full_count] _
+
+bad = 'full_count'
+
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "full_count",
+            "source_count",
+            "source_ids",
+            "table_count",
+            "owner",
+            "source_hash",
+            "missing_start",
+            "missing_candidate",
+            "wrong_account",
+            "full_protection",
+            "pending",
+            "bank_without_receipt",
+        ],
+    )
+    def test_original_denominators_and_inflight_are_never_silent_exclusions(bad: str) -> None:
+>       data = fixture()
+               ^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:549: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_ test_original_denominators_and_inflight_are_never_silent_exclusions[source_count] _
+
+bad = 'source_count'
+
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "full_count",
+            "source_count",
+            "source_ids",
+            "table_count",
+            "owner",
+            "source_hash",
+            "missing_start",
+            "missing_candidate",
+            "wrong_account",
+            "full_protection",
+            "pending",
+            "bank_without_receipt",
+        ],
+    )
+    def test_original_denominators_and_inflight_are_never_silent_exclusions(bad: str) -> None:
+>       data = fixture()
+               ^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:549: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_ test_original_denominators_and_inflight_are_never_silent_exclusions[source_ids] _
+
+bad = 'source_ids'
+
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "full_count",
+            "source_count",
+            "source_ids",
+            "table_count",
+            "owner",
+            "source_hash",
+            "missing_start",
+            "missing_candidate",
+            "wrong_account",
+            "full_protection",
+            "pending",
+            "bank_without_receipt",
+        ],
+    )
+    def test_original_denominators_and_inflight_are_never_silent_exclusions(bad: str) -> None:
+>       data = fixture()
+               ^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:549: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_ test_original_denominators_and_inflight_are_never_silent_exclusions[table_count] _
+
+bad = 'table_count'
+
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "full_count",
+            "source_count",
+            "source_ids",
+            "table_count",
+            "owner",
+            "source_hash",
+            "missing_start",
+            "missing_candidate",
+            "wrong_account",
+            "full_protection",
+            "pending",
+            "bank_without_receipt",
+        ],
+    )
+    def test_original_denominators_and_inflight_are_never_silent_exclusions(bad: str) -> None:
+>       data = fixture()
+               ^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:549: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_ test_original_denominators_and_inflight_are_never_silent_exclusions[owner] __
+
+bad = 'owner'
+
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "full_count",
+            "source_count",
+            "source_ids",
+            "table_count",
+            "owner",
+            "source_hash",
+            "missing_start",
+            "missing_candidate",
+            "wrong_account",
+            "full_protection",
+            "pending",
+            "bank_without_receipt",
+        ],
+    )
+    def test_original_denominators_and_inflight_are_never_silent_exclusions(bad: str) -> None:
+>       data = fixture()
+               ^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:549: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_ test_original_denominators_and_inflight_are_never_silent_exclusions[source_hash] _
+
+bad = 'source_hash'
+
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "full_count",
+            "source_count",
+            "source_ids",
+            "table_count",
+            "owner",
+            "source_hash",
+            "missing_start",
+            "missing_candidate",
+            "wrong_account",
+            "full_protection",
+            "pending",
+            "bank_without_receipt",
+        ],
+    )
+    def test_original_denominators_and_inflight_are_never_silent_exclusions(bad: str) -> None:
+>       data = fixture()
+               ^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:549: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_ test_original_denominators_and_inflight_are_never_silent_exclusions[missing_start] _
+
+bad = 'missing_start'
+
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "full_count",
+            "source_count",
+            "source_ids",
+            "table_count",
+            "owner",
+            "source_hash",
+            "missing_start",
+            "missing_candidate",
+            "wrong_account",
+            "full_protection",
+            "pending",
+            "bank_without_receipt",
+        ],
+    )
+    def test_original_denominators_and_inflight_are_never_silent_exclusions(bad: str) -> None:
+>       data = fixture()
+               ^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:549: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_ test_original_denominators_and_inflight_are_never_silent_exclusions[missing_candidate] _
+
+bad = 'missing_candidate'
+
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "full_count",
+            "source_count",
+            "source_ids",
+            "table_count",
+            "owner",
+            "source_hash",
+            "missing_start",
+            "missing_candidate",
+            "wrong_account",
+            "full_protection",
+            "pending",
+            "bank_without_receipt",
+        ],
+    )
+    def test_original_denominators_and_inflight_are_never_silent_exclusions(bad: str) -> None:
+>       data = fixture()
+               ^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:549: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_ test_original_denominators_and_inflight_are_never_silent_exclusions[wrong_account] _
+
+bad = 'wrong_account'
+
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "full_count",
+            "source_count",
+            "source_ids",
+            "table_count",
+            "owner",
+            "source_hash",
+            "missing_start",
+            "missing_candidate",
+            "wrong_account",
+            "full_protection",
+            "pending",
+            "bank_without_receipt",
+        ],
+    )
+    def test_original_denominators_and_inflight_are_never_silent_exclusions(bad: str) -> None:
+>       data = fixture()
+               ^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:549: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_ test_original_denominators_and_inflight_are_never_silent_exclusions[full_protection] _
+
+bad = 'full_protection'
+
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "full_count",
+            "source_count",
+            "source_ids",
+            "table_count",
+            "owner",
+            "source_hash",
+            "missing_start",
+            "missing_candidate",
+            "wrong_account",
+            "full_protection",
+            "pending",
+            "bank_without_receipt",
+        ],
+    )
+    def test_original_denominators_and_inflight_are_never_silent_exclusions(bad: str) -> None:
+>       data = fixture()
+               ^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:549: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_ test_original_denominators_and_inflight_are_never_silent_exclusions[pending] _
+
+bad = 'pending'
+
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "full_count",
+            "source_count",
+            "source_ids",
+            "table_count",
+            "owner",
+            "source_hash",
+            "missing_start",
+            "missing_candidate",
+            "wrong_account",
+            "full_protection",
+            "pending",
+            "bank_without_receipt",
+        ],
+    )
+    def test_original_denominators_and_inflight_are_never_silent_exclusions(bad: str) -> None:
+>       data = fixture()
+               ^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:549: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_ test_original_denominators_and_inflight_are_never_silent_exclusions[bank_without_receipt] _
+
+bad = 'bank_without_receipt'
+
+    @pytest.mark.parametrize(
+        "bad",
+        [
+            "full_count",
+            "source_count",
+            "source_ids",
+            "table_count",
+            "owner",
+            "source_hash",
+            "missing_start",
+            "missing_candidate",
+            "wrong_account",
+            "full_protection",
+            "pending",
+            "bank_without_receipt",
+        ],
+    )
+    def test_original_denominators_and_inflight_are_never_silent_exclusions(bad: str) -> None:
+>       data = fixture()
+               ^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:549: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+________ test_other_family_unknown_and_original_snapshot_are_retained _________
+
+    def test_other_family_unknown_and_original_snapshot_are_retained() -> None:
+>       data = fixture(confirmed=False)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:614: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = False
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_ test_frozen_exact_algorithm_recomputes_original_result_and_complete_sources _
+
+    def test_frozen_exact_algorithm_recomputes_original_result_and_complete_sources() -> None:
+>       data = fixture()
+               ^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:646: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = True
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+_______ test_actual_http_get_is_read_only_and_query_facts_are_forbidden _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000134D9A8FBC0>
+
+    def test_actual_http_get_is_read_only_and_query_facts_are_forbidden(
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+>       result = derive_periodic_payment_producers(fixture(confirmed=False))
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:684: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+auto = True, confirmed = False
+
+    def fixture(*, auto: bool = True, confirmed: bool = True) -> PeriodicActionSetInput:
+        version = recurring()
+        config = copy.deepcopy(version.configuration)
+        config["auto_execute"] = auto
+        version = version.model_copy(
+            update={"configuration": config, "content_hash": configuration_hash(config)}
+        )
+        current = context().model_copy(
+            update={"versions": [version], "requires_confirmation": not auto}
+        )
+        effect = payment().model_copy(update={"business_key": f"recurring:{POLICY}:2026-10"})
+        raw: dict[str, list[dict[str, Any]]] = {name: [] for name in REQUIRED_TABLES}
+        raw["users"] = [{"id": str(USER), "is_simulated": True}]
+        raw["accounts"] = [
+            dict(
+                id=str(row.account_id),
+                user_id=str(USER),
+                account_type="CASH",
+                currency="CNY",
+                bank_code="ICBC",
+                external_ref=str(row.account_id),
+                balance_cents=row.balance_cents,
+            )
+            for row in current.snapshot.cash_accounts
+        ]
+        raw["policies"] = [{"id": str(POLICY), "user_id": str(USER), "status": "ACTIVE"}]
+        raw["policy_versions"] = [
+            {
+                "id": str(VERSION),
+                "user_id": str(USER),
+                "policy_id": str(POLICY),
+                "version_number": 1,
+                "configuration": config,
+                "content_hash": version.content_hash,
+                "confirmed_at": version.confirmed_at.isoformat(),
+                "valid_from": version.valid_from.isoformat(),
+                "valid_until": version.valid_until.isoformat() if version.valid_until else None,
+            }
+        ]
+        proof_content = {
+            "counterparty_ref": "landlord-fixed",
+            "economic_role": "CONSUMPTION",
+            "fixture_tier": "SYNTHETIC_DIRECT_TEST_ONLY",
+        }
+        payee = {
+            "id": str(EVIDENCE),
+            "user_id": str(USER),
+            "source_type": "SIMULATED_BANK_TRANSACTION",
+            "source_ref": "synthetic:bank-not-executed",
+            "content": proof_content,
+            "content_hash": configuration_hash(proof_content),
+            "status": "VALID",
+            "evidence_level": "BANK_CONFIRMED",
+            "observed_at": NOW.isoformat(),
+            "valid_from": NOW.isoformat(),
+            "valid_to": None,
+        }
+        raw["evidence_items"] = [payee]
+        account = next(row for row in raw["accounts"] if row["id"] == str(A))
+        refs = [
+            {
+                "role": "source_account",
+                "kind": "ACCOUNT",
+                "id": str(A),
+                "binding_hash": configuration_hash({"id": str(A), "owner": str(USER), "type": "CASH"}),
+                "snapshot": copy.deepcopy(account),
+            },
+            {
+                "role": "payee_source",
+                "kind": "EVIDENCE",
+                "id": str(EVIDENCE),
+                "binding_hash": configuration_hash(
+                    {"id": str(EVIDENCE), "hash": payee["content_hash"], "payee_id": "landlord-fixed"}
+                ),
+                "snapshot": copy.deepcopy(payee),
+            },
+        ]
+        full_config = PeriodicTransferPolicy.model_validate_json(
+            __import__("json").dumps(
+                {
+                    "type": "periodic_transfer",
+                    "payee_id": "landlord-fixed",
+                    "source_account_id": str(A),
+                    "single_action_cap_cents": 300,
+                    "amount_rule": {"kind": "exact", "amount_cents": 300},
+                    "due_day": 4,
+                    "prepare_days_before": config["prepare_days_before"],
+                    "auto_execute": auto,
+                    "valid_until": "2026-10-06",
+                }
+            )
+        ).model_dump(mode="json")
+        full_hash = configuration_hash(full_config)
+        full_version = FullVersionView(
+            version_id=FULL_VERSION,
+            policy_id=FULL,
+            version_number=1,
+            configuration=full_config,
+            content_hash=full_hash,
+            previous_hash=None,
+            summary="synthetic",
+            confirmation={"accepted": True, "reviewed_hash": full_hash},
+            confirmed_at=NOW,
+            valid_from=NOW,
+            valid_until=NOW + timedelta(days=2),
+            change_reason="synthetic",
+            evidence_ids=[EVIDENCE],
+            impact_analysis={"reference_snapshots": refs},
+            confirmation_evidence_status="CURRENT_EVIDENCE_MATCHED",
+        )
+>       full = FullPolicyView(
+            user_id=USER,
+            policy_id=FULL,
+            epoch_id=EPOCH,
+            template_name="PeriodicTransferPolicy",
+            name="synthetic",
+            status="ACTIVE",
+            effective_status="ACTIVE",
+            planning_confirmation_valid=True,
+            reference_validation="CURRENT",
+            current_version=full_version,
+            updated_at=NOW,
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for FullPolicyView
+E       user_id
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=UUID('00000000-0000-0000-0000-000000000001'), input_type=UUID]
+E           For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+
+apps\api\app\tests\test_full_action_set_payment_producers.py:186: ValidationError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:469
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:423
+  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path F:\学校活动\工行杯\钱途有界\bounded-funds\.pytest_cache\v\cache\lastfailed: [WinError 5] 拒绝访问。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_exact_300_payment_and_no_grant_replaces_only_original_scope
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_ask_does_not_inherit_prior_action_confirmation
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_actual_complete_empty_relations_excluded_but_false_empty_unknown
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_original_denominators_and_inflight_are_never_silent_exclusions[full_count]
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_original_denominators_and_inflight_are_never_silent_exclusions[source_count]
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_original_denominators_and_inflight_are_never_silent_exclusions[source_ids]
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_original_denominators_and_inflight_are_never_silent_exclusions[table_count]
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_original_denominators_and_inflight_are_never_silent_exclusions[owner]
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_original_denominators_and_inflight_are_never_silent_exclusions[source_hash]
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_original_denominators_and_inflight_are_never_silent_exclusions[missing_start]
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_original_denominators_and_inflight_are_never_silent_exclusions[missing_candidate]
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_original_denominators_and_inflight_are_never_silent_exclusions[wrong_account]
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_original_denominators_and_inflight_are_never_silent_exclusions[full_protection]
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_original_denominators_and_inflight_are_never_silent_exclusions[pending]
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_original_denominators_and_inflight_are_never_silent_exclusions[bank_without_receipt]
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_other_family_unknown_and_original_snapshot_are_retained
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_frozen_exact_algorithm_recomputes_original_result_and_complete_sources
+FAILED apps/api/app/tests/test_full_action_set_payment_producers.py::test_actual_http_get_is_read_only_and_query_facts_are_forbidden
+18 failed, 3 warnings in 5.02s

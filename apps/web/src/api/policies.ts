@@ -26,6 +26,15 @@ export const getProposals = () => list<components['schemas']['ProposalList']>('/
   typeof item.compiler_version === 'string' && object(item.configuration) && typeof item.configuration_hash === 'string' &&
   typeof item.validation_ready === 'boolean' && (item.compilation_id === null || typeof item.compilation_id === 'string'));
 export const getVersions = (id: string) => list<components['schemas']['PolicyVersionList']>(`/policies/${encodeURIComponent(id)}/versions`, validVersion);
+export async function getPolicyMapVersions(id: string) {
+  const result = await getVersions(id);
+  const identities = new Set<string>(); const numbers = new Set<number>();
+  for (const version of result.items) {
+    if (version.policy_id !== id || version.version_number < 1 || identities.has(version.id) || numbers.has(version.version_number)) throw new Error('版本列表身份或唯一性未通过校验');
+    identities.add(version.id); numbers.add(version.version_number);
+  }
+  return result;
+}
 export const discoverPolicies = () => request<components['schemas']['DiscoveryResult']>('/policies/discover', 'POST', {});
 async function compilationRequest(path: string, method = 'GET', body?: unknown): Promise<Compilation> {
   const result = await request<Compilation>(path, method, body);
