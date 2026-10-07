@@ -1,2 +1,0 @@
-apps\api\app\tests\test_full_future_dated_projection_bridge.py:91: error: Incompatible types in assignment (expression has type "bool", target has type "Collection[str]")  [assignment]
-Found 1 error in 1 file (checked 3 source files)

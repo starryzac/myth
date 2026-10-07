@@ -1,3 +1,0 @@
-apps\api\app\domain\asset_exposure.py:151:101: E501 Line too long (101 > 100)
-apps\api\app\domain\asset_exposure.py:156:101: E501 Line too long (110 > 100)
-Found 2 errors.

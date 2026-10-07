@@ -358,6 +358,25 @@ def _verify_lifecycle_original(
             raise ValueError("POST_COMMIT_ORIGINAL_FULL_KEY_AND_RECEIPT_DIFFERS")
 
 
+def _financial_scope_equal(
+    reviewed: MultiTemplatePreviewResponse, actual: MultiTemplatePreviewResponse
+) -> bool:
+    """Compare every financial value and all 1098 points, retaining both display notes.
+
+    A hypothesis and an actual reading have different provenance labels. Those
+    labels stay in their immutable originals and hashes, but are not money or
+    constraints. The current-review source/permission guards still use the exact
+    original impact_value, including notes, before committing a new version.
+    """
+    expected = impact_value(reviewed, after=True)
+    current = impact_value(actual, after=False)
+    for value in (expected, current):
+        curve = value.get("curve")
+        if curve is not None:
+            curve.pop("calculation_notes")
+    return expected == current
+
+
 def _readback(
     engine: Engine,
     user_id: UUID,
@@ -403,7 +422,7 @@ def _readback(
             actual_hash == record.preview.candidate_configuration_hash
             and fresh.before_configuration == record.preview.after_configuration
             and coverage(fresh)[2]
-            and impact_value(record.preview, after=True) == impact_value(fresh, after=False)
+            and _financial_scope_equal(record.preview, fresh)
         )
         if not matched:
             reasons.append("POST_COMMIT_ACTUAL_SCOPE_NOT_EQUAL_TO_REVIEWED_CANDIDATE")

@@ -1,2 +1,0 @@
-scripts\mvp_schedule_control.py:77: error: Argument 1 to "set" has incompatible type "Any | None"; expected "Iterable[Any]"  [arg-type]
-Found 1 error in 1 file (checked 2 source files)

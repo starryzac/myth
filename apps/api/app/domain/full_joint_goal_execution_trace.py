@@ -7,8 +7,10 @@ from uuid import uuid5
 from app.domain.decision_trace_types import DecisionTrace
 from app.domain.execution import revalidate_execution
 from app.domain.execution_types import ConfirmationGrant, ExecutionContext, ExecutionEffect
+from app.domain.full_joint_goal_archive_protocol import ALGORITHM_V3, expanded_joint_trace
 from app.domain.full_joint_goal_execution import (
     ALGORITHM,
+    ALGORITHM_V4,
     MARKER,
     FullJointFrozenPlan,
     FullJointGoalConfirmRequest,
@@ -68,8 +70,17 @@ def _whole_consent(trace: DecisionTrace, plan: FullJointFrozenPlan) -> None:
 
 
 def verify_frozen_full_joint_goal_trace(trace: DecisionTrace) -> None:
+    from app.domain.immutable_joint_archive_scope import verify_complete_wire
+
     try:
-        _verify(trace)
+        if trace.algorithm_versions.get(MARKER) not in {ALGORITHM_V3, ALGORITHM_V4}:
+            _verify(trace)
+        else:
+            verify_complete_wire(
+                trace.algorithm_versions[MARKER],
+                trace.model_dump(mode="json"),
+                lambda: _verify(trace),
+            )
     except (KeyError, TypeError, StopIteration) as cause:
         raise ValueError("Complete closed original joint trace is required") from cause
 
@@ -79,9 +90,13 @@ def _verify(trace: DecisionTrace) -> None:
     # and does not call Session, a current-rule reader or an audit reader.
     from app.services.full_joint_goal_execution_guards import verify_frozen_joint_execution_trace
 
-    if trace.algorithm_versions.get(MARKER) != ALGORITHM:
+    if trace.algorithm_versions.get(MARKER) not in {ALGORITHM, ALGORITHM_V3, ALGORITHM_V4}:
         raise ValueError("Exact new joint execution algorithm is required")
     proof = verify_frozen_joint_execution_trace(trace)
+    trace = expanded_joint_trace(trace)
+    from app.domain.full_joint_goal_source_adapter import native_semantic_trace
+
+    trace = native_semantic_trace(trace)
     if trace.phase == "EVALUATION":
         if not isinstance(proof, FullJointFrozenPlan):
             raise ValueError("Exact original joint planning identity/outcome is required")

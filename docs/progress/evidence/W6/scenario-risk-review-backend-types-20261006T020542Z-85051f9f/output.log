@@ -1,4 +1,0 @@
-apps\api\app\tests\test_scenario_risk_review.py:403: error: Argument 1 to "Captured" has incompatible type "SimpleNamespace"; expected "BoundaryContext"  [arg-type]
-apps\api\app\tests\test_scenario_risk_review.py:492: error: Argument 1 to "compare_scenario_risk" has incompatible type "SimpleNamespace"; expected "Session"  [arg-type]
-apps\api\app\tests\test_scenario_risk_review.py:509: error: Argument 1 to "read_scenario_risk_context" has incompatible type "SimpleNamespace"; expected "Session"  [arg-type]
-Found 3 errors in 1 file (checked 4 source files)

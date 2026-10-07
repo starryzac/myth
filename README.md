@@ -1,55 +1,52 @@
 # 知余 · Zhiyu
 
-当前交付采用[知余 Demo 转型方案](知余_Demo转型开发方案_2026-10-06.md)：四页、两条离线规则模板、单目标、三条真实模拟资金场景。使用[独立启动说明](docs/demo/zhiyu-start.md)，不要用下方历史完整工程的默认 seed/reset 来准备本次演示。状态、实测与剩余缺口统一记在[Demo 交付记录](docs/progress/ZY-DEMO.md)，讲解见[演示讲稿](docs/demo/zhiyu-talk.md)。
+基于 FastAPI、React 和 PostgreSQL 的模拟资金 Agent。包含规则配置、多目标规划、资产配置与支取、必要问题问答、持续授权和动作恢复代码。全部账户、银行回执与资金操作均为模拟，不连接真实银行。
 
-当前已启动[知余试用入口](http://127.0.0.1:19179/zhiyu.html)，尚未执行本轮场景。两组真实 Edge 三场景及独立数据库核验已通过；首次打开、整页读取和资金执行的性能目标仍有缺口，详见交付记录。
+金额、权限、资金边界、执行状态、幂等与恢复由确定性代码处理。未来未到账收入不扩大当前可安排金额。模型只用于理解需求与生成候选，不能直接授权资金动作。
 
-下方保留原 BoundedFunds 工程说明与当时阶段记录；旧进度数字和正式库快照不是本次 Demo 的验收结果。原需求仍为 21/92 正式关闭，FULL 不由本轮自动关闭。
+## 工程结构
 
-## 原完整工程说明与历史阶段记录
+- `apps/api/app`：API、规则和规划领域、模拟银行、执行器、审计与后台任务。
+- `apps/api/alembic`：数据库迁移。
+- `apps/web`：前端源码，含扩展版、旧 Demo 和完整工程入口。
+- `packages/contracts`：OpenAPI 与 TypeScript 合同。
+- `scripts`：依赖安装、构建、合同生成、初始化与独立运行入口。
+- `deploy`：容器构建与独立模拟部署配置。
 
-面向青年的可审计分级自主资金 Agent。全部账户、产品与动作均为合成模拟。
+这是当前已接入应用的工程快照。工程目录不附开发计划、过程记录、验收脚本、测试夹具、截图、对话记录、运行数据或本机密钥。功能实现与完整验收结论分别处理；本 README 不声明五能力整体已通过验收。
 
-当前完成20/92项：[MVP-403决策轨迹页](docs/progress/MVP-403.md)已定向验收，八层、历史与当前关联、原回执及真实确认策略通过。初版整体及完整版均未完成，目标持续ACTIVE；下一项MVP-404演示控制台。全量留初版与完整版两个验收节点。见[开发状态](docs/progress/STATUS.md)与[92项追踪](docs/spec/requirements-traceability.md)。
+## 本地运行
 
-正式库为0007_external_bank_facts（23业务表），金融seed mvp-301-v6。非重置迁移保留原20表原字段全部数据，审计表和external facts仍为空，正式旧历史保持LEGACY_UNAUDITED；隔离临时库审计正向结果不代表正式全史VALID。`make seed`导入60天事实、129模拟流水、3账单、T0/T1/30天定存及独立银行开户/收入位置记录；成功reset业务摘要v2保持固定、审计历史增长。当前事实查询见[账户API](docs/architecture/account-facts-api.md)。
-
-策略已支持明确确认、追加版本、暂停、撤销、到期及旧动作失效；[策略 API](docs/architecture/policy-api.md)。`make policy-refresh` 可落库刷新时间状态，授权检查不依赖刷新是否执行。历史模式发现和离线自然语言编译仅生成可复核候选，默认关闭外部 LLM。
-
-[生活准备金估算](docs/architecture/living-reserve-api.md) 已实现：验证完整历史与分类证据后，按重叠窗口的精确分位数返回建议；历史不足或来源冲突时不给精确建议。估算全程只读，确认前不产生策略权限。
-
-90日现金边界、新增收入的目标月储备规划及[单产品资产配置预览](docs/architecture/asset-allocation-api.md)已完成对应任务验收。配置预览比较明确退出方案和净模拟收益，并保留目标归属、历史占用与在途预留。种子含三类产品的v1/v2共六条目录记录，旧持仓仍关联原版本；这些预览不产生资金动作。
-
-[安全恢复](docs/architecture/recovery-api.md)已通过MVP-205验收：整仓无损赎回、独立模拟银行到账、对账及回执。T1在途仍保留实际缺口，有损提前支取生成待明确确认的提案。[统一执行器](docs/architecture/execution-api.md)已实现五类动作及有损确认后的执行，已通过MVP-301验收；业务界面在后续任务开发。
-
-## 环境与启动
-
-Python 3.12、uv、Node.js 24、pnpm 11、Docker Desktop（Linux containers）、Microsoft Edge（真实浏览器测试）。本地 PostgreSQL 16 使用 54329 端口，API 8000，Web 5173。
+需要 Python 3.12、uv、Node.js 24、pnpm 11.19.0 和 PostgreSQL 16。启动脚本要求独立目录名为 `bounded-funds-next`。
 
 ```powershell
-# Windows PowerShell，在本仓库目录执行
-.\make.cmd bootstrap
-.\make.cmd dev
+git clone https://github.com/starryzac/myth.git bounded-funds-next
+Set-Location bounded-funds-next
+python scripts/tasks.py bootstrap
 ```
 
-Linux/macOS 使用 `make bootstrap`、`make dev`。两者调用同一个 `scripts/tasks.py`，也可直接 `python scripts/tasks.py <target>`。
+模拟数据库管理端默认使用 `127.0.0.1:54329`。尚无服务时可运行 `docker compose up -d db`；已有本地 PostgreSQL 时直接使用其管理连接。自定义管理连接通过当前会话的 `ZHIYU_NEXT_ADMIN_DATABASE_URL` 提供，不提交含口令的连接地址。
 
-打开 http://127.0.0.1:5173。API 健康检查 http://127.0.0.1:8000/api/v1/health。
+```powershell
+uv run --frozen --no-dev python scripts/zhiyu_next.py prepare
+uv run --frozen --no-dev python scripts/zhiyu_next.py start --round <prepare返回的完整轮次>
+uv run --frozen --no-dev python scripts/zhiyu_next.py status --round <同一完整轮次>
+```
 
-## 质量命令
+扩展版地址为 `http://127.0.0.1:19273/zhiyu-next.html`，API 默认端口为 `19200`。每轮创建独立数据库、低权限角色和审计 epoch；运行信息与私有配置只写本地忽略的 `.runtime`。已有历史不会在启动时自动重置。
 
-`lint`、`typecheck`、`unit`、`test`、`e2e`、`check` 对当前实现执行实际验证。M0 的 `check` 为 lint + typecheck + test + e2e；完整版本将按完整计划扩展为全部九项质量门。
+模型设置在本地页面填写并保存，再测试连接。密钥只进入本地后端私有配置，未配置时仍可使用离线规则入口。真实 DeepSeek 调用仍需在用户配置密钥后验证。
 
-按 2026-10-04 用户指令，全量验收集中在初版完成和完整版完成两个节点；失败修复后可以在同一节点重跑。开发中验证改动模块及直接相关测试，资金守恒、防重复扣款、UNKNOWN 恢复和迁移运行对应集成，前端运行类型检查与相关页面验证。任务的定向通过与版本的全量通过分别记录。
+持续任务 worker 默认关闭。`app.workers.zhiyu_autonomy` 保留现有源码验证许可门；仓库不提供本机许可文件，不能直接启用该 worker 或以导出源码替代其许可。暂停阻止新执行，已有 UNKNOWN 动作继续使用原动作和银行键查询恢复。
 
-`make types` 从实际 API 同步 OpenAPI 和前端类型；`typecheck` 拒绝过期的合同。`python scripts/verify_quality_gates.py` 与 `python scripts/verify_contract_gate.py` 可复验负向检查。
+## 构建与合同
 
-每次统一命令打印 `run_id`，原始子命令日志与退出状态保存在 `.runtime/quality/<run_id>/`。`test`/`integration` 会启动本项目 PostgreSQL；迁移集成测试只创建和销毁随机 `bf_test_*` 数据库，不回滚演示库。
+```powershell
+pnpm build          # 扩展版生产构建
+pnpm build:all      # 完整入口、旧 Demo、扩展版
+pnpm types          # 从 API 生成 OpenAPI 和 TypeScript 合同
+```
 
-`seed`/`demo-reset` 会启动本项目数据库、升级到当前迁移并事务性重置专属合成演示用户，保留其他用户及原审计历史；完整竞赛演示待 MVP-404。`audit-verify` 已接只读核验脚本，缺历史、无事件或不完整时非零退出，说明见[审计合同](docs/architecture/audit-chain-api.md)。`export-evidence`、`security-check`、`evidence-check`、`build-proposal` 的命令入口预留，关联任务实现前明确失败，不能用于宣称初版完成。
+三个前端构建输出分别是 `apps/web/dist`、`apps/web/dist-zhiyu`、`apps/web/dist-zhiyu-next`，不提交构建缓存。数据库迁移使用 `uv run --frozen --no-dev alembic upgrade head`，实际连接必须指向所属模拟环境。
 
-首次建立锁文件由维护者运行 `uv sync` 和 `pnpm install`；常规 bootstrap 使用 frozen 锁文件，避免安装时漂移。`.env` 只包含本地模拟配置，不覆盖已存在环境文件。
-
-## 原则
-
-未来未到账收入不计入当前自主资金。LLM 仅生成候选策略，用户确认后才形成权限。金额使用整数分，策略版本与审计记录必须可追溯。不得连接真实银行或真实资金接口。
+`deploy/compose.demo.yaml` 是独立模拟容器配置，构建需要显式提供其中声明的镜像、摘要和运行变量；常规本地体验使用以上独立启动入口。

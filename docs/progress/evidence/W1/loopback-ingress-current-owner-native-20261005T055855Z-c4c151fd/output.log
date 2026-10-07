@@ -1,9 +1,0 @@
-Traceback (most recent call last):
-  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\demo_loopback_relay.py", line 347, in <module>
-    raise SystemExit(main())
-                     ^^^^^^
-  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\demo_loopback_relay.py", line 164, in main
-    require(
-  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\demo_loopback_relay.py", line 36, in require
-    raise ValueError(message)
-ValueError: Current owned namespace, labels, and readonly images

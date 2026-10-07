@@ -1,4 +1,0 @@
-apps\api\app\tests\test_scenario_references.py:86: error: Value of type "Collection[str]" is not indexable  [index]
-apps\api\app\tests\test_scenario_runner.py:196: error: Argument "expected_error" to "ScenarioStep" has incompatible type "dict[str, object]"; expected "ExpectedScenarioError | None"  [arg-type]
-apps\api\app\tests\test_scenario_runner.py:227: error: "PolicyVersion" has no attribute "configuration_hash"; maybe "configuration"?  [attr-defined]
-Found 3 errors in 2 files (checked 5 source files)

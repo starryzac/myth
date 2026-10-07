@@ -1,5 +1,0 @@
-$ tsc --noEmit
-src/pages/AnnualPlanningPage.tsx(47,8): error TS18048: 'data.annual_projection.calculation_notes' is possibly 'undefined'.
-F:\学校活动\工行杯\钱途有界\bounded-funds\apps\web:
-[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @bounded-funds/web@0.1.0 typecheck: `tsc --noEmit`
-Exit status 2

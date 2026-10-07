@@ -12,8 +12,10 @@ from app.domain.full_dynamic_goal_execution import (
     FullDynamicGoalProof,
     derive_full_dynamic_goal_proof,
 )
+from app.domain.full_joint_goal_archive_protocol import ALGORITHM_V3, expanded_joint_trace
 from app.domain.full_joint_goal_execution import (
     ALGORITHM,
+    ALGORITHM_V4,
     MARKER,
     FullJointChildPrepareRequest,
     FullJointFrozenPlan,
@@ -179,7 +181,7 @@ def _capture(
     if capture is not None:
         from app.services.decision_recording import capture_evidence
 
-        capture.algorithms[MARKER] = ALGORITHM
+        capture.algorithms[MARKER] = plan.protocol
         capture.inputs[MARKER] = {
             "plan": plan.model_dump(mode="json"),
             "child_request": body.model_dump(mode="json"),
@@ -363,11 +365,14 @@ def read_frozen_full_joint_goal_proof(trace: object) -> FullDynamicGoalProof:
     if not isinstance(trace, DecisionTrace):
         raise ValueError("JOINT_TYPED_TRACE_REQUIRED")
     verify_trace(trace)
-    if trace.algorithm_versions.get(MARKER) != ALGORITHM:
+    if trace.algorithm_versions.get(MARKER) not in {ALGORITHM, ALGORITHM_V3, ALGORITHM_V4}:
         raise ValueError("JOINT_EXACT_NEW_ALGORITHM_REQUIRED")
+    trace = expanded_joint_trace(trace)
     raw = trace.inputs["planning"][MARKER]
     plan = FullJointFrozenPlan.model_validate_json(json.dumps(raw["plan"]))
     verify_frozen_joint_plan(plan)
+    if trace.algorithm_versions[MARKER] != plan.protocol:
+        raise ValueError("JOINT_PLAN_AND_TRACE_PROTOCOL_DIFFER")
     body = FullJointChildPrepareRequest.model_validate_json(json.dumps(raw["child_request"]))
     data = FullDynamicGoalInput.model_validate_json(json.dumps(raw["current_dynamic_input"]))
     child = plan.children[body.child_number - 1]
@@ -446,17 +451,24 @@ def verify_frozen_joint_execution_trace(
     from app.domain.decision_trace import verify_trace
     from app.domain.decision_trace_types import DecisionTrace
 
-    if not isinstance(trace, DecisionTrace) or trace.algorithm_versions.get(MARKER) != ALGORITHM:
+    if not isinstance(trace, DecisionTrace) or trace.algorithm_versions.get(MARKER) not in {
+        ALGORITHM,
+        ALGORITHM_V4,
+        ALGORITHM_V3,
+    }:
         raise ValueError("JOINT_EXACT_TYPED_VERSION_REQUIRED")
     verify_trace(trace)
     if trace.phase != "EVALUATION":
         return read_frozen_full_joint_goal_proof(trace)
+    trace = expanded_joint_trace(trace)
     if trace.action_id is not None:
         raise ValueError("JOINT_PLANNING_TRACE_CANNOT_CLAIM_AN_ACTION")
     plan = FullJointFrozenPlan.model_validate_json(
         json.dumps(trace.outcome["joint_execution_plan"])
     )
     verify_frozen_joint_plan(plan)
+    if trace.algorithm_versions[MARKER] != plan.protocol:
+        raise ValueError("JOINT_PLAN_AND_TRACE_PROTOCOL_DIFFER")
     if (
         trace.user_id != plan.user_id
         or trace.as_of < plan.prepared_at

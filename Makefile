@@ -1,3 +1,3 @@
-.PHONY: bootstrap dev migrate seed lint types typecheck fast-check unit property integration test e2e check full-check demo-reset export-evidence security-check audit-verify evidence-check build-proposal policy-refresh
-bootstrap dev migrate seed lint types typecheck fast-check unit property integration test e2e check full-check demo-reset export-evidence security-check audit-verify evidence-check build-proposal policy-refresh:
+.PHONY: bootstrap build build-all prepare dev status types
+bootstrap build build-all prepare dev status types:
 	python scripts/tasks.py $@

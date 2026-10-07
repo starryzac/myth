@@ -1,4 +1,0 @@
-$ tsc --noEmit
-src/api/full-goals.ts(6,51): error TS2339: Property 'FullGoalModelResponse' does not exist on type '{ AccountFactsCard: { state: "PROVEN" | "NOT_PROVEN" | "INCOMPLETE"; facts: { simulation: true; user_id: string; timezone: string; oldest_account_observed_at: string | null; latest_account_observed_at: string | null; ... 5 more ...; credit_card_unpaid_cents: number; }; bank_projection_state: "NOT_PROVEN" | "MATCHED"...'.
-src/api/full-goals.ts(7,53): error TS2339: Property 'FullGoalPreviewResponse' does not exist on type '{ AccountFactsCard: { state: "PROVEN" | "NOT_PROVEN" | "INCOMPLETE"; facts: { simulation: true; user_id: string; timezone: string; oldest_account_observed_at: string | null; latest_account_observed_at: string | null; ... 5 more ...; credit_card_unpaid_cents: number; }; bank_projection_state: "NOT_PROVEN" | "MATCHED"...'.
-[ELIFECYCLE] Command failed with exit code 2.

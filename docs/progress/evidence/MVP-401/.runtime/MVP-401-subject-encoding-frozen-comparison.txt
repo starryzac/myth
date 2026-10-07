@@ -1,5 +1,0 @@
-COMPARISONS 17 ALL_EQUAL
-depth:subject_hash ValidationError   Value error, Audit value cannot be canonically encoded [type=value_error, input_value={'content': {'balance_cen...0000-0000-000000000001'}, input_type=dict]
-depth:subject_canonical_text ValidationError   Value error, Audit value cannot be canonically encoded [type=value_error, input_value={'content': {'balance_cen...0000-0000-000000000001'}, input_type=dict]
-bytes:subject_hash ValidationError   Value error, Audit JSON exceeds byte limit [type=value_error, input_value={'content': {'balance_cen...0000-0000-000000000001'}, input_type=dict]
-bytes:subject_canonical_text ValidationError   Value error, Audit JSON exceeds byte limit [type=value_error, input_value={'content': {'balance_cen...0000-0000-000000000001'}, input_type=dict]

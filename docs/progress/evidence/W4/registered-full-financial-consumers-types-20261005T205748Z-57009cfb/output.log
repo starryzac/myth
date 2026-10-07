@@ -1,2 +1,0 @@
-apps\api\app\services\full_protection_projection.py:192: error: Incompatible types in assignment (expression has type "PeriodicTransferProjectionBinding | None", variable has type "PeriodicTransferProjectionBinding")  [assignment]
-Found 1 error in 1 file (checked 6 source files)

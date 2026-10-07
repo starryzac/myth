@@ -1,6 +1,0 @@
-run_id=20261004T051228Z-945320ed
-+ docker compose up -d --wait db
- Container bounded-funds-db-1 Running 
- Container bounded-funds-db-1 Waiting 
- Container bounded-funds-db-1 Healthy 
-+ uv run --frozen alembic upgrade head

@@ -1,6 +1,0 @@
-{
-  "status": "INVALID_COMPARISON_ATTEMPT",
-  "reason": "Snapshot helper initially allowed empty model metadata; repair added explicit model loading and physical alembic table snapshot while baseline phase was running. Root stopped owned long-chain worker before using invalid mixed-tool evidence. Short scenario original results and all raw files retained. Restart all scenarios with frozen repaired tool.",
-  "owned_worker_pid": 137364,
-  "formal_initial_empty_snapshot": "preflight/formal-before.json (invalid empty proof); corrected model snapshot separately retained."
-}

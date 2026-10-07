@@ -14,6 +14,7 @@ from app.domain.multi_goal_allocation import (
     MinimalGoalConflict,
     MultiGoalAllocationInput,
     MultiGoalAllocationResult,
+    OptimizerVersion,
     SourceReference,
     find_minimal_goal_conflict,
     solve_multi_goal_allocation,
@@ -62,6 +63,7 @@ def joint_goal_planning(
     now: datetime,
     *,
     capture_inputs: Callable[[MultiGoalAllocationInput], None] | None = None,
+    optimizer_version: OptimizerVersion | None = None,
 ) -> JointPlanningResponse:
     if now.tzinfo is None or now.utcoffset() is None:
         raise PolicyLifecycleError("INVALID_CLOCK", "服务器时间必须带时区")
@@ -227,6 +229,7 @@ def joint_goal_planning(
                 hard_protection_points=points,
                 goals=goals,
                 source_issues=sorted({issue.code for issue in issues}),
+                optimizer_version=optimizer_version if len(goals) == 8 else None,
             )
             if capture_inputs is not None:
                 capture_inputs(candidate.model_copy(deep=True))

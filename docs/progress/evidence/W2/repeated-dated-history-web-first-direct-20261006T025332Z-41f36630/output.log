@@ -1,9 +1,0 @@
-
- RUN  v3.2.4 F:/学校活动/工行杯/钱途有界/bounded-funds
-
-No test files found, exiting with code 1
-
-filter: apps/web/src/api/full-policy-change-history.test.ts, apps/web/src/components/FinancialChangeHistoryImpactPanel.test.tsx
-include: src/**/*.test.ts, src/**/*.test.tsx
-exclude:  **/node_modules/**, **/dist/**, **/cypress/**, **/.{idea,git,cache,output,temp}/**, **/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*
-

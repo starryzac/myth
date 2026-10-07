@@ -1,5 +1,0 @@
-apps\api\app\tests\test_full_policy_change_history.py:322: error: No overload variant of "__or__" of "dict" matches argument type "object"  [operator]
-apps\api\app\tests\test_full_policy_change_history.py:322: note: Possible overload variants:
-apps\api\app\tests\test_full_policy_change_history.py:322: note:     def __or__(self, dict[str, Any], /) -> dict[str, Any]
-apps\api\app\tests\test_full_policy_change_history.py:322: note:     def [_T1, _T2] __or__(self, dict[_T1, _T2], /) -> dict[str | _T1, Any | _T2]
-Found 1 error in 1 file (checked 2 source files)

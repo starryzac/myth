@@ -1,4 +1,0 @@
-F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
-  from starlette.testclient import TestClient as TestClient  # noqa
-{"event": "http_request", "request_id": "f0c506b5-ada2-4e2a-a0c2-2ffea63a2ced", "method": "GET", "status": 200, "duration_ms": 547.0}
-{"event": "http_request", "request_id": "543af2b4-06c5-4134-b184-81e3400d8a5f", "method": "GET", "status": 200, "duration_ms": 437.0}

@@ -1,2 +1,0 @@
-apps\api\app\tests\test_question_intervention_producer_api.py:18: error: Module "app.services.question_workflow" has no attribute "refresh_question_session"; maybe "read_question_session", "_read_question_session", or "close_question_session"?  [attr-defined]
-Found 1 error in 1 file (checked 5 source files)

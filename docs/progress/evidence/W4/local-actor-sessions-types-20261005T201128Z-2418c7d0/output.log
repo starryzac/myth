@@ -1,9 +1,0 @@
-apps\api\app\tests\test_local_actor_sessions.py:28: error: Unexpected keyword argument "_env_file" for "LocalActorSettings"  [call-arg]
-apps\api\app\tests\test_local_actor_sessions.py:151: error: Unexpected keyword argument "_env_file" for "LocalActorSettings"  [call-arg]
-apps\api\app\tests\test_local_actor_sessions.py:152: error: Unexpected keyword argument "_env_file" for "LocalActorSettings"  [call-arg]
-apps\api\app\tests\test_local_actor_sessions.py:153: error: Unexpected keyword argument "_env_file" for "LocalActorSettings"  [call-arg]
-apps\api\app\tests\test_local_actor_sessions.py:156: error: Unexpected keyword argument "_env_file" for "LocalActorSettings"  [call-arg]
-apps\api\app\tests\test_local_actor_sessions.py:159: error: Unexpected keyword argument "_env_file" for "LocalActorSettings"  [call-arg]
-apps\api\app\tests\test_local_actor_sessions.py:166: error: Unexpected keyword argument "_env_file" for "LocalActorSettings"  [call-arg]
-apps\api\app\tests\test_local_actor_sessions.py:174: error: Unexpected keyword argument "_env_file" for "LocalActorSettings"  [call-arg]
-Found 8 errors in 1 file (checked 5 source files)

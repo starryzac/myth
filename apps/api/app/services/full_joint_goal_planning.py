@@ -14,6 +14,7 @@ from app.domain.multi_goal_allocation import (
     MinimalGoalConflict,
     MultiGoalAllocationInput,
     MultiGoalAllocationResult,
+    OptimizerVersion,
     SourceReference,
     find_minimal_goal_conflict,
     solve_multi_goal_allocation,
@@ -57,13 +58,20 @@ class FullJointPlanningResponse(BoundaryModel):
 
 
 def full_joint_goal_planning(
-    session: Session, user_id: UUID, now: datetime
+    session: Session,
+    user_id: UUID,
+    now: datetime,
+    *,
+    optimizer_version: OptimizerVersion | None = None,
 ) -> FullJointPlanningResponse:
     _read_snapshot(session)
     now = _now(now)
     captures: list[MultiGoalAllocationInput] = []
     with session.no_autoflush:
-        original = joint_goal_planning(session, user_id, now, capture_inputs=captures.append)
+        original = joint_goal_planning(
+            session, user_id, now, capture_inputs=captures.append,
+            optimizer_version=optimizer_version,
+        )
         full = compute_full_annual_protection(session, user_id, now)
         reasons = {row.code for row in (*original.source_issues, *full.source_issues)}
         if (original.user_id, original.as_of) != (user_id, now) or (full.user_id, full.as_of) != (

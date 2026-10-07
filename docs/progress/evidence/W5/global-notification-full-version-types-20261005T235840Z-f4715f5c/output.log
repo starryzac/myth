@@ -1,3 +1,0 @@
-apps\api\app\domain\full_intervention.py:118: error: Need type annotation for "original"  [var-annotated]
-apps\api\app\tests\test_global_intervention_full_source.py:15: error: Module "app.tests.test_full_action_set_boundary_full" does not explicitly export attribute "NOW"  [attr-defined]
-Found 2 errors in 2 files (checked 3 source files)

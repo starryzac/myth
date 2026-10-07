@@ -1,4 +1,0 @@
-$ tsc --noEmit
-src/components/LocalActorSessionPanel.test.tsx(130,23): error TS2532: Object is possibly 'undefined'.
-src/components/LocalActorSessionPanel.test.tsx(131,12): error TS2532: Object is possibly 'undefined'.
-[ELIFECYCLE] Command failed with exit code 2.

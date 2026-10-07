@@ -1,3 +1,0 @@
-apps\api\app\tests\test_question_intervention_producer.py:201: error: Incompatible types in assignment (expression has type "object", variable has type "dict[str, Any]")  [assignment]
-apps\api\app\tests\test_intervention_current_observation.py:197: error: Non-overlapping identity check (left operand type: "InterventionInbox", right operand type: "SimpleNamespace")  [comparison-overlap]
-Found 2 errors in 2 files (checked 5 source files)

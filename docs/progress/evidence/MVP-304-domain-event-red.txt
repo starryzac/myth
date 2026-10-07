@@ -1,9 +1,0 @@
-..F                                                                      [100%]
-================================== FAILURES ===================================
-______ test_epoch_event_roundtrip_hash_and_replay_keep_first_observation ______
-apps\api\app\tests\test_audit_chain_domain.py:44: in test_epoch_event_roundtrip_hash_and_replay_keep_first_observation
-    from app.domain.audit_chain import build_event, parse_event, event_canonical_text, same_intent, verify_event
-E   ImportError: cannot import name 'build_event' from 'app.domain.audit_chain' (F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\apps\api\app\domain\audit_chain.py)
-=========================== short test summary info ===========================
-FAILED apps/api/app/tests/test_audit_chain_domain.py::test_epoch_event_roundtrip_hash_and_replay_keep_first_observation
-1 failed, 2 passed in 0.77s

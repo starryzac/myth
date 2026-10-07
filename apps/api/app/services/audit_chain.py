@@ -7,7 +7,7 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from contextvars import ContextVar
 from dataclasses import dataclass, field
-from datetime import UTC, datetime
+from datetime import datetime
 from typing import Any, Literal, cast
 from uuid import UUID, uuid4
 
@@ -59,6 +59,10 @@ from app.domain.audit_chain_types import (
 )
 from app.domain.bank_posting_codec import bank_posting_data, bank_posting_snapshot_version
 from app.domain.decision_trace_types import DecisionTrace
+from app.services.audit_receipt_clock import (
+    historical_receipt_read_clock,
+    receipt_read_clock_key,
+)
 from app.services.historical_read import historical_ledger_scope, stable_read_snapshot
 from app.services.policy_lifecycle import PolicyLifecycleError
 from pydantic import BaseModel, ConfigDict
@@ -675,7 +679,7 @@ def _failure(
     )
 
 
-_AuditReadKey = tuple[UUID, UUID | None, str, str | None]
+_AuditReadKey = tuple[UUID, UUID | None, str, str | None, datetime | None]
 
 
 @dataclass
@@ -714,7 +718,13 @@ def _audit_read_key(
     checkpoint: AuditCheckpoint | None,
     mode: Literal["PREFIX", "EXACT"],
 ) -> _AuditReadKey:
-    return user_id, epoch_id, mode, checkpoint.model_dump_json() if checkpoint else None
+    return (
+        user_id,
+        epoch_id,
+        mode,
+        checkpoint.model_dump_json() if checkpoint else None,
+        receipt_read_clock_key(),
+    )
 
 
 def _audit_row_digest(row: Any) -> str:
@@ -933,9 +943,9 @@ def _verify_audit_chain(
                         for actual in loaded:
                             actual_rows[kind, actual.id] = actual
             for snapshot in snapshots:
-                subject = domain.parse_subject(snapshot.canonical_text)
+                subject, original_digest = domain.parse_subject_original(snapshot.canonical_text)
                 if (
-                    domain.subject_hash(subject) != snapshot.snapshot_hash
+                    original_digest != snapshot.snapshot_hash
                     or subject.user_id != user_id
                     or subject.epoch_id != epoch.id
                     or subject.id != snapshot.entity_id
@@ -1074,7 +1084,9 @@ def _verify_audit_chain(
                                 _action_links(
                                     session,
                                     run,
-                                    _verified_maturity_link_clock(trace, events, datetime.now(UTC)),
+                                    _verified_maturity_link_clock(
+                                        trace, events, historical_receipt_read_clock()
+                                    ),
                                     trace,
                                 )
                         except PolicyLifecycleError as error:

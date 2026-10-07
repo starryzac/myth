@@ -12,8 +12,14 @@ from app.db.full_joint_goal_execution_models import (
 )
 from app.db.models import ActionPlan, AuditEpoch, EvidenceItem
 from app.domain.boundary_types import BoundaryModel
+from app.domain.full_joint_goal_archive_protocol import (
+    ALGORITHM_V3,
+    RECORD_PROTOCOL,
+    decode_joint_record,
+    expanded_joint_trace,
+)
 from app.domain.full_joint_goal_execution import (
-    ALGORITHM,
+    ALGORITHM_V4,
     MARKER,
     FullJointChildPrepareRequest,
     FullJointFrozenPlan,
@@ -59,8 +65,49 @@ def read_joint_plan_original(
     parent = session.get(FullJointGoalExecutionPlan, plan_id)
     if parent is None or parent.user_id != user_id:
         raise error("NOT_FOUND")
+    verified_parent_trace = None
     try:
-        plan = FullJointFrozenPlan.model_validate_json(json.dumps(parent.plan))
+        original = parent.plan
+        from app.domain.full_joint_goal_source_adapter import (
+            decode_source_record,
+            verified_parent_plan_reference,
+        )
+        from app.domain.full_joint_goal_source_archive import PROTOCOL as SOURCE_RECORD_PROTOCOL
+
+        if original.get("protocol") == SOURCE_RECORD_PROTOCOL:
+            verified_parent_trace = get_decision_trace(
+                session, user_id, uuid5(plan_id, "planning-proof"), now
+            )
+            if (
+                verified_parent_trace.trace is None
+                or verified_parent_trace.completeness != "COMPLETE"
+                or verified_parent_trace.audit_chain_status != "VALID"
+            ):
+                raise error("JOINT_ORIGINAL_PLANNING_TRACE_OR_AUDIT_NOT_VERIFIED")
+            bound = {
+                "user_id": str(parent.user_id),
+                "epoch_id": str(parent.epoch_id),
+                "plan_id": str(parent.id),
+                "request_hash": parent.request_hash,
+                "plan_hash": parent.plan_hash,
+                "plan_protocol": ALGORITHM_V4,
+            }
+            expected = verified_parent_plan_reference(verified_parent_trace.trace, bound)
+            original = decode_source_record(original, bound, "PLAN", expected_reference=expected)
+        if original.get("protocol") == RECORD_PROTOCOL:
+            original = decode_joint_record(
+                original,
+                {
+                    "user_id": str(parent.user_id),
+                    "epoch_id": str(parent.epoch_id),
+                    "plan_id": str(parent.id),
+                    "request_hash": parent.request_hash,
+                    "plan_hash": parent.plan_hash,
+                    "plan_protocol": ALGORITHM_V3,
+                },
+                "PLAN",
+            )
+        plan = FullJointFrozenPlan.model_validate_json(json.dumps(original))
         verify_frozen_joint_plan(plan)
     except (ValueError, TypeError, KeyError, StopIteration) as cause:
         raise error("JOINT_FROZEN_PARENT_INVALID") from cause
@@ -132,15 +179,17 @@ def read_joint_plan_original(
             or row.command_hash != configuration_hash(row.command)
         ):
             raise error("JOINT_PERSISTED_CHILD_IDENTITY_OR_COMMAND_DIFFERS")
-    parent_trace = get_decision_trace(session, user_id, uuid5(plan_id, "planning-proof"), now)
+    parent_trace = verified_parent_trace or get_decision_trace(
+        session, user_id, uuid5(plan_id, "planning-proof"), now
+    )
+    view = expanded_joint_trace(parent_trace.trace) if parent_trace.trace is not None else None
     if (
-        parent_trace.trace is None
+        view is None
         or parent_trace.completeness != "COMPLETE"
         or parent_trace.audit_chain_status != "VALID"
-        or parent_trace.trace.algorithm_versions.get(MARKER) != ALGORITHM
-        or parent_trace.trace.inputs.get("joint_execution_input")
-        != plan.inputs.model_dump(mode="json")
-        or parent_trace.trace.outcome.get("joint_execution_plan") != parent.plan
+        or view.algorithm_versions.get(MARKER) != plan.protocol
+        or view.inputs.get("joint_execution_input") != plan.inputs.model_dump(mode="json")
+        or view.outcome.get("joint_execution_plan") != plan.model_dump(mode="json")
     ):
         raise error("JOINT_ORIGINAL_PLANNING_TRACE_OR_AUDIT_NOT_VERIFIED")
     return parent, plan, rows, epoch
@@ -177,14 +226,15 @@ def verify_original_joint_child(
     ):
         raise error("JOINT_ORIGINAL_CHILD_ACTION_OR_MARKER_DIFFERS")
     saved = get_decision_trace(session, plan.user_id, action.decision_run_id, now)
+    view = expanded_joint_trace(saved.trace) if saved.trace is not None else None
     if (
-        saved.trace is None
+        view is None
         or saved.completeness != "COMPLETE"
         or saved.audit_chain_status != "VALID"
-        or saved.trace.action_id != action.id
-        or saved.trace.phase != "PREPARE"
-        or saved.trace.inputs.get("action_request") != action.request
-        or saved.trace.algorithm_versions.get(MARKER) != ALGORITHM
+        or view.action_id != action.id
+        or view.phase != "PREPARE"
+        or view.inputs.get("action_request") != action.request
+        or view.algorithm_versions.get(MARKER) != plan.protocol
     ):
         raise error("JOINT_ORIGINAL_CHILD_PREPARE_TRACE_MISSING_OR_DIRTY")
     return get_action(session, plan.user_id, action.id, now)
@@ -269,13 +319,14 @@ def read_joint_consent(
     saved = get_decision_trace(
         session, plan.user_id, uuid5(plan.plan_id, "whole-confirmation-proof"), now
     )
+    view = expanded_joint_trace(saved.trace) if saved.trace is not None else None
     if (
-        saved.trace is None
+        view is None
         or saved.completeness != "COMPLETE"
         or saved.audit_chain_status != "VALID"
-        or saved.trace.algorithm_versions.get(MARKER) != ALGORITHM
-        or saved.trace.inputs.get("joint_confirmation_request") != row.request
-        or saved.trace.outcome.get("joint_confirmation") != expected
+        or view.algorithm_versions.get(MARKER) != plan.protocol
+        or view.inputs.get("joint_confirmation_request") != row.request
+        or view.outcome.get("joint_confirmation") != expected
     ):
         raise error("JOINT_ORIGINAL_WHOLE_CONFIRMATION_TRACE_MISSING_OR_DIRTY")
     return FullJointConsentView(

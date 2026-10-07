@@ -1,9 +1,0 @@
-apps/api/app/tests/test_full_native_cases_integration.py::test_actual_existing_mixed_full_api_and_original_mvp_reads
-
-============================== warnings summary ===============================
-.venv\Lib\site-packages\fastapi\testclient.py:1
-  F:\学校活动\工行杯\钱途有界\bounded-funds\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
-    from starlette.testclient import TestClient as TestClient  # noqa
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-1 test collected in 5.15s

@@ -1,4 +1,0 @@
-apps\api\app\tests\test_scenario_simulation.py:323: error: Property "snapshot" defined in "BoundaryContext" is read-only  [misc]
-apps\api\app\tests\test_scenario_simulation.py:331: error: Property "snapshot" defined in "BoundaryContext" is read-only  [misc]
-apps\api\app\tests\test_scenario_simulation.py:333: error: Property "snapshot" defined in "BoundaryContext" is read-only  [misc]
-Found 3 errors in 1 file (checked 4 source files)

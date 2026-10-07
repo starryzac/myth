@@ -7,11 +7,11 @@
     "dev": "vite --host 127.0.0.1 --port 5173",
     "build": "tsc --noEmit && vite build",
     "build:zhiyu": "tsc --noEmit && vite build --config vite.zhiyu.config.ts",
+    "dev:zhiyu-next": "vite --config vite.zhiyu-next.config.ts",
+    "build:zhiyu-next": "tsc --noEmit && vite build --config vite.zhiyu-next.config.ts",
     "preview": "vite preview --host 127.0.0.1 --port 4173",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint . --max-warnings 0",
-    "test": "vitest run",
-    "e2e": "playwright test"
+    "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
     "@tanstack/react-query": "5.90.2",
@@ -20,10 +20,7 @@
   },
   "devDependencies": {
     "@eslint/js": "9.36.0",
-    "@playwright/test": "1.56.0",
     "@tailwindcss/vite": "4.1.13",
-    "@testing-library/jest-dom": "6.9.1",
-    "@testing-library/react": "16.3.0",
     "@types/node": "24.6.0",
     "@types/react": "19.1.16",
     "@types/react-dom": "19.1.9",
@@ -32,11 +29,9 @@
     "eslint-plugin-react-hooks": "5.2.0",
     "eslint-plugin-react-refresh": "0.4.22",
     "globals": "16.4.0",
-    "jsdom": "26.1.0",
     "tailwindcss": "4.1.13",
     "typescript": "5.9.3",
     "typescript-eslint": "8.44.1",
-    "vite": "7.3.6",
-    "vitest": "3.2.4"
+    "vite": "7.3.6"
   }
 }

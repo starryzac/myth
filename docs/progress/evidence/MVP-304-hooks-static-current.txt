@@ -1,4 +1,0 @@
-All checks passed!
-10 files already formatted
-apps\api\app\tests\test_audit_workflow_integration.py:307: error: Module "app.services.execution" does not explicitly export attribute "process_operation"  [attr-defined]
-Found 1 error in 1 file (checked 10 source files)

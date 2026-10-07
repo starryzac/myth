@@ -1,3 +1,0 @@
-apps\api\app\tests\test_full_joint_goal_execution.py:76: error: Item "None" of "FullDynamicGoalInput | None" has no attribute "model_original"  [union-attr]
-apps\api\app\tests\test_full_joint_goal_execution.py:104: error: Item "None" of "FullDynamicGoalInput | None" has no attribute "context"  [union-attr]
-Found 2 errors in 1 file (checked 7 source files)

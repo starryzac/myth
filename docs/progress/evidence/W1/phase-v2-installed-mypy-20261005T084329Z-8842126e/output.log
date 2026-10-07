@@ -1,5 +1,0 @@
-apps\api\app\tests\test_execution_phase_rechecks.py:57: error: Module "app.services.execution_observations" does not explicitly export attribute "event"  [attr-defined]
-apps\api\app\tests\test_execution_phase_rechecks.py:59: error: Module "app.services.execution_observations" does not explicitly export attribute "event"  [attr-defined]
-apps\api\app\tests\test_execution_phase_rechecks.py:162: error: Module "app.services.execution_observations" does not explicitly export attribute "User"  [attr-defined]
-apps\api\app\tests\test_execution_phase_rechecks.py:246: error: Module "app.services.execution_observations" does not explicitly export attribute "NullPool"  [attr-defined]
-Found 4 errors in 1 file (checked 3 source files)

@@ -1,3 +1,0 @@
-scripts\run_scoped_check.py:53: error: Item "TextIO" of "TextIO | Any" has no attribute "reconfigure"  [union-attr]
-scripts\run_scoped_check.py:54: error: Item "TextIO" of "TextIO | Any" has no attribute "reconfigure"  [union-attr]
-Found 2 errors in 1 file (checked 5 source files)

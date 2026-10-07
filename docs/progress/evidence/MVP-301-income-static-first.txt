@@ -1,4 +1,0 @@
-apps\api\app\services\execution_projection.py:170: error: Incompatible types in assignment (expression has type "int | None", variable has type "int")  [assignment]
-apps\api\app\tests\test_execution_projection.py:389: error: Item "None" of "ActionReceipt | None" has no attribute "id"  [union-attr]
-apps\api\app\tests\test_execution_projection.py:448: error: Item "None" of "ActionReceipt | None" has no attribute "id"  [union-attr]
-Found 3 errors in 2 files (checked 11 source files)

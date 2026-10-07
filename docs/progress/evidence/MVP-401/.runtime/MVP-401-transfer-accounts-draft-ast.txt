@@ -1,8 +1,0 @@
-{
-  "changed_function": "transfer_accounts",
-  "test_functions_unchanged": 10,
-  "original_asserts_preserved": 70,
-  "candidate_asserts": 74,
-  "original_sha256": "fb5cfd5d493823af8803d26df2a9837f8c552b2b7dc32eea12c3fdbf97a84c43",
-  "candidate_sha256": "469be4a073307923f3449df3a9d2b7bb5b2f0f9a32d7847d1febfe4301e50d69"
-}

@@ -1,3 +1,0 @@
-apps\api\app\tests\test_full_recovery_next.py:204: error: Unexpected keyword argument "observed_at" for "BillFact"  [call-arg]
-apps\api\app\tests\test_full_recovery_next.py:204: note: "BillFact" defined in "app.domain.boundary_types"
-Found 1 error in 1 file (checked 6 source files)

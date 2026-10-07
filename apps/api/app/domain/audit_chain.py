@@ -283,7 +283,7 @@ def subject_hash(subject: "AuditSubject") -> str:
     return _subject_hash_bytes(encoded)
 
 
-def parse_subject(text: str) -> "AuditSubject":
+def parse_subject_original(text: str) -> tuple["AuditSubject", str]:
     from app.domain.audit_chain_types import AuditSubject
 
     raw = _read(text)
@@ -292,7 +292,13 @@ def parse_subject(text: str) -> "AuditSubject":
     subject, encoded = _validated_subject_bytes(**subject.model_dump(mode="python"))
     if encoded.decode("utf-8") != text:
         raise AuditContractError("Audit subject text is not its original canonical encoding")
-    return subject
+    # The digest belongs only to the immediately preceding full native
+    # validation and original-byte comparison. No object or audit is cached.
+    return subject, _subject_hash_bytes(encoded)
+
+
+def parse_subject(text: str) -> "AuditSubject":
+    return parse_subject_original(text)[0]
 
 
 class AuditUnsupportedVersion(AuditContractError):
@@ -569,6 +575,7 @@ def _event_content(event: "AuditEvent") -> None:
             "POLICY_STATE_CHANGED": ("POLICY", "POLICY"),
             "GOAL_INITIALIZED": ("GOAL", "GOAL"),
             "TRANSACTION_CATEGORY_CONFIRMED": ("TRANSACTION", "TRANSACTION"),
+            "EXTENSION_RECORD_CREATED": ("EVIDENCE", "EVIDENCE"),
         }
         if (event.aggregate_type, payload.correlation_kind) != shapes[event.event_type]:
             raise AuditContractError(
@@ -599,13 +606,18 @@ def _event_content(event: "AuditEvent") -> None:
             raise AuditContractError("Audit aggregate differs from its typed business identity")
         if event.event_type != "ACTION_PROJECTED" and event.action_receipt_id is not None:
             raise AuditContractError("Only actual projection may declare its application receipt")
-        if payload.correlation_kind in {"POLICY", "GOAL", "TRANSACTION"} and any(
+        if payload.correlation_kind in {"POLICY", "GOAL", "TRANSACTION", "EVIDENCE"} and any(
             (event.decision_run_id, event.action_plan_id, event.action_receipt_id)
         ):
             raise AuditContractError("Policy/goal metadata cannot invent action relationships")
         if (
             event.event_type
-            in {"POLICY_STATE_CHANGED", "GOAL_INITIALIZED", "TRANSACTION_CATEGORY_CONFIRMED"}
+            in {
+                "POLICY_STATE_CHANGED",
+                "GOAL_INITIALIZED",
+                "TRANSACTION_CATEGORY_CONFIRMED",
+                "EXTENSION_RECORD_CREATED",
+            }
             and event.aggregate_id != event.correlation_id
         ):
             raise AuditContractError(
@@ -619,6 +631,7 @@ def _event_content(event: "AuditEvent") -> None:
             "ACTION_PROJECTED": {"ACTION_RECEIPT", "BANK_POSTING_SET"},
             "POLICY_VERSION_CONFIRMED": {"POLICY_CONFIGURATION"},
             "TRANSACTION_CATEGORY_CONFIRMED": {"EVIDENCE_CONTENT"},
+            "EXTENSION_RECORD_CREATED": {"EVIDENCE_CONTENT"},
         }
         if not required.get(event.event_type, set()).issubset({a.kind for a in payload.anchors}):
             raise AuditContractError(
@@ -1541,10 +1554,21 @@ def _subject_index(
 ) -> dict[tuple[str, UUID, str], "AuditSubject"]:
     result = {}
     for subject in bundle.subjects:
-        original = build_subject(**subject.model_dump(mode="python"))
+        original, encoded = _validated_subject_bytes(**subject.model_dump(mode="python"))
         if original.user_id != user_id or original.epoch_id != epoch_id:
             raise AuditContractError("Original audit subject belongs to another tenant or epoch")
-        key = (original.kind, original.id, subject_hash(original))
+        # UUID subclasses may change their string value between validation
+        # passes. Keep the original second validation for that typed seam;
+        # only standard immutable UUID scalars reuse the fully captured bytes.
+        digest = (
+            _subject_hash_bytes(encoded)
+            if all(
+                type(identity) is UUID
+                for identity in (original.user_id, original.epoch_id, original.id)
+            )
+            else subject_hash(original)
+        )
+        key = (original.kind, original.id, digest)
         if key in result:
             raise AuditContractError("Original subject bundle has duplicate versions")
         result[key] = original
@@ -1633,9 +1657,13 @@ def _trace_algorithms_supported(versions: dict[str, str]) -> bool:
         "full-policy-action-set-boundary-recovery-composed-v4",
         "full-seasonal-adoption-v1",
         "full-recovery-execution-v1",
+        "lossy-early-redemption-v1",
         "full-maturity-user-execution-v1",
         "full-experiment-asset-execution-v1",
         "registered-joint-goal-execution-v2",
+        "registered-joint-goal-execution-archive-v3",
+        "registered-joint-goal-execution-source-dag-v4",
+        "reviewed-multi-template-policy-change-v1",
     }
     return all(value in supported for value in versions.values())
 
@@ -1943,6 +1971,15 @@ def _references(
                 raise AuditUnsupportedVersion("Original decision trace schema is unsupported")
             trace = DecisionTrace.model_validate_json(json.dumps(raw_trace, allow_nan=False))
             verify_trace(trace)
+            if (
+                "reviewed_policy_change" in trace.algorithm_versions
+                or "reviewed-multi-template-policy-change-v1" in trace.algorithm_versions.values()
+            ):
+                from app.domain.full_policy_reviewed_change import (
+                    verify_frozen_reviewed_policy_change_trace,
+                )
+
+                verify_frozen_reviewed_policy_change_trace(trace)
             if "full_joint_goal_execution" in trace.algorithm_versions:
                 from app.domain.full_joint_goal_execution_trace import (
                     verify_frozen_full_joint_goal_trace,
@@ -1966,6 +2003,13 @@ def _references(
                 from app.domain.full_seasonal_adoption import verify_frozen_seasonal_adoption_trace
 
                 verify_frozen_seasonal_adoption_trace(trace)
+            if (
+                "zhiyu_lossy_redemption" in trace.algorithm_versions
+                or "lossy-early-redemption-v1" in trace.algorithm_versions.values()
+            ):
+                from app.services.zhiyu_asset_loss import verify_frozen_loss_native_trace
+
+                verify_frozen_loss_native_trace(trace)
             if "full_recovery_execution" in trace.algorithm_versions:
                 from app.domain.full_recovery_execution_trace import (
                     verify_frozen_full_recovery_trace,
@@ -2041,7 +2085,9 @@ def _references(
                 raise AuditContractError(
                     "Recorded decision fact differs from its original trace identity/clock"
                 )
-            missing = _missing_references(trace.inputs)
+            from app.domain.full_joint_goal_archive_protocol import expanded_joint_trace
+
+            missing = _missing_references(expanded_joint_trace(trace).inputs)
             if missing != set(event.payload.missing_evidence_ids):
                 raise AuditContractError(
                     "Missing source claims differ from the original frozen decision"

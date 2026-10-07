@@ -10,15 +10,24 @@ from collections.abc import Iterator
 from datetime import UTC, date, datetime, timedelta, timezone
 from fractions import Fraction
 from itertools import combinations, permutations, product
-from typing import Annotated, Literal, Self
+from typing import Annotated, Any, Literal, Self
 from uuid import UUID
 
 from app.domain.boundary_types import BoundaryModel
 from app.domain.policy_configuration import CalendarDate, MoneyCents, configuration_hash
-from pydantic import Field, StrictBool, StrictInt, model_validator
+from pydantic import (
+    Field,
+    SerializerFunctionWrapHandler,
+    StrictBool,
+    StrictInt,
+    model_serializer,
+    model_validator,
+)
 
 Hash = Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
 RepairField = Literal["monthly_min_cents", "monthly_max_cents", "deadline"]
+OptimizerVersion = Literal["critical-flow-affine-box-v2"]
+AFFINE_BOX_V2: OptimizerVersion = "critical-flow-affine-box-v2"
 
 
 class SourceReference(BoundaryModel):
@@ -124,6 +133,14 @@ class MultiGoalAllocationInput(BoundaryModel):
     goals: Annotated[list[AllocationGoal], Field(max_length=8)]
     source_issues: Annotated[list[str], Field(max_length=1000)] = Field(default_factory=list)
     solver_node_budget: Annotated[StrictInt, Field(ge=1, le=1_000_000)] = 200_000
+    optimizer_version: OptimizerVersion | None = None
+
+    @model_serializer(mode="wrap")
+    def preserve_legacy_wire(self, handler: SerializerFunctionWrapHandler) -> dict[str, Any]:
+        value: dict[str, Any] = handler(self)
+        if self.optimizer_version is None:
+            value.pop("optimizer_version", None)
+        return value
 
     @model_validator(mode="after")
     def original_context(self) -> Self:
@@ -200,7 +217,9 @@ class GoalAllocation(BoundaryModel):
 
 
 class MultiGoalAllocationResult(BoundaryModel):
-    algorithm_version: Literal["critical-flow-lexicographic-v1"] = "critical-flow-lexicographic-v1"
+    algorithm_version: Literal[
+        "critical-flow-lexicographic-v1", "critical-flow-affine-box-v2"
+    ] = "critical-flow-lexicographic-v1"
     status: Literal["OPTIMAL", "INFEASIBLE", "UNKNOWN"]
     purpose: Literal["CURRENT_PERIOD_PLANNING_ONLY"] = "CURRENT_PERIOD_PLANNING_ONLY"
     grants_authority: Literal[False] = False
@@ -464,6 +483,64 @@ def _vertices(
                 )
 
 
+def _affine_box_optima(
+    request: MultiGoalAllocationInput,
+    goals: list[AllocationGoal],
+    enabled: set[str],
+    ranks: list[int],
+    counter: _Counter,
+) -> Iterator[tuple[int, ...]]:
+    """Exact lexicographic optimum per affine box of the integral Hall polymatroid.
+
+    Lower translation can make its rank nonmonotone. Taking the residual of
+    every containing subset implements its monotone closure without omitting
+    any Hall constraint. Box caps preserve the integral polymatroid. Completion
+    endpoints are singleton regions, so every score coordinate is affine here.
+    """
+    regions = [_regions(goal, *_bounds(goal, request, enabled)) for goal in goals]
+    seen: set[tuple[int, ...]] = set()
+    for boxes in product(*regions):
+        counter.visit()
+        lower = tuple(box[0] for box in boxes)
+        if not _feasible(lower, ranks):
+            continue
+        score = _score(request, goals, lower)
+        costs: list[tuple[tuple[int, ...], int]] = []
+        for index, (low, high) in enumerate(boxes):
+            if low == high:
+                continue
+            counter.visit()
+            adjacent = tuple(value + int(other == index) for other, value in enumerate(lower))
+            next_score = _score(request, goals, adjacent)
+            # Appending the actual value tuple's coefficient preserves _best's
+            # exact tie order, including leaving zero-score coordinates low.
+            cost = tuple(b - a for a, b in zip(score, next_score, strict=True)) + tuple(
+                int(other == index) for other in range(len(goals))
+            )
+            if cost < (0,) * len(cost):
+                costs.append((cost, index))
+        values = list(lower)
+        for _, index in sorted(costs):
+            counter.visit()
+            values[index] = min(
+                boxes[index][1],
+                min(
+                    capacity
+                    - sum(
+                        value
+                        for other, value in enumerate(values)
+                        if other != index and mask & (1 << other)
+                    )
+                    for mask, capacity in enumerate(ranks)
+                    if mask & (1 << index)
+                ),
+            )
+        candidate = tuple(values)
+        if candidate not in seen:
+            seen.add(candidate)
+            yield candidate
+
+
 def _best(
     request: MultiGoalAllocationInput,
     goals: list[AllocationGoal],
@@ -471,6 +548,16 @@ def _best(
     counter: _Counter,
 ) -> tuple[tuple[int, int, int, int, int, int, int], tuple[int, ...]] | None:
     ranks = _ranks(request, goals, edges, counter)
+    if request.optimizer_version == AFFINE_BOX_V2:
+        counter.visit()
+        bounds = [_bounds(goal, request, _constraint_ids(request)) for goal in goals]
+        # Every box lower is componentwise >= this immutable global lower.
+        # If an original required goal has no permitted funding edge, no box
+        # can repair it. Keep all Hall subsets and paid-edge graph enumeration.
+        if any(low > high for low, high in bounds) or not _feasible(
+            tuple(low for low, _ in bounds), ranks
+        ):
+            return None
     targets = tuple(
         _month_remaining(goal, "target") if _active(goal, request) else 0 for goal in goals
     )
@@ -485,7 +572,8 @@ def _best(
     ):
         return (0, 0, 0, 0, 0, 0, 0), targets
     best = None
-    for values in _vertices(request, goals, _constraint_ids(request), ranks, counter):
+    vertices = _affine_box_optima if request.optimizer_version == AFFINE_BOX_V2 else _vertices
+    for values in vertices(request, goals, _constraint_ids(request), ranks, counter):
         candidate = (_score(request, goals, values), values)
         if best is None or candidate < best:
             best = candidate
@@ -602,6 +690,7 @@ def _result(
         }
     )
     return MultiGoalAllocationResult(
+        algorithm_version=request.optimizer_version or "critical-flow-lexicographic-v1",
         status=status,
         input_hash=configuration_hash(request.model_dump(mode="json")),
         objective_vector=(*_score(request, goals, values), movement_count)

@@ -1,2 +1,0 @@
-apps\api\app\domain\full_seasonal_adoption.py:548: error: "TraceEvidence" has no attribute "status"  [attr-defined]
-Found 1 error in 1 file (checked 7 source files)

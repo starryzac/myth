@@ -1,1 +1,0 @@
-apps/web/src/components/FullRecoveryExecutionPanel.tsx(53,246): error TS2339: Property 'entity_type' does not exist on type '{ code: string; source_ref: string; message: string; }'.

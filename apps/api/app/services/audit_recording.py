@@ -281,6 +281,9 @@ def _record(
 
 
 def record_decision(session: Session, trace: DecisionTrace) -> None:
+    from app.domain.full_joint_goal_archive_protocol import expanded_joint_trace
+
+    semantic_trace = expanded_joint_trace(trace)
     subjects: list[SubjectRequest] = [("DECISION_RUN", trace.run_id, "AFTER", None)]
     subjects += [("EVIDENCE", row.id, "BASIS", None) for row in trace.sources]
     subjects += [("POLICY_VERSION", row.id, "BASIS", None) for row in trace.policies]
@@ -303,7 +306,9 @@ def record_decision(session: Session, trace: DecisionTrace) -> None:
         fact_key=f"DECISION_RECORDED:{trace.run_id}",
         run_id=trace.run_id,
         action_id=trace.action_id,
-        missing=[UUID(value) for value in trace.inputs.get("missing_evidence_references", [])],
+        missing=[
+            UUID(value) for value in semantic_trace.inputs.get("missing_evidence_references", [])
+        ],
         anchor_specs=[("DECISION_TRACE", trace.run_id, trace.trace_hash, "decision-trace-v1")],
     )
 

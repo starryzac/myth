@@ -1,3 +1,0 @@
-apps\api\app\services\full_joint_goal_income_reservation.py:180: error: Unsupported operand types for >= ("datetime" and "None")  [operator]
-apps\api\app\services\full_joint_goal_income_reservation.py:180: note: Left operand is of type "datetime | None"
-Found 1 error in 1 file (checked 2 source files)

@@ -1,9 +1,0 @@
-F                                                                        [100%]
-================================== FAILURES ===================================
-______ test_bank_definitive_rejection_is_terminal_after_resource_release ______
-apps\api\app\tests\test_execution_reservations.py:95: in test_bank_definitive_rejection_is_terminal_after_resource_release
-    with pytest.raises(IntegrityError),session.begin_nested():
-E   Failed: DID NOT RAISE IntegrityError
-=========================== short test summary info ===========================
-FAILED apps/api/app/tests/test_execution_reservations.py::test_bank_definitive_rejection_is_terminal_after_resource_release
-1 failed, 2 deselected in 5.08s

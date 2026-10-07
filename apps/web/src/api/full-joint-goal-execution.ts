@@ -6,12 +6,15 @@ import { assertMoneyFields } from '../features/money';
 import { spendingCanonicalJson, spendingHash, spendingUUID as uuid, spendingDigest as digest } from './spending-evidence';
 import { releaseUUID5 } from './goal-release-authorizations';
 import { parseDynamicAction } from './full-dynamic-goal-execution';
+import type { FullJointInput } from './full-joint-planning';
 
 // These aliases refer to the actual Main-generated contract, never a client financial model.
 export type JointPrepare = components['schemas']['FullJointGoalPrepareRequest'];
 export type JointConfirm = components['schemas']['FullJointGoalConfirmRequest'];
 export type JointExecute = components['schemas']['FullJointGoalExecuteRequest'];
 export type JointPlan = components['schemas']['FullJointFrozenPlan'];
+// parseJointPlan validates these immutable JSON fields before their read-only use.
+export const jointAllocationInput = (plan: JointPlan): FullJointInput => plan.allocation_input as FullJointInput;
 export type JointPreview = components['schemas']['FullJointGoalPreview'];
 export type JointResponse = components['schemas']['FullJointGoalExecutionResponse'];
 export type JointLookup = components['schemas']['FullJointGoalLookup'];
@@ -104,7 +107,7 @@ export async function parseJointPlan(value: unknown, user?: string): Promise<Joi
 }
 export async function parseJointPreview(value: unknown, body: JointPrepare, user?: string, raw?: string): Promise<JointPreview> {
   parseJointPrepare(body); jointCheck(object(value) && exact(value, ['simulation', 'bank_authority', 'grants_authority', 'preview_only', 'user_id', 'epoch_id', 'as_of', 'request', 'status', 'registered_goal_ids', 'unresolved_original_action_ids', 'plan', 'input_hash', 'reasons', 'limitations']) && value.simulation === true && value.bank_authority === false && value.grants_authority === false && value.preview_only === true && uuid(value.user_id) && (!user || value.user_id === user) && value.epoch_id === body.expected_epoch_id && time(value.as_of) && spendingCanonicalJson(value.request) === spendingCanonicalJson(body) && ['READY_TO_REVIEW', 'BLOCKED', 'UNKNOWN'].includes(String(value.status)) && ids(value.registered_goal_ids) && ids(value.unresolved_original_action_ids) && digest(value.input_hash) && strings(value.reasons) && strings(value.limitations));
-  if (value.status === 'READY_TO_REVIEW') { const plan = await parseJointPlan(value.plan, value.user_id); jointCheck(plan.prepared_at === value.as_of && spendingCanonicalJson(plan.inputs.request) === spendingCanonicalJson(body) && value.reasons.length === 0 && value.unresolved_original_action_ids.length === 0 && jointCanonical([...value.registered_goal_ids].sort()) === jointCanonical(plan.allocation_input.goals.map((row) => row.goal_id).sort())); }
+  if (value.status === 'READY_TO_REVIEW') { const plan = await parseJointPlan(value.plan, value.user_id); jointCheck(plan.prepared_at === value.as_of && spendingCanonicalJson(plan.inputs.request) === spendingCanonicalJson(body) && value.reasons.length === 0 && value.unresolved_original_action_ids.length === 0 && jointCanonical([...value.registered_goal_ids].sort()) === jointCanonical(jointAllocationInput(plan).goals.map((row) => row.goal_id).sort())); }
   else jointCheck(value.plan === null && value.reasons.length > 0); return save(value as JointPreview, raw);
 }
 export async function parseJointResponse(value: unknown, user?: string, expected?: JointReviewBinding | null, raw?: string): Promise<JointResponse> {

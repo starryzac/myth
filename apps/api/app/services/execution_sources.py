@@ -551,6 +551,25 @@ def verify_execution_sources(
     )
     if validation.status != "READY":
         raise _source_error("执行前财务重验未通过：" + ",".join(validation.reasons))
+    from app.services.zhiyu_asset_loss import (
+        recheck_loss_native_source,
+        requires_zhiyu_asset_closure,
+    )
+
+    asset_engine = session.get_bind().engine
+    loss_bound = False
+    if requires_zhiyu_asset_closure(asset_engine):
+        loss_bound = (
+            recheck_loss_native_source(
+                session,
+                action,
+                BankCommand(effect=effect, effect_hash=execution_effect_hash(effect)),
+                context,
+                validation,
+                now,
+            )
+            is not None
+        )
     record_execution_trace(
         session,
         effect,
@@ -561,7 +580,7 @@ def verify_execution_sources(
         autonomy_level=action.autonomy_level,
         confirmation=confirmation,
         action_request=action.request
-        if dynamic_proof is not None or recovery_bound or experiment_asset_bound
+        if dynamic_proof is not None or recovery_bound or experiment_asset_bound or loss_bound
         else None,
     )
     return dynamic_proof

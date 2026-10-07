@@ -1,5 +1,0 @@
-apps\api\app\domain\full_dynamic_goal_execution.py:661: error: "TracePolicy" has no attribute "valid_until"  [attr-defined]
-apps\api\app\tests\test_full_dynamic_goal_execution_integration.py:155: error: "AuditVerification" has no attribute "mode"  [attr-defined]
-apps\api\app\tests\test_full_dynamic_goal_execution_history.py:91: error: Unexpected keyword argument "valid_until" for "TracePolicy"  [call-arg]
-apps\api\app\tests\test_full_dynamic_goal_execution_history.py:91: note: "TracePolicy" defined in "app.domain.decision_trace_types"
-Found 3 errors in 3 files (checked 7 source files)

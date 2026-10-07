@@ -1,2 +1,0 @@
-apps\api\app\tests\test_future_income_planning_integration.py:184: error: "AuditVerification" has no attribute "complete"  [attr-defined]
-Found 1 error in 1 file (checked 1 source file)

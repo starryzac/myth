@@ -210,6 +210,7 @@ def record_execution_trace(
         "full_recovery_execution",
         "full_experiment_asset_execution",
         "full_joint_goal_execution",
+        "zhiyu_lossy_redemption",
     } & capture.algorithms.keys()
     if new_execution_protocols:
         if (
@@ -244,6 +245,10 @@ def record_execution_trace(
             "decision_status": "COMPUTED",
         },
     )
+    if "zhiyu_lossy_redemption" in new_execution_protocols:
+        from app.services.zhiyu_asset_loss import verify_frozen_loss_native_trace
+
+        verify_frozen_loss_native_trace(trace)
     if "full_experiment_asset_execution" in new_execution_protocols:
         from app.domain.full_experiment_asset_execution_trace import (
             verify_frozen_full_experiment_asset_trace,

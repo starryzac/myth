@@ -1,2 +1,0 @@
-scripts\tests\test_mvp_coverage_scope.py:16: error: Returning Any from function declared to return "dict[str, Any]"  [no-any-return]
-Found 1 error in 1 file (checked 3 source files)

@@ -5037,7 +5037,7 @@ export interface components {
              * Correlation Kind
              * @enum {string}
              */
-            correlation_kind: "EPOCH" | "DECISION_RUN" | "POLICY" | "GOAL" | "TRANSACTION";
+            correlation_kind: "EPOCH" | "DECISION_RUN" | "POLICY" | "GOAL" | "TRANSACTION" | "EVIDENCE";
             /** References */
             references?: components["schemas"]["AuditReference"][];
             /** Anchors */
@@ -11858,9 +11858,9 @@ export interface components {
             /**
              * Protocol
              * @default registered-joint-goal-execution-v2
-             * @constant
+             * @enum {string}
              */
-            protocol: "registered-joint-goal-execution-v2";
+            protocol: "registered-joint-goal-execution-v2" | "registered-joint-goal-execution-archive-v3" | "registered-joint-goal-execution-source-dag-v4";
             /**
              * Simulation
              * @default true
@@ -18794,51 +18794,17 @@ export interface components {
             /** Upper Cents */
             upper_cents: number;
         };
-        /** MultiGoalAllocationInput */
         MultiGoalAllocationInput: {
-            /**
-             * Schema Version
-             * @default multi-goal-current-period-v1
-             * @constant
-             */
-            schema_version: "multi-goal-current-period-v1";
-            /**
-             * User Id
-             * Format: uuid
-             */
-            user_id: string;
-            /**
-             * As Of
-             * Format: date-time
-             */
-            as_of: string;
-            /**
-             * Timezone
-             * @enum {string}
-             */
-            timezone: "Asia/Shanghai" | "UTC";
-            /** Income Lots */
-            income_lots: components["schemas"]["AllocationIncomeLot"][];
-            /** Hard Protection Points */
-            hard_protection_points: components["schemas"]["HardProtectionPoint"][];
-            /** Goals */
-            goals: components["schemas"]["AllocationGoal"][];
-            /** Source Issues */
-            source_issues?: string[];
-            /**
-             * Solver Node Budget
-             * @default 200000
-             */
-            solver_node_budget: number;
+            [key: string]: unknown;
         };
         /** MultiGoalAllocationResult */
         MultiGoalAllocationResult: {
             /**
              * Algorithm Version
              * @default critical-flow-lexicographic-v1
-             * @constant
+             * @enum {string}
              */
-            algorithm_version: "critical-flow-lexicographic-v1";
+            algorithm_version: "critical-flow-lexicographic-v1" | "critical-flow-affine-box-v2";
             /**
              * Status
              * @enum {string}

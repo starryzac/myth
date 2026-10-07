@@ -1,3 +1,0 @@
-scripts\mvp_corpus.py:305: error: Need type annotation for "typed" (hint: "typed: set[<type>] = ...")  [var-annotated]
-scripts\mvp_corpus.py:319: error: Need type annotation for "dispatched" (hint: "dispatched: set[<type>] = ...")  [var-annotated]
-Found 2 errors in 1 file (checked 2 source files)

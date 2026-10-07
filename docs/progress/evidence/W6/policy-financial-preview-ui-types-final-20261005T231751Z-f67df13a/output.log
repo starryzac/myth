@@ -1,4 +1,0 @@
-apps/web/src/components/FinancialChangeImpactPanel.tsx(5,1): error TS6133: 'formatMoneyCents' is declared but its value is never read.
-apps/web/src/components/FinancialChangeImpactPanel.tsx(9,7): error TS7023: 'money' implicitly has return type 'any' because it does not have a return type annotation and is referenced directly or indirectly in one of its return expressions.
-apps/web/src/pages/GoalsPage.tsx(191,239): error TS2322: Type 'string | null' is not assignable to type 'string'.
-  Type 'null' is not assignable to type 'string'.

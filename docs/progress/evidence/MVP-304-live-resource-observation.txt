@@ -1,4 +1,0 @@
-2026-10-04T19:18:16.9215913+08:00
-{"Id":56356,"ProcessName":"python","CPU":2906.34375,"StartTime":"2026-10-04T17:49:24.1389035+08:00"}
-{"BlockIO":"129MB / 9.7GB","CPUPerc":"0.00%","Container":"bounded-funds-db-1","ID":"efea8d0e3a67","MemPerc":"0.61%","MemUsage":"96.55MiB / 15.47GiB","Name":"bounded-funds-db-1","NetIO":"1.57GB / 6.71GB","PIDs":"8"}
-{"read_only": "on", "observed_at": "2026-10-04T11:18:19.464162+00:00", "test_connections": [{"state": "idle in transaction", "database": "bf_test_dcd3b278d70f4d1b9309f39377f6a7e3", "wait_type": "Client", "wait_event": "ClientRead", "query_age_seconds": 2.136}]}

@@ -1,9 +1,0 @@
-run_id=20261005T233630Z-88ccbf9c
-+ uv run --frozen python scripts/evidence_check.py
-{
-  "status": "REJECTED",
-  "exit_code": 2,
-  "error": "Unsupported explicit evidence request schema",
-  "task_closed": false
-}
-QUALITY_CHILD_EXIT=2

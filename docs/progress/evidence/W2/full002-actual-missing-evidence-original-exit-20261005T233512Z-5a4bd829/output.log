@@ -1,4 +1,0 @@
-run_id=20261005T233514Z-d1b8c0eb
-+ uv run --frozen python scripts/evidence_check.py
-REJECTED: explicit evidence request is required; no newest file selected
-QUALITY_CHILD_EXIT=2

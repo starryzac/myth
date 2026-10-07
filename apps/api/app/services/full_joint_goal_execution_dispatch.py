@@ -94,7 +94,25 @@ def _result(
 
 
 def _persist_original_plan(session: Session, plan: FullJointFrozenPlan) -> None:
+    from app.domain.full_joint_goal_archive_protocol import (
+        ALGORITHM_V3,
+        binding_for_plan,
+        encode_joint_record,
+    )
+
     body = plan.inputs.request
+    from app.domain.full_joint_goal_execution import ALGORITHM_V4
+    from app.domain.full_joint_goal_source_adapter import source_binding_for_plan
+    from app.domain.full_joint_goal_source_archive import encode_shared_joint
+
+    original = plan.model_dump(mode="json")
+    persisted = (
+        encode_shared_joint(original, source_binding_for_plan(original), "PLAN")
+        if plan.protocol == ALGORITHM_V4
+        else encode_joint_record(original, binding_for_plan(original), "PLAN")
+        if plan.protocol == ALGORITHM_V3
+        else original
+    )
     parent = FullJointGoalExecutionPlan(
         id=plan.plan_id,
         user_id=plan.user_id,
@@ -105,7 +123,7 @@ def _persist_original_plan(session: Session, plan: FullJointFrozenPlan) -> None:
         idempotency_key=body.idempotency_key,
         request=body.model_dump(mode="json"),
         request_hash=configuration_hash(body.model_dump(mode="json")),
-        plan=plan.model_dump(mode="json"),
+        plan=persisted,
         plan_hash=plan.plan_hash,
         expires_at=plan.expires_at,
     )
@@ -137,6 +155,9 @@ def prepare_full_joint_goal_execution(
     body: FullJointGoalPrepareRequest,
     principal: LocalActorPrincipal,
     now: datetime,
+    *,
+    archive: bool = False,
+    source_dag: bool = False,
 ) -> FullJointGoalExecutionResponse:
     _principal(principal, user_id, now)
     require_original_joint_pipeline_hooks()
@@ -167,7 +188,9 @@ def prepare_full_joint_goal_execution(
                 _, plan, _, _ = read_joint_plan_original(session, user_id, previous.id, now)
             else:
                 with fresh_read(engine) as read:
-                    captured = capture_full_joint_goal_execution(read, user_id, body, now)
+                    captured = capture_full_joint_goal_execution(
+                        read, user_id, body, now, archive=archive, source_dag=source_dag
+                    )
                 if captured.preview.status != "READY_TO_REVIEW" or captured.preview.plan is None:
                     raise error(
                         "JOINT_CURRENT_COMPLETE_PLAN_NOT_READY", ",".join(captured.preview.reasons)
@@ -181,7 +204,7 @@ def prepare_full_joint_goal_execution(
                     phase="EVALUATION",
                     action_id=None,
                     parent_run_id=None,
-                    algorithm_versions={MARKER: ALGORITHM},
+                    algorithm_versions={MARKER: plan.protocol},
                     inputs={"joint_execution_input": captured.inputs.model_dump(mode="json")},
                     sources=list(captured.originals.sources.values()),
                     policies=list(captured.originals.policies.values()),
@@ -293,7 +316,7 @@ def confirm_full_joint_goal_execution(
                 phase="EVALUATION",
                 action_id=None,
                 parent_run_id=uuid5(plan.plan_id, "planning-proof"),
-                algorithm_versions={MARKER: ALGORITHM},
+                algorithm_versions={MARKER: plan.protocol},
                 inputs={
                     "joint_execution_input": plan.inputs.model_dump(mode="json"),
                     "joint_confirmation_request": body.model_dump(mode="json"),
@@ -345,7 +368,13 @@ def execute_full_joint_goal_child(
         with fresh_read(engine) as read:
             current = read_full_joint_goal_execution(read, user_id, plan_id, now)
             plan = current.original_plan
-            child = require_fixed_child(plan, body, [row.state for row in current.children])
+            try:
+                child = require_fixed_child(plan, body, [row.state for row in current.children])
+            except ValueError as rejected:
+                # This original child selection happens before confirmation or
+                # bank submission. Preserve the native no-advance rejection as
+                # a reviewable conflict instead of an unhandled HTTP 500.
+                raise error(str(rejected)) from rejected
             view = current.children[child.child_number - 1]
             if view.state == "ORIGINAL_RECEIPT_VERIFIED":
                 return current

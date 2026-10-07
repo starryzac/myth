@@ -1,2 +1,0 @@
-apps\api\app\tests\test_full_action_set_release_producers.py:625: error: Unexpected keyword argument "observed_at" for "GoalOwnership"  [call-arg]
-Found 1 error in 1 file (checked 4 source files)

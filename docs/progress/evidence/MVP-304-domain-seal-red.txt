@@ -1,9 +1,0 @@
-....F                                                                    [100%]
-================================== FAILURES ===================================
-_______ test_epoch_seal_is_independent_of_tail_and_binds_original_head ________
-apps\api\app\tests\test_audit_chain_domain.py:129: in test_epoch_seal_is_independent_of_tail_and_binds_original_head
-    from app.domain.audit_chain import build_seal, verify_seal, parse_seal, seal_canonical_text
-E   ImportError: cannot import name 'build_seal' from 'app.domain.audit_chain' (F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\apps\api\app\domain\audit_chain.py)
-=========================== short test summary info ===========================
-FAILED apps/api/app/tests/test_audit_chain_domain.py::test_epoch_seal_is_independent_of_tail_and_binds_original_head
-1 failed, 4 passed in 0.83s

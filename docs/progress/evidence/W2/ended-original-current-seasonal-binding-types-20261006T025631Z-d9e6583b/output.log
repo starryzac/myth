@@ -1,3 +1,0 @@
-apps\api\app\domain\full_seasonal_current_protection.py:94: error: Incompatible types in assignment (expression has type "SeasonalAdoptionProof", variable has type "EndedSeasonalAdoptionProof")  [assignment]
-apps\api\app\tests\test_full_seasonal_current_protection.py:70: error: Incompatible types in assignment (expression has type "int", target has type "Collection[str]")  [assignment]
-Found 2 errors in 2 files (checked 2 source files)

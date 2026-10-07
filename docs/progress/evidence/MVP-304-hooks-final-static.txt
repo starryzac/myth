@@ -1,3 +1,0 @@
-All checks passed!
-10 files already formatted
-Success: no issues found in 10 source files

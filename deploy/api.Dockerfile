@@ -28,7 +28,7 @@ WORKDIR /workspace
 COPY --from=dependencies /opt/bf-venv /opt/bf-venv
 COPY pyproject.toml uv.lock alembic.ini ./
 COPY apps/api/ ./apps/api/
-COPY scripts/scenario_runner_rpc.py scripts/seed_demo.py ./scripts/
+COPY scripts/seed_demo.py ./scripts/
 COPY deploy/initialize_demo.py ./deploy/initialize_demo.py
 ARG BF_SOURCE_HEAD
 ARG BF_SOURCE_DIGEST

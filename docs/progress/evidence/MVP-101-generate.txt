@@ -1,2 +1,0 @@
-Creating directory F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\apps\api\alembic\versions ...  done
-Generating F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\apps\api\alembic\versions\0001_mvp_tables_create_sixteen_mvp_persistence_tables.py ...  done

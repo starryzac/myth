@@ -1,4 +1,0 @@
-apps\api\app\domain\full_recovery_execution.py:344: error: Unsupported operand types for >= ("datetime" and "None")  [operator]
-apps\api\app\domain\full_recovery_execution.py:344: note: Right operand is of type "datetime | None"
-apps\api\app\tests\test_full_recovery_execution_integration.py:109: error: Module "app.services.execution" does not explicitly export attribute "process_operation"  [attr-defined]
-Found 2 errors in 2 files (checked 4 source files)

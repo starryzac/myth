@@ -1,5 +1,0 @@
-$ tsc --noEmit
-src/api/full-annual.ts(84,68): error TS18048: 'source.reference_snapshots' is possibly 'undefined'.
-src/api/full-annual.ts(86,417): error TS18046: 'proof.retained_command_ids' is of type 'unknown'.
-src/api/full-annual.ts(88,454): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'string'.
-[ELIFECYCLE] Command failed with exit code 2.

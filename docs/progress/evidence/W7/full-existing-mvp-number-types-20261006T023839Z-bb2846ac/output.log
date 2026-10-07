@@ -1,6 +1,0 @@
-scripts\full_experiment_claims.py: error: Source file found twice under different module names: "full_experiment_claims" and "scripts.full_experiment_claims"
-scripts\full_experiment_claims.py: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#mapping-file-paths-to-modules for more info
-scripts\full_experiment_claims.py: note: Common resolutions include:
-scripts\full_experiment_claims.py: note:     a) adding `__init__.py` somewhere,
-scripts\full_experiment_claims.py: note:     b) using `--explicit-package-bases` or adjusting `MYPYPATH`
-Found 1 error in 1 file (errors prevented further checking)

@@ -1,6 +1,0 @@
-apps\api\app\tests\test_intervention_public_json.py:52: error: Incompatible types in assignment (expression has type "BoundaryObservationRequest", variable has type "QuestionObservationRequest")  [assignment]
-apps\api\app\tests\test_intervention_public_json.py:62: error: Incompatible types in assignment (expression has type "DeliveryRequest", variable has type "QuestionObservationRequest")  [assignment]
-apps\api\app\tests\test_intervention_public_json.py:65: error: Incompatible types in assignment (expression has type "AcknowledgmentRequest", variable has type "QuestionObservationRequest")  [assignment]
-apps\api\app\tests\test_intervention_public_json.py:92: error: Incompatible types in assignment (expression has type "bool | str | float", variable has type "int")  [assignment]
-apps\api\app\tests\test_intervention_public_json.py:100: error: Incompatible types in assignment (expression has type "int | str | bool", variable has type "int")  [assignment]
-Found 5 errors in 1 file (checked 6 source files)

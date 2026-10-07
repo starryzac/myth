@@ -1,2 +1,0 @@
-apps\api\app\domain\full_future_dated_history.py:32: error: Incompatible types in assignment (expression has type "str", variable has type "Literal['full-future-dated-history-v1']")  [assignment]
-Found 1 error in 1 file (checked 4 source files)

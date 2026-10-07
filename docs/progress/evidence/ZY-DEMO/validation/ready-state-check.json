@@ -1,9 +1,0 @@
-{
-  "environment_id": "bf_test_9e4333a75fb649b2b39b440f67590090",
-  "epoch_id": "077e5bab-69a9-4950-bbe5-5f5ef531a4c7",
-  "goals": 0,
-  "actions": 0,
-  "income_received": false,
-  "safe_idle_cents": 3157400,
-  "scope": "Independent actual plural goals check; open-timings singular goal_present field is not used as goal evidence."
-}

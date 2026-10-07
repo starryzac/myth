@@ -1,2 +1,0 @@
-scripts\tests\test_browser_checkpoint_oracles.py:91: error: "TypeEngine[Any]" has no attribute "impl"  [attr-defined]
-Found 1 error in 1 file (checked 2 source files)

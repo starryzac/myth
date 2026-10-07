@@ -1,2 +1,0 @@
-apps\api\app\services\multi_goal_planning.py:85: error: Argument 3 to "current_epoch_audit" has incompatible type "bool"; expected "list[UUID]"  [arg-type]
-Found 1 error in 1 file (checked 2 source files)

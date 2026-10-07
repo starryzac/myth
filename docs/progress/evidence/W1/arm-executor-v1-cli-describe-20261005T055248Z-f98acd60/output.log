@@ -1,1 +1,0 @@
-{"protocol": "mvp-five-arm-service-protocol-v1", "status": "NOT_IMPLEMENTED", "production_provider": "app.services.experiment_arms", "financial_effect_evidence": false, "execution_mode": null, "reason": "Production narrow hook/freeze/original pipeline evidence is pending"}

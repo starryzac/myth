@@ -1,6 +1,0 @@
-$ tsc --noEmit
-src/api/scenario-risk-review.test.ts(17,433): error TS2339: Property 'configuration' does not exist on type '{ kind: "BILL"; bill_id: string; remaining_due_cents: number; due_offset_days: number; } | { kind: "GOAL"; goal_id: string; expected_version_id: string; monthly_min_cents: number; monthly_target_cents: number; monthly_max_cents: number; deadline_offset_days: number; } | { ...; } | { ...; }'.
-  Property 'configuration' does not exist on type '{ kind: "BILL"; bill_id: string; remaining_due_cents: number; due_offset_days: number; }'.
-src/api/scenario-risk-review.ts(70,267): error TS18046: 'goal.ownership_original' is of type 'unknown'.
-src/pages/ScenarioRiskReviewPage.tsx(35,304): error TS18048: 'full.reasons' is possibly 'undefined'.
-[ELIFECYCLE] Command failed with exit code 2.

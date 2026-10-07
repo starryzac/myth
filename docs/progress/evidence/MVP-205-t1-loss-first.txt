@@ -1,9 +1,0 @@
-F.                                                                       [100%]
-================================== FAILURES ===================================
-_____ test_t1_get_does_not_settle_and_same_post_advances_after_revocation _____
-apps\api\app\tests\test_recovery_service.py:41: in test_t1_get_does_not_settle_and_same_post_advances_after_revocation
-    revoke_policy(session, DEMO_USER_ID, policy_id, now=SEED_AS_OF + timedelta(minutes=1))
-E   TypeError: revoke_policy() missing 1 required positional argument: 'expected_version_id'
-=========================== short test summary info ===========================
-FAILED apps/api/app/tests/test_recovery_service.py::test_t1_get_does_not_settle_and_same_post_advances_after_revocation
-1 failed, 1 passed, 2 deselected in 7.90s

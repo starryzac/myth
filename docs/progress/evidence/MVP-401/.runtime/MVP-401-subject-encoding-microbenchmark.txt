@@ -1,1 +1,0 @@
-{"classification": "FINITE_PURE_SUBJECT_MICROBENCHMARK_NOT_PRODUCT_SLA_NOT_PG_NOT_CPROFILE", "subjects_per_sample": 140, "median_seconds": {"old": 0.0355928, "new": 0.008893}, "profile_active": false}

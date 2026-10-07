@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "<string>", line 10, in <module>
-  File "F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Lib\site-packages\alembic\command.py", line 467, in upgrade
-    script = ScriptDirectory.from_config(config)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\.venv\Lib\site-packages\alembic\script\base.py", line 165, in from_config
-    raise util.CommandError(
-alembic.util.exc.CommandError: No 'script_location' key found in configuration.

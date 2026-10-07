@@ -1,5 +1,0 @@
-apps\api\app\tests\test_full_intervention.py:105: error: Argument "payload_hash" to "InterventionReceipt" has incompatible type "object"; expected "str"  [arg-type]
-apps\api\app\tests\test_full_intervention_api.py:195: error: Missing named argument "user_id" for "ExternalFactRequest"  [call-arg]
-apps\api\app\tests\test_full_intervention_api.py:195: note: "ExternalFactRequest" defined in "app.domain.external_bank_fact_types"
-apps\api\app\tests\test_full_intervention_api.py:195: error: Missing named argument "counterparty_ref" for "ExternalFactRequest"  [call-arg]
-Found 3 errors in 2 files (checked 5 source files)

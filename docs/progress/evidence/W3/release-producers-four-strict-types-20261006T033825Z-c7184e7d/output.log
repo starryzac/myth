@@ -1,3 +1,0 @@
-apps\api\app\tests\test_full_action_set_release_producers_integration.py:58: error: "GoalReleaseEffect" has no attribute "creates_new_income"  [attr-defined]
-apps\api\app\tests\test_full_action_set_release_producers.py:186: error: Non-overlapping identity check (left operand type: "int | None", right operand type: "str | None")  [comparison-overlap]
-Found 2 errors in 2 files (checked 4 source files)

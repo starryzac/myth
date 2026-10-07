@@ -1,2 +1,0 @@
-apps\api\app\domain\full_recovery_planning.py:603: error: Argument "observed_triggers" to "FullRecoveryPlanningResult" has incompatible type "list[str]"; expected "list[Literal['BOUNDARY_SHRINK', 'AUTHORIZATION_REVOKED', 'POLICY_EXPIRED', 'LIQUIDITY_SHORTFALL']]"  [arg-type]
-Found 1 error in 1 file (checked 5 source files)

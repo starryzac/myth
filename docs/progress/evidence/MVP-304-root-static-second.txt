@@ -1,3 +1,0 @@
-apps\api\app\services\audit_recording.py:662: error: Argument "subjects" to "_record" has incompatible type "list[tuple[str, UUID, str, None]]"; expected "list[tuple[str, UUID, Literal['BASIS', 'BEFORE', 'AFTER'], dict[str, Any] | None]]"  [arg-type]
-apps\api\app\tests\test_audit_api.py:74: error: Module "app.api.v1.audit" does not explicitly export attribute "verify_audit_chain"  [attr-defined]
-Found 2 errors in 2 files (checked 5 source files)

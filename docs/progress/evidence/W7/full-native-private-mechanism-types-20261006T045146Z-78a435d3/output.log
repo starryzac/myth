@@ -1,7 +1,0 @@
-apps\api\app\tests\test_full_native_mechanism_steps.py:65: error: Missing positional arguments "active_policy_versions", "positions", "products" in call to "compute_boundary"  [call-arg]
-apps\api\app\tests\test_full_native_mechanism_steps.py:106: error: Unsupported target for indexed assignment ("object")  [index]
-apps\api\app\tests\test_full_native_mechanism_steps.py:197: error: "append" of "list" does not return a value (it only ever returns None)  [func-returns-value]
-apps\api\app\tests\test_full_native_mechanism_steps.py:228: error: Item "None" of "FullExperimentAssetRequest | None" has no attribute "model_copy"  [union-attr]
-apps\api\app\tests\test_full_native_mechanism_steps.py:258: error: "append" of "list" does not return a value (it only ever returns None)  [func-returns-value]
-apps\api\app\tests\test_full_native_mechanism_steps.py:268: error: "append" of "list" does not return a value (it only ever returns None)  [func-returns-value]
-Found 6 errors in 1 file (checked 3 source files)

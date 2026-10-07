@@ -38,6 +38,7 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
 FULL_ASSET_BATCH_GUARDS_VERSION = "full-asset-batch-guards-v1"
+ZHIYU_ASSET_CLOSURE_GUARDS_VERSION = "zhiyu-asset-closure-guards-v1"
 FULL_RECOVERY_GUARDS_VERSION = "full-recovery-execution-guards-v1"
 FULL_EXPERIMENT_ASSET_GUARDS_VERSION = "full-experiment-asset-guards-v1"
 FULL_JOINT_GOAL_GUARDS_VERSION = "registered-joint-goal-execution-v2"
@@ -190,6 +191,12 @@ def process_operation(
                 if validation.status != "READY":
                     raise _error("Original execution facts changed before independent acceptance")
                 enforce_full_execution_protection(engine, user_id, effect, context, validation, now)
+            from app.services.zhiyu_asset_loss import requires_zhiyu_asset_closure
+
+            if requires_zhiyu_asset_closure(engine):
+                from app.api.v1.zhiyu_assets import enforce_zhiyu_asset_acceptance
+
+                enforce_zhiyu_asset_acceptance(engine, session, action, command, now)
             collision = session.scalar(
                 select(BankOperation).where(
                     BankOperation.user_id == user_id,

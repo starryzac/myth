@@ -1,2 +1,0 @@
-apps\api\app\domain\full_joint_goal_planning.py:116: error: Incompatible types in assignment (expression has type "tuple[str, str, str, str]", variable has type "tuple[str, str, str]")  [assignment]
-Found 1 error in 1 file (checked 6 source files)

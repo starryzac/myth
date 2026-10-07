@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\scripts\generate_openapi.py", line 10, in <module>
-    from app.main import app
-ModuleNotFoundError: No module named 'app'

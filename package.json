@@ -3,9 +3,12 @@
   "private": true,
   "packageManager": "pnpm@11.19.0",
   "scripts": {
-    "dev": "pnpm --dir apps/web dev",
-    "build": "pnpm --dir apps/web build",
-    "types": "python scripts/tasks.py types"
+    "dev": "pnpm --dir apps/web dev:zhiyu-next",
+    "build": "pnpm --dir apps/web build:zhiyu-next",
+    "build:all": "pnpm --dir apps/web build && pnpm --dir apps/web build:zhiyu && pnpm --dir apps/web build:zhiyu-next",
+    "types": "uv run --frozen --no-dev python scripts/generate_openapi.py"
   },
-  "devDependencies": { "openapi-typescript": "^7.10.1" }
+  "devDependencies": {
+    "openapi-typescript": "^7.10.1"
+  }
 }

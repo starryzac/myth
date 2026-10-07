@@ -126,7 +126,11 @@ def _validate_content(trace: _TraceContent) -> None:
     byte_limit = (
         MAX_FULL_JOINT_TRACE_BYTES
         if trace.algorithm_versions.get("full_joint_goal_execution")
-        == "registered-joint-goal-execution-v2"
+        in {
+            "registered-joint-goal-execution-v2",
+            "registered-joint-goal-execution-archive-v3",
+            "registered-joint-goal-execution-source-dag-v4",
+        }
         else MAX_TRACE_BYTES
     )
     if len(_encoded(payload)) > byte_limit:
@@ -142,6 +146,26 @@ def _validate_hashes(trace: DecisionTrace) -> None:
 
 def build_trace(**fields: Any) -> DecisionTrace:
     """Freeze exact supplied facts/results; caller-provided hash fields are rejected."""
+    from app.domain.full_joint_goal_archive_protocol import (
+        ALGORITHM_V3,
+        MARKER,
+        encode_joint_trace_parts,
+    )
+    from app.domain.full_joint_goal_source_adapter import (
+        ALGORITHM_V4,
+        encode_native_source_trace_parts,
+    )
+
+    if fields.get("algorithm_versions", {}).get(MARKER) == ALGORITHM_V4:
+        inputs, outcome = encode_native_source_trace_parts(
+            fields["inputs"], fields["outcome"], fields["phase"]
+        )
+        fields = fields | {"inputs": inputs, "outcome": outcome}
+    elif fields.get("algorithm_versions", {}).get(MARKER) == ALGORITHM_V3:
+        inputs, outcome = encode_joint_trace_parts(
+            fields["inputs"], fields["outcome"], fields["phase"]
+        )
+        fields = fields | {"inputs": inputs, "outcome": outcome}
     content = _TraceContent.model_validate(fields)
     payload = content.model_dump(mode="python")
     payload["input_hash"] = hashlib.sha256(_encoded(_input_payload(content))).hexdigest()
@@ -175,6 +199,20 @@ def verify_trace(trace: DecisionTrace) -> None:
 def explain_trace(trace: DecisionTrace) -> TraceExplanation:
     """Only saved fields produce explanations; unknown reason codes remain explicit."""
     verify_trace(trace)
+    archived_references: dict[str, str] = {}
+    if trace.algorithm_versions.get("full_joint_goal_execution") in {
+        "registered-joint-goal-execution-archive-v3",
+        "registered-joint-goal-execution-source-dag-v4",
+    }:
+        from app.domain.full_joint_goal_archive_protocol import expanded_joint_trace
+        from app.domain.full_joint_goal_execution_trace import verify_frozen_full_joint_goal_trace
+
+        verify_frozen_full_joint_goal_trace(trace)
+        archived_references = {
+            "inputs": trace.inputs["record"]["record_hash"],
+            "outcome": trace.outcome["record"]["record_hash"],
+        }
+        trace = expanded_joint_trace(trace)
     outcome = trace.outcome
     decision: dict[str, Any] = {}
     decision_path = "outcome"
@@ -223,11 +261,18 @@ def explain_trace(trace: DecisionTrace) -> TraceExplanation:
     def add(
         code: str, reference: str, text: str | None = None, references: list[str] | None = None
     ) -> None:
+        saved = references or [reference]
+        saved = [
+            f"joint-original:{archived_references[ref.split('.', 1)[0]]}:{ref}"
+            if ref.split(".", 1)[0] in archived_references
+            else ref
+            for ref in saved
+        ]
         reasons.append(
             TraceReason(
                 code=code,
                 text=text or _REASONS.get(code, f"记录原因码 {code}；未提供该原因的解释模板。"),
-                references=references or [reference],
+                references=saved,
             )
         )
 

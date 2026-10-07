@@ -18,7 +18,11 @@ from app.domain.full_action_set_joint_producers import (
     joint_goal_ids,
 )
 from app.domain.full_joint_goal_planning import captured_references
-from app.domain.multi_goal_allocation import MultiGoalAllocationInput, SourceReference
+from app.domain.multi_goal_allocation import (
+    MultiGoalAllocationInput,
+    OptimizerVersion,
+    SourceReference,
+)
 from app.services.audit_chain import current_audit_epoch
 from app.services.autonomy_envelope import _snapshot
 from app.services.decision_recording import (
@@ -56,6 +60,7 @@ def capture_current_joint_producers(
     now: datetime,
     *,
     original_actual_capture: ActualActionSetCapture | None = None,
+    optimizer_version: OptimizerVersion | None = None,
 ) -> JointActionSetCapture:
     _snapshot(session)
     now = _now(now)
@@ -118,9 +123,12 @@ def capture_current_joint_producers(
                 try:
                     values: list[MultiGoalAllocationInput] = []
                     original_response = joint_goal_planning(
-                        session, user_id, now, capture_inputs=values.append
+                        session, user_id, now, capture_inputs=values.append,
+                        optimizer_version=optimizer_version,
                     )
-                    planning = full_joint_goal_planning(session, user_id, now)
+                    planning = full_joint_goal_planning(
+                        session, user_id, now, optimizer_version=optimizer_version
+                    )
                     if len(values) != 1 or planning.original_joint != original_response:
                         raise ValueError("JOINT_SAME_RRRO_ORIGINAL_CAPTURE_OR_RESPONSE_DIFFERS")
                     original = values[0]

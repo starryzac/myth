@@ -6,12 +6,16 @@ from uuid import UUID
 
 from app.domain.full_joint_goal_execution import (
     ALGORITHM,
+    ALGORITHM_V4,
     MARKER,
     FullJointGoalExecutionInput,
     FullJointGoalPrepareRequest,
     FullJointGoalPreview,
+    derive_archived_joint_execution_plan,
     derive_joint_execution_plan,
+    derive_source_archived_joint_execution_plan,
 )
+from app.domain.multi_goal_allocation import AFFINE_BOX_V2
 from app.services.decision_recording import (
     CAPTURE_KEY,
     DecisionCapture,
@@ -32,7 +36,13 @@ class FullJointGoalExecutionCapture:
 
 
 def capture_full_joint_goal_execution(
-    session: Session, user_id: UUID, body: FullJointGoalPrepareRequest, now: datetime
+    session: Session,
+    user_id: UUID,
+    body: FullJointGoalPrepareRequest,
+    now: datetime,
+    *,
+    archive: bool = False,
+    source_dag: bool = False,
 ) -> FullJointGoalExecutionCapture:
     """Only the same current verified snapshot supplies money, sources and scope."""
     now = _now(now)
@@ -49,7 +59,9 @@ def capture_full_joint_goal_execution(
             raise PolicyLifecycleError(
                 "JOINT_CURRENT_SCOPE_CHANGED", "当前联合规划版本或轮次不同", 409
             )
-        original = capture_current_joint_producers(session, user_id, now)
+        original = capture_current_joint_producers(
+            session, user_id, now, optimizer_version=AFFINE_BOX_V2 if source_dag else None
+        )
         capture.sources.update(original.originals.sources)
         capture.policies.update(original.originals.policies)
         scope_ids = {identity for identity in scope.current_version.evidence_ids}
@@ -62,9 +74,19 @@ def capture_full_joint_goal_execution(
         )
         capture_evidence(session, user_id, sorted(scope_ids, key=str))
         inputs = FullJointGoalExecutionInput(request=body, scope=scope, joint=original.inputs)
-        preview = derive_joint_execution_plan(inputs)
+        preview = (
+            derive_source_archived_joint_execution_plan(inputs)
+            if source_dag
+            else derive_archived_joint_execution_plan(inputs)
+            if archive
+            else derive_joint_execution_plan(inputs)
+        )
         capture.inputs[MARKER] = inputs.model_dump(mode="json")
-        capture.algorithms[MARKER] = ALGORITHM
+        from app.domain.full_joint_goal_archive_protocol import ALGORITHM_V3
+
+        capture.algorithms[MARKER] = (
+            ALGORITHM_V4 if source_dag else ALGORITHM_V3 if archive else ALGORITHM
+        )
     finally:
         if previous is None:
             session.info.pop(CAPTURE_KEY, None)
@@ -77,6 +99,14 @@ def capture_full_joint_goal_execution(
 
 
 def preview_full_joint_goal_execution(
-    session: Session, user_id: UUID, body: FullJointGoalPrepareRequest, now: datetime
+    session: Session,
+    user_id: UUID,
+    body: FullJointGoalPrepareRequest,
+    now: datetime,
+    *,
+    archive: bool = False,
+    source_dag: bool = False,
 ) -> FullJointGoalPreview:
-    return capture_full_joint_goal_execution(session, user_id, body, now).preview
+    return capture_full_joint_goal_execution(
+        session, user_id, body, now, archive=archive, source_dag=source_dag
+    ).preview

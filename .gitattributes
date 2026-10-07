@@ -3,5 +3,3 @@
 *.png binary
 *.webm binary
 *.mp4 binary
-# Raw evidence hashes include line endings; preserve the captured bytes.
-docs/progress/evidence/** -text -eol

@@ -1,9 +1,0 @@
-......F                                                                  [100%]
-================================== FAILURES ===================================
-___ test_bank_posting_and_receipt_digests_bind_the_full_original_money_set ____
-apps\api\app\tests\test_audit_chain_domain.py:175: in test_bank_posting_and_receipt_digests_bind_the_full_original_money_set
-    from app.domain.audit_chain import posting_set_digest, receipt_digest
-E   ImportError: cannot import name 'posting_set_digest' from 'app.domain.audit_chain' (F:\ѧУ�\���б�\Ǯ;�н�\bounded-funds\apps\api\app\domain\audit_chain.py)
-=========================== short test summary info ===========================
-FAILED apps/api/app/tests/test_audit_chain_domain.py::test_bank_posting_and_receipt_digests_bind_the_full_original_money_set
-1 failed, 6 passed in 0.81s

@@ -1,6 +1,0 @@
-..........................................s............................. [ 40%]
-........................................................................ [ 80%]
-....................................                                     [100%]
-=========================== short test summary info ===========================
-SKIPPED [1] scripts\tests\test_export_evidence.py:331: Native symlink creation unavailable: [WinError 1314] 客户端没有所需的特权。: 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.runtime\\tool_tests\\export_evidence\\9c6ed8ee79d14c95b13b36b65edaff28\\outside.json' -> 'F:\\学校活动\\工行杯\\钱途有界\\bounded-funds\\.runtime\\tool_tests\\export_evidence\\9c6ed8ee79d14c95b13b36b65edaff28\\tool-fixture\\.runtime\\inputs\\link.json'
-179 passed, 1 skipped in 9.81s

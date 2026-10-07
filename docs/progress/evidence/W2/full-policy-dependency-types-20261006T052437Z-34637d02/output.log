@@ -1,3 +1,0 @@
-apps\api\app\domain\full_policy_dependencies.py:243: error: Need type annotation for "graph"  [var-annotated]
-apps\api\app\services\full_policy_dependencies.py:114: error: Argument "template_name" to "DependencyPolicyOriginal" has incompatible type "str"; expected "Literal['RecurringObligationPolicy', 'LivingReservePolicy', 'EmergencyBufferPolicy', 'DatedExpensePolicy', 'LongTermGoalPolicy', 'PeriodicTransferPolicy', 'AssetAuthorizationPolicy', 'RecoveryPolicy', 'GoalAllocationPolicy', 'CrossGoalReallocationPolicy', 'SeasonalReservePolicy', 'InterventionPolicy']"  [arg-type]
-Found 2 errors in 2 files (checked 6 source files)

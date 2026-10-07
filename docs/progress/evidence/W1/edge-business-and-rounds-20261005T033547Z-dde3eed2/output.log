@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\w1_browser_acceptance.py", line 720, in <module>
-    raise SystemExit(main())
-                     ^^^^^^
-  File "F:\学校活动\工行杯\钱途有界\bounded-funds\scripts\w1_browser_acceptance.py", line 243, in main
-    "adapter_sha256": frozen["scripts/browser_checkpoint_oracles.py"],
-                      ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-KeyError: 'scripts/browser_checkpoint_oracles.py'

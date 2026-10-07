@@ -45,6 +45,9 @@ from app.services.full_policy_lifecycle import FullLifecycleResult, FullPolicyVi
 from pydantic import Field, StrictBool, StrictInt, StrictStr, model_validator
 
 ALGORITHM: Literal["registered-joint-goal-execution-v2"] = "registered-joint-goal-execution-v2"
+ALGORITHM_V4: Literal["registered-joint-goal-execution-source-dag-v4"] = (
+    "registered-joint-goal-execution-source-dag-v4"
+)
 MARKER = "full_joint_goal_execution"
 NAMESPACE = UUID("514aaf21-d405-5f9c-8706-de1684e812e4")
 Hash = Annotated[StrictStr, Field(pattern=r"^[0-9a-f]{64}$")]
@@ -411,7 +414,11 @@ def fixed_joint_effect(
 
 
 class FullJointFrozenPlan(BoundaryModel):
-    protocol: Literal["registered-joint-goal-execution-v2"] = ALGORITHM
+    protocol: Literal[
+        "registered-joint-goal-execution-v2",
+        "registered-joint-goal-execution-archive-v3",
+        "registered-joint-goal-execution-source-dag-v4",
+    ] = ALGORITHM
     simulation: Literal[True] = True
     bank_authority: Literal[False] = False
     funds_reserved: Literal[False] = False
@@ -502,6 +509,39 @@ class FullJointGoalPreview(BoundaryModel):
 
 
 def derive_joint_execution_plan(data: FullJointGoalExecutionInput) -> FullJointGoalPreview:
+    """Original RAW v2 derivation and capacity decisions remain unchanged."""
+    return _derive_joint_execution_plan(data, archive=False)
+
+
+def derive_archived_joint_execution_plan(data: FullJointGoalExecutionInput) -> FullJointGoalPreview:
+    """Replay all original financial predicates with a separately bounded v3 wire."""
+    return _derive_joint_execution_plan(data, archive=True)
+
+
+def derive_source_archived_joint_execution_plan(
+    data: FullJointGoalExecutionInput,
+) -> FullJointGoalPreview:
+    """Explicit V4 transport; every original financial predicate remains native."""
+    return _derive_joint_execution_plan(data, archive=True, source_dag=True)
+
+
+def _derive_joint_execution_plan(
+    data: FullJointGoalExecutionInput, *, archive: bool, source_dag: bool = False
+) -> FullJointGoalPreview:
+    from app.domain.full_joint_goal_archive_protocol import (
+        ALGORITHM_V3,
+        binding_for_plan,
+        encode_joint_record,
+        validate_joint_original_capacity,
+    )
+    from app.domain.full_joint_goal_source_adapter import (
+        source_binding_for_input,
+        source_binding_for_plan,
+    )
+    from app.domain.full_joint_goal_source_archive import encode_shared_joint
+
+    if source_dag and not archive:
+        raise ValueError("JOINT_SOURCE_DAG_REQUIRES_EXPLICIT_ARCHIVE")
     data = FullJointGoalExecutionInput.model_validate(data.model_dump())
     joint, actual = data.joint, data.joint.original_actual_input
     goals = joint_goal_ids(actual)
@@ -510,8 +550,13 @@ def derive_joint_execution_plan(data: FullJointGoalExecutionInput) -> FullJointG
     plan = None
     status: Literal["READY_TO_REVIEW", "BLOCKED", "UNKNOWN"] = "UNKNOWN"
     try:
-        if reasons or len(data.model_dump_json().encode("utf8")) > MAX_PLAN_BYTES:
+        if reasons or not archive and len(data.model_dump_json().encode("utf8")) > MAX_PLAN_BYTES:
             raise ValueError("JOINT_CAPTURE_INCOMPLETE_OR_CAPACITY_EXCEEDED")
+        if source_dag:
+            raw_input = data.model_dump(mode="json")
+            encode_shared_joint(raw_input, source_binding_for_input(raw_input), "INPUT")
+        elif archive:
+            validate_joint_original_capacity(data.model_dump(mode="json"))
         if (
             joint.expected_goal_ids != goals
             or joint.original_action_ids != joint_action_ids(actual)
@@ -621,6 +666,7 @@ def derive_joint_execution_plan(data: FullJointGoalExecutionInput) -> FullJointG
         # Construction here only supplies already typed derived values so that
         # the hash includes defaults; the complete strict validator follows.
         temporary = FullJointFrozenPlan.model_construct(
+            protocol=ALGORITHM_V4 if source_dag else ALGORITHM_V3 if archive else ALGORITHM,
             plan_id=parent,
             user_id=actual.base.user_id,
             epoch_id=actual.base.epoch_id,
@@ -638,7 +684,17 @@ def derive_joint_execution_plan(data: FullJointGoalExecutionInput) -> FullJointG
         plan = FullJointFrozenPlan.model_validate_json(
             json.dumps(encoded | {"plan_hash": configuration_hash(encoded)})
         )
-        if len(plan.model_dump_json().encode("utf8")) > MAX_PLAN_BYTES:
+        if source_dag:
+            raw_plan = plan.model_dump(mode="json")
+            bound = source_binding_for_plan(raw_plan)
+            encode_shared_joint(raw_plan, bound, "PLAN")
+            encode_shared_joint(raw_plan["inputs"], bound, "INPUT")
+        elif archive:
+            raw_plan = plan.model_dump(mode="json")
+            bound = binding_for_plan(raw_plan)
+            encode_joint_record(raw_plan, bound, "PLAN")
+            encode_joint_record(raw_plan["inputs"], bound, "INPUT")
+        elif len(plan.model_dump_json().encode("utf8")) > MAX_PLAN_BYTES:
             raise ValueError("JOINT_FROZEN_WHOLE_PLAN_CAPACITY_EXCEEDED")
         status = "READY_TO_REVIEW"
     except (ValueError, TypeError, KeyError, StopIteration, OverflowError) as error:
@@ -664,7 +720,30 @@ def derive_joint_execution_plan(data: FullJointGoalExecutionInput) -> FullJointG
 
 
 def verify_frozen_joint_plan(plan: FullJointFrozenPlan) -> None:
-    replayed = derive_joint_execution_plan(plan.inputs)
+    from app.domain.full_joint_goal_archive_protocol import ALGORITHM_V3
+    from app.domain.immutable_joint_validation_scope import verify_original_content
+
+    if plan.protocol not in {ALGORITHM_V3, ALGORITHM_V4}:
+        _verify_frozen_joint_plan_uncached(plan)
+        return
+    verify_original_content(
+        plan.protocol,
+        plan.model_dump(mode="json", exclude={"plan_hash"}),
+        plan.plan_hash,
+        lambda: _verify_frozen_joint_plan_uncached(plan),
+    )
+
+
+def _verify_frozen_joint_plan_uncached(plan: FullJointFrozenPlan) -> None:
+    from app.domain.full_joint_goal_archive_protocol import ALGORITHM_V3
+
+    replayed = (
+        derive_source_archived_joint_execution_plan(plan.inputs)
+        if plan.protocol == ALGORITHM_V4
+        else derive_archived_joint_execution_plan(plan.inputs)
+        if plan.protocol == ALGORITHM_V3
+        else derive_joint_execution_plan(plan.inputs)
+    )
     if replayed.status != "READY_TO_REVIEW" or replayed.plan != plan:
         raise ValueError("JOINT_FROZEN_PLAN_COMPLETE_ORIGINAL_MATH_DIFFERS")
 
@@ -738,8 +817,10 @@ def require_fixed_child(
         or len(states) != len(plan.children)
     ):
         raise ValueError("JOINT_ORIGINAL_EXECUTE_IDENTITY_OR_DENOMINATOR_DIFFERS")
-    child = next(row for row in plan.children if row.child_number == body.expected_child_number)
-    if child.action_id != body.expected_action_id:
+    child = next(
+        (row for row in plan.children if row.child_number == body.expected_child_number), None
+    )
+    if child is None or child.action_id != body.expected_action_id:
         raise ValueError("JOINT_FIXED_EXPECTED_CHILD_DIFFERS")
     terminal = {"ORIGINAL_RECEIPT_VERIFIED"}
     if any(value not in terminal for value in states[: child.child_number - 1]):

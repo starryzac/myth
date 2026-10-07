@@ -1,5 +1,0 @@
-apps\api\app\services\execution_projection.py:94: error: Incompatible types in assignment (expression has type "int | None", variable has type "int")  [assignment]
-apps\api\app\tests\test_execution_bank.py:589: error: Item "None" of "str | None" has no attribute "startswith"  [union-attr]
-apps\api\app\tests\test_execution_projection.py:188: error: Item "None" of "ActionReceipt | None" has no attribute "id"  [union-attr]
-apps\api\app\tests\test_execution_projection.py:221: error: Item "None" of "ActionReceipt | None" has no attribute "id"  [union-attr]
-Found 4 errors in 3 files (checked 107 source files)

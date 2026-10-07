@@ -1,2 +1,0 @@
-scripts\tests\test_mvp_observation_v2.py:100: error: Need type annotation for "fragment"  [var-annotated]
-Found 1 error in 1 file (checked 6 source files)

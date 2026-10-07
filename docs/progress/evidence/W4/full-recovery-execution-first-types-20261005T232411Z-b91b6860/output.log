@@ -1,5 +1,0 @@
-apps\api\app\tests\test_full_recovery_execution.py:206: error: Unsupported operand types for + ("None" and "int")  [operator]
-apps\api\app\tests\test_full_recovery_execution.py:206: note: Left operand is of type "int | None"
-apps\api\app\tests\test_full_recovery_execution.py:210: error: Unsupported operand types for + ("None" and "timedelta")  [operator]
-apps\api\app\tests\test_full_recovery_execution.py:210: note: Left operand is of type "datetime | None"
-Found 2 errors in 1 file (checked 3 source files)

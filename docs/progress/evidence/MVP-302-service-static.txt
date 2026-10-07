@@ -1,3 +1,0 @@
-All checks passed!
-2 files already formatted
-Success: no issues found in 2 source files

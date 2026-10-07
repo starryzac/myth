@@ -63,9 +63,11 @@ FULL_RECOVERY_GUARDS_VERSION = "full-recovery-execution-guards-v1"
 FULL_EXPERIMENT_ASSET_GUARDS_VERSION = "full-experiment-asset-guards-v1"
 FULL_JOINT_GOAL_GUARDS_VERSION = "registered-joint-goal-execution-v2"
 JOINT_GOAL_MARKER = "full_joint_goal_execution"
+ZHIYU_ASSET_CLOSURE_GUARDS_VERSION = "zhiyu-asset-closure-guards-v1"
 
 if TYPE_CHECKING:
     from app.domain.full_joint_goal_execution import FullJointChildPrepareRequest
+    from app.services.zhiyu_asset_loss import LossNativePrepareRequest
 
 
 def prepare_action(
@@ -81,11 +83,40 @@ def prepare_action(
     _full_recovery_request: FullRecoveryPrepareRequest | None = None,
     _full_experiment_asset_request: FullExperimentAssetRequest | None = None,
     _full_joint_goal_request: "FullJointChildPrepareRequest | None" = None,
+    _zhiyu_loss_request: "LossNativePrepareRequest | None" = None,
 ) -> ActionResponse:
     request = PrepareActionRequest.model_validate_json(request.model_dump_json())
     now = _clock(now)
     key = "action:" + configuration_hash({"key": request.idempotency_key})
     intent = request.intent.model_dump(mode="json")
+    if _zhiyu_loss_request is not None:
+        from app.services.zhiyu_asset_loss import LossNativePrepareRequest
+        from app.zhiyu_next_isolation import require_zhiyu_next_engine
+
+        require_zhiyu_next_engine(engine)
+        if any(
+            value is not None
+            for value in (
+                _full_dynamic_goal_request,
+                _full_recovery_request,
+                _full_experiment_asset_request,
+                _full_joint_goal_request,
+                _experiment_candidate_selector,
+                _experiment_context_guard,
+                _experiment_stage_capture,
+            )
+        ):
+            raise PolicyLifecycleError("ASSET_PROTOCOL_MIXED", "不能混合原执行协议", 409)
+        _zhiyu_loss_request = LossNativePrepareRequest.model_validate_json(
+            _zhiyu_loss_request.model_dump_json()
+        )
+        if request.idempotency_key != _zhiyu_loss_request.native_key or intent != {
+            "kind": "redeem_asset",
+            "position_id": str(_zhiyu_loss_request.position_id),
+        }:
+            raise PolicyLifecycleError(
+                "ASSET_LOSS_INTENT_MISMATCH", "原有损意图与私有原键须一致", 409
+            )
     if _full_joint_goal_request is not None:
         from app.domain.full_joint_goal_execution import child_bank_key
 
@@ -199,6 +230,12 @@ def prepare_action(
             )
         )
         if existing is not None:
+            if _zhiyu_loss_request is not None:
+                from app.services.zhiyu_asset_loss import verify_loss_native_prepare_replay
+
+                return verify_loss_native_prepare_replay(
+                    session, user_id, existing, request, _zhiyu_loss_request, now
+                )
             if _full_joint_goal_request is not None:
                 from app.services.execution_joint_goal_bridge import replay_joint_child_prepare
 
@@ -354,6 +391,16 @@ def prepare_action(
             raise PolicyLifecycleError(
                 "EXECUTION_NOT_READY", "动作不能安全准备：" + ",".join(validation.reasons), 409
             )
+        from app.services.zhiyu_asset_loss import (
+            produce_loss_native_marker,
+            requires_zhiyu_asset_closure,
+        )
+
+        loss_marker = None
+        if requires_zhiyu_asset_closure(engine):
+            loss_marker = produce_loss_native_marker(
+                session, user_id, request, _zhiyu_loss_request, effect, context, validation, now
+            )
         digest = execution_effect_hash(effect)
         if _experiment_stage_capture is not None:
             _experiment_stage_capture(
@@ -376,6 +423,8 @@ def prepare_action(
             payload[EXPERIMENT_ASSET_MARKER] = experiment_asset_marker
         if joint_marker is not None:
             payload[JOINT_GOAL_MARKER] = joint_marker
+        if loss_marker is not None:
+            payload["zhiyu_lossy_redemption"] = loss_marker
         initial = {"intent": intent, "effect_hash": digest}
         run = DecisionRun(
             id=uuid5(action_id, "decision"),
@@ -430,6 +479,7 @@ def prepare_action(
             and recovery_marker is None
             and experiment_asset_marker is None
             and joint_marker is None
+            and loss_marker is None
         ):
             record_execution_trace(
                 session,
@@ -465,6 +515,7 @@ def prepare_action(
             or recovery_marker is not None
             or experiment_asset_marker is not None
             or joint_marker is not None
+            or loss_marker is not None
         ):
             record_execution_trace(
                 session,
@@ -730,6 +781,24 @@ def confirm_action(
 
         if has_full_protection_policies(session, user_id):
             enforce_full_execution_protection(engine, user_id, effect, context, result, now)
+        from app.services.zhiyu_asset_loss import (
+            recheck_loss_native_source,
+            requires_zhiyu_asset_closure,
+        )
+
+        loss_bound = False
+        if requires_zhiyu_asset_closure(engine):
+            loss_bound = (
+                recheck_loss_native_source(
+                    session,
+                    action,
+                    BankCommand(effect=effect, effect_hash=previous.effect_hash),
+                    context,
+                    result,
+                    now,
+                )
+                is not None
+            )
         record_execution_trace(
             session,
             effect,
@@ -740,7 +809,7 @@ def confirm_action(
             autonomy_level=action.autonomy_level,
             confirmation=confirmation,
             action_request=action.request
-            if dynamic_proof is not None or recovery_bound or experiment_asset_bound
+            if dynamic_proof is not None or recovery_bound or experiment_asset_bound or loss_bound
             else None,
         )
         action.status, action.authorized_at = "AUTHORIZED", now
@@ -945,6 +1014,25 @@ def _execute_action(
                     BankCommand.model_validate_json(json.dumps(action.request["execution"])),
                     now,
                 )
+            from app.services.zhiyu_asset_loss import (
+                recheck_loss_native_source,
+                requires_zhiyu_asset_closure,
+            )
+
+            loss_bound = False
+            if requires_zhiyu_asset_closure(engine):
+                from app.api.v1.zhiyu_assets import enforce_zhiyu_asset_acceptance
+
+                original_command = BankCommand(
+                    effect=current.effect, effect_hash=current.effect_hash
+                )
+                loss_bound = (
+                    recheck_loss_native_source(
+                        session, action, original_command, context, validation, now
+                    )
+                    is not None
+                )
+                enforce_zhiyu_asset_acceptance(engine, session, action, original_command, now)
             reserve_run = record_execution_trace(
                 session,
                 current.effect,
@@ -955,7 +1043,10 @@ def _execute_action(
                 autonomy_level=action.autonomy_level,
                 confirmation=confirmation,
                 action_request=action.request
-                if dynamic_proof is not None or recovery_bound or experiment_asset_bound
+                if dynamic_proof is not None
+                or recovery_bound
+                or experiment_asset_bound
+                or loss_bound
                 else None,
             )
             reserve_resources(

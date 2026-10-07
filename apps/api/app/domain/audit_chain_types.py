@@ -28,6 +28,7 @@ EVENT_TYPES = frozenset(
         "TRANSACTION_CATEGORY_CONFIRMED",
         "EXTERNAL_BANK_FACT_SETTLED",
         "EXTERNAL_BANK_FACT_PROJECTED",
+        "EXTENSION_RECORD_CREATED",
     }
 )
 PUBLIC_SUBJECT_KINDS = frozenset(
@@ -191,7 +192,7 @@ class AuditObservation(AuditModel):
 
 class AuditPayloadV1(AuditModel):
     fact_key: Label
-    correlation_kind: Literal["EPOCH", "DECISION_RUN", "POLICY", "GOAL", "TRANSACTION"]
+    correlation_kind: Literal["EPOCH", "DECISION_RUN", "POLICY", "GOAL", "TRANSACTION", "EVIDENCE"]
     references: Annotated[list[AuditReference], Field(max_length=10000)] = Field(
         default_factory=list
     )

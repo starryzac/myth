@@ -1,9 +1,0 @@
-run_id=20261004T051123Z-ad72a90a
-+ uv run --frozen ruff check apps/api scripts
-All checks passed!
-+ uv run --frozen ruff format --check apps/api scripts
-148 files already formatted
-+ uv run --frozen mypy
-Success: no issues found in 136 source files
-+ pnpm --dir apps/web lint
-$ eslint . --max-warnings 0

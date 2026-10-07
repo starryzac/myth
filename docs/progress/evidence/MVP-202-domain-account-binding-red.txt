@@ -1,9 +1,0 @@
-.......................................F                                 [100%]
-================================== FAILURES ===================================
-____________ test_bill_cannot_bind_to_a_missing_or_noncard_account ____________
-apps\api\app\tests\test_boundary.py:564: in test_bill_cannot_bind_to_a_missing_or_noncard_account
-    with pytest.raises(ValueError,match="card account"):
-E   Failed: DID NOT RAISE ValueError
-=========================== short test summary info ===========================
-FAILED apps/api/app/tests/test_boundary.py::test_bill_cannot_bind_to_a_missing_or_noncard_account
-1 failed, 39 passed in 0.83s

@@ -1,5 +1,0 @@
-scripts\tests\test_browser_checkpoint_oracles.py:87: error: "TypeEngine[Any]" has no attribute "impl"  [attr-defined]
-scripts\tests\test_browser_checkpoint_oracles.py:88: error: Argument 1 to "normalized_original" has incompatible type "FromClause[ReadOnlyColumnCollection[str, KeyedColumnElement[Any]]]"; expected "Table[ReadOnlyColumnCollection[str, Column[Any]]]"  [arg-type]
-scripts\tests\test_browser_checkpoint_oracles.py:125: error: Argument 1 to "normalized_original" has incompatible type "FromClause[ReadOnlyColumnCollection[str, KeyedColumnElement[Any]]]"; expected "Table[ReadOnlyColumnCollection[str, Column[Any]]]"  [arg-type]
-scripts\tests\test_browser_checkpoint_oracles.py:179: error: Argument 1 to "normalized_original" has incompatible type "FromClause[ReadOnlyColumnCollection[str, KeyedColumnElement[Any]]]"; expected "Table[ReadOnlyColumnCollection[str, Column[Any]]]"  [arg-type]
-Found 4 errors in 1 file (checked 2 source files)

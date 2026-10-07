@@ -1,3 +1,0 @@
-apps\api\app\tests\test_full_experiment_asset_execution.py:378: error: Incompatible types in assignment (expression has type "bool", target has type "Collection[str]")  [assignment]
-apps\api\app\tests\test_full_experiment_asset_execution.py:380: error: Value of type "Collection[str]" is not indexable  [index]
-Found 2 errors in 1 file (checked 3 source files)

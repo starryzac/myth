@@ -1,4 +1,0 @@
-apps\api\app\tests\test_full_seasonal_adoption_service.py:19: error: Module "app.tests.test_full_seasonal_adoption" does not explicitly export attribute "USER"  [attr-defined]
-apps\api\app\tests\test_full_seasonal_adoption_api.py:12: error: Module "app.tests.test_full_seasonal_adoption" does not explicitly export attribute "USER"  [attr-defined]
-apps\api\app\tests\test_full_seasonal_adoption_api.py:105: error: Need type annotation for "changed"  [var-annotated]
-Found 3 errors in 2 files (checked 6 source files)

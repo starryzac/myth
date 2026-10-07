@@ -127,6 +127,7 @@ def get_session(
         )
         if (
             request.method == "GET"
+            or request.scope.get("zhiyu_read_only") is True
             or (audit_read and request.method == "POST")
             or policy_preview_read
             or full_goal_read
@@ -156,9 +157,9 @@ def get_session(
             "/api/v1/demo/state",
             "/api/v1/demo/commands/{command_id}",
         }
-        zhiyu_read = request.method == "GET" and (
-            request.scope.get("zhiyu_read_only") is True
-            or request.url.path
+        zhiyu_read = request.scope.get("zhiyu_read_only") is True or (
+            request.method == "GET"
+            and request.url.path
             in {
                 "/api/v1/zhiyu/environment",
                 "/api/v1/zhiyu/presets",

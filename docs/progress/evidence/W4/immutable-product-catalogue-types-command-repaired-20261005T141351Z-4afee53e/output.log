@@ -1,8 +1,0 @@
-apps\api\app\services\product_catalog.py:216: error: Missing positional argument "user_id" in call to "transaction_gate"  [call-arg]
-apps\api\app\api\v1\product_catalog.py:46: error: Module "app.services.product_catalog" does not explicitly export attribute "readonly"  [attr-defined]
-apps\api\app\tests\test_product_catalog.py:33: error: Module "app.services.product_catalog" does not explicitly export attribute "configuration_hash"  [attr-defined]
-apps\api\app\tests\test_product_catalog_integration.py:62: error: Need type annotation for "body"  [var-annotated]
-apps\api\app\tests\test_product_catalog_integration.py:160: error: Incompatible types in assignment (expression has type "dict[str, Any]", variable has type "AssetProduct | None")  [assignment]
-apps\api\app\tests\test_product_catalog_integration.py:161: error: Value of type "AssetProduct" is not indexable  [index]
-apps\api\app\tests\test_product_catalog_integration.py:163: error: Value of type "AssetProduct" is not indexable  [index]
-Found 7 errors in 4 files (checked 5 source files)

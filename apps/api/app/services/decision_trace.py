@@ -612,9 +612,13 @@ def _supported(trace: DecisionTrace) -> bool:
         "full-policy-action-set-boundary-recovery-composed-v4",
         "full-seasonal-adoption-v1",
         "full-recovery-execution-v1",
+        "lossy-early-redemption-v1",
         "full-maturity-user-execution-v1",
         "full-experiment-asset-execution-v1",
         "registered-joint-goal-execution-v2",
+        "registered-joint-goal-execution-archive-v3",
+        "registered-joint-goal-execution-source-dag-v4",
+        "reviewed-multi-template-policy-change-v1",
     }
     return all(version in supported for version in trace.algorithm_versions.values())
 
@@ -635,6 +639,15 @@ def _stored_trace(session: Session, row: DecisionRun) -> tuple[Completeness, Dec
     try:
         trace = DecisionTrace.model_validate_json(json.dumps(raw))
         verify_trace(trace)
+        if (
+            "reviewed_policy_change" in trace.algorithm_versions
+            or "reviewed-multi-template-policy-change-v1" in trace.algorithm_versions.values()
+        ):
+            from app.domain.full_policy_reviewed_change import (
+                verify_frozen_reviewed_policy_change_trace,
+            )
+
+            verify_frozen_reviewed_policy_change_trace(trace)
         if "full_joint_goal_execution" in trace.algorithm_versions:
             from app.domain.full_joint_goal_execution_trace import (
                 verify_frozen_full_joint_goal_trace,
@@ -658,6 +671,13 @@ def _stored_trace(session: Session, row: DecisionRun) -> tuple[Completeness, Dec
             from app.domain.full_seasonal_adoption import verify_frozen_seasonal_adoption_trace
 
             verify_frozen_seasonal_adoption_trace(trace)
+        if (
+            "zhiyu_lossy_redemption" in trace.algorithm_versions
+            or "lossy-early-redemption-v1" in trace.algorithm_versions.values()
+        ):
+            from app.services.zhiyu_asset_loss import verify_frozen_loss_native_trace
+
+            verify_frozen_loss_native_trace(trace)
         if "full_recovery_execution" in trace.algorithm_versions:
             from app.domain.full_recovery_execution_trace import verify_frozen_full_recovery_trace
 
@@ -832,6 +852,12 @@ def _verify_action_origin(
 def _action_links(
     session: Session, row: DecisionRun, now: datetime, trace: DecisionTrace | None
 ) -> list[TraceActionLink]:
+    from app.domain.full_joint_goal_archive_protocol import expanded_joint_trace
+
+    # _stored_trace has verified the real wire hash and full joint mathematics.
+    # Keep the returned/persisted trace as the wire original; expand only this read.
+    if trace is not None:
+        trace = expanded_joint_trace(trace)
     query = select(ActionPlan).where(ActionPlan.user_id == row.user_id)
     if row.subject_action_plan_id is not None:
         query = query.where(ActionPlan.id == row.subject_action_plan_id)

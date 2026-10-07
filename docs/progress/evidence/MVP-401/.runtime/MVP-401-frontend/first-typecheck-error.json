@@ -1,1 +1,0 @@
-{"scope":"MVP-401 frontend initial direct tool check; error output transcribed from actual tool result, not captured by subsequent runner","command":"pnpm --dir apps/web typecheck","tool_exit_code":1,"elapsed_seconds":7.8073892,"repair":"Guard optional BlockingConstraint required_cents/available_cents with != null before rendering. Contract source was not altered."}

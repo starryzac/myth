@@ -1,6 +1,0 @@
-apps\api\app\tests\test_full_action_set_asset_producers.py:220: error: Incompatible types in assignment (expression has type "CatalogProductBinding", variable has type "UUID")  [assignment]
-apps\api\app\tests\test_full_action_set_asset_producers.py:230: error: "UUID" has no attribute "catalogue_version_id"  [attr-defined]
-apps\api\app\tests\test_full_action_set_asset_producers.py:236: error: "UUID" has no attribute "product_record_hash"  [attr-defined]
-apps\api\app\tests\test_full_action_set_asset_producers.py:249: error: "UUID" has no attribute "model_dump"  [attr-defined]
-apps\api\app\tests\test_full_action_set_asset_producers.py:326: error: Argument "bindings" to "VerifiedCatalogProducts" has incompatible type "list[UUID]"; expected "list[CatalogProductBinding]"  [arg-type]
-Found 5 errors in 1 file (checked 3 source files)

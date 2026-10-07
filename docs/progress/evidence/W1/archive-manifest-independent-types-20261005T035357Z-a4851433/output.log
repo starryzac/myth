@@ -1,2 +1,0 @@
-apps\api\app\tests\test_audit_archive_manifest.py:122: error: Value of type "Collection[Collection[str]]" is not indexable  [index]
-Found 1 error in 1 file (checked 2 source files)

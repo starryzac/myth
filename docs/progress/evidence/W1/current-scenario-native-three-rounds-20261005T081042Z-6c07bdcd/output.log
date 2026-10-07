@@ -1,6 +1,0 @@
-phase=migration status=PASSED seconds=0.810
-phase=native_seed_once status=PASSED seconds=1.278
-phase=native_baseline_snapshot status=PASSED seconds=0.241
-phase=api_ready status=PASSED seconds=2.393
-phase=web_ready status=PASSED seconds=5.131
-W1 FAILED evidence=output\playwright\w1-20261005T081043Z-d65de08b

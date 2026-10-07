@@ -1,8 +1,0 @@
-scripts\tasks.py:24: error: Item "TextIO" of "TextIO | Any" has no attribute "reconfigure"  [union-attr]
-scripts\tasks.py:25: error: Item "TextIO" of "TextIO | Any" has no attribute "reconfigure"  [union-attr]
-scripts\tasks.py:152: error: Module has no attribute "killpg"  [attr-defined]
-scripts\tasks.py:157: error: Module has no attribute "killpg"  [attr-defined]
-scripts\tasks.py:157: error: Module has no attribute "SIGKILL"; maybe "SIGILL"?  [attr-defined]
-apps\api\app\domain\asset_allocation.py:361: error: Argument 1 to "get" of "dict" has incompatible type "UUID | None"; expected "UUID"  [arg-type]
-apps\api\app\tests\test_asset_allocation.py:274: error: Incompatible types in assignment (expression has type "object", variable has type "dict[str, Any]")  [assignment]
-Found 7 errors in 3 files (checked 76 source files)

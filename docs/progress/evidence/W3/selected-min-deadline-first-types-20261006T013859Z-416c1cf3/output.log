@@ -1,3 +1,0 @@
-apps\api\app\domain\full_goal_adjustments.py:229: error: Argument 2 to "_repair" has incompatible type "str"; expected "Literal['PROPOSAL', 'NOT_NEEDED', 'NO_PERMITTED_REPAIR', 'BASE_INFEASIBLE', 'UNKNOWN']"  [arg-type]
-apps\api\app\tests\test_full_goal_adjustments.py:437: error: Module "app.services.full_goal_adjustments" does not explicitly export attribute "read_full_goal_model"  [attr-defined]
-Found 2 errors in 2 files (checked 4 source files)

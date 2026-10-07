@@ -1,2 +1,0 @@
-apps\api\app\tests\test_full_goal_release_projection_audit.py:248: error: Too many values to unpack (2 expected, 3 provided)  [misc]
-Found 1 error in 1 file (checked 2 source files)
