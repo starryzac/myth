@@ -232,7 +232,8 @@ def _save_model_settings(update: ModelSettingsUpdate) -> ZhiyuModelSettings:
     elif update.api_key is not None and update.api_key.get_secret_value():
         values["api_key"] = update.api_key
     try:
-        candidate = ZhiyuModelSettings(**values)
+        # All fields already come from current settings; do not reread default dotenv.
+        candidate = ZhiyuModelSettings(_env_file=None, **values)  # type: ignore[call-arg]
     except ValueError:
         raise ModelConfigurationError() from None
     secret = candidate.api_key.get_secret_value() if candidate.api_key is not None else ""

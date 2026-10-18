@@ -461,7 +461,67 @@ def unsupported_producers(inventory: dict[str, list[dict[str, Any]]], epoch_id: 
         for row in inventory.get("evidence_items", [])
         if row["source_type"] == "FULL_GOAL_MODEL_V1" and row["status"] == "VALID"
     )
+    values.extend(user_goal_transfer_gates(inventory))
     return sorted(values)
+
+
+def user_goal_transfer_gates(inventory: dict[str, list[dict[str, Any]]]) -> list[str]:
+    """Explicit physical USER-only originals; never add a standing candidate.
+
+    This is a state/denominator gate. Complete audit/reconciliation independently
+    authenticates economic originals; terminal strings cannot replace those guards.
+    """
+    def object_field(row: dict[str, Any], field: str) -> dict[str, Any]:
+        value = row.get(field)
+        return value if type(value) is dict else {}
+
+    actions = {
+        row["id"]: row for row in inventory.get("action_plans", [])
+        if row.get("action_type") == "TRANSFER_GOAL"
+        or "goal_transfer_execution" in object_field(row, "request")
+        or object_field(row, "request").get("protocol")
+        in {"goal-transfer-action-v1", "goal-transfer-action-v2"}
+    }
+    banks = [row for row in inventory.get("bank_operations", [])
+             if row.get("operation_type") == "TRANSFER_GOAL"
+             or object_field(row, "request").get("protocol") == "full-goal-transfer-bank-v1"
+             or row.get("action_plan_id") in actions]
+    pending = {row["id"] for row in banks if row.get("action_plan_id") not in actions}
+    for identity, action in actions.items():
+        original_banks = [row for row in banks if row.get("action_plan_id") == identity]
+        receipts = [row for row in inventory.get("action_receipts", [])
+                    if row.get("action_plan_id") == identity]
+        postings = [row for row in inventory.get("simulated_bank_postings", [])
+                    if row.get("operation_id") in {bank["id"] for bank in original_banks}]
+        if not original_banks and not receipts and not postings and action.get("status") in {
+            "CANCELLED", "INVALIDATED", "FAILED"
+        }:
+            continue
+        if len(original_banks) != 1:
+            pending.add(identity)
+            continue
+        bank = original_banks[0]
+        if bank.get("status") == "REJECTED" and not postings and not receipts and action.get(
+            "status"
+        ) in {"CANCELLED", "INVALIDATED", "FAILED"}:
+            continue
+        if (
+            bank.get("status") == "SETTLED"
+            and action.get("status") in {"SUCCEEDED", "RECONCILED"}
+            and len(receipts) == 1 and receipts[0].get("status") == "SUCCEEDED"
+            and bank.get("id") == identity
+            and bank.get("operation_type") == action.get("action_type") == "TRANSFER_GOAL"
+            and bank.get("user_id") == action.get("user_id") == receipts[0].get("user_id")
+            and object_field(receipts[0], "response").get("bank_operation_id") == identity
+            and len(postings) == 4
+            and len({row["id"] for row in postings}) == 4
+            and len(object_field(receipts[0], "response").get("posting_ids", [])) == 4
+            and set(object_field(receipts[0], "response").get("posting_ids", []))
+            == {row["id"] for row in postings}
+        ):
+            continue
+        pending.add(identity)
+    return ["USER_ONLY_GOAL_TRANSFER_UNRESOLVED:" + identity for identity in sorted(pending)]
 
 
 def known_inactive_keys(inventory: dict[str, list[dict[str, Any]]], now: datetime) -> set[str]:

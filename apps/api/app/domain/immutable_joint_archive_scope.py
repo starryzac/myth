@@ -10,6 +10,11 @@ from dataclasses import dataclass, field
 from threading import Lock
 from typing import Any, cast
 
+from app.domain.immutable_joint_validation_scope import (
+    _historical_key,
+    _historical_pure_proofs,
+    _reuse_historical_proof,
+)
 from app.domain.policy_configuration import configuration_hash
 
 V3 = "registered-joint-goal-execution-archive-v3"
@@ -18,6 +23,7 @@ MAX_PROOFS = 16
 MAX_DECODED_ORIGINALS = 16
 MAX_DECODED_TOTAL_BYTES = 64 * 1024 * 1024
 MAX_CACHED_COMPRESSED_BYTES = 8 * 1024 * 1024
+CompleteArguments = Mapping[str, Any] | Callable[[], Mapping[str, Any]]
 
 
 @dataclass
@@ -45,20 +51,64 @@ def immutable_joint_archive_scope() -> Iterator[None]:
 
 def verify_complete_wire(
     protocol: str,
-    complete_wire: Mapping[str, Any],
+    complete_wire: CompleteArguments,
     uncached_pure_verifier: Callable[[], None],
+    *,
+    fresh_original: Callable[[], dict[str, Any]] | None = None,
+    verifier_implementation: Callable[..., Any] | None = None,
 ) -> None:
     """Positive pure trace proof only, keyed by every byte-relevant wire field."""
+    def complete() -> dict[str, Any]:
+        assert fresh_original is not None
+        original = fresh_original()
+        wire = complete_wire if isinstance(complete_wire, Mapping) else complete_wire()
+        if (
+            original["wire"]["algorithm_versions"].get("full_joint_goal_execution") != protocol
+            or configuration_hash(original["wire"]) != configuration_hash(dict(wire))
+        ):
+            raise ValueError("Fresh complete native trace differs from passed wire")
+        return original
+
+    getter = complete if fresh_original is not None else None
+    proof_key = _historical_key("wire", protocol, verifier_implementation, getter)
+
+    def verify() -> None:
+        _reuse_historical_proof(
+            proof_key,
+            lambda: _historical_key("wire", protocol, verifier_implementation, getter),
+            uncached_pure_verifier,
+        )
+
     current = _request.get()
-    if protocol not in {V3, V4} or current is None:
+    if (
+        protocol not in {V3, V4}
+        or current is None
+        or not isinstance(complete_wire, Mapping) and protocol != V4
+    ):
+        verify()
+        return
+    def key() -> str:
+        wire = complete_wire if isinstance(complete_wire, Mapping) else complete_wire()
+        identity = configuration_hash({"kind": "frozen-trace", "wire": dict(wire)})
+        if proof_key is not None:
+            identity = configuration_hash(
+                {"request_identity": identity, "native_proof_key": proof_key}
+            )
+        return identity
+
+    identity = key()
+    if (
+        fresh_original is not None
+        and _historical_pure_proofs.get() is not None
+        and proof_key is None
+    ):
         uncached_pure_verifier()
         return
-    identity = configuration_hash({"kind": "frozen-trace", "wire": dict(complete_wire)})
     with current.lock:
         if identity in current.proved:
             return
-    uncached_pure_verifier()
-    if identity != configuration_hash({"kind": "frozen-trace", "wire": dict(complete_wire)}):
+    verify()
+    if identity != key():
         raise ValueError("Pure verifier changed the complete original wire")
     with current.lock:
         if len(current.proved) < MAX_PROOFS:
@@ -67,15 +117,25 @@ def verify_complete_wire(
 
 def decode_complete_original(
     protocol: str,
-    complete_arguments: Mapping[str, Any],
+    complete_arguments: CompleteArguments,
     decoded_bytes: int,
     uncached_complete_decoder: Callable[[], dict[str, Any]],
 ) -> dict[str, Any]:
     """Return an isolated original, never a cached caller-mutable dictionary."""
     current = _request.get()
-    if protocol not in {V3, V4} or current is None:
+    if (
+        protocol not in {V3, V4}
+        or current is None
+        or not isinstance(complete_arguments, Mapping) and protocol != V4
+    ):
         return uncached_complete_decoder()
-    identity = configuration_hash({"kind": "record-decode", "args": dict(complete_arguments)})
+    def key() -> str:
+        arguments = (
+            complete_arguments if isinstance(complete_arguments, Mapping) else complete_arguments()
+        )
+        return configuration_hash({"kind": "record-decode", "args": dict(arguments)})
+
+    identity = key()
     with current.lock:
         previous = current.decoded.get(identity)
     if previous is not None:
@@ -105,7 +165,7 @@ def decode_complete_original(
             raise ValueError("Cached original must remain a complete JSON object")
         return cast(dict[str, Any], result)
     original = uncached_complete_decoder()
-    if identity != configuration_hash({"kind": "record-decode", "args": dict(complete_arguments)}):
+    if identity != key():
         raise ValueError("Pure decoder changed its complete original arguments")
     # Native decoding already enforced canonical JSON, complete binding and every
     # caller node/depth/byte cap. Store that exact complete result as private bytes,

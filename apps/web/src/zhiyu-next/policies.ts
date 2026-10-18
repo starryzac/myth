@@ -74,3 +74,5 @@ export async function readPolicyCommand(original: PendingOperation, environment:
 export const getPolicyCatalog = (environment: NextState) => request('/zhiyu-next/policy-templates', 'GET', undefined, (value) => parsePolicyCatalog(value, environment));
 export const getPolicySchema = (name: TemplateName, environment: NextState, version: 'MVP_V1' | 'FULL_V1' = 'FULL_V1') => request(`/zhiyu-next/policy-schema/${name}?dsl_version=${version}`, 'GET', undefined, (value) => parsePolicySchema(value, name, environment, version));
 export const getPolicyRecords = (environment: NextState) => request('/zhiyu-next/policy-records', 'GET', undefined, (value) => parsePolicyRecords(value, environment));
+
+export const getTransferSchema = (environment: NextState) => request('/zhiyu-next/policy-templates/CrossGoalReallocationPolicy/goal-transfer-schema', 'GET', undefined, (value) => parsePolicySchema(value, 'CrossGoalReallocationPolicy', environment));

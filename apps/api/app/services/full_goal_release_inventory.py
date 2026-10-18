@@ -2,7 +2,7 @@
 
 import json
 from datetime import datetime
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
 from uuid import UUID
 
 from app.db.models import ActionPlan, ActionReceipt, BankOperation, Goal, SimulatedBankPosting, User
@@ -35,6 +35,9 @@ from app.services.policy_lifecycle import PolicyLifecycleError, _now
 from app.services.simulated_bank import ledger_heads
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
+
+if TYPE_CHECKING:
+    from app.domain.full_goal_transfer import GoalTransferSettlementOriginal
 
 
 class ReleaseInventoryTable(BoundaryModel):
@@ -207,8 +210,26 @@ def _read(
         if row.operation_type == "RELEASE_GOAL"
         or row.request.get("protocol") == "full-goal-release-bank-v1"
     ]
+    transfer_banks = [
+        row for row in banks
+        if row.operation_type == "TRANSFER_GOAL"
+        or row.request.get("protocol") == "full-goal-transfer-bank-v1"
+    ]
     retained: list[GoalCashSourceProof] = []
     for action in actions.values():
+        if action.action_type == "TRANSFER_GOAL" or "goal_transfer_execution" in action.request:
+            from app.domain.full_goal_transfer_audit import read_frozen_goal_transfer_action
+
+            try:
+                transfer, bases = read_frozen_goal_transfer_action(row_copy(action))
+                if goal.id in {transfer.effect.source_goal_id, transfer.effect.target_goal_id}:
+                    # V1 release replay remains a three-leg protocol. The separate
+                    # transfer inventory can continue original source ALLOC residuals.
+                    reasons.append("GOAL_RELEASE_TRANSFER_HISTORY_UNSUPPORTED")
+                retained.extend(base for base in bases if base.goal_id == goal.id)
+            except (ValueError, TypeError, KeyError):
+                reasons.append("CURRENT_TRANSFER_ACTION_OR_RETAINED_BASES_NOT_VERIFIED")
+            continue
         if "goal_release_execution" not in action.request:
             if action.goal_id == goal.id and action.action_type in {
                 "RELEASE_GOAL",
@@ -252,7 +273,7 @@ def _read(
             basis,
             originals_by_ref,
             income.ledger,
-            {row.id for row in banks if row not in release_banks},
+            {row.id for row in banks if row not in release_banks and row not in transfer_banks},
         )
     except (PolicyLifecycleError, ValueError):
         reasons.append("CURRENT_COMPLETE_ORIGINAL_ALLOCATION_DENOMINATOR_NOT_VERIFIED")
@@ -338,6 +359,31 @@ def _read(
         current_source_binding_hash=binding,
         now=now,
     )
+    if transfer_banks:
+        from app.services.full_goal_transfer_reader import read_goal_transfer_bank_original
+
+        bank_complete = bank_verified and all(row.complete for row in inventory)
+        # Entry-specific source limitations cannot erase already consumed policy
+        # capacity. Reproduce the old Bank-only usage with the physical denominator.
+        usage = compute_release_policy_usage(
+            user_id, full_policy_id, original_releases,
+            actual_release_operation_count=len(release_banks) if bank_complete else None,
+            whole_bank_source_verified=bank_complete,
+            current_source_binding_hash=binding, now=now,
+        )
+        transfer_originals = []
+        for bank in transfer_banks:
+            try:
+                transfer_originals.append(read_goal_transfer_bank_original(session, bank, now))
+            except (PolicyLifecycleError, ValueError, TypeError, KeyError):
+                reasons.append("CURRENT_TRANSFER_BANK_OR_EXACT_FOUR_LEGS_NOT_VERIFIED")
+        usage = merge_goal_transfer_policy_usage(
+            usage, user_id, original_releases, transfer_originals,
+            actual_release_bank_ids={row.id for row in release_banks},
+            actual_transfer_bank_ids={row.id for row in transfer_banks},
+            whole_bank_source_verified=bank_complete,
+            current_source_binding_hash=binding, now=now,
+        )
     reasons.extend(residual.reasons)
     reasons.extend(usage.reasons)
     available = []
@@ -427,4 +473,84 @@ def _original(
                 ],
             }
         )
+    )
+
+
+def merge_goal_transfer_policy_usage(
+    usage: GoalReleasePolicyUsage,
+    user_id: UUID,
+    releases: list[GoalReleaseSettlementOriginal],
+    transfers: list["GoalTransferSettlementOriginal"],
+    *,
+    actual_release_bank_ids: set[UUID],
+    actual_transfer_bank_ids: set[UUID],
+    whole_bank_source_verified: bool,
+    current_source_binding_hash: str,
+    now: datetime,
+) -> GoalReleasePolicyUsage:
+    """One policy ID across both original protocols and all immutable versions.
+
+    This cannot make a V1 release residual transferable. Unknown originals keep
+    the complete cap unavailable; SETTLED consumes cap without an application receipt.
+    """
+    from app.domain.full_goal_transfer_provenance import goal_transfer_policy_lifetime_usage
+
+    reasons: list[str] = []
+    originals: list[GoalReleaseSettlementOriginal | GoalTransferSettlementOriginal] = [
+        *releases, *transfers
+    ]
+    pending = sorted({row.bank_operation_id for row in originals
+                      if row.status == "UNKNOWN"})
+    accepted = sorted({row.bank_operation_id for row in originals
+                       if row.status == "ACCEPTED"
+                       and (row.command.effect.policy_id
+                            if isinstance(row, GoalReleaseSettlementOriginal)
+                            else row.command.effect.scope.policy.policy_id) == usage.policy_id})
+    complete = (
+        whole_bank_source_verified
+        and {row.bank_operation_id for row in releases} == actual_release_bank_ids
+        and {row.bank_operation_id for row in transfers} == actual_transfer_bank_ids
+        and len(releases) == len(actual_release_bank_ids)
+        and len(transfers) == len(actual_transfer_bank_ids)
+        and not actual_release_bank_ids & actual_transfer_bank_ids
+    )
+    total: int | None = None
+    reserved: int | None = None
+    if not complete:
+        reasons.append("COMPLETE_CURRENT_RELEASE_TRANSFER_BANK_INVENTORY_NOT_VERIFIED")
+    try:
+        occupied = goal_transfer_policy_lifetime_usage(
+            user_id, usage.policy_id, releases, transfers,
+            actual_release_bank_ids=actual_release_bank_ids,
+            actual_transfer_bank_ids=actual_transfer_bank_ids, now=now,
+        )
+        reserved = sum(
+            row.command.effect.amount_cents for row in originals
+            if row.bank_operation_id in accepted
+        )
+        total = occupied - reserved
+    except (ValueError, TypeError, KeyError):
+        reasons.append("ORIGINAL_RELEASE_TRANSFER_KEY_UNRESOLVED_OR_NOT_VERIFIED")
+    if usage.state != "VERIFIED":
+        reasons.extend(usage.reasons)
+    verified = not reasons
+    return GoalReleasePolicyUsage(
+        policy_id=usage.policy_id, state="VERIFIED" if verified else "UNKNOWN",
+        settled_cents=total if verified else None,
+        accepted_reserved_cents=reserved if verified else None,
+        cap_occupied_cents=total + reserved
+        if verified and total is not None and reserved is not None else None,
+        actual_operation_count=len(actual_release_bank_ids | actual_transfer_bank_ids)
+        if complete else None,
+        captured_operation_count=len(releases) + len(transfers),
+        pending_operation_ids=pending, accepted_operation_ids=accepted,
+        reasons=list(dict.fromkeys(reasons)),
+        source_binding_hash=configuration_hash({
+            "legacy_usage": usage.model_dump(mode="json"),
+            "transfer_originals": [row.model_dump(mode="json") for row in transfers],
+            "current_source_binding_hash": current_source_binding_hash,
+            "actual_release_bank_ids": [str(row) for row in sorted(actual_release_bank_ids)],
+            "actual_transfer_bank_ids": [str(row) for row in sorted(actual_transfer_bank_ids)],
+            "as_of": now.isoformat(),
+        }),
     )

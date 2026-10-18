@@ -36,6 +36,15 @@ from app.domain.policy_configuration import (
     validate_configuration,
 )
 from app.domain.recovery_types import RecoveryQuote
+from app.domain.zhiyu_quote_revision import (
+    LOSS_V2,
+    PRICE_V2,
+    SOURCE_V2,
+    RevisionLossPrepareRequest,
+    decode_revision_payload,
+    verify_lineage,
+    verify_price_terms,
+)
 from app.services.action_contracts import ActionResponse, PrepareActionRequest
 from app.services.audit_chain import verify_audit_chain
 from app.services.demo_console import _epoch
@@ -86,6 +95,22 @@ class LossNativePrepareRequest(BoundaryModel):
         return self
 
 
+LossPrepareBody = LossNativePrepareRequest | RevisionLossPrepareRequest
+
+
+def intent_key(body: LossPrepareBody) -> str:
+    if isinstance(body, RevisionLossPrepareRequest):
+        return f"asset-loss-revision-intent:{body.quote_id}"
+    return f"asset-loss-intent:{body.position_id}"
+
+
+def price_source_ref(source: "LossSourceBasis") -> str:
+    if source.quote_payload.get("price_protocol") == PRICE_V2:
+        payload = decode_revision_payload(source.quote_payload)
+        return f"{PRICE_V2}:{payload.position_id}:{payload.revision.revision_number}"
+    return f"{PRICE_PROTOCOL}:{source.position.position_id}"
+
+
 class InstalledLossPrepare(Protocol):
     def __call__(
         self,
@@ -94,7 +119,7 @@ class InstalledLossPrepare(Protocol):
         request: PrepareActionRequest,
         now: datetime,
         *,
-        _zhiyu_loss_request: LossNativePrepareRequest,
+        _zhiyu_loss_request: LossPrepareBody,
     ) -> ActionResponse: ...
 
 
@@ -102,7 +127,7 @@ def installed_loss_prepare(
     engine: Engine,
     user_id: UUID,
     request: PrepareActionRequest,
-    body: LossNativePrepareRequest,
+    body: LossPrepareBody,
     now: datetime,
 ) -> ActionResponse:
     import inspect
@@ -152,6 +177,16 @@ class LossSourceBasis(BoundaryModel):
         position, product, quote = self.position, self.product, self.quote
         terms = FixedPrincipalTerms.model_validate(product.maturity_rule)
         values = self.model_dump(mode="json", exclude={"source_hash"})
+        revision = self.quote_payload.get("price_protocol") == PRICE_V2
+        if revision:
+            payload = decode_revision_payload(self.quote_payload)
+            verify_price_terms(payload, product)
+            if (
+                payload.quote != quote
+                or payload.user_id != position.user_id
+                or payload.position_id != position.position_id
+            ):
+                raise ValueError("Renewed price exact owner differs")
         if (
             type(position.principal_cents) is not int
             or position.principal_cents <= 0
@@ -199,11 +234,12 @@ class LossSourceBasis(BoundaryModel):
             or quote.expires_at != quote.request_at + timedelta(minutes=15)
             or quote.principal_available_at
             != quote.request_at + timedelta(days=product.redemption_delay_days)
-            or quote.quote_id != uuid5(position.position_id, PRICE_PROTOCOL)
+            or (not revision and quote.quote_id != uuid5(position.position_id, PRICE_PROTOCOL))
             or quote.evidence_ids != [quote.quote_id]
             or configuration_hash(self.quote_payload) != self.quote_evidence_hash
             or self.quote_payload.get("quote") != quote.model_dump(mode="json")
-            or self.quote_payload.get("price_protocol") != PRICE_PROTOCOL
+            or self.quote_payload.get("price_protocol")
+            != (PRICE_V2 if revision else PRICE_PROTOCOL)
             or self.quote_payload.get("rounding") != "CEIL_CENT"
             or self.quote_payload.get("simulation") is not True
             or self.source_hash != configuration_hash(values)
@@ -241,10 +277,12 @@ class LossSourceBasis(BoundaryModel):
 
 
 class LossNativeMarker(BoundaryModel):
-    protocol: Literal["lossy-early-redemption-v1"] = "lossy-early-redemption-v1"
+    protocol: Literal["lossy-early-redemption-v1", "lossy-early-redemption-quote-revision-v2"] = (
+        "lossy-early-redemption-v1"
+    )
     user_id: UUID
     epoch_id: UUID
-    original_request: LossNativePrepareRequest
+    original_request: LossPrepareBody
     intent_evidence_id: UUID
     intent_evidence_hash: Hash
     source: LossSourceBasis
@@ -254,13 +292,20 @@ class LossNativeMarker(BoundaryModel):
     @model_validator(mode="after")
     def immutable_source(self) -> Self:
         if (
-            self.epoch_id != self.original_request.expected_epoch_id
+            self.protocol != self.original_request.protocol
+            or (self.protocol == LOSS_V2)
+            != (self.source.quote_payload.get("price_protocol") == PRICE_V2)
+            or (
+                isinstance(self.original_request, RevisionLossPrepareRequest)
+                and self.original_request.quote_id != self.source.quote.quote_id
+            )
+            or self.epoch_id != self.original_request.expected_epoch_id
             or self.source.position.user_id != self.user_id
             or self.source.position.position_id != self.original_request.position_id
             or self.intent_evidence_id
             != uuid5(
                 self.epoch_id,
-                f"{RECORD_MARKER}:EVENT:asset-loss-intent:{self.original_request.position_id}",
+                f"{RECORD_MARKER}:EVENT:{intent_key(self.original_request)}",
             )
         ):
             raise ValueError("The exact audited source and original native request must agree")
@@ -285,7 +330,14 @@ def decode_marker(raw: dict[str, Any]) -> LossNativeMarker:
             for name, model in nested_models.items()
         )
         or not isinstance(raw.get("original_request"), dict)
-        or set(raw["original_request"]) != set(LossNativePrepareRequest.model_fields)
+        or set(raw["original_request"])
+        != set(
+            (
+                RevisionLossPrepareRequest
+                if raw.get("protocol") == LOSS_V2
+                else LossNativePrepareRequest
+            ).model_fields
+        )
     ):
         raise failure("原有损支取完整产品、权限、报价或私有请求字段缺失")
     position = source.get("position")
@@ -372,10 +424,17 @@ def read_source_basis(session: Session, user_id: UUID, effect: ExecutionEffect) 
         or quote_row.user_id != user_id
         or quote_row.status != "VALID"
         or quote_row.evidence_level != "BANK_CONFIRMED"
-        or quote_row.source_type != "SIMULATED_REDEMPTION_QUOTE"
-        or quote_row.source_ref != f"{PRICE_PROTOCOL}:{position.id}"
+        or quote_row.source_type not in {"SIMULATED_REDEMPTION_QUOTE", SOURCE_V2}
+        or (
+            quote_row.source_type == "SIMULATED_REDEMPTION_QUOTE"
+            and quote_row.source_ref != f"{PRICE_PROTOCOL}:{position.id}"
+        )
     ):
         raise failure("原持仓、原条款、原正式权限或服务器报价缺失")
+    if quote_row.source_type == SOURCE_V2:
+        from app.services.zhiyu_quote_revisions import read_revision_original
+
+        read_revision_original(session, user_id, quote_row.id, effect.valid_from)
     product_terms = AssetProductTerms(
         **{
             name: getattr(product, name)
@@ -416,14 +475,12 @@ def read_source_basis(session: Session, user_id: UUID, effect: ExecutionEffect) 
 
 
 def original_intent(
-    session: Session, user_id: UUID, body: LossNativePrepareRequest, now: datetime
+    session: Session, user_id: UUID, body: LossPrepareBody, now: datetime
 ) -> EvidenceItem:
     if _epoch(session, user_id) != body.expected_epoch_id:
         raise failure("有损支取原请求跨轮次")
     audit = verify_audit_chain(session, user_id, body.expected_epoch_id)
-    source_id = uuid5(
-        body.expected_epoch_id, f"{RECORD_MARKER}:EVENT:asset-loss-intent:{body.position_id}"
-    )
+    source_id = uuid5(body.expected_epoch_id, f"{RECORD_MARKER}:EVENT:{intent_key(body)}")
     source = session.get(EvidenceItem, source_id)
     if source is None or audit.status != "VALID":
         raise failure("有损支取缺少完整已审计原请求")
@@ -434,7 +491,7 @@ def original_intent(
         require_local_user(actor, user_id, captured_at)
         if (
             captured_at > now
-            or raw.get("protocol") != ALGORITHM
+            or raw.get("protocol") != body.protocol
             or raw.get("bank_authority") is not False
             or raw.get("user_id") != str(user_id)
             or raw.get("epoch_id") != str(body.expected_epoch_id)
@@ -444,6 +501,11 @@ def original_intent(
                 "expected_epoch_id": str(body.expected_epoch_id),
                 "position_id": str(body.position_id),
                 "client_request_id": str(body.client_request_id),
+                **(
+                    {"quote_id": str(body.quote_id)}
+                    if isinstance(body, RevisionLossPrepareRequest)
+                    else {}
+                ),
             }
         ):
             raise ValueError("Original signed source scope changed")
@@ -456,7 +518,7 @@ def produce_loss_native_marker(
     session: Session,
     user_id: UUID,
     request: PrepareActionRequest,
-    body: LossNativePrepareRequest | None,
+    body: LossPrepareBody | None,
     effect: ExecutionEffect,
     context: ExecutionContext,
     validation: ExecutionValidation,
@@ -484,6 +546,7 @@ def produce_loss_native_marker(
         raise failure("原执行重验、缺口改善和ASK_ONCE门未通过")
     intent = original_intent(session, user_id, body, now)
     marker = LossNativeMarker(
+        protocol=body.protocol,
         user_id=user_id,
         epoch_id=body.expected_epoch_id,
         original_request=body,
@@ -504,9 +567,19 @@ def capture_loss_native(session: Session, marker: LossNativeMarker) -> None:
     if capture is None:
         raise failure("有损支取缺少原决策输入捕获")
     capture.inputs[MARKER] = marker.model_dump(mode="json")
-    capture.algorithms[MARKER] = ALGORITHM
+    capture.algorithms[MARKER] = marker.protocol
     capture_evidence(
-        session, marker.user_id, [marker.intent_evidence_id, marker.source.quote.quote_id]
+        session,
+        marker.user_id,
+        [marker.intent_evidence_id, marker.source.quote.quote_id]
+        + (
+            [
+                a.quote_id
+                for a in decode_revision_payload(marker.source.quote_payload).revision.ancestors
+            ]
+            if marker.protocol == LOSS_V2
+            else []
+        ),
     )
     capture_versions(
         session,
@@ -583,7 +656,7 @@ def verify_frozen_loss_native_trace(trace: DecisionTrace) -> LossNativeMarker:
             ):
                 raise ValueError("Frozen formal native policy originals differ")
         if (
-            trace.algorithm_versions.get(MARKER) != ALGORITHM
+            trace.algorithm_versions.get(MARKER) != marker.protocol
             or trace.user_id != marker.user_id
             or trace.action_id != effect.operation_id
             or trace.inputs["planning"][MARKER] != marker.model_dump(mode="json")
@@ -605,15 +678,54 @@ def verify_frozen_loss_native_trace(trace: DecisionTrace) -> LossNativeMarker:
             or intent.captured_content_hash != marker.intent_evidence_hash
             or price.user_id != marker.user_id
             or price.evidence_level != "BANK_CONFIRMED"
-            or price.source_type != "SIMULATED_REDEMPTION_QUOTE"
-            or price.source_ref != f"{PRICE_PROTOCOL}:{marker.original_request.position_id}"
+            or price.source_type
+            != (SOURCE_V2 if marker.protocol == LOSS_V2 else "SIMULATED_REDEMPTION_QUOTE")
+            or price.source_ref != price_source_ref(marker.source)
             or price.status_at_decision != "VALID"
             or price.content_integrity != "VERIFIED"
             or price.content != marker.source.quote_payload
             or price.content_hash != marker.source.quote_evidence_hash
             or price.captured_content_hash != marker.source.quote_evidence_hash
+            or price.observed_at != marker.source.quote.request_at
+            or price.valid_from != marker.source.quote.request_at
+            or price.valid_to != marker.source.quote.expires_at
+            or price.supersedes_evidence_id is not None
         ):
             raise ValueError("Frozen native loss revalidation differs")
+        if marker.protocol == LOSS_V2:
+            revision = decode_revision_payload(marker.source.quote_payload)
+            originals: list[dict[str, Any]] = []
+            for reference in revision.revision.ancestors:
+                captured = evidence[reference.quote_id]
+                if (
+                    captured.user_id != marker.user_id
+                    or captured.evidence_level != "BANK_CONFIRMED"
+                    or captured.content_integrity != "VERIFIED"
+                    or captured.status_at_decision != "VALID"
+                    or captured.content_hash != reference.evidence_hash
+                    or captured.captured_content_hash != reference.evidence_hash
+                ):
+                    raise ValueError("Captured original quote lineage is incomplete")
+                if captured.source_type != (
+                    "SIMULATED_REDEMPTION_QUOTE" if not originals else SOURCE_V2
+                ):
+                    raise ValueError("Unknown ancestor simulator protocol")
+                old_quote = RecoveryQuote.model_validate_json(json.dumps(captured.content["quote"]))
+                expected_ref = (
+                    f"{PRICE_PROTOCOL}:{marker.source.position.position_id}"
+                    if not originals
+                    else f"{PRICE_V2}:{marker.source.position.position_id}:{len(originals)}"
+                )
+                if (
+                    captured.source_ref != expected_ref
+                    or captured.observed_at != old_quote.request_at
+                    or captured.valid_from != old_quote.request_at
+                    or captured.valid_to != old_quote.expires_at
+                    or captured.supersedes_evidence_id is not None
+                ):
+                    raise ValueError("Captured original quote identity or validity differs")
+                originals.append(captured.content)
+            verify_lineage(revision, originals)
         return marker
     except (KeyError, TypeError, ValueError, AttributeError, PolicyLifecycleError):
         # Original trace/audit readers already translate a ValueError into their
@@ -675,6 +787,15 @@ def recheck_loss_native_source(
     if not has_loss_native_binding(session, action):
         raise failure("有损原协议标记缺失，不能普通执行降级")
     marker = read_original_loss_native(session, action.user_id, action, command, now)
+    from app.services.zhiyu_quote_revisions import require_latest_quote_for_acceptance
+
+    require_latest_quote_for_acceptance(
+        session,
+        action.user_id,
+        marker.source.position.position_id,
+        marker.source.quote.quote_id,
+        now,
+    )
     if (
         not command.effect.valid_from <= now < command.effect.expires_at
         or not marker.source.quote.request_at <= now < marker.source.quote.expires_at
@@ -695,7 +816,7 @@ def verify_loss_native_prepare_replay(
     user_id: UUID,
     action: ActionPlan,
     request: PrepareActionRequest,
-    body: LossNativePrepareRequest,
+    body: LossPrepareBody,
     now: datetime,
 ) -> ActionResponse:
     from app.services.execution import get_action

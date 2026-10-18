@@ -721,7 +721,10 @@ def _derive_joint_execution_plan(
 
 def verify_frozen_joint_plan(plan: FullJointFrozenPlan) -> None:
     from app.domain.full_joint_goal_archive_protocol import ALGORITHM_V3
-    from app.domain.immutable_joint_validation_scope import verify_original_content
+    from app.domain.immutable_joint_validation_scope import (
+        _complete_model_original,
+        verify_original_content,
+    )
 
     if plan.protocol not in {ALGORITHM_V3, ALGORITHM_V4}:
         _verify_frozen_joint_plan_uncached(plan)
@@ -731,6 +734,8 @@ def verify_frozen_joint_plan(plan: FullJointFrozenPlan) -> None:
         plan.model_dump(mode="json", exclude={"plan_hash"}),
         plan.plan_hash,
         lambda: _verify_frozen_joint_plan_uncached(plan),
+        fresh_original=lambda: _complete_model_original(plan, FullJointFrozenPlan),
+        verifier_implementation=_verify_frozen_joint_plan_uncached,
     )
 
 

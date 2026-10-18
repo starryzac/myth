@@ -1,7 +1,9 @@
 """Source-bound fixed joint child recognition and current range proof seams."""
 
 import json
+from dataclasses import dataclass
 from datetime import datetime
+from typing import TYPE_CHECKING, cast
 from uuid import UUID, uuid5
 
 from app.db.full_joint_goal_execution_models import FullJointGoalExecutionChild
@@ -41,6 +43,18 @@ from app.services.policy_lifecycle import _now
 from sqlalchemy import select, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
+
+if TYPE_CHECKING:
+    from app.domain.decision_trace_types import DecisionTrace
+
+
+@dataclass(frozen=True)
+class _VerifiedJointTraceValues:
+    """Already validated values owned by this synchronous verification call only."""
+
+    expanded_trace: "DecisionTrace"
+    plan: FullJointFrozenPlan
+    proof: FullJointFrozenPlan | FullDynamicGoalProof
 
 
 def has_full_joint_goal_binding(session: Session, action: ActionPlan) -> bool:
@@ -356,7 +370,7 @@ def read_current_full_joint_goal_proof(
     )
 
 
-def read_frozen_full_joint_goal_proof(trace: object) -> FullDynamicGoalProof:
+def _read_frozen_full_joint_goal_values(trace: object) -> _VerifiedJointTraceValues:
     """Root history delegate: exact new inputs/old effect math, never old relabel."""
     from app.domain.decision_trace import verify_trace
     from app.domain.decision_trace_types import DecisionTrace
@@ -441,12 +455,15 @@ def read_frozen_full_joint_goal_proof(trace: object) -> FullDynamicGoalProof:
         mode="json"
     ):
         raise ValueError("JOINT_FROZEN_FIXED_CURRENT_PROOF_DIFFERS")
-    return proof
+    return _VerifiedJointTraceValues(trace, plan, proof)
 
 
-def verify_frozen_joint_execution_trace(
-    trace: object,
-) -> FullJointFrozenPlan | FullDynamicGoalProof:
+def read_frozen_full_joint_goal_proof(trace: object) -> FullDynamicGoalProof:
+    """Root history delegate: exact new inputs/old effect math, never old relabel."""
+    return cast(FullDynamicGoalProof, _read_frozen_full_joint_goal_values(trace).proof)
+
+
+def _verify_frozen_joint_trace_values(trace: object) -> _VerifiedJointTraceValues:
     """Exact new-version delegate for Root decision/audit historical readers."""
     from app.domain.decision_trace import verify_trace
     from app.domain.decision_trace_types import DecisionTrace
@@ -457,9 +474,9 @@ def verify_frozen_joint_execution_trace(
         ALGORITHM_V3,
     }:
         raise ValueError("JOINT_EXACT_TYPED_VERSION_REQUIRED")
-    verify_trace(trace)
     if trace.phase != "EVALUATION":
-        return read_frozen_full_joint_goal_proof(trace)
+        return _read_frozen_full_joint_goal_values(trace)
+    verify_trace(trace)
     trace = expanded_joint_trace(trace)
     if trace.action_id is not None:
         raise ValueError("JOINT_PLANNING_TRACE_CANNOT_CLAIM_AN_ACTION")
@@ -541,4 +558,11 @@ def verify_frozen_joint_execution_trace(
             or proof.valid_to != plan.expires_at
         ):
             raise ValueError("JOINT_WHOLE_CONSENT_ORIGINAL_ACTOR_SOURCE_DIFFERS")
-    return plan
+    return _VerifiedJointTraceValues(trace, plan, plan)
+
+
+def verify_frozen_joint_execution_trace(
+    trace: object,
+) -> FullJointFrozenPlan | FullDynamicGoalProof:
+    """Exact new-version delegate for Root decision/audit historical readers."""
+    return _verify_frozen_joint_trace_values(trace).proof

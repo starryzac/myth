@@ -1,7 +1,7 @@
 """Durable notification identities; preferences and receipts grant no financial authority."""
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Annotated, Any, Literal, Self
 from uuid import UUID, uuid5
 
@@ -9,6 +9,11 @@ from app.domain.boundary_types import BoundaryModel
 from app.domain.full_action_set_boundary import GlobalBoundaryObservation
 from app.domain.full_action_set_boundary_actual import ActualGlobalBoundaryObservation
 from app.domain.full_action_set_boundary_full import FullGlobalBoundaryObservation
+from app.domain.full_policy_configuration import (
+    MANDATORY_INTERVENTIONS,
+    InterventionPolicy,
+    InterventionReason,
+)
 from app.domain.policy_configuration import UUIDReference, configuration_hash
 from app.domain.question_workflow import CommandKey, PendingPlanningQuestion, QuestionRevision
 from pydantic import Field, StrictBool, StrictInt, TypeAdapter, field_validator, model_validator
@@ -280,3 +285,30 @@ def effective_state(
             else ("UNKNOWN" if source_status == "UNKNOWN" else stored)
         )
     )
+
+
+def notification_schedule(
+    policy: InterventionPolicy | None,
+    reason: InterventionReason,
+    requires_attention: bool,
+    now: datetime,
+    previous_attention_at: datetime | None,
+) -> tuple[State, datetime]:
+    """Only optional notifications can be deferred; this never grants financial authority."""
+    if not requires_attention:
+        return "RECORDED_ONLY", now
+    if reason in MANDATORY_INTERVENTIONS or policy is None:
+        return "PENDING", now
+    # Revalidate copied settings too. Invalid settings cannot silently remove a question.
+    try:
+        policy = InterventionPolicy.model_validate_json(policy.model_dump_json())
+    except ValueError:
+        return "PENDING", now
+    if reason not in policy.must_ask_on:
+        return "RECORDED_ONLY", now
+    if previous_attention_at is None or previous_attention_at > now:
+        return "PENDING", now
+    available = previous_attention_at + timedelta(
+        seconds=policy.minimum_reask_interval_seconds
+    )
+    return ("DEFERRED", available) if available > now else ("PENDING", now)

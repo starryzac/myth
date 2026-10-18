@@ -24,6 +24,7 @@ if TYPE_CHECKING:
         AuditVerification,
         ReferenceBundle,
     )
+    from app.domain.decision_trace_types import DecisionTrace
 
 MAX_EVENT_BYTES = 1024 * 1024
 MAX_SUBJECT_BYTES = 16 * 1024 * 1024
@@ -1130,6 +1131,13 @@ def _financial_identity(
             "PRINCIPAL_DEBIT": ("POSITION:" + command["position_id"], "ECONOMIC", -principal),
         }
         return command, specs
+    if operation["operation_type"] == "TRANSFER_GOAL":
+        from app.domain.full_goal_transfer_audit import frozen_goal_transfer_identity
+
+        try:
+            return frozen_goal_transfer_identity(operation, action, observed_at)
+        except (KeyError, TypeError, ValueError) as error:
+            raise AuditContractError("Frozen paired goal transfer identity differs") from error
     if operation["operation_type"] == "RELEASE_GOAL":
         from app.domain.full_goal_release_audit import frozen_goal_release_identity
 
@@ -1290,6 +1298,13 @@ def verify_frozen_settlement(
         if row["id"] != str(identity):
             raise AuditContractError("Frozen posting does not bind its original bank operation")
         actual[leg] = (row["ledger_key"], row["ledger_dimension"], row["delta_cents"])
+        if operation["operation_type"] == "TRANSFER_GOAL":
+            from app.domain.full_goal_transfer_audit import verify_frozen_goal_transfer_posting
+
+            try:
+                verify_frozen_goal_transfer_posting(command, row)
+            except (KeyError, TypeError, ValueError) as error:
+                raise AuditContractError("Frozen paired goal transfer leg differs") from error
         if operation["operation_type"] == "RELEASE_GOAL":
             from app.domain.full_goal_release_audit import verify_frozen_goal_release_posting
 
@@ -1378,6 +1393,16 @@ def verify_frozen_projection(
     ):
         raise AuditContractError("Frozen receipt observation and settlement clocks disagree")
     originals = {(s.kind, str(s.id)): s.data for s in subjects}
+    if operation["operation_type"] == "TRANSFER_GOAL":
+        from app.domain.full_goal_transfer import GoalTransferEffect
+        from app.domain.full_goal_transfer_audit import verify_frozen_goal_transfer_projection
+
+        if not isinstance(command, GoalTransferEffect):
+            raise AuditContractError("Frozen transfer projection needs its exact paired effect")
+        try:
+            verify_frozen_goal_transfer_projection(command, operation, receipt, rows, originals)
+        except (ValueError, KeyError, TypeError) as error:
+            raise AuditContractError("Frozen paired goal transfer originals differ") from error
     if operation["operation_type"] == "RELEASE_GOAL":
         from app.domain.full_goal_release_execution import GoalReleaseEffect
         from app.domain.full_goal_release_projection_audit import (
@@ -1624,6 +1649,25 @@ def _missing_references(value: Any) -> set[UUID]:
     return missing
 
 
+def _trace_missing_references(trace: "DecisionTrace") -> set[UUID]:
+    """Consumption after the original complete native math and audit anchor checks."""
+    from app.domain.decision_trace import verify_trace
+    from app.domain.full_joint_goal_archive_protocol import expanded_joint_trace
+    from app.domain.full_joint_goal_source_adapter import ALGORITHM_V4, physical_source_record
+
+    if trace.algorithm_versions.get("full_joint_goal_execution") == ALGORITHM_V4:
+        verify_trace(trace)  # Retain the original fresh wire check before reading its input.
+        physical = physical_source_record(trace.inputs["record"])
+        if physical is not None:
+            missing = _missing_references(physical["root"])
+            # The complete native codec has already proved every node reachable and leaf-only.
+            # The original scanner collects a set, so repeated occurrences cannot add claims.
+            for node in physical["nodes"]:
+                missing.update(_missing_references(node["value"]))
+            return missing
+    return _missing_references(expanded_joint_trace(trace).inputs)
+
+
 def _trace_algorithms_supported(versions: dict[str, str]) -> bool:
     from app.domain.asset_allocation import ALGORITHM_VERSION as asset
     from app.domain.autonomy import ALGORITHM_VERSION as autonomy
@@ -1649,6 +1693,7 @@ def _trace_algorithms_supported(versions: dict[str, str]) -> bool:
         "full-finite-planning-minimax-v1",
         "full-goal-release-authorization-v1",
         "full-goal-emergency-release-v1",
+        "full-goal-transfer-v1",
         "full-payment-relation-v1",
         "full-dynamic-goal-execution-v1",
         "full-policy-action-set-boundary-v1",
@@ -1658,11 +1703,14 @@ def _trace_algorithms_supported(versions: dict[str, str]) -> bool:
         "full-seasonal-adoption-v1",
         "full-recovery-execution-v1",
         "lossy-early-redemption-v1",
+        "lossy-early-redemption-quote-revision-v2",
         "full-maturity-user-execution-v1",
         "full-experiment-asset-execution-v1",
         "registered-joint-goal-execution-v2",
         "registered-joint-goal-execution-archive-v3",
         "registered-joint-goal-execution-source-dag-v4",
+        "zhiyu-standing-delegated-native-v2",
+        "zhiyu-standing-income-goal-native-v1",
         "reviewed-multi-template-policy-change-v1",
     }
     return all(value in supported for value in versions.values())
@@ -1980,6 +2028,10 @@ def _references(
                 )
 
                 verify_frozen_reviewed_policy_change_trace(trace)
+            if "zhiyu_standing_delegated" in trace.algorithm_versions:
+                from app.domain.zhiyu_standing_native import verify_standing_delegated_trace
+
+                verify_standing_delegated_trace(trace)
             if "full_joint_goal_execution" in trace.algorithm_versions:
                 from app.domain.full_joint_goal_execution_trace import (
                     verify_frozen_full_joint_goal_trace,
@@ -2085,9 +2137,7 @@ def _references(
                 raise AuditContractError(
                     "Recorded decision fact differs from its original trace identity/clock"
                 )
-            from app.domain.full_joint_goal_archive_protocol import expanded_joint_trace
-
-            missing = _missing_references(expanded_joint_trace(trace).inputs)
+            missing = _trace_missing_references(trace)
             if missing != set(event.payload.missing_evidence_ids):
                 raise AuditContractError(
                     "Missing source claims differ from the original frozen decision"

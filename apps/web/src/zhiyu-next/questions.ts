@@ -14,6 +14,21 @@ import { QUESTION_PREFIX, questionCheck as check, parseQuestionRecovery, parseQu
 import type { PendingOperation } from './operation';
 
 export const QUESTION_PROTOCOL = 'zhiyu-full-asset-mode-question-v1';
+export async function modeSourceFingerprint(manifest: Record<string, unknown>): Promise<string> {
+  if (!Object.hasOwn(manifest, 'source_fingerprint_version')) return multiConfigurationHash(manifest);
+  check(manifest.source_fingerprint_version === 'full-asset-mode-source-clock-v2' && object(manifest.complete_native_basis) && Array.isArray(manifest.original_sources) && Array.isArray(manifest.original_policies));
+  const basis = structuredClone(manifest.complete_native_basis); check(object(basis.snapshot));
+  delete basis.as_of; delete basis.snapshot.as_of;
+  const living = basis.snapshot.living_reserves ?? []; check(Array.isArray(living));
+  for (const row of living) { check(object(row)); delete row.estimation_input_digest; }
+  for (const name of ['exposure', 'income']) if (object(basis[name])) delete basis[name].as_of;
+  const ordered = (rows: unknown[]) => rows.map((row) => { check(object(row) && uuid(row.id)); return row; }).sort((a, b) => String(a.id).localeCompare(String(b.id)));
+  const native = await multiConfigurationHash({ basis: { autonomy_basis: basis }, sources: ordered(manifest.original_sources), policies: ordered(manifest.original_policies) });
+  check(native === manifest.native_source_fingerprint);
+  const compared = structuredClone(manifest);
+  compared.complete_native_basis = { normalized_native_source_fingerprint: native };
+  return multiConfigurationHash(compared);
+}
 const time = (v: unknown): v is string => typeof v === 'string' && /(?:Z|[+-]\d\d:\d\d)$/.test(v) && Number.isFinite(Date.parse(v));
 const strings = (v: unknown): v is string[] => Array.isArray(v) && v.every((x) => typeof x === 'string');
 type Facts = components['schemas']['AutonomyFacts']; type Decision = components['schemas']['AutonomyDecision'];
@@ -54,7 +69,7 @@ export async function parseModeEvaluation(v: unknown, environment: NextState, se
   return v as ModeEvaluation;
 }
 export async function parseModeReceipt(v: unknown, environment: NextState, expectedSession?: string): Promise<ModeReceipt> {
-  check(object(v) && exact(v, ['protocol', 'user_id', 'epoch_id', 'session_id', 'revision', 'previous_receipt_hash', 'command_id', 'command_kind', 'authenticated_actor', 'original_request', 'as_of', 'valid_until', 'source_manifest', 'source_fingerprint', 'evaluation', 'state', 'question_id', 'answer_applied', 'receipt_hash', 'bank_authority', 'old_confirmation_inherited']) && v.protocol === QUESTION_PROTOCOL && v.user_id === environment.dashboard.user_id && v.epoch_id === environment.epoch_id && uuid(v.session_id) && (!expectedSession || v.session_id === expectedSession) && uuid(v.command_id) && Number.isSafeInteger(v.revision) && Number(v.revision) >= 1 && Number(v.revision) <= 17 && (v.previous_receipt_hash === null || digest(v.previous_receipt_hash)) && time(v.as_of) && time(v.valid_until) && v.bank_authority === false && v.old_confirmation_inherited === false && typeof v.answer_applied === 'boolean' && object(v.source_manifest) && digest(v.source_fingerprint) && await multiConfigurationHash(v.source_manifest) === v.source_fingerprint && digest(v.receipt_hash));
+  check(object(v) && exact(v, ['protocol', 'user_id', 'epoch_id', 'session_id', 'revision', 'previous_receipt_hash', 'command_id', 'command_kind', 'authenticated_actor', 'original_request', 'as_of', 'valid_until', 'source_manifest', 'source_fingerprint', 'evaluation', 'state', 'question_id', 'answer_applied', 'receipt_hash', 'bank_authority', 'old_confirmation_inherited']) && v.protocol === QUESTION_PROTOCOL && v.user_id === environment.dashboard.user_id && v.epoch_id === environment.epoch_id && uuid(v.session_id) && (!expectedSession || v.session_id === expectedSession) && uuid(v.command_id) && Number.isSafeInteger(v.revision) && Number(v.revision) >= 1 && Number(v.revision) <= 17 && (v.previous_receipt_hash === null || digest(v.previous_receipt_hash)) && time(v.as_of) && time(v.valid_until) && v.bank_authority === false && v.old_confirmation_inherited === false && typeof v.answer_applied === 'boolean' && object(v.source_manifest) && digest(v.source_fingerprint) && await modeSourceFingerprint(v.source_manifest) === v.source_fingerprint && digest(v.receipt_hash));
   const { receipt_hash: _digest, ...unhashed } = v; void _digest; check(await multiConfigurationHash(unhashed) === v.receipt_hash);
   const actor = parseLocalActorSession({ simulation: true, principal: v.authenticated_actor, bank_authority: false, confirms_financial_action: false }).principal; check(actor.role === 'USER' && actor.user_id === v.user_id && Date.parse(actor.issued_at) <= Date.parse(v.as_of) && Date.parse(v.as_of) < Date.parse(actor.expires_at));
   check(object(v.original_request) && exact(v.original_request, ['kind', 'path', 'body']) && typeof v.original_request.path === 'string' && object(v.original_request.body)); const info = questionPath(v.original_request.path.replace(/^\/api\/v1/, '')); check(info && v.original_request.kind === `FULL_ASSET_MODE_${info.kind}` && v.original_request.body.expected_epoch_id === v.epoch_id && v.original_request.body.client_request_id === v.command_id && (info.session_id === null || info.session_id === v.session_id));

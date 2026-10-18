@@ -103,6 +103,7 @@ def _scope(
     policy = read_full_policy(session, user_id, policy_id, now)
     if (
         policy.template_name != "CrossGoalReallocationPolicy"
+        or policy.current_version.configuration.get("scope_version") is not None
         or policy.epoch_id != epoch.id
         or policy.current_version.version_id != body.expected_policy_version_id
         or policy.effective_status not in {"ACTIVE", "CONFIRMED"}

@@ -2,15 +2,17 @@ import { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { LocalActorSession } from '../api/local-actor';
 import type { MultiPreview } from '../api/full-policy-change-multi';
-import { getPolicySchema, type PolicyRecord } from './policies';
+import { getPolicySchema, getTransferSchema, type PolicyRecord } from './policies';
 import { previewPolicyChange, scopeTitles, type ChangeReview } from './policy-change';
-import { buildFromSchema, formFromConfiguration, configurationSummary, type FormValues } from './policy-schema';
-import PolicySchemaForm from './PolicySchemaForm';
+import { buildFromSchema, formFromConfiguration, type FormValues } from './policy-schema';
+import PolicySchemaForm, { PolicyConfigurationSummary } from './PolicySchemaForm';
 import { businessText, money, userError } from './display';
 import type { NextState } from './api';
+import { isTransferConfiguration } from './goal-transfers';
 
 export default function PolicyChangePanel({ record, environment, blocked, session, review, perform, runRead, edited, close }: { record: PolicyRecord; environment: NextState; blocked: boolean; session: LocalActorSession | null; review: ChangeReview | null; perform: (path: string, body: Record<string, unknown>) => Promise<void>; runRead: (work: () => Promise<MultiPreview>) => Promise<MultiPreview>; edited: () => void; close: () => void }) {
-  const schema = useQuery({ queryKey: ['zhiyu-next-policy-schema', environment.environment_id, environment.epoch_id, record.template_name, record.dsl_version], queryFn: () => getPolicySchema(record.template_name, environment, record.dsl_version), enabled: !blocked, staleTime: Infinity, retry: false });
+  const transfer = isTransferConfiguration(record.configuration);
+  const schema = useQuery({ queryKey: ['zhiyu-next-policy-schema', environment.environment_id, environment.epoch_id, record.template_name, record.dsl_version, transfer], queryFn: () => transfer ? getTransferSchema(environment) : getPolicySchema(record.template_name, environment, record.dsl_version), enabled: !blocked, staleTime: Infinity, retry: false });
   const [values, setValues] = useState<FormValues>({}); const [preview, setPreview] = useState<MultiPreview | null>(null); const [error, setError] = useState(''); const [reason, setReason] = useState('');
   const initialized = useRef(''); const boundReview = review?.policy_id === record.policy_id && review.source_kind === record.source_kind && review.request.expected_version_id === record.current_version_id ? review : null;
   const displayed = boundReview?.preview ?? preview;
@@ -31,14 +33,14 @@ export default function PolicyChangePanel({ record, environment, blocked, sessio
     void perform(`/zhiyu-next/policies/${record.source_kind}/${record.policy_id}/change-confirm`, { expected_version_id: record.current_version_id, expected_epoch_id: environment.epoch_id, configuration: boundReview.preview.after_configuration, review_id: boundReview.review_id, accepted: true, reviewed_configuration_hash: boundReview.preview.candidate_configuration_hash, reviewed_review_hash: boundReview.review_hash, reviewed_scope: boundReview.covered_scopes[0], reason: reason.trim() });
   }
   const impact = displayed?.financial_impact;
-  return <section className="zy-card zyn-policy-workspace" aria-label="现行规则修改"><div className="zy-section-heading"><h2>修改{businessText(record.name)}</h2><button className="zy-link" disabled={blocked} onClick={close}>取消修改</button></div><p>先核对当前版本与候选影响。实际修改只能确认已经覆盖的范围，未覆盖部分继续保留限制。</p>
+  return <section className="zy-card zyn-policy-workspace" aria-label="现行规则修改"><div className="zy-section-heading"><h2>修改{record.name}</h2><button className="zy-link" disabled={blocked} onClick={close}>取消修改</button></div><p>先核对当前版本与候选影响。实际修改只能确认已经覆盖的范围，未覆盖部分继续保留限制。</p>
     {schema.isPending && <p role="status">正在读取当前模板业务字段…</p>}{schema.isError && <p role="alert">{userError(schema.error)}</p>}
     {schema.data && <form onSubmit={(event) => { event.preventDefault(); void calculate(); }}><PolicySchemaForm schema={schema.data.json_schema} values={values} choices={schema.data.reference_choices} disabled={blocked} update={update} /><button className="zy-secondary" disabled={blocked} type="submit">计算修改影响</button></form>}
     {error && <p role="alert">{error}</p>}
     {impact && <section aria-label="修改影响"><h3>{impact.status === 'UNKNOWN' ? '修改影响尚未核实' : impact.status === 'PARTIAL' ? '修改影响部分可核实' : '修改影响已计算'}</h3><p>{impact.scope === 'UNSUPPORTED' ? '当前影响范围尚未支持。' : scopeTitles[impact.scope]}</p>
       <dl className="zy-facts"><div><dt>安全闲置资金</dt><dd>{money(impact.before?.safe_idle_cents)} → {money(impact.after?.safe_idle_cents)}</dd></div><div><dt>最低日内余量</dt><dd>{money(impact.before?.minimum_margin_cents)} → {money(impact.after?.minimum_margin_cents)}</dd></div></dl>
       <p>未来收入尚未到账，不计入当前现金；候选回收本金与产品容量不代表当前可执行资金。</p>
-      <details className="zyn-policy-details"><summary>核对候选范围</summary><ul>{configurationSummary(displayed!.after_configuration, schema.data?.reference_choices).map((row, index) => <li key={index}>{businessText(row)}</li>)}</ul></details>
+      <details className="zyn-policy-details"><summary>核对候选范围</summary><ul><PolicyConfigurationSummary configuration={displayed!.after_configuration} choices={schema.data?.reference_choices} /></ul></details>
       {impact.product_capacities.length > 0 && <p>已覆盖 {impact.product_capacities.length} 个产品的独立容量；各产品容量不能相加为组合安排。</p>}
       {impact.recovery_candidates.length > 0 && <p>已覆盖 {impact.recovery_candidates.length} 笔持仓回收候选；尚未生成多仓执行。</p>}
       {impact.goal_allocation_after && <p>本次计算仅覆盖当前期 {impact.goal_allocation_after.goals.length} 个目标，不证明多期最优安排。</p>}

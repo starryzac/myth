@@ -189,7 +189,12 @@ def load_execution_context(
                 if effect.position_id is None:
                     raise ValueError("Missing original position")
                 quote = load_execution_quote(
-                    session, user_id, effect.position_id, now, requested_at=effect.valid_from
+                    session,
+                    user_id,
+                    effect.position_id,
+                    now,
+                    requested_at=effect.valid_from,
+                    quote_id=effect.quote_id,
                 )
                 if not (effect.fee_cents or effect.loss_cents) and quote.kind != "REDEEM":
                     raise RedemptionPermissionDenied("ZERO_COST_QUOTE_IS_NOT_AUTOMATIC_REDEMPTION")
@@ -230,6 +235,10 @@ def load_execution_context(
                 ActionResourceReservation.status == "RESERVED",
             )
         ):
+            from app.services.standing_owned_asset_scope import is_owned_reserved_claim
+
+            if is_owned_reserved_claim(session, claim, now):
+                continue
             try:
                 if claim.created_at > now:
                     raise ValueError("Future reservation is not a current fact")

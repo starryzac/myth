@@ -109,6 +109,8 @@ def preview_full_asset_execution(
     user_id: UUID,
     body: FullAssetPrepareRequest,
     now: datetime,
+    *,
+    maximum_turnover_cents: int | None = None,
 ) -> FullAssetExecutionPreview:
     _read_snapshot(session)
     body = FullAssetPrepareRequest.model_validate_json(body.model_dump_json())
@@ -117,7 +119,11 @@ def preview_full_asset_execution(
     if epoch is None or epoch.status != "OPEN" or epoch.id != body.expected_epoch_id:
         raise PolicyLifecycleError("FULL_ASSET_EPOCH_CHANGED", "需要当前原OPEN epoch", 409)
     planning = read_full_asset_allocation(
-        session, user_id, body.full_policy_id, now, FullAssetPlanOptions(mode=body.planning_mode)
+        session,
+        user_id,
+        body.full_policy_id,
+        now,
+        FullAssetPlanOptions(mode=body.planning_mode, max_turnover_cents=maximum_turnover_cents),
     )
     protection = compute_full_annual_protection(session, user_id, now)
     full = read_full_policy(session, user_id, body.full_policy_id, now)

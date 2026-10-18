@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { fullGraphKinds, getFullEvidenceGraph, getOriginalFullGraphResponse, isFullGraphKind, isFullGraphTime } from '../api/full-evidence-graph';
+import { fullGraphKinds, fullGraphTables, getFullEvidenceGraph, getOriginalFullGraphResponse, isFullGraphKind, isFullGraphTime } from '../api/full-evidence-graph';
 import type { FullGraph, FullGraphNode, FullGraphRootKind } from '../api/full-evidence-graph';
 import { isEvidenceIdentity } from '../api/evidence';
 import { errorMessage } from '../api/http';
@@ -28,7 +28,7 @@ function Result({ graph }: { graph: FullGraph }) {
     <h3>{graph.state === 'REFERENCES_RESOLVED' ? '引用已解析 · 不代表金融成功' : 'UNKNOWN · 证据图未完整证明'}</h3>
     <p className="simulation-note">只读模拟来源；不授予权限、不修账、不执行资金动作。</p>
     <dl className="readonly-fields"><dt>原用户</dt><dd>{graph.user_id}</dd><dt>本次读取时点</dt><dd>{graph.as_of}</dd><dt>知识时点</dt><dd>{graph.known_at}</dd><dt>实际节点分母 / 展示</dt><dd>{graph.expected_node_count} / {graph.displayed_node_count}</dd><dt>实际边分母 / 展示</dt><dd>{graph.expected_edge_count} / {graph.edges.length}</dd><dt>审计</dt><dd>{proofLabel(graph.audit_proof.state)} · {graph.audit_proof.detail}</dd><dt>银行</dt><dd>{proofLabel(graph.bank_proof.state)} · {graph.bank_proof.detail}</dd><dt>原输入摘要</dt><dd>{graph.input_hash}</dd></dl>
-    <details><summary>35 类来源完整分母 · {graph.complete_registered_inventory ? '注册来源已完整捕获' : '来源捕获不完整'}</summary>
+    <details><summary>{Object.keys(fullGraphTables).length} 类来源完整分母 · {graph.complete_registered_inventory ? '注册来源已完整捕获' : '来源捕获不完整'}</summary>
       <table><caption>同 owner 的实际行数、该知识时点可知行数与捕获数；不是仅当前连通节点数。</caption><thead><tr><th>类型 / 表</th><th>范围</th><th>实际</th><th>可知</th><th>捕获</th><th>完整</th></tr></thead><tbody>{graph.inventory.map((row) => <tr key={row.kind}><th>{row.kind} / {row.table}</th><td>{row.owner_scope === 'CURRENT_USER' ? '当前用户' : '共享目录'}</td><td>{row.actual_owned_count}</td><td>{row.known_count}</td><td>{row.captured_count}</td><td>{row.complete ? '是' : '否'}</td></tr>)}</tbody></table>
     </details>
     {graph.issues.length > 0 && <div role="note" className="notice"><h4>具体不足</h4><ul>{graph.issues.map((issue, index) => <li key={index}>{issue.code} · {issue.reference} · {issue.detail}</li>)}</ul></div>}

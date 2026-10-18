@@ -5,24 +5,6 @@ import re
 from collections.abc import AsyncIterator
 from typing import Any
 
-from app.api.dependencies import ClockDependency, get_engine
-from app.api.errors import validation_error_handler
-from app.api.v1.zhiyu import router as preserved_router
-from app.api.v1.zhiyu_asset_permissions import router as asset_permission_router
-from app.api.v1.zhiyu_assets import router as asset_closure_router
-from app.api.v1.zhiyu_catalog import router as catalog_router
-from app.api.v1.zhiyu_discovery import router as discovery_router
-from app.api.v1.zhiyu_goals import router as goals_router
-from app.api.v1.zhiyu_next import router
-from app.api.v1.zhiyu_payments import router as payments_router
-from app.api.v1.zhiyu_policy_review import router as review_router
-from app.domain.immutable_joint_validation_scope import immutable_joint_validation_scope
-from app.main import create_app
-from app.services.audit_receipt_clock import server_receipt_read_clock_scope
-from app.services.llm_provider import ModelProviderError
-from app.services.zhiyu_local_actor import load_credentials
-from app.services.zhiyu_model_settings import ModelConfigurationError
-from app.zhiyu_next_isolation import require_zhiyu_next_engine
 from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -30,8 +12,66 @@ from sqlalchemy.engine import Engine
 from starlette.middleware.base import RequestResponseEndpoint
 from starlette.responses import Response
 
+from app.api.dependencies import ClockDependency, get_engine
+from app.api.errors import validation_error_handler
+from app.api.v1.zhiyu import router as preserved_router
+from app.api.v1.zhiyu_asset_permissions import router as asset_permission_router
+from app.api.v1.zhiyu_assets import router as asset_closure_router
+from app.api.v1.zhiyu_catalog import router as catalog_router
+from app.api.v1.zhiyu_discovery import router as discovery_router
+from app.api.v1.zhiyu_full_asset_questions import router as full_questions_router
+from app.api.v1.zhiyu_full_joint_questions import router as joint_questions_router
+from app.api.v1.zhiyu_full_joint_scope_questions import router as joint_scope_questions_router
+from app.api.v1.zhiyu_goal_releases import router as goal_releases_router
+from app.api.v1.zhiyu_goal_transfers import router as goal_transfers_router
+from app.api.v1.zhiyu_goals import router as goals_router
+from app.api.v1.zhiyu_next import router
+from app.api.v1.zhiyu_payments import router as payments_router
+from app.api.v1.zhiyu_policy_review import router as review_router
+from app.api.v1.zhiyu_questions import router as questions_router
+from app.api.v1.zhiyu_quote_revisions import router as quote_revision_router
+from app.api.v1.zhiyu_standing import router as standing_router
+from app.domain.immutable_joint_validation_scope import (
+    _HistoricalPureProofMemo,
+    historical_pure_proof_scope,
+    immutable_joint_validation_scope,
+)
+from app.main import create_app
+from app.services.audit_receipt_clock import server_receipt_read_clock_scope
+from app.services.llm_provider import ModelProviderError
+from app.services.zhiyu_local_actor import load_credentials
+from app.services.zhiyu_model_settings import ModelConfigurationError
+from app.zhiyu_next_isolation import require_zhiyu_next_engine
+
 ALLOWED = {
     "GET": (
+        r"/api/v1/zhiyu-next/goal-transfers/context/[^/]+",
+        r"/api/v1/zhiyu-next/goal-transfers/previews/[^/]+/[^/]+",
+        r"/api/v1/zhiyu-next/goal-transfers/operations/[^/]+/[^/]+",
+        r"/api/v1/zhiyu-next/goal-transfers/actions/[^/]+",
+        r"/api/v1/zhiyu-next/policy-templates/CrossGoalReallocationPolicy/goal-transfer-schema",
+        r"/api/v1/zhiyu-next/goal-releases/context/[^/]+",
+        r"/api/v1/zhiyu-next/goal-releases/authorizations/[^/]+/by-key/[^/]+",
+        r"/api/v1/zhiyu-next/goal-releases/by-key/[^/]+",
+        r"/api/v1/zhiyu-next/goal-releases/actions/[^/]+",
+        r"/api/v1/zhiyu-next/assets/lossy-revisions/(quotes|commands|prepare-commands|actions)/[^/]+",
+        r"/api/v1/zhiyu-next/standing",
+        r"/api/v1/zhiyu-next/standing/schema",
+        r"/api/v1/zhiyu-next/standing/candidates/[^/]+",
+        r"/api/v1/zhiyu-next/standing/commands/[^/]+",
+        r"/api/v1/zhiyu-next/standing/grants/[^/]+",
+        r"/api/v1/zhiyu-next/questions/context",
+        r"/api/v1/zhiyu-next/questions/commands/[^/]+/by-start-key/[^/]+",
+        r"/api/v1/zhiyu-next/questions/sessions/[^/]+",
+        r"/api/v1/zhiyu-next/questions/sessions/[^/]+/commands/by-key/[^/]+",
+        r"/api/v1/zhiyu-next/questions/full-assets/commands/[^/]+/by-key/[^/]+",
+        r"/api/v1/zhiyu-next/questions/full-assets/sessions/[^/]+",
+        r"/api/v1/zhiyu-next/questions/full-joint/schema",
+        r"/api/v1/zhiyu-next/questions/full-joint-scopes/schema",
+        r"/api/v1/zhiyu-next/questions/full-joint-scopes/commands/[^/]+/by-key/[^/]+",
+        r"/api/v1/zhiyu-next/questions/full-joint-scopes/sessions/[^/]+",
+        r"/api/v1/zhiyu-next/questions/full-joint/commands/[^/]+/by-key/[^/]+",
+        r"/api/v1/zhiyu-next/questions/full-joint/sessions/[^/]+",
         r"/api/v1/zhiyu-next/assets/state",
         r"/api/v1/zhiyu-next/assets/portfolios/[^/]+",
         r"/api/v1/zhiyu-next/assets/portfolio-commands/[^/]+/[^/]+",
@@ -67,6 +107,23 @@ ALLOWED = {
         r"/openapi.json",
     ),
     "POST": (
+        r"/api/v1/zhiyu-next/interventions/check-current",
+        r"/api/v1/zhiyu-next/goal-transfers/(preview|prepare)",
+        r"/api/v1/zhiyu-next/goal-transfers/actions/[^/]+/execute",
+        r"/api/v1/zhiyu-next/goal-releases/authorizations/[^/]+/(preview|confirm)",
+        r"/api/v1/zhiyu-next/goal-releases/(preview|prepare)",
+        r"/api/v1/zhiyu-next/goal-releases/actions/[^/]+/execute",
+        r"/api/v1/zhiyu-next/assets/lossy-revisions/(renew|prepare)",
+        r"/api/v1/zhiyu-next/assets/lossy-revisions/actions/[^/]+/(confirm-and-execute|execute-original)",
+        r"/api/v1/zhiyu-next/standing/(candidates|confirm|control)",
+        r"/api/v1/zhiyu-next/questions/sessions",
+        r"/api/v1/zhiyu-next/questions/sessions/[^/]+/(answers|refresh|close)",
+        r"/api/v1/zhiyu-next/questions/full-assets/sessions",
+        r"/api/v1/zhiyu-next/questions/full-joint/sessions",
+        r"/api/v1/zhiyu-next/questions/full-joint-scopes/sessions",
+        r"/api/v1/zhiyu-next/questions/full-joint-scopes/sessions/[^/]+/(answers|refresh|close)",
+        r"/api/v1/zhiyu-next/questions/full-joint/sessions/[^/]+/(refresh|close)",
+        r"/api/v1/zhiyu-next/questions/full-assets/sessions/[^/]+/(answers|refresh|close)",
         r"/api/v1/zhiyu-next/assets/portfolios/(preview|prepare)",
         r"/api/v1/zhiyu-next/assets/portfolios/[^/]+/(confirm-and-execute|continue-original)",
         r"/api/v1/zhiyu-next/assets/maturity/(preview|prepare)",
@@ -94,6 +151,8 @@ ALLOWED = {
     "PUT": (r"/api/v1/zhiyu-next/model-settings",),
 }
 READ_ONLY_POST = (
+    r"/api/v1/zhiyu-next/goal-releases/authorizations/[^/]+/preview",
+    r"/api/v1/zhiyu-next/goal-releases/preview",
     r"/api/v1/zhiyu-next/assets/portfolios/preview",
     r"/api/v1/zhiyu-next/assets/maturity/preview",
     r"/api/v1/zhiyu-next/assets/reinvestments/preview",
@@ -126,6 +185,7 @@ def create_zhiyu_next_app(engine: Engine | None = None) -> FastAPI:
     require_zhiyu_next_engine(selected)
     load_credentials(selected, create=True)
     api = create_app()
+    historical_proofs = _HistoricalPureProofMemo()
     api.title = "知余扩展版 · 开发验证 API"
     api.dependency_overrides[get_engine] = lambda: selected
     receipt_reads = [Depends(_server_receipt_read_clock)]
@@ -135,7 +195,15 @@ def create_zhiyu_next_app(engine: Engine | None = None) -> FastAPI:
     api.include_router(review_router, dependencies=receipt_reads)
     api.include_router(payments_router, dependencies=receipt_reads)
     api.include_router(goals_router, dependencies=receipt_reads)
+    api.include_router(goal_releases_router, dependencies=receipt_reads)
+    api.include_router(goal_transfers_router, dependencies=receipt_reads)
+    api.include_router(standing_router, dependencies=receipt_reads)
+    api.include_router(questions_router, dependencies=receipt_reads)
+    api.include_router(full_questions_router, dependencies=receipt_reads)
+    api.include_router(joint_questions_router, dependencies=receipt_reads)
+    api.include_router(joint_scope_questions_router, dependencies=receipt_reads)
     api.include_router(asset_closure_router, dependencies=receipt_reads)
+    api.include_router(quote_revision_router, dependencies=receipt_reads)
     api.include_router(asset_permission_router, dependencies=receipt_reads)
     api.include_router(preserved_router, dependencies=receipt_reads)
     original_openapi = api.openapi
@@ -218,7 +286,11 @@ def create_zhiyu_next_app(engine: Engine | None = None) -> FastAPI:
         request.scope["zhiyu_read_only"] = read_only_request(request.method, request.url.path)
         from app.domain.immutable_joint_archive_scope import immutable_joint_archive_scope
 
-        with immutable_joint_validation_scope(), immutable_joint_archive_scope():
+        with (
+            historical_pure_proof_scope(historical_proofs),
+            immutable_joint_validation_scope(),
+            immutable_joint_archive_scope(),
+        ):
             return await call_next(request)
 
     return api

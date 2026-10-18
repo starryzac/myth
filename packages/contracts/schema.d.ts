@@ -11023,7 +11023,7 @@ export interface components {
             /** Root */
             root: string;
             /** Requested Root Kind */
-            requested_root_kind: ("ACCOUNT" | "TRANSACTION" | "BILL" | "GOAL" | "POSITION" | "BANK_OPERATION" | "BANK_REDEMPTION" | "POSTING" | "EXTERNAL_FACT" | "AUDIT_EPOCH" | "AUDIT_EVENT" | "AUDIT_SNAPSHOT" | "FULL_POLICY" | "FULL_POLICY_VERSION" | "FULL_POLICY_COMMAND" | "EVIDENCE" | "PROPOSAL" | "POLICY" | "POLICY_VERSION" | "DECISION" | "ACTION" | "RECEIPT" | "PRODUCT" | "PRODUCT_CATALOGUE" | "USER" | "CONSTRAINT" | "RESOURCE_CLAIM" | "COMMAND_OUTBOX" | "COMMAND_INBOX" | "COMMAND_ATTEMPT" | "INTERVENTION_OUTBOX" | "INTERVENTION_INBOX" | "ASSET_PORTFOLIO" | "ASSET_BATCH" | "ASSET_CONSENT") | "FULL_GOAL_MODEL";
+            requested_root_kind: ("ACCOUNT" | "TRANSACTION" | "BILL" | "GOAL" | "POSITION" | "BANK_OPERATION" | "BANK_REDEMPTION" | "POSTING" | "EXTERNAL_FACT" | "AUDIT_EPOCH" | "AUDIT_EVENT" | "AUDIT_SNAPSHOT" | "FULL_POLICY" | "FULL_POLICY_VERSION" | "FULL_POLICY_COMMAND" | "EVIDENCE" | "PROPOSAL" | "POLICY" | "POLICY_VERSION" | "DECISION" | "ACTION" | "RECEIPT" | "PRODUCT" | "PRODUCT_CATALOGUE" | "USER" | "CONSTRAINT" | "RESOURCE_CLAIM" | "COMMAND_OUTBOX" | "COMMAND_INBOX" | "COMMAND_ATTEMPT" | "INTERVENTION_OUTBOX" | "INTERVENTION_INBOX" | "ASSET_PORTFOLIO" | "ASSET_BATCH" | "ASSET_CONSENT" | "JOINT_PLAN" | "JOINT_CHILD" | "JOINT_CONSENT") | "FULL_GOAL_MODEL";
             /** Inventory */
             inventory: components["schemas"]["GraphInventory"][];
             /** Complete Registered Inventory */
@@ -17113,7 +17113,7 @@ export interface components {
              * Kind
              * @enum {string}
              */
-            kind: "ACCOUNT" | "TRANSACTION" | "BILL" | "GOAL" | "POSITION" | "BANK_OPERATION" | "BANK_REDEMPTION" | "POSTING" | "EXTERNAL_FACT" | "AUDIT_EPOCH" | "AUDIT_EVENT" | "AUDIT_SNAPSHOT" | "FULL_POLICY" | "FULL_POLICY_VERSION" | "FULL_POLICY_COMMAND" | "EVIDENCE" | "PROPOSAL" | "POLICY" | "POLICY_VERSION" | "DECISION" | "ACTION" | "RECEIPT" | "PRODUCT" | "PRODUCT_CATALOGUE" | "USER" | "CONSTRAINT" | "RESOURCE_CLAIM" | "COMMAND_OUTBOX" | "COMMAND_INBOX" | "COMMAND_ATTEMPT" | "INTERVENTION_OUTBOX" | "INTERVENTION_INBOX" | "ASSET_PORTFOLIO" | "ASSET_BATCH" | "ASSET_CONSENT";
+            kind: "ACCOUNT" | "TRANSACTION" | "BILL" | "GOAL" | "POSITION" | "BANK_OPERATION" | "BANK_REDEMPTION" | "POSTING" | "EXTERNAL_FACT" | "AUDIT_EPOCH" | "AUDIT_EVENT" | "AUDIT_SNAPSHOT" | "FULL_POLICY" | "FULL_POLICY_VERSION" | "FULL_POLICY_COMMAND" | "EVIDENCE" | "PROPOSAL" | "POLICY" | "POLICY_VERSION" | "DECISION" | "ACTION" | "RECEIPT" | "PRODUCT" | "PRODUCT_CATALOGUE" | "USER" | "CONSTRAINT" | "RESOURCE_CLAIM" | "COMMAND_OUTBOX" | "COMMAND_INBOX" | "COMMAND_ATTEMPT" | "INTERVENTION_OUTBOX" | "INTERVENTION_INBOX" | "ASSET_PORTFOLIO" | "ASSET_BATCH" | "ASSET_CONSENT" | "JOINT_PLAN" | "JOINT_CHILD" | "JOINT_CONSENT";
             /** Table */
             table: string;
             /**
@@ -17149,7 +17149,7 @@ export interface components {
              * Kind
              * @enum {string}
              */
-            kind: "ACCOUNT" | "TRANSACTION" | "BILL" | "GOAL" | "POSITION" | "BANK_OPERATION" | "BANK_REDEMPTION" | "POSTING" | "EXTERNAL_FACT" | "AUDIT_EPOCH" | "AUDIT_EVENT" | "AUDIT_SNAPSHOT" | "FULL_POLICY" | "FULL_POLICY_VERSION" | "FULL_POLICY_COMMAND" | "EVIDENCE" | "PROPOSAL" | "POLICY" | "POLICY_VERSION" | "DECISION" | "ACTION" | "RECEIPT" | "PRODUCT" | "PRODUCT_CATALOGUE" | "USER" | "CONSTRAINT" | "RESOURCE_CLAIM" | "COMMAND_OUTBOX" | "COMMAND_INBOX" | "COMMAND_ATTEMPT" | "INTERVENTION_OUTBOX" | "INTERVENTION_INBOX" | "ASSET_PORTFOLIO" | "ASSET_BATCH" | "ASSET_CONSENT";
+            kind: "ACCOUNT" | "TRANSACTION" | "BILL" | "GOAL" | "POSITION" | "BANK_OPERATION" | "BANK_REDEMPTION" | "POSTING" | "EXTERNAL_FACT" | "AUDIT_EPOCH" | "AUDIT_EVENT" | "AUDIT_SNAPSHOT" | "FULL_POLICY" | "FULL_POLICY_VERSION" | "FULL_POLICY_COMMAND" | "EVIDENCE" | "PROPOSAL" | "POLICY" | "POLICY_VERSION" | "DECISION" | "ACTION" | "RECEIPT" | "PRODUCT" | "PRODUCT_CATALOGUE" | "USER" | "CONSTRAINT" | "RESOURCE_CLAIM" | "COMMAND_OUTBOX" | "COMMAND_INBOX" | "COMMAND_ATTEMPT" | "INTERVENTION_OUTBOX" | "INTERVENTION_INBOX" | "ASSET_PORTFOLIO" | "ASSET_BATCH" | "ASSET_CONSENT" | "JOINT_PLAN" | "JOINT_CHILD" | "JOINT_CONSENT";
             /**
              * Id
              * Format: uuid
@@ -18794,8 +18794,44 @@ export interface components {
             /** Upper Cents */
             upper_cents: number;
         };
+        /** MultiGoalAllocationInput */
         MultiGoalAllocationInput: {
-            [key: string]: unknown;
+            /**
+             * Schema Version
+             * @default multi-goal-current-period-v1
+             * @constant
+             */
+            schema_version: "multi-goal-current-period-v1";
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * As Of
+             * Format: date-time
+             */
+            as_of: string;
+            /**
+             * Timezone
+             * @enum {string}
+             */
+            timezone: "Asia/Shanghai" | "UTC";
+            /** Income Lots */
+            income_lots: components["schemas"]["AllocationIncomeLot"][];
+            /** Hard Protection Points */
+            hard_protection_points: components["schemas"]["HardProtectionPoint"][];
+            /** Goals */
+            goals: components["schemas"]["AllocationGoal"][];
+            /** Source Issues */
+            source_issues?: string[];
+            /**
+             * Solver Node Budget
+             * @default 200000
+             */
+            solver_node_budget: number;
+            /** Optimizer Version */
+            optimizer_version?: "critical-flow-affine-box-v2" | null;
         };
         /** MultiGoalAllocationResult */
         MultiGoalAllocationResult: {
@@ -35836,7 +35872,7 @@ export interface operations {
             };
             header?: never;
             path: {
-                kind: ("ACCOUNT" | "TRANSACTION" | "BILL" | "GOAL" | "POSITION" | "BANK_OPERATION" | "BANK_REDEMPTION" | "POSTING" | "EXTERNAL_FACT" | "AUDIT_EPOCH" | "AUDIT_EVENT" | "AUDIT_SNAPSHOT" | "FULL_POLICY" | "FULL_POLICY_VERSION" | "FULL_POLICY_COMMAND" | "EVIDENCE" | "PROPOSAL" | "POLICY" | "POLICY_VERSION" | "DECISION" | "ACTION" | "RECEIPT" | "PRODUCT" | "PRODUCT_CATALOGUE" | "USER" | "CONSTRAINT" | "RESOURCE_CLAIM" | "COMMAND_OUTBOX" | "COMMAND_INBOX" | "COMMAND_ATTEMPT" | "INTERVENTION_OUTBOX" | "INTERVENTION_INBOX" | "ASSET_PORTFOLIO" | "ASSET_BATCH" | "ASSET_CONSENT") | "FULL_GOAL_MODEL";
+                kind: ("ACCOUNT" | "TRANSACTION" | "BILL" | "GOAL" | "POSITION" | "BANK_OPERATION" | "BANK_REDEMPTION" | "POSTING" | "EXTERNAL_FACT" | "AUDIT_EPOCH" | "AUDIT_EVENT" | "AUDIT_SNAPSHOT" | "FULL_POLICY" | "FULL_POLICY_VERSION" | "FULL_POLICY_COMMAND" | "EVIDENCE" | "PROPOSAL" | "POLICY" | "POLICY_VERSION" | "DECISION" | "ACTION" | "RECEIPT" | "PRODUCT" | "PRODUCT_CATALOGUE" | "USER" | "CONSTRAINT" | "RESOURCE_CLAIM" | "COMMAND_OUTBOX" | "COMMAND_INBOX" | "COMMAND_ATTEMPT" | "INTERVENTION_OUTBOX" | "INTERVENTION_INBOX" | "ASSET_PORTFOLIO" | "ASSET_BATCH" | "ASSET_CONSENT" | "JOINT_PLAN" | "JOINT_CHILD" | "JOINT_CONSENT") | "FULL_GOAL_MODEL";
                 identity: string;
             };
             cookie?: never;

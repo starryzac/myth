@@ -132,6 +132,7 @@ def plan_execution_effect(
     now: datetime,
     *,
     _experiment_candidate: dict[str, Any] | None = None,
+    _quote_id: UUID | None = None,
 ) -> ExecutionEffect:
     if _experiment_candidate is not None and intent.kind != "purchase_asset":
         raise PolicyLifecycleError("EXPERIMENT_NOT_IMPLEMENTED", "候选替换仅支持一般资金申购", 409)
@@ -298,7 +299,7 @@ def plan_execution_effect(
         original = session.get(PolicyVersion, position.policy_version_id)
         assert original is not None
         version = _current(session, user_id, original.policy_id, now)
-        quote = load_execution_quote(session, user_id, position.id, now)
+        quote = load_execution_quote(session, user_id, position.id, now, quote_id=_quote_id)
         delay = (quote.principal_available_at - quote.request_at).days
         common["expires_at"] = min(common["expires_at"], quote.expires_at)
         return ExecutionEffect(

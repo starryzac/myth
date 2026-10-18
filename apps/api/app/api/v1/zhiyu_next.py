@@ -1,6 +1,7 @@
 """Closed extension adapters; all money, clocks, facts and receipts are server-owned."""
 
 import os
+from datetime import datetime
 from typing import Annotated, Any, Literal
 from uuid import UUID
 
@@ -14,7 +15,7 @@ from app.services.demo_console import _epoch
 from app.services.execution import get_action
 from app.services.external_bank_facts import ingest_external_fact
 from app.services.historical_read import historical_ledger_scope
-from app.services.llm_provider import OpenAICompatibleProvider
+from app.services.llm_provider import ModelProviderError, OpenAICompatibleProvider
 from app.services.policy_lifecycle import PolicyLifecycleError
 from app.services.zhiyu_agent import message
 from app.services.zhiyu_model_settings import (
@@ -36,7 +37,7 @@ from app.services.zhiyu_orchestration import (
     serial_user,
 )
 from app.zhiyu_next_isolation import require_zhiyu_next_engine
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Request, Response
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, field_validator
 from sqlalchemy import select
 from sqlalchemy.engine import Engine
@@ -68,6 +69,9 @@ class AgentRequest(ClientRequest):
     text: Annotated[str, Field(min_length=1, max_length=2000)]
     engine: Literal["llm", "rules"] = "llm"
     parent_request_id: UUID | None = None
+    context_request_id: UUID | None = None
+    action_id: UUID | None = None
+    goal_id: UUID | None = None
 
 
 class ConfirmRequest(ClientRequest):
@@ -101,6 +105,10 @@ class IncomeRequest(ClientRequest):
     event: Literal["PAYROLL_A", "PAYROLL_B"]
 
 
+class ReminderCheckRequest(ClientRequest):
+    expected_epoch_id: UUID
+
+
 CAPABILITIES = [
     {
         "id": "single_goal",
@@ -127,6 +135,50 @@ CAPABILITIES = [
 ]
 
 
+def current_capabilities() -> list[dict[str, str]]:
+    """Configuration/planning availability never supplies an execution permit."""
+    from app.services.zhiyu_capability_acceptance import capability_validation_status
+
+    result = [dict(item) for item in CAPABILITIES]
+    planning = {
+        "twelve_policies": (
+            "CONFIGURATION_AVAILABLE",
+            "十二策略配置与生命周期可用；金融消费按各自原协议重检",
+        ),
+        "multi_goal": ("PLANNING_AVAILABLE", "多目标与年度规划可用；执行资格单独核实"),
+        "assets": ("PLANNING_AVAILABLE", "有限资产规划可用；购买、损失与到期执行按专用门核实"),
+        "minimax": ("DEVELOPMENT_AVAILABLE", "有限候选与必要问题入口可用；不产生资金权限"),
+        "ask_once_execution": (
+            "NOT_OPEN",
+            "通用逐笔执行未开放；专用业务面板保留各自明确确认与重检",
+        ),
+        "model": ("AVAILABLE", "模型配置入口可用；实际供应商连通另行核实，离线模板不依赖模型"),
+    }
+    for item in result:
+        if item["id"] in planning:
+            item["status"], item["reason"] = planning[item["id"]]
+    reviews: tuple[tuple[Literal["JOINT_GOALS", "ASSETS"], str, str], ...] = (
+        ("JOINT_GOALS", "joint_execution", "联合目标实际执行资格"),
+        ("ASSETS", "asset_execution", "资产实际执行资格"),
+    )
+    for capability, key, title in reviews:
+        status = capability_validation_status(capability)
+        expected = (
+            "VERIFIED_ACTUAL_JOINT_ACCEPTANCE"
+            if capability == "JOINT_GOALS"
+            else "VERIFIED_ACTUAL_ASSET_ACCEPTANCE"
+        )
+        result.append(
+            {
+                "id": key,
+                "title": title,
+                "status": "VERIFIED" if status == expected else "NOT_OPEN",
+                "reason": "仅显示当前完整来源的独立实际审查状态；不代替原执行权限重检",
+            }
+        )
+    return result
+
+
 @router.get("/environment")
 def environment(
     session: SessionDependency, user: DemoUserDependency, engine: EngineDependency
@@ -138,6 +190,46 @@ def environment(
         "epoch_id": str(_epoch(session, user.id)),
         "round_id": os.environ["ZHIYU_NEXT_ROUND"],
     }
+
+
+def intervention_activity(
+    session: Session, user: UUID, epoch: UUID, now: datetime
+) -> list[dict[str, Any]]:
+    """Pure current notification reading; never DELIVER, claim, ACK or a money receipt."""
+    from app.services.full_intervention import MAX_MESSAGES, list_interventions
+
+    listing = list_interventions(session, user, now, limit=MAX_MESSAGES)
+    rows = []
+    labels = {
+        "PENDING": ("等待处理", "有新的安排变化，请查看对应问题或规则；提醒本身不会执行资金动作。"),
+        "DEFERRED": (
+            "暂缓提醒",
+            "可选提醒尚在间隔内，目前无需再次确认；必要授权、损失和风险仍会立即显示。",
+        ),
+        "RECORDED_ONLY": ("已记录", "安排未变化或仅为可选记录，没有增加新的确认。"),
+        "ACKNOWLEDGED": ("已收阅", "这条提醒已收阅，收阅不代表同意资金操作。"),
+        "INVALIDATED": ("已失效", "原提醒已不适用于当前安排，没有据此执行资金操作。"),
+    }
+    for view in listing.items:
+        message = view.original_message
+        if message.user_id != user or message.epoch_id != epoch or view.source_status != "CURRENT":
+            continue
+        label, detail = labels.get(
+            view.effective_state, ("正在核实", "提醒来源仍在核实，未据此执行资金操作。")
+        )
+        rows.append(
+            {
+                "id": str(message.message_id),
+                "at": message.created_at.isoformat(),
+                "intent": "安排变化提醒",
+                "authorization": "当前介入规则；通知不授予资金权限",
+                "decision": detail,
+                "amount_cents": None,
+                "status": label,
+                "action_id": None,
+            }
+        )
+    return rows
 
 
 @router.get("/state")
@@ -154,6 +246,23 @@ def state(
             select(ActionPlan).where(ActionPlan.user_id == user.id).order_by(ActionPlan.created_at)
         ):
             if str(action.id) not in original_ids:
+                if (
+                    action.action_type == "TRANSFER_GOAL"
+                    or "goal_transfer_execution" in action.request
+                ):
+                    from app.api.v1.zhiyu_goal_transfers import verified_transfer_activity
+
+                    base["activity"].append(
+                        verified_transfer_activity(session, user.id, action, now)
+                    )
+                    continue
+                if action.request.get("protocol") == "goal-release-action-v1":
+                    from app.api.v1.zhiyu_goal_releases import verified_release_activity
+
+                    base["activity"].append(
+                        verified_release_activity(session, user.id, action, now)
+                    )
+                    continue
                 actual = get_action(session, user.id, action.id, now)
                 base["actions"].append(actual.model_dump(mode="json"))
                 base["activity"].append(
@@ -213,11 +322,14 @@ def state(
                     "status": "PAUSED" if paused else "ACTIVE",
                 }
             )
+        base["activity"].extend(
+            intervention_activity(session, user.id, _epoch(session, user.id), now)
+        )
         base["activity"].sort(key=lambda item: (item["at"], item["id"]))
         base.update(
             variant="zhiyu-next",
             autonomy=autonomy_state(session, user.id, now),
-            capabilities=CAPABILITIES,
+            capabilities=current_capabilities(),
         )
         return base
 
@@ -247,6 +359,9 @@ def agent_message(
         "text": body.text,
         "engine": body.engine,
         "parent_request_id": str(body.parent_request_id) if body.parent_request_id else None,
+        **({"context_request_id": str(body.context_request_id)} if body.context_request_id else {}),
+        **({"action_id": str(body.action_id)} if body.action_id else {}),
+        **({"goal_id": str(body.goal_id)} if body.goal_id else {}),
     }
     try:
         with serial_user(engine, user.id), Session(engine) as session, session.begin():
@@ -254,7 +369,22 @@ def agent_message(
             if previous is not None:
                 return previous
             source, turns = agent_context(session, user.id, body.parent_request_id, body.text)
-            result = message(session, user.id, source, body.engine, now)
+            from app.services.zhiyu_agent_tools import conversation_references
+
+            references = conversation_references(session, user.id, body.context_request_id)
+            from app.db.models import Goal
+
+            if body.action_id is not None:
+                selected_action = session.get(ActionPlan, body.action_id)
+                if selected_action is None or selected_action.user_id != user.id:
+                    raise PolicyLifecycleError("NOT_FOUND", "原安排不存在", 404)
+                references["action_id"] = str(body.action_id)
+            if body.goal_id is not None:
+                selected_goal = session.get(Goal, body.goal_id)
+                if selected_goal is None or selected_goal.user_id != user.id:
+                    raise PolicyLifecycleError("NOT_FOUND", "原目标不存在", 404)
+                references["goal_id"] = str(body.goal_id)
+            result = message(session, user.id, source, body.engine, now, references=references)
             result["simulation"] = True
             result["client_request_id"] = str(body.client_request_id)
             remember_operation(
@@ -267,6 +397,10 @@ def agent_message(
                 context={"source_text": source, "turn_count": turns},
             )
             return result
+    except ModelProviderError as error:
+        retained = PolicyLifecycleError(error.code, error.message, 503)
+        remember_rejection(engine, user.id, body.client_request_id, original, retained, now)
+        raise retained from error
     except PolicyLifecycleError as error:
         # Agent compilation has no financial side effects, and its whole
         # transaction rolled back. Retain a definitive, static rejection.
@@ -343,12 +477,34 @@ def resume(
 
 @router.get("/operations/{client_request_id}")
 def read_operation(
-    client_request_id: UUID, session: SessionDependency, user: DemoUserDependency
+    client_request_id: UUID,
+    session: SessionDependency,
+    user: DemoUserDependency,
+    now: ClockDependency,
 ) -> dict[str, Any]:
     result = operation(session, user.id, client_request_id)
     if result is None:
-        raise PolicyLifecycleError("NOT_FOUND", "原请求尚未有可核实结果，请保留原定位", 404)
+        from app.api.zhiyu_next_intervention_check import read_reminder_check_operation
+
+        result = read_reminder_check_operation(
+            session, user.id, _epoch(session, user.id), client_request_id, now
+        )
+        if result is None:
+            raise PolicyLifecycleError("NOT_FOUND", "原请求尚未有可核实结果，请保留原定位", 404)
     return result
+
+
+@router.post("/interventions/check-current")
+def check_current_reminders(
+    body: ReminderCheckRequest,
+    response: Response,
+    engine: EngineDependency,
+    user: DemoUserDependency,
+    now: ClockDependency,
+) -> dict[str, Any]:
+    from app.api.zhiyu_next_intervention_check import check_current_reminders as check
+
+    return check(engine, user.id, body.expected_epoch_id, body.client_request_id, now, response)
 
 
 @router.post("/demo/income")

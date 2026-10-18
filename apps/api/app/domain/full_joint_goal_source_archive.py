@@ -9,6 +9,7 @@ import binascii
 import copy
 import hashlib
 import json
+import math
 from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import Any, Literal
@@ -32,6 +33,7 @@ from app.domain.full_joint_goal_archive import (
     _pairs,
 )
 from app.domain.full_joint_goal_archive_protocol import _canonical
+from app.domain.immutable_joint_archive_scope import decode_complete_original
 from app.domain.policy_configuration import configuration_hash
 
 PROTOCOL = "joint-goal-source-sequence-archive-v4"
@@ -328,6 +330,17 @@ class SharedJointOriginal:
     ) -> LogicalMetrics:
         total = nodes = depth = references = source_rows = 0
         hasher = hashlib.sha256()
+        encoded_strings: dict[str, bytes] = {}
+
+        def string_bytes(value: str) -> bytes:
+            cached = encoded_strings.get(value)
+            if cached is not None:
+                return cached
+            encoded = json.dumps(value, ensure_ascii=False).encode("utf8")
+            # Pure scalar bytes only, bounded and discarded after this invocation.
+            if len(encoded_strings) < 1024 and len(encoded) <= 1024:
+                encoded_strings[value] = encoded
+            return encoded
 
         def emit(raw: bytes) -> None:
             nonlocal total
@@ -357,7 +370,7 @@ class SharedJointOriginal:
                     for index, key in enumerate(keys):
                         if index:
                             emit(b",")
-                        emit(json.dumps(key, ensure_ascii=False).encode("utf8") + b":")
+                        emit(string_bytes(key) + b":")
                         visit(item[key], level + 1)
                     emit(b"}")
                 elif type(item) is list:
@@ -367,6 +380,14 @@ class SharedJointOriginal:
                             emit(b",")
                         visit(child, level + 1)
                     emit(b"]")
+                elif type(item) is str:
+                    emit(string_bytes(item))
+                elif item is None:
+                    emit(b"null")
+                elif type(item) is bool:
+                    emit(b"true" if item else b"false")
+                elif type(item) is int:
+                    emit(str(item).encode("ascii"))
                 else:
                     emit(
                         json.dumps(
@@ -516,7 +537,123 @@ class SharedJointOriginal:
             raise JointArchiveError("V4 original binding is malformed") from error
 
 
+def _strict_canonical_original(
+    value: dict[str, Any], byte_limit: int, node_limit: int, depth_limit: int
+) -> tuple[bytes, int, int]:
+    """Same strict canonical preflight; bounded local scalar lengths only."""
+    if type(value) is not dict:
+        raise JointArchiveError("Joint original must be a JSON object")
+    nodes, deepest, byte_count = 0, 0, 0
+    string_lengths: dict[str, int] = {}
+
+    def add(size: int) -> None:
+        nonlocal byte_count
+        byte_count += size
+        if byte_count > byte_limit:
+            raise JointArchiveError("Joint original exceeds decoded byte budget")
+
+    def string(text: str) -> None:
+        cached = string_lengths.get(text) if len(text) <= 1024 else None
+        if cached is not None:
+            add(cached)
+            return
+        start_count = byte_count
+        add(2)
+        for start in range(0, len(text), 4096):
+            try:
+                add(len(json.dumps(text[start : start + 4096], ensure_ascii=False)
+                        .encode("utf8")) - 2)
+            except UnicodeError as error:
+                raise JointArchiveError("Joint original contains incomplete UTF-8") from error
+        size = byte_count - start_count
+        if len(string_lengths) < 1024 and size <= 1024:
+            string_lengths[text] = size
+
+    def visit(child: Any, depth: int) -> None:
+        nonlocal nodes, deepest
+        nodes, deepest = nodes + 1, max(deepest, depth)
+        if nodes > node_limit or depth > depth_limit:
+            raise JointArchiveError("Joint original exceeds node/depth budget")
+        if child is None:
+            add(4)
+        elif type(child) is bool:
+            add(4 if child else 5)
+        elif type(child) is str:
+            string(child)
+        elif type(child) is int:
+            if not -(2**63) <= child <= 2**63 - 1:
+                raise JointArchiveError("Joint original integer is outside signed64")
+            add(len(str(child)))
+        elif type(child) is float:
+            if not math.isfinite(child):
+                raise JointArchiveError("Joint original float must be finite")
+            add(len(json.dumps(child, allow_nan=False)))
+        elif type(child) is list:
+            add(2 + max(0, len(child) - 1))
+            for item in child:
+                visit(item, depth + 1)
+        elif type(child) is dict:
+            add(2 + max(0, len(child) - 1))
+            for key, item in child.items():
+                if type(key) is not str:
+                    raise JointArchiveError("Joint original keys must be strings")
+                string(key)
+                add(1)
+                visit(item, depth + 1)
+        else:
+            raise JointArchiveError("Joint originals accept JSON values only")
+
+    visit(value, 0)
+    raw = json.dumps(value, sort_keys=True, ensure_ascii=False,
+                     separators=(",", ":"), allow_nan=False).encode("utf8")
+    if len(raw) != byte_count:
+        raise JointArchiveError("Joint original canonical byte count differs")
+    return raw, nodes, deepest
+
+
+def _complete_encoding_arguments(
+    value: dict[str, Any], bound: dict[str, Any], kind: Kind
+) -> dict[str, Any]:
+    # Every hit rechecks exact JSON scalar/container/key types and the unchanged
+    # expanded logical limits before hashing. JSON-equivalent tuples/subclasses
+    # must never borrow an earlier successful strict-original proof.
+    raw, _, _ = _strict_canonical_original(value, MAX_DECODED_BYTES, MAX_LOGICAL_NODES, MAX_DEPTH)
+    return {
+        "purpose": "complete-v4-source-encoding",
+        "original_sha256": hashlib.sha256(raw).hexdigest(),
+        "binding": bound,
+        "record_kind": kind,
+        "codec": {"protocol": PROTOCOL, "dag_protocol": DAG_PROTOCOL, "codec": CODEC,
+                  "marker": MARKER, "node_kind": NODE_KIND, "false_flags": FALSE_FLAGS,
+                  "kinds": sorted(KINDS), "fields": sorted(FIELDS),
+                  "binding_keys": sorted(BINDING_KEYS), "node_fields": sorted(NODE_FIELDS),
+                  "input_paths": [list(path) for path in INPUT_PATHS],
+                  "plan_paths": [list(path) for path in PLAN_PATHS]},
+        "limits": {"decoded_bytes": MAX_DECODED_BYTES, "shared_nodes": MAX_NODES,
+                   "depth": MAX_DEPTH, "logical_nodes": MAX_LOGICAL_NODES,
+                   "sequences": MAX_SEQUENCES, "sequence_items": MAX_SEQUENCE_ITEMS,
+                   "references": MAX_REFERENCE_OCCURRENCES, "amplification": MAX_AMPLIFICATION,
+                   "wire_bytes": MAX_WIRE_BYTES,
+                   "min_source_reference_bytes": MIN_SOURCE_REFERENCE_BYTES},
+    }
+
+
 def encode_shared_joint(
+    value: dict[str, Any], original_binding: dict[str, Any], kind: Kind
+) -> dict[str, Any]:
+    """Same complete codec; successful isolated bytes may repeat inside one scope."""
+    if kind not in KINDS:
+        raise JointArchiveError("V4 record kind unsupported")
+    bound = binding(original_binding)
+    return decode_complete_original(
+        "registered-joint-goal-execution-source-dag-v4",
+        lambda: _complete_encoding_arguments(value, bound, kind),
+        MAX_WIRE_BYTES,
+        lambda: _encode_shared_joint_uncached(value, bound, kind),
+    )
+
+
+def _encode_shared_joint_uncached(
     value: dict[str, Any], original_binding: dict[str, Any], kind: Kind
 ) -> dict[str, Any]:
     if kind not in KINDS:

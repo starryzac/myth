@@ -3,13 +3,13 @@
 import json
 from collections.abc import Iterator
 from contextlib import contextmanager
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime
-from typing import Annotated, Any, Literal, cast
+from typing import TYPE_CHECKING, Annotated, Any, Literal, cast
 from uuid import UUID, uuid5
 
 from app.db.audit_guard import audit_command_guard
-from app.db.full_models import InterventionInbox, InterventionOutbox
+from app.db.full_models import FullPolicy, InterventionInbox, InterventionOutbox
 from app.db.models import DecisionRun, User
 from app.domain.boundary_action_events import ALGORITHM_VERSION as BOUNDARY_ALGORITHM
 from app.domain.boundary_types import BoundaryModel
@@ -32,9 +32,14 @@ from app.domain.full_intervention import (
     command_identity,
     effective_state,
     message_identity,
+    notification_schedule,
     question_semantics,
 )
-from app.domain.full_policy_configuration import InterventionPolicy
+from app.domain.full_policy_configuration import (
+    MANDATORY_INTERVENTIONS,
+    InterventionPolicy,
+    InterventionReason,
+)
 from app.domain.policy_configuration import configuration_hash
 from app.domain.question_workflow import CommandKey, PendingPlanningQuestion, QuestionRevision
 from app.services.audit_chain import current_audit_epoch
@@ -51,6 +56,9 @@ from sqlalchemy.orm import Session
 
 MAX_MESSAGES = 512
 CommandKeyAdapter = TypeAdapter(CommandKey)
+
+if TYPE_CHECKING:
+    from app.domain.full_action_set_boundary import CandidateInput, CandidateView
 
 
 class InterventionInboxClaim(BoundaryModel):
@@ -159,6 +167,7 @@ class Source:
     revision: int | None
     boundary: dict[str, Any] | None
     attention: bool
+    reason: InterventionReason = "NEW_RISK"
 
 
 def _error(code: str, detail: str) -> PolicyLifecycleError:
@@ -192,6 +201,30 @@ def _trace(session: Session, user: UUID, identity: UUID, now: datetime) -> Decis
     if result.trace is None:
         raise _error("INTERVENTION_SOURCE_INTEGRITY_ERROR", "通知来源没有原 typed 轨迹")
     return result.trace
+
+
+def _single_action_reason(before: DecisionTrace, after: DecisionTrace) -> InterventionReason:
+    """The caller already reproduced both complete original economic signatures."""
+    from app.domain.autonomy import _amount_invariant
+    from app.domain.execution_types import ExecutionEffect
+
+    try:
+        left = ExecutionEffect.model_validate_json(json.dumps(before.inputs["effect"]))
+        right = ExecutionEffect.model_validate_json(json.dumps(after.inputs["effect"]))
+        if (
+            left.action_type == right.action_type == "TRANSFER_INTERNAL"
+            and left.amount_cents > right.amount_cents
+            and before.outcome["autonomy_level"] == after.outcome["autonomy_level"]
+            == "AUTO_EXECUTE"
+            and before.outcome["validation"]["status"]
+            == after.outcome["validation"]["status"] == "READY"
+            and _amount_invariant(left) == _amount_invariant(right)
+        ):
+            return "AUTONOMOUS_AMOUNT_DECREASE"
+    except (ValueError, KeyError, TypeError):
+        pass
+    # Unknown, authority, payee, asset, fee/loss or risk changes are never optional.
+    return "NEW_RISK"
 
 
 def _boundary_source(session: Session, user: UUID, identity: UUID, now: datetime) -> Source:
@@ -231,6 +264,7 @@ def _boundary_source(session: Session, user: UUID, identity: UUID, now: datetime
         None,
         value.model_dump(mode="json"),
         before != after,
+        _single_action_reason(before_trace, after_trace),
     )
 
 
@@ -258,6 +292,7 @@ def _question_source(
         state.revision,
         None,
         True,
+        "VALUE_PREFERENCE_CHANGE",
     )
 
 
@@ -280,6 +315,140 @@ def _global_boundary_source(session: Session, user: UUID, identity: UUID, now: d
 
         return actual_global_boundary_intervention_source(session, user, identity, now)
     raise _error("INTERVENTION_SOURCE_INTEGRITY_ERROR", "原全局观察算法未明确支持，不能降格")
+
+
+def _verified_goal_decrease(before: "CandidateInput", after: "CandidateInput") -> bool:
+    """Notification classification only; both original native validators already ran."""
+    from app.domain.autonomy import _amount_invariant, classify_autonomy
+    from app.domain.execution import execution_effect_hash
+
+    left, right = before.facts, after.facts
+    if left is None or right is None or left.effect is None or right.effect is None:
+        return False
+    if left.validation is None or right.validation is None:
+        return False
+    first, second = left.effect, right.effect
+    return (
+        before.candidate_key == after.candidate_key == "goal:" + str(first.goal_id)
+        and first.action_type == second.action_type == "ALLOCATE_GOAL"
+        and first.goal_id is not None and first.goal_id == second.goal_id
+        and first.user_id == second.user_id == left.user_id == right.user_id
+        and first.amount_cents > second.amount_cents > 0
+        and first.fee_cents == second.fee_cents == first.loss_cents == second.loss_cents == 0
+        and _amount_invariant(first) == _amount_invariant(second)
+        and left.authority == right.authority
+        and left.authority.status == "AUTHORIZED"
+        and left.validation.status == right.validation.status == "READY"
+        and classify_autonomy(left).level == classify_autonomy(right).level == "AUTO_EXECUTE"
+        and not before.missing_reasons and not after.missing_reasons
+        and not before.full_source_issues and not after.full_source_issues
+        and before.full_protection is not None and after.full_protection is not None
+        and before.full_protection.status in {"PASSED", "NO_ADDITIONAL_POLICY"}
+        and after.full_protection.status in {"PASSED", "NO_ADDITIONAL_POLICY"}
+        and before.full_protection.original_effect_hash == execution_effect_hash(first)
+        and after.full_protection.original_effect_hash == execution_effect_hash(second)
+    )
+
+
+def _changed_auto_goal(
+    before: list["CandidateView"], after: list["CandidateView"],
+) -> str | None:
+    left = {row.candidate_key: row for row in before}
+    right = {row.candidate_key: row for row in after}
+    if len(left) != len(before) or len(right) != len(after) or set(left) != set(right):
+        return None
+    changed = [key for key in left if left[key] != right[key]]
+    if len(changed) != 1 or not changed[0].startswith("goal:"):
+        return None
+    key = changed[0]
+    if any(
+        row.state != "INCLUDED" or row.action_type != "ALLOCATE_GOAL"
+        or row.autonomy_level != "AUTO_EXECUTE" for row in (left[key], right[key])
+    ):
+        return None
+    return key
+
+
+def _actual_goal_decrease_reason(
+    session: Session, user: UUID, source: Source, now: datetime,
+) -> InterventionReason:
+    """Only a proven same-scope single Goal reduction is an optional global alert."""
+    from app.domain.full_action_set_boundary_actual import (
+        ActualActionSetInput,
+        ActualGlobalBoundaryObservation,
+    )
+    from app.domain.full_action_set_boundary_full import dynamic_candidate
+
+    if not source.attention or source.trace.parent_run_id is None:
+        return "NEW_RISK"
+    try:
+        previous = _trace(session, user, source.trace.parent_run_id, now)
+        if previous.algorithm_versions.get("global_action_set") != (
+            "full-policy-action-set-boundary-actual-v2"
+        ):
+            return "NEW_RISK"
+        first = ActualGlobalBoundaryObservation.model_validate_json(
+            json.dumps(previous.outcome["actual_global_boundary_observation"])
+        )
+        second = ActualGlobalBoundaryObservation.model_validate_json(
+            json.dumps(source.boundary)
+        )
+        old, new = first.snapshot, second.snapshot
+        if (
+            not old.global_action_set_complete or not new.global_action_set_complete
+            or old.status != new.status or new.status != "COMPLETE"
+            or (old.user_id, old.epoch_id, old.scope, old.algorithm_version)
+            != (new.user_id, new.epoch_id, new.scope, new.algorithm_version)
+            or old.user_id != user or old.as_of > new.as_of
+            or old.expected_candidate_keys != new.expected_candidate_keys
+            or old.unsupported_producers or new.unsupported_producers
+            or old.reasons or new.reasons
+        ):
+            return "NEW_RISK"
+        key = _changed_auto_goal(old.candidates, new.candidates)
+        if key is None:
+            return "NEW_RISK"
+        left = {row.candidate_key: row for row in old.candidates}
+        right = {row.candidate_key: row for row in new.candidates}
+        before = ActualActionSetInput.model_validate_json(
+            json.dumps(previous.inputs["actual_action_set_input"])
+        )
+        after = ActualActionSetInput.model_validate_json(
+            json.dumps(source.trace.inputs["actual_action_set_input"])
+        )
+        # Rule/preference changes remain necessary, even if the resulting amount fell.
+        if any(
+            before.base.original_inventory.get(table) != after.base.original_inventory.get(table)
+            for table in ("policies", "policy_versions", "full_policies", "full_policy_versions")
+        ):
+            return "NEW_RISK"
+        old_producers = [row for row in before.dynamic_goals if row.candidate_key == key]
+        new_producers = [row for row in after.dynamic_goals if row.candidate_key == key]
+        if len(old_producers) != 1 or len(new_producers) != 1:
+            return "NEW_RISK"
+        old_goal, new_goal = old_producers[0], new_producers[0]
+        if old_goal.data is None or new_goal.data is None or (
+            old_goal.data.model_evidence_id != new_goal.data.model_evidence_id
+            or old_goal.data.model_evidence_hash != new_goal.data.model_evidence_hash
+            or old_goal.data.model_original != new_goal.data.model_original
+            or old_goal.authority != new_goal.authority
+        ):
+            return "NEW_RISK"
+        old_view, old_shadow = dynamic_candidate(
+            before.base, old_goal, actual_v2_native_values=True
+        )
+        new_view, new_shadow = dynamic_candidate(
+            after.base, new_goal, actual_v2_native_values=True
+        )
+        if (
+            old_view == left[key] and new_view == right[key]
+            and old_shadow is not None and new_shadow is not None
+            and _verified_goal_decrease(old_shadow, new_shadow)
+        ):
+            return "AUTONOMOUS_AMOUNT_DECREASE"
+    except (PolicyLifecycleError, ValueError, KeyError, TypeError, OverflowError):
+        pass
+    return "NEW_RISK"
 
 
 def _global_source_status(
@@ -323,10 +492,28 @@ def _policy(
     session: Session, user: UUID, identity: UUID | None, epoch: UUID, now: datetime
 ) -> dict[str, Any] | None:
     if identity is None:
-        return None
+        # The actual Question and boundary producers omit an explicit settings ID.
+        # Select only a unique current owner/epoch policy; ambiguity cannot suppress alerts.
+        rows = list(session.scalars(select(FullPolicy).where(
+            FullPolicy.user_id == user, FullPolicy.epoch_id == epoch,
+            FullPolicy.template_name == "InterventionPolicy",
+            FullPolicy.status.in_(["ACTIVE", "CONFIRMED"]),
+        ).limit(2)))
+        if len(rows) != 1 or (
+            rows[0].user_id != user or rows[0].epoch_id != epoch
+            or rows[0].template_name != "InterventionPolicy"
+            or rows[0].status not in {"ACTIVE", "CONFIRMED"}
+        ):
+            return None
+        try:
+            return _policy(session, user, rows[0].id, epoch, now)
+        except (PolicyLifecycleError, ValueError, TypeError):
+            return None  # Invalid automatic settings retain immediate safe defaults.
     view = read_full_policy(session, user, identity, now)
     if (
-        view.epoch_id != epoch
+        view.policy_id != identity
+        or view.current_version.policy_id != identity
+        or view.epoch_id != epoch
         or view.template_name != "InterventionPolicy"
         or not view.planning_confirmation_valid
         or view.reference_validation != "CURRENT"
@@ -334,6 +521,8 @@ def _policy(
     ):
         raise _error("INTERVENTION_POLICY_NOT_CURRENT", "介入设置必须来自当前已确认原版本")
     config = InterventionPolicy.model_validate_json(json.dumps(view.current_version.configuration))
+    if configuration_hash(config.model_dump(mode="json")) != view.current_version.content_hash:
+        raise _error("INTERVENTION_POLICY_NOT_CURRENT", "介入设置原配置摘要未通过核实")
     return {
         "policy_id": str(identity),
         "version_id": str(view.current_version.version_id),
@@ -341,9 +530,69 @@ def _policy(
         "confirmed_at": view.current_version.confirmed_at.isoformat(),
         "configuration": config.model_dump(mode="json"),
         "bank_authority": False,
-        # Exact repeated semantics are merged; new economic questions bypass any interval.
-        "throttle_scope": "IDENTICAL_NO_NEW_ECONOMIC_CONSEQUENCE_ONLY",
+        "source_binding": {
+            "user_id": str(user), "epoch_id": str(epoch),
+            "evidence_ids": [str(value) for value in view.current_version.evidence_ids],
+            "reference_snapshots": view.current_version.impact_analysis.get(
+                "reference_snapshots", []
+            ),
+            "reference_validation": view.reference_validation,
+            "confirmation_evidence_status": view.current_version.confirmation_evidence_status,
+        },
+        "throttle_scope": "OPTIONAL_PROVEN_INTERNAL_AMOUNT_DECREASE_ONLY",
     }
+
+
+def _last_optional_attention(
+    session: Session, user: UUID, epoch: UUID, policy_id: str, now: datetime
+) -> datetime | None:
+    row = session.scalar(select(InterventionOutbox).where(
+        InterventionOutbox.user_id == user, InterventionOutbox.epoch_id == epoch,
+        InterventionOutbox.created_at <= now,
+        InterventionOutbox.payload["intervention_policy_binding"]["policy_id"].astext == policy_id,
+        InterventionOutbox.payload["requires_user_attention"].astext == "true",
+        InterventionOutbox.state.in_(["PENDING", "ACKNOWLEDGED", "DEFERRED"]),
+    ).order_by(InterventionOutbox.created_at.desc(), InterventionOutbox.id.desc()).limit(1))
+    if row is None:
+        return None
+    try:
+        original = _message(session, row, now)
+        if original.user_id == user and original.epoch_id == epoch:
+            return original.created_at
+    except PolicyLifecycleError:
+        pass
+    return None  # Unverified history may cause an extra alert, never a silent question.
+
+
+def _source_schedule(
+    session: Session, user: UUID, epoch: UUID, source: Source,
+    policy: dict[str, Any] | None, now: datetime,
+) -> tuple[State, datetime]:
+    config = (
+        InterventionPolicy.model_validate_json(json.dumps(policy["configuration"]))
+        if policy else None
+    )
+    previous = None
+    if (
+        policy is not None and config is not None and source.attention
+        and source.reason not in MANDATORY_INTERVENTIONS
+        and source.reason in config.must_ask_on and config.minimum_reask_interval_seconds
+    ):
+        previous = _last_optional_attention(session, user, epoch, policy["policy_id"], now)
+    return notification_schedule(config, source.reason, source.attention, now, previous)
+
+
+def _deferred_policy_changed(session: Session, value: InterventionMessage, now: datetime) -> bool:
+    bound = value.intervention_policy_binding
+    if bound is None:
+        return True
+    try:
+        current = _policy(session, value.user_id, None, value.epoch_id, now)
+        return current is None or any(
+            current[key] != bound.get(key) for key in ("policy_id", "version_id", "content_hash")
+        )
+    except (PolicyLifecycleError, ValueError, TypeError):
+        return True
 
 
 def _read_observe(
@@ -701,14 +950,18 @@ def _view(
             # 0012. A new observation never revives an old invalidated message.
             source_binding = "LEGACY_TERMINAL_SOURCE"
     state = effective_state(cast(State, row.state), source_status=source_status)
+    available = row.available_at
+    if state == "DEFERRED" and source_status == "CURRENT":
+        if now >= available or _deferred_policy_changed(session, value, now):
+            state, available = "PENDING", min(available, now)
     return InterventionView(
         original_message=value,
         payload_hash=row.payload_hash,
         stored_state=cast(State, row.state),
         effective_state=state,
         source_status=source_status,
-        available_at=row.available_at,
-        pending=state == "PENDING" and value.requires_user_attention and now >= row.available_at,
+        available_at=available,
+        pending=state == "PENDING" and value.requires_user_attention and now >= available,
         previously_claimed=inbox is not None,
         original_inbox_claim=InterventionInboxClaim(
             inbox_id=inbox.id,
@@ -883,6 +1136,22 @@ def observe_intervention(
                 )
             )
             duplicate = prior is not None
+            if (
+                not duplicate and policy is not None
+                and isinstance(body, GlobalBoundaryObservationRequest)
+                and source.trace.algorithm_versions.get("global_action_set")
+                == "full-policy-action-set-boundary-actual-v2"
+            ):
+                # Only new scheduling needs the optional classification. Historical
+                # source reads keep their original native verifier and do not rerun it.
+                source = replace(
+                    source, reason=_actual_goal_decrease_reason(reader, user, source, now)
+                )
+            scheduled_state, available = (
+                (cast(State, prior.state), prior.available_at)
+                if prior is not None else
+                _source_schedule(reader, user, body.expected_epoch_id, source, policy, now)
+            )
         for replaced_id in replaced:
             previous_row = _outbox(writer, user, replaced_id)
             previous_inbox = _inbox(writer, previous_row)
@@ -911,8 +1180,8 @@ def observe_intervention(
                     question_revision=message.question_revision,
                     payload=payload,
                     payload_hash=payload_hash,
-                    state="PENDING" if message.requires_user_attention else "RECORDED_ONLY",
-                    available_at=now,
+                    state=scheduled_state,
+                    available_at=available,
                     updated_at=now,
                 )
             )
@@ -958,6 +1227,10 @@ def _claim(
     if inbox is not None:
         _ack_receipt(inbox, row)
         return inbox, False
+    if row.state == "DEFERRED":
+        # The caller has freshly checked view.pending. Preserve 0012's two-step transition.
+        row.state, row.updated_at = "PENDING", now
+        session.flush()
     inbox = InterventionInbox(
         id=uuid5(row.id, CONSUMER),
         user_id=row.user_id,

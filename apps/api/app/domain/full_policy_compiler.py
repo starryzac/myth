@@ -709,19 +709,22 @@ def resolve_provider_references(value: dict[str, Any], redacted: RedactedInput) 
     }
     list_refs = {"goal_ids", "source_goal_ids", "must_not_reduce_policy_ids"}
 
-    def walk(item: Any, field: str = "") -> Any:
-        if field in scalar_refs and item is not None:
+    def walk(item: Any, field: str = "", depth: int = 0) -> Any:
+        if (
+            field in scalar_refs and item is not None
+            and (field != "name" or depth == 1)
+        ):
             if type(item) is not str or item not in redacted.references:
                 raise ValueError("Provider reference must be an original redaction token")
             return redacted.references[item]
         if field in list_refs:
             if type(item) is not list:
                 raise ValueError("Provider reference list is invalid")
-            return [walk(child, "goal_id") for child in item]
+            return [walk(child, "goal_id", depth + 1) for child in item]
         if isinstance(item, dict):
-            return {key: walk(child, key) for key, child in item.items()}
+            return {key: walk(child, key, depth + 1) for key, child in item.items()}
         if isinstance(item, list):
-            return [walk(child) for child in item]
+            return [walk(child, depth=depth + 1) for child in item]
         return item
 
     result: dict[str, Any] = walk(strict_candidate_json(value))

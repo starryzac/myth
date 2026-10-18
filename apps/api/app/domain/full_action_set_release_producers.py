@@ -139,6 +139,26 @@ def release_key(policy: UUID, goal: UUID, destination: UUID) -> str:
     return f"full-release:{policy}:{goal}:{destination}"
 
 
+def _paired_goal_scope(actual: ActualActionSetInput, policy_id: str) -> bool:
+    versions = [
+        row for row in actual.base.original_inventory["full_policy_versions"]
+        if row["policy_id"] == policy_id
+    ]
+    latest = max(versions, key=lambda row: row["version_number"])
+    config = latest["configuration"]
+    if config.get("scope_version") != "GOAL_TRANSFER_V1":
+        return False
+    from app.domain.full_goal_transfer import GoalTransferPolicyConfiguration
+
+    verified = GoalTransferPolicyConfiguration.model_validate_json(json.dumps(config))
+    if (
+        verified.model_dump(mode="json") != config
+        or configuration_hash(config) != latest["content_hash"]
+    ):
+        raise ValueError("GOAL_TRANSFER_CURRENT_CONFIGURATION_NOT_PROVEN")
+    return True
+
+
 def release_policy_ids(actual: ActualActionSetInput) -> list[UUID]:
     return sorted(
         (
@@ -146,6 +166,7 @@ def release_policy_ids(actual: ActualActionSetInput) -> list[UUID]:
             for row in actual.base.original_inventory["full_policies"]
             if row["epoch_id"] == str(actual.base.epoch_id)
             and row["template_name"] == "CrossGoalReallocationPolicy"
+            and not _paired_goal_scope(actual, row["id"])
         ),
         key=str,
     )
@@ -311,10 +332,12 @@ def _scope_is_current(actual: ActualActionSetInput, saved: GoalReleaseAuthorizat
         (row for row in raw["full_policy_versions"] if row["policy_id"] == parent["id"]),
         key=lambda row: row["version_number"],
     )
+    # A new version can choose the separate paired-goal protocol. An old
+    # Cash original then remains readable and stale; it grants no Goal authority.
+    if latest["id"] != str(saved.policy_version_id):
+        return False
     config = CrossGoalReallocationPolicy.model_validate_json(json.dumps(latest["configuration"]))
     if parent["status"] in {"REVOKED", "SUSPENDED", "EXPIRED"} or not config.enabled:
-        return False
-    if latest["id"] != str(saved.policy_version_id):
         return False
     if (
         latest["content_hash"] != scope.policy_configuration_hash
@@ -1217,7 +1240,17 @@ def derive_release_producers(supplied: ReleaseActionSetInput) -> ReleaseActionSe
     handled = (
         [
             "FULL_PRODUCER_ADAPTER_MISSING:CrossGoalReallocationPolicy:" + str(identity)
-            for identity in data.expected_full_policy_ids
+            for identity in sorted(
+                set(data.expected_full_policy_ids)
+                | {
+                    UUID(row["id"])
+                    for row in actual.base.original_inventory["full_policies"]
+                    if row["epoch_id"] == str(actual.base.epoch_id)
+                    and row["template_name"] == "CrossGoalReallocationPolicy"
+                    and _paired_goal_scope(actual, row["id"])
+                },
+                key=str,
+            )
         ]
         if complete
         else []

@@ -45,6 +45,7 @@ from app.services.full_joint_goal_execution_store import (
 from app.services.full_joint_goal_planning import full_joint_goal_planning
 from app.services.historical_read import historical_ledger_scope
 from app.services.policy_lifecycle import PolicyLifecycleError
+from app.services.zhiyu_capability_acceptance import capability_validation_status
 from app.services.zhiyu_orchestration import serial_user
 from app.zhiyu_next_isolation import require_zhiyu_next_engine
 from fastapi import APIRouter, Depends, Path, Query, Request
@@ -100,7 +101,7 @@ def fixed_plan_summary(plan: FullJointFrozenPlan) -> dict[str, Any]:
         "full_binding_hash": plan.full_binding_hash,
         "complete_original_retained": True,
         "current_execution_goal_limit": 8,
-        "current_execution_validation": "DEVELOPMENT_PENDING_ACTUAL_JOINT_ACCEPTANCE",
+        "current_execution_validation": capability_validation_status("JOINT_GOALS"),
     }
 
 
@@ -184,7 +185,7 @@ def planning(
             },
             "limitations": actual.limitations,
             "current_execution_goal_limit": 8,
-            "current_execution_validation": "DEVELOPMENT_PENDING_ACTUAL_JOINT_ACCEPTANCE",
+            "current_execution_validation": capability_validation_status("JOINT_GOALS"),
         }
 
 

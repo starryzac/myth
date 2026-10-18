@@ -37,6 +37,11 @@ from app.domain.full_goal_release_execution import (
     GoalReleaseEffect,
     goal_release_effect_hash,
 )
+from app.domain.full_goal_transfer import (
+    GoalTransferBankCommand,
+    GoalTransferEffect,
+    goal_transfer_effect_hash,
+)
 from app.domain.policy_configuration import configuration_hash
 from app.services.historical_read import stable_read_snapshot
 from app.services.policy_lifecycle import PolicyLifecycleError
@@ -604,6 +609,7 @@ def _supported(trace: DecisionTrace) -> bool:
         "full-finite-planning-minimax-v1",
         "full-goal-release-authorization-v1",
         "full-goal-emergency-release-v1",
+        "full-goal-transfer-v1",
         "full-payment-relation-v1",
         "full-dynamic-goal-execution-v1",
         "full-policy-action-set-boundary-v1",
@@ -613,17 +619,143 @@ def _supported(trace: DecisionTrace) -> bool:
         "full-seasonal-adoption-v1",
         "full-recovery-execution-v1",
         "lossy-early-redemption-v1",
+        "lossy-early-redemption-quote-revision-v2",
         "full-maturity-user-execution-v1",
         "full-experiment-asset-execution-v1",
         "registered-joint-goal-execution-v2",
         "registered-joint-goal-execution-archive-v3",
         "registered-joint-goal-execution-source-dag-v4",
+        "zhiyu-standing-delegated-native-v2",
+        "zhiyu-standing-income-goal-native-v1",
         "reviewed-multi-template-policy-change-v1",
     }
     return all(version in supported for version in trace.algorithm_versions.values())
 
 
+def _plain_action_json(value: Any) -> None:
+    """Exact JSON values within the unchanged shared-object work/depth budget."""
+    from app.domain.full_joint_goal_archive import MAX_DEPTH, MAX_NODES
+
+    nodes = 0
+
+    def visit(child: Any, depth: int) -> None:
+        nonlocal nodes
+        nodes += 1
+        if nodes > MAX_NODES or depth > MAX_DEPTH:
+            raise ValueError("Action read JSON exceeds the original node/depth budget")
+        if type(child) is dict:
+            for key, item in child.items():
+                if type(key) is not str:
+                    raise ValueError("Exact JSON string keys required for action read")
+                visit(item, depth + 1)
+        elif type(child) is list:
+            for item in child:
+                visit(item, depth + 1)
+        elif child is not None and type(child) not in (str, int, float, bool):
+            raise ValueError("Exact JSON values required for action read")
+
+    visit(value, 0)
+
+
+def _joint_action_wire_digest(trace: DecisionTrace) -> str:
+    # Check actual raw wire containers before model_dump can normalize Any values.
+    _plain_action_json(trace.inputs)
+    _plain_action_json(trace.outcome)
+    return configuration_hash(trace.model_dump(mode="json"))
+
+
+def _joint_action_projection_digest(trace: DecisionTrace) -> str:
+    _plain_action_json(trace.inputs)
+    _plain_action_json(trace.outcome)
+    return configuration_hash({
+        "metadata": trace.model_dump(mode="json", exclude={"inputs", "outcome"}),
+        "inputs": trace.inputs,
+        "outcome": trace.outcome,
+    })
+
+
+@dataclass
+class _JointActionProjection:
+    """Single-use consumption data from this reader's fully verified V4 wire."""
+
+    wire: DecisionTrace
+    projected: DecisionTrace
+    wire_digest: str
+    projection_digest: str
+    _consumed: bool = field(default=False, init=False)
+
+    def consume(self, wire: DecisionTrace) -> DecisionTrace:
+        if self._consumed:
+            raise _integrity("动作投影已在本次读取消费")
+        self._consumed = True
+        verify_trace(wire)
+        if (
+            wire is not self.wire
+            or _joint_action_wire_digest(wire) != self.wire_digest
+            or _joint_action_projection_digest(self.projected) != self.projection_digest
+        ):
+            raise _integrity("动作投影已不同于本次完整已核验原轨迹")
+        return self.projected
+
+
+def _project_joint_action_fields(trace: DecisionTrace) -> DecisionTrace | None:
+    """Consumption only, called after all original stored/native guards succeeded."""
+    from app.domain.full_joint_goal_source_adapter import physical_source_record
+    from app.domain.full_joint_goal_source_archive import MARKER
+
+    if trace.algorithm_versions.get("full_joint_goal_execution") != (
+        "registered-joint-goal-execution-source-dag-v4"
+    ):
+        return None
+
+    left_dag = physical_source_record(trace.inputs["record"])
+    right_dag = physical_source_record(trace.outcome["record"])
+    if left_dag is None or right_dag is None:
+        return None
+    left, right = left_dag["root"], right_dag["root"]
+    if "goal_release_effect" in left or "goal_transfer_effect" in left:
+        return None  # Preserve the original release-origin branch through the full decoder.
+    inputs = {
+        key: left[key] for key in ("effect", "action_request", "action_requests") if key in left
+    }
+    outcome = {"validation": right["validation"]} if "validation" in right else {}
+
+    def reference(value: Any) -> bool:
+        if type(value) is dict:
+            return MARKER in value or any(reference(child) for child in value.values())
+        if type(value) is list:
+            return any(reference(child) for child in value)
+        return False
+
+    if reference(inputs) or reference(outcome):
+        return None  # Only the original complete decoder may expand a source reference.
+    _plain_action_json(inputs)
+    _plain_action_json(outcome)
+    return trace.model_copy(update={"inputs": inputs, "outcome": outcome})
+
+
 def _stored_trace(session: Session, row: DecisionRun) -> tuple[Completeness, DecisionTrace | None]:
+    completeness, trace, _ = _stored_trace_values(session, row, include_projection=False)
+    return completeness, trace
+
+
+def _stored_trace_with_action_projection(
+    session: Session, row: DecisionRun
+) -> tuple[Completeness, DecisionTrace | None, _JointActionProjection | None]:
+    snapshot = row.input_snapshot
+    raw = snapshot.get("decision_trace") if type(snapshot) is dict else None
+    algorithms = raw.get("algorithm_versions") if isinstance(raw, dict) else None
+    if not isinstance(algorithms, dict) or algorithms.get("full_joint_goal_execution") != (
+        "registered-joint-goal-execution-source-dag-v4"
+    ):
+        completeness, trace = _stored_trace(session, row)
+        return completeness, trace, None
+    return _stored_trace_values(session, row, include_projection=True)
+
+
+def _stored_trace_values(
+    session: Session, row: DecisionRun, *, include_projection: bool
+) -> tuple[Completeness, DecisionTrace | None, _JointActionProjection | None]:
     try:
         if configuration_hash(row.input_snapshot) != row.snapshot_hash:
             raise _integrity("原决策输入摘要不一致")
@@ -631,13 +763,14 @@ def _stored_trace(session: Session, row: DecisionRun) -> tuple[Completeness, Dec
         raise _integrity("原决策输入不是有效JSON") from error
     raw = row.input_snapshot.get("decision_trace")
     if raw is None:
-        return "LEGACY_PARTIAL", None
+        return "LEGACY_PARTIAL", None, None
     if not isinstance(raw, dict):
         raise _integrity("冻结轨迹不是JSON对象")
     if raw.get("schema_version") != "decision-trace-v1":
-        return "UNSUPPORTED_VERSION", None
+        return "UNSUPPORTED_VERSION", None, None
     try:
         trace = DecisionTrace.model_validate_json(json.dumps(raw))
+        before = _joint_action_wire_digest(trace) if include_projection else None
         verify_trace(trace)
         if (
             "reviewed_policy_change" in trace.algorithm_versions
@@ -648,6 +781,10 @@ def _stored_trace(session: Session, row: DecisionRun) -> tuple[Completeness, Dec
             )
 
             verify_frozen_reviewed_policy_change_trace(trace)
+        if "zhiyu_standing_delegated" in trace.algorithm_versions:
+            from app.domain.zhiyu_standing_native import verify_standing_delegated_trace
+
+            verify_standing_delegated_trace(trace)
         if "full_joint_goal_execution" in trace.algorithm_versions:
             from app.domain.full_joint_goal_execution_trace import (
                 verify_frozen_full_joint_goal_trace,
@@ -756,12 +893,45 @@ def _stored_trace(session: Session, row: DecisionRun) -> tuple[Completeness, Dec
     }.issubset(set(row.evidence_ids)):
         raise _integrity("决策记录来源索引与冻结内容不一致")
     _verify_constraints(session, trace)
-    return ("COMPLETE" if _supported(trace) else "UNSUPPORTED_VERSION"), trace
+    projection = None
+    if include_projection:
+        if before != _joint_action_wire_digest(trace):
+            raise _integrity("完整原轨迹在本次核验内发生改变")
+        projected = _project_joint_action_fields(trace)
+        if before != _joint_action_wire_digest(trace):
+            raise _integrity("完整原轨迹在动作投影读取内发生改变")
+        if projected is not None:
+            assert before is not None
+            projection = _JointActionProjection(
+                trace, projected, before, _joint_action_projection_digest(projected)
+            )
+    return ("COMPLETE" if _supported(trace) else "UNSUPPORTED_VERSION"), trace, projection
 
 
 def _verify_action_origin(
     trace: DecisionTrace | None, action: ActionPlan
-) -> BankCommand | GoalReleaseBankCommand | None:
+) -> BankCommand | GoalReleaseBankCommand | GoalTransferBankCommand | None:
+    if action.action_type == "TRANSFER_GOAL" or "goal_transfer_execution" in action.request:
+        from app.services.full_goal_transfer_reader import read_goal_transfer_command
+
+        transfer_command = read_goal_transfer_command(action)
+        if trace is not None:
+            try:
+                transfer_effect = GoalTransferEffect.model_validate_json(
+                    json.dumps(trace.inputs["goal_transfer_effect"])
+                )
+                original_request = trace.inputs["action_request"]
+                if (
+                    not isinstance(original_request, dict)
+                    or configuration_hash(original_request) != action.request_hash
+                    or transfer_command.effect_hash != goal_transfer_effect_hash(transfer_effect)
+                    or transfer_command.effect.model_dump(mode="json")
+                    != transfer_effect.model_dump(mode="json")
+                ):
+                    raise ValueError("Frozen paired goal transfer origin differs")
+            except (KeyError, TypeError, ValueError) as error:
+                raise _integrity("调拨原动作、原来源或录制经济后果不同") from error
+        return transfer_command
     if action.action_type == "RELEASE_GOAL" or "goal_release_execution" in action.request:
         from app.services.full_goal_release_reader import read_goal_release_command
 
@@ -858,6 +1028,21 @@ def _action_links(
     # Keep the returned/persisted trace as the wire original; expand only this read.
     if trace is not None:
         trace = expanded_joint_trace(trace)
+    return _action_links_from_expanded(session, row, now, trace)
+
+
+def _action_links_with_projection(
+    session: Session, row: DecisionRun, now: datetime, trace: DecisionTrace | None,
+    projection: _JointActionProjection | None,
+) -> list[TraceActionLink]:
+    if projection is None or trace is None:
+        return _action_links(session, row, now, trace)
+    return _action_links_from_expanded(session, row, now, projection.consume(trace))
+
+
+def _action_links_from_expanded(
+    session: Session, row: DecisionRun, now: datetime, trace: DecisionTrace | None
+) -> list[TraceActionLink]:
     query = select(ActionPlan).where(ActionPlan.user_id == row.user_id)
     if row.subject_action_plan_id is not None:
         query = query.where(ActionPlan.id == row.subject_action_plan_id)
@@ -903,7 +1088,11 @@ def _action_links(
             if operation is None:
                 raise _integrity("回执缺少独立银行操作")
             try:
-                if operation.operation_type == "RELEASE_GOAL":
+                if operation.operation_type == "TRANSFER_GOAL":
+                    from app.services.full_goal_transfer_reader import verify_goal_transfer_receipt
+
+                    verify_goal_transfer_receipt(session, operation, receipt, now)
+                elif operation.operation_type == "RELEASE_GOAL":
                     from app.services.full_goal_release_reader import verify_goal_release_receipt
 
                     verify_goal_release_receipt(session, operation, receipt, now)
@@ -945,6 +1134,19 @@ def _action_links(
 def get_decision_trace(
     session: Session, user_id: UUID, run_id: UUID, now: datetime
 ) -> DecisionTraceResponse:
+    return _read_decision_trace(session, user_id, run_id, now, include_explanation=True)
+
+
+def _get_decision_trace_without_explanation(
+    session: Session, user_id: UUID, run_id: UUID, now: datetime
+) -> DecisionTraceResponse:
+    """Read all original guards for internal joint readers that do not use prose."""
+    return _read_decision_trace(session, user_id, run_id, now, include_explanation=False)
+
+
+def _read_decision_trace(
+    session: Session, user_id: UUID, run_id: UUID, now: datetime, *, include_explanation: bool
+) -> DecisionTraceResponse:
     now = _clock(now)
     with session.no_autoflush:
         row = session.scalar(
@@ -954,7 +1156,7 @@ def get_decision_trace(
             raise _not_found()
         if now < row.as_of:
             raise PolicyLifecycleError("DECISION_NOT_YET_OCCURRED", "决策时钟晚于当前读取时钟", 409)
-        completeness, trace = _stored_trace(session, row)
+        completeness, trace, projection = _stored_trace_with_action_projection(session, row)
         references = _current_references(session, trace, allow_missing=True) if trace else []
         from app.services.audit_chain import get_decision_audit_status
 
@@ -965,9 +1167,13 @@ def get_decision_trace(
             read_at=now,
             completeness=completeness,
             trace=trace,
-            explanation=explain_trace(trace) if trace and completeness == "COMPLETE" else None,
+            explanation=(
+                explain_trace(trace)
+                if include_explanation and trace and completeness == "COMPLETE"
+                else None
+            ),
             current_references=references,
-            actions=_action_links(session, row, now, trace),
+            actions=_action_links_with_projection(session, row, now, trace, projection),
             children=list(
                 session.scalars(
                     select(DecisionRun.id)

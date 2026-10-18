@@ -8,21 +8,23 @@ import { getQuestionView, readQuestionView, type QuestionView, type QuestionUpda
 import { businessText, money, userError } from './display';
 
 const names: Record<Mode, string> = { PORTFOLIO: '有限产品组合', FIXED_LADDER: '分期到期阶梯' };
-export default function QuestionPanel({ environment, state, signed, blocked, perform, runRead, update, recovering = false, retryOriginal }: { environment: NextState; state?: AssetsState; signed: boolean; blocked: boolean; perform: AssetPerform; runRead: <T>(work: () => Promise<T>) => Promise<T>; update: QuestionUpdate | null; recovering?: boolean; retryOriginal?: () => Promise<void> }) {
+export default function QuestionPanel({ environment, state, signed, blocked, perform, runRead, update, recovering = false, retryOriginal, onQuestionRead }: { environment: NextState; state?: AssetsState; signed: boolean; blocked: boolean; perform: AssetPerform; runRead: <T>(work: () => Promise<T>) => Promise<T>; update: QuestionUpdate | null; recovering?: boolean; retryOriginal?: () => Promise<void>; onQuestionRead?: (view: QuestionView | null) => void }) {
   const [open, setOpen] = useState(false); const [policyId, setPolicyId] = useState(''); const [working, setWorking] = useState(false); const [loaded, setLoaded] = useState<QuestionView | null>(null); const [error, setError] = useState('');
   useEffect(() => { if (update || recovering) setOpen(true); }, [update, recovering]); useEffect(() => { if (update) setLoaded(null); }, [update]);
   const saved = useQuery({ queryKey: ['zhiyu-next-question-view', environment.environment_id, environment.epoch_id], queryFn: () => readQuestionView(environment), enabled: open && !blocked && !update, retry: false, staleTime: Infinity });
   const view = loaded ?? update ?? saved.data; const receipt = view?.receipt; const evaluation = view?.evaluation;
+  useEffect(() => { if (view) onQuestionRead?.(view); }, [view, onQuestionRead]);
+  useEffect(() => { setLoaded(null); }, [state]);
   const policies = state?.policies.filter((p) => p.source_kind === 'FULL_POLICY' && p.template_name === 'AssetAuthorizationPolicy' && p.planning_confirmation_valid && ['ACTIVE', 'CONFIRMED'].includes(p.effective_status) && p.configuration.scope === 'goal' && environment.goals.some((g) => g.id === p.configuration.goal_id)) ?? [];
   const policy = policies.find((p) => p.policy_id === policyId) ?? (policies.length === 1 ? policies[0] : undefined);
   const currentQuestion = !!view && view.effective_state === 'PENDING_ANSWER' && receipt?.question_id && view.current_source_fingerprint === receipt.source_fingerprint && evaluation?.should_ask === true;
   async function start() {
-    if (!policy || !signed || blocked || working || receipt && !['CLOSED', 'ARCHIVED'].includes(view!.effective_state)) return; setWorking(true); setError('');
+    if (!policy || !signed || blocked || working || receipt && !['CLOSED', 'ARCHIVED'].includes(view!.effective_state)) return; setWorking(true); setError(''); onQuestionRead?.(null);
     try { const body = { expected_epoch_id: environment.epoch_id, client_request_id: crypto.randomUUID(), full_policy_id: policy.policy_id, expected_full_policy_version_id: policy.current_version_id }; const recovery: QuestionRecovery = { protocol: 'zhiyu-next-question-recovery-v1', user_id: environment.dashboard.user_id, start_request: body, session_id: null, previous_receipt_hash: null }; await perform(`${QUESTION_PREFIX}/sessions`, body, undefined, undefined, undefined, undefined, undefined, undefined, recovery); }
     catch (cause) { setError(userError(cause)); } finally { setWorking(false); }
   }
   async function command(kind: 'answers' | 'refresh' | 'close', mode?: Mode) {
-    if (!view || !receipt || blocked || working || !signed || receipt.revision > 16 || ['CLOSED', 'ARCHIVED'].includes(view.effective_state) || kind === 'answers' && !currentQuestion) return; setWorking(true); setError('');
+    if (!view || !receipt || blocked || working || !signed || receipt.revision > 16 || ['CLOSED', 'ARCHIVED'].includes(view.effective_state) || kind === 'answers' && !currentQuestion) return; setWorking(true); setError(''); onQuestionRead?.(null);
     try {
       const fresh = await runRead(() => getQuestionView(view.recovery, environment)); setLoaded(fresh);
       if (fresh.receipt.receipt_hash !== receipt.receipt_hash || fresh.receipt.revision !== receipt.revision) throw new Error('原问题版本已经变化，请审阅当前问题。');
@@ -34,7 +36,7 @@ export default function QuestionPanel({ environment, state, signed, blocked, per
   return <section aria-label="少问必要偏好"><section className="zy-card"><div className="zy-section-heading"><h3>只问会改变整组安排的偏好</h3><button className="zy-secondary" disabled={working} onClick={() => setOpen((v) => !v)}>{open ? '收起必要问题' : '查看必要问题'}</button></div><p>比较整组购买、到期与保护结果。回答偏好不扣款，也不延续此前的资金确认。</p></section>
     {open && <section className="zy-card">
       {(error || saved.isError) && <p role="alert" className="zy-message zy-error">{error || userError(saved.error)}</p>}
-      {!view && <><label className="zy-field" htmlFor="zyn-question-policy">当前目标资产范围<select id="zyn-question-policy" disabled={blocked || working} value={policy?.policy_id ?? ''} onChange={(e) => setPolicyId(e.target.value)}><option value="">请选择</option>{policies.map((p) => <option key={p.policy_id} value={p.policy_id}>{businessText(p.name)}</option>)}</select></label><p className="zy-muted">目前只接受已有真实目标与原资产权限关联的完整范围；尚未接通服务时不能推断当前问题。</p><button className="zy-secondary" disabled={!policy || !signed || blocked || working} onClick={() => void start()}>核实是否需要询问</button></>}
+      {(!view || ['CLOSED', 'ARCHIVED'].includes(view.effective_state)) && <><label className="zy-field" htmlFor="zyn-question-policy">当前目标资产范围<select id="zyn-question-policy" disabled={blocked || working} value={policy?.policy_id ?? ''} onChange={(e) => setPolicyId(e.target.value)}><option value="">请选择</option>{policies.map((p) => <option key={p.policy_id} value={p.policy_id}>{businessText(p.name)}</option>)}</select></label><p className="zy-muted">目前只接受已有真实目标与原资产权限关联的完整范围；尚未接通服务时不能推断当前问题。</p><button className="zy-secondary" disabled={!policy || !signed || blocked || working} onClick={() => void start()}>核实是否需要询问</button></>}
       {recovering && <p role="status">正在核对同一个偏好原命令；未找到原件不能当作拒绝，也不会开启另一会话。</p>}
       {receipt && view && <>
         <h4>{view.effective_state === 'STALE_RECOMPUTATION_REQUIRED' ? '来源已变化，旧问题不能继续回答' : view.effective_state === 'READY_FOR_REVIEW' ? '当前无需再问偏好' : view.effective_state === 'PENDING_ANSWER' ? '只需选择一个安排偏好' : view.effective_state === 'UNKNOWN' ? '完整效果仍待核实' : '已关闭的偏好记录'}</h4>

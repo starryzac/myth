@@ -12,6 +12,12 @@ from typing import Any
 
 from app.db.session import create_database_engine
 from app.domain.demo_identity import DEMO_USER_ID
+from app.domain.immutable_joint_archive_scope import immutable_joint_archive_scope
+from app.domain.immutable_joint_validation_scope import (
+    _HistoricalPureProofMemo,
+    historical_pure_proof_scope,
+    immutable_joint_validation_scope,
+)
 from app.services.policy_lifecycle import PolicyLifecycleError
 from app.services.zhiyu_orchestration import drain_once
 from app.zhiyu_next_isolation import require_zhiyu_next_engine
@@ -82,6 +88,7 @@ def main() -> int:
     os.environ.pop("ZHIYU_NEXT_ADMIN_DATABASE_URL", None)
     engine = create_database_engine(environment["DATABASE_URL"])
     require_zhiyu_next_engine(engine, check_connection=True)
+    historical_proofs = _HistoricalPureProofMemo()
     registration: dict[str, Any] = {
         "protocol": "zhiyu-next-single-goal-worker-v1",
         "pid": os.getpid(),
@@ -103,7 +110,12 @@ def main() -> int:
             require_verified_source()
             require_zhiyu_next_engine(engine)
             try:
-                result = drain_once(engine, DEMO_USER_ID, datetime.now(UTC))
+                with (
+                    historical_pure_proof_scope(historical_proofs),
+                    immutable_joint_validation_scope(),
+                    immutable_joint_archive_scope(),
+                ):
+                    result = drain_once(engine, DEMO_USER_ID, datetime.now(UTC))
                 print(
                     json.dumps({"at": datetime.now(UTC).isoformat(), **result}, ensure_ascii=False),
                     flush=True,

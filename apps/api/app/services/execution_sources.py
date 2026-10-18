@@ -35,6 +35,9 @@ from sqlalchemy.orm import Session
 FULL_JOINT_GOAL_GUARDS_VERSION = "registered-joint-goal-execution-v2"
 
 
+STANDING_DELEGATED_GUARDS_VERSION = "zhiyu-standing-delegated-native-v2"
+
+
 def _source_error(message: str) -> PolicyLifecycleError:
     return PolicyLifecycleError("INVALID_EXECUTION_SOURCE", message, 409)
 
@@ -164,6 +167,7 @@ def load_execution_quote(
     now: datetime,
     *,
     requested_at: datetime | None = None,
+    quote_id: UUID | None = None,
 ) -> RecoveryQuote:
     """Keep the original price/identity through confirmation; never guess early-exit costs."""
     if now.tzinfo is None or now.utcoffset() is None:
@@ -172,6 +176,14 @@ def load_execution_quote(
     requested = requested_at or now
     if requested.tzinfo is None or requested.utcoffset() is None or requested > now:
         raise _source_error("报价原时间不合法")
+    if quote_id is not None:
+        from app.domain.zhiyu_quote_revision import SOURCE_V2
+
+        proof = session.get(EvidenceItem, quote_id)
+        if proof is not None and proof.source_type == SOURCE_V2:
+            from app.services.zhiyu_quote_revisions import load_current_revision_quote
+
+            return load_current_revision_quote(session, user_id, position_id, quote_id, now)
     row = session.get(AssetPosition, position_id)
     if row is None or row.user_id != user_id or row.status not in {"HELD", "MATURED"}:
         raise _source_error("报价必须绑定当前用户尚未提交赎回的本金")
@@ -443,6 +455,17 @@ def verify_execution_sources(
                 raise _source_error("收款账单已变化，必须重新准备")
         else:
             _counterparty_binding(session, user_id, effect.payee_id, effect.payee_evidence_id, now)
+    from app.services.zhiyu_standing_guards import (
+        enforce_standing_first_bank,
+        has_standing_binding,
+    )
+
+    standing_action = session.get(ActionPlan, effect.operation_id)
+    if standing_action is not None and has_standing_binding(standing_action):
+        # Called only for a genuinely new bank acceptance, after the unchanged
+        # bank user/command/cash/ownership/reservation/payee checks. Existing
+        # bank originals recover before this gate in process_operation.
+        return enforce_standing_first_bank(session, user_id, effect, now)
     from app.services.decision_recording import record_execution_trace, start_capture
 
     start_capture(session)

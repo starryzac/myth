@@ -1,6 +1,6 @@
 import { object } from '../features/policy-form';
 import { businessText } from './display';
-import { choicesAt, fieldLabel, isOptional, resolveSchema, unionOptions, valueLabel, type Schema, type FormValues, type ReferenceChoices } from './policy-schema';
+import { choicesAt, configurationSummary, fieldLabel, isOptional, resolveSchema, unionOptions, valueLabel, type Schema, type FormValues, type ReferenceChoices } from './policy-schema';
 
 export default function PolicySchemaForm({ schema, values, choices, disabled, update }: { schema: Schema; values: FormValues; choices: ReferenceChoices; disabled: boolean; update: (path: string, value: string | string[]) => void }) {
   function fields(input: unknown, path: string, depth: number): React.ReactNode {
@@ -22,8 +22,13 @@ export default function PolicySchemaForm({ schema, values, choices, disabled, up
     const needsReference = item.format === 'uuid' || /(?:_id|_ids)$/.test(path);
     const value = values[path] ?? (array ? [] : '');
     return <label className="zy-field" key={path} htmlFor={id}>{label}{/_cents(?:_per_day)?$/.test(path) ? '（元）' : ''}{optional ? '（可选）' : ''}
-      {options || needsReference ? <><select id={id} multiple={array} value={array ? Array.isArray(value) ? value : [] : String(value)} disabled={disabled || needsReference && !references?.length} onChange={(event) => update(path, array ? [...event.target.selectedOptions].map((option) => option.value) : event.target.value)}>{!array && <option value="">{optional ? '不关联' : '请选择'}</option>}{(options ?? []).map((option) => <option key={option.value} value={option.value}>{businessText(option.label)}</option>)}</select>{array && <small>可选择多项；按住 Ctrl 或 Command 增选。</small>}{needsReference && !references?.length && <small>当前没有可核实的{label}，先保留其他字段。</small>}</> : <input id={id} type={node.format === 'date' ? 'date' : 'text'} inputMode={node.type === 'integer' || node.type === 'number' ? 'decimal' : undefined} value={Array.isArray(value) ? value.join('，') : value} disabled={disabled} maxLength={typeof node.maxLength === 'number' ? node.maxLength : 500} onChange={(event) => update(path, event.target.value)} placeholder={array ? '用逗号分隔，如餐饮，交通' : undefined} />}
+      {options || needsReference ? <><select id={id} multiple={array} value={array ? Array.isArray(value) ? value : [] : String(value)} disabled={disabled || needsReference && !references?.length} onChange={(event) => update(path, array ? [...event.target.selectedOptions].map((option) => option.value) : event.target.value)}>{!array && <option value="">{optional ? '不关联' : '请选择'}</option>}{(options ?? []).map((option) => <option key={option.value} value={option.value}>{references ? option.label : businessText(option.label)}</option>)}</select>{array && <small>可选择多项；按住 Ctrl 或 Command 增选。</small>}{needsReference && !references?.length && <small>当前没有可核实的{label}，先保留其他字段。</small>}</> : <input id={id} type={node.format === 'date' ? 'date' : 'text'} inputMode={node.type === 'integer' || node.type === 'number' ? 'decimal' : undefined} value={Array.isArray(value) ? value.join('，') : value} disabled={disabled} maxLength={typeof node.maxLength === 'number' ? node.maxLength : 500} onChange={(event) => update(path, event.target.value)} placeholder={array ? '用逗号分隔，如餐饮，交通' : undefined} />}
     </label>;
   }
   return <>{fields(schema, '', 0)}</>;
+}
+
+export function PolicyConfigurationSummary({ configuration, choices }: { configuration: Record<string, unknown>; choices?: ReferenceChoices }) {
+  const { name, ...scope } = configuration;
+  return <>{typeof name === 'string' && <li>规则名称：{name}</li>}{configurationSummary(scope, choices).map((row, index) => <li key={index}>{businessText(row)}</li>)}</>;
 }

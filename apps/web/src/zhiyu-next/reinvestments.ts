@@ -20,6 +20,15 @@ const same = (left: unknown, right: unknown) => canonical(left) === canonical(ri
 /** The native maturity parser has already validated the complete event and originals. */
 export const receivedMaturityEvent = (source: MaturityAction) => source.original_event as components['schemas']['OriginalMaturityEvent'];
 export type ReinvestmentUpdate = { phase: 'PREPARE' | 'CONFIRM' | 'CONTINUE'; source: MaturityAction; view: AssetView | null; recovery: ReinvestmentRecovery; partial_preparation: boolean; resume_original: boolean };
+export type ReinvestmentIntent = { protocol: 'maturity-settled-reinvestment-v1'; user_id: string; epoch_id: string; original_request: ReinvestmentRequest; original_maturity_event: MaturityAction['original_event']; original_native_request: AssetPrepare; principal_at_capture: ReturnType<typeof parseLocalActorSession>['principal']; captured_at: string; bank_authority: false; event_is_exclusive_funding_reservation: false };
+export function parseReinvestmentIntent(value: unknown, source: MaturityAction, environment: NextState): ReinvestmentIntent {
+  check(object(value) && exact(value, ['protocol', 'user_id', 'epoch_id', 'original_request', 'original_maturity_event', 'original_native_request', 'principal_at_capture', 'captured_at', 'bank_authority', 'event_is_exclusive_funding_reservation']) && value.protocol === protocol && value.user_id === environment.dashboard.user_id && value.epoch_id === environment.epoch_id && value.bank_authority === false && value.event_is_exclusive_funding_reservation === false && typeof value.captured_at === 'string' && Number.isFinite(Date.parse(value.captured_at)));
+  const body = parseReinvestmentRequest(value.original_request); const native = nativeReinvestmentRequest(body, source);
+  check(same(value.original_maturity_event, source.original_event) && same(value.original_native_request, native));
+  const actor = parseLocalActorSession({ simulation: true, principal: value.principal_at_capture, bank_authority: false, confirms_financial_action: false }).principal; const event = receivedMaturityEvent(source);
+  check(actor.role === 'USER' && actor.user_id === value.user_id && Date.parse(actor.issued_at) <= Date.parse(value.captured_at) && Date.parse(value.captured_at) < Date.parse(actor.expires_at) && event.settled_at && Date.parse(event.settled_at) <= Date.parse(value.captured_at));
+  return value as ReinvestmentIntent;
+}
 export function nativeReinvestmentRequest(body: ReinvestmentRequest, source: MaturityAction): AssetPrepare {
   const requestBody = parseReinvestmentRequest(body); const event = receivedMaturityEvent(source);
   check(source.action_id === body.maturity_action_id && source.epoch_id === body.expected_epoch_id && source.service_receipt_verified && event.proof_status === 'VERIFIED' && event.service_receipt_verified && event.destination_account_id && (event.goal_id === null ? body.expected_goal_policy_version_id === null : body.expected_goal_policy_version_id !== null));
@@ -55,11 +64,8 @@ async function readPrepared(recovery: ReinvestmentRecovery, source: MaturityActi
   if (raw.status !== 'RECORDED') {
     check(exact(raw, ['simulation', 'variant', 'environment_id', 'epoch_id', 'protocol', 'status', 'original_intent', 'native_lookup', 'replacement_allowed', 'bank_execute_allowed']) && ['NOT_FOUND_NOT_FINAL', 'PARTIAL_BINDING_NOT_FINAL'].includes(String(raw.status)) && raw.bank_execute_allowed === false);
     if (raw.original_intent === null) { check(raw.native_lookup === null && raw.status === 'NOT_FOUND_NOT_FINAL'); return { view: null, partial: false, resume: false }; }
-    const intent = raw.original_intent;
-    check(object(intent) && exact(intent, ['protocol', 'user_id', 'epoch_id', 'original_request', 'original_maturity_event', 'original_native_request', 'principal_at_capture', 'captured_at', 'bank_authority', 'event_is_exclusive_funding_reservation']) && intent.protocol === protocol && intent.user_id === recovery.user_id && intent.epoch_id === environment.epoch_id && intent.bank_authority === false && intent.event_is_exclusive_funding_reservation === false && same(intent.original_request, recovery.prepare_request) && same(intent.original_maturity_event, source.original_event) && same(intent.original_native_request, native) && typeof intent.captured_at === 'string' && Number.isFinite(Date.parse(intent.captured_at)));
-    const actor = parseLocalActorSession({ simulation: true, principal: intent.principal_at_capture, bank_authority: false, confirms_financial_action: false }).principal;
-    const event = receivedMaturityEvent(source);
-    check(actor.role === 'USER' && actor.user_id === recovery.user_id && Date.parse(actor.issued_at) <= Date.parse(intent.captured_at) && Date.parse(intent.captured_at) < Date.parse(actor.expires_at) && event.settled_at && Date.parse(event.settled_at) <= Date.parse(intent.captured_at));
+    const intent = parseReinvestmentIntent(raw.original_intent, source, environment);
+    check(intent.user_id === recovery.user_id && same(intent.original_request, recovery.prepare_request) && same(intent.original_native_request, native));
     const nativeIntent: AssetIntent = { protocol: 'full-asset-browser-command-v1', kind: 'PREPARE', user_id: recovery.user_id, portfolio_id: null, path: '/full-asset-executions/prepare', body: native, body_json: JSON.stringify(native), request_hash: await hash(native), reviewed_portfolio: null };
     const lookup = await parseAssetLookup(raw.native_lookup, nativeIntent);
     if (lookup.original === null) { check(raw.status === 'NOT_FOUND_NOT_FINAL'); return { view: null, partial: true, resume: true }; }

@@ -7,7 +7,11 @@ from zoneinfo import ZoneInfo
 
 from app.domain.policy_compiler import CompileContext, compile_policy
 from app.services.llm_provider import OpenAICompatibleProvider
-from app.services.policy_compilation import CompilationResponse, compile_candidate
+from app.services.policy_compilation import (
+    CandidateProvider,
+    CompilationResponse,
+    compile_candidate,
+)
 from app.services.zhiyu_model_settings import load_model_settings
 from app.services.zhiyu_orchestration import autonomy_state, records
 from sqlalchemy.orm import Session
@@ -30,12 +34,13 @@ def candidate_summary(result: CompilationResponse) -> str:
     return "该候选消费链尚未开放。"
 
 
-def message(
+def _candidate_message(
     session: Session,
     user_id: UUID,
     source_text: str,
     engine: str,
     now: datetime,
+    provider_override: CandidateProvider | None = None,
 ) -> dict[str, Any]:
     # Server-owned read tools. No caller-selected URL, arbitrary route or write tool.
     query = source_text.strip()
@@ -53,7 +58,9 @@ def message(
             reply = "原安排正在核实，会使用同一原动作查询；核实期间暂停新的冲突安排。"
         return {"reply": reply, "candidate": None, "questions": [], "model_used": False}
     settings = load_model_settings()
-    provider = OpenAICompatibleProvider(settings) if engine == "llm" else None
+    provider = provider_override or (
+        OpenAICompatibleProvider(settings) if engine == "llm" else None
+    )
     result = compile_candidate(
         session,
         user_id,
@@ -96,3 +103,34 @@ def message(
             "can_confirm": result.proposal_id is not None,
         },
     }
+
+
+def message(
+    session: Session, user_id: UUID, source_text: str, engine: str, now: datetime,
+    *, references: dict[str, str] | None = None,
+) -> dict[str, Any]:
+    from app.services.zhiyu_agent_tools import read_action, read_goal, run_model_agent
+
+    refs = references or {}
+    if engine == "llm":
+        def candidate(provider: CandidateProvider) -> dict[str, Any]:
+            return _candidate_message(
+                session, user_id, source_text, engine, now, provider_override=provider
+            )
+
+        return run_model_agent(
+            session, user_id, source_text, now,
+            OpenAICompatibleProvider(load_model_settings()), candidate, refs,
+        )
+    if any(word in source_text for word in ("现在怎么样", "这笔", "为什么", "当前状态")):
+        fact = (
+            read_goal(session, user_id, now, refs, "")
+            if "为什么" in source_text and "goal_id" in refs
+            else read_action(session, user_id, now, refs)
+        )
+        return {
+            "reply": fact["summary"], "candidate": None, "questions": [],
+            "model_used": False, "facts": [fact],
+            "references": {**refs, **fact.get("references", {})},
+        }
+    return {**_candidate_message(session, user_id, source_text, engine, now), "references": refs}

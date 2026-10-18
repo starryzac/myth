@@ -248,6 +248,7 @@ def schema(
                     "goal_id",
                     "goal_ids",
                     "source_goal_ids",
+                    "target_goal_ids",
                     "target_goal_id",
                     "source_goal_id",
                 )
@@ -261,6 +262,25 @@ def schema(
                 if row.template_name == "CrossGoalReallocationPolicy"
             ],
         },
+    }
+
+
+@router.get("/policy-templates/CrossGoalReallocationPolicy/goal-transfer-schema")
+def goal_transfer_schema(
+    session: SessionDependency,
+    user: DemoUserDependency,
+    engine: EngineDependency,
+    now: ClockDependency,
+) -> dict[str, Any]:
+    from app.domain.full_goal_transfer import GoalTransferPolicyConfiguration
+
+    result = schema("CrossGoalReallocationPolicy", session, user, engine, now, "FULL_V1")
+    config_schema = GoalTransferPolicyConfiguration.model_json_schema()
+    return {
+        **result,
+        "scope_version": "GOAL_TRANSFER_V1",
+        "json_schema": config_schema,
+        "schema_sha256": configuration_hash(config_schema),
     }
 
 

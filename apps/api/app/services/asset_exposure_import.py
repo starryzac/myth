@@ -176,7 +176,10 @@ def load_all_asset_exposure(
             resource_reservations
             or any(row.legacy_redemption_id is None for row in bank_operations)
             or any(
-                "execution" in row.request or "goal_release_execution" in row.request
+                "execution" in row.request
+                or "goal_release_execution" in row.request
+                or "goal_transfer_execution" in row.request
+                or row.action_type == "TRANSFER_GOAL"
                 for row in actions
             )
         ):
@@ -302,6 +305,20 @@ def load_all_asset_exposure(
             if configuration_hash(action.request) != action.request_hash:
                 raise ValueError("Action request hash mismatch")
             state = declaration.get("state")
+            if action.action_type == "TRANSFER_GOAL" or "goal_transfer_execution" in action.request:
+                from app.services.full_goal_transfer import validate_goal_transfer_exposure
+
+                validate_goal_transfer_exposure(
+                    action,
+                    declaration,
+                    receipts,
+                    bank_operations,
+                    resource_reservations,
+                    bank_postings,
+                    epoch,
+                    session=session,
+                )
+                continue
             if "goal_release_execution" in action.request:
                 from app.services.full_goal_release_execution import validate_goal_release_exposure
 
@@ -612,7 +629,7 @@ def load_all_asset_exposure(
             owned_goal = next(item for item in context.snapshot.goals if item.goal_id == identifier)
             if amount > owned_goal.cash_owned_cents:
                 raise ValueError("Pending goal purchases exceed that goal's owned cash")
-        return [
+        verified = [
             AssetExposure(
                 as_of=epoch,
                 scope="general_idle_funds" if scope == "general" else "goal",
@@ -628,6 +645,9 @@ def load_all_asset_exposure(
             )
             for scope in sorted(scopes, key=lambda value: (value != "general", value))
         ]
+        from app.services.standing_owned_asset_scope import normalize_verified_asset_exposures
+
+        return normalize_verified_asset_exposures(session, context, verified)
     except (KeyError, TypeError, ValueError, OverflowError, PolicyLifecycleError) as error:
         sources.issue("EXPOSURE_RECONCILIATION_REQUIRED", statement.id, str(error))
         return None

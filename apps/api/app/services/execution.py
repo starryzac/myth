@@ -58,6 +58,7 @@ from sqlalchemy import select, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
+STANDING_DELEGATED_GUARDS_VERSION = "zhiyu-standing-delegated-native-v2"
 FULL_ASSET_BATCH_GUARDS_VERSION = "full-asset-batch-guards-v1"
 FULL_RECOVERY_GUARDS_VERSION = "full-recovery-execution-guards-v1"
 FULL_EXPERIMENT_ASSET_GUARDS_VERSION = "full-experiment-asset-guards-v1"
@@ -67,7 +68,7 @@ ZHIYU_ASSET_CLOSURE_GUARDS_VERSION = "zhiyu-asset-closure-guards-v1"
 
 if TYPE_CHECKING:
     from app.domain.full_joint_goal_execution import FullJointChildPrepareRequest
-    from app.services.zhiyu_asset_loss import LossNativePrepareRequest
+    from app.services.zhiyu_asset_loss import LossPrepareBody
 
 
 def prepare_action(
@@ -83,13 +84,14 @@ def prepare_action(
     _full_recovery_request: FullRecoveryPrepareRequest | None = None,
     _full_experiment_asset_request: FullExperimentAssetRequest | None = None,
     _full_joint_goal_request: "FullJointChildPrepareRequest | None" = None,
-    _zhiyu_loss_request: "LossNativePrepareRequest | None" = None,
+    _zhiyu_loss_request: "LossPrepareBody | None" = None,
 ) -> ActionResponse:
     request = PrepareActionRequest.model_validate_json(request.model_dump_json())
     now = _clock(now)
     key = "action:" + configuration_hash({"key": request.idempotency_key})
     intent = request.intent.model_dump(mode="json")
     if _zhiyu_loss_request is not None:
+        from app.domain.zhiyu_quote_revision import RevisionLossPrepareRequest
         from app.services.zhiyu_asset_loss import LossNativePrepareRequest
         from app.zhiyu_next_isolation import require_zhiyu_next_engine
 
@@ -107,7 +109,12 @@ def prepare_action(
             )
         ):
             raise PolicyLifecycleError("ASSET_PROTOCOL_MIXED", "不能混合原执行协议", 409)
-        _zhiyu_loss_request = LossNativePrepareRequest.model_validate_json(
+        loss_request_model = (
+            RevisionLossPrepareRequest
+            if isinstance(_zhiyu_loss_request, RevisionLossPrepareRequest)
+            else LossNativePrepareRequest
+        )
+        _zhiyu_loss_request = loss_request_model.model_validate_json(
             _zhiyu_loss_request.model_dump_json()
         )
         if request.idempotency_key != _zhiyu_loss_request.native_key or intent != {
@@ -341,7 +348,19 @@ def prepare_action(
             )
         elif candidate is None:
             # Preserve the original five-position default and fault-injection signature.
-            effect = _build_effect(session, user_id, action_id, request, now)
+            effect = _build_effect(
+                session,
+                user_id,
+                action_id,
+                request,
+                now,
+                _quote_id=(
+                    _zhiyu_loss_request.quote_id
+                    if _zhiyu_loss_request is not None
+                    and isinstance(_zhiyu_loss_request, RevisionLossPrepareRequest)
+                    else None
+                ),
+            )
         else:
             effect = _build_effect(
                 session, user_id, action_id, request, now, _experiment_candidate=candidate
@@ -548,11 +567,14 @@ def _build_effect(
     now: datetime,
     *,
     _experiment_candidate: dict[str, Any] | None = None,
+    _quote_id: UUID | None = None,
 ) -> ExecutionEffect:
     from app.services.execution_planning import plan_execution_effect
 
     if _experiment_candidate is None:
-        return plan_execution_effect(session, user_id, action_id, request.intent, now)
+        return plan_execution_effect(
+            session, user_id, action_id, request.intent, now, _quote_id=_quote_id
+        )
     return plan_execution_effect(
         session,
         user_id,
@@ -836,8 +858,16 @@ def confirm_action(
 
 def execute_action(engine: Engine, user_id: UUID, action_id: UUID, now: datetime) -> ActionResponse:
     from app.db.audit_guard import audit_command_guard
+    from app.domain.immutable_joint_archive_scope import immutable_joint_archive_scope
+    from app.domain.immutable_joint_validation_scope import immutable_joint_validation_scope
+    from app.services.zhiyu_standing_recording import recorded_native_replay_scope
 
-    with audit_command_guard(engine, user_id):
+    with (
+        audit_command_guard(engine, user_id),
+        immutable_joint_archive_scope(),
+        immutable_joint_validation_scope(),
+        recorded_native_replay_scope(),
+    ):
         return _execute_action(engine, user_id, action_id, now)
 
 
@@ -898,6 +928,20 @@ def _execute_action(
             )
 
             dynamic_proof = None
+            from app.services.zhiyu_standing_guards import (
+                has_standing_binding,
+                revalidate_standing_phase,
+            )
+
+            standing_bound = has_standing_binding(action)
+            standing_value = standing_proof = None
+            if standing_bound:
+                context, dynamic_proof, standing_value, standing_proof = revalidate_standing_phase(
+                    engine, action, now, "RESERVE"
+                )
+                # A new signed finite SYSTEM delegation never consumes the old
+                # USER once-consent or clears the native MVP confirmation bit.
+                confirmation = None
             from app.services.full_recovery_execution import (
                 has_full_recovery_binding,
                 recheck_full_recovery_proof,
@@ -973,7 +1017,7 @@ def _execute_action(
                     now,
                     own_action_id=action.id if has_claims else None,
                 )
-            if dynamic_proof is not None and not joint_bound:
+            if dynamic_proof is not None and not joint_bound and not standing_bound:
                 from app.services.execution_context import require_full_dynamic_goal_proof_context
 
                 context = require_full_dynamic_goal_proof_context(
@@ -1033,22 +1077,30 @@ def _execute_action(
                     is not None
                 )
                 enforce_zhiyu_asset_acceptance(engine, session, action, original_command, now)
-            reserve_run = record_execution_trace(
-                session,
-                current.effect,
-                validation,
-                now,
-                "RESERVE",
-                parent_run_id=action.decision_run_id,
-                autonomy_level=action.autonomy_level,
-                confirmation=confirmation,
-                action_request=action.request
-                if dynamic_proof is not None
-                or recovery_bound
-                or experiment_asset_bound
-                or loss_bound
-                else None,
-            )
+            if standing_bound:
+                from app.services.zhiyu_standing_recording import record_standing_phase_trace
+
+                assert standing_value is not None and standing_proof is not None
+                reserve_run = record_standing_phase_trace(
+                    session, action, standing_value, standing_proof
+                )
+            else:
+                reserve_run = record_execution_trace(
+                    session,
+                    current.effect,
+                    validation,
+                    now,
+                    "RESERVE",
+                    parent_run_id=action.decision_run_id,
+                    autonomy_level=action.autonomy_level,
+                    confirmation=confirmation,
+                    action_request=action.request
+                    if dynamic_proof is not None
+                    or recovery_bound
+                    or experiment_asset_bound
+                    or loss_bound
+                    else None,
+                )
             reserve_resources(
                 session, user_id, action.id, _claims(session, current.effect, context), now
             )
@@ -1106,6 +1158,9 @@ def _execute_action(
     # Phase 1 above is committed. Bank mutations commit independently.
     try:
         process_operation(engine, user_id, action_id, now)
+        from app.services.zhiyu_standing_test_transport import maybe_lose_original_response
+
+        maybe_lose_original_response(engine, user_id, action_id, now)
     except PolicyLifecycleError:
         _record_bank_refusal(engine, user_id, action_id, now)
         raise

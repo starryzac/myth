@@ -793,7 +793,25 @@ def verify_audit_chain(
             if unchanged:
                 return proof.result.model_copy(deep=True)
         value.proof = None
-    return _verify_audit_chain(session, user_id, epoch_id, checkpoint, mode)
+    from app.domain.full_goal_transfer_audit import frozen_goal_transfer_read_scope
+
+    current_snapshot = None
+    try:
+        if stable_read_snapshot(session):
+            original = _AuditReadScope(
+                session, session.get_transaction(), session.get_nested_transaction()
+            )
+            original_clock = receipt_read_clock_key()
+
+            def original_snapshot_unchanged() -> bool:
+                return original.matches(session) and original_clock == receipt_read_clock_key()
+
+            current_snapshot = original_snapshot_unchanged
+    except Exception:
+        current_snapshot = None
+
+    with frozen_goal_transfer_read_scope(current_snapshot):
+        return _verify_audit_chain(session, user_id, epoch_id, checkpoint, mode)
 
 
 def _verified_maturity_link_clock(
@@ -1046,10 +1064,10 @@ def _verify_audit_chain(
             unsupported_trace = False
             if epoch.status == "OPEN":
                 from app.services.decision_trace import (
-                    _action_links,
+                    _action_links_with_projection,
                     _current_references,
                     _ReferenceReads,
-                    _stored_trace,
+                    _stored_trace_with_action_projection,
                 )
 
                 with historical_ledger_scope(session):
@@ -1072,7 +1090,9 @@ def _verify_audit_chain(
                         if run is None:
                             raise ValueError("当前轮次的原决策已缺失")
                         try:
-                            completeness, trace = _stored_trace(session, run)
+                            completeness, trace, projection = _stored_trace_with_action_projection(
+                                session, run
+                            )
                             if completeness == "UNSUPPORTED_VERSION":
                                 unsupported_trace = True
                             elif completeness != "COMPLETE" or trace is None:
@@ -1081,13 +1101,14 @@ def _verify_audit_chain(
                                 _current_references(
                                     session, trace, allow_missing=True, _reads=reference_reads
                                 )
-                                _action_links(
+                                _action_links_with_projection(
                                     session,
                                     run,
                                     _verified_maturity_link_clock(
                                         trace, events, historical_receipt_read_clock()
                                     ),
                                     trace,
+                                    projection,
                                 )
                         except PolicyLifecycleError as error:
                             original_trace = run.input_snapshot.get("decision_trace", {})

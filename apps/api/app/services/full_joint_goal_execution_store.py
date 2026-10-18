@@ -33,7 +33,9 @@ from app.domain.full_joint_goal_execution import (
 from app.domain.policy_configuration import configuration_hash
 from app.services.action_contracts import ActionResponse
 from app.services.audit_chain import row_copy
-from app.services.decision_trace import get_decision_trace
+from app.services.decision_trace import (
+    _get_decision_trace_without_explanation as get_decision_trace,
+)
 from app.services.execution import get_action
 from app.services.full_policy_lifecycle import _read_snapshot
 from app.services.policy_lifecycle import PolicyLifecycleError, _now

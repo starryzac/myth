@@ -10,6 +10,18 @@ from app.domain.boundary_types import BoundaryModel, BoundaryResult
 from app.domain.decision_trace_types import DecisionTrace
 from app.domain.full_policy_change_multi import PHASES, SourceKind
 from app.domain.full_policy_configuration import validate_full_configuration
+from app.domain.full_policy_review_shared_sources import (
+    PROTOCOL as SHARED_SOURCE_PROTOCOL,
+)
+from app.domain.full_policy_review_shared_sources import (
+    encoded as shared_encoded,
+)
+from app.domain.full_policy_review_shared_sources import (
+    metrics as shared_metrics,
+)
+from app.domain.full_policy_review_shared_sources import (
+    resolve_shared_preview,
+)
 from app.domain.local_actor_session_types import LocalActorPrincipal, require_local_user
 from app.domain.policy_configuration import (
     UUIDReference,
@@ -224,7 +236,9 @@ def impact_value(preview: MultiTemplatePreviewResponse, *, after: bool) -> dict[
 
 
 class ReviewedChangeRecord(BoundaryModel):
-    protocol: Literal["reviewed-policy-change-record-v1"] = "reviewed-policy-change-record-v1"
+    protocol: Literal["reviewed-policy-change-record-v1", "reviewed-policy-change-record-v2"] = (
+        "reviewed-policy-change-record-v1"
+    )
     review_id: UUID
     user_id: UUID
     epoch_id: UUID
@@ -260,11 +274,20 @@ def review_original_text(record: ReviewedChangeRecord) -> str:
     )
 
 
-def read_review_original(inputs: dict[str, Any]) -> ReviewedChangeRecord:
-    text = inputs["review_record_json"]
+def parse_review_record_json(text: str) -> ReviewedChangeRecord:
+    """Budget a new v2 packet, retaining the original strict JSON model path."""
     if type(text) is not str or len(text.encode("utf-8")) > MAX_REVIEW_BYTES:
         raise ValueError("COMPLETE_BOUNDED_REVIEW_ORIGINAL_REQUIRED")
-    record = ReviewedChangeRecord.model_validate_json(text)
+    value = json.loads(text)
+    if type(value) is dict and value.get("protocol") == "reviewed-policy-change-record-v2":
+        if shared_metrics(value)[0] > MAX_REVIEW_BYTES:
+            raise ValueError("COMPLETE_BOUNDED_REVIEW_ORIGINAL_REQUIRED")
+    return ReviewedChangeRecord.model_validate_json(text)
+
+
+def read_review_original(inputs: dict[str, Any]) -> ReviewedChangeRecord:
+    text = inputs["review_record_json"]
+    record = parse_review_record_json(text)
     verify_record(record)
     if text != review_original_text(record) or inputs["review_record_hash"] != configuration_hash(
         record.model_dump(mode="json")
@@ -273,8 +296,26 @@ def read_review_original(inputs: dict[str, Any]) -> ReviewedChangeRecord:
     return record
 
 
+def resolved_review_preview(record: ReviewedChangeRecord) -> MultiTemplatePreviewResponse:
+    """Keep the immutable packed original; resolve only for full validation/display."""
+    if record.protocol == "reviewed-policy-change-record-v1":
+        if record.preview.source_originals.get("protocol") == SHARED_SOURCE_PROTOCOL:
+            raise ValueError("V1_REVIEW_CANNOT_CARRY_SHARED_SOURCE_CAPSULE")
+        return record.preview
+    if len(record.model_dump_json().encode("utf-8")) > MAX_REVIEW_BYTES:
+        raise ValueError("COMPLETE_BOUNDED_REVIEW_ORIGINAL_REQUIRED")
+    SourceBasis.model_validate(record.source_basis.model_dump())
+    shared_metrics(record.model_dump(mode="json"))
+    full = resolve_shared_preview(
+        record.preview.model_dump(mode="json"),
+        record.source_basis.model_dump(mode="json"),
+        record.source_basis_hash,
+    )
+    return MultiTemplatePreviewResponse.model_validate_json(shared_encoded(full))
+
+
 def verify_record(record: ReviewedChangeRecord) -> None:
-    preview = record.preview
+    preview = resolved_review_preview(record)
     require_local_user(record.actor, record.user_id, record.captured_at)
     canonical = (
         validate_configuration(record.request.configuration)
@@ -424,7 +465,9 @@ def legacy_request(
     }
 
 
-def verify_frozen_reviewed_policy_change_trace(trace: DecisionTrace) -> None:
+def verify_frozen_reviewed_policy_change_trace(
+    trace: DecisionTrace,
+) -> ReviewedChangeRecord | None:
     """Verify only registered metadata binding, never independent bank/matrix success."""
     if trace.phase != "EVALUATION" or trace.algorithm_versions != {MARKER: ALGORITHM}:
         raise ValueError("EXACT_REVIEWED_POLICY_CHANGE_ALGORITHM_REQUIRED")
@@ -445,6 +488,7 @@ def verify_frozen_reviewed_policy_change_trace(trace: DecisionTrace) -> None:
             or trace.outcome != expected
         ):
             raise ValueError("REVIEW_TRACE_IDENTITY_DIFFERS")
+        return record
     elif phase == "CONFIRM":
         raw = trace.inputs
         if set(raw) != {
@@ -504,3 +548,4 @@ def verify_frozen_reviewed_policy_change_trace(trace: DecisionTrace) -> None:
             raise ValueError("CONFIRM_TRACE_ORIGINAL_BODY_AND_RECEIPT_DIFFERS")
     else:
         raise ValueError("REVIEW_TRACE_PHASE_NOT_SUPPORTED")
+    return None

@@ -199,6 +199,7 @@ def _action(
         "ASSET_REDEEM",
         "ASSET_MATURITY",
         "RELEASE_GOAL",
+        "TRANSFER_GOAL",
     }:
         issues.append(
             _issue(
@@ -208,6 +209,27 @@ def _action(
                 "UNSUPPORTED",
             )
         )
+    elif action.action_type == "TRANSFER_GOAL":
+        try:
+            from app.services.full_goal_transfer_reader import read_goal_transfer_command
+
+            transfer_command = read_goal_transfer_command(action)
+            result = result.model_copy(
+                update={
+                    "effect_hash": transfer_command.effect_hash,
+                    "expected_fee_cents": 0,
+                    "expected_loss_cents": 0,
+                    "read_original_action_path": (
+                        f"/api/v1/zhiyu-next/goal-transfers/actions/{action.id}"
+                    ),
+                }
+            )
+        except (PolicyLifecycleError, ValueError, TypeError, KeyError) as error:
+            issues.append(
+                _issue(
+                    "ACTION_EFFECT_HASH_OR_IDENTITY_MISMATCH", action.id, str(error), "INTEGRITY"
+                )
+            )
     elif action.action_type == "RELEASE_GOAL":
         try:
             from app.services.full_goal_release_reader import read_goal_release_command
@@ -337,6 +359,83 @@ def _action(
                         )
                     )
                     result = result.model_copy(update={"state": "PENDING_BANK"})
+            elif operation.operation_type == "TRANSFER_GOAL":
+                from app.services.full_goal_transfer_reader import (
+                    read_goal_transfer_bank_command,
+                    verify_goal_transfer_legs,
+                    verify_goal_transfer_receipt,
+                )
+
+                if requests:
+                    raise ValueError("Dedicated goal transfer cannot share a legacy redemption")
+                original_transfer = read_goal_transfer_bank_command(session, operation, now)
+                result = result.model_copy(
+                    update={
+                        "effect_hash": original_transfer.effect_hash,
+                        "expected_fee_cents": 0,
+                        "expected_loss_cents": 0,
+                    }
+                )
+                if operation.status == "SETTLED" and ledger_verified:
+                    verify_goal_transfer_legs(session, operation, now)
+                    result = result.model_copy(
+                        update={
+                            "complete_settlement_legs_verified": True,
+                            "actual_executed_cents": original_transfer.effect.amount_cents,
+                            "actual_fee_cents": 0,
+                            "actual_loss_cents": 0,
+                            "state": "BANK_SETTLED_APPLICATION_UNRESOLVED",
+                        }
+                    )
+                    if len(receipts) == 1:
+                        verify_goal_transfer_receipt(session, operation, receipts[0], now)
+                        result = result.model_copy(
+                            update={
+                                "state": "SERVICE_RECEIPT_VERIFIED",
+                                "service_receipt_verified": True,
+                            }
+                        )
+                    else:
+                        issues.append(
+                            _issue(
+                                "BANK_SETTLED_APPLICATION_UNRESOLVED",
+                                action.id,
+                                "原银行四条腿已核，应用回执缺失；只恢复原键，不重扣",
+                                "PENDING",
+                            )
+                        )
+                elif operation.status == "REJECTED" and not postings and not receipts:
+                    result = result.model_copy(
+                        update={
+                            "state": "BANK_REJECTION_VERIFIED",
+                            "actual_executed_cents": 0,
+                            "actual_fee_cents": 0,
+                            "actual_loss_cents": 0,
+                        }
+                    )
+                elif operation.status in {"ACCEPTED", "UNKNOWN"} and not postings and not receipts:
+                    result = result.model_copy(update={"state": "PENDING_BANK"})
+                    issues.append(
+                        _issue(
+                            "BANK_RESULT_PENDING",
+                            action.id,
+                            "目标调拨原银行结果未知，不能换键或释放原累计占用",
+                            "PENDING",
+                        )
+                    )
+                elif operation.status == "SETTLED" and not ledger_verified:
+                    issues.append(
+                        _issue(
+                            "BANK_LEGS_NOT_VERIFIED",
+                            action.id,
+                            "缺完整原账本，SETTLED字符串不能证明四腿调拨",
+                            "MISSING",
+                        )
+                    )
+                else:
+                    raise ValueError(
+                        "Dedicated goal transfer status disagrees with original legs or receipts"
+                    )
             elif operation.operation_type == "RELEASE_GOAL":
                 from app.services.full_goal_release_reader import (
                     read_goal_release_bank_command,

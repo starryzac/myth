@@ -45,6 +45,9 @@ Kind = Literal[
     "ASSET_PORTFOLIO",
     "ASSET_BATCH",
     "ASSET_CONSENT",
+    "JOINT_PLAN",
+    "JOINT_CHILD",
+    "JOINT_CONSENT",
 ]
 GraphRootKind = Kind | Literal["FULL_GOAL_MODEL"]
 KIND_TABLES: dict[str, str] = {
@@ -83,6 +86,9 @@ KIND_TABLES: dict[str, str] = {
     "ASSET_PORTFOLIO": "full_asset_execution_portfolios",
     "ASSET_BATCH": "full_asset_execution_batches",
     "ASSET_CONSENT": "full_asset_execution_consents",
+    "JOINT_PLAN": "full_joint_goal_execution_plans",
+    "JOINT_CHILD": "full_joint_goal_execution_children",
+    "JOINT_CONSENT": "full_joint_goal_execution_consents",
 }
 SHARED_KINDS = frozenset({"PRODUCT", "PRODUCT_CATALOGUE"})
 IMMUTABLE_HISTORICAL_KINDS = frozenset(
@@ -98,6 +104,9 @@ IMMUTABLE_HISTORICAL_KINDS = frozenset(
         "ASSET_PORTFOLIO",
         "ASSET_BATCH",
         "ASSET_CONSENT",
+        "JOINT_PLAN",
+        "JOINT_CHILD",
+        "JOINT_CONSENT",
     }
 )
 MAX_NODES = 2048

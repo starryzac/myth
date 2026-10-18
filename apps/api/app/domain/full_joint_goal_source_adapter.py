@@ -4,7 +4,10 @@ No database, current-policy reader, financial facts, permission or bank calls.
 All native mathematical and current execution gates remain in their consumers.
 """
 
+import base64
 import copy
+import hashlib
+import json
 from typing import TYPE_CHECKING, Any, cast
 from uuid import UUID, uuid5
 
@@ -13,12 +16,18 @@ from app.domain.full_joint_goal_archive import (
     MAX_DEPTH,
     MAX_NODES,
     JointArchiveError,
+    _constant,
+    _inflate,
+    _json_budget,
+    _pairs,
 )
 from app.domain.full_joint_goal_archive_protocol import RecordKind, _canonical
 from app.domain.full_joint_goal_source_archive import (
+    DAG_PROTOCOL,
     PHASES,
     TRACE_PROTOCOL,
     SharedJointOriginal,
+    _complete_encoding_arguments,
     binding,
     decode_shared_joint,
     encode_shared_joint,
@@ -27,7 +36,7 @@ from app.domain.full_joint_goal_source_archive import (
     reference,
     trace_reference,
 )
-from app.domain.immutable_joint_archive_scope import decode_complete_original
+from app.domain.immutable_joint_archive_scope import decode_complete_original, verify_complete_wire
 from app.domain.policy_configuration import configuration_hash
 
 if TYPE_CHECKING:
@@ -69,19 +78,40 @@ def source_binding_for_plan(plan: dict[str, Any]) -> dict[str, Any]:
         if plan["protocol"] != ALGORITHM_V4:
             raise JointArchiveError("Native V4 cannot relabel another original plan")
         bound = source_binding_for_input(plan["inputs"], plan["plan_hash"])
-        dag = pool_sources(plan, bound, "PLAN")
-        _canonical(dag, MAX_DECODED_BYTES, MAX_NODES, MAX_DEPTH)
-        view = SharedJointOriginal(dag, bound, "PLAN")
-        view.check_original_binding()
-        view.logical_metrics()
+        def complete_arguments() -> dict[str, Any]:
+            return {
+                "purpose": "native-v4-complete-plan-binding",
+                "complete": _complete_encoding_arguments(plan, bound, "PLAN"),
+                "adapter_limits": [MAX_DECODED_BYTES, MAX_NODES, MAX_DEPTH],
+            }
+
+        def verify() -> None:
+            dag = pool_sources(plan, bound, "PLAN")
+            _canonical(dag, MAX_DECODED_BYTES, MAX_NODES, MAX_DEPTH)
+            view = SharedJointOriginal(dag, bound, "PLAN")
+            view.check_original_binding()
+            view.logical_metrics()
+
+        verify_complete_wire(ALGORITHM_V4, complete_arguments, verify)
         return bound
+    except (KeyError, TypeError, AttributeError) as error:
+        raise JointArchiveError("V4 native complete plan binding missing") from error
+
+
+def _encode_complete_source_plan(plan: dict[str, Any]) -> dict[str, Any]:
+    """The complete encoder validates the same whole binding and all codec budgets once."""
+    try:
+        if plan["protocol"] != ALGORITHM_V4:
+            raise JointArchiveError("Native V4 cannot relabel another original plan")
+        bound = source_binding_for_input(plan["inputs"], plan["plan_hash"])
+        return encode_shared_joint(plan, bound, "PLAN")
     except (KeyError, TypeError, AttributeError) as error:
         raise JointArchiveError("V4 native complete plan binding missing") from error
 
 
 def source_plan_reference(plan: dict[str, Any]) -> dict[str, Any]:
     """Deterministically bind original PLAN transport in independently audited trace."""
-    return reference(encode_shared_joint(plan, source_binding_for_plan(plan), "PLAN"))
+    return reference(_encode_complete_source_plan(plan))
 
 
 def encode_native_source_trace_parts(
@@ -97,10 +127,14 @@ def encode_native_source_trace_parts(
             if phase == "EVALUATION"
             else inputs["planning"][MARKER]["plan"]
         )
-        bound = source_binding_for_plan(plan)
+        if phase == "EVALUATION":
+            complete_plan_record = _encode_complete_source_plan(plan)
+            bound = binding(complete_plan_record["binding"])
+        else:
+            bound = source_binding_for_plan(plan)
         native_outcome = copy.deepcopy(outcome)
         if phase == "EVALUATION":
-            expected_plan = source_plan_reference(plan)
+            expected_plan = reference(complete_plan_record)
             if (
                 PARENT_REFERENCE in native_outcome
                 and native_outcome[PARENT_REFERENCE] != expected_plan
@@ -245,3 +279,44 @@ def verified_parent_plan_reference(
     ):
         raise JointArchiveError("V4 independent original parent reference differs")
     return cast(dict[str, Any], copy.deepcopy(expected))
+
+
+def physical_source_record(record: dict[str, Any]) -> dict[str, Any] | None:
+    """Read bounded physical JSON for consumption after full native verification.
+
+    This is not a codec or mathematical proof. Native verification must precede
+    use and proves all source nodes reachable and leaf-only. No expanded copy,
+    proof memo, permission decision or client-provided verified flag is created.
+    """
+    budget = record["shared_bytes"]
+    if type(budget) is not int or not 0 < budget <= MAX_DECODED_BYTES:
+        raise ValueError("V4 action projection shared byte budget differs")
+    encoded = record["payload_base64"]
+    compressed_bytes = record["compressed_bytes"]
+    if (
+        type(encoded) is not str or type(compressed_bytes) is not int
+        or not 1 <= compressed_bytes <= MAX_DECODED_BYTES + 1024 * 1024
+        or len(encoded) > 4 * ((compressed_bytes + 2) // 3)
+    ):
+        raise ValueError("V4 action projection base64 shape or budget differs")
+    compressed = base64.b64decode(encoded, validate=True)
+    if (
+        len(compressed) != record["compressed_bytes"]
+        or base64.b64encode(compressed).decode("ascii") != record["payload_base64"]
+    ):
+        raise ValueError("V4 action projection compressed bytes differ")
+    raw = _inflate(compressed, budget)
+    if (
+        len(raw) != budget
+        or hashlib.sha256(raw).hexdigest() != record["shared_plaintext_sha256"]
+    ):
+        raise ValueError("V4 action projection shared plaintext differs")
+    _json_budget(raw, MAX_NODES, MAX_DEPTH)
+    dag = json.loads(raw.decode("utf8"), object_pairs_hook=_pairs, parse_constant=_constant)
+    if (
+        type(dag) is not dict or set(dag) != {"protocol", "root", "nodes"}
+        or dag["protocol"] != DAG_PROTOCOL or type(dag["root"]) is not dict
+        or type(dag["nodes"]) is not list
+    ):
+        return None
+    return cast(dict[str, Any], dag)

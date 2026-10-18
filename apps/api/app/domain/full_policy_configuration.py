@@ -411,7 +411,20 @@ def validate_full_configuration(
     version: DSLVersion = "FULL_V1",
 ) -> dict[str, Any]:
     """Validate JSON candidates only. No state, source, confirmation or SQL is consulted."""
-    model = template_model(template_name, version)
+    # The explicit new scope has its own model. Old FULL_V1 documents keep
+    # their original class, defaults and canonical bytes. No Cash consent
+    # or default field is reinterpreted as paired Goal authority.
+    if (
+        version == "FULL_V1"
+        and template_name == "CrossGoalReallocationPolicy"
+        and type(configuration) is dict
+        and configuration.get("scope_version") == "GOAL_TRANSFER_V1"
+    ):
+        from app.domain.full_goal_transfer import GoalTransferPolicyConfiguration
+
+        model: type[BaseModel] = GoalTransferPolicyConfiguration
+    else:
+        model = template_model(template_name, version)
     # Reject non-JSON Python values, non-string keys, NaN and infinity before normalization.
     configuration_hash(configuration)
     candidate = model.model_validate(configuration)

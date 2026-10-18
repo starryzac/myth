@@ -131,6 +131,8 @@ def _reference_denominator(
     goals = set(configuration.get("goal_ids", [])) | set(configuration.get("source_goal_ids", []))
     if configuration.get("goal_id"):
         goals.add(configuration["goal_id"])
+    if configuration.get("scope_version") == "GOAL_TRANSFER_V1":
+        goals.update(configuration.get("target_goal_ids", []))
     expected.update(("goal", UUID(value)) for value in goals)
     if configuration.get("source_account_id"):
         expected.add(("source_account", UUID(configuration["source_account_id"])))

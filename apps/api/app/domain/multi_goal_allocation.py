@@ -10,19 +10,22 @@ from collections.abc import Iterator
 from datetime import UTC, date, datetime, timedelta, timezone
 from fractions import Fraction
 from itertools import combinations, permutations, product
-from typing import Annotated, Any, Literal, Self
+from typing import Annotated, Any, Literal, Self, cast
 from uuid import UUID
 
 from app.domain.boundary_types import BoundaryModel
 from app.domain.policy_configuration import CalendarDate, MoneyCents, configuration_hash
 from pydantic import (
     Field,
+    GetJsonSchemaHandler,
     SerializerFunctionWrapHandler,
     StrictBool,
     StrictInt,
     model_serializer,
     model_validator,
 )
+from pydantic.json_schema import JsonSchemaValue
+from pydantic_core import CoreSchema
 
 Hash = Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
 RepairField = Literal["monthly_min_cents", "monthly_max_cents", "deadline"]
@@ -122,6 +125,20 @@ class AllocationGoal(BoundaryModel):
 
 
 class MultiGoalAllocationInput(BoundaryModel):
+    @classmethod
+    def __get_pydantic_json_schema__(
+        cls, core_schema: CoreSchema, handler: GetJsonSchemaHandler
+    ) -> JsonSchemaValue:
+        # Describe the declared fields without changing the legacy wire serializer.
+        document_schema = dict(core_schema)
+        model_schema = document_schema
+        while model_schema["type"] in {"function-before", "function-after", "function-wrap"}:
+            inner = dict(model_schema["schema"])
+            model_schema["schema"] = inner
+            model_schema = inner
+        model_schema.pop("serialization", None)
+        return handler(cast(CoreSchema, document_schema))
+
     schema_version: Literal["multi-goal-current-period-v1"] = "multi-goal-current-period-v1"
     user_id: UUID
     as_of: datetime

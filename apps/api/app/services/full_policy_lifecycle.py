@@ -371,6 +371,8 @@ def _references(
     )
     if configuration.get("goal_id"):
         goal_ids.add(configuration["goal_id"])
+    if configuration.get("scope_version") == "GOAL_TRANSFER_V1":
+        goal_ids.update(configuration.get("target_goal_ids", []))
     for identifier in sorted(goal_ids):
         goal = _owned(session, Goal, UUID(identifier), user_id, now)
         refs.append(
@@ -1000,6 +1002,13 @@ def _record_command(
         )
         invalidated.extend(release.invalidated_action_ids)
         inflight.extend(release.inflight_action_ids)
+        from app.services.full_goal_transfer import recheck_goal_transfer_actions
+
+        transfer = recheck_goal_transfer_actions(
+            session, policy.user_id, policy.id, version.id, policy.status, command_id, now
+        )
+        invalidated.extend(transfer.invalidated_action_ids)
+        inflight.extend(transfer.inflight_action_ids)
     elif policy.template_name == "PeriodicTransferPolicy":
         from app.services.full_payment_permissions import recheck_full_payment_actions
 

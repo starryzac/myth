@@ -100,7 +100,10 @@ def _preview(
         raise PolicyLifecycleError("UNSUPPORTED_USER_TIMEZONE", "原边界不支持当前用户时区", 409)
     zone: Literal["Asia/Shanghai", "UTC"] = "UTC" if timezone == "UTC" else "Asia/Shanghai"
     policy = read_full_policy(session, user_id, request.policy_id, now)
-    if policy.template_name != "CrossGoalReallocationPolicy":
+    if (
+        policy.template_name != "CrossGoalReallocationPolicy"
+        or policy.current_version.configuration.get("scope_version") is not None
+    ):
         raise PolicyLifecycleError(
             "INVALID_REALLOCATION_POLICY", "仅显式回拨有限模板可供本预览", 422
         )

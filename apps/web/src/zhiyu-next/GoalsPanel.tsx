@@ -11,13 +11,15 @@ import type { PaymentRecovery } from './payment-recovery';
 import LocalUserPanel from './LocalUserPanel';
 import GoalRepairPanel from './GoalRepairPanel';
 import type { GoalModelUpdate } from './goal-repairs';
+import JointQuestionPanel from './JointQuestionPanel';
+import JointScopeQuestionPanel from './JointScopeQuestionPanel';
 
 export type GoalPerform = (path: string, body: Record<string, unknown>, payment?: PaymentRecovery, joint?: JointRecovery) => Promise<void>;
 const stageText: Record<ThinJointResponse['state'], string> = { PARTIALLY_PREPARED: '原准备尚未完整核实', PREPARED_UNRESERVED: '仅已准备，尚未确认或扣款', CONFIRMED_UNRESERVED: '整体确认已核实，逐项核对后执行', PARTIALLY_SETTLED: '部分原回执已核实', UNRESOLVED: '同一原动作正在核实', ORIGINAL_SERVICE_RECEIPTS_VERIFIED: '全部原回执已核实', STOPPED: '原安排已停止后续执行', RETAINED_HISTORY: '历史原件，只供查看' };
 const phaseText = { BEFORE_PAYMENT: '付款前', AFTER_PAYMENT: '付款后', AFTER_PRINCIPAL: '本金变化后' };
-export default function GoalsPanel({ environment, blocked, update, perform, runRead, retryOriginal, resumeOriginal, recovering = false, repairUpdate, repairRecovering }: { environment: NextState; blocked: boolean; update: JointUpdate | null; perform: GoalPerform; runRead: <T>(work: () => Promise<T>) => Promise<T>; retryOriginal?: () => Promise<void>; resumeOriginal?: () => Promise<void>; recovering?: boolean; repairUpdate?: GoalModelUpdate | null; repairRecovering?: boolean }) {
+export default function GoalsPanel({ environment, blocked, update, perform, runRead, retryOriginal, resumeOriginal, recovering = false, repairUpdate, repairRecovering, questionBlocked = blocked, questionPending = false, runQuestionRead, runQuestionWrite, questionPendingChanged, scopeBlocked = blocked, scopePending = false, runScopeRead, runScopeWrite, scopePendingChanged }: { environment: NextState; blocked: boolean; update: JointUpdate | null; perform: GoalPerform; runRead: <T>(work: () => Promise<T>) => Promise<T>; retryOriginal?: () => Promise<void>; resumeOriginal?: () => Promise<void>; recovering?: boolean; repairUpdate?: GoalModelUpdate | null; repairRecovering?: boolean; questionBlocked?: boolean; questionPending?: boolean; runQuestionRead?: <T>(work: () => Promise<T>) => Promise<T>; runQuestionWrite?: <T>(work: () => Promise<T>) => Promise<T>; questionPendingChanged?: (pending: boolean) => void; scopeBlocked?: boolean; scopePending?: boolean; runScopeRead?: <T>(work: () => Promise<T>) => Promise<T>; runScopeWrite?: <T>(work: () => Promise<T>) => Promise<T>; scopePendingChanged?: (pending: boolean) => void }) {
   const [open, setOpen] = useState(false); const [offset, setOffset] = useState(0); const [policyId, setPolicyId] = useState(''); const [session, setSession] = useState<LocalActorSession | null>(null); const [working, setWorking] = useState(false); const [error, setError] = useState('');
-  useEffect(() => { if (update || recovering || repairUpdate || repairRecovering) setOpen(true); }, [update, recovering, repairUpdate, repairRecovering]);
+  useEffect(() => { if (scopePending || questionPending || update || recovering || repairUpdate || repairRecovering) setOpen(true); }, [scopePending, questionPending, update, recovering, repairUpdate, repairRecovering]);
   const identity = [environment.environment_id, environment.epoch_id];
   const planning = useQuery({ queryKey: ['zhiyu-next-goal-planning', ...identity, offset], queryFn: () => getNextGoalPlanning(environment, offset), enabled: open && !blocked, retry: false, staleTime: Infinity });
   const records = useQuery({ queryKey: ['zhiyu-next-policy-records', ...identity], queryFn: () => getPolicyRecords(environment), enabled: open && !blocked, retry: false, staleTime: Infinity });
@@ -54,6 +56,8 @@ export default function GoalsPanel({ environment, blocked, update, perform, runR
     {open && <>
       <LocalUserPanel environment={environment} session={session} update={setSession} />
       <GoalRepairPanel environment={environment} session={session} blocked={blocked} update={repairUpdate} recovering={repairRecovering} perform={perform} runRead={runRead} retryOriginal={retryOriginal} />
+      <JointQuestionPanel environment={environment} policy={selected} signed={signed} blocked={questionBlocked || !runQuestionWrite} runRead={runQuestionRead ?? runRead} runWrite={async (work) => { if (!runQuestionWrite) throw new Error('联合问题写入尚未接通。'); return runQuestionWrite(work); }} onPendingChange={questionPendingChanged} />
+      <JointScopeQuestionPanel environment={environment} policies={policies} signed={signed} blocked={scopeBlocked || !runScopeWrite} runRead={runScopeRead ?? runRead} runWrite={async (work) => { if (!runScopeWrite) throw new Error('联合范围选择写入尚未接通。'); return runScopeWrite(work); }} onPendingChange={scopePendingChanged} />
       {(error || planning.isError || records.isError || original.isError) && <p className="zy-message zy-error" role="alert">{error || userError(planning.error ?? records.error ?? original.error)}</p>}
       {planning.isFetching && <p role="status">正在读取完整年度计算的显示分页…</p>}
       {!available && <p className="zy-message">联合执行尚待本轮真实链验收。当前可查看规划与原件；目标规则调整需本人单独确认。</p>}

@@ -14,11 +14,13 @@ from app.db.models import User
 from app.domain.decision_trace import build_trace
 from app.domain.decision_trace_types import DecisionTrace
 from app.domain.full_policy_change_multi import SourceKind
+from app.domain.full_policy_review_shared_sources import pack_shared_originals
 from app.domain.full_policy_reviewed_change import (
     ALGORITHM,
     EXCLUDED_METADATA,
     GLOBAL_TABLES,
     MARKER,
+    MAX_REVIEW_BYTES,
     ConfirmReviewedChangeRequest,
     ReviewedChangeRecord,
     ReviewRequest,
@@ -27,8 +29,8 @@ from app.domain.full_policy_reviewed_change import (
     impact_value,
     legacy_request,
     outer_request,
-    read_review_original,
     require_current_review,
+    resolved_review_preview,
     review_digest,
     review_original_text,
     verify_frozen_reviewed_policy_change_trace,
@@ -45,7 +47,7 @@ from app.services.full_policy_change_multi import (
 )
 from app.services.full_policy_lifecycle import FullChangeRequest, change_full_policy
 from app.services.policy_lifecycle import PolicyLifecycleError, _now, _user, change_policy
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, ValidationError
 from sqlalchemy import select
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
@@ -200,7 +202,9 @@ def _capture(
         return preview, _basis(read, user_id, body.expected_epoch_id, now)
 
 
-def _original(session: Session, user_id: UUID, run_id: UUID, now: datetime) -> DecisionTrace:
+def _original(
+    session: Session, user_id: UUID, run_id: UUID, now: datetime
+) -> tuple[DecisionTrace, ReviewedChangeRecord | None]:
     result = get_decision_trace(session, user_id, run_id, now)
     if (
         result.trace is None
@@ -209,20 +213,153 @@ def _original(session: Session, user_id: UUID, run_id: UUID, now: datetime) -> D
     ):
         raise _fail("ORIGINAL_REVIEW_TRACE_AND_AUDIT_REQUIRED")
     try:
-        verify_frozen_reviewed_policy_change_trace(result.trace)
+        record = verify_frozen_reviewed_policy_change_trace(result.trace)
     except (TypeError, ValueError, KeyError) as cause:
         raise _fail("ORIGINAL_REVIEW_TRACE_INVALID") from cause
-    return result.trace
+    return result.trace, record
 
 
 def read_review(
     engine: Engine, user_id: UUID, review_id: UUID, now: datetime
 ) -> ReviewedChangeRecord:
     with _reader(engine) as read:
-        trace = _original(read, user_id, review_id, _now(now))
-        if trace.inputs.get("review_phase") != "REVIEW":
+        trace, record = _original(read, user_id, review_id, _now(now))
+        if trace.inputs.get("review_phase") != "REVIEW" or record is None:
             raise _fail("ORIGINAL_REVIEW_ID_REQUIRED")
-        return read_review_original(trace.inputs)
+        return record
+
+
+def _capacity() -> PolicyLifecycleError:
+    return PolicyLifecycleError(
+        "COMPLETE_REVIEW_CAPACITY_EXCEEDED", "完整复核原件超过已登记的有限容量", 413
+    )
+
+
+def _bounded_review(record: ReviewedChangeRecord) -> ReviewedChangeRecord:
+    """Retain small v1 originals; the only fallback preserves exact same-package data."""
+    if len(record.model_dump_json().encode("utf-8")) > MAX_REVIEW_BYTES:
+        try:
+            capsule = pack_shared_originals(
+                record.preview.model_dump(mode="json"),
+                record.source_basis.model_dump(mode="json"),
+                record.source_basis_hash,
+            )
+            record = record.model_copy(
+                update={
+                    "protocol": "reviewed-policy-change-record-v2",
+                    "preview": record.preview.model_copy(update={"source_originals": capsule}),
+                }
+            )
+            record = record.model_copy(update={"review_hash": review_digest(record)})
+            if len(record.model_dump_json().encode("utf-8")) > MAX_REVIEW_BYTES:
+                raise _capacity()
+            verify_record(record)
+        except (TypeError, ValueError, KeyError) as cause:
+            raise _capacity() from cause
+    else:
+        verify_record(record)
+    return record
+
+
+def _capacity_error(error: ValueError) -> bool:
+    from app.domain.audit_chain import AuditContractError
+
+    messages = {
+        "Complete decision trace exceeds the byte limit",
+        "Trace JSON exceeds the byte limit",
+        "Trace JSON exceeds its depth or node limit",
+        "Audit JSON exceeds byte limit",
+        "Audit JSON exceeds depth or node limit",
+    }
+
+    def matches(cause: object) -> bool:
+        if str(cause) in messages:
+            return True
+        return (
+            isinstance(cause, AuditContractError)
+            and str(cause) == "Audit value cannot be canonically encoded"
+            and isinstance(cause.__cause__, AuditContractError)
+            and str(cause.__cause__) == "Audit JSON exceeds depth or node limit"
+        )
+
+    if isinstance(error, ValidationError):
+        failures = error.errors(include_url=False, include_input=False)
+        return bool(failures) and all(
+            matches(item.get("ctx", {}).get("error")) for item in failures
+        )
+    return matches(error)
+
+
+def _review_trace(record: ReviewedChangeRecord, sources: list[Any]) -> DecisionTrace:
+    """Prepare and bound the exact new trace and full future row before persistence."""
+    from app.db.models import DecisionRun
+    from app.domain.audit_chain import encode_subject_original
+    from app.services.audit_recording import audit_subject_data
+
+    try:
+        trace = build_trace(
+            run_id=record.review_id,
+            user_id=record.user_id,
+            phase="EVALUATION",
+            as_of=record.captured_at,
+            algorithm_versions={MARKER: ALGORITHM},
+            inputs={
+                "review_phase": "REVIEW",
+                "review_record_json": review_original_text(record),
+                "review_record_hash": configuration_hash(record.model_dump(mode="json")),
+            },
+            sources=sources,
+            policies=[],
+            constraints=[],
+            candidates=[],
+            outcome={
+                "review_hash": record.review_hash,
+                "confirmation_eligible": record.confirmation_eligible,
+                "bank_authority": False,
+            },
+        )
+    except ValueError as cause:
+        if _capacity_error(cause):
+            raise _capacity() from cause
+        raise
+    evidence_ids = [str(item.id) for item in trace.sources]
+    snapshot = {
+        "decision_trace": trace.model_dump(mode="json"),
+        "decision_trace_indexes": {"policy_version_ids": [], "evidence_ids": evidence_ids},
+    }
+    # These are the exact new-row fields assigned by record_trace, not a claim
+    # about a previous persisted row. The row is never added to a Session here.
+    future = DecisionRun(
+        id=trace.run_id,
+        user_id=trace.user_id,
+        created_at=trace.as_of,
+        idempotency_key="trace:" + str(trace.run_id),
+        trigger_type="TRACE_" + trace.phase,
+        algorithm_version="decision-trace-v1",
+        as_of=trace.as_of,
+        parent_run_id=trace.parent_run_id,
+        subject_action_plan_id=trace.action_id,
+        input_snapshot=snapshot,
+        snapshot_hash=configuration_hash(snapshot),
+        policy_version_ids=[],
+        evidence_ids=evidence_ids,
+        result={},
+        status="SUCCEEDED",
+        completed_at=trace.as_of,
+    )
+    try:
+        encode_subject_original(
+            user_id=trace.user_id,
+            epoch_id=record.epoch_id,
+            kind="DECISION_RUN",
+            id=trace.run_id,
+            data=audit_subject_data(future),
+        )
+    except ValueError as cause:
+        if _capacity_error(cause):
+            raise _capacity() from cause
+        raise
+    return trace
 
 
 def register_review(
@@ -242,8 +379,9 @@ def register_review(
         from app.db.models import DecisionRun
 
         if write.get(DecisionRun, run_id) is not None:
-            trace = _original(write, user_id, run_id, now)
-            record = read_review_original(trace.inputs)
+            _, record = _original(write, user_id, run_id, now)
+            if record is None:
+                raise _fail("ORIGINAL_REVIEW_ID_REQUIRED")
             if (record.source_kind, record.policy_id, record.request) != (kind, policy_id, body):
                 raise _fail("IDEMPOTENCY_CONFLICT")
             return record
@@ -268,31 +406,11 @@ def register_review(
             review_hash="0" * 64,
         )
         record = record.model_copy(update={"review_hash": review_digest(record)})
-        verify_record(record)
-        record_trace(
-            write,
-            build_trace(
-                run_id=run_id,
-                user_id=user_id,
-                phase="EVALUATION",
-                as_of=now,
-                algorithm_versions={MARKER: ALGORITHM},
-                inputs={
-                    "review_phase": "REVIEW",
-                    "review_record_json": review_original_text(record),
-                    "review_record_hash": configuration_hash(record.model_dump(mode="json")),
-                },
-                sources=capture_sources(write, user_id, preview.source_evidence_ids),
-                policies=[],
-                constraints=[],
-                candidates=[],
-                outcome={
-                    "review_hash": record.review_hash,
-                    "confirmation_eligible": eligible,
-                    "bank_authority": False,
-                },
-            ),
+        record = _bounded_review(record)
+        prepared = _review_trace(
+            record, capture_sources(write, user_id, preview.source_evidence_ids)
         )
+        record_trace(write, prepared)
         return record
 
 
@@ -388,6 +506,7 @@ def _readback(
     receipt: dict[str, Any],
     now: datetime,
 ) -> ReviewCommitResponse:
+    reviewed_preview = resolved_review_preview(record)
     version_id = None
     fresh = None
     actual_hash = None
@@ -445,7 +564,7 @@ def _readback(
         lifecycle_receipt=receipt,
         actual_version_id=version_id,
         actual_configuration_hash=actual_hash,
-        reviewed_preview=record.preview,
+        reviewed_preview=reviewed_preview,
         actual_readback=fresh,
         covered_scopes=record.covered_scopes,
         uncovered_items=record.uncovered_items,
@@ -481,7 +600,7 @@ def confirm_reviewed_change(
         from app.db.models import DecisionRun
 
         if write.get(DecisionRun, run_id) is not None:
-            trace = _original(write, user_id, run_id, now)
+            trace, _ = _original(write, user_id, run_id, now)
             if trace.inputs.get("outer_request") != outer:
                 raise _fail("IDEMPOTENCY_CONFLICT")
             receipt = trace.inputs["lifecycle_receipt"]
@@ -571,7 +690,7 @@ def lookup_reviewed_change(
             return ReviewCommandLookup(
                 status="NOT_FOUND_NOT_FINAL", user_id=user_id, idempotency_key=key
             )
-        trace = _original(read, user_id, run_id, _now(now))
+        trace, _ = _original(read, user_id, run_id, _now(now))
         raw = trace.inputs
         body = ConfirmReviewedChangeRequest.model_validate_json(json.dumps(raw["request"]))
         outer = raw["outer_request"]

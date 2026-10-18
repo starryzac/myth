@@ -113,17 +113,8 @@ def _identity(
     return action, effect
 
 
-def _legs(
-    session: Session, operation: BankOperation, effect: ExecutionEffect, now: datetime
-) -> list[SimulatedBankPosting]:
-    from app.services.historical_read import verify_historical_ledger
-
-    verify_historical_ledger(session, operation.user_id)
-    rows = list(
-        session.scalars(
-            select(SimulatedBankPosting).where(SimulatedBankPosting.operation_id == operation.id)
-        )
-    )
+def expected_execution_posting_legs(effect: ExecutionEffect) -> dict[str, tuple[str, str, int]]:
+    """The original bank leg specification, independent of SQL, clocks and authority."""
     expected = {use.account_id: -use.amount_cents for use in effect.cash_uses}
     if effect.destination_account_id is not None:
         credit = effect.net_cents if effect.action_type == "REDEEM_ASSET" else effect.amount_cents
@@ -208,6 +199,21 @@ def _legs(
             "INCOME_LOCATION",
             use.amount_cents,
         )
+    return specs
+
+
+def _legs(
+    session: Session, operation: BankOperation, effect: ExecutionEffect, now: datetime
+) -> list[SimulatedBankPosting]:
+    from app.services.historical_read import verify_historical_ledger
+
+    verify_historical_ledger(session, operation.user_id)
+    rows = list(
+        session.scalars(
+            select(SimulatedBankPosting).where(SimulatedBankPosting.operation_id == operation.id)
+        )
+    )
+    specs = expected_execution_posting_legs(effect)
     actual = {row.leg_ref: (row.ledger_key, row.ledger_dimension, row.delta_cents) for row in rows}
     if (
         actual != specs
@@ -817,6 +823,11 @@ def verify_execution_receipt(
     session: Session, operation: BankOperation, receipt: ActionReceipt, now: datetime
 ) -> None:
     """Read-only historical verification; never reauthorizes or repairs an economic effect."""
+    if operation.operation_type == "TRANSFER_GOAL":
+        from app.services.full_goal_transfer_reader import verify_goal_transfer_receipt
+
+        verify_goal_transfer_receipt(session, operation, receipt, now)
+        return
     if operation.operation_type == "RELEASE_GOAL":
         from app.services.full_goal_release_reader import verify_goal_release_receipt
 

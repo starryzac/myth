@@ -81,7 +81,7 @@ BEGIN
 END $$;
 CREATE TRIGGER transaction_category_audit_insert BEFORE INSERT ON audit_events
 FOR EACH ROW EXECUTE FUNCTION guard_transaction_category_audit();
-"""
+"""  # noqa: E501 - Preserve the exact retained SQL protocol text.
 
 
 def upgrade() -> None:

@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, cast
 from uuid import UUID
 
-from app.db import catalog_models, full_models, models
+from app.db import catalog_models, full_joint_goal_execution_models, full_models, models
 from app.db.base import Base
 from app.domain import audit_chain as audit_domain
 from app.domain.full_evidence_graph import (
@@ -35,7 +35,7 @@ from sqlalchemy import Table, func, inspect, select
 from sqlalchemy.orm import Session
 
 # These imports register the actual mapped tables; no model or schema is synthesized.
-REGISTERED_MODELS = (models, full_models, catalog_models)
+REGISTERED_MODELS = (models, full_models, catalog_models, full_joint_goal_execution_models)
 ROW_LIMIT = 10000
 POSTING_LIMIT = 100000
 TOTAL_ROW_LIMIT = 120000
@@ -443,7 +443,7 @@ def persisted_references(
                 "/closing_position_id",
                 "BANK_CLOSING_POSITION",
             )
-        if row.kind in {"COMMAND_OUTBOX", "ASSET_BATCH"}:
+        if row.kind in {"COMMAND_OUTBOX", "ASSET_BATCH", "JOINT_CHILD"}:
             add(
                 row,
                 "ACTION",
@@ -451,7 +451,13 @@ def persisted_references(
                 "/action_plan_id",
                 "ORIGINAL_EXECUTION_BINDING",
             )
-        if row.kind == "ASSET_CONSENT":
+        if row.kind == "JOINT_CHILD":
+            for field, target in (
+                ("goal_id", "GOAL"),
+                ("original_mvp_version_id", "POLICY_VERSION"),
+            ):
+                add(row, target, raw.get(field), "/" + field, "ORIGINAL_EXECUTION_BINDING")
+        if row.kind in {"ASSET_CONSENT", "JOINT_CONSENT"}:
             add(row, "EVIDENCE", raw.get("evidence_id"), "/evidence_id", "ORIGINAL_USER_CONSENT")
         if row.kind == "INTERVENTION_OUTBOX":
             add(

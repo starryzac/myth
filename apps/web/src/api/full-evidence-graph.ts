@@ -16,9 +16,10 @@ export const fullGraphTables = {
   RESOURCE_CLAIM: 'action_resource_reservations', COMMAND_OUTBOX: 'command_outbox', COMMAND_INBOX: 'command_inbox', COMMAND_ATTEMPT: 'command_delivery_attempts',
   INTERVENTION_OUTBOX: 'intervention_outbox', INTERVENTION_INBOX: 'intervention_inbox', ASSET_PORTFOLIO: 'full_asset_execution_portfolios',
   ASSET_BATCH: 'full_asset_execution_batches', ASSET_CONSENT: 'full_asset_execution_consents',
+  JOINT_PLAN: 'full_joint_goal_execution_plans', JOINT_CHILD: 'full_joint_goal_execution_children', JOINT_CONSENT: 'full_joint_goal_execution_consents',
 } as const;
 export const fullGraphKinds = [...Object.keys(fullGraphTables), 'FULL_GOAL_MODEL'] as FullGraphRootKind[];
-const immutableKinds = new Set(['POLICY_VERSION', 'FULL_POLICY_VERSION', 'FULL_POLICY_COMMAND', 'RECEIPT', 'POSTING', 'AUDIT_EVENT', 'AUDIT_SNAPSHOT', 'PRODUCT_CATALOGUE', 'ASSET_PORTFOLIO', 'ASSET_BATCH', 'ASSET_CONSENT']);
+const immutableKinds = new Set(['POLICY_VERSION', 'FULL_POLICY_VERSION', 'FULL_POLICY_COMMAND', 'RECEIPT', 'POSTING', 'AUDIT_EVENT', 'AUDIT_SNAPSHOT', 'PRODUCT_CATALOGUE', 'ASSET_PORTFOLIO', 'ASSET_BATCH', 'ASSET_CONSENT', 'JOINT_PLAN', 'JOINT_CHILD', 'JOINT_CONSENT']);
 const relations = new Set(['PERSISTED_FOREIGN_KEY', 'PERSISTED_TYPED_ARRAY', 'AUDIT_ORIGINAL_LINK', 'EXACT_AUDIT_SUBJECT_SNAPSHOT', 'CURRENT_IDENTITY_OF_RETAINED_SNAPSHOT', 'FULL_CONFIRMED_ORIGINAL_REFERENCE', 'FULL_REFERENCE_VERSION', 'ORIGINAL_CONFIRMATION_EVIDENCE', 'FULL_GOAL_MODEL_ORIGINAL_BINDING', 'ORIGINAL_FULL_PLANNING_CONFIRMATION', 'BANK_CLOSING_POSITION', 'ORIGINAL_EXECUTION_BINDING', 'ORIGINAL_USER_CONSENT', 'ORIGINAL_INTERVENTION_OBSERVATION']);
 const originals = new WeakMap<object, string>();
 export const getOriginalFullGraphResponse = (value: FullGraph): string | null => originals.get(value) ?? null;
@@ -36,7 +37,7 @@ const hash = (v: unknown): v is string => typeof v === 'string' && /^[0-9a-f]{64
 const count = (v: unknown): v is number => Number.isSafeInteger(v) && (v as number) >= 0;
 const strings = (v: unknown): v is string[] => Array.isArray(v) && v.every((row) => typeof row === 'string');
 const scope = (kind: string) => ['PRODUCT', 'PRODUCT_CATALOGUE'].includes(kind) ? 'SHARED_PRODUCT_CATALOGUE' : 'CURRENT_USER';
-function check(value: unknown): asserts value { if (!value) throw new Error('完整证据图的身份、35类分母、历史原件或只读边界未通过校验'); }
+function check(value: unknown): asserts value { if (!value) throw new Error(`完整证据图的身份、${Object.keys(fullGraphTables).length}类分母、历史原件或只读边界未通过校验`); }
 function key(v: unknown): v is string { if (typeof v !== 'string') return false; const [kind, identity, extra] = v.split(':'); return extra === undefined && kind !== 'FULL_GOAL_MODEL' && isFullGraphKind(kind) && isEvidenceIdentity(identity) && identity === identity.toLowerCase(); }
 function proof(v: unknown): void { check(object(v) && ['VERIFIED', 'UNKNOWN', 'NOT_APPLICABLE', 'NOT_CHECKED'].includes(String(v.state)) && typeof v.check === 'string' && typeof v.detail === 'string' && strings(v.original_refs) && v.grants_authority === false); }
 function pointer(v: unknown, path: string): unknown {

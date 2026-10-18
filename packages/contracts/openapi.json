@@ -14266,7 +14266,10 @@
                     "INTERVENTION_INBOX",
                     "ASSET_PORTFOLIO",
                     "ASSET_BATCH",
-                    "ASSET_CONSENT"
+                    "ASSET_CONSENT",
+                    "JOINT_PLAN",
+                    "JOINT_CHILD",
+                    "JOINT_CONSENT"
                   ],
                   "type": "string"
                 },
@@ -32643,7 +32646,10 @@
                   "INTERVENTION_INBOX",
                   "ASSET_PORTFOLIO",
                   "ASSET_BATCH",
-                  "ASSET_CONSENT"
+                  "ASSET_CONSENT",
+                  "JOINT_PLAN",
+                  "JOINT_CHILD",
+                  "JOINT_CONSENT"
                 ]
               },
               {
@@ -44637,7 +44643,10 @@
               "INTERVENTION_INBOX",
               "ASSET_PORTFOLIO",
               "ASSET_BATCH",
-              "ASSET_CONSENT"
+              "ASSET_CONSENT",
+              "JOINT_PLAN",
+              "JOINT_CHILD",
+              "JOINT_CONSENT"
             ],
             "title": "Kind"
           },
@@ -44759,7 +44768,10 @@
               "INTERVENTION_INBOX",
               "ASSET_PORTFOLIO",
               "ASSET_BATCH",
-              "ASSET_CONSENT"
+              "ASSET_CONSENT",
+              "JOINT_PLAN",
+              "JOINT_CHILD",
+              "JOINT_CONSENT"
             ],
             "title": "Kind"
           },
@@ -48157,8 +48169,95 @@
         "title": "MonthlyMinimumRange"
       },
       "MultiGoalAllocationInput": {
-        "additionalProperties": true,
-        "type": "object"
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "multi-goal-current-period-v1",
+            "title": "Schema Version",
+            "default": "multi-goal-current-period-v1"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "timezone": {
+            "type": "string",
+            "enum": [
+              "Asia/Shanghai",
+              "UTC"
+            ],
+            "title": "Timezone"
+          },
+          "income_lots": {
+            "items": {
+              "$ref": "#/components/schemas/AllocationIncomeLot"
+            },
+            "type": "array",
+            "maxItems": 128,
+            "title": "Income Lots"
+          },
+          "hard_protection_points": {
+            "items": {
+              "$ref": "#/components/schemas/HardProtectionPoint"
+            },
+            "type": "array",
+            "maxItems": 1098,
+            "minItems": 1,
+            "title": "Hard Protection Points"
+          },
+          "goals": {
+            "items": {
+              "$ref": "#/components/schemas/AllocationGoal"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Goals"
+          },
+          "source_issues": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "title": "Source Issues"
+          },
+          "solver_node_budget": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Solver Node Budget",
+            "default": 200000
+          },
+          "optimizer_version": {
+            "anyOf": [
+              {
+                "type": "string",
+                "const": "critical-flow-affine-box-v2"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Optimizer Version"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "as_of",
+          "timezone",
+          "income_lots",
+          "hard_protection_points",
+          "goals"
+        ],
+        "title": "MultiGoalAllocationInput"
       },
       "MultiGoalAllocationResult": {
         "properties": {

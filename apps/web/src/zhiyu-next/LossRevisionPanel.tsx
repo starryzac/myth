@@ -11,7 +11,7 @@ import { spendingHash as hash } from '../api/spending-evidence';
 import { businessText, money, userError } from './display';
 
 export default function LossRevisionPanel({ environment, state, blocked, signed, old, oldQuote, update, recovering, perform, runRead, resumeOriginal, retryOriginal, onPresence }: { environment: NextState; state?: AssetsState; blocked: boolean; signed: boolean; old?: LossUpdate | null; oldQuote?: LossBinding['quote'] | null; update: LossRevisionUpdate | null; recovering: boolean; perform: AssetPerform; runRead: <T>(work: () => Promise<T>) => Promise<T>; resumeOriginal?: () => Promise<void>; retryOriginal?: () => Promise<void>; onPresence: () => void }) {
-  const [oldFresh, setOldFresh] = useState<LossUpdate | null>(null); const [error, setError] = useState(''); const [working, setWorking] = useState(false); const [fresh, setFresh] = useState<LossRevisionUpdate | null>(null);
+  const [oldFresh, setOldFresh] = useState<LossUpdate | null>(null); const [error, setError] = useState(''); const [working, setWorking] = useState(false); const [fresh, setFresh] = useState<LossRevisionUpdate | null>(null); const [declinedQuoteId, setDeclinedQuoteId] = useState('');
   const identity = [environment.environment_id, environment.epoch_id];
   const previous = useQuery({ queryKey: ['zhiyu-next-quote-revision-view', ...identity], queryFn: () => readRevisionUpdate(environment), enabled: !blocked && !update, retry: false, staleTime: Infinity, refetchInterval: (q) => !blocked && !update && ['UNKNOWN', 'SUBMITTED'].includes(q.state.data?.view?.action.status ?? '') ? 15000 : false });
   const source = useQuery({ queryKey: ['zhiyu-next-quote-revision-source', ...identity], queryFn: () => revisionSourceAvailable(environment), enabled: !blocked && assetSourceOpen(state?.source_validation_status), retry: false, staleTime: Infinity });
@@ -27,8 +27,11 @@ export default function LossRevisionPanel({ environment, state, blocked, signed,
   const permission = (goal: string | null | undefined) => state?.policies.some((p) => p.source_kind === 'MVP_POLICY' && p.template_name === 'AssetAuthorizationPolicy' && p.planning_confirmation_valid && ['ACTIVE', 'CONFIRMED'].includes(p.effective_status) && p.configuration.allow_early_withdrawal_with_penalty === true && (goal === null ? p.configuration.scope === 'general_idle_funds' && p.configuration.goal_id === null : p.configuration.scope === 'goal' && p.configuration.goal_id === goal)) ?? false;
   const goal = quoted?.revision.goal_id ?? baseAction?.effect.goal_id ?? state?.positions.find((p) => p.position_id === baseCost?.position_id)?.goal_id;
   const canRenew = available && (!previous.isError || !!update) && expired && !unresolved && !current?.partial && !!baseCost && permission(goal);
-  const canPrepare = available && quoted?.quote_validity.status === 'VALID' && !view && !current?.partial && current?.recovery.prepare_request === null && permission(quoted.revision.goal_id);
-  const canConfirm = available && !!view && view.action.status === 'PLANNED' && view.action.bank_status === null && view.action.receipt === null && view.signed === null && view.quote_validity.status === 'VALID' && Date.parse(view.server_as_of) < Date.parse(view.action.effect.expires_at) && permission(view.action.effect.goal_id);
+  const declined = !!quoted && declinedQuoteId === quoted.revision.quote.quote_id;
+  const unaccepted = !!quoted && !blocked && !working && !recovering && !current?.partial && !unresolved && (!view || view.action.status === 'PLANNED' && view.action.bank_status === null && view.action.receipt === null && view.signed === null);
+  const canDecline = unaccepted && !declined && (view?.quote_validity ?? quoted!.quote_validity).status === 'VALID';
+  const canPrepare = !declined && available && quoted?.quote_validity.status === 'VALID' && !view && !current?.partial && current?.recovery.prepare_request === null && permission(quoted.revision.goal_id);
+  const canConfirm = !declined && available && !!view && view.action.status === 'PLANNED' && view.action.bank_status === null && view.action.receipt === null && view.signed === null && view.quote_validity.status === 'VALID' && Date.parse(view.server_as_of) < Date.parse(view.action.effect.expires_at) && permission(view.action.effect.goal_id);
   async function reload() {
     if (blocked || working) return; setWorking(true); setError('');
     try {
@@ -80,6 +83,8 @@ export default function LossRevisionPanel({ environment, state, blocked, signed,
     {current?.partial && <p role="status">同一新报价准备尚未完整，只能续接原准备；不能确认、执行或再次续报。</p>}
     {view?.action.receipt ? <p className="zy-result">新报价原银行与回执已核实：本金 {money(view.action.receipt.executed_cents)}，费用 {money(view.action.receipt.fee_cents)}，损失 {money(view.action.receipt.loss_cents)}，净到账 {money(view.action.effect.net_cents)}。</p> : view && <p>{['UNKNOWN', 'SUBMITTED'].includes(view.action.status) ? '同一新报价支取正在核实，保留原动作和银行请求。' : view.signed ? '本次新报价的明确同意已核实，尚无完成回执。' : '新报价仅已准备，尚未同意或执行支取。'}</p>}
     {canConfirm && <button className="zy-primary" disabled={blocked || working || !signed} onClick={() => void confirm()}>接受本次新报价损失并支取</button>}
+    {canDecline && <button className="zy-secondary" onClick={() => { if (quoted) setDeclinedQuoteId(quoted.revision.quote.quote_id); }}>暂不支取</button>}
+    {declined && unaccepted && <><p role="status">已选择暂不支取。本次未发送同意或执行请求；新报价原件保留。</p><button className="zy-link" onClick={() => setDeclinedQuoteId('')}>重新审阅本次报价</button></>}
     {resumeOriginal && current?.resume_original && signed && available && <button className="zy-secondary" disabled={working} onClick={() => void resumeOriginal()}>{current.partial ? '续接同一新报价准备' : '继续核实同一新报价支取'}</button>}
     {retryOriginal && recovering && signed && <button className="zy-secondary" disabled={working} onClick={() => void retryOriginal()}>恢复会话后续接原续报请求</button>}
   </section>;

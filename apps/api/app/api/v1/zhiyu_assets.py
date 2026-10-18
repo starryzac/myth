@@ -6,7 +6,7 @@ execution/bank acceptance hooks before enabling portfolio or lossy routes.
 
 import json
 from datetime import datetime
-from typing import Any, Literal, Self
+from typing import Annotated, Any, Literal, Self
 from uuid import UUID, uuid5
 
 from app.api.dependencies import ClockDependency, DemoUserDependency, SessionDependency
@@ -58,7 +58,7 @@ from app.services.action_contracts import (
 )
 from app.services.audit_chain import audit_read_scope, verify_audit_chain
 from app.services.demo_console import _epoch
-from app.services.execution import confirm_action, execute_action, get_action
+from app.services.execution import _lock_user, confirm_action, execute_action, get_action
 from app.services.execution_sources import load_execution_quote
 from app.services.full_asset_execution import preview_full_asset_execution
 from app.services.full_asset_execution_dispatch import (
@@ -91,11 +91,12 @@ from app.services.zhiyu_asset_loss import (
     installed_loss_prepare,
     read_original_loss_native,
 )
+from app.services.zhiyu_capability_acceptance import capability_validation_status
 from app.services.zhiyu_orchestration import MARKER, _valid, operation, serial_user, store
 from app.services.zhiyu_policy_catalog import list_catalog_policies
 from fastapi import APIRouter, Depends
-from pydantic import StrictBool, model_validator
-from sqlalchemy import select
+from pydantic import Field, StrictBool, StrictInt, field_validator, model_validator
+from sqlalchemy import or_, select
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
@@ -104,6 +105,10 @@ GUARDS_VERSION = "zhiyu-asset-closure-guards-v1"
 PORTFOLIO_ACCEPTANCE = "zhiyu-asset-portfolio-user-v1"
 LOSS_PROTOCOL = "lossy-early-redemption-v1"
 REINVESTMENT_PROTOCOL = "maturity-settled-reinvestment-v1"
+REINVESTMENT_INTENT_PROTOCOL: Literal["maturity-settled-reinvestment-intent-v2"] = (
+    "maturity-settled-reinvestment-intent-v2"
+)
+MAX_INTENT_REVISIONS = 16
 CAPACITY = 1000
 router = APIRouter(prefix=PREFIX, tags=["知余资产闭环"], dependencies=[Depends(isolated)])
 
@@ -396,6 +401,73 @@ class ReinvestmentIntent(BoundaryModel):
         return self
 
 
+class ReinvestmentIntentRefreshRequest(EpochRequest):
+    maturity_action_id: UUIDReference
+    expected_intent_hash: Hash
+    replacement_request: ReinvestmentRequest
+    client_request_id: UUIDReference
+
+    @model_validator(mode="after")
+    def exact_nonfinancial_command(self) -> Self:
+        request = self.replacement_request
+        if (
+            (request.expected_epoch_id, request.maturity_action_id)
+            != (self.expected_epoch_id, self.maturity_action_id)
+            or request.client_request_id == self.client_request_id
+        ):
+            raise ValueError(
+                "Refresh and new preparation are distinct same-event original requests"
+            )
+        return self
+
+
+class ReinvestmentIntentRevision(BoundaryModel):
+    protocol: Literal["maturity-settled-reinvestment-intent-v2"] = REINVESTMENT_INTENT_PROTOCOL
+    user_id: UUID
+    epoch_id: UUID
+    revision: Annotated[StrictInt, Field(ge=1, le=MAX_INTENT_REVISIONS)]
+    base_intent_hash: Hash
+    previous_intent_hash: Hash
+    original_request: ReinvestmentIntentRefreshRequest
+    current_intent: ReinvestmentIntent
+    revision_hash: Hash
+    bank_authority: Literal[False] = False
+    financial_plan_created: Literal[False] = False
+    financial_confirmation_created: Literal[False] = False
+    original_submission_absent_at_refresh: Literal[True] = True
+
+    @field_validator(
+        "bank_authority", "financial_plan_created", "financial_confirmation_created", mode="before"
+    )
+    @classmethod
+    def no_financial_claim(cls, raw: Any) -> Any:
+        if raw is not False:
+            raise ValueError("An intent refresh never prepares or confirms a financial plan")
+        return raw
+
+    @field_validator("original_submission_absent_at_refresh", mode="before")
+    @classmethod
+    def original_absence(cls, raw: Any) -> Any:
+        if raw is not True:
+            raise ValueError("Refresh requires its original locked absence check")
+        return raw
+
+    @model_validator(mode="after")
+    def original_revision(self) -> Self:
+        intent, request = self.current_intent, self.original_request
+        if (
+            self.user_id != intent.user_id or self.epoch_id != intent.epoch_id
+            or self.epoch_id != request.expected_epoch_id
+            or request.maturity_action_id != intent.original_maturity_event.action_id
+            or request.replacement_request != intent.original_request
+            or self.previous_intent_hash != request.expected_intent_hash
+            or self.revision_hash
+            != configuration_hash(self.model_dump(mode="json", exclude={"revision_hash"}))
+        ):
+            raise ValueError("Intent revision owner, original request or full hash differs")
+        return self
+
+
 class ReinvestmentBinding(BoundaryModel):
     protocol: Literal["maturity-settled-reinvestment-v1"] = "maturity-settled-reinvestment-v1"
     user_id: UUID
@@ -474,15 +546,32 @@ def portfolio_wrapper_id(epoch_id: UUID, client_request_id: UUID) -> UUID:
 
 def portfolio_native_present(session: Session, user_id: UUID, body: PortfolioRequest) -> bool:
     """Any accepted parent/child/native bank source prevents a terminal rejection."""
-    native = native_portfolio_request(body)
+    return native_portfolio_present(session, user_id, native_portfolio_request(body))
+
+
+def native_portfolio_present(
+    session: Session, user_id: UUID, native: FullAssetPrepareRequest
+) -> bool:
+    """Inspect all original identities; a NOT_FOUND lookup is never absence proof."""
     parent_id = portfolio_identity(user_id, native)
-    if session.get(FullAssetExecutionPortfolio, parent_id) is not None:
+    if (
+        session.get(FullAssetExecutionPortfolio, parent_id) is not None
+        or session.get(FullAssetExecutionConsent, uuid5(parent_id, "consent")) is not None
+        or session.scalar(select(EvidenceItem.id).where(
+            EvidenceItem.user_id == user_id,
+            EvidenceItem.source_type == "USER_FULL_ASSET_PORTFOLIO_CONFIRMATION",
+            or_(
+                EvidenceItem.source_ref == str(parent_id),
+                EvidenceItem.content["portfolio_id"].as_string() == str(parent_id),
+            ),
+        )) is not None
+    ):
         return True
     if (
         session.scalar(
             select(FullAssetExecutionPortfolio.id).where(
                 FullAssetExecutionPortfolio.user_id == user_id,
-                FullAssetExecutionPortfolio.epoch_id == body.expected_epoch_id,
+                FullAssetExecutionPortfolio.epoch_id == native.expected_epoch_id,
                 FullAssetExecutionPortfolio.idempotency_key == native.idempotency_key,
             )
         )
@@ -490,12 +579,27 @@ def portfolio_native_present(session: Session, user_id: UUID, body: PortfolioReq
         or session.scalar(
             select(FullAssetExecutionConsent.id).where(
                 FullAssetExecutionConsent.user_id == user_id,
-                FullAssetExecutionConsent.epoch_id == body.expected_epoch_id,
-                FullAssetExecutionConsent.idempotency_key == native.idempotency_key,
+                FullAssetExecutionConsent.epoch_id == native.expected_epoch_id,
+                or_(
+                    FullAssetExecutionConsent.idempotency_key == native.idempotency_key,
+                    FullAssetExecutionConsent.portfolio_id == parent_id,
+                ),
             )
         )
         is not None
     ):
+        return True
+    if session.scalar(
+        select(FullAssetExecutionBatch.id).where(
+            FullAssetExecutionBatch.user_id == user_id,
+            or_(
+                FullAssetExecutionBatch.portfolio_id == parent_id,
+                FullAssetExecutionBatch.bank_idempotency_key.in_(
+                    [batch_key(parent_id, number) for number in range(1, 5)]
+                ),
+            ),
+        )
+    ) is not None:
         return True
     for number in range(1, 5):
         action_id = uuid5(parent_id, f"batch:{number}")
@@ -505,6 +609,7 @@ def portfolio_native_present(session: Session, user_id: UUID, body: PortfolioReq
                 (FullAssetExecutionBatch, uuid5(parent_id, f"binding:{number}")),
                 (ActionPlan, action_id),
                 (DecisionRun, uuid5(action_id, "decision")),
+                (AssetPosition, uuid5(action_id, "position")),
             )
         ):
             return True
@@ -516,10 +621,18 @@ def portfolio_native_present(session: Session, user_id: UUID, body: PortfolioReq
                     ActionPlan.user_id == user_id, ActionPlan.idempotency_key == bank_key
                 ),
                 select(DecisionRun.id).where(
-                    DecisionRun.user_id == user_id, DecisionRun.idempotency_key == bank_key
+                    DecisionRun.user_id == user_id,
+                    or_(
+                        DecisionRun.idempotency_key == bank_key,
+                        DecisionRun.subject_action_plan_id == action_id,
+                    ),
                 ),
                 select(BankOperation.id).where(
-                    BankOperation.user_id == user_id, BankOperation.idempotency_key == bank_key
+                    BankOperation.user_id == user_id,
+                    or_(
+                        BankOperation.idempotency_key == bank_key,
+                        BankOperation.action_plan_id == action_id,
+                    ),
                 ),
                 select(ActionReceipt.id).where(
                     ActionReceipt.user_id == user_id, ActionReceipt.action_plan_id == action_id
@@ -1023,6 +1136,102 @@ def verify_reinvestment_funding(
         )
 
 
+def read_reinvestment_intent_chain(
+    session: Session, user_id: UUID, maturity_action_id: UUID
+) -> tuple[ReinvestmentIntent | None, list[ReinvestmentIntentRevision]]:
+    epoch = _epoch(session, user_id)
+    raw = anchored(session, user_id, "EVENT", f"asset-maturity-event:{maturity_action_id}")
+    prefix = f"asset-maturity-intent:{maturity_action_id}:revision:"
+    rows = list(session.scalars(select(EvidenceItem).where(
+        EvidenceItem.user_id == user_id,
+        EvidenceItem.source_type == "ZHIYU_NEXT_EVENT",
+        EvidenceItem.content["epoch_id"].as_string() == str(epoch),
+        EvidenceItem.content["key"].as_string().startswith(prefix),
+    ).limit(MAX_INTENT_REVISIONS + 1)))
+    if raw is None:
+        if rows:
+            raise failure("意图修订缺少原到账EVENT", "REINVESTMENT_INTENT_CHAIN_INVALID")
+        return None, []
+    base = decode_record(ReinvestmentIntent, raw)
+    if (base.user_id, base.epoch_id, base.original_maturity_event.action_id) != (
+        user_id, epoch, maturity_action_id
+    ) or len(rows) > MAX_INTENT_REVISIONS:
+        raise failure("意图原归属或容量无法核验", "REINVESTMENT_INTENT_CHAIN_INVALID")
+    numbered: dict[int, ReinvestmentIntentRevision] = {}
+    for row in rows:
+        original = _valid(session, row, user_id, epoch)
+        value = decode_record(ReinvestmentIntentRevision, original["payload"])
+        if (
+            value.revision in numbered
+            or original["key"] != prefix + str(value.revision)
+        ):
+            raise failure("意图修订原键或序号重复", "REINVESTMENT_INTENT_CHAIN_INVALID")
+        numbered[value.revision] = value
+    revisions = [numbered[number] for number in sorted(numbered)]
+    validate_reinvestment_intent_revisions(base, revisions)
+    return base, revisions
+
+
+def validate_reinvestment_intent_revisions(
+    base: ReinvestmentIntent, revisions: list[ReinvestmentIntentRevision]
+) -> None:
+    """Validate a bounded chain independently of SQL row order; never grant permission."""
+    if len(revisions) > MAX_INTENT_REVISIONS:
+        raise failure("意图修订容量超限", "REINVESTMENT_INTENT_CHAIN_INVALID")
+    base_hash = configuration_hash(base.model_dump(mode="json"))
+    previous_hash, previous = base_hash, base
+    prepare_ids = {base.original_request.client_request_id}
+    refresh_ids: set[UUID] = set()
+    for number, value in enumerate(revisions, start=1):
+        current = value.current_intent
+        if (
+            value.revision != number
+            or (value.user_id, value.epoch_id, value.base_intent_hash, value.previous_intent_hash)
+            != (base.user_id, base.epoch_id, base_hash, previous_hash)
+            or current.original_maturity_event != base.original_maturity_event
+            or current.original_native_request.idempotency_key
+            != base.original_native_request.idempotency_key
+            or current.original_request.full_policy_id != base.original_request.full_policy_id
+            or current.original_request.mvp_asset_policy_id
+            != base.original_request.mvp_asset_policy_id
+            or current.captured_at < previous.captured_at
+            or current.original_request.client_request_id in prepare_ids
+            or value.original_request.client_request_id in refresh_ids
+        ):
+            raise failure("意图修订改变原事实、scope或前序", "REINVESTMENT_INTENT_CHAIN_INVALID")
+        prepare_ids.add(current.original_request.client_request_id)
+        refresh_ids.add(value.original_request.client_request_id)
+        previous, previous_hash = current, value.revision_hash
+
+
+
+def current_reinvestment_intent(
+    base: ReinvestmentIntent, revisions: list[ReinvestmentIntentRevision]
+) -> tuple[ReinvestmentIntent, str]:
+    return (
+        (revisions[-1].current_intent, revisions[-1].revision_hash)
+        if revisions else (base, configuration_hash(base.model_dump(mode="json")))
+    )
+
+
+def require_uncommitted_reinvestment(
+    session: Session, user_id: UUID, intent: ReinvestmentIntent
+) -> None:
+    event = intent.original_maturity_event
+    native = intent.original_native_request
+    parent = portfolio_identity(user_id, native)
+    if any(
+        anchored(session, user_id, "BINDING", key) is not None for key in (
+            f"asset-maturity-event:{event.action_id}",
+            f"asset-portfolio-source:{parent}",
+            f"asset-acceptance:{parent}",
+        )
+    ) or native_portfolio_present(session, user_id, native):
+        raise failure(
+            "已有原生提交，只能查询或恢复原件", "REINVESTMENT_ORIGINAL_SUBMISSION_PRESENT"
+        )
+
+
 def capture_reinvestment_intent(
     engine: Engine,
     user_id: UUID,
@@ -1032,7 +1241,7 @@ def capture_reinvestment_intent(
 ) -> ReinvestmentIntent:
     key = f"asset-maturity-event:{body.maturity_action_id}"
     with fresh_read(engine) as read:
-        prior = anchored(read, user_id, "EVENT", key)
+        prior, _ = read_reinvestment_intent_chain(read, user_id, body.maturity_action_id)
         event = (
             verified_maturity_source(
                 read, user_id, body.maturity_action_id, body.expected_epoch_id, now
@@ -1042,13 +1251,17 @@ def capture_reinvestment_intent(
         )
     with Session(engine) as writer, writer.begin():
         _epoch(writer, user_id, body.expected_epoch_id)
-        data = anchored(writer, user_id, "EVENT", key)
-        if data is not None:
-            original = decode_record(ReinvestmentIntent, data)
-            if original.user_id != user_id or original.original_request.model_dump(
-                exclude={"client_request_id"}
-            ) != body.model_dump(exclude={"client_request_id"}):
-                raise failure("同实收事件不能换策略范围或版本另建组合", "REQUEST_CONFLICT")
+        base, revisions = read_reinvestment_intent_chain(writer, user_id, body.maturity_action_id)
+        if base is not None:
+            original, _ = current_reinvestment_intent(base, revisions)
+            excluded = set() if revisions else {"client_request_id"}
+            if original.original_request.model_dump(exclude=excluded) != body.model_dump(
+                exclude=excluded
+            ):
+                raise failure(
+                    "原意图已固定或已明确刷新，请查询原件而非替换旧pending",
+                    "REINVESTMENT_INTENT_SUPERSEDED" if revisions else "REQUEST_CONFLICT",
+                )
             return original
         if event is None:
             raise failure("原实收到期来源快照未证明")
@@ -1196,6 +1409,276 @@ def prepare_original_reinvestment(
         return binding, actual
 
 
+def refreshed_reinvestment_revision(
+    base: ReinvestmentIntent,
+    revisions: list[ReinvestmentIntentRevision],
+    body: ReinvestmentIntentRefreshRequest,
+    actor: LocalActorPrincipal,
+    now: datetime,
+) -> ReinvestmentIntentRevision:
+    validate_reinvestment_intent_revisions(base, revisions)
+    prior, prior_hash = current_reinvestment_intent(base, revisions)
+    request = body.replacement_request
+    if body.expected_intent_hash != prior_hash:
+        raise failure("意图前序已变化，先查询当前原件", "REINVESTMENT_INTENT_HASH_CHANGED")
+    if len(revisions) >= MAX_INTENT_REVISIONS:
+        raise failure("意图刷新达到有限容量", "REINVESTMENT_INTENT_CAPACITY")
+    if (
+        request.full_policy_id != base.original_request.full_policy_id
+        or request.mvp_asset_policy_id != base.original_request.mvp_asset_policy_id
+        or request.client_request_id in {
+            base.original_request.client_request_id,
+            *(row.current_intent.original_request.client_request_id for row in revisions),
+        }
+        or now < prior.captured_at
+    ):
+        raise failure("仅支持原scope的当前规则与全新准备请求", "REINVESTMENT_INTENT_SCOPE_CHANGED")
+    intent = ReinvestmentIntent(
+        user_id=base.user_id,
+        epoch_id=base.epoch_id,
+        original_request=request,
+        original_maturity_event=base.original_maturity_event,
+        original_native_request=native_reinvestment_request(request, base.original_maturity_event),
+        principal_at_capture=actor,
+        captured_at=now,
+    )
+    values = {
+        "protocol": REINVESTMENT_INTENT_PROTOCOL,
+        "user_id": str(base.user_id),
+        "epoch_id": str(base.epoch_id),
+        "revision": len(revisions) + 1,
+        "base_intent_hash": configuration_hash(base.model_dump(mode="json")),
+        "previous_intent_hash": prior_hash,
+        "original_request": body.model_dump(mode="json"),
+        "current_intent": intent.model_dump(mode="json"),
+        "bank_authority": False,
+        "financial_plan_created": False,
+        "financial_confirmation_created": False,
+        "original_submission_absent_at_refresh": True,
+    }
+    return ReinvestmentIntentRevision.model_validate_json(json.dumps({
+        **values, "revision_hash": configuration_hash(values),
+    }))
+
+
+def original_reinvestment_refresh_operation(
+    session: Session, user_id: UUID, request_id: UUID
+) -> dict[str, Any] | None:
+    payload = anchored(session, user_id, "OPERATION", str(request_id))
+    if payload is None:
+        return None
+    try:
+        request = payload["request"]
+        body = ReinvestmentIntentRefreshRequest.model_validate_json(json.dumps(request["body"]))
+        if set(payload) != {"request", "operation_status", "result"} or request != {
+            "kind": "REINVESTMENT_INTENT_REFRESH",
+            "path": PREFIX + "/reinvestments/intents/refresh",
+            "body": body.model_dump(mode="json"),
+        } or (
+            body.client_request_id != request_id
+            or body.expected_epoch_id != _epoch(session, user_id)
+        ):
+            raise ValueError("Refresh original command identity differs")
+        result = payload["result"]
+        superseded: bool | None = None
+        if payload["operation_status"] == "COMPLETED":
+            value = decode_record(ReinvestmentIntentRevision, result["revision"])
+            _, revisions = read_reinvestment_intent_chain(session, user_id, body.maturity_action_id)
+            if value.original_request != body or value not in revisions or result != {
+                "protocol": REINVESTMENT_INTENT_PROTOCOL, "status": "RECORDED",
+                "client_request_id": str(request_id), "revision": value.model_dump(mode="json"),
+                "bank_authority": False, "financial_plan_created": False,
+                "financial_confirmation_created": False,
+            }:
+                raise ValueError("Refresh result differs from its original revision")
+            superseded = value.revision < len(revisions)
+            status = "RECORDED"
+        elif payload["operation_status"] == "REJECTED":
+            if set(result) != {
+                "error", "bank_authority", "financial_plan_created",
+                "financial_confirmation_created", "absence_is_final",
+            } or any(result[name] is not False for name in (
+                "bank_authority", "financial_plan_created",
+                "financial_confirmation_created", "absence_is_final",
+            )):
+                raise ValueError("Nonfinancial rejection cannot claim financial absence")
+            error = result["error"]
+            if set(error) != {"code", "message", "status_code"} or (
+                not isinstance(error["code"], str) or not isinstance(error["message"], str)
+                or type(error["status_code"]) is not int or not 400 <= error["status_code"] < 600
+            ):
+                raise ValueError("Original rejection fields differ")
+            status = "REJECTED"
+        else:
+            raise ValueError("Refresh original result is unresolved")
+        return {
+            "status": status, "original_request": body.model_dump(mode="json"),
+            "original_result": result, "superseded": superseded,
+        }
+    except (KeyError, TypeError, ValueError):
+        raise failure(
+            "原意图刷新命令或结果无法核对", "REINVESTMENT_INTENT_ORIGINAL_UNKNOWN"
+        ) from None
+
+
+def refresh_reinvestment_intent(
+    engine: Engine, user_id: UUID, body: ReinvestmentIntentRefreshRequest,
+    actor: LocalActorPrincipal, now: datetime,
+) -> dict[str, Any]:
+    now = _now(now)
+    signed_user(actor, user_id, now)
+    request = {
+        "kind": "REINVESTMENT_INTENT_REFRESH",
+        "path": PREFIX + "/reinvestments/intents/refresh",
+        "body": body.model_dump(mode="json"),
+    }
+    result: dict[str, Any] | None = None
+    rejected: PolicyLifecycleError | None = None
+    with serial_user(engine, user_id), Session(engine) as writer, writer.begin():
+        _lock_user(writer, user_id)  # Shared with native prepare/confirm; before fresh RR.
+        _epoch(writer, user_id, body.expected_epoch_id)
+        old = anchored(writer, user_id, "OPERATION", str(body.client_request_id))
+        if old is not None:
+            if old.get("request") != request:
+                raise failure("原刷新命令不能更换body", "REQUEST_CONFLICT")
+            if old.get("operation_status") == "REJECTED":
+                original = original_reinvestment_refresh_operation(
+                    writer, user_id, body.client_request_id
+                )
+                if original is None:
+                    raise failure("原刷新命令未核实", "REINVESTMENT_INTENT_ORIGINAL_UNKNOWN")
+                error = original["original_result"]["error"]
+                rejected = PolicyLifecycleError(
+                    error["code"], error["message"], error["status_code"]
+                )
+            elif old.get("operation_status") == "COMPLETED":
+                original = original_reinvestment_refresh_operation(
+                    writer, user_id, body.client_request_id
+                )
+                if original is None:
+                    raise failure("原刷新命令未核实", "REINVESTMENT_INTENT_ORIGINAL_UNKNOWN")
+                result = dict(original["original_result"])
+            else:
+                raise failure("原刷新提交状态未证明", "REINVESTMENT_INTENT_ORIGINAL_UNKNOWN")
+        else:
+            try:
+                with fresh_read(engine) as read:
+                    base, revisions = read_reinvestment_intent_chain(
+                        read, user_id, body.maturity_action_id
+                    )
+                    if base is None:
+                        raise failure(
+                            "缺少本人原到账意图，请先查询原事件", "REINVESTMENT_INTENT_NOT_FOUND"
+                        )
+                    current, _ = current_reinvestment_intent(base, revisions)
+                    event = verified_maturity_source(
+                        read, user_id, body.maturity_action_id, body.expected_epoch_id, now
+                    )
+                    if event != base.original_maturity_event:
+                        raise failure("原实际到账事实已变化", "REINVESTMENT_SOURCE_CHANGED")
+                    require_uncommitted_reinvestment(read, user_id, current)
+                    revision = refreshed_reinvestment_revision(base, revisions, body, actor, now)
+                    preview = preview_full_asset_execution(
+                        read, user_id, revision.current_intent.original_native_request, now
+                    )
+                    if preview.portfolio is None or preview.state != "READY_TO_REVIEW":
+                        raise failure(
+                            "当前规则或正式权限未产生合法组合，保留现金", "MATURITY_RETAIN_CASH"
+                        )
+                    verify_reinvestment_funding(event, preview.portfolio)
+                store(
+                    writer, user_id, "EVENT",
+                    f"asset-maturity-intent:{body.maturity_action_id}:revision:{revision.revision}",
+                    revision.model_dump(mode="json"), now,
+                )
+                result = {
+                    "protocol": REINVESTMENT_INTENT_PROTOCOL,
+                    "status": "RECORDED",
+                    "client_request_id": str(body.client_request_id),
+                    "revision": revision.model_dump(mode="json"),
+                    "bank_authority": False,
+                    "financial_plan_created": False,
+                    "financial_confirmation_created": False,
+                }
+                payload = {"request": request, "operation_status": "COMPLETED", "result": result}
+            except PolicyLifecycleError as error:
+                # Rejection describes ONLY this nonfinancial refresh, never final financial absence.
+                rejected = error
+                payload = {
+                    "request": request, "operation_status": "REJECTED",
+                    "result": {
+                        "error": {"code": error.code, "message": error.message,
+                                  "status_code": error.status_code},
+                        "bank_authority": False, "financial_plan_created": False,
+                        "financial_confirmation_created": False, "absence_is_final": False,
+                    },
+                }
+            store(writer, user_id, "OPERATION", str(body.client_request_id), payload, now)
+    if rejected is not None:
+        raise rejected
+    if result is None:
+        raise failure("原刷新结果未证明", "REINVESTMENT_INTENT_ORIGINAL_UNKNOWN")
+    return result
+
+
+@router.post("/reinvestments/intents/refresh")
+def reinvestment_intent_refresh(
+    body: ReinvestmentIntentRefreshRequest, session: SessionDependency,
+    engine: EngineDependency, user: DemoUserDependency, now: ClockDependency,
+    actor: PrincipalDependency,
+) -> dict[str, Any]:
+    result = refresh_reinvestment_intent(engine, user.id, body, actor, now)
+    return {**identity(session, user.id, engine), **result}
+
+
+@router.get("/reinvestments/intents/by-command/{client_request_id}")
+def reinvestment_intent_command(
+    client_request_id: UUID, session: SessionDependency,
+    engine: EngineDependency, user: DemoUserDependency,
+) -> dict[str, Any]:
+    with historical_ledger_scope(session), audit_read_scope(session):
+        original = original_reinvestment_refresh_operation(session, user.id, client_request_id)
+        return {
+            **identity(session, user.id, engine), "protocol": REINVESTMENT_INTENT_PROTOCOL,
+            **(original if original is not None else {
+                "status": "NOT_FOUND_NOT_FINAL", "original_request": None,
+                "original_result": None, "superseded": None,
+            }),
+            "bank_authority": False, "absence_is_final": False,
+        }
+
+
+@router.get("/reinvestments/intents/by-maturity-action/{maturity_action_id}")
+def reinvestment_intents(
+    maturity_action_id: UUID, session: SessionDependency,
+    engine: EngineDependency, user: DemoUserDependency,
+) -> dict[str, Any]:
+    with historical_ledger_scope(session), audit_read_scope(session):
+        base, revisions = read_reinvestment_intent_chain(session, user.id, maturity_action_id)
+        current, intent_hash = (
+            current_reinvestment_intent(base, revisions) if base else (None, None)
+        )
+        status = "NOT_FOUND_NOT_FINAL"
+        if current is not None:
+            try:
+                require_uncommitted_reinvestment(session, user.id, current)
+            except PolicyLifecycleError as error:
+                if error.code != "REINVESTMENT_ORIGINAL_SUBMISSION_PRESENT":
+                    raise
+                status = "ORIGINAL_SUBMISSION_PRESENT"
+            else:
+                status = "INTENT_UNPREPARED"
+        return {
+            **identity(session, user.id, engine), "protocol": REINVESTMENT_INTENT_PROTOCOL,
+            "status": status,
+            "base_intent": base.model_dump(mode="json") if base else None,
+            "current_intent": current.model_dump(mode="json") if current else None,
+            "intent_hash": intent_hash,
+            "revisions": [row.model_dump(mode="json") for row in revisions],
+            "bank_authority": False, "absence_is_final": False,
+        }
+
+
 @router.post("/reinvestments/preview")
 def reinvestment_preview(
     body: ReinvestmentRequest,
@@ -1252,8 +1735,8 @@ def reinvestment_original(
     with historical_ledger_scope(session), audit_read_scope(session):
         original = original_reinvestment(session, user.id, maturity_action_id, now)
         if original is None:
-            data = anchored(session, user.id, "EVENT", f"asset-maturity-event:{maturity_action_id}")
-            intent = decode_record(ReinvestmentIntent, data) if data else None
+            base, revisions = read_reinvestment_intent_chain(session, user.id, maturity_action_id)
+            intent, _ = current_reinvestment_intent(base, revisions) if base else (None, None)
             lookup = (
                 read_full_asset_execution_by_key(
                     session,
@@ -1603,7 +2086,7 @@ def asset_state(
             **identity(session, user.id, engine),
             "protocol": "zhiyu-next-assets-state-v1",
             "server_as_of": now.isoformat(),
-            "source_validation_status": "DEVELOPMENT_PENDING_ACTUAL_ASSET_ACCEPTANCE",
+            "source_validation_status": capability_validation_status("ASSETS"),
             "catalogue_status": catalogue.status,
             "catalogue_issues": catalogue.issues,
             "policies": policies,
@@ -1878,6 +2361,20 @@ def enforce_zhiyu_asset_acceptance(
     """Install at both original new-accept seams; existing bank results bypass new grants."""
     if action.user_id != command.effect.user_id or action.id != command.effect.operation_id:
         raise failure("资产动作与银行command原身份不一致")
+    from app.services.zhiyu_standing_guards import has_standing_binding, revalidate_standing_phase
+
+    if has_standing_binding(action) and command.effect.action_type == "PURCHASE_ASSET":
+        if command.effect.fee_cents or command.effect.loss_cents:
+            raise failure("SYSTEM委托资产仅接受原完整零损购买")
+        _, _, value, proof = revalidate_standing_phase(
+            engine, action, now, "BANK_ACCEPT" if action.status == "SUBMITTED" else "RESERVE"
+        )
+        if (
+            value.native.kind not in {"ASSET_PORTFOLIO", "MATURITY_REINVESTMENT"}
+            or proof.status != "READY"
+        ):
+            raise failure("SYSTEM必须独立通过原整体委托协议")
+        return
     if command.effect.action_type == "PURCHASE_ASSET":
         from app.services.execution_bank import has_full_asset_batch_binding
 
@@ -1921,6 +2418,14 @@ def enforce_zhiyu_asset_acceptance(
     elif command.effect.action_type == "REDEEM_ASSET" and (
         command.effect.fee_cents or command.effect.loss_cents
     ):
+        if (
+            action.request.get("zhiyu_lossy_redemption", {}).get("protocol")
+            == "lossy-early-redemption-quote-revision-v2"
+        ):
+            from app.api.v1.zhiyu_quote_revisions import enforce_revision_acceptance
+
+            enforce_revision_acceptance(engine, action, command, now)
+            return
         with fresh_read(engine) as read:
             binding, original_loss = original_loss_binding(read, action.user_id, action.id, now)
             accepted_loss = original_loss_consent(read, action.user_id, binding, now)

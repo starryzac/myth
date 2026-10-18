@@ -350,9 +350,16 @@ class OpenAICompatibleProvider:
                 raise ValueError("Finite registered tools required")
             calls = []
             identities: set[str] = set()
-            for item in raw:
-                if type(item) is not dict or set(item) != {"id", "type", "function"}:
-                    raise ValueError("Exact tool envelope required")
+            for position, item in enumerate(raw):
+                if (
+                    type(item) is not dict
+                    or set(item) not in (
+                        {"id", "type", "function"}, {"id", "type", "function", "index"}
+                    )
+                    or "index" in item
+                    and (type(item["index"]) is not int or item["index"] != position)
+                ):
+                    raise ValueError("Exact tool envelope and position required")
                 identity = item["id"]
                 function = item["function"]
                 if (
@@ -379,15 +386,25 @@ class OpenAICompatibleProvider:
         except (KeyError, TypeError, ValueError, RecursionError):
             raise ModelProviderError("LLM_TOOL_REJECTED") from None
 
-    def propose(self, text: str, context: CompileContext) -> dict[str, Any]:
+    def propose(
+        self, text: str, context: CompileContext, *,
+        budget: ModelCallBudget | None = None,
+        candidate_format: Literal["mvp", "full"] | None = None,
+    ) -> dict[str, Any]:
         if type(text) is not str or not text.strip() or len(text) > MAX_USER_TEXT_CHARS:
             raise ModelProviderError("LLM_INPUT_LIMIT")
-        if self.candidate_format == "mvp":
+        if (candidate_format or self.candidate_format) == "mvp":
             schemas = {
                 "goal_saving": GoalSaving.model_json_schema(),
                 "emergency_buffer": EmergencyBuffer.model_json_schema(),
             }
             shape = "Return one configuration object matching one of the provided schemas."
+            missing = "If any required factual field is missing, return exactly {}. "
+            naming = (
+                "For name, use only the purpose explicitly stated by the user; preserve "
+                "the literal "
+                "purpose 应急金 when stated. "
+            )
         else:
             from app.domain.full_policy_configuration import template_names, template_schema
 
@@ -395,8 +412,34 @@ class OpenAICompatibleProvider:
             shape = (
                 "Return exactly {template_name: registered template name, configuration: object}."
             )
+            naming = (
+                "FULL reference protocol: copy each explicit [REFERENCE_N] token verbatim "
+                "to its original reference slot (source_account_id, payee_id, goal_id, "
+                "asset_policy_id, cross_goal_reallocation_policy_id, account_id or "
+                "goal_ids, source_goal_ids, must_not_reduce_policy_ids). The server restores "
+                "these exact original tokens before UUID/schema validation. A token is an "
+                "explicit original reference, never an invented value: do not omit it "
+                "because the downstream schema uses UUID format. Square brackets are literal "
+                "token characters: use goal_ids=[\"[REFERENCE_1]\",\"[REFERENCE_2]\"] when "
+                "those two goal tokens occur; bare REFERENCE_1 is invalid. Top-level name is null "
+                "or omitted unless the input explicitly contains 名称 followed by a "
+                "[REFERENCE_N] token; then copy only that token. A template heading or "
+                "purpose such as 应急金 is not an explicit top-level name. Nested method.name "
+                "is the schema algorithm enum and does not use a reference token. "
+            )
+            missing = (
+                "When the registered template is clear but factual fields are missing, keep "
+                "template_name and include only explicitly stated configuration fields. "
+                "The server will require new explicit user input for every unanchored field. "
+                "For an unrecognized intent return {}. "
+            )
         prompt = (
             "You produce untrusted policy candidates for review only. "
+            "Return only a JSON object using schema fields, with no explanatory metadata. "
+            + missing
+            + naming
+            + "Leave valid_from and valid_until null or omitted unless explicitly stated "
+            "by the user. "
             "Never grant authority, confirm user consent, execute actions, choose funds, or invent "
             "money, dates, references or missing financial facts. "
             "Preserve only explicit user facts. "
@@ -418,7 +461,8 @@ class OpenAICompatibleProvider:
                         allow_nan=False,
                     ),
                 },
-            ]
+            ],
+            budget=budget,
         )
         if reply.content is None:
             raise ModelProviderError("LLM_INVALID_RESPONSE")
