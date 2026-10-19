@@ -1,31 +1,27 @@
 # 知余 · Zhiyu
 
-基于 FastAPI、React 和 PostgreSQL 的模拟资金 Agent。包含规则配置、多目标规划、资产配置与支取、必要问题问答、持续授权和动作恢复代码。全部账户、银行回执与资金操作均为模拟，不连接真实银行。
+基于 FastAPI、React / TypeScript 与 PostgreSQL 的模拟资金 Agent。用确定性规则管理当前可安排资金，提供规则配置、多目标规划、资产规划与支取、必要问题问答、持续授权和原动作恢复。
 
-金额、权限、资金边界、执行状态、幂等与恢复由确定性代码处理。未来未到账收入不扩大当前可安排金额。模型只用于理解需求与生成候选，不能直接授权资金动作。
+所有账户、银行操作与回执均为模拟。金额、权限、幂等、执行状态与审计由代码校验；未来未到账收入不扩大当前资金边界。模型负责理解需求和提出候选，执行前仍须通过授权与业务校验。
 
-## 工程结构
+## 仓库内容
 
-- `apps/api/app`：API、规则和规划领域、模拟银行、执行器、审计与后台任务。
-- `apps/api/alembic`：数据库迁移。
-- `apps/web`：前端源码，含扩展版、旧 Demo 和完整工程入口。
-- `packages/contracts`：OpenAPI 与 TypeScript 合同。
-- `scripts`：依赖安装、构建、合同生成、初始化与独立运行入口。
-- `deploy`：容器构建与独立模拟部署配置。
+这是当前已安装源码的精简发布，使用知余四页应用作为唯一前端入口。
 
-这是当前已接入应用的工程快照。工程目录不附开发计划、过程记录、验收脚本、测试夹具、截图、对话记录、运行数据或本机密钥。功能实现与完整验收结论分别处理；本 README 不声明五能力整体已通过验收。
+```text
+apps/api/app/        API、规划与规则、模拟银行、执行与审计、受控 worker
+apps/api/alembic/    数据库迁移
+apps/web/           知余前端及其实际使用的共享模块
+packages/contracts/ OpenAPI 与 TypeScript 合同
+scripts/            安装、启动、构建与合同生成
+deploy/initialize_demo.py  独立模拟数据库初始化
+```
 
-## 2026-10-18 阶段进展
+旧控制台与旧 Demo 的前端入口、重复前端组件、独立验收工具和过时容器部署配置已清理。开发过程材料、测试夹具、运行数据、依赖目录和私有配置不纳入发布；资金执行、合同类型及历史审计仍需使用的共享模块保留。
 
-本次同步已安装的应用源码：十二模板模型候选、受控工具循环与原对象追问；目标释放和接收的双向授权调拨、原始来源与当前事实校验；必要问题、提醒去重和稳定静默；资产续报价及持续任务的分族消费者。模型输出仍需经过确定性校验与明确授权，不能代替用户同意。
+## 本地启动
 
-开发环境的当前完整后端5836项非集成测试、Ruff及mypy通过。前端1918项测试及静态、类型与生产构建按未变依赖复用已保存结果，没有在本次同步中重跑。来源版本失效、目标版本失效和原A先向B再向C调拨三条新模拟场景已取得真实通过终态；这些记录不等于五能力整体验收。
-
-完整版验收仍在进行：自然八目标流程因服务器处理过慢超过原确认窗口而失败，优化与重验尚未完成；资产实际场景、当前五族资格、驻留worker恢复、兼容性和Edge四页仍有待闭合的验收。仓库不会携带本机验收许可或通过状态来绕过这些门，后台默认关闭。本次不包含仍在隔离目录试验、尚未安装的性能候选。
-
-## 本地运行
-
-需要 Python 3.12、uv、Node.js 24、pnpm 11.19.0 和 PostgreSQL 16。启动脚本要求独立目录名为 `bounded-funds-next`。
+需要 Python 3.12、uv、Node.js 24、pnpm 11 和 PostgreSQL 16。启动器检查独立目录名，请按以下名称克隆：
 
 ```powershell
 git clone https://github.com/starryzac/myth.git bounded-funds-next
@@ -33,7 +29,13 @@ Set-Location bounded-funds-next
 python scripts/tasks.py bootstrap
 ```
 
-模拟数据库管理端默认使用 `127.0.0.1:54329`。尚无服务时可运行 `docker compose up -d db`；已有本地 PostgreSQL 时直接使用其管理连接。自定义管理连接通过当前会话的 `ZHIYU_NEXT_ADMIN_DATABASE_URL` 提供，不提交含口令的连接地址。
+模拟数据库管理连接默认使用 `127.0.0.1:54329`。首次体验且该端口空闲时，可用以下命令启动数据库：
+
+```powershell
+docker compose up -d db
+```
+
+已有本地数据库时，直接复用其服务；管理连接可通过会话环境变量 `ZHIYU_NEXT_ADMIN_DATABASE_URL` 指定，不提交口令。启动器只接受回环地址上的 54329 端口，每轮创建独立数据库、低权限角色及审计 epoch。
 
 ```powershell
 uv run --frozen --no-dev python scripts/zhiyu_next.py prepare
@@ -41,20 +43,23 @@ uv run --frozen --no-dev python scripts/zhiyu_next.py start --round <prepare返�
 uv run --frozen --no-dev python scripts/zhiyu_next.py status --round <同一完整轮次>
 ```
 
-扩展版地址为 `http://127.0.0.1:19273/zhiyu-next.html`，API 默认端口为 `19200`。每轮创建独立数据库、低权限角色和审计 epoch；运行信息与私有配置只写本地忽略的 `.runtime`。已有历史不会在启动时自动重置。
+默认页面：[http://127.0.0.1:19273/zhiyu-next.html](http://127.0.0.1:19273/zhiyu-next.html)，API 端口为 `19200`。若端口已占用，先用 `prepare --help` 查看自定义参数，并始终使用该轮的端口和完整标识。已有历史不会在启动时自动重置。
 
-模型设置在本地页面填写并保存，再测试连接。密钥只进入本地后端私有配置，未配置时仍可使用离线规则入口。开发环境已验证十二模板真实模型候选与注册工具协议；新部署仍需自行配置密钥并测试连接，这些结果不替代真实业务数据、金融消费者或页面验收。
+模型服务在页面的模型设置中配置并测试连接；密钥保存在本机忽略目录中。未配置模型时，可使用离线规则入口。运行信息和凭证保存在 `.runtime/`，不应上传。
 
-持续任务 worker 默认关闭。`app.workers.zhiyu_autonomy` 保留现有源码验证许可门；仓库不提供本机许可文件，不能直接启用该 worker 或以导出源码替代其许可。暂停阻止新执行，已有 UNKNOWN 动作继续使用原动作和银行键查询恢复。
-
-## 构建与合同
+## 构建与检查
 
 ```powershell
-pnpm build          # 扩展版生产构建
-pnpm build:all      # 完整入口、旧 Demo、扩展版
-pnpm types          # 从 API 生成 OpenAPI 和 TypeScript 合同
+pnpm lint          # 前端代码规范
+pnpm typecheck     # TypeScript 类型检查
+pnpm build         # 唯一知余入口的生产构建
+pnpm types         # 生成基础 API 的 OpenAPI 和 TypeScript 合同
 ```
 
-三个前端构建输出分别是 `apps/web/dist`、`apps/web/dist-zhiyu`、`apps/web/dist-zhiyu-next`，不提交构建缓存。数据库迁移使用 `uv run --frozen --no-dev alembic upgrade head`，实际连接必须指向所属模拟环境。
+产物位于 `apps/web/dist-zhiyu-next/`。独立启动器使用源码开发服务；`pnpm dev` 仅启动前端，需先准备并启动对应 API。Windows 可用 `make.cmd`，Linux/macOS 可用 `make`；两者调用 `scripts/tasks.py`。
 
-`deploy/compose.demo.yaml` 是独立模拟容器配置，构建需要显式提供其中声明的镜像、摘要和运行变量；常规本地体验使用以上独立启动入口。
+## 当前边界
+
+代码已接入十二模板候选、受控模型工具、多目标与双向授权调拨、资产及必要问题等流程。整体功能仍有验收缺口，部分请求耗时较长；本仓库不宣称完整模拟金融、常驻恢复或浏览器验收已完成。
+
+后台默认关闭，现有 worker 的精确源码及实际验收许可门保留。仓库不分发本机许可文件；重新部署需自行完成对应验证。UNKNOWN 动作继续使用原动作身份和银行键恢复，暂停与撤销不会把未知结果改成成功。

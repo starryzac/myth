@@ -12,6 +12,7 @@ export type GoalModelBinding = { id: string; policy_id: string; policy_version_i
 export interface FullGoalConfiguration {
   type: 'long_term_goal'; name: string | null; valid_from: string | null; valid_until: string | null;
   target_cents: number; deadline: string; monthly_contribution: { min_cents: number; target_cents: number; max_cents: number };
+  dynamic_reserve_math_version?: 'SAFE_PARTIAL_V2';
   importance: number; minimum_guarantee_cents: number; allow_partial: boolean; allow_deferral: boolean;
   deferral_cost_cents_per_day: number; asset_policy_id: string | null; cross_goal_reallocation_allowed: false; cross_goal_reallocation_policy_id: null;
 }
@@ -42,7 +43,8 @@ export function parseFullGoalConfiguration(value: unknown): FullGoalConfiguratio
   requireValue(typeof value.allow_partial === 'boolean' && typeof value.allow_deferral === 'boolean' && cents(value.deferral_cost_cents_per_day) && (value.allow_deferral || value.deferral_cost_cents_per_day === 0));
   requireValue(nullable(value.asset_policy_id, uuid) && value.cross_goal_reallocation_allowed === false && value.cross_goal_reallocation_policy_id === null);
   requireValue(value.valid_from === null || value.deadline >= (value.valid_from as string)); requireValue(value.valid_until === null || value.deadline <= (value.valid_until as string));
-  const allowed = ['type', 'name', 'valid_from', 'valid_until', 'target_cents', 'deadline', 'monthly_contribution', 'importance', 'minimum_guarantee_cents', 'allow_partial', 'allow_deferral', 'deferral_cost_cents_per_day', 'asset_policy_id', 'cross_goal_reallocation_allowed', 'cross_goal_reallocation_policy_id'];
+  requireValue(!Object.hasOwn(value, 'dynamic_reserve_math_version') || value.dynamic_reserve_math_version === 'SAFE_PARTIAL_V2');
+  const allowed = ['dynamic_reserve_math_version', 'type', 'name', 'valid_from', 'valid_until', 'target_cents', 'deadline', 'monthly_contribution', 'importance', 'minimum_guarantee_cents', 'allow_partial', 'allow_deferral', 'deferral_cost_cents_per_day', 'asset_policy_id', 'cross_goal_reallocation_allowed', 'cross_goal_reallocation_policy_id'];
   requireValue(Object.keys(value).every((key) => allowed.includes(key)) && Object.keys(monthly).every((key) => ['min_cents', 'target_cents', 'max_cents'].includes(key)));
   return value as unknown as FullGoalConfiguration;
 }

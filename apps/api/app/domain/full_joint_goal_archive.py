@@ -5,6 +5,7 @@ import binascii
 import hashlib
 import json
 import math
+import re
 import struct
 import zlib
 from typing import Any, NoReturn, cast
@@ -185,6 +186,8 @@ def _inflate(compressed: bytes, budget: int) -> bytes:
 
 def _json_budget(raw: bytes, node_limit: int, depth_limit: int) -> None:
     """Bound valid JSON token count before json.loads can allocate all its containers."""
+    raw_size = len(raw)
+    string_delimiter = re.compile(rb'["\\]').search
     index = nodes = 0
     stack: list[int] = []
 
@@ -194,7 +197,7 @@ def _json_budget(raw: bytes, node_limit: int, depth_limit: int) -> None:
         if nodes > node_limit or depth > depth_limit:
             raise JointArchiveError("Joint archive decoded JSON exceeds node/depth budget")
 
-    while index < len(raw):
+    while index < raw_size:
         token = raw[index]
         if token in b" \t\r\n,:":
             index += 1
@@ -209,19 +212,23 @@ def _json_budget(raw: bytes, node_limit: int, depth_limit: int) -> None:
             index += 1
         elif token == 34:
             index += 1
-            while index < len(raw) and raw[index] != 34:
-                index += 2 if raw[index] == 92 else 1
-            if index >= len(raw):
+            while index < raw_size and raw[index] != 34:
+                if raw[index] == 92:
+                    index += 2
+                else:
+                    delimiter = string_delimiter(raw, index)
+                    index = raw_size if delimiter is None else delimiter.start()
+            if index >= raw_size:
                 raise JointArchiveError("Joint archive JSON string is truncated")
             index += 1
             lookahead = index
-            while lookahead < len(raw) and raw[lookahead] in b" \t\r\n":
+            while lookahead < raw_size and raw[lookahead] in b" \t\r\n":
                 lookahead += 1
-            if lookahead == len(raw) or raw[lookahead] != 58:
+            if lookahead == raw_size or raw[lookahead] != 58:
                 value_node(len(stack))
         else:
             value_node(len(stack))
-            while index < len(raw) and raw[index] not in b" \t\r\n,:{}[]":
+            while index < raw_size and raw[index] not in b" \t\r\n,:{}[]":
                 index += 1
     if stack:
         raise JointArchiveError("Joint archive JSON containers are truncated")

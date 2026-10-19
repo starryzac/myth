@@ -30,6 +30,7 @@ from app.domain.full_joint_goal_execution import (
     verify_frozen_joint_plan,
     whole_consent_content,
 )
+from app.domain.immutable_joint_validation_scope import parse_verified_joint_plan_original_json
 from app.domain.policy_configuration import configuration_hash
 from app.services.action_contracts import ActionResponse
 from app.services.audit_chain import row_copy
@@ -109,8 +110,9 @@ def read_joint_plan_original(
                 },
                 "PLAN",
             )
-        plan = FullJointFrozenPlan.model_validate_json(json.dumps(original))
-        verify_frozen_joint_plan(plan)
+        plan = parse_verified_joint_plan_original_json(
+            json.dumps(original), FullJointFrozenPlan, verify_frozen_joint_plan
+        )
     except (ValueError, TypeError, KeyError, StopIteration) as cause:
         raise error("JOINT_FROZEN_PARENT_INVALID") from cause
     epoch = session.get(AuditEpoch, parent.epoch_id)

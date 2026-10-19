@@ -27,6 +27,7 @@ from app.domain.full_dynamic_goal_execution import (
     native_income_original_matches,
     read_frozen_full_dynamic_goal_proof,
 )
+from app.domain.full_policy_configuration import LongTermGoalPolicy
 from app.domain.multi_goal_allocation import SourceReference
 from app.domain.policy_configuration import configuration_hash
 from app.services.action_contracts import ActionResponse, GoalIntent, PrepareActionRequest
@@ -217,6 +218,9 @@ def read_full_dynamic_goal_inputs(
             protection_inventory_complete=True,
             protection_issues=[row.code for row in full.source_issues],
             own_effect=own_effect,
+            dynamic_reserve_math_version=LongTermGoalPolicy.model_validate_json(
+                json.dumps(original.content["full_configuration"])
+            ).dynamic_reserve_math_version,
         )
 
 
@@ -230,7 +234,11 @@ def preview_full_dynamic_goal_execution(
         proof=derive_full_dynamic_goal_proof(actual),
         limitations=[
             "只使用已确认原月度min/target/max与当前已核新收入，不新增资金许可。",
-            "OVERDUE/PARTIAL及原最低额、期限、窗口否决保留；全多目标调度未实现。",
+            (
+                "原模型已明确选择安全部分金额；所有原最低额、期限及保护否决保留。"
+                if actual.dynamic_reserve_math_version == "SAFE_PARTIAL_V2"
+                else "OVERDUE/PARTIAL及原最低额、期限、窗口否决保留；全多目标调度未实现。"
+            ),
             "实际prepare/confirm/execute仍须原银行与完整保护网关，预览无副作用。",
         ],
     )

@@ -14,6 +14,7 @@ from contextlib import contextmanager
 from contextvars import ContextVar
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
+from importlib import import_module
 from threading import Lock
 from types import FunctionType, UnionType
 from typing import Annotated, Any, Union, get_args, get_origin
@@ -22,7 +23,7 @@ from zoneinfo import ZoneInfo
 
 from app.domain.policy_configuration import configuration_hash
 from pydantic import BaseModel
-from pydantic_core import TzInfo
+from pydantic_core import SchemaSerializer, SchemaValidator, TzInfo
 
 V3 = "registered-joint-goal-execution-archive-v3"
 V4 = "registered-joint-goal-execution-source-dag-v4"
@@ -35,10 +36,25 @@ _proofs: ContextVar[set[str] | None] = ContextVar("joint_immutable_request_proof
 MAX_HISTORICAL_PURE_PROOFS = 256
 
 
+@dataclass(frozen=True, eq=False, slots=True)
+class _JsonPlanBinding:
+    # One fixed native implementation per instance; never JSON or typed originals.
+    references: tuple[object, ...]
+    constants: str
+
+    def matches(self, other: "_JsonPlanBinding") -> bool:
+        return self.constants == other.constants and len(self.references) == len(
+            other.references
+        ) and all(left is right for left, right in zip(
+            self.references, other.references, strict=True
+        ))
+
+
 @dataclass(slots=True)
 class _HistoricalPureProofMemo:
     _digests: set[str] = field(default_factory=set, init=False)
     _lock: LockType = field(default_factory=Lock, init=False)
+    _json_plan_binding: _JsonPlanBinding | None = field(default=None, init=False)
 
 
 _historical_pure_proofs: ContextVar[_HistoricalPureProofMemo | None] = ContextVar(
@@ -315,3 +331,218 @@ def verify_original_content(
     verify()
     if len(current) < MAX_PROOFS:
         current.add(identity)
+
+
+# This finite list is the audited native replay seam, not a recursive Python
+# dependency engine. Frozen modules/factories remain a prerequisite. Every call
+# still runs the caller's actual strict JSON constructor before consulting it.
+_JSON_PLAN_SCHEMAS = (
+    ("full_joint_goal_execution", "FullJointFrozenPlan FullJointGoalExecutionInput"),
+    ("full_dynamic_goal_execution", "FullDynamicGoalInput"),
+    ("full_protection_projection", "FullProtectionProjectionInput FullProtectionProjectionResult"),
+    ("full_policy_configuration", "GoalAllocationPolicy LongTermGoalPolicy"),
+    ("multi_goal_allocation", "MultiGoalAllocationInput SourceReference"),
+)
+_JSON_PLAN_FUNCTIONS = (
+    ("full_joint_goal_execution", "verify_frozen_joint_plan _verify_frozen_joint_plan_uncached "
+     "derive_archived_joint_execution_plan derive_source_archived_joint_execution_plan "
+     "_derive_joint_execution_plan _scope _structure _history _sources "
+     "_original_funds_and_goals _protection_basis project_full_protection "
+     "bind_full_joint_input solve_multi_goal_allocation apply_joint_batch_cap "
+     "fixed_joint_effect derive_full_dynamic_goal_proof revalidate_execution "
+     "validate_full_execution_protection configuration_hash"),
+    ("full_dynamic_goal_execution", "_originals derive_full_dynamic_goal_proof "
+     "project_full_protection configuration_hash"),
+    ("full_execution_protection", "validate_full_execution_protection project_full_protection"),
+    ("full_action_set_joint_producers", "_request_hash _raw_sources _originals "
+     "native_income_original_matches configuration_hash"),
+    ("immutable_joint_validation_scope", "_complete_model_original verify_original_content "
+     "_historical_key _reuse_historical_proof"),
+    ("full_joint_goal_archive_protocol", "binding_for_plan encode_joint_record "
+     "validate_joint_original_capacity"),
+    ("full_joint_goal_source_adapter", "source_binding_for_input source_binding_for_plan"),
+    ("full_joint_goal_source_archive", "encode_shared_joint"),
+)
+_JSON_PLAN_CONSTANTS = (
+    ("full_joint_goal_execution", "ALGORITHM ALGORITHM_V4 NAMESPACE MAX_PLAN_BYTES MARKER"),
+    ("full_joint_goal_planning", "ORIGINAL_FLOORS EXTRA_FLOORS PHASES POINT_COUNT"),
+    ("full_action_set_joint_producers", "MAX_GOALS MAX_BYTES"),
+    ("full_joint_goal_archive_protocol", "ALGORITHM_V3 CODEC MAX_WIRE_BYTES "
+     "MAX_DECODED_BYTES MAX_DEPTH MAX_NODES MAX_COMPRESSED_BYTES"),
+    ("full_joint_goal_source_adapter", "MAX_DECODED_BYTES MAX_DEPTH MAX_NODES"),
+    ("full_joint_goal_archive", "MAX_DECODED_BYTES MAX_DEPTH MAX_NODES MAX_COMPRESSED_BYTES"),
+    ("full_joint_goal_source_archive", "PROTOCOL DAG_PROTOCOL CODEC MAX_SEQUENCES "
+     "MAX_SEQUENCE_ITEMS MAX_REFERENCE_OCCURRENCES MAX_AMPLIFICATION MAX_WIRE_BYTES "
+     "MAX_DECODED_BYTES MAX_DEPTH MAX_NODES MAX_LOGICAL_NODES"),
+)
+_JSON_PLAN_ZONE_MODULES = (
+    "full_joint_goal_execution", "full_joint_goal_planning", "full_dynamic_goal_execution",
+    "full_protection_projection", "full_registered_account_debits",
+)
+MAX_JSON_PLAN_ORIGINAL_BYTES = 64 * 1024 * 1024  # admission only, never a new input refusal
+
+
+def _json_plan_native_binding(
+    model_type: type[BaseModel], verify: Callable[..., None], plan: BaseModel,
+) -> _JsonPlanBinding | None:
+    from app.domain import full_joint_goal_execution as native
+    from app.services.full_goals import FullGoalModelContent
+
+    if (
+        model_type is not native.FullJointFrozenPlan
+        or verify is not native.verify_frozen_joint_plan
+    ):
+        return None
+    if (
+        type(plan) is not native.FullJointFrozenPlan
+        or getattr(plan, "protocol", None) not in {V3, V4}
+    ):
+        return None
+    # Main and per-goal wrapper families have different replay dependencies.
+    # The initial native fast path deliberately does not admit those wrappers.
+    joint = plan.inputs.joint
+    if joint.protection_inputs is None or any(
+        source.reference_snapshots or source.protected_references
+        for source in joint.protection_inputs.policies
+    ) or any(
+        source.reference_snapshots or source.protected_references
+        for goal in joint.original_actual_input.dynamic_goals if goal.data is not None
+        for source in goal.data.protection_policies
+    ):
+        return None
+    references: list[object] = []
+    constants: list[Any] = []
+
+    def small(value: Any) -> Any:
+        if value is None or type(value) in (str, bool, int):
+            return value
+        if type(value) is UUID:
+            return ["native-uuid", str(value)]
+        if type(value) is tuple:
+            return [small(item) for item in value]
+        if type(value) is dict and all(type(key) is str for key in value):
+            return {key: small(item) for key, item in value.items()}
+        raise _HistoricalOriginalNotEligible("Unknown native implementation default")
+
+    def function(value: Any) -> None:
+        value = getattr(value, "__func__", value)
+        if type(value) is not FunctionType or value.__closure__:
+            raise _HistoricalOriginalNotEligible("Unknown native delegate")
+        if not value.__module__.startswith(("app.domain.", "app.services.", "pydantic.")):
+            raise _HistoricalOriginalNotEligible("Unknown native delegate module")
+        references.extend((value, value.__code__))
+        constants.extend((small(value.__defaults__), small(value.__kwdefaults__)))
+
+    schemas: list[type[BaseModel]] = [FullGoalModelContent]
+    if (FullGoalModelContent.__module__, FullGoalModelContent.__qualname__) != (
+        "app.services.full_goals", "FullGoalModelContent"
+    ):
+        return None
+    for module_name, names in _JSON_PLAN_SCHEMAS:
+        module = import_module("app.domain." + module_name)
+        for name in names.split():
+            schema = getattr(module, name)
+            if (schema.__module__, schema.__qualname__) != (module.__name__, name):
+                return None
+            schemas.append(schema)
+    for schema in schemas:
+        if (
+            not isinstance(schema, type) or not issubclass(schema, BaseModel)
+            or type(schema.__pydantic_validator__) is not SchemaValidator
+            or type(schema.__pydantic_serializer__) is not SchemaSerializer
+        ):
+            return None
+        for method in ("model_validate_json", "model_validate", "model_dump", "model_dump_json"):
+            actual, original = getattr(schema, method), getattr(BaseModel, method)
+            if getattr(actual, "__func__", actual) is not getattr(original, "__func__", original):
+                return None
+            function(actual)
+        references.extend((schema, schema.__pydantic_validator__, schema.__pydantic_serializer__))
+        constants.append(small(schema.model_config))
+        for name, field_info in schema.model_fields.items():
+            references.append(field_info)
+            constants.append(name)
+            factory = field_info.default_factory
+            if factory is not None:
+                if factory is not list and factory is not dict:
+                    return None
+                references.append(factory)
+            elif not field_info.is_required():
+                constants.append(small(field_info.default))
+        for group in (
+            "validators", "field_validators", "root_validators", "field_serializers",
+            "model_serializers", "model_validators",
+        ):
+            for name, decorator in getattr(schema.__pydantic_decorators__, group).items():
+                constants.append(name)
+                function(decorator.func)
+    for module_name, names in _JSON_PLAN_FUNCTIONS:
+        module = import_module("app.domain." + module_name)
+        for name in names.split():
+            function(getattr(module, name))
+    for module_name, names in _JSON_PLAN_CONSTANTS:
+        module = import_module("app.domain." + module_name)
+        constants.extend(small(getattr(module, name)) for name in names.split())
+    for module_name in _JSON_PLAN_ZONE_MODULES:
+        if import_module("app.domain." + module_name).ZoneInfo is not ZoneInfo:
+            return None
+    references.extend((ZoneInfo("UTC"), ZoneInfo("Asia/Shanghai")))
+    return _JsonPlanBinding(tuple(references), configuration_hash({"native": constants}))
+
+
+def parse_verified_joint_plan_original_json[JsonPlan: BaseModel](
+    document: str, model_type: type[JsonPlan], verify: Callable[[JsonPlan], None],
+) -> JsonPlan:
+    """Fresh caller-owned strict JSON model; reuse only a prior native pure proof.
+
+    Unknown caller aliases retain their constructor and verifier. This helper
+    neither retains models nor skips any current/owner/permission/trace checks.
+    """
+    plan = model_type.model_validate_json(document)
+    memo, current = _historical_pure_proofs.get(), _proofs.get()
+    binding = None
+    key = None
+    try:
+        from app.domain.immutable_joint_archive_scope import _request
+
+        if (
+            type(memo) is _HistoricalPureProofMemo and current is not None
+            and _request.get() is not None and type(document) is str
+            and len(document) <= MAX_JSON_PLAN_ORIGINAL_BYTES and document.isascii()
+        ):
+            binding = _json_plan_native_binding(model_type, verify, plan)
+            if binding is not None:
+                key = configuration_hash({
+                    "role": "strict-json-plan-original-v1",
+                    "protocol": getattr(plan, "protocol", None),
+                    "utf8_bytes": len(document),
+                    "sha256": hashlib.sha256(document.encode("utf-8")).hexdigest(),
+                })
+                with memo._lock:
+                    compatible = memo._json_plan_binding
+                    if compatible is not None and compatible.matches(binding):
+                        if key in memo._digests:
+                            return plan
+                    elif compatible is not None:
+                        binding = None  # Never rebind an instance after implementation drift.
+    except Exception:
+        # Only admission/introspection failures fall back; never catch parser or verifier errors.
+        binding = None
+    verify(plan)
+    if binding is None or key is None or memo is None or current is None:
+        return plan
+    try:
+        after = _json_plan_native_binding(model_type, verify, plan)
+        if after is None or not binding.matches(after):
+            return plan
+        with memo._lock:
+            previous = memo._json_plan_binding
+            if previous is not None and not previous.matches(binding):
+                return plan
+            if len(memo._digests) < MAX_HISTORICAL_PURE_PROOFS:
+                memo._json_plan_binding = binding
+                if len(memo._digests) < MAX_HISTORICAL_PURE_PROOFS:
+                    memo._digests.add(key)
+    except Exception:
+        pass  # A post-success metadata failure cannot replace the original verifier's result.
+    return plan

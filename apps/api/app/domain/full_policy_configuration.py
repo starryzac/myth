@@ -54,6 +54,7 @@ FullAssetClass = Literal[
     "FIXED_DEPOSIT_90D",
     "LOW_RISK_TERM",
 ]
+DynamicReserveMathVersion = Literal["SAFE_PARTIAL_V2"]
 PositiveMoney = Annotated[MoneyCents, Field(gt=0)]
 Importance = Annotated[StrictInt, Field(ge=0, le=100)]
 UUIDList = Annotated[list[UUIDReference], Field(max_length=32)]
@@ -111,6 +112,9 @@ class LongTermGoalPolicy(CommonConfiguration):
     importance: Importance = 50
     minimum_guarantee_cents: MoneyCents = 0
     allow_partial: StrictBool = False
+    dynamic_reserve_math_version: DynamicReserveMathVersion | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
     allow_deferral: StrictBool = False
     deferral_cost_cents_per_day: MoneyCents = 0
     asset_policy_id: UUIDReference | None = None

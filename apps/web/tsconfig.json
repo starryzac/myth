@@ -28,8 +28,6 @@
   },
   "include": [
     "src",
-    "vite.config.ts",
-    "vite.zhiyu.config.ts",
     "vite.zhiyu-next.config.ts"
   ]
 }

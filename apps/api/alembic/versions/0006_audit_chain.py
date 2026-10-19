@@ -2,6 +2,7 @@
 
 import re
 from collections.abc import Sequence
+from typing import Any
 
 import sqlalchemy as sa
 from alembic import op
@@ -458,12 +459,13 @@ REVOKE ALL ON FUNCTION audit_event_head() FROM PUBLIC;
 
 def upgrade() -> None:
     op.execute("CREATE EXTENSION IF NOT EXISTS pgcrypto")
-    for name, kind in [
+    column_types: list[tuple[str, sa.types.TypeEngine[Any]]] = [
         ("epoch_id", sa.UUID()),
         ("schema_version", sa.String(48)),
         ("canonical_version", sa.String(48)),
         ("canonical_text", sa.Text()),
-    ]:
+    ]
+    for name, kind in column_types:
         op.add_column("audit_events", sa.Column(name, kind, nullable=True))
     for name in [
         "uq_audit_events_user_sequence",

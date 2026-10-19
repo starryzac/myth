@@ -27,6 +27,7 @@ from app.domain.full_joint_goal_execution import (
     verify_frozen_joint_plan,
     whole_consent_content,
 )
+from app.domain.immutable_joint_validation_scope import parse_verified_joint_plan_original_json
 from app.domain.policy_configuration import configuration_hash
 from app.services.audit_chain import audit_read_scope, current_audit_epoch
 from app.services.decision_recording import current_capture
@@ -383,8 +384,9 @@ def _read_frozen_full_joint_goal_values(trace: object) -> _VerifiedJointTraceVal
         raise ValueError("JOINT_EXACT_NEW_ALGORITHM_REQUIRED")
     trace = expanded_joint_trace(trace)
     raw = trace.inputs["planning"][MARKER]
-    plan = FullJointFrozenPlan.model_validate_json(json.dumps(raw["plan"]))
-    verify_frozen_joint_plan(plan)
+    plan = parse_verified_joint_plan_original_json(
+        json.dumps(raw["plan"]), FullJointFrozenPlan, verify_frozen_joint_plan
+    )
     if trace.algorithm_versions[MARKER] != plan.protocol:
         raise ValueError("JOINT_PLAN_AND_TRACE_PROTOCOL_DIFFER")
     body = FullJointChildPrepareRequest.model_validate_json(json.dumps(raw["child_request"]))
@@ -480,10 +482,10 @@ def _verify_frozen_joint_trace_values(trace: object) -> _VerifiedJointTraceValue
     trace = expanded_joint_trace(trace)
     if trace.action_id is not None:
         raise ValueError("JOINT_PLANNING_TRACE_CANNOT_CLAIM_AN_ACTION")
-    plan = FullJointFrozenPlan.model_validate_json(
-        json.dumps(trace.outcome["joint_execution_plan"])
+    plan = parse_verified_joint_plan_original_json(
+        json.dumps(trace.outcome["joint_execution_plan"]),
+        FullJointFrozenPlan, verify_frozen_joint_plan,
     )
-    verify_frozen_joint_plan(plan)
     if trace.algorithm_versions[MARKER] != plan.protocol:
         raise ValueError("JOINT_PLAN_AND_TRACE_PROTOCOL_DIFFER")
     if (

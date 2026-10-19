@@ -4,12 +4,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 127.0.0.1 --port 5173",
-    "build": "tsc --noEmit && vite build",
-    "build:zhiyu": "tsc --noEmit && vite build --config vite.zhiyu.config.ts",
+    "dev": "vite --config vite.zhiyu-next.config.ts",
     "dev:zhiyu-next": "vite --config vite.zhiyu-next.config.ts",
-    "build:zhiyu-next": "tsc --noEmit && vite build --config vite.zhiyu-next.config.ts",
-    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "build": "tsc --noEmit && vite build --config vite.zhiyu-next.config.ts",
+    "preview": "vite preview --config vite.zhiyu-next.config.ts --host 127.0.0.1 --port 4173",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings 0"
   },

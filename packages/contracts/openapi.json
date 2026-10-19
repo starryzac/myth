@@ -32077,6 +32077,18 @@
                 "type": "null"
               }
             ]
+          },
+          "dynamic_reserve_math_version": {
+            "anyOf": [
+              {
+                "type": "string",
+                "const": "SAFE_PARTIAL_V2"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dynamic Reserve Math Version"
           }
         },
         "additionalProperties": false,
@@ -32541,6 +32553,18 @@
             },
             "type": "array",
             "title": "Reasons"
+          },
+          "dynamic_reserve_math_version": {
+            "anyOf": [
+              {
+                "type": "string",
+                "const": "SAFE_PARTIAL_V2"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dynamic Reserve Math Version"
           }
         },
         "additionalProperties": false,

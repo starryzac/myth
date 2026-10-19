@@ -18,7 +18,7 @@ from app.domain.dynamic_goal_reserve import (
     compute_dynamic_goal_reserve,
 )
 from app.domain.execution_types import CashUse, ExecutionContext, ExecutionEffect
-from app.domain.full_policy_configuration import LongTermGoalPolicy
+from app.domain.full_policy_configuration import DynamicReserveMathVersion, LongTermGoalPolicy
 from app.domain.full_protection_projection import (
     FullProtectionPolicySource,
     FullProtectionProjectionInput,
@@ -93,6 +93,9 @@ class FullDynamicGoalInput(BoundaryModel):
     protection_inventory_complete: Literal[True]
     protection_issues: list[str] = Field(default_factory=list)
     own_effect: ExecutionEffect | None = None
+    dynamic_reserve_math_version: DynamicReserveMathVersion | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
 
 
 class FullDynamicGoalProof(BoundaryModel):
@@ -119,6 +122,9 @@ class FullDynamicGoalProof(BoundaryModel):
     proof_hash: Hash
     reserve: DynamicGoalReserveResult | None
     reasons: list[str]
+    dynamic_reserve_math_version: DynamicReserveMathVersion | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
     # Same-invocation validation must recompute this actual typed input. It is
     # deliberately excluded from the compact Action.request/HTTP proof.
     inputs: FullDynamicGoalInput = Field(exclude=True)
@@ -160,6 +166,8 @@ def _originals(data: FullDynamicGoalInput) -> tuple[AllocationGoal, list[Allocat
     full = LongTermGoalPolicy.model_validate_json(json.dumps(raw["full_configuration"])).model_dump(
         mode="json"
     )
+    if data.dynamic_reserve_math_version != full.get("dynamic_reserve_math_version"):
+        raise ValueError("ORIGINAL_DYNAMIC_MATH_VERSION_DIFFERS")
     version = next(
         (row for row in context.versions if row.version_id == body.expected_policy_version_id), None
     )
@@ -430,7 +438,20 @@ def derive_full_dynamic_goal_proof(
         nominal = min(remaining, max(0, goal.monthly_target_cents - contributed))
         cap = reserve.suggested_additional_cents
         status = "BLOCKED"
-        if reserve.status != "READY" or cap is None or not 0 < cap <= maximum or cap < minimum:
+        safe_partial = (
+            data.dynamic_reserve_math_version == "SAFE_PARTIAL_V2"
+            and goal.allow_partial is True
+            and reserve.status == "PARTIAL"
+            and reserve.minimum_shortfall_cents == 0
+            and reserve.guarantee_shortfall_cents == 0
+            and reserve.overdue_days == 0
+        )
+        if (
+            (reserve.status != "READY" and not safe_partial)
+            or cap is None
+            or not 0 < cap <= maximum
+            or cap < minimum
+        ):
             reasons.append("READ_ONLY_OVERDUE_PARTIAL_OR_ZERO_IS_NOT_EXECUTABLE")
         else:
             status = "VERIFIED_RANGE"
@@ -458,6 +479,7 @@ def derive_full_dynamic_goal_proof(
         "effect_hash": _effect_hash(effect) if effect is not None else None,
         "reserve": reserve,
         "reasons": reasons,
+        "dynamic_reserve_math_version": data.dynamic_reserve_math_version,
     }
     temporary = FullDynamicGoalProof(**fields, proof_hash="0" * 64, inputs=data)
     digest = configuration_hash(temporary.model_dump(mode="json", exclude={"proof_hash"}))

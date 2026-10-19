@@ -10746,6 +10746,8 @@ export interface components {
             /** Protection Issues */
             protection_issues?: string[];
             own_effect?: components["schemas"]["ExecutionEffect"] | null;
+            /** Dynamic Reserve Math Version */
+            dynamic_reserve_math_version?: "SAFE_PARTIAL_V2" | null;
         };
         /**
          * FullDynamicGoalLookup
@@ -10984,6 +10986,8 @@ export interface components {
             reserve: components["schemas"]["DynamicGoalReserveResult"] | null;
             /** Reasons */
             reasons: string[];
+            /** Dynamic Reserve Math Version */
+            dynamic_reserve_math_version?: "SAFE_PARTIAL_V2" | null;
         };
         /** FullEvidenceGraph */
         FullEvidenceGraph: {

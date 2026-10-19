@@ -15,6 +15,10 @@ export default function PolicySchemaForm({ schema, values, choices, disabled, up
       const children = Object.entries(node.properties).map(([name, child]) => fields(child, path ? `${path}.${name}` : name, depth + 1));
       return path ? <fieldset key={path} className="zyn-policy-group"><legend>{fieldLabel(path)}</legend><div className="zyn-form-grid">{children}</div></fieldset> : <div className="zyn-form-grid">{children}</div>;
     }
+    if (path === 'dynamic_reserve_math_version') {
+      if (node.const !== 'SAFE_PARTIAL_V2') throw new Error('目标金额安排方式尚未支持。');
+      return <label className="zy-field" key={path} htmlFor={id}>{fieldLabel(path)}<select id={id} value={String(values[path] ?? '')} disabled={disabled} onChange={(event) => update(path, event.target.value)}><option value="">保持原完整金额规则</option><option value="SAFE_PARTIAL_V2">在最低额和资金保护范围内按安全金额安排</option></select><small>仅在允许部分完成时适用。此选择随本次规则一起确认；已有规则不会自动切换。</small></label>;
+    }
     if (node.const !== undefined) return null;
     const label = fieldLabel(path); const optional = isOptional(object(input) ? input : {}); const references = choicesAt(choices, path); const array = node.type === 'array';
     const item = array ? resolveSchema(schema, node.items) : node;
