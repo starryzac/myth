@@ -1,7 +1,0 @@
-packages:
-  - apps/web
-  - packages/*
-storeDir: .pnpm-store
-allowBuilds:
-  '@tailwindcss/oxide': true
-  esbuild: true

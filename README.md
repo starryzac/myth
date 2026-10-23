@@ -1,65 +1,64 @@
-# 知余 · Zhiyu
+# 知余
 
-基于 FastAPI、React / TypeScript 与 PostgreSQL 的模拟资金 Agent。用确定性规则管理当前可安排资金，提供规则配置、多目标规划、资产规划与支取、必要问题问答、持续授权和原动作恢复。
+知余是一个围绕生活开支、储蓄目标和资金安排的个人财务应用。它想解决一个很日常的问题：钱到账以后，扣除接下来要用的钱，还能拿出多少去完成自己的目标？
 
-所有账户、银行操作与回执均为模拟。金额、权限、幂等、执行状态与审计由代码校验；未来未到账收入不扩大当前资金边界。模型负责理解需求和提出候选，执行前仍须通过授权与业务校验。
+你可以设置生活准备金和储蓄规则，让多个目标共同分配新增收入，也可以查看账单、模拟资产配置、执行记录和原始回执。涉及资金的操作需要明确的规则和授权；遇到结果不确定的请求，系统会保留原记录并继续查询，不会简单换一个请求再扣一次。
 
-## 仓库内容
+当前仓库使用 Go 后端、React 前端和 PostgreSQL。银行服务是独立的本地模拟程序，所有余额、产品与交易都用于模拟，不连接真实银行或真实资金。
 
-这是当前已安装源码的精简发布，使用知余四页应用作为唯一前端入口。
+## 可以做什么
+
+- 查看当前资金、目标进度、现金流预测和操作历史。
+- 设置生活准备金、储蓄目标及分配规则，并在确认后授予对应权限。
+- 预览单目标和多目标资金安排，处理模拟账单、目标调拨与资产操作。
+- 由后台任务处理已授权操作，并保留处理中、结果未知和最终结清的状态。
+- 查看审计记录和导入的历史资料，按原请求恢复中断的操作。
+- 选择接入 DeepSeek，辅助理解问题和整理候选方案。模型不能替用户确认授权，也不能决定实际扣款。
+
+这是仍在开发中的 Go 版本。仓库提供当前软件源码，完整场景验收与性能收尾仍在进行。
+
+## 构建
+
+需要 Go 1.27.2、Node.js 22.12 或更新版本，以及 pnpm 11.25.0。完整运行还需要本机 PostgreSQL 16。
+
+```sh
+go mod download
+go build -trimpath -o bin/zhiyu ./cmd/zhiyu
+go build -trimpath -o bin/banksim ./cmd/banksim
+go build -trimpath -o bin/audit-anchor ./cmd/audit-anchor
+
+cd web
+pnpm install --frozen-lockfile
+pnpm build
+```
+
+Windows 下请给输出文件加上 `.exe` 后缀。后端不会自动读取旧项目的数据库或配置；运行配置需要显式提供。
+
+## 运行
+
+首次启动和配置字段见 [本地运行说明](docs/running.md)。API 默认监听 `127.0.0.1:19310`，模拟银行监听 `127.0.0.1:19311`，前端入口为 `http://127.0.0.1:5178`。
+
+配置完成后，分别在终端运行：
+
+```sh
+./bin/banksim -config .runtime/bank-runtime.json -protocol-v2 -credit-inventory
+./bin/zhiyu api -config .runtime/app-runtime.json
+./bin/zhiyu worker -config .runtime/app-runtime.json
+./bin/zhiyu native-standing -config .runtime/app-runtime.json
+./bin/zhiyu projection -config .runtime/app-runtime.json
+```
+
+前端在 `web` 目录运行 `pnpm dev`。`pnpm preview` 只用于预览构建产物，不会代理后端接口。
+
+## 代码结构
 
 ```text
-apps/api/app/        API、规划与规则、模拟银行、执行与审计、受控 worker
-apps/api/alembic/    数据库迁移
-apps/web/           知余前端及其实际使用的共享模块
-packages/contracts/ OpenAPI 与 TypeScript 合同
-scripts/            安装、启动、构建与合同生成
-deploy/initialize_demo.py  独立模拟数据库初始化
+cmd/          应用、模拟银行与离线审计签名入口
+internal/     资金规则、规划、授权、执行、审计和接口实现
+db/           数据库迁移、查询与内嵌银行结构
+api/openapi/  HTTP 接口定义
+web/          React 页面与前端资源
+config/       可选模型配置示例
 ```
 
-旧控制台与旧 Demo 的前端入口、重复前端组件、独立验收工具和过时容器部署配置已清理。开发过程材料、测试夹具、运行数据、依赖目录和私有配置不纳入发布；资金执行、合同类型及历史审计仍需使用的共享模块保留。
-
-## 本地启动
-
-需要 Python 3.12、uv、Node.js 24、pnpm 11 和 PostgreSQL 16。启动器检查独立目录名，请按以下名称克隆：
-
-```powershell
-git clone https://github.com/starryzac/myth.git bounded-funds-next
-Set-Location bounded-funds-next
-python scripts/tasks.py bootstrap
-```
-
-模拟数据库管理连接默认使用 `127.0.0.1:54329`。首次体验且该端口空闲时，可用以下命令启动数据库：
-
-```powershell
-docker compose up -d db
-```
-
-已有本地数据库时，直接复用其服务；管理连接可通过会话环境变量 `ZHIYU_NEXT_ADMIN_DATABASE_URL` 指定，不提交口令。启动器只接受回环地址上的 54329 端口，每轮创建独立数据库、低权限角色及审计 epoch。
-
-```powershell
-uv run --frozen --no-dev python scripts/zhiyu_next.py prepare
-uv run --frozen --no-dev python scripts/zhiyu_next.py start --round <prepare返回的完整轮次>
-uv run --frozen --no-dev python scripts/zhiyu_next.py status --round <同一完整轮次>
-```
-
-默认页面：[http://127.0.0.1:19273/zhiyu-next.html](http://127.0.0.1:19273/zhiyu-next.html)，API 端口为 `19200`。若端口已占用，先用 `prepare --help` 查看自定义参数，并始终使用该轮的端口和完整标识。已有历史不会在启动时自动重置。
-
-模型服务在页面的模型设置中配置并测试连接；密钥保存在本机忽略目录中。未配置模型时，可使用离线规则入口。运行信息和凭证保存在 `.runtime/`，不应上传。
-
-## 构建与检查
-
-```powershell
-pnpm lint          # 前端代码规范
-pnpm typecheck     # TypeScript 类型检查
-pnpm build         # 唯一知余入口的生产构建
-pnpm types         # 生成基础 API 的 OpenAPI 和 TypeScript 合同
-```
-
-产物位于 `apps/web/dist-zhiyu-next/`。独立启动器使用源码开发服务；`pnpm dev` 仅启动前端，需先准备并启动对应 API。Windows 可用 `make.cmd`，Linux/macOS 可用 `make`；两者调用 `scripts/tasks.py`。
-
-## 当前边界
-
-代码已接入十二模板候选、受控模型工具、多目标与双向授权调拨、资产及必要问题等流程。整体功能仍有验收缺口，部分请求耗时较长；本仓库不宣称完整模拟金融、常驻恢复或浏览器验收已完成。
-
-后台默认关闭，现有 worker 的精确源码及实际验收许可门保留。仓库不分发本机许可文件；重新部署需自行完成对应验证。UNKNOWN 动作继续使用原动作身份和银行键恢复，暂停与撤销不会把未知结果改成成功。
+金额以整数分处理；未来收入不会被当成已经到账的钱。模拟操作的请求、授权和回执会保留关联，方便解释一次安排为什么发生、做到哪一步，以及失败后该从哪里继续。

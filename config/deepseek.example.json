@@ -1,0 +1,6 @@
+{
+  "enabled": false,
+  "endpoint": "https://api.deepseek.com/chat/completions",
+  "model": "deepseek-flash",
+  "api_key_env": "ZYGO_DEEPSEEK_API_KEY"
+}
